@@ -11752,7 +11752,7 @@ app-root {
   position: fixed;
   z-index: 1019;
   width: 200px;
-  height: calc(100vh - 55px); }
+  height: calc(100vh); }
 
 .sidebar-fixed .main, .sidebar-fixed .app-footer {
   margin-left: 200px; }
@@ -11763,7 +11763,7 @@ app-root {
 .sidebar-off-canvas .sidebar {
   position: fixed;
   z-index: 1019;
-  height: calc(100vh - 55px); }
+  height: calc(100vh); }
 
 @media (min-width: 992px) {
   .sidebar-compact .sidebar {
