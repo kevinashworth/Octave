@@ -1,0 +1,6 @@
+{
+  "name": "LayoutFull",
+  "version": "0.0.0",
+  "private": true,
+  "main": "./LayoutFull.js"
+}

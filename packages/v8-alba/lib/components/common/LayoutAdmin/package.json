@@ -1,0 +1,6 @@
+{
+  "name": "LayoutAdmin",
+  "version": "0.0.0",
+  "private": true,
+  "main": "./LayoutAdmin.js"
+}
