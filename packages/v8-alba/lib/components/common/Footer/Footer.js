@@ -1,3 +1,4 @@
+import { registerComponent } from 'meteor/vulcan:core';
 import React, {Component} from 'react';
 
 class Footer extends Component {
@@ -11,4 +12,4 @@ class Footer extends Component {
   }
 }
 
-export default Footer;
+registerComponent('Footer', Footer);
