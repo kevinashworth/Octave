@@ -6,9 +6,9 @@ Package.describe({
 Package.onUse(function (api) {
 
   api.use([
-    'vulcan:core@1.8.10',
-    'vulcan:forms@1.8.10',
-    'vulcan:accounts@1.8.10',
+    'vulcan:core',
+    'vulcan:forms',
+    'vulcan:accounts',
     'fourseven:scss',
   ]);
 
