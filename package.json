@@ -6,7 +6,7 @@
   },
   "scripts": {
     "prestart": "node .vulcan/prestart_vulcan.js",
-    "start": "METEOR_PACKAGE_DIRS=\"/Users/kevinashworth/Developer/github_clones/Vulcan/packages\" meteor --port 4004 --settings settings.json",
+    "start": "METEOR_PACKAGE_DIRS=\"~/Developer/github_clones/Vulcan/packages\" meteor --port 4004 --settings settings.json",
     "lint": "eslint --cache --ext .jsx,js packages"
   },
   "dependencies": {
