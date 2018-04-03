@@ -12,9 +12,9 @@ Package.onUse(function (api) {
     'fourseven:scss',
   ]);
 
-  api.addFiles('lib/stylesheets/index.styles.css', 'client');
-  api.addAssets('lib/stylesheets/index.styles.css.map', 'client');
-  api.addFiles('lib/stylesheets/simple-line-icons.scss', 'client');
+  // api.addFiles('lib/stylesheets/index.styles.css', 'client');
+  // api.addAssets('lib/stylesheets/index.styles.css.map', 'client');
+  api.addFiles('lib/stylesheets/scss/style.scss', 'client');
 
   api.mainModule('lib/server/main.js', 'server');
   api.mainModule('lib/client/main.js', 'client');
