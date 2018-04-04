@@ -1,22 +1,22 @@
 // import React from 'react';
-// import {Route, Link} from 'react-router';
-// import {Breadcrumb, BreadcrumbItem} from 'reactstrap';
+import {Link} from 'react-router';
+import {Breadcrumb, BreadcrumbItem} from 'reactstrap';
 // import routes from '../../routes';
 //
 // const findRouteName = url => routes[url];
 //
-// const getPaths = (pathname) => {
-//   const paths = ['/'];
-//
-//   if (pathname === '/') return paths;
-//
-//   pathname.split('/').reduce((prev, curr, index) => {
-//     const currPath = `${prev}/${curr}`;
-//     paths.push(currPath);
-//     return currPath;
-//   });
-//   return paths;
-// };
+const getPaths = (pathname) => {
+  const paths = ['/'];
+
+  if (pathname === '/') return paths;
+
+  pathname.split('/').reduce((prev, curr, index) => {
+    const currPath = `${prev}/${curr}`;
+    paths.push(currPath);
+    return currPath;
+  });
+  return paths;
+};
 //
 // const BreadcrumbsItem = ({match, ...rest}) => {
 //   const routeName = findRouteName(match.url);
@@ -56,19 +56,47 @@
 
 import { registerComponent } from 'meteor/vulcan:core';
 import React, {Component} from 'react';
+import { withRouter } from 'react-router';
 
-class Breadcrumb extends Component {
-  render() {
+const BreadcrumbsItem = ({path, routeName}) => {
+  if (routeName) {
     return (
-      <div className="KevinSaysHello">
-        <ol className="breadcrumb">
-          <li className="breadcrumb-item"><a href="#/">Home</a></li>
-          <li className="breadcrumb-item"><a href="#/plugins">Fake</a></li>
-          <li className="active breadcrumb-item">Breadcrumbs</li>
-        </ol>
-      </div>
-    )
+      <BreadcrumbItem>
+        <Link to={path || ''}>
+          {routeName}
+        </Link>
+      </BreadcrumbItem>
+    );
+  }
+  return null;
+};
+
+class Breadcrumbs extends Component {
+  render() {
+    console.log('Router, yo:', this.props.router);
+    // console.log('routes, yo:', this.props.router.routes[0]);
+    const paths = getPaths(this.props.router.location.pathname);
+    const items = paths.map((path, i) => <BreadcrumbsItem key={i++} path={path} routeName={this.props.router.routes[this.props.router.routes.length - 1].name}/>);
+    return (
+      <Breadcrumb>
+        {items}
+      </Breadcrumb>
+    );
   }
 }
 
-registerComponent('Breadcrumb', Breadcrumb);
+// class Breadcrumb extends Component {
+//   render() {
+//     return (
+//       <div className="KevinSaysHello">
+//         <ol className="breadcrumb">
+//           <li className="breadcrumb-item"><a href="#/">Home</a></li>
+//           <li className="breadcrumb-item"><a href="#/plugins">Fake</a></li>
+//           <li className="active breadcrumb-item">Breadcrumbs</li>
+//         </ol>
+//       </div>
+//     )
+//   }
+// }
+
+registerComponent('Breadcrumb', Breadcrumbs, withRouter);
