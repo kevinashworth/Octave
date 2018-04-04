@@ -1,0 +1,6 @@
+{
+  "name": "ContactsDataTable",
+  "version": "0.0.0",
+  "private": true,
+  "main": "./ContactsDataTable.js"
+}
