@@ -17,3 +17,8 @@ import '../components/common/LayoutAdmin/';
 // Alba views
 
 import '../components/Dashboard/';
+
+// V8
+
+import '../components/contacts/ContactsTable';
+import '../components/contacts/ContactsRow';

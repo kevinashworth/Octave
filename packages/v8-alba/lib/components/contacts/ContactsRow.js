@@ -1,3 +1,4 @@
+import { registerComponent } from 'meteor/vulcan:core';
 import React from 'react';
 import PropTypes from 'prop-types';
 
@@ -24,4 +25,4 @@ ContactsRow.propTypes = {
   contact: PropTypes.object
 }
 
-export default ContactsRow;
+registerComponent('ContactsRow', ContactsRow);

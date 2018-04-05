@@ -1,3 +1,4 @@
+import { registerComponent, Components } from 'meteor/vulcan:core';
 import React, {Component} from 'react';
 import {
   Card,
@@ -8,7 +9,6 @@ import {
   PaginationItem,
   PaginationLink
 } from 'reactstrap';
-import ContactsRow from './ContactsRow.js';
 import contacts from './_contacts.js';
 
 class ContactsTable extends Component {
@@ -33,7 +33,7 @@ class ContactsTable extends Component {
               </tr>
               </thead>
               <tbody>
-              {contacts.map(contact => <ContactsRow key={contact.project_id} contact={contact} />)}
+              {contacts.map(contact => <Components.ContactsRow key={contact.project_id} contact={contact} />)}
               </tbody>
             </Table>
             <nav>
@@ -56,4 +56,4 @@ class ContactsTable extends Component {
   }
 }
 
-export default ContactsTable;
+registerComponent('ContactsTable', ContactsTable);
