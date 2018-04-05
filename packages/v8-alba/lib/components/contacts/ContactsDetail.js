@@ -1,3 +1,4 @@
+import { registerComponent } from 'meteor/vulcan:core';
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Card, CardBody, CardFooter, CardHeader, CardText, CardTitle } from 'reactstrap';
@@ -38,4 +39,4 @@ ContactsDetail.propTypes = {
   })
 };
 
-export default ContactsDetail;
+registerComponent('ContactsDetail', ContactsDetail);
