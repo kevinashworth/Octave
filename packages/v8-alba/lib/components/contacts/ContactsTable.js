@@ -18,6 +18,7 @@ class ContactsTable extends Component {
         <Card>
           <CardHeader>
             <i className="fa fa-align-justify"></i> ContactsTable
+            <Components.ContactDropdowns/>
           </CardHeader>
           <CardBody>
             <Table hover bordered striped responsive size="sm">

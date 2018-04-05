@@ -1,9 +1,8 @@
+import { registerComponent, Components } from 'meteor/vulcan:core';
 import React, {Component} from 'react';
-import { Link } from 'react-router-dom'
+import { Link } from 'react-router'
 import {Card, CardHeader, CardBody} from 'reactstrap';
 import {BootstrapTable, TableHeaderColumn} from 'react-bootstrap-table';
-import 'react-bootstrap-table/dist/react-bootstrap-table-all.min.css';
-import ContactDropdowns from '../../containers/Filter/ContactDropdowns';
 import contacts from './_contacts';
 
 class ContactsDataTable extends Component {
@@ -56,17 +55,13 @@ class ContactsDataTable extends Component {
       <div className="animated">
         <Card>
           <CardHeader>
-            <i className="icon-menu"></i>Contacts Data Table 2
-            <ContactDropdowns></ContactDropdowns>
+            <i className="icon-menu"></i>Contacts DataTable
+            <Components.ContactDropdowns/>
           </CardHeader>
           <CardBody>
             <BootstrapTable data={this.table} version="4" condensed striped hover pagination search options={this.options} selectRow={selectRow} keyField='project_id'>
               <TableHeaderColumn dataField="name" dataSort dataFormat={
                 (cell, row) => {
-                  // console.log('cell:', cell);
-                  // console.log('row:', row);
-                  // console.log('formatExtraData:', formatExtraData);
-                  // console.log('index:', index);
                   return (
                     <Link to={`/contacts/${row.project_id}`}>
                       {cell}
@@ -96,4 +91,4 @@ class ContactsDataTable extends Component {
   }
 }
 
-export default ContactsDataTable;
+registerComponent('ContactsDataTable', ContactsDataTable)
