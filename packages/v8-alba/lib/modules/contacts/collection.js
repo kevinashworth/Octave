@@ -1,12 +1,25 @@
-import { createCollection } from "meteor/vulcan:core";
+import { createCollection, getDefaultResolvers, getDefaultMutations } from "meteor/vulcan:core";
 import schema from "./schema.js";
 
 const Contacts = createCollection({
-  collectionName: "Contacts",
+  collectionName: "contacts",
 
   typeName: "Contact",
 
-  schema
+  schema,
+
+  resolvers: getDefaultResolvers('contacts'),
+
+  mutations: getDefaultMutations('contacts'),
+
+});
+
+
+// default sort by createdAt timestamp in descending order
+Contacts.addDefaultView(terms => {
+  return {
+    options: {sort: {createdAt: -1}}
+  };
 });
 
 export default Contacts;

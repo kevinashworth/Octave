@@ -19,6 +19,12 @@ registerFragment(/* GraphQL */ `
     user {
       displayName
     }
+    displayName
     body
+    street1
+    street2
+    city
+    state
+    zip
   }
 `);

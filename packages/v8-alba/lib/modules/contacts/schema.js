@@ -1,6 +1,3 @@
-import FormsUpload from "meteor/vulcan:forms-upload";
-import { getSetting } from "meteor/vulcan:core";
-
 const schema = {
   // default properties
 
@@ -32,13 +29,53 @@ const schema = {
     viewableBy: ["guests"]
   },
   body: {
-    label: "Body",
+    label: "Notes",
     type: String,
     optional: true,
     control: "textarea", // use a textarea form component
+    viewableBy: ["members"],
+    insertableBy: ["admins"],
+    editableBy: ["admins"]
+  },
+  street1: {
+    label: "Address",
+    type: String,
+    optional: true,
+    viewableBy: ["members"],
+    insertableBy: ["admins"],
+    editableBy: ["admins"]
+  },
+  street2: {
+    label: "(cont)",
+    type: String,
+    optional: true,
+    viewableBy: ["members"],
+    insertableBy: ["admins"],
+    editableBy: ["admins"]
+  },
+  city: {
+    label: "City",
+    type: String,
+    optional: true,
     viewableBy: ["guests"],
-    insertableBy: ["members"],
-    editableBy: ["members"]
+    insertableBy: ["admins"],
+    editableBy: ["admins"]
+  },
+  state: {
+    label: "State",
+    type: String,
+    optional: true,
+    viewableBy: ["guests"],
+    insertableBy: ["admins"],
+    editableBy: ["admins"]
+  },
+  zip: {
+    label: "Zip",
+    type: Number,
+    optional: true,
+    viewableBy: ["members"],
+    insertableBy: ["admins"],
+    editableBy: ["admins"]
   }
 };
 
