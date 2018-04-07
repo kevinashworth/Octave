@@ -47,6 +47,11 @@ export default {
       name: 'Projects (DT)',
       url: '/projectsdatatable',
       icon: 'fa fa-camera'
+    },
+    {
+      name: 'Modals',
+      url: '/modals',
+      icon: 'fa fa-external-link'
     }
   ]
 };

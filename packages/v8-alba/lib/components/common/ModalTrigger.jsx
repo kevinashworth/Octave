@@ -1,61 +1,58 @@
-import { registerComponent } from 'meteor/vulcan:lib';
+import { registerComponent, Components } from 'meteor/vulcan:lib';
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
-import Modal from 'react-bootstrap/lib/Modal'
+import { Modal, ModalHeader, ModalBody } from 'reactstrap';
 
-class ModalTrigger extends PureComponent {
+class MyModalTrigger extends PureComponent {
 
   constructor() {
     super();
-    this.openModal = this.openModal.bind(this);
-    this.closeModal = this.closeModal.bind(this);
     this.state = {
       modalIsOpen: false
     };
+    this.toggle = this.toggle.bind(this);
   }
 
-  openModal() {
-    this.setState({modalIsOpen: true});
-  }
-
-  closeModal() {
-    this.setState({modalIsOpen: false});
+  toggle() {
+    this.setState({
+      modalIsOpen: !this.state.modalIsOpen
+    });
   }
 
   renderHeader() {
     return (
-      <Modal.Header closeButton>
-        <Modal.Title>{this.props.title}</Modal.Title>
-      </Modal.Header>
+      <ModalHeader toggle={this.toggle}>
+        {this.props.title}
+      </ModalHeader>
     )
   }
 
   render() {
 
-    const triggerComponent = this.props.component ? React.cloneElement(this.props.component, { onClick: this.openModal }) : <a href="#" onClick={this.openModal}>{this.props.label}</a>;
-    const childrenComponent = React.cloneElement(this.props.children, {closeModal: this.closeModal});
+    const triggerComponent = this.props.component ? React.cloneElement(this.props.component, { onClick: this.toggle }) : <a href="#" onClick={this.toggle}>{this.props.label}</a>;
+    const childrenComponent = React.cloneElement(this.props.children, {toggle: this.toggle});
 
     return (
       <div className="modal-trigger">
         {triggerComponent}
         <Modal
           className={this.props.className}
-          bsSize={this.props.size}
-          show={this.state.modalIsOpen}
-          onHide={this.closeModal}
-          dialogClassName={this.props.dialogClassName}
+          size={this.props.size}
+          isOpen={this.state.modalIsOpen}
+          toggle={this.toggle}
+          wrapClassName={this.props.dialogClassName}
         >
           {this.props.title ? this.renderHeader() : null}
-          <Modal.Body>
+          <ModalBody>
             {childrenComponent}
-          </Modal.Body>
+          </ModalBody>
         </Modal>
       </div>
     )
   }
 }
 
-ModalTrigger.propTypes = {
+MyModalTrigger.propTypes = {
   className: PropTypes.string,
   label: PropTypes.string,
   component: PropTypes.object,
@@ -63,10 +60,8 @@ ModalTrigger.propTypes = {
   title: PropTypes.oneOfType([PropTypes.string, PropTypes.element]),
 }
 
-ModalTrigger.defaultProps = {
+MyModalTrigger.defaultProps = {
   size: 'large'
 }
 
-registerComponent('ModalTrigger', ModalTrigger);
-
-export default ModalTrigger;
+registerComponent('MyModalTrigger', MyModalTrigger);

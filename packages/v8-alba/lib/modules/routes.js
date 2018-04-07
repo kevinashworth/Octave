@@ -5,4 +5,5 @@ addRoute([
   {path: '/dashboard',         name: 'Dashboard',      componentName: 'Dashboard'},
   {path: '/contacts',          name: 'Contacts (T)',   componentName: 'ContactsTable'},
   {path: '/contactsdatatable', name: 'Contacts (DT)',  componentName: 'ContactsDataTable'},
+  {path: '/modals',            name: 'Modals Test',    componentName: 'Modals'},
 ]);

@@ -8,7 +8,8 @@ import '../components/common/SidebarFooter/';
 import '../components/common/SidebarForm/';
 import '../components/common/SidebarHeader/';
 import '../components/common/SidebarMinimizer/';
-import '../components/common/Modals/';
+import '../components/common/Modals.jsx';
+import '../components/common/ModalTrigger.jsx';
 
 // Alba containers
 
