@@ -8,7 +8,7 @@ import '../components/common/SidebarFooter/';
 import '../components/common/SidebarForm/';
 import '../components/common/SidebarHeader/';
 import '../components/common/SidebarMinimizer/';
-import '../components/common/Filter/ContactDropdowns';
+import '../components/common/Modals/';
 
 // Alba containers
 
@@ -21,6 +21,9 @@ import '../components/Dashboard/';
 
 // V8
 
+import '../components/common/Filter/ContactDropdowns';
 import '../components/contacts/ContactsTable';
 import '../components/contacts/ContactsRow';
 import '../components/contacts/ContactsDataTable';
+import '../components/contacts/ContactsNewForm';
+import '../components/contacts/ContactsEditForm';

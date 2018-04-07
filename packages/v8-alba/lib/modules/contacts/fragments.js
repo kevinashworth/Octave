@@ -5,9 +5,7 @@ registerFragment(/* GraphQL */ `
     _id
     createdAt
     userId
-    user {
-      displayName
-    }
+    displayName
   }
 `);
 
@@ -16,9 +14,6 @@ registerFragment(/* GraphQL */ `
     _id
     createdAt
     userId
-    user {
-      displayName
-    }
     displayName
     body
     street1

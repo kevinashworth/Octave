@@ -1,4 +1,4 @@
-import { registerComponent, Components } from 'meteor/vulcan:core';
+import { registerComponent, Components, withList, withCurrentUser } from 'meteor/vulcan:core';
 import React, {Component} from 'react';
 import {
   Card,
@@ -13,6 +13,7 @@ import Contacts from '../../modules/contacts/collection.js';
 
 const ContactsTable = ({results = [], currentUser}) =>
   <div className="animated fadeIn">
+    <Components.AccountsLoginForm />
     <Card>
       <CardHeader>
         <i className="fa fa-align-justify"></i> ContactsTable
@@ -28,6 +29,7 @@ const ContactsTable = ({results = [], currentUser}) =>
             <th>City</th>
             <th>State</th>
             <th>Zip</th>
+            <th>Edit</th>
           </tr>
           </thead>
           <tbody>
@@ -48,11 +50,12 @@ const ContactsTable = ({results = [], currentUser}) =>
         </nav>
       </CardBody>
     </Card>
+    <Components.ContactsNewForm />
   </div>
 
 const options = {
   collection: Contacts,
-  fragmentName: 'ContactsItemFragment'
+  fragmentName: 'ContactsDetailsFragment'
 };
 
-registerComponent('ContactsTable', ContactsTable);
+registerComponent('ContactsTable', ContactsTable, [withList, options], withCurrentUser);

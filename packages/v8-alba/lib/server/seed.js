@@ -11,7 +11,7 @@ import Contacts from '../modules/contacts/collection.js';
 
 const seedData = [
   {
-  "name": "Nicole Abellera Hallman",
+  "displayName": "Nicole Abellera Hallman",
   "street1": "1750 Ocean Park Blvd.  Ste. 208",
   "street2": " ",
   "city": "Santa Monica",
@@ -19,7 +19,7 @@ const seedData = [
   "zip": 00987
   },
   {
-  "name": "Faith Abraham",
+  "displayName": "Faith Abraham",
   "street1": "1756 22nd St.",
   "street2": " ",
   "city": "Santa Monica",
@@ -27,7 +27,7 @@ const seedData = [
   "zip": 90404
   },
   {
-  "name": "Faith Abraham",
+  "displayName": "Faith Abraham",
   "street1": "2323 Beverly Blvd.",
   "street2": " ",
   "city": "Los Angeles",
@@ -35,7 +35,7 @@ const seedData = [
   "zip": 90057
   },
   {
-  "name": "Micky Adams",
+  "displayName": "Micky Adams",
   "street1": "5225 Wilshire Blvd.  Ste. 415",
   "street2": " ",
   "city": "Los Angeles",
@@ -43,7 +43,7 @@ const seedData = [
   "zip": 90036
   },
   {
-  "name": "Jonathan Aldana",
+  "displayName": "Jonathan Aldana",
   "street1": "4024 Radford Ave.",
   "street2": "Editorial Bldg. 2  Room 5",
   "city": "Studio City",
@@ -51,7 +51,7 @@ const seedData = [
   "zip": 91604
   },
   {
-  "name": "Alexis Allen",
+  "displayName": "Alexis Allen",
   "street1": "1149 N. Gower St.  Ste. 106B",
   "street2": " ",
   "city": "Los Angeles",
@@ -59,7 +59,7 @@ const seedData = [
   "zip": 90038
   },
   {
-  "name": "Jill Anthony Thomas",
+  "displayName": "Jill Anthony Thomas",
   "street1": "100 Universal City Plaza",
   "street2": "Bldg. 9128  Ste. A",
   "city": "Universal City",

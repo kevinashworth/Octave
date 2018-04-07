@@ -4,7 +4,7 @@ const schema = {
   _id: {
     type: String,
     optional: true,
-    viewableBy: ["guests"]
+    viewableBy: ["members"]
   },
   createdAt: {
     type: Date,
@@ -17,7 +17,7 @@ const schema = {
   userId: {
     type: String,
     optional: true,
-    viewableBy: ["guests"]
+    viewableBy: ["members"]
   },
 
   // custom properties
@@ -26,14 +26,16 @@ const schema = {
     label: "Name",
     type: String,
     optional: true,
-    viewableBy: ["guests"]
+    viewableBy: ["guests"],
+    insertableBy: ["admins"],
+    editableBy: ["admins"]
   },
   body: {
     label: "Notes",
     type: String,
     optional: true,
     control: "textarea", // use a textarea form component
-    viewableBy: ["members"],
+    viewableBy: ["guests"],
     insertableBy: ["admins"],
     editableBy: ["admins"]
   },
@@ -41,7 +43,7 @@ const schema = {
     label: "Address",
     type: String,
     optional: true,
-    viewableBy: ["members"],
+    viewableBy: ["guests"],
     insertableBy: ["admins"],
     editableBy: ["admins"]
   },
@@ -57,7 +59,7 @@ const schema = {
     label: "City",
     type: String,
     optional: true,
-    viewableBy: ["guests"],
+    viewableBy: ["members"],
     insertableBy: ["admins"],
     editableBy: ["admins"]
   },
@@ -65,7 +67,7 @@ const schema = {
     label: "State",
     type: String,
     optional: true,
-    viewableBy: ["guests"],
+    viewableBy: ["members"],
     insertableBy: ["admins"],
     editableBy: ["admins"]
   },
