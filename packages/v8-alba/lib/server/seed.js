@@ -16,7 +16,7 @@ const seedData = [
   "street2": " ",
   "city": "Santa Monica",
   "state": "RI",
-  "zip": 00987
+  "zip": "00987"
   },
   {
   "displayName": "Faith Abraham",
@@ -24,7 +24,7 @@ const seedData = [
   "street2": " ",
   "city": "Santa Monica",
   "state": "CA",
-  "zip": 90404
+  "zip": "90404"
   },
   {
   "displayName": "Faith Abraham",
@@ -32,7 +32,7 @@ const seedData = [
   "street2": " ",
   "city": "Los Angeles",
   "state": "CA",
-  "zip": 90057
+  "zip": "90057"
   },
   {
   "displayName": "Micky Adams",
@@ -40,7 +40,7 @@ const seedData = [
   "street2": " ",
   "city": "Los Angeles",
   "state": "CA",
-  "zip": 90036
+  "zip": "90036"
   },
   {
   "displayName": "Jonathan Aldana",
@@ -48,7 +48,7 @@ const seedData = [
   "street2": "Editorial Bldg. 2  Room 5",
   "city": "Studio City",
   "state": "CA",
-  "zip": 91604
+  "zip": "91604"
   },
   {
   "displayName": "Alexis Allen",
@@ -56,7 +56,7 @@ const seedData = [
   "street2": " ",
   "city": "Los Angeles",
   "state": "CA",
-  "zip": 90038
+  "zip": "90038"
   },
   {
   "displayName": "Jill Anthony Thomas",
@@ -64,7 +64,7 @@ const seedData = [
   "street2": "Bldg. 9128  Ste. A",
   "city": "Universal City",
   "state": "CA",
-  "zip": 91608
+  "zip": "91608"
   },
 ];
 

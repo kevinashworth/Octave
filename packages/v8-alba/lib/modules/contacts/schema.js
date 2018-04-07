@@ -25,7 +25,7 @@ const schema = {
   displayName: {
     label: "Name",
     type: String,
-    optional: true,
+    optional: false,
     viewableBy: ["guests"],
     insertableBy: ["admins"],
     editableBy: ["admins"]
@@ -73,7 +73,7 @@ const schema = {
   },
   zip: {
     label: "Zip",
-    type: Number,
+    type: String,
     optional: true,
     viewableBy: ["members"],
     insertableBy: ["admins"],
