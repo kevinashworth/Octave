@@ -13,7 +13,7 @@ const ContactsRow = ({contact, currentUser}) =>
     <td>{contact.zip}</td>
     <td>{Contacts.options.mutations.edit.check(currentUser, contact) ?
       <Components.ModalTrigger label="Edit">
-        <Components.Modals currentUser={currentUser} documentId={contact._id} />
+        <Components.ContactsEditForm currentUser={currentUser} documentId={contact._id} />
       </Components.ModalTrigger>
       : null
     }</td>
