@@ -28,3 +28,5 @@ import '../components/contacts/ContactsRow';
 import '../components/contacts/ContactsDataTable';
 import '../components/contacts/ContactsNewForm';
 import '../components/contacts/ContactsEditForm';
+import '../components/contacts/ContactsProfile';
+import '../components/contacts/ContactsSingle';

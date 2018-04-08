@@ -33,7 +33,7 @@ const ContactsTable = ({results = [], currentUser}) =>
           </tr>
           </thead>
           <tbody>
-          {results.map(contact => <Components.ContactsRow key={contact._id} contact={contact} currentUser={currentUser} />)}
+          {results.map(contact => <Components.ContactsRow documentId={contact._id} key={contact._id} contact={contact} currentUser={currentUser} />)}
           </tbody>
         </Table>
         <nav>
