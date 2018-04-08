@@ -21,5 +21,6 @@ registerFragment(/* GraphQL */ `
     city
     state
     zip
+    slug
   }
 `);

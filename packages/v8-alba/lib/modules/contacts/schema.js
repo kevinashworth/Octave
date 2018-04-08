@@ -1,3 +1,5 @@
+import { Utils } from 'meteor/vulcan:core';
+
 const schema = {
   // default properties
 
@@ -25,7 +27,7 @@ const schema = {
   displayName: {
     label: "Name",
     type: String,
-    optional: false,
+    optional: true,
     viewableBy: ["guests"],
     insertableBy: ["admins"],
     editableBy: ["admins"]
@@ -78,7 +80,20 @@ const schema = {
     viewableBy: ["members"],
     insertableBy: ["admins"],
     editableBy: ["admins"]
-  }
+  },
+  slug: {
+    type: String,
+    optional: true,
+    viewableBy: ['guests'],
+    onInsert: (contact) => {
+      return Utils.slugify(contact.displayName);
+    },
+    onEdit: (modifier, contact) => {
+      if (modifier.$set.displayName) {
+        return Utils.slugify(modifier.$set.displayName);
+      }
+    }
+  },
 };
 
 export default schema;
