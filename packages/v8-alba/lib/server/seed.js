@@ -13,7 +13,6 @@ const seedData = [
   {
   "displayName": "Nicole Abellera Hallman",
   "street1": "1750 Ocean Park Blvd.  Ste. 208",
-  "street2": " ",
   "city": "Santa Monica",
   "state": "RI",
   "zip": "00987"
@@ -21,7 +20,6 @@ const seedData = [
   {
   "displayName": "Faith Abraham",
   "street1": "1756 22nd St.",
-  "street2": " ",
   "city": "Santa Monica",
   "state": "CA",
   "zip": "90404"
@@ -29,7 +27,6 @@ const seedData = [
   {
   "displayName": "Faith Abraham",
   "street1": "2323 Beverly Blvd.",
-  "street2": " ",
   "city": "Los Angeles",
   "state": "CA",
   "zip": "90057"
@@ -37,7 +34,6 @@ const seedData = [
   {
   "displayName": "Micky Adams",
   "street1": "5225 Wilshire Blvd.  Ste. 415",
-  "street2": " ",
   "city": "Los Angeles",
   "state": "CA",
   "zip": "90036"
@@ -53,7 +49,6 @@ const seedData = [
   {
   "displayName": "Alexis Allen",
   "street1": "1149 N. Gower St.  Ste. 106B",
-  "street2": " ",
   "city": "Los Angeles",
   "state": "CA",
   "zip": "90038"
