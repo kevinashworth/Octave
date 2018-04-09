@@ -1,4 +1,5 @@
 import { Utils } from 'meteor/vulcan:core';
+import Contacts from './collection.js';
 
 const schema = {
   // default properties
@@ -85,12 +86,26 @@ const schema = {
     type: String,
     optional: true,
     viewableBy: ['guests'],
-    onInsert: (contact) => {
-      return Utils.slugify(contact.displayName);
+    onInsert: contact => {
+      const slug = Utils.slugify(contact.displayName);
+      let suffix = "";
+      let index = 0;
+      while (!!Contacts.findOne({slug: slug+suffix})) {
+        index++;
+        suffix = "-"+index;
+      }
+      return slug+suffix;
     },
     onEdit: (modifier, contact) => {
       if (modifier.$set.displayName) {
-        return Utils.slugify(modifier.$set.displayName);
+        const slug = Utils.slugify(contact.displayName);
+        let suffix = "";
+        let index = 0;
+        while (!!Contacts.findOne({slug: slug+suffix})) {
+          index++;
+          suffix = "-"+index;
+        }
+        return slug+suffix;
       }
     }
   },
