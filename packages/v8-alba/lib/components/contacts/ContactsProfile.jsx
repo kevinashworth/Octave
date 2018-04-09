@@ -3,8 +3,8 @@ import React from 'react';
 import { FormattedMessage } from 'meteor/vulcan:i18n';
 import Contacts from '../../modules/contacts/collection.js';
 import moment from 'moment';
-// import { Link } from 'react-router';
-import { Card, CardBody, CardFooter, CardHeader, CardText } from 'reactstrap';
+import { Link } from 'react-router';
+import { Button, Card, CardBody, CardFooter, CardHeader, CardText } from 'reactstrap';
 
 const ContactsProfile = (props) => {
   if (props.loading) {
@@ -27,13 +27,19 @@ const ContactsProfile = (props) => {
 
     return (
       <Card className="card-accent-primary">
-        <CardHeader tag="h2">{ contact.displayName }</CardHeader>
+        <CardHeader tag="h2">{ contact.displayName }{ Contacts.options.mutations.edit.check(props.currentUser, contact) ?
+          <div className="float-right">
+            <Button tag={Link} to={`/contacts/${contact.slug}/edit`}>Edit</Button>
+          </div> : null}
+        </CardHeader>
         <CardBody>
           <CardText dangerouslySetInnerHTML={createAddress()}></CardText>
           <CardText>{ contact.body }</CardText>
         </CardBody>
         <CardFooter>
           <small className="text-muted">{displayDate}</small>
+
+
         </CardFooter>
       </Card>
     )
