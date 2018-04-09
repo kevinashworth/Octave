@@ -20,7 +20,7 @@ const ContactsProfile = (props) => {
       "Created " + moment(contact.createdAt).format(DATE_FORMAT_LONG);
     const createAddress = () => {
       let streetAddress = contact.street1 + "<br/>";
-      if (contact.street2.trim().length > 0) streetAddress += contact.street2 + "<br/>";
+      if (contact.street2 && contact.street2.trim().length > 0) streetAddress += contact.street2 + "<br/>";
       streetAddress += contact.city + ", " + contact.state + "  " + contact.zip
       return {__html: streetAddress};
     }
