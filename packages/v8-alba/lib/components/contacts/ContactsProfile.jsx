@@ -8,34 +8,32 @@ import { Card, CardBody, CardFooter, CardHeader, CardText } from 'reactstrap';
 
 const ContactsProfile = (props) => {
   if (props.loading) {
-
     return <div className="page contacts-profile"><Components.Loading/></div>
-
   } else if (!props.document) {
-
-    console.log(`// missing contact (_id/slug: ${props.contactId || props.slug})`);
     return <div className="page contacts-profile"><FormattedMessage id="app.404"/></div>
-
   } else {
 
-    const DATE_FORMAT_LONG = 'MMMM DD YYYY, h:mm:ss a';
-    // const contact = Contacts.findOne(c._id);
     const contact = props.document;
+    const DATE_FORMAT_LONG = 'MMMM DD YYYY, h:mm:ss a';
+    const displayDate = contact.updatedAt ?
+      "Last modified " + moment(contact.updatedAt).format(DATE_FORMAT_LONG) :
+      "Created " + moment(contact.createdAt).format(DATE_FORMAT_LONG);
+    const createAddress = () => {
+      let streetAddress = contact.street1 + "<br/>";
+      if (contact.street2.trim().length > 0) streetAddress += contact.street2 + "<br/>";
+      streetAddress += contact.city + ", " + contact.state + "  " + contact.zip
+      return {__html: streetAddress};
+    }
 
     return (
       <Card className="card-accent-primary">
         <CardHeader tag="h2">{ contact.displayName }</CardHeader>
         <CardBody>
-          {/* <CardTitle>{ contact.project_title }</CardTitle> */}
-          <CardText>{ contact.street1 }</CardText>
-          <CardText></CardText>
-          {contact.street2 &&
-          <CardText>{ contact.street2 }</CardText>
-          }
-          <CardText>{ contact.city } { contact.state } { contact.zip }</CardText>
+          <CardText dangerouslySetInnerHTML={createAddress()}></CardText>
+          <CardText>{ contact.body }</CardText>
         </CardBody>
         <CardFooter>
-          Last modified {moment("2017-05-21 15:28:34").format(DATE_FORMAT_LONG)}
+          <small className="text-muted">{displayDate}</small>
         </CardFooter>
       </Card>
     )

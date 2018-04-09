@@ -109,6 +109,14 @@ const schema = {
       }
     }
   },
+  updatedAt: {
+    type: Date,
+    optional: true,
+    viewableBy: ["guests"],
+    onEdit: () => {
+      return new Date();
+    }
+  },
 };
 
 export default schema;

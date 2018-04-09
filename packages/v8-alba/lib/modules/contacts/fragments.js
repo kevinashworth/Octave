@@ -13,6 +13,7 @@ registerFragment(/* GraphQL */ `
   fragment ContactsDetailsFragment on Contact {
     _id
     createdAt
+    updatedAt
     userId
     displayName
     body
