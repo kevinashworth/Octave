@@ -33,7 +33,7 @@ const ContactsTable = ({results = [], currentUser}) =>
           </tr>
           </thead>
           <tbody>
-          {results.map(contact => <Components.ContactsRow documentId={contact._id} key={contact._id} contact={contact} currentUser={currentUser} />)}
+          {results.map(contact => <Components.ContactsRow key={contact._id} documentId={contact._id} currentUser={currentUser} />)}
           </tbody>
         </Table>
         <nav>
@@ -58,4 +58,4 @@ const options = {
   fragmentName: 'ContactsDetailsFragment'
 };
 
-registerComponent('ContactsTable', ContactsTable, [withList, options], withCurrentUser);
+registerComponent('ContactsTable', ContactsTable, withCurrentUser, [withList, options]);

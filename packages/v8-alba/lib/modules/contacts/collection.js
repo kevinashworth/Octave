@@ -4,15 +4,15 @@ import './fragments.js';
 import './permissions.js';
 
 const Contacts = createCollection({
-  collectionName: "contacts",
+  collectionName: "Contacts",
 
   typeName: "Contact",
 
   schema,
 
-  resolvers: getDefaultResolvers('contacts'),
+  resolvers: getDefaultResolvers('Contacts'),
 
-  mutations: getDefaultMutations('contacts'),
+  mutations: getDefaultMutations('Contacts'),
 
 });
 

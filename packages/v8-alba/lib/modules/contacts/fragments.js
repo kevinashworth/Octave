@@ -4,8 +4,10 @@ registerFragment(/* GraphQL */ `
   fragment ContactsItemFragment on Contact {
     _id
     createdAt
+    updatedAt
     userId
     displayName
+    slug
   }
 `);
 

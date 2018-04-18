@@ -4,11 +4,11 @@ import { Components, registerComponent, getFragment } from "meteor/vulcan:core";
 
 import Contacts from '../../modules/contacts/collection.js';
 
-const ContactsEditForm = ({document, toggle}) =>
+const ContactsEditForm = ({documentId, toggle}) =>
   <Components.SmartForm
     collection={Contacts}
-    document={document}
-    mutationFragment={getFragment('ContactsItemFragment')}
+    documentId={documentId}
+    mutationFragment={getFragment('ContactsDetailsFragment')}
     showRemove={true}
     successCallback={document => {
       toggle();

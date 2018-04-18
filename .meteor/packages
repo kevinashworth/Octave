@@ -1,6 +1,6 @@
 # see http://docs.vulcanjs.org/packages
 
-vulcan:core@1.8.11
+vulcan:core
 
 ############ Language Packages ############
 
@@ -8,7 +8,7 @@ vulcan:i18n-en-us
 
 ############ Accounts Packages ############
 
-accounts-password@1.4.0
+accounts-password
 # accounts-twitter
 # accounts-facebook
 
@@ -17,3 +17,4 @@ accounts-password@1.4.0
 v8-alba
 fortawesome:fontawesome
 jss:flag-icon
+vulcan:debug

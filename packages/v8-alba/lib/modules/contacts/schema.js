@@ -1,5 +1,4 @@
 import { Utils } from 'meteor/vulcan:core';
-import Contacts from './collection.js';
 
 const schema = {
   // default properties
@@ -7,12 +6,16 @@ const schema = {
   _id: {
     type: String,
     optional: true,
-    viewableBy: ["members"]
+    viewableBy: ["guests"],
+    insertableBy: ["admins"],
+    editableBy: ["admins"]
   },
   createdAt: {
     type: Date,
     optional: true,
-    viewableBy: ["guests"],
+    viewableBy: ["members"],
+    insertableBy: ["admins"],
+    editableBy: ["admins"],
     onInsert: () => {
       return new Date();
     }
@@ -20,7 +23,9 @@ const schema = {
   userId: {
     type: String,
     optional: true,
-    viewableBy: ["members"]
+    viewableBy: ["members"],
+    insertableBy: ["admins"],
+    editableBy: ["admins"]
   },
 
   // custom properties
@@ -38,7 +43,7 @@ const schema = {
     type: String,
     optional: true,
     control: "textarea", // use a textarea form component
-    viewableBy: ["guests"],
+    viewableBy: ["members"],
     insertableBy: ["admins"],
     editableBy: ["admins"]
   },
@@ -46,7 +51,7 @@ const schema = {
     label: "Address",
     type: String,
     optional: true,
-    viewableBy: ["guests"],
+    viewableBy: ["members"],
     insertableBy: ["admins"],
     editableBy: ["admins"]
   },
@@ -85,27 +90,15 @@ const schema = {
   slug: {
     type: String,
     optional: true,
-    viewableBy: ['guests'],
-    onInsert: contact => {
-      const slug = Utils.slugify(contact.displayName);
-      let suffix = "";
-      let index = 0;
-      while (!!Contacts.findOne({slug: slug+suffix})) {
-        index++;
-        suffix = "-"+index;
-      }
-      return slug+suffix;
+    viewableBy: ["members"],
+    insertableBy: ["admins"],
+    editableBy: ["admins"],
+    onInsert: (contact) => {
+      return Utils.slugify(contact.displayName);
     },
     onEdit: (modifier, contact) => {
       if (modifier.$set.displayName) {
-        const slug = Utils.slugify(contact.displayName);
-        let suffix = "";
-        let index = 0;
-        while (!!Contacts.findOne({slug: slug+suffix})) {
-          index++;
-          suffix = "-"+index;
-        }
-        return slug+suffix;
+        return Utils.slugify(modifier.$set.displayName);
       }
     }
   },
