@@ -1,13 +1,11 @@
 import React, { PropTypes, Component } from 'react';
 import { Components, registerComponent, getFragment } from "meteor/vulcan:core";
-// import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
-
 import Contacts from '../../modules/contacts/collection.js';
 
-const ContactsEditForm = ({documentId, toggle}) =>
+const ContactsEditForm = ({documentId, toggle, params}) =>
   <Components.SmartForm
     collection={Contacts}
-    documentId={documentId}
+    documentId={documentId ? documentId : params._id}
     mutationFragment={getFragment('ContactsDetailsFragment')}
     showRemove={true}
     successCallback={document => {

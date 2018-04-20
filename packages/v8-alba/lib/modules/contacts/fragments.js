@@ -27,3 +27,15 @@ registerFragment(/* GraphQL */ `
     slug
   }
 `);
+
+registerFragment(/* GraphQL */ `
+  fragment ContactsEditFragment on Contact {
+    displayName
+    body
+    street1
+    street2
+    city
+    state
+    zip
+  }
+`);

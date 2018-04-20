@@ -6,16 +6,12 @@ const schema = {
   _id: {
     type: String,
     optional: true,
-    viewableBy: ["guests"],
-    insertableBy: ["admins"],
-    editableBy: ["admins"]
+    viewableBy: ["guests"]
   },
   createdAt: {
     type: Date,
     optional: true,
     viewableBy: ["members"],
-    insertableBy: ["admins"],
-    editableBy: ["admins"],
     onInsert: () => {
       return new Date();
     }
@@ -23,9 +19,7 @@ const schema = {
   userId: {
     type: String,
     optional: true,
-    viewableBy: ["members"],
-    insertableBy: ["admins"],
-    editableBy: ["admins"]
+    viewableBy: ["members"]
   },
 
   // custom properties
@@ -91,8 +85,6 @@ const schema = {
     type: String,
     optional: true,
     viewableBy: ["members"],
-    insertableBy: ["admins"],
-    editableBy: ["admins"],
     onInsert: (contact) => {
       return Utils.slugify(contact.displayName);
     },
