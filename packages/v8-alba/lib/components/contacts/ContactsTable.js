@@ -11,7 +11,7 @@ import {
 } from 'reactstrap';
 import Contacts from '../../modules/contacts/collection.js';
 
-const ContactsTable = ({results = [], currentUser}) =>
+const ContactsTable = ({loading, results = [], currentUser}) =>
   <div className="animated fadeIn">
     <Components.AccountsLoginForm />
     <Card>
@@ -19,6 +19,10 @@ const ContactsTable = ({results = [], currentUser}) =>
         <i className="fa fa-align-justify"></i> ContactsTable
         <Components.ContactDropdowns/>
       </CardHeader>
+    { loading ?
+      <CardBody>
+        <Components.Loading />
+      </CardBody> :
       <CardBody>
         <Table hover bordered striped responsive size="sm">
           <thead>
@@ -49,6 +53,7 @@ const ContactsTable = ({results = [], currentUser}) =>
           </Pagination>
         </nav>
       </CardBody>
+    }
     </Card>
     <Components.ContactsNewForm />
   </div>
