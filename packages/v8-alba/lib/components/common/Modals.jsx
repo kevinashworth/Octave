@@ -12,11 +12,12 @@ class Modals extends Component {
             <i className="fa fa-align-justify"></i> ModalTrigger
           </CardHeader>
           <CardBody>
-            <Components.MyModalTrigger title="This is the title" component={<Button>Launch modal with a Button</Button>}>
+            <Components.MyModalTrigger title="Where is the title?" component={<Button>Launch it with a Button</Button>}>
               <Components.ContactsEditForm/>
             </Components.MyModalTrigger>
           </CardBody>
         </Card>
+        <Components.Loading />
       </div>
     )
   }
