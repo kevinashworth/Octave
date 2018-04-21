@@ -14,7 +14,7 @@ const ContactsRow = ({loading, document, currentUser}) => {
   } else {
     return (
       <tr>
-        <td><Link to={`/contacts/${contact._id}/${contact.slug}`}>{contact.displayName}</Link></td>
+        <td><Link to={`/contacts/${contact._id}/${contact.slug}`}>{contact.fullName}</Link></td>
         <td>{contact.street1}</td>
         <td>{contact.street2}</td>
         <td>{contact.city}</td>

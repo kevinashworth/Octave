@@ -18,6 +18,7 @@ registerFragment(/* GraphQL */ `
     updatedAt
     userId
     displayName
+    fullName
     body
     street1
     street2

@@ -25,7 +25,47 @@ const schema = {
   // custom properties
 
   displayName: {
-    label: "Name",
+    label: "Display Name",
+    type: String,
+    optional: true,
+    viewableBy: ["guests"],
+    insertableBy: ["admins"],
+    editableBy: ["admins"]
+  },
+  firstName: {
+    label: "First",
+    type: String,
+    optional: true,
+    viewableBy: ["guests"],
+    insertableBy: ["admins"],
+    editableBy: ["admins"]
+  },
+  middleName: {
+    label: "Middle",
+    type: String,
+    optional: true,
+    viewableBy: ["guests"],
+    insertableBy: ["admins"],
+    editableBy: ["admins"]
+  },
+  lastName: {
+    label: "Last",
+    type: String,
+    optional: true,
+    viewableBy: ["guests"],
+    insertableBy: ["admins"],
+    editableBy: ["admins"]
+  },
+  title: {
+    label: "Title",
+    type: String,
+    optional: true,
+    viewableBy: ["guests"],
+    insertableBy: ["admins"],
+    editableBy: ["admins"]
+  },
+  gender: {
+    label: "Gender",
     type: String,
     optional: true,
     viewableBy: ["guests"],
@@ -102,6 +142,40 @@ const schema = {
       return new Date();
     }
   },
+
+  // GraphQL only fields
+
+  fullName: {
+    label: "Full Name",
+    type: String,
+    optional: true,
+    viewableBy: ["members"],
+    resolveAs: {
+      type: "String",
+      resolver: (contact, args, context) => {
+        if (!contact.displayName) {
+          let tempName = "";
+          if (contact.firstName) {
+            tempName += contact.firstName;
+          }
+          if (contact.middleName) {
+            tempName += (" " + contact.middleName);
+          }
+          if (contact.lastName) {
+            tempName += (" " + contact.lastName);
+          }
+          if (tempName.length) {
+            return tempName;
+          } else {
+            return "Name Unknown";
+          }
+        } else {
+          return contact.displayName;
+        }
+      },
+    }
+  },
+
 };
 
 export default schema;
