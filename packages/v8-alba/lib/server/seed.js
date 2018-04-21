@@ -8,6 +8,7 @@ import { Promise } from 'meteor/promise';
 import Users from 'meteor/vulcan:users';
 import { newMutation } from 'meteor/vulcan:core';
 import Contacts from '../modules/contacts/collection.js';
+import seedData999 from '../components/contacts/_contacts3.js';
 
 const seedData = [
   {
@@ -98,10 +99,10 @@ Meteor.startup(() => {
     Promise.await(createDummyUsers());
   }
   const currentUser = Users.findOne(); // just get the first user available
-  if (Contacts.find().fetch().length === 0) {
+  if (Contacts.find().fetch().length === 7) {
     // eslint-disable-next-line no-console
     console.log('// creating dummy contacts');
-    Promise.awaitAll(seedData.map(document => newMutation({
+    Promise.awaitAll(seedData999.map(document => newMutation({
       action: 'contacts.new',
       collection: Contacts,
       document,

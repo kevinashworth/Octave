@@ -26,6 +26,7 @@ import '../components/common/Filter/ContactDropdowns';
 import '../components/contacts/ContactsTable';
 import '../components/contacts/ContactsRow';
 import '../components/contacts/ContactsDataTable';
+import '../components/contacts/CDT';
 import '../components/contacts/ContactsNewForm';
 import '../components/contacts/ContactsEditForm';
 import '../components/contacts/ContactsProfile';

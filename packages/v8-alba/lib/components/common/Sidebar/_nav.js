@@ -29,6 +29,11 @@ export default {
       icon: 'icon-people'
     },
     {
+      name: 'CDT',
+      url: '/cdt',
+      icon: 'icon-people'
+    },
+    {
       name: 'Contacts & Projects',
       url: '/contactsandprojects',
       icon: 'icon-book-open'
