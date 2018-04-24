@@ -74,15 +74,7 @@ class ContactsDataTable extends Component {
                   )
                 }
               }>Name</TableHeaderColumn>
-              <TableHeaderColumn dataField="title" dataSort dataFormat={
-                (cell, row) => {
-                  return (
-                    <Link to={`/projects/${row._id}`}>
-                      {cell}
-                    </Link>
-                  )
-                }
-              }>Title</TableHeaderColumn>
+              <TableHeaderColumn dataField="title" dataSort>Title</TableHeaderColumn>
               <TableHeaderColumn dataField="street1" dataSort>Address</TableHeaderColumn>
               <TableHeaderColumn dataField="street2">(cont)</TableHeaderColumn>
               <TableHeaderColumn dataField="city" dataSort>City</TableHeaderColumn>

@@ -35,6 +35,9 @@ const ContactsProfile = (props) => {
       if (contact.zip) {
         streetAddress += "  " + contact.zip;
       }
+      if (contact.street1 && contact.city && contact.state) {
+        streetAddress += `<br/><small><a href="https://maps.google.com/?q=${contact.street1},${contact.city},${contact.state}" target="_maps">Open in Google Maps</a></small>`;
+      }
       return {__html: streetAddress};
     }
     const createAltName = () => {
@@ -50,6 +53,8 @@ const ContactsProfile = (props) => {
       }
       if (contact.fullName !== alternateName) {
         alternateName = "aka " + alternateName;
+      } else {
+        alternateName = null;
       }
       return {__html: alternateName};
     }
@@ -63,8 +68,7 @@ const ContactsProfile = (props) => {
         </CardHeader>
         <CardBody>
           <CardText dangerouslySetInnerHTML={createAltName()}></CardText>
-          <CardText>{ contact.title }</CardText>
-          <CardText>{ contact.gender }</CardText>
+          <CardText>{ contact.title }<br/>{ contact.gender }</CardText>
           <CardText dangerouslySetInnerHTML={createAddress()}></CardText>
           <CardText>{ contact.body }</CardText>
         </CardBody>
@@ -73,7 +77,7 @@ const ContactsProfile = (props) => {
             <CardText>
           {contact.links.map(link =>
             <Button className={`btn-${link.platformName.toLowerCase()} text-white`} key={link.profileLink}>
-              <span><CardLink href={link.profileLink} >{link.profileName}</CardLink></span>
+              <span><CardLink href={link.profileLink} target="_links">{link.profileName}</CardLink></span>
             </Button>
         )}
       </CardText>
