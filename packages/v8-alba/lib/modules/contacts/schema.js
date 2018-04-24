@@ -1,4 +1,29 @@
 import { Utils } from 'meteor/vulcan:core';
+import SimpleSchema from 'simpl-schema';
+
+export const linkSchema = new SimpleSchema({
+  platformName: {
+    type: String,
+    optional: true,
+    viewableBy: ["members"],
+    insertableBy: ["admins"],
+    editableBy: ["admins"],
+  },
+  profileName: {
+    type: String,
+    optional: true,
+    viewableBy: ["members"],
+    insertableBy: ["admins"],
+    editableBy: ["admins"],
+  },
+  profileLink: {
+    type: String,
+    optional: true,
+    viewableBy: ["members"],
+    insertableBy: ["admins"],
+    editableBy: ["admins"],
+  },
+});
 
 const schema = {
   // default properties
@@ -80,6 +105,17 @@ const schema = {
     viewableBy: ["members"],
     insertableBy: ["admins"],
     editableBy: ["admins"]
+  },
+  links: {
+    label: "Links",
+    type: Array,
+    optional: true,
+    viewableBy: ["members"],
+    insertableBy: ["admins"],
+    editableBy: ["admins"],
+  },
+  'links.$': {
+    type: linkSchema,
   },
   street1: {
     label: "Address",

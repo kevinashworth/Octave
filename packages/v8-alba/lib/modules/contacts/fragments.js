@@ -19,7 +19,13 @@ registerFragment(/* GraphQL */ `
     userId
     displayName
     fullName
+    firstName
+    middleName
+    lastName
+    gender
+    title
     body
+    links
     street1
     street2
     city

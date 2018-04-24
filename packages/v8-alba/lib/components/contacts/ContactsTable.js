@@ -60,7 +60,8 @@ const ContactsTable = ({loading, results = [], currentUser}) =>
 
 const options = {
   collection: Contacts,
-  fragmentName: 'ContactsDetailsFragment'
+  fragmentName: 'ContactsDetailsFragment',
+  limit: 20
 };
 
 registerComponent('ContactsTable', ContactsTable, withCurrentUser, [withList, options]);
