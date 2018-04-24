@@ -1,9 +1,9 @@
-import { registerComponent, Components } from 'meteor/vulcan:core';
+import { registerComponent, Components, withCurrentUser, withList } from 'meteor/vulcan:core';
 import React, {Component} from 'react';
 import { Link } from 'react-router'
-import {Card, CardHeader, CardBody} from 'reactstrap';
+import {Button, Card, CardHeader, CardBody, CardFooter} from 'reactstrap';
 import {BootstrapTable, TableHeaderColumn} from 'react-bootstrap-table';
-import contacts from './_contacts';
+import Contacts from '../../modules/contacts/collection.js';
 
 class ContactsDataTable extends Component {
   constructor(props) {
@@ -18,11 +18,13 @@ class ContactsDataTable extends Component {
     }
 
     function rowClickHandler(row, columnIndex, rowIndex, event) {
-      console.log(`You clicked row ${row.project_id} (${rowIndex}, ${columnIndex}):`);
+      // eslint-disable-next-line no-console
+      console.log(`You clicked row ${row._id} (${rowIndex}, ${columnIndex}):`);
+      // eslint-disable-next-line no-console
       console.log(event);
     }
 
-    this.table = contacts;
+    // this.table = this.props.results;
     this.options = {
       sortIndicator: true,
       paginationSize: 5,
@@ -38,7 +40,7 @@ class ContactsDataTable extends Component {
       }, {
         text: '100', value: 100
       }, {
-        text: 'All', value: contacts.length
+        text: 'All', value: this.props.totalCount
       } ],
       sizePerPage: 20,
       paginationShowsTotal: renderShowsTotal,
@@ -48,9 +50,12 @@ class ContactsDataTable extends Component {
   }
 
   render() {
+    const { count, totalCount, results, loadingMore, loadMore } = this.props;
     const selectRow = {
       mode: 'checkbox'
     };
+    const hasMore = results && (totalCount > results.length);
+
     return (
       <div className="animated">
         <Card>
@@ -59,20 +64,20 @@ class ContactsDataTable extends Component {
             <Components.ContactDropdowns/>
           </CardHeader>
           <CardBody>
-            <BootstrapTable data={this.table} version="4" condensed striped hover pagination search options={this.options} selectRow={selectRow} keyField='project_id'>
-              <TableHeaderColumn dataField="name" dataSort dataFormat={
+            <BootstrapTable data={this.props.results} version="4" condensed striped hover pagination search options={this.options} selectRow={selectRow} keyField='_id'>
+              <TableHeaderColumn dataField="fullName" dataSort dataFormat={
                 (cell, row) => {
                   return (
-                    <Link to={`/contacts/${row.project_id}`}>
+                    <Link to={`/contacts/${row._id}`}>
                       {cell}
                     </Link>
                   )
                 }
               }>Name</TableHeaderColumn>
-              <TableHeaderColumn dataField="project_title" dataSort dataFormat={
+              <TableHeaderColumn dataField="title" dataSort dataFormat={
                 (cell, row) => {
                   return (
-                    <Link to={`/projects/${row.project_id}`}>
+                    <Link to={`/projects/${row._id}`}>
                       {cell}
                     </Link>
                   )
@@ -84,6 +89,14 @@ class ContactsDataTable extends Component {
               <TableHeaderColumn dataField="state" dataSort>State</TableHeaderColumn>
               <TableHeaderColumn dataField="zip" dataSort>Zip</TableHeaderColumn>
             </BootstrapTable>
+          {hasMore &&
+          <CardFooter>
+            {loadingMore ?
+              <Components.Loading/> :
+              <Button onClick={e => {e.preventDefault(); loadMore();}}>Load More ({count}/{totalCount})</Button>
+            }
+          </CardFooter>
+          }
           </CardBody>
         </Card>
       </div>
@@ -91,4 +104,10 @@ class ContactsDataTable extends Component {
   }
 }
 
-registerComponent('ContactsDataTable', ContactsDataTable)
+const options = {
+  collection: Contacts,
+  fragmentName: 'ContactsDetailsFragment',
+  limit: 150
+};
+
+registerComponent('ContactsDataTable', ContactsDataTable, withCurrentUser, [withList, options]);
