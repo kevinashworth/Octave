@@ -35,3 +35,5 @@ import '../components/contacts/ContactsProfile';
 import '../components/contacts/ContactsSingle';
 
 import '../components/projects/ProjectsDataTable';
+import '../components/projects/ProjectsTable';
+import '../components/projects/ProjectsRow';

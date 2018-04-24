@@ -1,3 +1,4 @@
+import { registerComponent, Components, withList, withCurrentUser } from 'meteor/vulcan:core';
 import React, {Component} from 'react';
 import {
   Card,
@@ -8,19 +9,19 @@ import {
   PaginationItem,
   PaginationLink
 } from 'reactstrap';
-import ProjectDropdowns from '../../containers/Filter/ProjectDropdowns';
-import ProjectsRow from './ProjectsRow.js';
-import projects from './_projects.js';
+import Projects from '../../modules/projects/collection.js';
 
-class ProjectsTable extends Component {
-  render() {
-    return (
+const ProjectsTable = ({loading, results = [], currentUser}) =>
       <div className="animated fadeIn">
         <Card>
           <CardHeader>
             <i className="fa fa-picture-o"></i> ProjectsTable
-            <ProjectDropdowns></ProjectDropdowns>
+            <Components.ProjectDropdowns/>
           </CardHeader>
+        { loading ?
+          <CardBody>
+            <Components.Loading />
+          </CardBody> :
           <CardBody>
             <Table hover bordered striped responsive size="sm">
               <thead>
@@ -33,7 +34,7 @@ class ProjectsTable extends Component {
               </tr>
               </thead>
               <tbody>
-              {projects.map(project => <ProjectsRow key={project.project_id} project={project} />)}
+              {results.map(project => <Components.ProjectsRow key={project._id} documentId={project._id} currentUser={currentUser} />)}
               </tbody>
             </Table>
             <nav>
@@ -49,11 +50,14 @@ class ProjectsTable extends Component {
               </Pagination>
             </nav>
           </CardBody>
+        }
         </Card>
       </div>
 
-    )
-  }
-}
+const options = {
+  collection: Projects,
+  fragmentName: 'ProjectsDetailsFragment',
+  limit: 20
+};
 
-export default ProjectsTable;
+registerComponent('ProjectsTable', ProjectsTable, withCurrentUser, [withList, options]);

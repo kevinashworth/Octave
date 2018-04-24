@@ -1,15 +1,20 @@
+import { Components, registerComponent, withDocument, withCurrentUser } from 'meteor/vulcan:core';
 import React from 'react';
-import PropTypes from 'prop-types';
 import { Badge } from 'reactstrap';
-import { Link } from 'react-router-dom';
+import { Link } from 'react-router';
 import moment from 'moment';
+import Projects from '../../modules/projects/collection.js';
 
-const DATE_FORMAT_SHORT = 'YYYY-MM-DD';
-// const DATE_FORMAT_LONG = 'MMMM DD YYYY, h:mm:ss a';
+// const DATE_FORMAT_SHORT = 'YYYY-MM-DD';
+const DATE_FORMAT_LONG = 'MMMM DD YYYY, h:mm:ss a';
 
-class ProjectsRow extends React.Component {
-  render() {
-    const project = this.props.project;
+
+const ProjectsRow = ({loading, document, currentUser}) => {
+    const project = document;
+    const displayDate = project.updatedAt ?
+      "Last modified " + moment(project.updatedAt).format(DATE_FORMAT_LONG) :
+      "Created " + moment(project.createdAt).format(DATE_FORMAT_LONG);
+
     var badgeColor = "danger";
     switch (project.status) {
       case "On Hiatus":
@@ -37,9 +42,9 @@ class ProjectsRow extends React.Component {
 
     // TODO: a map or reduce version of this
     let fake_company = "";
-    if (!project.casting_company) {
+    if (!project.castingCompany) {
       for (var i = 0; i < project.personnel.length; i++) {
-        if (project.personnel[i].personnel_title === "Casting Director")
+        if (project.personnel[i].personnelTitle === "Casting Director")
           fake_company += (project.personnel[i].name.split(' ').slice(-1).join(' ') + "/");
       }
 
@@ -51,23 +56,28 @@ class ProjectsRow extends React.Component {
       }
     }
 
+    if (loading) {
+      return (
+        <tr></tr>
+      )
+    } else {
     return (
       <tr>
-        <td><Link to={`/projects/${project.project_id}`}>{project.project_title}</Link></td>
-        <td>{project.project_type}</td>
-        <td>{moment(String(project.last_modified)).format(DATE_FORMAT_SHORT)}</td>
-        <td>{project.casting_company ? project.casting_company : fake_company}</td>
+        <td><Link to={`/projects/${project._id}/${project.slug}`}>{project.projectTitle}</Link></td>
+        <td>{project.projectType}</td>
+        <td>{moment(String(displayDate)).format(DATE_FORMAT_LONG)}</td>
+        <td>{project.castingCompany ? project.castingCompany : fake_company}</td>
         <td>
           <Badge color={badgeColor}>{project.status}</Badge>
         </td>
       </tr>
-
-    )
-  }
+    )}
 }
 
-ProjectsRow.propTypes = {
-  project: PropTypes.object
-}
+const options = {
+  collection: Projects,
+  queryName: 'projectsSingleQuery',
+  fragmentName: 'ProjectsDetailsFragment',
+};
 
-export default ProjectsRow;
+registerComponent('ProjectsRow', ProjectsRow, withCurrentUser, [withDocument, options]);
