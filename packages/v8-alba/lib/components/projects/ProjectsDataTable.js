@@ -1,10 +1,8 @@
+import { registerComponent, Components, withCurrentUser, withList } from 'meteor/vulcan:core';
 import React, {Component} from 'react';
-import {Card, CardHeader, CardBody} from 'reactstrap';
+import {Button, Card, CardHeader, CardBody, CardFooter} from 'reactstrap';
 import {BootstrapTable, TableHeaderColumn} from 'react-bootstrap-table';
-import 'react-bootstrap-table/dist/react-bootstrap-table-all.min.css';
-import ProjectDropdowns from '../../containers/Filter/ProjectDropdowns';
-import projects from '../ProjectsTable/_projects';
-
+import Projects from '../../modules/projects/collection.js';
 
 class ProjectsDataTable extends Component {
   constructor(props) {
@@ -19,11 +17,13 @@ class ProjectsDataTable extends Component {
     }
 
     function rowClickHandler(row, columnIndex, rowIndex, event) {
-      console.log(`You clicked row ${row.project_id} (${rowIndex}, ${columnIndex}):`);
+      // eslint-disable-next-line no-console
+      console.log(`You clicked row ${row._id} (${rowIndex}, ${columnIndex}):`);
+      // eslint-disable-next-line no-console
       console.log(event);
     }
 
-    this.table = projects;
+    // this.table = projects;
     this.options = {
       sortIndicator: true,
       paginationSize: 5,
@@ -39,7 +39,7 @@ class ProjectsDataTable extends Component {
       }, {
         text: '100', value: 100
       }, {
-        text: 'All', value: projects.length
+        text: 'All', value: this.props.totalCount
       } ],
       sizePerPage: 20,
       paginationShowsTotal: renderShowsTotal,
@@ -49,24 +49,33 @@ class ProjectsDataTable extends Component {
   }
 
   render() {
+    const { count, totalCount, results, loadingMore, loadMore } = this.props;
     const selectRow = {
       mode: 'checkbox'
     };
+    const hasMore = results && (totalCount > results.length);
     return (
       <div className="animated">
         <Card>
           <CardHeader>
             <i className="fa fa-camera"></i>Projects Data Table
-            <ProjectDropdowns></ProjectDropdowns>
+            <Components.ProjectDropdowns/>
           </CardHeader>
           <CardBody>
-            <BootstrapTable data={this.table} version="4" condensed striped hover pagination search options={this.options} selectRow={selectRow} keyField='project_id'>
-              <TableHeaderColumn dataField="project_title" dataSort>Title</TableHeaderColumn>
-              <TableHeaderColumn dataField="project_type" dataSort>Type</TableHeaderColumn>
-              <TableHeaderColumn dataField="last_modified" dataSort>Last Modified</TableHeaderColumn>
-              <TableHeaderColumn dataField="casting_company" dataSort>Casting</TableHeaderColumn>
+            <BootstrapTable data={this.props.results} version="4" condensed striped hover pagination search options={this.options} selectRow={selectRow} keyField='_id'>
+              <TableHeaderColumn dataField="projectTitle" dataSort>Title</TableHeaderColumn>
+              <TableHeaderColumn dataField="projectType" dataSort>Type</TableHeaderColumn>
+              <TableHeaderColumn dataField="castingCompany" dataSort>Casting</TableHeaderColumn>
               <TableHeaderColumn dataField="status" dataSort>Status</TableHeaderColumn>
             </BootstrapTable>
+            {hasMore &&
+            <CardFooter>
+              {loadingMore ?
+                <Components.Loading/> :
+                <Button onClick={e => {e.preventDefault(); loadMore();}}>Load More ({count}/{totalCount})</Button>
+              }
+            </CardFooter>
+            }
           </CardBody>
         </Card>
       </div>
@@ -74,4 +83,10 @@ class ProjectsDataTable extends Component {
   }
 }
 
-export default ProjectsDataTable;
+const options = {
+  collection: Projects,
+  fragmentName: 'ProjectsDetailsFragment',
+  limit: 150
+};
+
+registerComponent('ProjectsDataTable', ProjectsDataTable, withCurrentUser, [withList, options]);

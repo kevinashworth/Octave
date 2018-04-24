@@ -1,3 +1,4 @@
+import { registerComponent } from 'meteor/vulcan:core';
 import React, {Component} from 'react';
 import {
   ButtonDropdown,
@@ -84,4 +85,4 @@ class ProjectDropdowns extends Component {
   }
 }
 
-export default ProjectDropdowns;
+registerComponent('ProjectDropdowns', ProjectDropdowns);
