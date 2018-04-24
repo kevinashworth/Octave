@@ -6,7 +6,7 @@ const ContactsEditForm = ({documentId, toggle, params}) =>
   <Components.SmartForm
     collection={Contacts}
     documentId={documentId ? documentId : params._id}
-    mutationFragment={getFragment('ContactsDetailsFragment')}
+    mutationFragment={getFragment('ContactsEditFragment')}
     showRemove={true}
     successCallback={document => {
       toggle();

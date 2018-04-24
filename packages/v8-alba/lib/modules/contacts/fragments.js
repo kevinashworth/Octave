@@ -38,6 +38,11 @@ registerFragment(/* GraphQL */ `
 registerFragment(/* GraphQL */ `
   fragment ContactsEditFragment on Contact {
     displayName
+    fullName
+    firstName
+    middleName
+    lastName
+    title
     body
     street1
     street2
