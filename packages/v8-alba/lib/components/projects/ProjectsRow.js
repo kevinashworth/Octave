@@ -1,7 +1,7 @@
-import { Components, registerComponent, withDocument, withCurrentUser } from 'meteor/vulcan:core';
+import { Components, registerComponent, withCurrentUser, withDocument } from 'meteor/vulcan:core';
 import React from 'react';
-import { Badge, Button } from 'reactstrap';
 import { Link } from 'react-router';
+import { Badge, Button } from 'reactstrap';
 import moment from 'moment';
 import { DATE_FORMAT_SHORT } from '../../modules/constants.js';
 import Projects from '../../modules/projects/collection.js';

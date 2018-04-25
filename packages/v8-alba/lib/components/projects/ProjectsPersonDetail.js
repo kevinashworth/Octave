@@ -1,7 +1,8 @@
 import { registerComponent } from 'meteor/vulcan:core';
-import React, {Component} from 'react';
-import { CardText } from 'reactstrap';
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import { CardText } from 'reactstrap';
+
 
 // import { Badge, ListGroupItem } from 'reactstrap';
 

@@ -1,7 +1,7 @@
 import { registerComponent } from 'meteor/vulcan:core';
 import React from 'react';
-import { CardText } from 'reactstrap';
 import PropTypes from 'prop-types';
+import { CardText } from 'reactstrap';
 
 class ProjectsAddressDetail extends React.Component {
   render() {

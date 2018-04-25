@@ -1,5 +1,5 @@
-import React, { PropTypes, Component } from 'react';
-import { Components, registerComponent, getFragment } from "meteor/vulcan:core";
+import { Components, getFragment, registerComponent } from "meteor/vulcan:core";
+import React from 'react';
 import Projects from '../../modules/projects/collection.js';
 
 const ProjectsEditForm = ({documentId, toggle, params}) =>

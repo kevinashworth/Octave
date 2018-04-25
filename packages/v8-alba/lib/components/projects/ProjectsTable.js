@@ -1,15 +1,15 @@
-import { registerComponent, Components, withList, withCurrentUser } from 'meteor/vulcan:core';
-import React, {Component} from 'react';
+import { Components, registerComponent, withCurrentUser, withList } from 'meteor/vulcan:core';
+import React from 'react';
 import {
   Button,
   Card,
-  CardHeader,
   CardBody,
   CardFooter,
-  Table,
+  CardHeader,
   Pagination,
   PaginationItem,
-  PaginationLink
+  PaginationLink,
+  Table
 } from 'reactstrap';
 import Projects from '../../modules/projects/collection.js';
 

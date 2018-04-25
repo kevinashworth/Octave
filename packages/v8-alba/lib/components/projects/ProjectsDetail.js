@@ -1,4 +1,4 @@
-import { Components, registerComponent, withDocument, withCurrentUser } from 'meteor/vulcan:core';
+import { Components, registerComponent, withCurrentUser, withDocument } from 'meteor/vulcan:core';
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Card, CardBody, CardFooter, CardHeader, CardLink, CardText } from 'reactstrap';
