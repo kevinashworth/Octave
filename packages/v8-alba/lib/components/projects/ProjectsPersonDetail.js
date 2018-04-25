@@ -19,8 +19,9 @@ class ProjectsPersonDetail extends Component {
 
 ProjectsPersonDetail.propTypes = {
   person: PropTypes.shape({
-    personnel_title: PropTypes.string,
     name: PropTypes.string.isRequired,
+    personnelId: PropTypes.number.isRequired,
+    personnelTitle: PropTypes.string.isRequired,
   })
 };
 

@@ -26,22 +26,12 @@ class ProjectsAddressDetail extends React.Component {
 
 ProjectsAddressDetail.propTypes = {
   address: PropTypes.shape({
-    street1: PropTypes.string,
+    street1: PropTypes.string.isRequired,
     street2: PropTypes.string,
-    city: PropTypes.string,
-    state: PropTypes.string,
+    city: PropTypes.string.isRequired,
+    state: PropTypes.string.isRequired,
     zip: PropTypes.string,
-  })
-};
-
-ProjectsAddressDetail.defaultProps = {
-  address: {
-    street1: "",
-    street2: "",
-    city: "",
-    state: "",
-    zip: ""
-  }
+  }).isRequired
 };
 
 registerComponent('ProjectsAddressDetail', ProjectsAddressDetail);
