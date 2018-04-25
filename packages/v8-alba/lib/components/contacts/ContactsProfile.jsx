@@ -3,6 +3,7 @@ import React from 'react';
 import { FormattedMessage } from 'meteor/vulcan:i18n';
 import Contacts from '../../modules/contacts/collection.js';
 import moment from 'moment';
+import { DATE_FORMAT_LONG } from '../../modules/constants.js'
 import { Link } from 'react-router';
 import { Button, Card, CardBody, CardFooter, CardHeader, CardText, CardLink } from 'reactstrap';
 
@@ -14,7 +15,6 @@ const ContactsProfile = (props) => {
   } else {
 
     const contact = props.document;
-    const DATE_FORMAT_LONG = 'MMMM DD YYYY, h:mm:ss a';
     const displayDate = contact.updatedAt ?
       "Last modified " + moment(contact.updatedAt).format(DATE_FORMAT_LONG) :
       "Created " + moment(contact.createdAt).format(DATE_FORMAT_LONG);

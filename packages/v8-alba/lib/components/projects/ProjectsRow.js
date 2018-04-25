@@ -3,17 +3,14 @@ import React from 'react';
 import { Badge } from 'reactstrap';
 import { Link } from 'react-router';
 import moment from 'moment';
+import { DATE_FORMAT_SHORT } from '../../modules/constants.js';
 import Projects from '../../modules/projects/collection.js';
-
-// const DATE_FORMAT_SHORT = 'YYYY-MM-DD';
-const DATE_FORMAT_LONG = 'MMMM DD YYYY, h:mm:ss a';
-
 
 const ProjectsRow = ({loading, document, currentUser}) => {
     const project = document;
     const displayDate = project.updatedAt ?
-      "Last modified " + moment(project.updatedAt).format(DATE_FORMAT_LONG) :
-      "Created " + moment(project.createdAt).format(DATE_FORMAT_LONG);
+      "Last modified " + moment(project.updatedAt).format(DATE_FORMAT_SHORT) :
+      "Created " + moment(project.createdAt).format(DATE_FORMAT_SHORT);
 
     var badgeColor = "danger";
     switch (project.status) {
@@ -65,7 +62,7 @@ const ProjectsRow = ({loading, document, currentUser}) => {
       <tr>
         <td><Link to={`/projects/${project._id}/${project.slug}`}>{project.projectTitle}</Link></td>
         <td>{project.projectType}</td>
-        <td>{moment(String(displayDate)).format(DATE_FORMAT_LONG)}</td>
+        <td>{displayDate}</td>
         <td>{project.castingCompany ? project.castingCompany : fake_company}</td>
         <td>
           <Badge color={badgeColor}>{project.status}</Badge>

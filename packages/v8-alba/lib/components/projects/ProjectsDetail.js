@@ -5,13 +5,16 @@ import ProjectsPersonDetail from './ProjectsPersonDetail.js';
 import ProjectsAddressDetail from './ProjectsAddressDetail.js';
 import moment from 'moment';
 import projects from './_projects.js';
+import { DATE_FORMAT_LONG } from '../../modules/constants.js'
 
 class ProjectsDetail extends React.Component {
   render() {
-    const DATE_FORMAT_LONG = 'MMMM DD YYYY, h:mm:ss a';
     const project_id = this.props.match.params.project_id;
     const projectNum = parseInt(project_id)
     const project = projects.find(p => p.project_id === projectNum);
+    const displayDate = project.updatedAt ?
+      "Last modified " + moment(project.updatedAt).format(DATE_FORMAT_LONG) :
+      "Created " + moment(project.createdAt).format(DATE_FORMAT_LONG);
 
     return (
       <Card className="card-accent-primary">
@@ -38,9 +41,7 @@ class ProjectsDetail extends React.Component {
           {project.personnel.map(person => <ProjectsPersonDetail key={person.personnel_id} person={person} />)}
           <ProjectsAddressDetail address={project.address}></ProjectsAddressDetail>
         </CardBody>
-        <CardFooter>
-          Last modified {moment(String(project.last_modified)).format(DATE_FORMAT_LONG)}
-        </CardFooter>
+        <CardFooter>{displayDate}</CardFooter>
       </Card>
     );
   }
