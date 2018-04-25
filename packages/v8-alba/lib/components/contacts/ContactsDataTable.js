@@ -68,7 +68,7 @@ class ContactsDataTable extends Component {
               <TableHeaderColumn dataField="fullName" dataSort dataFormat={
                 (cell, row) => {
                   return (
-                    <Link to={`/contacts/${row._id}`}>
+                    <Link to={`/contacts/${row._id}/${row.slug}`}>
                       {cell}
                     </Link>
                   )
