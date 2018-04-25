@@ -20,6 +20,7 @@ registerFragment(/* GraphQL */ `
     projectTitle
     projectType
     castingCompany
+    address
     personnel
     network
     status

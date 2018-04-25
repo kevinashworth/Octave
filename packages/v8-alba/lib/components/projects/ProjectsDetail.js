@@ -42,7 +42,10 @@ class ProjectsDetail extends React.Component {
             <b>{ project.castingCompany }</b>
           </CardText>
           {project.personnel.map(person => <Components.ProjectsPersonDetail key={person.personnelId} person={person} />)}
-          <Components.ProjectsAddressDetail address={project.address}/>
+          {project.address ?
+          <Components.ProjectsAddressDetail address={project.address}/> :
+          <CardText>No address yet.</CardText>
+          }
         </CardBody>
         <CardFooter>{displayDate}</CardFooter>
       </Card>

@@ -1,6 +1,54 @@
 import { Utils } from 'meteor/vulcan:core';
 import SimpleSchema from 'simpl-schema';
 
+// const Address = `
+//   type Address {
+//     street1: String
+//     street2: String
+//     city: String
+//     state: String
+//     zip: String
+//   }`;
+// addGraphQLSchema(Address);
+
+// export const addressSchema = new SimpleSchema({
+//   street1: {
+//     type: String,
+//     optional: true,
+//     viewableBy: ["guests"],
+//     insertableBy: ["admins"],
+//     editableBy: ["admins"]
+//   },
+//   street2: {
+//     type: String,
+//     optional: true,
+//     viewableBy: ["guests"],
+//     insertableBy: ["admins"],
+//     editableBy: ["admins"]
+//   },
+//   city: {
+//     type: String,
+//     optional: true,
+//     viewableBy: ["guests"],
+//     insertableBy: ["admins"],
+//     editableBy: ["admins"]
+//   },
+//   state: {
+//     type: String,
+//     optional: true,
+//     viewableBy: ["guests"],
+//     insertableBy: ["admins"],
+//     editableBy: ["admins"]
+//   },
+//   zip: {
+//     type: String,
+//     optional: true,
+//     viewableBy: ["guests"],
+//     insertableBy: ["admins"],
+//     editableBy: ["admins"]
+//   },
+// });
+
 export const personnelSchema = new SimpleSchema({
   personnelId: {
     type: String,
@@ -144,7 +192,9 @@ const schema = {
   address: {
     type: Object,
     optional: true,
-    blackbox: true
+    viewableBy: ["guests"],
+    insertableBy: ["admins"],
+    editableBy: ["admins"],
   },
   slug: {
     type: String,
