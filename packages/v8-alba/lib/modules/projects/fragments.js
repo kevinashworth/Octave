@@ -20,8 +20,12 @@ registerFragment(/* GraphQL */ `
     projectTitle
     projectType
     castingCompany
+    personnel
+    network
     status
     union
+    notes
+    logline
     slug
   }
 `);

@@ -1,9 +1,11 @@
 import { registerComponent, Components, withList, withCurrentUser } from 'meteor/vulcan:core';
 import React, {Component} from 'react';
 import {
+  Button,
   Card,
   CardHeader,
   CardBody,
+  CardFooter,
   Table,
   Pagination,
   PaginationItem,
@@ -11,7 +13,9 @@ import {
 } from 'reactstrap';
 import Projects from '../../modules/projects/collection.js';
 
-const ProjectsTable = ({loading, results = [], currentUser}) =>
+const ProjectsTable = ({loading, loadingMore, loadMore, results = [], currentUser, count, totalCount}) => {
+  const hasMore = results && (totalCount > results.length);
+  return (
       <div className="animated fadeIn">
         <Card>
           <CardHeader>
@@ -31,6 +35,7 @@ const ProjectsTable = ({loading, results = [], currentUser}) =>
                 <th>Last updated</th>
                 <th>Casting</th>
                 <th>Status</th>
+                <th>Edit</th>
               </tr>
               </thead>
               <tbody>
@@ -51,8 +56,18 @@ const ProjectsTable = ({loading, results = [], currentUser}) =>
             </nav>
           </CardBody>
         }
+          {hasMore &&
+          <CardFooter>
+            {loadingMore ?
+              <Components.Loading/> :
+              <Button onClick={e => {e.preventDefault(); loadMore();}}>Load More ({count}/{totalCount})</Button>
+            }
+          </CardFooter>
+          }
         </Card>
       </div>
+    )
+  }
 
 const options = {
   collection: Projects,

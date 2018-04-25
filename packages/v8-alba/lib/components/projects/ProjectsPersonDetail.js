@@ -1,3 +1,4 @@
+import { registerComponent } from 'meteor/vulcan:core';
 import React, {Component} from 'react';
 import { CardText } from 'reactstrap';
 import PropTypes from 'prop-types';
@@ -9,7 +10,7 @@ class ProjectsPersonDetail extends Component {
     const person = this.props.person;
     return (
       <CardText className="mb-0">
-        { person.personnel_title} <b>{ person.name }</b>
+        { person.personnelTitle} <b>{ person.name }</b>
       </CardText>
     )
   }
@@ -22,4 +23,4 @@ ProjectsPersonDetail.propTypes = {
   })
 };
 
-export default ProjectsPersonDetail;
+registerComponent('ProjectsPersonDetail', ProjectsPersonDetail);

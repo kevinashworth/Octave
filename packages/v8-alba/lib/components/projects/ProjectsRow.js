@@ -1,12 +1,17 @@
 import { Components, registerComponent, withDocument, withCurrentUser } from 'meteor/vulcan:core';
 import React from 'react';
-import { Badge } from 'reactstrap';
+import { Badge, Button } from 'reactstrap';
 import { Link } from 'react-router';
 import moment from 'moment';
 import { DATE_FORMAT_SHORT } from '../../modules/constants.js';
 import Projects from '../../modules/projects/collection.js';
 
 const ProjectsRow = ({loading, document, currentUser}) => {
+  if (loading) {
+    return (
+      <tr></tr>
+    )
+  } else {
     const project = document;
     const displayDate = project.updatedAt ?
       "Last modified " + moment(project.updatedAt).format(DATE_FORMAT_SHORT) :
@@ -53,11 +58,6 @@ const ProjectsRow = ({loading, document, currentUser}) => {
       }
     }
 
-    if (loading) {
-      return (
-        <tr></tr>
-      )
-    } else {
     return (
       <tr>
         <td><Link to={`/projects/${project._id}/${project.slug}`}>{project.projectTitle}</Link></td>
@@ -67,6 +67,12 @@ const ProjectsRow = ({loading, document, currentUser}) => {
         <td>
           <Badge color={badgeColor}>{project.status}</Badge>
         </td>
+        <td>{Projects.options.mutations.edit.check(currentUser, project) ?
+          <Components.MyModalTrigger title="Edit Project" component={<Button>Edit</Button>}>
+            <Components.ProjectsEditForm currentUser={currentUser} documentId={project._id} />
+          </Components.MyModalTrigger>
+          : null
+        }</td>
       </tr>
     )}
 }

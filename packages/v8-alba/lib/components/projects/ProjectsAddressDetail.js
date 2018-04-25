@@ -1,3 +1,4 @@
+import { registerComponent } from 'meteor/vulcan:core';
 import React from 'react';
 import { CardText } from 'reactstrap';
 import PropTypes from 'prop-types';
@@ -43,4 +44,4 @@ ProjectsAddressDetail.defaultProps = {
   }
 };
 
-export default ProjectsAddressDetail;
+registerComponent('ProjectsAddressDetail', ProjectsAddressDetail);

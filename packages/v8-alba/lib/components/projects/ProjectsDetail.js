@@ -1,26 +1,29 @@
+import { Components, registerComponent, withDocument, withCurrentUser } from 'meteor/vulcan:core';
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Card, CardBody, CardFooter, CardHeader, CardLink, CardText } from 'reactstrap';
-import ProjectsPersonDetail from './ProjectsPersonDetail.js';
-import ProjectsAddressDetail from './ProjectsAddressDetail.js';
 import moment from 'moment';
-import projects from './_projects.js';
 import { DATE_FORMAT_LONG } from '../../modules/constants.js'
+import Projects from '../../modules/projects/collection.js';
 
 class ProjectsDetail extends React.Component {
   render() {
-    const project_id = this.props.match.params.project_id;
-    const projectNum = parseInt(project_id)
-    const project = projects.find(p => p.project_id === projectNum);
+    if (this.props.loading) {
+      return <div><Components.Loading/></div>
+    } else if (!this.props.document) {
+      return <div><Components.FormattedMessage id="app.404"/></div>
+    } else {
+
+    const project = this.props.document;
     const displayDate = project.updatedAt ?
       "Last modified " + moment(project.updatedAt).format(DATE_FORMAT_LONG) :
       "Created " + moment(project.createdAt).format(DATE_FORMAT_LONG);
 
     return (
       <Card className="card-accent-primary">
-        <CardHeader tag="h2">{ project.project_title }</CardHeader>
+        <CardHeader tag="h2">{ project.projectTitle }</CardHeader>
         <CardBody>
-          <CardText className="mb-1">{ project.project_type } {project.network &&
+          <CardText className="mb-1">{ project.projectType } {project.network &&
             <span>
             ({ project.network })
             </span>
@@ -36,23 +39,21 @@ class ProjectsDetail extends React.Component {
         </CardBody>
         <CardBody>
           <CardText className="mb-0">
-            <b>{ project.casting_company }</b>
+            <b>{ project.castingCompany }</b>
           </CardText>
-          {project.personnel.map(person => <ProjectsPersonDetail key={person.personnel_id} person={person} />)}
-          <ProjectsAddressDetail address={project.address}></ProjectsAddressDetail>
+          {project.personnel.map(person => <Components.ProjectsPersonDetail key={person.personnelId} person={person} />)}
+          <Components.ProjectsAddressDetail address={project.address}/>
         </CardBody>
         <CardFooter>{displayDate}</CardFooter>
       </Card>
     );
-  }
+  }}
 }
 
-ProjectsDetail.propTypes = {
-  match: PropTypes.shape({
-    params: PropTypes.shape({
-      project_id: PropTypes.string.isRequired
-    })
-  })
+const options = {
+  collection: Projects,
+  queryName: 'projectsSingleQuery',
+  fragmentName: 'ProjectsDetailsFragment',
 };
 
-export default ProjectsDetail;
+registerComponent('ProjectsDetail', ProjectsDetail, withCurrentUser, [withDocument, options]);

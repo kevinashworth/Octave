@@ -12,5 +12,6 @@ addRoute([
   // {path: '/offices',                    name: 'Offices',         componentName: 'OfficesListGroup'},
   {path: '/projects',                   name: 'Projects (T)',    componentName: 'ProjectsTable'},
   {path: '/projectsdatatable',          name: 'Projects (DT)',   componentName: 'ProjectsDataTable'},
-  // {path: '/projects/:_id(/:slug)',      name: 'Project',         componentName: 'ProjectsDetail'},
+  {path: '/projects/:_id/edit',         name: 'projects.edit',   componentName: 'ProjectsEditForm'},
+  {path: '/projects/:_id(/:slug)',      name: 'projects.single', componentName: 'ProjectsSingle'},
 ]);

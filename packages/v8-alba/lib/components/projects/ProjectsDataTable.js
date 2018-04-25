@@ -1,5 +1,6 @@
 import { registerComponent, Components, withCurrentUser, withList } from 'meteor/vulcan:core';
 import React, {Component} from 'react';
+import { Link } from 'react-router'
 import {Button, Card, CardHeader, CardBody, CardFooter} from 'reactstrap';
 import {BootstrapTable, TableHeaderColumn} from 'react-bootstrap-table';
 import Projects from '../../modules/projects/collection.js';
@@ -63,7 +64,15 @@ class ProjectsDataTable extends Component {
           </CardHeader>
           <CardBody>
             <BootstrapTable data={this.props.results} version="4" condensed striped hover pagination search options={this.options} selectRow={selectRow} keyField='_id'>
-              <TableHeaderColumn dataField="projectTitle" dataSort>Title</TableHeaderColumn>
+              <TableHeaderColumn dataField="projectTitle" dataSort dataFormat={
+                (cell, row) => {
+                  return (
+                    <Link to={`/projects/${row._id}/${row.slug}`}>
+                      {cell}
+                    </Link>
+                  )
+                }
+              }>Name</TableHeaderColumn>
               <TableHeaderColumn dataField="projectType" dataSort>Type</TableHeaderColumn>
               <TableHeaderColumn dataField="castingCompany" dataSort>Casting</TableHeaderColumn>
               <TableHeaderColumn dataField="status" dataSort>Status</TableHeaderColumn>

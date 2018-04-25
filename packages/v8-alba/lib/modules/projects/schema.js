@@ -58,7 +58,7 @@ const schema = {
     editableBy: ["admins"]
   },
   projectType: {
-    label: "Web Site",
+    label: "Type",
     type: String,
     optional: true,
     viewableBy: ["guests"],
@@ -66,7 +66,7 @@ const schema = {
     editableBy: ["admins"]
   },
   union: {
-    label: "Middle",
+    label: "Union",
     type: String,
     optional: true,
     viewableBy: ["guests"],
@@ -74,7 +74,7 @@ const schema = {
     editableBy: ["admins"]
   },
   network: {
-    label: "Last",
+    label: "Network",
     type: String,
     optional: true,
     viewableBy: ["guests"],
@@ -82,7 +82,7 @@ const schema = {
     editableBy: ["admins"]
   },
   status: {
-    label: "Title",
+    label: "Status",
     type: String,
     optional: true,
     viewableBy: ["guests"],
@@ -90,7 +90,7 @@ const schema = {
     editableBy: ["admins"]
   },
   logline: {
-    label: "Gender",
+    label: "Logline",
     type: String,
     optional: true,
     viewableBy: ["guests"],
@@ -151,11 +151,11 @@ const schema = {
     optional: true,
     viewableBy: ["members"],
     onInsert: (project) => {
-      return Utils.slugify(project.title);
+      return Utils.slugify(project.projectTitle);
     },
     onEdit: (modifier, project) => {
       if (modifier.$set.displayName) {
-        return Utils.slugify(modifier.$set.title);
+        return Utils.slugify(modifier.$set.projectTitle);
       }
     }
   },
