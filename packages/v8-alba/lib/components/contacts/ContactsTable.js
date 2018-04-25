@@ -1,9 +1,9 @@
-import { registerComponent, Components, withList, withCurrentUser } from 'meteor/vulcan:core';
-import React, {Component} from 'react';
+import { Components, registerComponent, withCurrentUser, withList } from 'meteor/vulcan:core';
+import React from 'react';
 import {
   Card,
-  CardHeader,
   CardBody,
+  CardHeader,
   Table,
   Pagination,
   PaginationItem,

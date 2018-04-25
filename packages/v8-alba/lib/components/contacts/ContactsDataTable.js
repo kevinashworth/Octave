@@ -1,8 +1,8 @@
-import { registerComponent, Components, withCurrentUser, withList } from 'meteor/vulcan:core';
-import React, {Component} from 'react';
+import { Components, registerComponent, withCurrentUser, withList } from 'meteor/vulcan:core';
+import React, { Component } from 'react';
 import { Link } from 'react-router'
-import {Button, Card, CardHeader, CardBody, CardFooter} from 'reactstrap';
-import {BootstrapTable, TableHeaderColumn} from 'react-bootstrap-table';
+import { Button, Card, CardBody, CardFooter, CardHeader } from 'reactstrap';
+import { BootstrapTable, TableHeaderColumn } from 'react-bootstrap-table';
 import Contacts from '../../modules/contacts/collection.js';
 
 class ContactsDataTable extends Component {

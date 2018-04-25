@@ -1,8 +1,7 @@
-import { Components, registerComponent, withDocument, withCurrentUser } from 'meteor/vulcan:core';
+import { Components, registerComponent, withCurrentUser, withDocument } from 'meteor/vulcan:core';
 import React from 'react';
 import { Link } from 'react-router';
 import { Button } from 'reactstrap';
-
 import Contacts from '../../modules/contacts/collection.js';
 
 const ContactsRow = ({loading, document, currentUser}) => {

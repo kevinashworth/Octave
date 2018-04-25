@@ -1,11 +1,11 @@
-import { Components, registerComponent, withDocument, withCurrentUser } from 'meteor/vulcan:core';
-import React from 'react';
+import { Components, registerComponent, withCurrentUser, withDocument } from 'meteor/vulcan:core';
 import { FormattedMessage } from 'meteor/vulcan:i18n';
-import Contacts from '../../modules/contacts/collection.js';
+import React from 'react';
+import { Link } from 'react-router';
+import { Button, Card, CardBody, CardFooter, CardHeader, CardLink, CardText } from 'reactstrap';
 import moment from 'moment';
 import { DATE_FORMAT_LONG } from '../../modules/constants.js'
-import { Link } from 'react-router';
-import { Button, Card, CardBody, CardFooter, CardHeader, CardText, CardLink } from 'reactstrap';
+import Contacts from '../../modules/contacts/collection.js';
 
 const ContactsProfile = (props) => {
   if (props.loading) {
