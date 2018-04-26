@@ -3,14 +3,13 @@ import React from 'react';
 import Contacts from '../../modules/contacts/collection.js';
 
 const CDT = () => (
-  <div className="app-content">
-    <div className="movies-app">
+  <div>
       <Components.Datatable
         collection={Contacts}
-        columns={['fullName', 'zip']}
-        // options={{ terms: { view: 'alphabetical' } }} // uncomment on #Step18
+        columns={['fullName', 'title', 'street1', 'street2', 'city', 'state', 'zip']}
+        options={{ fragmentName: 'ContactsDetailsFragment' }}
+        showEdit={false}
       />
-    </div>
   </div>
 );
 
