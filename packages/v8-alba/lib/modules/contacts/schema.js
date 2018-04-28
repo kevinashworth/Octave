@@ -25,6 +25,23 @@ export const linkSchema = new SimpleSchema({
   },
 });
 
+export const projectIdsSchema = new SimpleSchema({
+  projectId: {
+    type: String,
+    optional: true,
+    viewableBy: ["members"],
+    insertableBy: ["admins"],
+    editableBy: ["admins"],
+  },
+  projectTitle: {
+    type: String,
+    optional: true,
+    viewableBy: ["members"],
+    insertableBy: ["admins"],
+    editableBy: ["admins"],
+  },
+});
+
 const schema = {
   // default properties
 
@@ -178,6 +195,52 @@ const schema = {
       return new Date();
     }
   },
+
+  // A contact has many projects
+
+  projectIds: {
+    label: "Projects",
+    type: Array,
+    optional: true,
+    viewableBy: ["members"],
+    insertableBy: ["admins"],
+    editableBy: ["admins"],
+  },
+  'projectIds.$': {
+    type: projectIdsSchema,
+  },
+
+  // projectsCount: {
+  //   type: Number,
+  //   optional: true,
+  //   viewableBy: ['guests'],
+  //   resolveAs: {
+  //     type: 'Int',
+  //     resolver: (contact, args, { Projects }) => {
+  //       const projectsCount = Projects.find({ contactId: contact._id }).count();
+  //       return projectsCount;
+  //     },
+  //   }
+  // },
+  // projects: {
+  //   type: Object,
+  //   optional: true,
+  //   viewableBy: ['members'],
+  //   resolveAs: {
+  //     arguments: 'limit: Int = 5',
+  //     type: '[Project]',
+  //     resolver: (contact, { limit }, { currentUser, Users, Projects }) => {
+  //       const projects = Projects.find({_id: {$in: contactIds}}, { limit }).fetch();
+  //
+  //       // restrict documents fields
+  //       const viewableProjects = _.filter(projects, projects => Projects.checkAccess(currentUser, projects));
+  //       const restrictedProjects = Users.restrictViewableFields(currentUser, Projects, viewableProjects);
+  //
+  //       return restrictedProjects;
+  //     }
+  //   }
+  // },
+
 
   // GraphQL only fields
 

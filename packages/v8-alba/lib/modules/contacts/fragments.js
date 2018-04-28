@@ -31,6 +31,7 @@ registerFragment(/* GraphQL */ `
     city
     state
     zip
+    projectIds
     slug
   }
 `);

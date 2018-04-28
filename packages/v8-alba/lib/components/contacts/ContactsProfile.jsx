@@ -2,7 +2,7 @@ import { Components, registerComponent, withCurrentUser, withDocument } from 'me
 import { FormattedMessage } from 'meteor/vulcan:i18n';
 import React from 'react';
 import { Link } from 'react-router';
-import { Button, Card, CardBody, CardFooter, CardHeader, CardLink, CardText } from 'reactstrap';
+import { Button, Card, CardBody, CardFooter, CardHeader, CardLink, CardText, CardTitle } from 'reactstrap';
 import moment from 'moment';
 import { DATE_FORMAT_LONG } from '../../modules/constants.js'
 import Contacts from '../../modules/contacts/collection.js';
@@ -72,17 +72,24 @@ const ContactsProfile = (props) => {
           <CardText dangerouslySetInnerHTML={createAddress()}></CardText>
           <CardText>{ contact.body }</CardText>
         </CardBody>
+        {contact.projectIds &&
+          <CardBody>
+            <CardTitle>Projects</CardTitle>
+            <CardText>
+            {contact.projectIds.map(project =>
+              <CardLink href={`/projects/${project.projectId}`}>{project.projectTitle}</CardLink>)}
+            </CardText>
+          </CardBody>
+        }
         {contact.links &&
           <CardBody>
             <CardText>
           {contact.links.map(link =>
             <Button className={`btn-${link.platformName.toLowerCase()} text-white`} key={link.profileLink}>
               <span><CardLink href={link.profileLink} target="_links">{link.profileName}</CardLink></span>
-            </Button>
-        )}
-      </CardText>
-    </CardBody>
-
+            </Button>)}
+            </CardText>
+          </CardBody>
         }
         <CardFooter>
           <small className="text-muted">{displayDate}</small>
