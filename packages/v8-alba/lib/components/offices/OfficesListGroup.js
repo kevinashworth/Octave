@@ -1,10 +1,10 @@
-import React, {Component} from 'react';
-import { Card, CardBody, CardHeader, ListGroup } from 'reactstrap';
-import OfficesItem from './OfficesItem.js';
-import offices from './_offices.js';
+import { Components, registerComponent, withCurrentUser, withList } from 'meteor/vulcan:core';
+import React from 'react';
+import { Button, Card, CardBody, CardFooter, CardHeader, ListGroup } from 'reactstrap';
+import Offices from '../../modules/offices/collection.js';
 
-class OfficesListGroup extends Component {
-  render() {
+const OfficesListGroup = ({loading, loadingMore, loadMore, results = [], currentUser, count, totalCount}) => {
+    const hasMore = results && (totalCount > results.length);
     return (
       <div className="animated">
         <Card>
@@ -13,23 +13,26 @@ class OfficesListGroup extends Component {
           </CardHeader>
           <CardBody>
             <ListGroup>
-              {/* <ListGroupItem tag="a" action href="#link1">Joe Blow Casting <Badge pill>14</Badge></ListGroupItem>
-              <ListGroupItem tag="a" action href="#link2" color="info">CFB <Badge color="secondary">5</Badge></ListGroupItem>
-              <ListGroupItem tag="a" action href="#link3">
-                <ListGroupItemHeading>A Certain Casting Office</ListGroupItemHeading>
-                <ListGroupItemText>
-                  Long list, of casting, names and, other info. Maybe a, list of, their projects, too.
-                </ListGroupItemText>
-              </ListGroupItem>
-              <ListGroupItem tag="a" action href="#link4" color="success">Dorian &amp; Sibby Casting</ListGroupItem> */}
-
-              {offices.items.map(office => <OfficesItem key={office._id} office={office} />)}
+              {results.map(office => <Components.OfficesItem key={office._id} documentId={office._id} currentUser={currentUser} />)}
             </ListGroup>
           </CardBody>
+          {hasMore &&
+          <CardFooter>
+            {loadingMore ?
+              <Components.Loading/> :
+              <Button onClick={e => {e.preventDefault(); loadMore();}}>Load More ({count}/{totalCount})</Button>
+            }
+          </CardFooter>
+          }
         </Card>
       </div>
-    );
+    )
   }
-}
 
-export default OfficesListGroup;
+const options = {
+  collection: Offices,
+  fragmentName: 'OfficesDetailsFragment',
+  limit: 20
+};
+
+registerComponent('OfficesListGroup', OfficesListGroup, withCurrentUser, [withList, options]);

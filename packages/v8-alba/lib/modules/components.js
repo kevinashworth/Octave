@@ -43,3 +43,6 @@ import '../components/projects/ProjectsPersonDetail';
 import '../components/projects/ProjectsDetail';
 import '../components/projects/ProjectsSingle';
 import '../components/projects/ProjectsEditForm';
+
+import '../components/offices/OfficesItem';
+import '../components/offices/OfficesListGroup';

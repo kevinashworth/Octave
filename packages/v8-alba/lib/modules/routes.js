@@ -9,7 +9,7 @@ addRoute([
   {path: '/contactsdatatable',   name: 'Contacts (DT)',  componentName: 'ContactsDataTable'},
   {path: '/cdt',                        name: 'CDT',             componentName: 'CDT'},
   {path: '/modals',              name: 'Modals Test',    componentName: 'Modals'},
-  // {path: '/offices',                    name: 'Offices',         componentName: 'OfficesListGroup'},
+  {path: '/offices',                    name: 'Offices',         componentName: 'OfficesListGroup'},
   {path: '/projects',                   name: 'Projects (T)',    componentName: 'ProjectsTable'},
   {path: '/projectsdatatable',          name: 'Projects (DT)',   componentName: 'ProjectsDataTable'},
   {path: '/projects/:_id/edit',         name: 'projects.edit',   componentName: 'ProjectsEditForm'},

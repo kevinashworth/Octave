@@ -1,33 +1,35 @@
+import { Components, registerComponent, withCurrentUser, withDocument } from 'meteor/vulcan:core';
 import React, { Component } from "react";
 import { Badge, ListGroupItem } from "reactstrap";
+import moment from 'moment';
+import { DATE_FORMAT_SHORT } from '../../modules/constants.js';
+import Offices from '../../modules/offices/collection.js';
 
-class OfficesItem extends Component {
-  render() {
-    const { office } = this.props;
-    if (office._id % 2) {
-      return (
-        <ListGroupItem tag="a" action href={office.href}>
-          {office.text} <Badge pill>{office.badge}</Badge>
-        </ListGroupItem>
-      );
-    } else {
-      return (
-        <ListGroupItem color="secondary" tag="a" action href={office.href}>
-          {office.text} <Badge pill>{office.badge}</Badge>
-        </ListGroupItem>
-      );
-    }
-    {
-      /* <ListGroupItem tag="a" action href="#link2" color="info">CFB <Badge color="secondary">5</Badge></ListGroupItem>
-    <ListGroupItem tag="a" action href="#link3">
-      <ListGroupItemHeading>A Certain Casting Office</ListGroupItemHeading>
-      <ListGroupItemText>
-        Long list, of casting, names and, other info. Maybe a, list of, their projects, too.
-      </ListGroupItemText>
-    </ListGroupItem>
-    <ListGroupItem tag="a" action href="#link4" color="success">Dorian &amp; Sibby Casting</ListGroupItem> */
-    }
+const OfficesItem = ({loading, document, currentUser}) => {
+  if (loading) {
+    return (
+      <tr></tr>
+    )
+  } else {
+    const office = document;
+    const badge = office.projectIds ? office.projectIds.length : null;
+    const displayDate = office.updatedAt ?
+      "Last modified " + moment(office.updatedAt).format(DATE_FORMAT_SHORT) :
+      "Created " + moment(office.createdAt).format(DATE_FORMAT_SHORT);
+
+    return (
+      <ListGroupItem tag="a" action href={office.href}>
+        {office.displayName} <Badge color="success" pill>{badge}</Badge>
+        &nbsp; <small>{displayDate}</small>
+      </ListGroupItem>
+    );
   }
 }
 
-export default OfficesItem;
+const options = {
+  collection: Offices,
+  queryName: 'officesSingleQuery',
+  fragmentName: 'OfficesDetailsFragment',
+};
+
+registerComponent('OfficesItem', OfficesItem, withCurrentUser, [withDocument, options]);

@@ -9,8 +9,10 @@ import Users from 'meteor/vulcan:users';
 import { newMutation } from 'meteor/vulcan:core';
 import Contacts from '../modules/contacts/collection.js';
 import Projects from '../modules/projects/collection.js';
+import Offices from '../modules/offices/collection.js';
 import seedData999 from '../components/contacts/_contacts3.js';
 import seedProjects from '../components/projects/_projects.js';
+import seedOffices from '../components/offices/_offices2.js';
 
 const createUser = async (username, email) => {
   const user = {
@@ -64,6 +66,17 @@ Meteor.startup(() => {
     Promise.awaitAll(seedProjects.map(document => newMutation({
       action: 'projects.new',
       collection: Projects,
+      document,
+      currentUser,
+      validate: false,
+    })));
+  }
+  if (Offices.find().fetch().length === 0) {
+    // eslint-disable-next-line no-console
+    console.log('// creating dummy offices');
+    Promise.awaitAll(seedOffices.map(document => newMutation({
+      action: 'offices.new',
+      collection: Offices,
       document,
       currentUser,
       validate: false,
