@@ -1,7 +1,8 @@
 import { Components, registerComponent, withCurrentUser, withDocument } from 'meteor/vulcan:core';
 import React from 'react';
+import { Link } from 'react-router';
 import PropTypes from 'prop-types';
-import { Card, CardBody, CardFooter, CardHeader, CardLink, CardText } from 'reactstrap';
+import { Button, Card, CardBody, CardFooter, CardHeader, CardLink, CardText } from 'reactstrap';
 import moment from 'moment';
 import { DATE_FORMAT_LONG } from '../../modules/constants.js'
 import Projects from '../../modules/projects/collection.js';
@@ -21,7 +22,12 @@ class ProjectsDetail extends React.Component {
 
     return (
       <Card className="card-accent-primary">
-        <CardHeader tag="h2">{ project.projectTitle }</CardHeader>
+        <CardHeader tag="h2">{ project.projectTitle }{ Projects.options.mutations.edit.check(this.props.currentUser, project) ?
+          <div className="float-right">
+            <Button tag={Link} to={`/projects/${project._id}/edit`}>Edit</Button>
+          </div> : null}
+        </CardHeader>
+
         <CardBody>
           <CardText className="mb-1">{ project.projectType } {project.network &&
             <span>
