@@ -13,7 +13,7 @@ class Modals extends Component {
           </CardHeader>
           <CardBody>
             <Components.MyModalTrigger title="Where is the title?" component={<Button>Launch it with a Button</Button>}>
-              <Components.ContactsEditForm/>
+              <Components.ContactsEditForm documentId="teM76tkmvtJHfhRDT"/>
             </Components.MyModalTrigger>
           </CardBody>
         </Card>
