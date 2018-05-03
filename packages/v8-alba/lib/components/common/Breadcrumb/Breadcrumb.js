@@ -1,5 +1,5 @@
-import { registerComponent } from 'meteor/vulcan:core';
-import React, {Component} from 'react';
+import { Components, registerComponent } from 'meteor/vulcan:core';
+import React, { Component } from 'react';
 import { withRouter } from 'react-router';
 import Breadcrumbs from 'react-breadcrumbs'; // NB: 1.6.x required for react-router v3
 
@@ -15,6 +15,7 @@ class Breadcrumb extends Component {
           wrapperClass="breadcrumb" itemclass="breadcrumb-item" // BreadcrumbItem
           displayMissingText="Home" // TODO
         />
+        <Components.HeadTags title={`V8 Alba: ${this.props.routes[1].name}`} />
       </div>
     );
   }

@@ -60,6 +60,8 @@ const ContactsProfile = (props) => {
     }
 
     return (
+      <div className="animated fadeIn">
+      <Components.HeadTags title={`V8 Alba: ${contact.fullName}`} />
       <Card className="card-accent-primary">
         <CardHeader tag="h2">{ contact.fullName }{ Contacts.options.mutations.edit.check(props.currentUser, contact) ?
           <div className="float-right">
@@ -95,6 +97,7 @@ const ContactsProfile = (props) => {
           <small className="text-muted">{displayDate}</small>
         </CardFooter>
       </Card>
+      </div>
     )
   }
 }
