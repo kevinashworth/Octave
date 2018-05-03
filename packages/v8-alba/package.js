@@ -10,6 +10,7 @@ Package.onUse(function (api) {
     'vulcan:forms@1.9.1',
     'vulcan:accounts@1.9.1',
     'fourseven:scss',
+    'percolate:migrations'
   ]);
 
   // api.addFiles('lib/stylesheets/index.styles.css', 'client');
