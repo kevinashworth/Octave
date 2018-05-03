@@ -11,43 +11,43 @@ import SimpleSchema from 'simpl-schema';
 //   }`;
 // addGraphQLSchema(Address);
 
-// export const addressSchema = new SimpleSchema({
-//   street1: {
-//     type: String,
-//     optional: true,
-//     viewableBy: ["guests"],
-//     insertableBy: ["admins"],
-//     editableBy: ["admins"]
-//   },
-//   street2: {
-//     type: String,
-//     optional: true,
-//     viewableBy: ["guests"],
-//     insertableBy: ["admins"],
-//     editableBy: ["admins"]
-//   },
-//   city: {
-//     type: String,
-//     optional: true,
-//     viewableBy: ["guests"],
-//     insertableBy: ["admins"],
-//     editableBy: ["admins"]
-//   },
-//   state: {
-//     type: String,
-//     optional: true,
-//     viewableBy: ["guests"],
-//     insertableBy: ["admins"],
-//     editableBy: ["admins"]
-//   },
-//   zip: {
-//     type: String,
-//     optional: true,
-//     viewableBy: ["guests"],
-//     insertableBy: ["admins"],
-//     editableBy: ["admins"]
-//   },
-// });
+export const addressSchema = new SimpleSchema({
+  street1: {
+    type: String,
+    optional: true,
+    viewableBy: ["guests"],
+    insertableBy: ["admins"],
+    editableBy: ["admins"]
+  },
+  street2: {
+    type: String,
+    optional: true,
+    viewableBy: ["guests"],
+    insertableBy: ["admins"],
+    editableBy: ["admins"]
+  },
+  city: {
+    type: String,
+    optional: true,
+    viewableBy: ["guests"],
+    insertableBy: ["admins"],
+    editableBy: ["admins"]
+  },
+  state: {
+    type: String,
+    optional: true,
+    viewableBy: ["guests"],
+    insertableBy: ["admins"],
+    editableBy: ["admins"]
+  },
+  zip: {
+    type: String,
+    optional: true,
+    viewableBy: ["guests"],
+    insertableBy: ["admins"],
+    editableBy: ["admins"]
+  },
+});
 
 export const personnelSchema = new SimpleSchema({
   personnelId: {
@@ -189,12 +189,15 @@ const schema = {
   'personnel.$': {
     type: personnelSchema,
   },
-  address: {
-    type: Object,
+  addresses: {
+    type: Array,
     optional: true,
     viewableBy: ["guests"],
     insertableBy: ["admins"],
     editableBy: ["admins"],
+  },
+  'addresses.$': {
+    type: addressSchema
   },
   slug: {
     type: String,
