@@ -1,7 +1,7 @@
 import { registerComponent, Components } from 'meteor/vulcan:lib';
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
-import { Modal, ModalHeader, ModalBody } from 'reactstrap';
+import { Button, Modal, ModalBody, ModalFooter, ModalHeader } from 'reactstrap';
 
 class MyModalTrigger extends PureComponent {
 
@@ -46,6 +46,9 @@ class MyModalTrigger extends PureComponent {
           <ModalBody>
             {childrenComponent}
           </ModalBody>
+          <ModalFooter>
+            <Button color="secondary" onClick={this.toggle}>Cancel</Button>
+          </ModalFooter>
         </Modal>
       </div>
     )
