@@ -1,6 +1,18 @@
 import { Utils } from 'meteor/vulcan:core';
 import SimpleSchema from 'simpl-schema';
 
+const projectGroup = {
+  name: 'projects',
+  label: 'Projects',
+  order: 10
+}
+
+const linkGroup = {
+  name: 'links',
+  label: 'Links',
+  order: 20
+}
+
 export const linkSchema = new SimpleSchema({
   platformName: {
     type: String,
@@ -130,6 +142,7 @@ const schema = {
     viewableBy: ["members"],
     insertableBy: ["admins"],
     editableBy: ["admins"],
+    group: linkGroup
   },
   'links.$': {
     type: linkSchema,
@@ -205,6 +218,7 @@ const schema = {
     viewableBy: ["members"],
     insertableBy: ["admins"],
     editableBy: ["admins"],
+    group: projectGroup
   },
   'projectIds.$': {
     type: projectIdsSchema,
