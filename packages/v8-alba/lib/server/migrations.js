@@ -1,23 +1,34 @@
 // see https://guide.meteor.com/collections.html#migrations
 import { Migrations } from 'meteor/percolate:migrations';
+import Projects from '../modules/projects/collection.js';
 
 Migrations.add({
   version: 1,
-  name: 'just a test',
+  name: 'address -> addresses',
   up() {
-    // eslint-disable-next-line no-console
-    console.log('Up! Inside migrations.');
-    // Projects.find({addresses: {$exists: false}}).forEach(project => {
-    //   Projects.update(addresses[0], {$set: {project.address}});
-    // });
+    Projects.find({addresses: {$exists: false}}).forEach(project => {
+      if (project.address) {
+        Projects.update(project._id,
+          {
+            $addToSet: {addresses: project.address},
+            $unset: {address: 1, project_id: 1}
+          });
+      }
+    });
   },
   down() {
-    // eslint-disable-next-line no-console
-    console.log('Down! Inside migrations.');
-    // Projects.update({}, {$unset: {addresses: true}}, {multi: true});
+    Projects.find({address: {$exists: false}}).forEach(project => {
+      if (project.addresses && project.addresses[0]) {
+        Projects.update(project._id,
+          {
+            $set: {address: project.addresses[0]},
+            $unset: {addresses: 1}
+          });
+      }
+    });
   }
 });
 
 Meteor.startup(() => {
-  Migrations.migrateTo('latest');
+  Migrations.migrateTo('1');
 });
