@@ -78,14 +78,6 @@ const schema = {
 
   // custom properties
 
-  displayName: {
-    label: "Display Name",
-    type: String,
-    optional: true,
-    viewableBy: ["guests"],
-    insertableBy: ["admins"],
-    editableBy: ["admins"]
-  },
   firstName: {
     label: "First",
     type: String,
@@ -266,26 +258,48 @@ const schema = {
     resolveAs: {
       type: "String",
       resolver: (contact, args, context) => {
-        if (!contact.displayName) {
-          let tempName = "";
-          if (contact.firstName) {
-            tempName += contact.firstName;
-          }
-          if (contact.middleName) {
-            tempName += (" " + contact.middleName);
-          }
-          if (contact.lastName) {
-            tempName += (" " + contact.lastName);
-          }
-          if (tempName.length) {
-            return tempName;
-          } else {
-            return "Name Unknown";
-          }
-        } else {
-          return contact.displayName;
+        let tempName = "";
+        if (contact.firstName) {
+          tempName += contact.firstName;
         }
-      },
+        if (contact.middleName) {
+          tempName += (" " + contact.middleName);
+        }
+        if (contact.lastName) {
+          tempName += (" " + contact.lastName);
+        }
+        if (tempName.length) {
+          return tempName;
+        } else {
+          return "Full Name Unknown";
+        }
+      }
+    },
+  },
+  displayName: {
+    label: "Display Name",
+    type: String,
+    optional: true,
+    viewableBy: ["members"],
+    resolveAs: {
+      type: "String",
+      resolver: (contact, args, context) => {
+        let tempName = "";
+        if (contact.firstName) {
+          tempName += contact.firstName;
+        }
+        if (contact.middleName) {
+          tempName += (" " + contact.middleName);
+        }
+        if (contact.lastName) {
+          tempName += (" " + contact.lastName);
+        }
+        if (tempName.length) {
+          return tempName;
+        } else {
+          return "Display Name Unknown";
+        }
+      }
     }
   },
 
