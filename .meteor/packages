@@ -1,6 +1,6 @@
 # see http://docs.vulcanjs.org/packages
 
-vulcan:core
+vulcan:core@1.10.0
 
 ############ Language Packages ############
 
@@ -15,7 +15,10 @@ accounts-password
 ############ Your Packages ############
 
 v8-alba
+
+vulcan:debug
+vulcan:ui-bootstrap
+
 fortawesome:fontawesome
 jss:flag-icon
-vulcan:debug
 percolate:migrations

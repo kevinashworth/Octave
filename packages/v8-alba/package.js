@@ -6,8 +6,8 @@ Package.describe({
 Package.onUse(function (api) {
 
   api.use([
-    'vulcan:core',
-    'vulcan:forms',
+    'vulcan:core@1.10.0',
+    'vulcan:forms@1.10.0',
     'vulcan:accounts',
     'fourseven:scss',
     'percolate:migrations'
@@ -19,6 +19,7 @@ Package.onUse(function (api) {
   api.addFiles('lib/stylesheets/simple-line-icons.scss', 'client');
   api.addFiles('lib/stylesheets/react-bootstrap-table-all.min.css', 'client');
   api.addFiles('lib/stylesheets/spinner.scss', 'client');
+  api.addFiles('lib/stylesheets/react-select.min.css', 'client');
 
   api.mainModule('lib/server/main.js', 'server');
   api.mainModule('lib/client/main.js', 'client');
