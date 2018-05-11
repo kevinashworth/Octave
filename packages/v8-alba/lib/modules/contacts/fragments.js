@@ -17,7 +17,6 @@ registerFragment(/* GraphQL */ `
     createdAt
     updatedAt
     userId
-    displayName
     fullName
     firstName
     middleName
@@ -38,8 +37,6 @@ registerFragment(/* GraphQL */ `
 
 registerFragment(/* GraphQL */ `
   fragment ContactsEditFragment on Contact {
-    displayName
-    fullName
     firstName
     middleName
     lastName

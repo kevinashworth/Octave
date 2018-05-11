@@ -8,7 +8,7 @@ import Offices from '../../modules/offices/collection.js';
 const OfficesItem = ({loading, document, currentUser}) => {
   if (loading) {
     return (
-      <tr></tr>
+      null
     )
   } else {
     const office = document;

@@ -10,10 +10,12 @@ import Projects from '../../modules/projects/collection.js';
 class ProjectsDetail extends React.Component {
   render() {
     if (this.props.loading) {
-      return <div><Components.Loading/></div>
-    } else if (!this.props.document) {
-      return <div><Components.FormattedMessage id="app.404"/></div>
-    } else {
+      return (<div><Components.Loading/></div>);
+    }
+
+    if (!this.props.document) {
+      return (<div><Components.FormattedMessage id="app.404"/></div>);
+    }
 
     const project = this.props.document;
     const displayDate = project.updatedAt ?
@@ -22,6 +24,7 @@ class ProjectsDetail extends React.Component {
 
     return (
       <div className="animated fadeIn">
+      <Components.HeadTags title={`V8 Alba: ${project.projectTitle}`} />
       <Card className="card-accent-primary">
         <CardHeader tag="h2">{ project.projectTitle }{ Projects.options.mutations.edit.check(this.props.currentUser, project) ?
           <div className="float-right">
@@ -54,12 +57,13 @@ class ProjectsDetail extends React.Component {
            :
           <CardText>No addresses yet. ADD ONE!</CardText>
           }
+          {project.contactId}
         </CardBody>
         <CardFooter>{displayDate}</CardFooter>
       </Card>
-      </div>
+    </div>
     );
-  }}
+  }
 }
 
 const options = {

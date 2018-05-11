@@ -1,15 +1,5 @@
-import { Utils } from 'meteor/vulcan:core';
+import { Components, Utils } from 'meteor/vulcan:core';
 import SimpleSchema from 'simpl-schema';
-
-// const Address = `
-//   type Address {
-//     street1: String
-//     street2: String
-//     city: String
-//     state: String
-//     zip: String
-//   }`;
-// addGraphQLSchema(Address);
 
 export const addressSchema = new SimpleSchema({
   street1: {
@@ -189,6 +179,24 @@ const schema = {
   'personnel.$': {
     type: personnelSchema,
   },
+  contactId: {
+    type: String,
+    control: "MySelect",
+    optional: true,
+    viewableBy: ["members"],
+    insertableBy: ["admins"],
+    editableBy: ["admins"],
+    query: `
+      ContactsList{
+        _id
+        fullName
+      }
+    `,
+    options: props => props.data.ContactsList.map(contact => ({
+      value: contact._id,
+      label: contact.fullName,
+    })),
+  },
   addresses: {
     type: Array,
     optional: true,
@@ -207,7 +215,7 @@ const schema = {
       return Utils.slugify(project.projectTitle);
     },
     onEdit: (modifier, project) => {
-      if (modifier.$set.displayName) {
+      if (modifier.$set.projectTitle) {
         return Utils.slugify(modifier.$set.projectTitle);
       }
     }

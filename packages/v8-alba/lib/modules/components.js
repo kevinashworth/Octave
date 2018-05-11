@@ -3,6 +3,7 @@
 
 import '../components/common/Breadcrumb/';
 import '../components/common/Footer/';
+import '../components/common/Header/';
 import '../components/common/Sidebar/';
 import '../components/common/SidebarFooter/';
 import '../components/common/SidebarForm/';
@@ -13,7 +14,7 @@ import '../components/common/ModalTrigger.jsx';
 
 // Alba containers
 
-import '../components/common/LayoutFull/';
+import '../components/common/LayoutFull/'; // replaceComponent Full
 import '../components/common/LayoutAdmin/';
 
 // Alba views
@@ -24,6 +25,7 @@ import '../components/Dashboard/';
 
 import '../components/common/Filter/ContactDropdowns';
 import '../components/common/Filter/ProjectDropdowns';
+import '../components/common/Select';
 
 import '../components/contacts/ContactsTable';
 import '../components/contacts/ContactsRow';
