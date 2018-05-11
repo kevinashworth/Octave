@@ -75,8 +75,8 @@ app-root {
     position: fixed;
     z-index: $zindex-sticky - 1;
     width: $sidebar-width;
-    // height: calc(100vh - #{$navbar-height}); KA changed this when removing header entirely
-    height: calc(100vh);
+    height: calc(100vh - #{$navbar-height});
+    // height: calc(100vh); KA changed back to above when adding header back in
     // margin-top: - $navbar-height;
 
     // .sidebar-nav {
