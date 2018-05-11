@@ -3,7 +3,7 @@ import React from 'react';
 import Contacts from '../../modules/contacts/collection.js';
 
 const ContactsNewForm = ({currentUser}) =>
-  <div>
+  <div className="animated fadeIn">
     {Contacts.options.mutations.new.check(currentUser) ?
       <div style={ { marginBottom: '20px', paddingBottom: '20px', borderBottom: '1px solid #ccc' } }>
         <h4>Insert New Document</h4>

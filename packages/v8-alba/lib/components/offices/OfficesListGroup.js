@@ -6,7 +6,7 @@ import Offices from '../../modules/offices/collection.js';
 const OfficesListGroup = ({loading, loadingMore, loadMore, results = [], currentUser, count, totalCount}) => {
     const hasMore = results && (totalCount > results.length);
     return (
-      <div className="animated">
+      <div className="animated fadeIn">
         <Card>
           <CardHeader>
             <i className="icon-briefcase"></i>Offices as ListGroup

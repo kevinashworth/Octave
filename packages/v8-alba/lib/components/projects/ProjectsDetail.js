@@ -21,6 +21,7 @@ class ProjectsDetail extends React.Component {
       "Created " + moment(project.createdAt).format(DATE_FORMAT_LONG);
 
     return (
+      <div className="animated fadeIn">
       <Card className="card-accent-primary">
         <CardHeader tag="h2">{ project.projectTitle }{ Projects.options.mutations.edit.check(this.props.currentUser, project) ?
           <div className="float-right">
@@ -56,6 +57,7 @@ class ProjectsDetail extends React.Component {
         </CardBody>
         <CardFooter>{displayDate}</CardFooter>
       </Card>
+      </div>
     );
   }}
 }

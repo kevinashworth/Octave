@@ -56,7 +56,7 @@ class ProjectsDataTable extends Component {
     };
     const hasMore = results && (totalCount > results.length);
     return (
-      <div className="animated">
+      <div className="animated fadeIn">
         <Card>
           <CardHeader>
             <i className="fa fa-camera"></i>Projects Data Table

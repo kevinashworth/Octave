@@ -57,7 +57,7 @@ class ContactsDataTable extends Component {
     const hasMore = results && (totalCount > results.length);
 
     return (
-      <div className="animated">
+      <div className="animated fadeIn">
         <Card>
           <CardHeader>
             <i className="icon-menu"></i>Contacts DataTable

@@ -6,6 +6,7 @@ import Contacts from '../../modules/contacts/collection.js';
 const ContactsEditForm = ({documentId, params, router, toggle}) => {
   const theDocumentId = documentId ? documentId : params._id;
   return (
+    <div className="animated fadeIn">
     <Components.SmartForm
       collection={Contacts}
       documentId={theDocumentId}
@@ -19,6 +20,7 @@ const ContactsEditForm = ({documentId, params, router, toggle}) => {
         }
       }}
     />
+  </div>
   )
 }
 
