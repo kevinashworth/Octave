@@ -1,42 +1,46 @@
 import { registerComponent } from 'meteor/vulcan:lib';
 import React, { PureComponent } from 'react';
+import Select from 'react-select';
 import PropTypes from 'prop-types';
-import { Input } from 'formsy-react-components';
 
-class MyCustomFormComponent extends PureComponent {
-
-  constructor() {
-    super();
-    this.toggleMessage = this.toggleMessage.bind(this);
+class MySelect extends PureComponent {
+  constructor(props) {
+    super(props);
+    this.handleChange = this.handleChange.bind(this);
     this.state = {
-      contactId: 'foo'
+      value: this.props.value
     };
   }
 
-  toggleMessage() {
-    this.setState({
-      contactId: this.state.contactId === 'foo' ? 'bar' : 'foo'
-    });
-    this.context.updateCurrentValues({contactId: this.state.contactId});
+  handleChange = (value) => {
+    this.setState({ value });
+    // eslint-disable-next-line no-console
+    console.log(`Selected label: ${value.label}`);
+    // eslint-disable-next-line no-console
+    console.log(`Selected value: ${value.value}`);
+    this.context.updateCurrentValues({contactId: value.value});
   }
 
   render() {
-
     return (
       <div className="form-group row">
         <label className="control-label col-sm-3">{this.props.label}</label>
         <div className="col-sm-9">
-          <p>contactId is: {this.state.contactId}</p>
-          <a onClick={this.toggleMessage}>Toggle contactId</a>
-          <Input type="hidden" name="contactId" value={this.state.contactId}/>
+          <Select
+            name="form-field-name"
+            value={this.state.value}
+            onChange={this.handleChange}
+            options={this.props.options}
+            resetValue={{ value: null, label: '' }}
+          />
         </div>
       </div>
     );
   }
 }
 
-MyCustomFormComponent.contextTypes = {
+MySelect.contextTypes = {
   updateCurrentValues: PropTypes.func,
 };
 
-registerComponent('MyCustomFormComponent', MyCustomFormComponent);
+registerComponent('MySelect', MySelect);

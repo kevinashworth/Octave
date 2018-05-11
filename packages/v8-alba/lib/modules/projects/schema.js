@@ -1,16 +1,5 @@
 import { Components, Utils } from 'meteor/vulcan:core';
 import SimpleSchema from 'simpl-schema';
-// import MySelectComponent from '../../components/common/Select.jsx';
-
-// const Address = `
-//   type Address {
-//     street1: String
-//     street2: String
-//     city: String
-//     state: String
-//     zip: String
-//   }`;
-// addGraphQLSchema(Address);
 
 export const addressSchema = new SimpleSchema({
   street1: {
@@ -192,7 +181,7 @@ const schema = {
   },
   contactId: {
     type: String,
-    control: "select",
+    control: "MySelect",
     optional: true,
     viewableBy: ["members"],
     insertableBy: ["admins"],
