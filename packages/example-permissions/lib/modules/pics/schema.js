@@ -36,7 +36,7 @@ const schema = {
       addOriginalField: true
     }
   },
-  
+
   // custom properties
 
   imageUrl: {
@@ -46,11 +46,9 @@ const schema = {
     insertableBy: ['members'],
     editableBy: ['members'],
     control: FormsUpload, // use the FormsUpload form component
-    form: {
-      options: {
-        preset: 'vulcanstagram'
-      },
-    }
+    options: {
+      preset: 'vulcanstagram'
+    },
   },
   body: {
     label: 'Body',

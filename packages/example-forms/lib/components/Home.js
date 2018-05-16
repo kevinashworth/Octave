@@ -38,7 +38,7 @@ const Home = ({ flash }) => (
       /*
 
       Specify that the datatable's “new document” form should have its `meetingDate`
-      prefilled to today's date; and also specify a success callback. 
+      prefilled to today's date; and also specify a success callback.
 
       */
       newFormOptions={{
@@ -46,7 +46,7 @@ const Home = ({ flash }) => (
           meetingDate: new Date(),
         },
         successCallback: () => {
-          flash('New customer created.');
+          flash({message: 'New customer created.', type: 'success'});
         },
       }}
     />

@@ -1,5 +1,5 @@
 import React from 'react';
-import { registerComponent, withCurrentUser } from 'meteor/vulcan:core';
+import { Components, registerComponent, withCurrentUser } from 'meteor/vulcan:core';
 import { Link } from 'react-router';
 import ReactMarkdown from 'react-markdown';
 // import SyntaxHighlighter from 'react-syntax-highlighter';
@@ -19,7 +19,7 @@ const languages = {
 };
 
 // see https://github.com/rexxars/react-markdown-examples/blob/master/examples/custom-renderers/link-renderer.js
-const LinkRenderer = props => 
+const LinkRenderer = props =>
   props.href.match(/^(https?:)?\/\//) ?
     <a href={props.href} target="_blank">{props.children}</a> :
     <Link to={props.href}>{props.children}</Link>

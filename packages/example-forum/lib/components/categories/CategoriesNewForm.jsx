@@ -8,12 +8,12 @@ const CategoriesNewForm = (props, context) => {
 
   return (
     <div className="categories-new-form">
-      <Components.SmartForm 
+      <Components.SmartForm
         collection={Categories}
         mutationFragment={getFragment('CategoriesList')}
         successCallback={category => {
           props.closeModal();
-          props.flash(context.intl.formatMessage({id: 'categories.new_success'}, {name: category.name}), "success");
+          props.flash({id: 'categories.new_success', properties: {name: category.name}, type: "success"});
         }}
       />
     </div>

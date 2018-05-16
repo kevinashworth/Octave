@@ -7,7 +7,6 @@ Pics Home component
 import React from 'react';
 import { registerComponent, Components, withCurrentUser } from 'meteor/vulcan:core';
 import Users from 'meteor/vulcan:users';
-import Button from 'react-bootstrap/lib/Button';
 
 const PicsHome = ({results = [], currentUser, loading, loadMore, count, totalCount}) => {
   if (currentUser) {
@@ -18,15 +17,15 @@ const PicsHome = ({results = [], currentUser, loading, loadMore, count, totalCou
         {Users.canDo(currentUser, 'pics.view') ?
 
           <Components.PicsList /> :
-        
+
           <Components.Checkout
             productKey="membership"
             associatedCollection={Users}
             associatedDocument={currentUser}
             fragmentName="UsersCurrent"
-            button={<Button bsStyle="primary">Buy membership</Button>}
+            button={<Components.Button variant="primary">Buy membership</Components.Button>}
           />
-        
+
         }
 
       </div>
@@ -41,7 +40,7 @@ const PicsHome = ({results = [], currentUser, loading, loadMore, count, totalCou
     )
 
   }
-  
+
 };
 
 registerComponent('PicsHome', PicsHome, withCurrentUser);

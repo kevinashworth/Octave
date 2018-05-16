@@ -62,6 +62,12 @@ const schema = {
       if (!post.postedAt && getCollection('Posts').getDefaultStatus(currentUser) === getCollection('Posts').config.STATUS_APPROVED) {
         return new Date();
       }
+    },
+    onEdit: (modifier, post) => {
+      // Set the post's postedAt if it's going to be approved
+      if (!post.postedAt && modifier.$set.status === getCollection('Posts').config.STATUS_APPROVED) {
+        return new Date();
+      }
     }
   },
   /**
@@ -77,14 +83,12 @@ const schema = {
     control: 'url',
     order: 10,
     searchable: true,
-    form: {
-      query: `
-        SiteData{
-          logoUrl
-          title
-        }
-      `,
-    },
+    query: `
+      SiteData{
+        logoUrl
+        title
+      }
+    `,
   },
   /**
     Title
@@ -158,13 +162,13 @@ const schema = {
     onInsert: (post) => {
       if (post.body) {
         // excerpt length is configurable via the settings (30 words by default, ~255 characters)
-        const excerptLength = getSetting('forum.postExcerptLength', 30); 
+        const excerptLength = getSetting('forum.postExcerptLength', 30);
         return Utils.trimHTML(Utils.sanitize(marked(post.body)), excerptLength);
       }
     },
     onEdit: (modifier, post) => {
       if (modifier.$set.body) {
-        const excerptLength = getSetting('forum.postExcerptLength', 30); 
+        const excerptLength = getSetting('forum.postExcerptLength', 30);
         return Utils.trimHTML(Utils.sanitize(marked(modifier.$set.body)), excerptLength);
       }
     }
@@ -216,9 +220,7 @@ const schema = {
         return getCollection('Posts').getDefaultStatus(currentUser);
       }
     },
-    form: {
-      options: () => getCollection('Posts').statuses,
-    },
+    options: () => getCollection('Posts').statuses,
     group: formGroups.admin
   },
   /**

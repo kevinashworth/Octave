@@ -1,49 +1,45 @@
-import { Components, registerComponent, withMutation, withCurrentUser, withMessages, Utils } from 'meteor/vulcan:core';
+import { Components, registerComponent, withMutation, withCurrentUser, withMessages, getErrors } from 'meteor/vulcan:core';
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { FormattedMessage, intlShape } from 'meteor/vulcan:i18n';
-import Button from 'react-bootstrap/lib/Button';
 
 class NewsletterButton extends Component {
   constructor(props) {
     super(props);
     this.subscriptionAction = this.subscriptionAction.bind(this);
   }
-  
+
   // use async/await + try/catch <=> promise.then(res => ..).catch(e => ...)
   async subscriptionAction() {
-    
-    const { 
-      flash, 
-      mutationName, 
-      successCallback, 
-      user, 
+
+    const {
+      flash,
+      mutationName,
+      successCallback,
+      user,
       [mutationName]: mutationToTrigger, // dynamic 'mutationToTrigger' variable based on the mutationName (addUserNewsletter or removeUserNewsletter)
     } = this.props;
-    
+
     try {
       const mutationResult = await mutationToTrigger({userId: user._id});
-      
+
       successCallback(mutationResult);
     } catch(error) {
-      console.error(error); // eslint-disable-line no-console
-      flash(
-        this.context.intl.formatMessage(Utils.decodeIntlError(error)),
-        "error"
-      );
+      console.error(getErrors(error)); // eslint-disable-line no-console
+      flash(getErrors(error)[0]);
     }
   }
 
   render() {
-    
+
     return (
-      <Button
+      <Components.Button
         className="newsletter-button"
         onClick={this.subscriptionAction}
-        bsStyle="primary"
+        variant="primary"
       >
         <FormattedMessage id={this.props.label}/>
-      </Button>
+      </Components.Button>
     )
   }
 }

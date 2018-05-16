@@ -39,11 +39,9 @@ registerFragment(/* GraphQL */`
     twitterUsername
     website
     groups
-    karma
     # vulcan:posts
     postCount
     # vulcan:comments
     commentCount
   }
 `);
-
