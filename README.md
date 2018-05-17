@@ -13,7 +13,7 @@ I am not really using much here, certainly nothing to have git ignore, but going
     "title": "V8 Alba",
     "tagline": "Alba 1.8.14",
 
-    "faviconUrl": "img/favicon.png",
+    "faviconUrl": "/img/favicon.png",
 
     "locale": "en"
   }

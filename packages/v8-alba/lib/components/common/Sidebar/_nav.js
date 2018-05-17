@@ -29,6 +29,11 @@ export default {
       icon: 'icon-people'
     },
     {
+      name: 'CDT',
+      url: '/cdt',
+      icon: 'icon-people'
+    },
+    {
       name: 'Contacts & Projects',
       url: '/contactsandprojects',
       icon: 'icon-book-open'
@@ -47,6 +52,11 @@ export default {
       name: 'Projects (DT)',
       url: '/projectsdatatable',
       icon: 'fa fa-camera'
+    },
+    {
+      name: 'Modals',
+      url: '/modals',
+      icon: 'fa fa-external-link'
     }
   ]
 };

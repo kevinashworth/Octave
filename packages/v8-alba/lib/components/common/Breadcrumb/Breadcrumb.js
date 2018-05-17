@@ -1,74 +1,24 @@
-// import React from 'react';
-// import {Route, Link} from 'react-router';
-// import {Breadcrumb, BreadcrumbItem} from 'reactstrap';
-// import routes from '../../routes';
-//
-// const findRouteName = url => routes[url];
-//
-// const getPaths = (pathname) => {
-//   const paths = ['/'];
-//
-//   if (pathname === '/') return paths;
-//
-//   pathname.split('/').reduce((prev, curr, index) => {
-//     const currPath = `${prev}/${curr}`;
-//     paths.push(currPath);
-//     return currPath;
-//   });
-//   return paths;
-// };
-//
-// const BreadcrumbsItem = ({match, ...rest}) => {
-//   const routeName = findRouteName(match.url);
-//   if (routeName) {
-//     return (
-//       match.isExact ?
-//         (
-//           <BreadcrumbItem active>{routeName}</BreadcrumbItem>
-//         ) :
-//         (
-//           <BreadcrumbItem>
-//             <Link to={match.url || ''}>
-//               {routeName}
-//             </Link>
-//           </BreadcrumbItem>
-//         )
-//     );
-//   }
-//   return null;
-// };
-//
-// const Breadcrumbs = ({location : {pathname}, match, ...rest}) => {
-//   const paths = getPaths(pathname);
-//   const items = paths.map((path, i) => <Route key={i++} path={path} component={BreadcrumbsItem}/>);
-//   return (
-//     <Breadcrumb>
-//       {items}
-//     </Breadcrumb>
-//   );
-// };
-//
-// export default props => (
-//   <div>
-//     <Route path="/:path" component={Breadcrumbs} {...props} />
-//   </div>
-// );
-
-import { registerComponent } from 'meteor/vulcan:core';
-import React, {Component} from 'react';
+import { Components, registerComponent } from 'meteor/vulcan:core';
+import React, { Component } from 'react';
+import { withRouter } from 'react-router';
+import Breadcrumbs from 'react-breadcrumbs'; // NB: 1.6.x required for react-router v3
 
 class Breadcrumb extends Component {
   render() {
     return (
-      <div className="KevinSaysHello">
-        <ol className="breadcrumb">
-          <li className="breadcrumb-item"><a href="#/">Home</a></li>
-          <li className="breadcrumb-item"><a href="#/plugins">Fake</a></li>
-          <li className="active breadcrumb-item">Breadcrumbs</li>
-        </ol>
+      <div>
+        <Breadcrumbs
+          routes={this.props.routes}
+          params={this.props.params}
+          separator=" /&nbsp;"                                  // emulate
+          wrapperElement="ol" itemElement="li"                  // Breadcrumb &
+          wrapperClass="breadcrumb" itemclass="breadcrumb-item" // BreadcrumbItem
+          displayMissingText="Home" // TODO
+        />
+        <Components.HeadTags title={`V8 Alba: ${this.props.routes[1].name}`} />
       </div>
-    )
+    );
   }
 }
 
-registerComponent('Breadcrumb', Breadcrumb);
+registerComponent('Breadcrumb', Breadcrumb, withRouter);

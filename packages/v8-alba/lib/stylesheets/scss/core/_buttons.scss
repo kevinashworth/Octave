@@ -25,6 +25,7 @@ button {
   }
 }
 
+.btn-imdb,
 .btn-facebook,
 .btn-twitter,
 .btn-linkedin,
@@ -54,6 +55,10 @@ button {
   overflow: hidden;
   color: #fff !important;
   text-align: center;
+
+  a {
+    color: #fff;
+  }
 
   &::before {
     position: absolute;
@@ -97,6 +102,25 @@ button {
     @include button-social-size($input-btn-padding-y-sm, $input-btn-padding-x-sm, $font-size-sm, $line-height-sm, $btn-border-radius-sm);
   }
 
+}
+
+.btn-imdb {
+  $color: #f5de50 !default;
+
+  background: $color;
+  &::before {
+    content: "\f2d8";
+    background: darken($color, 5%);
+
+  }
+
+  &:hover {
+    background: darken($color, 5%);
+
+    &::before {
+      background: darken($color, 10%);
+    }
+  }
 }
 
 .btn-facebook {
