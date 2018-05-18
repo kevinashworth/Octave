@@ -49,7 +49,7 @@ Meteor.startup(() => {
     Promise.await(createDummyUsers());
   }
   const currentUser = Users.findOne(); // just get the first user available
-  if (Contacts.find().fetch().length === 7) {
+  if (Contacts.find().fetch().length === 0) {
     // eslint-disable-next-line no-console
     console.log('// creating dummy contacts');
     Promise.awaitAll(seedData999.map(document => newMutation({
