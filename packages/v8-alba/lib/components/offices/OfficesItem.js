@@ -18,7 +18,7 @@ const OfficesItem = ({loading, document, currentUser}) => {
       "Created " + moment(office.createdAt).format(DATE_FORMAT_SHORT);
 
     return (
-      <ListGroupItem tag="a" action href={office.href}>
+      <ListGroupItem tag="a" action href={`/offices/${office._id}/${office.slug}`}>
         {office.displayName} <Badge color="success" pill>{badge}</Badge>
         &nbsp; <small>{displayDate}</small>
       </ListGroupItem>
