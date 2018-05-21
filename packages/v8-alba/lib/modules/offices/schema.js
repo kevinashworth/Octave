@@ -1,6 +1,24 @@
 import { Utils } from 'meteor/vulcan:core';
 import SimpleSchema from 'simpl-schema';
 
+const contactGroup = {
+  name: 'contacts',
+  label: 'Contacts',
+  order: 10
+}
+
+const projectGroup = {
+  name: 'projects',
+  label: 'Projects',
+  order: 20
+}
+
+const linkGroup = {
+  name: 'links',
+  label: 'Links',
+  order: 30
+}
+
 export const linkSchema = new SimpleSchema({
   platformName: {
     type: String,
@@ -42,29 +60,29 @@ export const projectIdsSchema = new SimpleSchema({
   },
 });
 
-export const contactsIdsSchema = new SimpleSchema({
-  contactId: {
-    type: String,
-    optional: true,
-    viewableBy: ["members"],
-    insertableBy: ["admins"],
-    editableBy: ["admins"],
-  },
-  contactName: {
-    type: String,
-    optional: true,
-    viewableBy: ["members"],
-    insertableBy: ["admins"],
-    editableBy: ["admins"],
-  },
-  contactTitle: {
-    type: String,
-    optional: true,
-    viewableBy: ["members"],
-    insertableBy: ["admins"],
-    editableBy: ["admins"],
-  },
-});
+// export const contactsIdsSchema = new SimpleSchema({
+//   contactId: {
+//     type: String,
+//     optional: true,
+//     viewableBy: ["members"],
+//     insertableBy: ["admins"],
+//     editableBy: ["admins"],
+//   },
+//   contactName: {
+//     type: String,
+//     optional: true,
+//     viewableBy: ["members"],
+//     insertableBy: ["admins"],
+//     editableBy: ["admins"],
+//   },
+//   contactTitle: {
+//     type: String,
+//     optional: true,
+//     viewableBy: ["members"],
+//     insertableBy: ["admins"],
+//     editableBy: ["admins"],
+//   },
+// });
 
 const schema = {
   // default properties
@@ -114,6 +132,7 @@ const schema = {
     viewableBy: ["members"],
     insertableBy: ["admins"],
     editableBy: ["admins"],
+    group: linkGroup
   },
   'links.$': {
     type: linkSchema,
@@ -189,23 +208,30 @@ const schema = {
     viewableBy: ["members"],
     insertableBy: ["admins"],
     editableBy: ["admins"],
+    group: projectGroup
   },
   'projectIds.$': {
     type: projectIdsSchema,
   },
 
-  // An office has many contact
+  // An office has many contacts
 
   contactIds: {
-    label: "Projects",
     type: Array,
     optional: true,
     viewableBy: ["members"],
-    insertableBy: ["admins"],
-    editableBy: ["admins"],
+    resolveAs: {
+      fieldName: 'contacts',
+      type: '[Contact]',
+      resolver: (office, args, { Contacts }) => {
+        return Contacts.loader.loadMany(office.contactIds);
+      },
+      addOriginalField: true
+    },
+    group: contactGroup
   },
   'contactIds.$': {
-    type: projectIdsSchema,
+    type: String
   },
 
 };

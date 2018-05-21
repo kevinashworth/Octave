@@ -15,3 +15,15 @@ db.contacts.updateOne(
     }
   }
 )
+
+db.offices.updateOne(
+  {_id: "Rs6rMWEA5Ys8ZPB4Z"},
+  {
+    $set: {
+    contactIds: [
+      "rWN2hbMTZzns8Q93f",
+      "AA9PXzDmvSnuoXtNB"
+      ]
+    }
+  }
+)

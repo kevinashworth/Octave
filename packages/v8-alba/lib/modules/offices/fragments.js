@@ -21,11 +21,27 @@ registerFragment(/* GraphQL */ `
     body
     links
     projectIds
+    contactIds
     street1
     street2
     city
     state
     zip
     slug
+  }
+`);
+
+registerFragment(/* GraphQL */ `
+  fragment OfficesEditFragment on Office {
+    displayName
+    body
+    links
+    projectIds
+    contactIds
+    street1
+    street2
+    city
+    state
+    zip
   }
 `);
