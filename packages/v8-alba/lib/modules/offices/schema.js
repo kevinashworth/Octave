@@ -1,6 +1,13 @@
 import { Utils } from 'meteor/vulcan:core';
 import SimpleSchema from 'simpl-schema';
 
+function getContactsAsOptions (contacts) {
+  return contacts.map(contact => ({
+    value: contact._id,
+    label: contact.fullName,
+  }));
+}
+
 const contactGroup = {
   name: 'contacts',
   label: 'Contacts',
@@ -219,19 +226,34 @@ const schema = {
   contactIds: {
     type: Array,
     optional: true,
+    control: "selectmultiple",
     viewableBy: ["members"],
+    insertableBy: ["admins"],
+    editableBy: ["admins"],
+    options: props => {
+      return getContactsAsOptions(props.data.ContactsList);
+    },
+    query: `
+      ContactsList{
+        _id
+        fullName
+      }
+    `,
     resolveAs: {
       fieldName: 'contacts',
       type: '[Contact]',
-      resolver: (office, args, { Contacts }) => {
-        return Contacts.loader.loadMany(office.contactIds);
+      resolver: async (office, args, {currentUser, Users, Contacts}) => {
+        if (!office.contactIds) return [];
+        const contacts = _.compact(await Contacts.loader.loadMany(office.contactIds));
+        return Users.restrictViewableFields(currentUser, Contacts, contacts);
       },
-      addOriginalField: true
+      addOriginalField: true,
     },
     group: contactGroup
   },
   'contactIds.$': {
-    type: String
+    type: String,
+    optional: true
   },
 
 };

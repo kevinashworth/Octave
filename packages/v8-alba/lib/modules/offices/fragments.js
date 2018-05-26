@@ -22,6 +22,10 @@ registerFragment(/* GraphQL */ `
     links
     projectIds
     contactIds
+    contacts {
+      _id
+      fullName
+    }
     street1
     street2
     city
@@ -38,6 +42,10 @@ registerFragment(/* GraphQL */ `
     links
     projectIds
     contactIds
+    contacts {
+      _id
+      fullName
+    }
     street1
     street2
     city

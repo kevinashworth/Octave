@@ -11,6 +11,7 @@ const OfficesEditForm = ({documentId, params, router, toggle}) => {
       collection={Offices}
       documentId={theDocumentId}
       mutationFragment={getFragment('OfficesEditFragment')}
+      queryFragment={getFragment('OfficesEditFragment')}
       showRemove={true}
       successCallback={document => {
         if (toggle) {

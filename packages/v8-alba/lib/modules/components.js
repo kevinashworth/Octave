@@ -50,4 +50,5 @@ import '../components/offices/OfficesDetail';
 import '../components/offices/OfficesEditForm';
 import '../components/offices/OfficesItem';
 import '../components/offices/OfficesListGroup';
+import '../components/offices/OfficesPersonDetail';
 import '../components/offices/OfficesSingle';
