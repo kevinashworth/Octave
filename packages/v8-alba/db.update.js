@@ -1,14 +1,14 @@
 db.contacts.updateOne(
-  {_id: "cJQ8Ky858AQWiksfS"},
+  {_id: "ch3G4DkfPRXLpKDxh"},
   {
     $set: {
     projectIds: [
       {
-        projectId: "twkxT4DvW6DSyMpCx",
+        projectId: "miAnpe7qHxQLP5kLu",
         projectTitle: "Great News"
       },
       {
-        projectId: "2Lgn7maghuphbk8FL",
+        projectId: "b5Kh3LTJug3Z6TQKB",
         projectTitle: "Andi Mack"
       }
       ]
@@ -17,12 +17,12 @@ db.contacts.updateOne(
 )
 
 db.offices.updateOne(
-  {_id: "Rs6rMWEA5Ys8ZPB4Z"},
+  {_id: "3JgyZa23h8TvW6xQj"},
   {
     $set: {
     contactIds: [
-      "rWN2hbMTZzns8Q93f",
-      "AA9PXzDmvSnuoXtNB"
+      "ch3G4DkfPRXLpKDxh",
+      "siWZMeiuYuD59wH8m"
       ]
     }
   }
