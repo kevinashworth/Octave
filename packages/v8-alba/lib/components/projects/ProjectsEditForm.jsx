@@ -14,16 +14,17 @@ class ProjectsEditForm extends React.Component {
         collection={Projects}
         documentId={documentId ? documentId : params._id}
         mutationFragment={getFragment('ProjectsEditFragment')}
-        queryFragment={getFragment('ProjectsEditFragment')}
-        fields={['projectTitle',
-          'projectType',
-          'contactId',
-            // 'personnel',
-            // 'personnel.personnelId',
-            // 'personnel.name',
-            // 'personnel.personnelTitle',
-          'status',
-          'union']}
+        queryFragmentName={'ProjectsEditFragment'}
+        hideFields={['personnel']}
+        // fields={['projectTitle',
+        //   'projectType',
+        //   'contactId',
+        //   'addresses',
+        //   'addresses.$.street1',
+        //   'addresses: { street2 }',
+        //   'addresses.city',
+        //   'status',
+        //   'union']}
         showRemove={true}
         successCallback={document => {
           if (toggle) {

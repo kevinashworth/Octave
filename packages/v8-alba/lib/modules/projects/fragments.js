@@ -39,6 +39,7 @@ registerFragment(/* GraphQL */ `
     projectType
     personnel
     contactId
+    addresses
     status
     union
   }

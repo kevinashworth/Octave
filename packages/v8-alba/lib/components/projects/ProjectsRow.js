@@ -43,20 +43,20 @@ const ProjectsRow = ({loading, document, currentUser}) => {
     }
 
     // TODO: a map or reduce version of this
-    let fake_company = "";
-    if (!project.castingCompany) {
-      for (var i = 0; i < project.personnel.length; i++) {
-        if (project.personnel[i].personnelTitle === "Casting Director")
-          fake_company += (project.personnel[i].name.split(' ').slice(-1).join(' ') + "/");
-      }
-
-      if (fake_company.length > 0) {
-        fake_company = fake_company.slice(0, -1);
-        fake_company += " Casting";
-      } else {
-        fake_company = "Unknown Casting Office";
-      }
-    }
+    let fake_company = "TODO";
+    // if (!project.castingCompany) {
+    //   for (var i = 0; i < project.personnel.length; i++) {
+    //     if (project.personnel[i].personnelTitle === "Casting Director")
+    //       fake_company += (project.personnel[i].name.split(' ').slice(-1).join(' ') + "/");
+    //   }
+    //
+    //   if (fake_company.length > 0) {
+    //     fake_company = fake_company.slice(0, -1);
+    //     fake_company += " Casting";
+    //   } else {
+    //     fake_company = "Unknown Casting Office";
+    //   }
+    // }
 
     return (
       <tr>

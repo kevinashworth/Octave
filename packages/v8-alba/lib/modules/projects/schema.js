@@ -4,38 +4,23 @@ import SimpleSchema from 'simpl-schema';
 export const addressSchema = new SimpleSchema({
   street1: {
     type: String,
-    optional: true,
-    viewableBy: ["guests"],
-    insertableBy: ["admins"],
-    editableBy: ["admins"]
+    optional: true
   },
   street2: {
     type: String,
-    optional: true,
-    viewableBy: ["guests"],
-    insertableBy: ["admins"],
-    editableBy: ["admins"]
+    optional: true
   },
   city: {
     type: String,
-    optional: true,
-    viewableBy: ["guests"],
-    insertableBy: ["admins"],
-    editableBy: ["admins"]
+    optional: true
   },
   state: {
     type: String,
-    optional: true,
-    viewableBy: ["guests"],
-    insertableBy: ["admins"],
-    editableBy: ["admins"]
+    optional: true
   },
   zip: {
     type: String,
-    optional: true,
-    viewableBy: ["guests"],
-    insertableBy: ["admins"],
-    editableBy: ["admins"]
+    optional: true
   },
 });
 
@@ -200,7 +185,7 @@ const schema = {
   addresses: {
     type: Array,
     optional: true,
-    viewableBy: ["guests"],
+    viewableBy: ["members"],
     insertableBy: ["admins"],
     editableBy: ["admins"],
   },
@@ -210,7 +195,7 @@ const schema = {
   slug: {
     type: String,
     optional: true,
-    viewableBy: ["members"],
+    viewableBy: ["guests"],
     onInsert: (project) => {
       return Utils.slugify(project.projectTitle);
     },

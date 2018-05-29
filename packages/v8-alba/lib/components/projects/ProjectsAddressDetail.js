@@ -9,7 +9,7 @@ class ProjectsAddressDetail extends React.Component {
     return (
       <CardText className="mt-1">
         { address.street1 }<br/>
-        {address.street2.length > 0 &&
+        {address.street2 &&
           <span>{ address.street2 }<br/></span>
         }
         { address.city } { address.state } { address.zip }<br/>
