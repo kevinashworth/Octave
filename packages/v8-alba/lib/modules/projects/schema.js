@@ -1,36 +1,25 @@
 import { Components, Utils } from 'meteor/vulcan:core';
 import SimpleSchema from 'simpl-schema';
-
-export const addressSchema = new SimpleSchema({
-  street1: {
-    type: String,
-    optional: true
-  },
-  street2: {
-    type: String,
-    optional: true
-  },
-  city: {
-    type: String,
-    optional: true
-  },
-  state: {
-    type: String,
-    optional: true
-  },
-  zip: {
-    type: String,
-    optional: true
-  },
-});
+import { addressSchema } from '../shared_schemas.js';
 
 export const personnelSchema = new SimpleSchema({
   personnelId: {
     type: String,
+    control: "MySelect",
     optional: true,
     viewableBy: ["members"],
     insertableBy: ["admins"],
     editableBy: ["admins"],
+    query: `
+      ContactsList{
+        _id
+        fullName
+      }
+    `,
+    options: props => props.data.ContactsList.map(contact => ({
+      value: contact._id,
+      label: contact.fullName,
+    })),
   },
   name: {
     type: String,
@@ -38,6 +27,17 @@ export const personnelSchema = new SimpleSchema({
     viewableBy: ["members"],
     insertableBy: ["admins"],
     editableBy: ["admins"],
+    resolveAs: {
+      type: "String",
+      resolver: (contact, args, context) => {
+        console.group("Resolver");
+        console.table(contact);
+        console.table(args);
+        console.table(context);
+        console.groupEnd();
+        return "Namey McName"
+      }
+    },
   },
   personnelTitle: {
     type: String,

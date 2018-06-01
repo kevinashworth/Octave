@@ -15,7 +15,7 @@ class ProjectsEditForm extends React.Component {
         documentId={documentId ? documentId : params._id}
         mutationFragment={getFragment('ProjectsEditFragment')}
         queryFragmentName={'ProjectsEditFragment'}
-        hideFields={['personnel']}
+        // hideFields={['personnel']}
         // fields={['projectTitle',
         //   'projectType',
         //   'contactId',

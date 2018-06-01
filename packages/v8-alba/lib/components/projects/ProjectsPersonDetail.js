@@ -20,7 +20,10 @@ class ProjectsPersonDetail extends Component {
 ProjectsPersonDetail.propTypes = {
   person: PropTypes.shape({
     name: PropTypes.string.isRequired,
-    personnelId: PropTypes.number.isRequired,
+    personnelId: PropTypes.oneOfType([
+      PropTypes.string,
+      PropTypes.number
+    ]).isRequired,
     personnelTitle: PropTypes.string.isRequired,
   })
 };
