@@ -8,17 +8,15 @@ class MySelect extends PureComponent {
     super(props);
     this.handleChange = this.handleChange.bind(this);
     this.state = {
-      value: this.props.value
+      value: this.props.value,
+      path: this.props.path
     };
   }
 
   handleChange = (value) => {
     this.setState({ value });
-    // eslint-disable-next-line no-console
-    console.log(`Selected label: ${value.label}`);
-    // eslint-disable-next-line no-console
-    console.log(`Selected value: ${value.value}`);
-    this.context.updateCurrentValues({contactId: value.value});
+    console.log(`Selected label: ${value.label}\nSelected value: ${value.value}`);
+    this.context.updateCurrentValues({[this.state.path]: value.value});
   }
 
   render() {
