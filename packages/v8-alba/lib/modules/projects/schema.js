@@ -2,46 +2,31 @@ import { Components, Utils } from 'meteor/vulcan:core';
 import SimpleSchema from 'simpl-schema';
 import { addressSchema } from '../shared_schemas.js';
 
-export const personnelSchema = new SimpleSchema({
-  personnelId: {
+export const contactSchema = new SimpleSchema({
+  contactId: {
     type: String,
-    control: "MySelect",
+    control: "SelectContactIdNameTitle",
     optional: true,
     viewableBy: ["members"],
     insertableBy: ["admins"],
     editableBy: ["admins"],
-    query: `
-      ContactsList{
-        _id
-        fullName
-      }
-    `,
     options: props => props.data.ContactsList.map(contact => ({
-      value: contact._id,
-      label: contact.fullName,
-    })),
+        value: contact._id,
+        label: contact.fullName,
+      })),
   },
-  name: {
+  contactName: {
     type: String,
     optional: true,
+    hidden: true,
     viewableBy: ["members"],
     insertableBy: ["admins"],
     editableBy: ["admins"],
-    resolveAs: {
-      type: "String",
-      resolver: (contact, args, context) => {
-        console.group("Resolver");
-        console.table(contact);
-        console.table(args);
-        console.table(context);
-        console.groupEnd();
-        return "Namey McName"
-      }
-    },
   },
-  personnelTitle: {
+  contactTitle: {
     type: String,
     optional: true,
+    hidden: true,
     viewableBy: ["members"],
     insertableBy: ["admins"],
     editableBy: ["admins"],
@@ -153,20 +138,9 @@ const schema = {
     insertableBy: ["admins"],
     editableBy: ["admins"]
   },
-  personnel: {
-    label: "Personnel",
+  contacts: {
+    label: "contacts",
     type: Array,
-    optional: true,
-    viewableBy: ["members"],
-    insertableBy: ["admins"],
-    editableBy: ["admins"],
-  },
-  'personnel.$': {
-    type: personnelSchema,
-  },
-  contactId: {
-    type: String,
-    control: "MySelect",
     optional: true,
     viewableBy: ["members"],
     insertableBy: ["admins"],
@@ -177,10 +151,9 @@ const schema = {
         fullName
       }
     `,
-    options: props => props.data.ContactsList.map(contact => ({
-      value: contact._id,
-      label: contact.fullName,
-    })),
+  },
+  'contacts.$': {
+    type: contactSchema,
   },
   addresses: {
     type: Array,

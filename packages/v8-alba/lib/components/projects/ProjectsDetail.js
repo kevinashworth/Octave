@@ -51,8 +51,8 @@ class ProjectsDetail extends React.Component {
           <CardText className="mb-0">
             <b>{ project.castingCompany }</b>
           </CardText>
-          {project.personnel ?
-            project.personnel.map(person => <Components.ProjectsPersonDetail key={person.personnelId} person={person} />)
+          {project.contacts ?
+            project.contacts.map(contact => <Components.ProjectsContactDetail key={contact.contactId} contact={contact} />)
             :
             <CardText>No contacts yet. ADD ONE!</CardText>
           }

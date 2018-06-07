@@ -21,8 +21,7 @@ registerFragment(/* GraphQL */ `
     projectType
     castingCompany
     addresses
-    contactId
-    personnel
+    contacts
     network
     status
     union
@@ -37,8 +36,7 @@ registerFragment(/* GraphQL */ `
     _id
     projectTitle
     projectType
-    personnel
-    contactId
+    contacts
     addresses
     status
     union

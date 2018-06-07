@@ -26,6 +26,8 @@ import '../components/Dashboard/';
 import '../components/common/Filter/ContactDropdowns';
 import '../components/common/Filter/ProjectDropdowns';
 import '../components/common/Select';
+import '../components/common/SelectIdNameTitle';
+import '../components/common/SelectMultiple';
 
 import '../components/contacts/ContactsTable';
 import '../components/contacts/ContactsRow';
@@ -41,7 +43,7 @@ import '../components/projects/ProjectsTable';
 import '../components/projects/ProjectsRow';
 import '../components/projects/ProjectsDetail';
 import '../components/projects/ProjectsAddressDetail';
-import '../components/projects/ProjectsPersonDetail';
+import '../components/projects/ProjectsContactDetail';
 import '../components/projects/ProjectsDetail';
 import '../components/projects/ProjectsSingle';
 import '../components/projects/ProjectsEditForm';
