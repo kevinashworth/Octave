@@ -21,8 +21,8 @@ class SelectContactIdNameTitle extends PureComponent {
       value: this.props.value,
       path: this.props.path,
       pathPrefix: this.props.parentFieldName + "." + this.props.itemIndex + ".",
-      contactName: "contactName will autopopulate",
-      contactTitle: "contactTitle goes here",
+      contactName: this.props.document.contacts[this.props.itemIndex].contactName,
+      contactTitle: this.props.document.contacts[this.props.itemIndex].contactTitle,
     };
   }
 
