@@ -37,9 +37,11 @@ class OfficesDetail extends React.Component {
         </CardBody>
         <CardBody>
           {office.contacts &&
-            office.contacts.map(person => <Components.OfficesPersonDetail key={person._id} person={person} />)
+            office.contacts.map(person => <Components.OfficesPersonDetail key={person.contactId} person={person} />)
           }
-          {office.contactIds}
+          {office.contactIds &&
+            office.contactIds.map(contact => <Components.OfficesContactDetail key={contact.value} contact={contact} />)
+          }
         </CardBody>
         {office.links &&
           <CardBody>

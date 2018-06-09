@@ -7,7 +7,6 @@ class MySelectMultiple extends PureComponent {
   constructor(props) {
     super(props);
     this.handleChange = this.handleChange.bind(this);
-    debugger;
     this.state = {
       value: this.props.value,
       path: this.props.path
@@ -17,7 +16,6 @@ class MySelectMultiple extends PureComponent {
   handleChange = (value) => {
     this.setState({ value });
     console.table(`Selected values: ${value}`);
-    debugger;
     this.context.updateCurrentValues({[this.state.path]: value});
   }
 

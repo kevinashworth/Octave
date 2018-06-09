@@ -226,7 +226,7 @@ const schema = {
   contactIds: {
     type: Array,
     optional: true,
-    control: "selectmultiple",
+    control: "MySelectMultiple",
     viewableBy: ["members"],
     insertableBy: ["admins"],
     editableBy: ["admins"],
@@ -252,9 +252,25 @@ const schema = {
     group: contactGroup
   },
   'contactIds.$': {
-    type: String,
+    type: Object,
     optional: true
   },
+  'contactIds.$.value': {
+    type: String,
+    optional: true,
+    label: 'contactId',
+    description: 'contactId'
+  },
+  'contactIds.$.label': {
+    type: String,
+    optional: true,
+    label: 'contactName',
+    description: 'contactName'
+  },
+  'contactIds.$.title': {
+    type: String,
+    optional: true
+  }
 
 };
 

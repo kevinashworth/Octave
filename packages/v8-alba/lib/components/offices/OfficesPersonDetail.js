@@ -9,9 +9,9 @@ class OfficesPersonDetail extends Component {
     const person = this.props.person;
     return (
       <CardText>
-        { person.personnelTitle} <b>{ person.fullName }</b> ({person._id})
+        { person.personnelTitle} <b>{ person.name }</b> ({person.contactId})
         <Link to={`/contacts/${person._id}`}>
-          {person.fullName}
+          {person.name}
         </Link>
       </CardText>
     )
@@ -20,8 +20,8 @@ class OfficesPersonDetail extends Component {
 
 OfficesPersonDetail.propTypes = {
   person: PropTypes.shape({
-    fullName: PropTypes.string.isRequired,
-    _id: PropTypes.string.isRequired,
+    name: PropTypes.string.isRequired,
+    contactId: PropTypes.string.isRequired,
     personnelTitle: PropTypes.string,
   })
 };
