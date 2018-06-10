@@ -6,24 +6,29 @@ import PropTypes from 'prop-types';
 
 import pure from 'recompose/pure';
 import onlyUpdateForKeys from 'recompose/onlyUpdateForKeys';
-const PureInput = pure(Input);
-const PureSelect = onlyUpdateForKeys(['value'])(Select);
+const OptimizedInput = pure(Input);
+const OptimizedSelect = onlyUpdateForKeys(['value'])(Select);
 
 /**
-* This version explicity for contactId, contactName, contactTitle, only
-* Also working on a DRY component called for now SelectIdGenericWIP.jsx
+* This version explicity for contactId, contactName, contactTitle
+* Also working on a DRY component called (for now) SelectIdGenericWIP.jsx
 */
 
 class SelectContactIdNameTitle extends PureComponent {
   constructor(props) {
     super(props);
+
     this.handleSelectChange = this.handleSelectChange.bind(this);
     this.handleInputChange = this.handleInputChange.bind(this);
+
     const nestedFields = Object.keys(this.props.nestedSchema);
-    const contactName = this.props.document.contacts ? this.props.document.contacts[this.props.itemIndex].contactName : ""
-    const contactTitle = this.props.document.contacts ? this.props.document.contacts[this.props.itemIndex].contactTitle : ""
+    const contacts = this.props.document.contacts;
+    const itemIndex = this.props.itemIndex;
+    const contactName = contacts[itemIndex] ? contacts[itemIndex].contactName : ""
+    const contactTitle = contacts[itemIndex] ? contacts[itemIndex].contactTitle : ""
+
     this.state = {
-      selectField: nestedFields.shift(),  // get first item, shift remaining
+      selectField: nestedFields.shift(),  // get first field, shift remaining
       indexFields: nestedFields,
       value: this.props.value,
       path: this.props.path,
@@ -38,21 +43,17 @@ class SelectContactIdNameTitle extends PureComponent {
       value,
       contactName: value.label
     });
-    console.log(`Selected label: ${value.label}\nSelected value: ${value.value}`);
-    console.log(`this.state.path: ${this.state.path}`);
     this.context.updateCurrentValues({
       [this.state.path]: value.value,
       [this.state.pathPrefix + 'contactName']: value.label
     });
-    debugger;
   }
 
   handleInputChange = ({target}) => {
     this.setState({
       [target.id]: target.value
     });
-    console.log('setState ' + target.id + ':', target.value);
-    const path = this.state.pathPrefix + target.id; //TODO - improveable?
+    const path = this.state.pathPrefix + target.id;
     this.context.updateCurrentValues({
       [path]: target.value
     })
@@ -61,24 +62,24 @@ class SelectContactIdNameTitle extends PureComponent {
   render() {
     return (
       <FormGroup>
-        <Label for={this.state.selectField}>{this.state.selectField}</Label>
-          <PureSelect
-            id={this.state.selectField}
+        <Label for="contactId">Name from Database</Label>
+          <OptimizedSelect
+            id="contactId"
             value={this.state.value}
             onChange={this.handleSelectChange}
             options={this.props.options}
             resetValue={{ value: null, label: '' }}
           />
-        <Label for="contactName">contactName</Label>
-        <PureInput
+        <Label for="contactName">Editable Name</Label>
+        <OptimizedInput
           type="text"
           id="contactName"
           value={this.state.contactName}
           onChange={this.handleInputChange}
           required
         />
-        <Label for="contactTitle">contactTitle</Label>
-        <PureInput
+        <Label for="contactTitle">Title for Project</Label>
+        <OptimizedInput
           type="text"
           id="contactTitle"
           value={this.state.contactTitle}
