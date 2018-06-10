@@ -1,9 +1,9 @@
 import { registerComponent } from 'meteor/vulcan:core';
-import React from 'react';
+import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import { CardText } from 'reactstrap';
 
-class ProjectsAddressDetail extends React.Component {
+class ProjectsAddressDetail extends PureComponent {
   render() {
     const address = this.props.address;
     return (

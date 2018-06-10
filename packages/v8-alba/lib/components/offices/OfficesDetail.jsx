@@ -1,5 +1,5 @@
 import { Components, registerComponent, withCurrentUser, withDocument } from 'meteor/vulcan:core';
-import React from 'react';
+import React, { PureComponent } from 'react';
 import { Link } from 'react-router';
 import PropTypes from 'prop-types';
 import { Button, Card, CardBody, CardFooter, CardHeader, CardLink, CardText } from 'reactstrap';
@@ -7,7 +7,7 @@ import moment from 'moment';
 import { DATE_FORMAT_LONG } from '../../modules/constants.js'
 import Offices from '../../modules/offices/collection.js';
 
-class OfficesDetail extends React.Component {
+class OfficesDetail extends PureComponent {
   render() {
     if (this.props.loading) {
       return (<div><Components.Loading/></div>);

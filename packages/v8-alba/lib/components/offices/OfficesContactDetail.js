@@ -1,10 +1,10 @@
 import { registerComponent } from 'meteor/vulcan:core';
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import { Link } from 'react-router';
 import PropTypes from 'prop-types';
 import { CardText } from 'reactstrap';
 
-class OfficesContactDetail extends Component {
+class OfficesContactDetail extends PureComponent {
   render() {
     const contact = {
       _id: this.props.contact.value,

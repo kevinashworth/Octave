@@ -1,12 +1,12 @@
 import { registerComponent } from 'meteor/vulcan:core';
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 // import PropTypes from 'prop-types';
 import { CardText } from 'reactstrap';
 
 
 // import { Badge, ListGroupItem } from 'reactstrap';
 
-class ProjectsContactDetail extends Component {
+class ProjectsContactDetail extends PureComponent {
   render() {
     const contact = this.props.contact;
     return (

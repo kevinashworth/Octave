@@ -1,9 +1,9 @@
 import { Components, getFragment, registerComponent } from 'meteor/vulcan:core';
-import React from 'react';
+import React, { PureComponent } from 'react';
 import { withRouter } from 'react-router';
 import Projects from '../../modules/projects/collection.js';
 
-class ProjectsEditForm extends React.Component {
+class ProjectsEditForm extends PureComponent {
   render () {
     const { documentId, params, router, toggle } = this.props;
     const theDocumentId = documentId ? documentId : params._id;

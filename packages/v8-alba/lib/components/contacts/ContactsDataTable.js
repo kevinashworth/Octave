@@ -1,11 +1,11 @@
 import { Components, registerComponent, withCurrentUser, withList } from 'meteor/vulcan:core';
-import React, { Component } from 'react';
-import { Link } from 'react-router'
+import React, { PureComponent } from 'react';
+import { Link } from 'react-router';
 import { Button, Card, CardBody, CardFooter, CardHeader } from 'reactstrap';
 import { BootstrapTable, TableHeaderColumn } from 'react-bootstrap-table';
 import Contacts from '../../modules/contacts/collection.js';
 
-class ContactsDataTable extends Component {
+class ContactsDataTable extends PureComponent {
   constructor(props) {
     super(props);
 
