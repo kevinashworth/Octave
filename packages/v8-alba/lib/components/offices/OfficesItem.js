@@ -1,6 +1,7 @@
 import { Components, registerComponent, withCurrentUser, withDocument } from 'meteor/vulcan:core';
-import React, { Component } from "react";
-import { Badge, ListGroupItem } from "reactstrap";
+import React from 'react';
+import { Link } from 'react-router';
+import { Badge, ListGroupItem } from 'reactstrap';
 import moment from 'moment';
 import { DATE_FORMAT_SHORT } from '../../modules/constants.js';
 import Offices from '../../modules/offices/collection.js';
@@ -18,8 +19,9 @@ const OfficesItem = ({loading, document, currentUser}) => {
       "Created " + moment(office.createdAt).format(DATE_FORMAT_SHORT);
 
     return (
-      <ListGroupItem tag="a" action href={`/offices/${office._id}/${office.slug}`}>
-        {office.displayName} <Badge color="success" pill>{badge}</Badge>
+      <ListGroupItem action>
+        <Link to={`/offices/${office._id}/${office.slug}`}>{office.displayName}</Link>
+        &nbsp; <Badge color="success" pill>{badge}</Badge>
         &nbsp; <small>{displayDate}</small>
       </ListGroupItem>
     );
