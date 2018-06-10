@@ -19,15 +19,17 @@ class SelectContactIdNameTitle extends PureComponent {
     super(props);
     this.handleSelectChange = this.handleSelectChange.bind(this);
     this.handleInputChange = this.handleInputChange.bind(this);
-    const unshifted = Object.keys(this.props.nestedSchema);
+    const nestedFields = Object.keys(this.props.nestedSchema);
+    const contactName = this.props.document.contacts ? this.props.document.contacts[this.props.itemIndex].contactName : ""
+    const contactTitle = this.props.document.contacts ? this.props.document.contacts[this.props.itemIndex].contactTitle : ""
     this.state = {
-      selectField: unshifted.shift(),  // get first item, shift remaining
-      indexFields: unshifted,
+      selectField: nestedFields.shift(),  // get first item, shift remaining
+      indexFields: nestedFields,
       value: this.props.value,
       path: this.props.path,
       pathPrefix: this.props.parentFieldName + "." + this.props.itemIndex + ".",
-      contactName: this.props.document.contacts[this.props.itemIndex].contactName,
-      contactTitle: this.props.document.contacts[this.props.itemIndex].contactTitle,
+      contactName: contactName,
+      contactTitle: contactTitle,
     };
   }
 
