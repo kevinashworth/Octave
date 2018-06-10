@@ -20,6 +20,7 @@ Package.onUse(function (api) {
   api.addFiles('lib/stylesheets/react-bootstrap-table-all.min.css', 'client');
   api.addFiles('lib/stylesheets/spinner.scss', 'client');
   api.addFiles('lib/stylesheets/react-select.min.css', 'client');
+  api.addFiles('lib/stylesheets/react-virtualized-select-styles.css', 'client');
 
   api.mainModule('lib/server/main.js', 'server');
   api.mainModule('lib/client/main.js', 'client');

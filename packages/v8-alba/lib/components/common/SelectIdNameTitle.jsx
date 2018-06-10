@@ -1,7 +1,7 @@
 import { registerComponent } from 'meteor/vulcan:lib';
 import React, { PureComponent } from 'react';
 import { FormGroup, Input, Label } from 'reactstrap';
-import Select from 'react-select';
+import Select from 'react-virtualized-select';
 import PropTypes from 'prop-types';
 
 import pure from 'recompose/pure';
