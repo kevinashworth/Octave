@@ -1,9 +1,9 @@
 import { registerComponent } from 'meteor/vulcan:core';
-import React, {Component} from 'react';
-import {Row, Col, Button, Modal, ModalHeader, ModalBody, ModalFooter, Card, CardHeader, CardBody} from 'reactstrap';
+import React, { PureComponent } from 'react';
+import { Button, Card, CardBody, CardHeader, Col, Modal, ModalBody, ModalFooter, ModalHeader, Row } from 'reactstrap';
 
 
-class Modals extends Component {
+class Modals extends PureComponent {
 
   constructor(props) {
     super(props);

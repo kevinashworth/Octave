@@ -1,9 +1,9 @@
 import { Components, registerComponent } from 'meteor/vulcan:core';
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import { withRouter } from 'react-router';
 import Breadcrumbs from 'react-breadcrumbs'; // NB: 1.6.x required for react-router v3
 
-class Breadcrumb extends Component {
+class Breadcrumb extends PureComponent {
   render() {
     return (
       <div>

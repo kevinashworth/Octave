@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import {
   Badge,
@@ -22,7 +22,7 @@ const defaultProps = {
   mssgs: false,
 };
 
-class HeaderDropdown extends Component {
+class HeaderDropdown extends PureComponent {
 
   constructor(props) {
     super(props);
