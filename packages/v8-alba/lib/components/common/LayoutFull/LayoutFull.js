@@ -1,6 +1,6 @@
 import { replaceComponent, Components } from 'meteor/vulcan:core';
 import React from 'react';
-import {Container} from 'reactstrap';
+import { Container } from 'reactstrap';
 
 const LayoutFull = ({ children }) => (
   <div className="app">

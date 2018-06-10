@@ -1,8 +1,13 @@
 import { registerComponent } from 'meteor/vulcan:lib';
 import React, { PureComponent } from 'react';
-import { FormGroup, Input, Label } from 'reactstrap'
+import { FormGroup, Input, Label } from 'reactstrap';
 import Select from 'react-select';
 import PropTypes from 'prop-types';
+
+import pure from 'recompose/pure';
+import onlyUpdateForKeys from 'recompose/onlyUpdateForKeys';
+const PureInput = pure(Input);
+const PureSelect = onlyUpdateForKeys(['value'])(Select);
 
 /**
 * This version explicity for contactId, contactName, contactTitle, only
@@ -55,7 +60,7 @@ class SelectContactIdNameTitle extends PureComponent {
     return (
       <FormGroup>
         <Label for={this.state.selectField}>{this.state.selectField}</Label>
-          <Select
+          <PureSelect
             id={this.state.selectField}
             value={this.state.value}
             onChange={this.handleSelectChange}
@@ -63,7 +68,7 @@ class SelectContactIdNameTitle extends PureComponent {
             resetValue={{ value: null, label: '' }}
           />
         <Label for="contactName">contactName</Label>
-        <Input
+        <PureInput
           type="text"
           id="contactName"
           value={this.state.contactName}
@@ -71,7 +76,7 @@ class SelectContactIdNameTitle extends PureComponent {
           required
         />
         <Label for="contactTitle">contactTitle</Label>
-        <Input
+        <PureInput
           type="text"
           id="contactTitle"
           value={this.state.contactTitle}
