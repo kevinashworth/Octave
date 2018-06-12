@@ -80,7 +80,7 @@ const ProjectsRow = ({loading, document, currentUser}) => {
 const options = {
   collection: Projects,
   queryName: 'projectsSingleQuery',
-  fragmentName: 'ProjectsDetailsFragment',
+  fragmentName: 'ProjectsSingleFragment',
 };
 
 registerComponent('ProjectsRow', ProjectsRow, withCurrentUser, [withDocument, options]);

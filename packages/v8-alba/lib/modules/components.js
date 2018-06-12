@@ -38,15 +38,13 @@ import '../components/contacts/ContactsEditForm';
 import '../components/contacts/ContactsProfile';
 import '../components/contacts/ContactsSingle';
 
-import '../components/projects/ProjectsDataTable';
-import '../components/projects/ProjectsTable';
-import '../components/projects/ProjectsRow';
-import '../components/projects/ProjectsDetail';
 import '../components/projects/ProjectsAddressDetail';
 import '../components/projects/ProjectsContactDetail';
-import '../components/projects/ProjectsDetail';
-import '../components/projects/ProjectsSingle';
+import '../components/projects/ProjectsDataTable';
 import '../components/projects/ProjectsEditForm';
+import '../components/projects/ProjectsRow';
+import '../components/projects/ProjectsSingle';
+import '../components/projects/ProjectsTable';
 
 import '../components/offices/OfficesContactDetail';
 import '../components/offices/OfficesEditForm';

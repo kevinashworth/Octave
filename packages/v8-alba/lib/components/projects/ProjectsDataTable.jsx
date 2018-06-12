@@ -94,7 +94,7 @@ class ProjectsDataTable extends PureComponent {
 
 const options = {
   collection: Projects,
-  fragmentName: 'ProjectsDetailsFragment',
+  fragmentName: 'ProjectsSingleFragment',
   limit: 150
 };
 
