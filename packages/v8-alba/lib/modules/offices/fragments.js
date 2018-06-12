@@ -12,7 +12,7 @@ registerFragment(/* GraphQL */ `
 `);
 
 registerFragment(/* GraphQL */ `
-  fragment OfficesDetailsFragment on Office {
+  fragment OfficesSingleFragment on Office {
     _id
     createdAt
     updatedAt

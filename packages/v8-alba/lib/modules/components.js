@@ -49,7 +49,6 @@ import '../components/projects/ProjectsSingle';
 import '../components/projects/ProjectsEditForm';
 
 import '../components/offices/OfficesContactDetail';
-import '../components/offices/OfficesDetail';
 import '../components/offices/OfficesEditForm';
 import '../components/offices/OfficesItem';
 import '../components/offices/OfficesListGroup';
