@@ -29,14 +29,13 @@ import '../components/common/Select';
 import '../components/common/SelectIdNameTitle';
 import '../components/common/SelectMultiple';
 
-import '../components/contacts/ContactsTable';
-import '../components/contacts/ContactsRow';
 import '../components/contacts/ContactsDataTable';
-import '../components/contacts/CDT';
-import '../components/contacts/ContactsNewForm';
 import '../components/contacts/ContactsEditForm';
-import '../components/contacts/ContactsProfile';
+import '../components/contacts/ContactsNewForm';
+import '../components/contacts/ContactsRow';
 import '../components/contacts/ContactsSingle';
+import '../components/contacts/ContactsTable';
+import '../components/contacts/CDT';
 
 import '../components/projects/ProjectsAddressDetail';
 import '../components/projects/ProjectsContactDetail';
