@@ -31,7 +31,7 @@ const OfficesItem = ({loading, document, currentUser}) => {
 const options = {
   collection: Offices,
   queryName: 'officesSingleQuery',
-  fragmentName: 'OfficesDetailsFragment',
+  fragmentName: 'OfficesSingleFragment',
 };
 
 registerComponent('OfficesItem', OfficesItem, withCurrentUser, [withDocument, options]);

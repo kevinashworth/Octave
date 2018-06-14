@@ -1,6 +1,24 @@
 import { Utils } from 'meteor/vulcan:core';
 import SimpleSchema from 'simpl-schema';
 
+function getFullNameFromContact ({firstName, middleName, lastName}) {
+  let tempName = "";
+  if (firstName) {
+    tempName += firstName;
+  }
+  if (middleName) {
+    tempName += (" " + middleName);
+  }
+  if (lastName) {
+    tempName += (" " + lastName);
+  }
+  if (tempName.length) {
+    return tempName;
+  } else {
+    return "displayName or fullName Unknown";
+  }
+}
+
 const projectGroup = {
   name: 'projects',
   label: 'Projects',
@@ -184,13 +202,20 @@ const schema = {
     optional: true,
     viewableBy: ["members"],
     onInsert: (contact) => {
-      return Utils.slugify(contact.displayName);
+      return Utils.slugify(getFullNameFromContact(contact));
     },
     onEdit: (modifier, contact) => {
-      if (modifier.$set.displayName) {
-        return Utils.slugify(modifier.$set.displayName);
-      }
+      return Utils.slugify(getFullNameFromContact({
+        firstName: modifier.$set.firstName ? modifier.$set.firstName : null,
+        middleName: modifier.$set.middleName ? modifier.$set.middleName : null,
+        lastName: modifier.$set.lastName ? modifier.$set.lastName : null,
+      }));
     }
+    // onEdit: (modifier, contact) => {
+    //   if (modifier.$set.firstName || modifier.$set.middleName || modifier.$set.lastName) {
+    //     return Utils.slugify(contact.displayName);
+    //   }
+    // }
   },
   updatedAt: {
     type: Date,
@@ -257,23 +282,7 @@ const schema = {
     viewableBy: ["members"],
     resolveAs: {
       type: "String",
-      resolver: (contact, args, context) => {
-        let tempName = "";
-        if (contact.firstName) {
-          tempName += contact.firstName;
-        }
-        if (contact.middleName) {
-          tempName += (" " + contact.middleName);
-        }
-        if (contact.lastName) {
-          tempName += (" " + contact.lastName);
-        }
-        if (tempName.length) {
-          return tempName;
-        } else {
-          return "Full Name Unknown";
-        }
-      }
+      resolver: (contact) => getFullNameFromContact(contact)
     },
   },
   displayName: {
@@ -283,23 +292,7 @@ const schema = {
     viewableBy: ["members"],
     resolveAs: {
       type: "String",
-      resolver: (contact, args, context) => {
-        let tempName = "";
-        if (contact.firstName) {
-          tempName += contact.firstName;
-        }
-        if (contact.middleName) {
-          tempName += (" " + contact.middleName);
-        }
-        if (contact.lastName) {
-          tempName += (" " + contact.lastName);
-        }
-        if (tempName.length) {
-          return tempName;
-        } else {
-          return "Display Name Unknown";
-        }
-      }
+      resolver: (contact) => getFullNameFromContact(contact)
     }
   },
 

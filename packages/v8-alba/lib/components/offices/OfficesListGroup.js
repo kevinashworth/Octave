@@ -31,7 +31,7 @@ const OfficesListGroup = ({loading, loadingMore, loadMore, results = [], current
 
 const options = {
   collection: Offices,
-  fragmentName: 'OfficesDetailsFragment',
+  fragmentName: 'OfficesSingleFragment',
   limit: 20
 };
 

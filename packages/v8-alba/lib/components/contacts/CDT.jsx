@@ -7,7 +7,7 @@ const CDT = () => (
       <Components.Datatable
         collection={Contacts}
         columns={['fullName', 'title', 'street1', 'street2', 'city', 'state', 'zip']}
-        options={{ fragmentName: 'ContactsDetailsFragment' }}
+        options={{ fragmentName: 'ContactsSingleFragment' }}
         showEdit={false}
       />
   </div>

@@ -1,10 +1,82 @@
-import { Components, registerComponent } from 'meteor/vulcan:core';
-import React from 'react';
+import { Components, registerComponent, withCurrentUser, withDocument } from 'meteor/vulcan:core';
+import React, { PureComponent } from 'react';
+import { Link } from 'react-router';
+import PropTypes from 'prop-types';
+import mapProps from 'recompose/mapProps';
+import { Button, Card, CardBody, CardFooter, CardHeader, CardLink, CardText } from 'reactstrap';
+import moment from 'moment';
+import { DATE_FORMAT_LONG } from '../../modules/constants.js'
+import Projects from '../../modules/projects/collection.js';
 
-const ProjectsSingle = (props, context) => {
-  return <Components.ProjectsDetail documentId={props.params._id} slug={props.params.slug} />
+class ProjectsSingle extends PureComponent {
+  render() {
+    if (this.props.loading) {
+      return (<div><Components.Loading/></div>);
+    }
+
+    if (!this.props.document) {
+      return (<div><Components.FormattedMessage id="app.404"/></div>);
+    }
+
+    const project = this.props.document;
+    const displayDate = project.updatedAt ?
+      "Last modified " + moment(project.updatedAt).format(DATE_FORMAT_LONG) :
+      "Created " + moment(project.createdAt).format(DATE_FORMAT_LONG);
+
+    return (
+      <div className="animated fadeIn">
+      <Components.HeadTags title={`V8 Alba: ${project.projectTitle}`} />
+      <Card className="card-accent-primary">
+        <CardHeader tag="h2">{ project.projectTitle }{ Projects.options.mutations.edit.check(this.props.currentUser, project) ?
+          <div className="float-right">
+            <Button tag={Link} to={`/projects/${project._id}/edit`}>Edit</Button>
+          </div> : null}
+        </CardHeader>
+
+        <CardBody>
+          <CardText className="mb-1">{ project.projectType } {project.network &&
+            <span>
+            ({ project.network })
+            </span>
+          }</CardText>
+          <CardText>{ project.union }</CardText>
+          <CardText className="mb-1">{ project.logline }</CardText>
+          <CardText className="mb-1">{ project.notes }</CardText>
+          {project.website &&
+          <CardText>
+            <CardLink href={project.website}>Open official website</CardLink>
+          </CardText>
+          }
+        </CardBody>
+        <CardBody>
+          <CardText className="mb-0">
+            <b>{ project.castingCompany }</b>
+          </CardText>
+          {project.contacts ?
+            project.contacts.map(contact => <Components.ProjectsContactDetail key={contact.contactId} contact={contact} />)
+            :
+            <CardText>No contacts yet. ADD ONE!</CardText>
+          }
+          {project.addresses ?
+            project.addresses.map(address => <Components.ProjectsAddressDetail key={address} address={address}/>)
+            :
+            <CardText>No addresses yet. ADD ONE!</CardText>
+          }
+          {project.contactId}
+        </CardBody>
+        <CardFooter>{displayDate}</CardFooter>
+      </Card>
+    </div>
+    );
+  }
+}
+
+const options = {
+  collection: Projects,
+  queryName: 'projectsSingleQuery',
+  fragmentName: 'ProjectsSingleFragment',
 };
 
-ProjectsSingle.displayName = "ProjectsSingle";
+const mapPropsFunction = props => ({...props, documentId: props.params._id, slug: props.params.slug});
 
-registerComponent('ProjectsSingle', ProjectsSingle);
+registerComponent('ProjectsSingle', ProjectsSingle, withCurrentUser, mapProps(mapPropsFunction), [withDocument, options]);

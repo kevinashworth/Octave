@@ -33,7 +33,7 @@ const ContactsRow = ({loading, document, currentUser}) => {
 const options = {
   collection: Contacts,
   queryName: 'contactsSingleQuery',
-  fragmentName: 'ContactsDetailsFragment',
+  fragmentName: 'ContactsSingleFragment',
 };
 
 registerComponent('ContactsRow', ContactsRow, withCurrentUser, [withDocument, options]);
