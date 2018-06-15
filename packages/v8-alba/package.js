@@ -6,8 +6,8 @@ Package.describe({
 Package.onUse(function (api) {
 
   api.use([
-    'vulcan:core@1.10.0',
-    'vulcan:forms@1.10.0',
+    'vulcan:core',
+    'vulcan:forms',
     'vulcan:accounts',
     'fourseven:scss',
     'percolate:migrations'
