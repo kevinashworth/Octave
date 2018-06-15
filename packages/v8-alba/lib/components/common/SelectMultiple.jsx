@@ -3,7 +3,7 @@ import React, { PureComponent } from 'react';
 import Select from 'react-select';
 import PropTypes from 'prop-types';
 
-class MySelect extends PureComponent {
+class MySelectMultiple extends PureComponent {
   constructor(props) {
     super(props);
     this.handleChange = this.handleChange.bind(this);
@@ -15,8 +15,8 @@ class MySelect extends PureComponent {
 
   handleChange = (value) => {
     this.setState({ value });
-    console.log(`Selected label: ${value.label}\nSelected value: ${value.value}`);
-    this.context.updateCurrentValues({[this.state.path]: value.value});
+    console.table(`Selected values: ${value}`);
+    this.context.updateCurrentValues({[this.state.path]: value});
   }
 
   render() {
@@ -30,6 +30,7 @@ class MySelect extends PureComponent {
             onChange={this.handleChange}
             options={this.props.options}
             resetValue={{ value: null, label: '' }}
+            multi
           />
         </div>
       </div>
@@ -37,8 +38,8 @@ class MySelect extends PureComponent {
   }
 }
 
-MySelect.contextTypes = {
+MySelectMultiple.contextTypes = {
   updateCurrentValues: PropTypes.func,
 };
 
-registerComponent('MySelect', MySelect);
+registerComponent('MySelectMultiple', MySelectMultiple);

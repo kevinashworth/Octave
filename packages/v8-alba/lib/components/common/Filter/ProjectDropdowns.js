@@ -1,5 +1,5 @@
 import { registerComponent } from 'meteor/vulcan:core';
-import React, {Component} from 'react';
+import React, { PureComponent } from 'react';
 import {
   ButtonDropdown,
   DropdownItem,
@@ -7,7 +7,7 @@ import {
   DropdownToggle,
 } from 'reactstrap';
 
-class ProjectDropdowns extends Component {
+class ProjectDropdowns extends PureComponent {
 
   constructor(props) {
     super(props);

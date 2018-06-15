@@ -1,7 +1,7 @@
 import { registerComponent } from 'meteor/vulcan:core';
-import React, {Component} from 'react';
+import React, { PureComponent } from 'react';
 
-class SidebarFooter extends Component {
+class SidebarFooter extends PureComponent {
 
   render() {
     return null

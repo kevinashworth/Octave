@@ -1,7 +1,7 @@
 import { registerComponent } from 'meteor/vulcan:core';
-import React, {Component} from 'react';
+import React, { PureComponent } from 'react';
 
-class SidebarMinimizer extends Component {
+class SidebarMinimizer extends PureComponent {
 
   sidebarMinimize() {
     document.body.classList.toggle('sidebar-minimized');

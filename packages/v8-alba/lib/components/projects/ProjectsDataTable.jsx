@@ -1,11 +1,11 @@
 import { Components, registerComponent, withCurrentUser, withList } from 'meteor/vulcan:core';
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import { Link } from 'react-router'
 import { Button, Card, CardBody, CardFooter, CardHeader } from 'reactstrap';
 import { BootstrapTable, TableHeaderColumn } from 'react-bootstrap-table';
 import Projects from '../../modules/projects/collection.js';
 
-class ProjectsDataTable extends Component {
+class ProjectsDataTable extends PureComponent {
   constructor(props) {
     super(props);
 
@@ -94,7 +94,7 @@ class ProjectsDataTable extends Component {
 
 const options = {
   collection: Projects,
-  fragmentName: 'ProjectsDetailsFragment',
+  fragmentName: 'ProjectsSingleFragment',
   limit: 150
 };
 

@@ -1,15 +1,15 @@
 import { registerComponent } from 'meteor/vulcan:core';
-import React from 'react';
+import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import { CardText } from 'reactstrap';
 
-class ProjectsAddressDetail extends React.Component {
+class ProjectsAddressDetail extends PureComponent {
   render() {
     const address = this.props.address;
     return (
       <CardText className="mt-1">
         { address.street1 }<br/>
-        {address.street2.length > 0 &&
+        {address.street2 &&
           <span>{ address.street2 }<br/></span>
         }
         { address.city } { address.state } { address.zip }<br/>

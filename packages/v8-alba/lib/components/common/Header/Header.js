@@ -1,8 +1,8 @@
 import { registerComponent } from 'meteor/vulcan:core';
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import { NavbarBrand, NavbarToggler } from 'reactstrap';
 
-class Header extends Component {
+class Header extends PureComponent {
   constructor(props) {
     super(props);
   }

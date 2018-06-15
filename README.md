@@ -16,9 +16,8 @@ I am not really using much here, certainly nothing to have git ignore, but going
     "faviconUrl": "/img/favicon.png",
 
     "locale": "en"
-  }
-}
+  },
+  "debug": true,
 ```
-## Notes to self
 
-How to create an environment variable to account for different home directories?
+## Notes to self

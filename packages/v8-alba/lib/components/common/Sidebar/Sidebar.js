@@ -1,11 +1,11 @@
 import { registerComponent, Components } from 'meteor/vulcan:core';
-import React, {Component} from 'react';
-import {withRouter, Link} from 'react-router';
-import {Badge, Nav, NavItem, NavLink as RsNavLink} from 'reactstrap';
+import React, { PureComponent } from 'react';
+import { withRouter, Link } from 'react-router';
+import { Badge, Nav, NavItem, NavLink as RsNavLink } from 'reactstrap';
 import classNames from 'classnames';
 import nav from './_nav';
 
-class Sidebar extends Component {
+class Sidebar extends PureComponent {
 
   constructor(props) {
     super(props);

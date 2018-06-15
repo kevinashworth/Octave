@@ -1,5 +1,5 @@
 import { registerComponent } from 'meteor/vulcan:core';
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import {Bar, Line} from 'react-chartjs-2';
 import {
   Badge,
@@ -410,7 +410,7 @@ const mainChartOpts = {
 }
 
 
-class Dashboard extends Component {
+class Dashboard extends PureComponent {
   constructor(props) {
     super(props);
 

@@ -1,8 +1,8 @@
 import { registerComponent, Components } from 'meteor/vulcan:core';
-import React, {Component} from 'react';
+import React, { PureComponent } from 'react';
 import { Button, Card, CardHeader, CardBody } from 'reactstrap';
 
-class Modals extends Component {
+class Modals extends PureComponent {
   render() {
     return (
       <div className="animated fadeIn">

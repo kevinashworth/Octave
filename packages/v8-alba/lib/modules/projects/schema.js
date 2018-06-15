@@ -1,62 +1,32 @@
 import { Components, Utils } from 'meteor/vulcan:core';
 import SimpleSchema from 'simpl-schema';
+import { addressSchema } from '../shared_schemas.js';
 
-export const addressSchema = new SimpleSchema({
-  street1: {
+export const contactSchema = new SimpleSchema({
+  contactId: {
     type: String,
-    optional: true,
-    viewableBy: ["guests"],
-    insertableBy: ["admins"],
-    editableBy: ["admins"]
-  },
-  street2: {
-    type: String,
-    optional: true,
-    viewableBy: ["guests"],
-    insertableBy: ["admins"],
-    editableBy: ["admins"]
-  },
-  city: {
-    type: String,
-    optional: true,
-    viewableBy: ["guests"],
-    insertableBy: ["admins"],
-    editableBy: ["admins"]
-  },
-  state: {
-    type: String,
-    optional: true,
-    viewableBy: ["guests"],
-    insertableBy: ["admins"],
-    editableBy: ["admins"]
-  },
-  zip: {
-    type: String,
-    optional: true,
-    viewableBy: ["guests"],
-    insertableBy: ["admins"],
-    editableBy: ["admins"]
-  },
-});
-
-export const personnelSchema = new SimpleSchema({
-  personnelId: {
-    type: String,
+    control: "SelectContactIdNameTitle",
     optional: true,
     viewableBy: ["members"],
     insertableBy: ["admins"],
     editableBy: ["admins"],
+    options: props => props.data.ContactsList.map(contact => ({
+        value: contact._id,
+        label: contact.fullName,
+      })),
   },
-  name: {
+  contactName: {
     type: String,
     optional: true,
+    hidden: true,
     viewableBy: ["members"],
     insertableBy: ["admins"],
     editableBy: ["admins"],
   },
-  personnelTitle: {
+  contactTitle: {
     type: String,
     optional: true,
+    hidden: true,
     viewableBy: ["members"],
     insertableBy: ["admins"],
     editableBy: ["admins"],
@@ -168,20 +138,9 @@ const schema = {
     insertableBy: ["admins"],
     editableBy: ["admins"]
   },
-  personnel: {
-    label: "Personnel",
+  contacts: {
+    label: "contacts",
     type: Array,
-    optional: true,
-    viewableBy: ["members"],
-    insertableBy: ["admins"],
-    editableBy: ["admins"],
-  },
-  'personnel.$': {
-    type: personnelSchema,
-  },
-  contactId: {
-    type: String,
-    control: "MySelect",
     optional: true,
     viewableBy: ["members"],
     insertableBy: ["admins"],
@@ -192,15 +151,14 @@ const schema = {
         fullName
       }
     `,
-    options: props => props.data.ContactsList.map(contact => ({
-      value: contact._id,
-      label: contact.fullName,
-    })),
+  },
+  'contacts.$': {
+    type: contactSchema,
   },
   addresses: {
     type: Array,
     optional: true,
-    viewableBy: ["guests"],
+    viewableBy: ["members"],
     insertableBy: ["admins"],
     editableBy: ["admins"],
   },
@@ -210,7 +168,7 @@ const schema = {
   slug: {
     type: String,
     optional: true,
-    viewableBy: ["members"],
+    viewableBy: ["guests"],
     onInsert: (project) => {
       return Utils.slugify(project.projectTitle);
     },

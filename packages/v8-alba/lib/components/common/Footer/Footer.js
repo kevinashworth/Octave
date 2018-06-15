@@ -1,7 +1,7 @@
 import { registerComponent } from 'meteor/vulcan:core';
-import React, {Component} from 'react';
+import React, { PureComponent } from 'react';
 
-class Footer extends Component {
+class Footer extends PureComponent {
   render() {
     return (
       <footer className="app-footer">

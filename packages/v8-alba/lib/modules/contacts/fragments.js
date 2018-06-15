@@ -12,7 +12,7 @@ registerFragment(/* GraphQL */ `
 `);
 
 registerFragment(/* GraphQL */ `
-  fragment ContactsDetailsFragment on Contact {
+  fragment ContactsSingleFragment on Contact {
     _id
     createdAt
     updatedAt

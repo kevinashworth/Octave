@@ -12,7 +12,7 @@ registerFragment(/* GraphQL */ `
 `);
 
 registerFragment(/* GraphQL */ `
-  fragment ProjectsDetailsFragment on Project {
+  fragment ProjectsSingleFragment on Project {
     _id
     createdAt
     updatedAt
@@ -21,8 +21,7 @@ registerFragment(/* GraphQL */ `
     projectType
     castingCompany
     addresses
-    contactId
-    personnel
+    contacts
     network
     status
     union
@@ -37,8 +36,8 @@ registerFragment(/* GraphQL */ `
     _id
     projectTitle
     projectType
-    personnel
-    contactId
+    contacts
+    addresses
     status
     union
   }

@@ -10,7 +10,7 @@ import { newMutation } from 'meteor/vulcan:core';
 import Contacts from '../modules/contacts/collection.js';
 import Projects from '../modules/projects/collection.js';
 import Offices from '../modules/offices/collection.js';
-import seedData999 from '../components/contacts/_contacts3.js';
+import seedContacts from '../components/contacts/_contacts3.js';
 import seedProjects from '../components/projects/_projects.js';
 import seedOffices from '../components/offices/_offices2.js';
 
@@ -52,7 +52,7 @@ Meteor.startup(() => {
   if (Contacts.find().fetch().length === 0) {
     // eslint-disable-next-line no-console
     console.log('// creating dummy contacts');
-    Promise.awaitAll(seedData999.map(document => newMutation({
+    Promise.awaitAll(seedContacts.map(document => newMutation({
       action: 'contacts.new',
       collection: Contacts,
       document,
