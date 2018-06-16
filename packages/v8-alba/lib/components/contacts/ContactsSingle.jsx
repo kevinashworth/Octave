@@ -80,7 +80,7 @@ const ContactsSingle = (props) => {
             <CardTitle>Projects</CardTitle>
             <CardText>
             {contact.projectIds.map(project =>
-              <CardLink href={`/projects/${project.projectId}`} key={project.projectId}>{project.projectTitle}</CardLink>)}
+              <CardLink key={project.projectId}><Link to={`/projects/${project.projectId}`}>{project.projectTitle}</Link></CardLink>)}
             </CardText>
           </CardBody>
         }
