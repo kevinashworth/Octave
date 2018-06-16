@@ -27,6 +27,7 @@ registerFragment(/* GraphQL */ `
     union
     notes
     logline
+    website
     slug
   }
 `);

@@ -105,6 +105,14 @@ const schema = {
     insertableBy: ["admins"],
     editableBy: ["admins"]
   },
+  website: {
+    label: "Official Site",
+    type: String,
+    optional: true,
+    viewableBy: ["guests"],
+    insertableBy: ["admins"],
+    editableBy: ["admins"]
+  },
   notes: {
     label: "Notes",
     type: String,

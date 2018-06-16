@@ -44,7 +44,7 @@ class ProjectsSingle extends PureComponent {
           <CardText className="mb-1">{ project.notes }</CardText>
           {project.website &&
           <CardText>
-            <CardLink href={project.website}>Open official website</CardLink>
+            <CardLink href={project.website}>Open official website <i className="fa fa-external-link"></i></CardLink>
           </CardText>
           }
         </CardBody>
