@@ -95,7 +95,7 @@ class ProjectsDataTable extends PureComponent {
 const options = {
   collection: Projects,
   fragmentName: 'ProjectsSingleFragment',
-  limit: 150
+  limit: 1000
 };
 
 registerComponent('ProjectsDataTable', ProjectsDataTable, withCurrentUser, [withList, options]);
