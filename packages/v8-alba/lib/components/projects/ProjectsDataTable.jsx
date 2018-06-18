@@ -1,11 +1,19 @@
 import { Components, registerComponent, withCurrentUser, withList } from 'meteor/vulcan:core';
-import React, { PureComponent } from 'react';
+import React, { Component } from 'react';
 import { Link } from 'react-router'
 import { Button, Card, CardBody, CardFooter, CardHeader } from 'reactstrap';
 import { BootstrapTable, TableHeaderColumn } from 'react-bootstrap-table';
 import Projects from '../../modules/projects/collection.js';
 
-class ProjectsDataTable extends PureComponent {
+// Set initial state. Just options I want to keep.
+// See https://github.com/amannn/react-keep-state
+let keptState = {
+  defaultSearch: "",
+  sortName: "projectTitle",
+  sortOrder: "asc"
+};
+
+class ProjectsDataTable extends Component {
   constructor(props) {
     super(props);
 
@@ -24,29 +32,57 @@ class ProjectsDataTable extends PureComponent {
       console.log(event);
     }
 
-    // this.table = projects;
-    this.options = {
-      sortIndicator: true,
-      paginationSize: 5,
-      hidePageListOnlyOnePage: true,
-      prePage: 'Prev',
-      nextPage: 'Next',
-      firstPage: 'First',
-      lastPage: 'Last',
-      sizePerPageList: [ {
-        text: '20', value: 20
-      }, {
-        text: '50', value: 50
-      }, {
-        text: '100', value: 100
-      }, {
-        text: 'All', value: this.props.totalCount
-      } ],
-      sizePerPage: 20,
-      paginationShowsTotal: renderShowsTotal,
-      paginationPosition: 'both',
-      onRowClick: rowClickHandler,
+    const sortChangeHandler = (sortName, sortOrder) => {
+      this.setState((prevState, props) => ({
+        options: {...prevState.options, sortName, sortOrder}
+      }));
     }
+
+    const searchChangeHandler = (searchText) => {
+      if (this.state.options.defaultSearch !== searchText) {
+        this.setState((prevState, props) => ({
+          options: {...prevState.options, defaultSearch: searchText}
+        }));
+      }
+    }
+
+    this.state = {
+      options: {
+        sortIndicator: true,
+        paginationSize: 5,
+        hidePageListOnlyOnePage: true,
+        prePage: 'Prev',
+        nextPage: 'Next',
+        firstPage: 'First',
+        lastPage: 'Last',
+        sizePerPageList: [ {
+          text: '20', value: 20
+        }, {
+          text: '50', value: 50
+        }, {
+          text: '100', value: 100
+        }, {
+          text: 'All', value: this.props.totalCount
+        } ],
+        sizePerPage: 20,
+        paginationShowsTotal: renderShowsTotal,
+        paginationPosition: 'both',
+        onRowClick: rowClickHandler,
+        onSortChange: sortChangeHandler,
+        onSearchChange: searchChangeHandler,
+        clearSearch: true,
+
+        // Retrieve the last state
+        ...keptState
+      }
+    }
+  }
+
+  componentWillUnmount() {
+    // Remember state for the next mount
+    keptState.defaultSearch = this.state.options.defaultSearch;
+    keptState.sortName = this.state.options.sortName;
+    keptState.sortOrder = this.state.options.sortOrder;
   }
 
   render() {
@@ -63,7 +99,7 @@ class ProjectsDataTable extends PureComponent {
             <Components.ProjectDropdowns/>
           </CardHeader>
           <CardBody>
-            <BootstrapTable data={this.props.results} version="4" condensed striped hover pagination search options={this.options} selectRow={selectRow} keyField='_id'>
+            <BootstrapTable data={this.props.results} version="4" condensed striped hover pagination search options={this.state.options} selectRow={selectRow} keyField='_id'>
               <TableHeaderColumn dataField="projectTitle" dataSort dataFormat={
                 (cell, row) => {
                   return (
@@ -95,7 +131,8 @@ class ProjectsDataTable extends PureComponent {
 const options = {
   collection: Projects,
   fragmentName: 'ProjectsSingleFragment',
-  limit: 1000
+  limit: 1000,
+  enableCache: true
 };
 
 registerComponent('ProjectsDataTable', ProjectsDataTable, withCurrentUser, [withList, options]);
