@@ -1,5 +1,5 @@
 import { Components, registerComponent, withCurrentUser, withList } from 'meteor/vulcan:core';
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import { Link } from 'react-router'
 import { Button, Card, CardBody, CardFooter, CardHeader } from 'reactstrap';
 import { BootstrapTable, TableHeaderColumn } from 'react-bootstrap-table';
@@ -9,13 +9,21 @@ import Projects from '../../modules/projects/collection.js';
 // See https://github.com/amannn/react-keep-state
 let keptState = {
   defaultSearch: "",
+  page: 1,
+  sizePerPage: 20,
   sortName: "projectTitle",
   sortOrder: "asc"
 };
 
-class ProjectsDataTable extends Component {
+class ProjectsDataTable extends PureComponent {
   constructor(props) {
     super(props);
+
+    const pageChangeHandler = (page, sizePerPage) => {
+      this.setState((prevState) => ({
+        options: {...prevState.options, page, sizePerPage}
+      }));
+    }
 
     function renderShowsTotal(start, to, total) {
       return (
@@ -33,17 +41,21 @@ class ProjectsDataTable extends Component {
     }
 
     const sortChangeHandler = (sortName, sortOrder) => {
-      this.setState((prevState, props) => ({
+      this.setState((prevState) => ({
         options: {...prevState.options, sortName, sortOrder}
       }));
     }
 
     const searchChangeHandler = (searchText) => {
-      if (this.state.options.defaultSearch !== searchText) {
-        this.setState((prevState, props) => ({
-          options: {...prevState.options, defaultSearch: searchText}
-        }));
-      }
+      this.setState((prevState) => ({
+        options: {...prevState.options, defaultSearch: searchText}
+      }));
+    }
+
+    const sizePerPageListHandler = (sizePerPage) => {
+      this.setState((prevState) => ({
+        options: {...prevState.options, sizePerPage}
+      }));
     }
 
     this.state = {
@@ -64,10 +76,11 @@ class ProjectsDataTable extends Component {
         }, {
           text: 'All', value: this.props.totalCount
         } ],
-        sizePerPage: 20,
         paginationShowsTotal: renderShowsTotal,
         paginationPosition: 'both',
+        onPageChange: pageChangeHandler,
         onRowClick: rowClickHandler,
+        onSizePerPageList: sizePerPageListHandler,
         onSortChange: sortChangeHandler,
         onSearchChange: searchChangeHandler,
         clearSearch: true,
@@ -80,9 +93,14 @@ class ProjectsDataTable extends Component {
 
   componentWillUnmount() {
     // Remember state for the next mount
-    keptState.defaultSearch = this.state.options.defaultSearch;
-    keptState.sortName = this.state.options.sortName;
-    keptState.sortOrder = this.state.options.sortOrder;
+    const { options } = this.state;
+    keptState = {
+      defaultSearch: options.defaultSearch,
+      page: options.page,
+      sizePerPage: options.sizePerPage,
+      sortName: options.sortName,
+      sortOrder: options.sortOrder
+    };
   }
 
   render() {
