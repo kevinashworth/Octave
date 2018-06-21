@@ -5,9 +5,25 @@ import { Button, Card, CardBody, CardFooter, CardHeader } from 'reactstrap';
 import { BootstrapTable, TableHeaderColumn } from 'react-bootstrap-table';
 import Contacts from '../../modules/contacts/collection.js';
 
+// Set initial state. Just options I want to keep.
+// See https://github.com/amannn/react-keep-state
+let keptState = {
+  defaultSearch: "",
+  page: 1,
+  sizePerPage: 20,
+  sortName: "fullName",
+  sortOrder: "asc"
+};
+
 class ContactsDataTable extends PureComponent {
   constructor(props) {
     super(props);
+
+    const pageChangeHandler = (page, sizePerPage) => {
+      this.setState((prevState) => ({
+        options: {...prevState.options, page, sizePerPage}
+      }));
+    }
 
     function renderShowsTotal(start, to, total) {
       return (
@@ -24,29 +40,67 @@ class ContactsDataTable extends PureComponent {
       console.log(event);
     }
 
-    // this.table = this.props.results;
-    this.options = {
-      sortIndicator: true,
-      paginationSize: 5,
-      hidePageListOnlyOnePage: true,
-      prePage: 'Prev',
-      nextPage: 'Next',
-      firstPage: 'First',
-      lastPage: 'Last',
-      sizePerPageList: [ {
-        text: '20', value: 20
-      }, {
-        text: '50', value: 50
-      }, {
-        text: '100', value: 100
-      }, {
-        text: 'All', value: this.props.totalCount
-      } ],
-      sizePerPage: 20,
-      paginationShowsTotal: renderShowsTotal,
-      paginationPosition: 'both',
-      onRowClick: rowClickHandler,
+    const sortChangeHandler = (sortName, sortOrder) => {
+      this.setState((prevState) => ({
+        options: {...prevState.options, sortName, sortOrder}
+      }));
     }
+
+    const searchChangeHandler = (searchText) => {
+      this.setState((prevState) => ({
+        options: {...prevState.options, defaultSearch: searchText}
+      }));
+    }
+
+    const sizePerPageListHandler = (sizePerPage) => {
+      this.setState((prevState) => ({
+        options: {...prevState.options, sizePerPage}
+      }));
+    }
+
+    this.state = {
+      options: {
+        sortIndicator: true,
+        paginationSize: 5,
+        hidePageListOnlyOnePage: true,
+        prePage: 'Prev',
+        nextPage: 'Next',
+        firstPage: 'First',
+        lastPage: 'Last',
+        sizePerPageList: [ {
+          text: '20', value: 20
+        }, {
+          text: '50', value: 50
+        }, {
+          text: '100', value: 100
+        }, {
+          text: 'All', value: this.props.totalCount
+        } ],
+        paginationShowsTotal: renderShowsTotal,
+        paginationPosition: 'both',
+        onPageChange: pageChangeHandler,
+        onRowClick: rowClickHandler,
+        onSizePerPageList: sizePerPageListHandler,
+        onSortChange: sortChangeHandler,
+        onSearchChange: searchChangeHandler,
+        clearSearch: true,
+
+        // Retrieve the last state
+        ...keptState
+      }
+    }
+  }
+
+  componentWillUnmount() {
+    // Remember state for the next mount
+    const { options } = this.state;
+    keptState = {
+      defaultSearch: options.defaultSearch,
+      page: options.page,
+      sizePerPage: options.sizePerPage,
+      sortName: options.sortName,
+      sortOrder: options.sortOrder
+    };
   }
 
   render() {
@@ -64,7 +118,7 @@ class ContactsDataTable extends PureComponent {
             <Components.ContactDropdowns/>
           </CardHeader>
           <CardBody>
-            <BootstrapTable data={this.props.results} version="4" condensed striped hover pagination search options={this.options} selectRow={selectRow} keyField='_id'>
+            <BootstrapTable data={this.props.results} version="4" condensed striped hover pagination search options={this.state.options} selectRow={selectRow} keyField='_id'>
               <TableHeaderColumn dataField="fullName" dataSort dataFormat={
                 (cell, row) => {
                   return (
@@ -99,7 +153,8 @@ class ContactsDataTable extends PureComponent {
 const options = {
   collection: Contacts,
   fragmentName: 'ContactsSingleFragment',
-  limit: 150
+  limit: 1000,
+  enableCache: true
 };
 
 registerComponent('ContactsDataTable', ContactsDataTable, withCurrentUser, [withList, options]);
