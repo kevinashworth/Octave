@@ -135,6 +135,7 @@ class ContactsDataTable extends PureComponent {
               <TableHeaderColumn dataField="state" dataSort>State</TableHeaderColumn>
               <TableHeaderColumn dataField="zip" dataSort>Zip</TableHeaderColumn>
             </BootstrapTable>
+          </CardBody>
           {hasMore &&
           <CardFooter>
             {loadingMore ?
@@ -143,7 +144,6 @@ class ContactsDataTable extends PureComponent {
             }
           </CardFooter>
           }
-          </CardBody>
         </Card>
       </div>
     );

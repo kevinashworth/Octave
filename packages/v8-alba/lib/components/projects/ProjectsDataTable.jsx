@@ -1,6 +1,6 @@
 import { Components, registerComponent, withCurrentUser, withList } from 'meteor/vulcan:core';
 import React, { PureComponent } from 'react';
-import { Link } from 'react-router'
+import { Link } from 'react-router';
 import { Button, Card, CardBody, CardFooter, CardHeader } from 'reactstrap';
 import { BootstrapTable, TableHeaderColumn } from 'react-bootstrap-table';
 import Projects from '../../modules/projects/collection.js';
@@ -109,6 +109,7 @@ class ProjectsDataTable extends PureComponent {
       mode: 'checkbox'
     };
     const hasMore = results && (totalCount > results.length);
+
     return (
       <div className="animated fadeIn">
         <Card>
@@ -131,15 +132,15 @@ class ProjectsDataTable extends PureComponent {
               <TableHeaderColumn dataField="castingCompany" dataSort>Casting</TableHeaderColumn>
               <TableHeaderColumn dataField="status" dataSort>Status</TableHeaderColumn>
             </BootstrapTable>
-            {hasMore &&
-            <CardFooter>
-              {loadingMore ?
-                <Components.Loading/> :
-                <Button onClick={e => {e.preventDefault(); loadMore();}}>Load More ({count}/{totalCount})</Button>
-              }
-            </CardFooter>
-            }
           </CardBody>
+          {hasMore &&
+          <CardFooter>
+            {loadingMore ?
+              <Components.Loading/> :
+              <Button onClick={e => {e.preventDefault(); loadMore();}}>Load More ({count}/{totalCount})</Button>
+            }
+          </CardFooter>
+          }
         </Card>
       </div>
     );
