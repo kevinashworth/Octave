@@ -58,10 +58,11 @@ const ContactsTable = ({loading, results = [], currentUser}) =>
     <Components.ContactsNewForm />
   </div>
 
-const options = {
-  collection: Contacts,
-  fragmentName: 'ContactsSingleFragment',
-  limit: 20
-};
+  const options = {
+    collection: Contacts,
+    fragmentName: 'ContactsSingleFragment',
+    limit: 100,
+    enableCache: true
+  };
 
 registerComponent('ContactsTable', ContactsTable, withCurrentUser, [withList, options]);
