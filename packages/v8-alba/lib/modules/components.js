@@ -25,6 +25,7 @@ import '../components/Dashboard/';
 
 import '../components/common/Filter/ContactDropdowns';
 import '../components/common/Filter/ProjectDropdowns';
+import '../components/common/Filter/ProjectFilters';
 import '../components/common/Select';
 import '../components/common/SelectIdNameTitle';
 import '../components/common/SelectMultiple';
