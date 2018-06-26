@@ -1,12 +1,12 @@
+import { registerFragment } from 'meteor/vulcan:core';
 import Users from 'meteor/vulcan:users';
-import { Utils } from 'meteor/vulcan:core';
+import _ from 'lodash';
 
-
-const projectDropdownFilters = [
+const projectFilters = [
   {
-    name: "Filter by type",
+    name: "Filter projects by type",
     order: 1,
-    title: "Type",
+    label: "Type",
     filters: [
       {
         name: "Feature Film",
@@ -53,9 +53,9 @@ const projectDropdownFilters = [
       }
     ]
   }, {
-    name: "Filter by last updated",
+    name: "Filter projects by last updated",
     order: 2,
-    title: "Last updated",
+    label: "Last updated",
     filters: [
       {
         name: "One Day",
@@ -75,9 +75,9 @@ const projectDropdownFilters = [
       }
     ]
   }, {
-    name: "Filter by status",
+    name: "Filter projects by status",
     order: 3,
-    title: "Status",
+    label: "Status",
     filters: [
       { header: "Filter by status" },
       {
@@ -111,15 +111,14 @@ const projectDropdownFilters = [
   }
 ];
 
-// const filterByType = {
-//   name: "Filter by type",
-//   order: 2
-// };
+let projectFiltersArray = [];
 
 const addFields = () => {
-  projectDropdownFilters[0].filters.forEach(filter => {
+  projectFilters[0].filters.forEach(filter => {
+    const fieldName = _.camelCase(`${projectFilters[0].name} ${filter.name}`);
+    projectFiltersArray.push(fieldName);
     Users.addField({
-      fieldName: Utils.slugify(`${projectDropdownFilters[0].name} ${filter.name}`),
+      fieldName: fieldName,
       fieldSchema: {
         label: `${filter.name}`,
         type: Boolean,
@@ -127,19 +126,22 @@ const addFields = () => {
         defaultValue: filter.show,
         control: "checkbox",
         viewableBy: ["members"],
-        insertableBy: ["admins"],
-        editableBy: ["admins"],
+        insertableBy: ["members"],
+        editableBy: ["members"],
         group: {
-          name: projectDropdownFilters[0].name,
-          order: projectDropdownFilters[0].order
+          label: projectFilters[0].label,
+          name: projectFilters[0].name,
+          order: projectFilters[0].order
         },
       }
     });
   });
 
-  projectDropdownFilters[0].filters.forEach(filter => {
+  projectFilters[1].filters.forEach(filter => {
+    const fieldName = _.camelCase(`${projectFilters[1].name} ${filter.name}`);
+    projectFiltersArray.push(fieldName);
     Users.addField({
-      fieldName: Utils.slugify(`${projectDropdownFilters[1].name} ${filter.name}`),
+      fieldName: fieldName,
       fieldSchema: {
         label: `${filter.name}`,
         type: Boolean,
@@ -147,22 +149,25 @@ const addFields = () => {
         defaultValue: filter.show,
         control: "checkbox",
         viewableBy: ["members"],
-        insertableBy: ["admins"],
-        editableBy: ["admins"],
+        insertableBy: ["members"],
+        editableBy: ["members"],
         group: {
-          name: projectDropdownFilters[1].name,
-          order: projectDropdownFilters[1].order
+          label: projectFilters[1].label,
+          name: projectFilters[1].name,
+          order: projectFilters[1].order
         },
       }
     });
   });
 
-  projectDropdownFilters[0].filters.forEach(filter => {
-    if (filter.heading) {
+  projectFilters[2].filters.forEach(filter => {
+    const fieldName = _.camelCase(`${projectFilters[2].name} ${filter.name}`);
+    projectFiltersArray.push(fieldName);
+    if (filter.header) {
       // TODO
     } else {
       Users.addField({
-        fieldName: Utils.slugify(`${projectDropdownFilters[2].name} ${filter.name}`),
+        fieldName: fieldName,
         fieldSchema: {
           label: `${filter.name}`,
           type: Boolean,
@@ -170,11 +175,12 @@ const addFields = () => {
           defaultValue: filter.show,
           control: "checkbox",
           viewableBy: ["members"],
-          insertableBy: ["admins"],
-          editableBy: ["admins"],
+          insertableBy: ["members"],
+          editableBy: ["members"],
           group: {
-            name: projectDropdownFilters[2].name,
-            order: projectDropdownFilters[2].order
+            label: projectFilters[2].label,
+            name: projectFilters[2].name,
+            order: projectFilters[2].order
           },
         }
       });
@@ -182,5 +188,17 @@ const addFields = () => {
   });
 };
 
-// Add filter options for project type
+registerFragment(`
+  fragment UserProjectFilterList on User {
+    _id
+    ${projectFiltersArray[0]}
+    ${projectFiltersArray[1]}
+    ${projectFiltersArray[2]}
+    ${projectFiltersArray[3]}
+  }
+`);
+
+// Add filter options for projects
 addFields();
+
+export default projectFiltersArray;
