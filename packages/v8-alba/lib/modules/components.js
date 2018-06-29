@@ -21,6 +21,10 @@ import '../components/common/LayoutAdmin/';
 
 import '../components/Dashboard/';
 
+// Debug
+
+import '../components/common/Fragments';
+
 // V8
 
 import '../components/common/Filter/ContactDropdowns';
