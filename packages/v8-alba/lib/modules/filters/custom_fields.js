@@ -162,10 +162,10 @@ const addFields = () => {
 
   projectFilters[2].filters.forEach(filter => {
     const fieldName = _.camelCase(`${projectFilters[2].name} ${filter.name}`);
-    projectFiltersArray.push(fieldName);
     if (filter.header) {
       // TODO
     } else {
+      projectFiltersArray.push(fieldName);
       Users.addField({
         fieldName: fieldName,
         fieldSchema: {
@@ -186,17 +186,17 @@ const addFields = () => {
       });
     }
   });
+
+  const graphQLFilterList = projectFiltersArray.join().replace(/,/g, '\n');
+
+  registerFragment(`
+    fragment UserProjectFilterList on User {
+      _id
+      ${graphQLFilterList}
+    }
+  `);
 };
 
-registerFragment(`
-  fragment UserProjectFilterList on User {
-    _id
-    ${projectFiltersArray[0]}
-    ${projectFiltersArray[1]}
-    ${projectFiltersArray[2]}
-    ${projectFiltersArray[3]}
-  }
-`);
 
 // Add filter options for projects
 addFields();
