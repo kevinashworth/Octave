@@ -33,6 +33,13 @@ class ProjectFilters extends PureComponent {
       filterProjectsByTypeTvMiniSeries: false,
       filterProjectsByTypeTvMovie: false,
       filterProjectsByStatusCasting: true,
+      filterProjectsByStatusOnHold: false,
+      filterProjectsByStatusShooting: false,
+      filterProjectsByStatusOnHiatus: false,
+      filterProjectsByStatusSeeNotes: true,
+      filterProjectsByStatusUnknown: true,
+      filterProjectsByStatusWrapped: false,
+      filterProjectsByStatusCanceled: false,
       selectedOption: 'filterProjectsByLastUpdatedTwoWeeks'
     };
   }
@@ -61,7 +68,8 @@ class ProjectFilters extends PureComponent {
   }
 
   handleSubmit(event) {
-    alert('A name was submitted: ' + this.state.value);
+    // eslint-disable-next-line no-console
+    console.info('An event was triggered: ', event.target.id, event.target.value);
     event.preventDefault();
   }
 
@@ -140,16 +148,23 @@ class ProjectFilters extends PureComponent {
             <DropdownItem toggle={false}>
               <CustomInput type="checkbox" id="filterProjectsByStatusCasting" label="Casting"
                 checked={this.state.filterProjectsByStatusCasting} onChange={this.handleInputChange} />
-              <CustomInput type="checkbox" id="filterProjectsByStatusOnHold" label="On Hold" />
-              <CustomInput type="checkbox" id="filterProjectsByStatusShooting" label="Shooting" />
-              <CustomInput type="checkbox" id="filterProjectsByStatusOnHiatus" label="On Hiatus" />
-              <CustomInput type="checkbox" id="filterProjectsByStatusSeeNotes" label="See Notes" />
-              <CustomInput type="checkbox" id="filterProjectsByStatusUnknown" label="Unknown" />
+              <CustomInput type="checkbox" id="filterProjectsByStatusOnHold" label="On Hold"
+                checked={this.state.filterProjectsByStatusOnHold} onChange={this.handleInputChange} />
+              <CustomInput type="checkbox" id="filterProjectsByStatusShooting" label="Shooting"
+                checked={this.state.filterProjectsByStatusShooting} onChange={this.handleInputChange} />
+              <CustomInput type="checkbox" id="filterProjectsByStatusOnHiatus" label="On Hiatus"
+                checked={this.state.filterProjectsByStatusOnHiatus} onChange={this.handleInputChange} />
+              <CustomInput type="checkbox" id="filterProjectsByStatusSeeNotes" label="See Notes"
+                checked={this.state.filterProjectsByStatusSeeNotes} onChange={this.handleInputChange} />
+              <CustomInput type="checkbox" id="filterProjectsByStatusUnknown" label="Unknown"
+                checked={this.state.filterProjectsByStatusUnknown} onChange={this.handleInputChange} />
             </DropdownItem>
             <DropdownItem header>Inactive</DropdownItem>
             <DropdownItem toggle={false}>
-              <CustomInput type="checkbox" id="filterProjectsByStatusWrapped" label="Wrapped" />
-              <CustomInput type="checkbox" id="filterProjectsByStatusCanceled" label="Canceled" />
+              <CustomInput type="checkbox" id="filterProjectsByStatusWrapped" label="Wrapped"
+                checked={this.state.filterProjectsByStatusWrapped} onChange={this.handleInputChange} />
+              <CustomInput type="checkbox" id="filterProjectsByStatusCanceled" label="Canceled"
+                checked={this.state.filterProjectsByStatusCanceled} onChange={this.handleInputChange} />
             </DropdownItem>
           </DropdownMenu>
         </ButtonDropdown>
