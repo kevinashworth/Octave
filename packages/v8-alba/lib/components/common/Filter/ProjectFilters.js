@@ -32,6 +32,9 @@ class ProjectFilters extends PureComponent {
       filterProjectsByTypeTvDaytime: false,
       filterProjectsByTypeTvMiniSeries: false,
       filterProjectsByTypeTvMovie: false,
+      filterProjectsByTypeNewMediaSvod: true,
+      filterProjectsByTypeNewMediaAvod: true,
+      filterProjectsByTypeNewMedia50K: false,
       filterProjectsByStatusCasting: true,
       filterProjectsByStatusOnHold: false,
       filterProjectsByStatusShooting: false,
@@ -68,8 +71,9 @@ class ProjectFilters extends PureComponent {
   }
 
   handleSubmit(event) {
+    event.persist();
     // eslint-disable-next-line no-console
-    console.info('An event was triggered: ', event.target.id, event.target.value);
+    console.info('An event was triggered: ', event);
     event.preventDefault();
   }
 
@@ -108,16 +112,24 @@ class ProjectFilters extends PureComponent {
                 checked={this.state.filterProjectsByTypePilot12Hour} onChange={this.handleInputChange} />
             </DropdownItem>
             <DropdownItem toggle={false}>
-              <CustomInput type="checkbox" id="filterProjectsByTypeTvOneHour" label="TV One Hour" />
-              <CustomInput type="checkbox" id="filterProjectsByTypeTv12Hour" label="TV 1/2 Hour" />
-              <CustomInput type="checkbox" id="filterProjectsByTypeTvDaytime" label="TV Daytime" />
-              <CustomInput type="checkbox" id="filterProjectsByTypeTvMiniSeries" label="TV Mini-Series" />
-              <CustomInput type="checkbox" id="filterProjectsByTypeTvMovie" label="TV Movie" />
+              <CustomInput type="checkbox" id="filterProjectsByTypeTvOneHour" label="TV One Hour"
+                checked={this.state.filterProjectsByTypeTvOneHour} onChange={this.handleInputChange} />
+              <CustomInput type="checkbox" id="filterProjectsByTypeTv12Hour" label="TV 1/2 Hour"
+                checked={this.state.filterProjectsByTypeTv12Hour} onChange={this.handleInputChange} />
+              <CustomInput type="checkbox" id="filterProjectsByTypeTvDaytime" label="TV Daytime"
+                checked={this.state.filterProjectsByTypeTvDaytime} onChange={this.handleInputChange} />
+              <CustomInput type="checkbox" id="filterProjectsByTypeTvMiniSeries" label="TV Mini-Series"
+                checked={this.state.filterProjectsByTypeTvMiniSeries} onChange={this.handleInputChange} />
+              <CustomInput type="checkbox" id="filterProjectsByTypeTvMovie" label="TV Movie"
+                checked={this.state.filterProjectsByTypeTvMovie} onChange={this.handleInputChange} />
             </DropdownItem>
             <DropdownItem toggle={false}>
-              <CustomInput type="checkbox" id="filterProjectsByTypeNewMediaSvod" label="New Media (SVOD)" />
-              <CustomInput type="checkbox" id="filterProjectsByTypeNewMediaAvod" label="New Media (AVOD)" />
-              <CustomInput type="checkbox" id="filterProjectsByTypeNewMedia50K" label="New Media (<$50k)" />
+              <CustomInput type="checkbox" id="filterProjectsByTypeNewMediaSvod" label="New Media (SVOD)"
+                checked={this.state.filterProjectsByTypeNewMediaSvod} onChange={this.handleInputChange} />
+              <CustomInput type="checkbox" id="filterProjectsByTypeNewMediaAvod" label="New Media (AVOD)"
+                checked={this.state.filterProjectsByTypeNewMediaAvod} onChange={this.handleInputChange} />
+              <CustomInput type="checkbox" id="filterProjectsByTypeNewMedia50K" label="New Media (<$50k)"
+                checked={this.state.filterProjectsByTypeNewMedia50K} onChange={this.handleInputChange} />
             </DropdownItem>
             <DropdownItem toggle={false}><a href="#" size="sm" color="primary">Show All</a></DropdownItem>
           </DropdownMenu>
@@ -129,12 +141,18 @@ class ProjectFilters extends PureComponent {
           <DropdownMenu onChange={event => this.handleOptionChange(event)}>
             <DropdownItem header>Filter projects by last updated</DropdownItem>
             <DropdownItem toggle={false}>
-              <CustomInput type="radio" name="lastupdated" id="filterProjectsByLastUpdatedOneDay" label="One Day" />
-              <CustomInput type="radio" name="lastupdated" id="filterProjectsByLastUpdatedOneWeek" label="One Week" />
-              <CustomInput type="radio" name="lastupdated" id="filterProjectsByLastUpdatedTwoWeeks" label="Two Weeks" />
-              <CustomInput type="radio" name="lastupdated" id="filterProjectsByLastUpdatedOneMonth" label="One Month" />
-              <CustomInput type="radio" name="lastupdated" id="filterProjectsByLastUpdatedTwoMonths" label="Two Months" />
-              <CustomInput type="radio" name="lastupdated" id="filterProjectsByLastUpdatedOneYear" label="One Year" />
+              <CustomInput type="radio" name="lastupdated" id="filterProjectsByLastUpdatedOneDay" label="One Day"
+                checked={this.state.selectedOption === 'filterProjectsByLastUpdatedOneDay'} onChange={this.handleOptionChange} />
+              <CustomInput type="radio" name="lastupdated" id="filterProjectsByLastUpdatedOneWeek" label="One Week"
+                checked={this.state.selectedOption === 'filterProjectsByLastUpdatedOneWeek'} onChange={this.handleOptionChange} />
+              <CustomInput type="radio" name="lastupdated" id="filterProjectsByLastUpdatedTwoWeeks" label="Two Weeks"
+                checked={this.state.selectedOption === 'filterProjectsByLastUpdatedTwoWeeks'} onChange={this.handleOptionChange} />
+              <CustomInput type="radio" name="lastupdated" id="filterProjectsByLastUpdatedOneMonth" label="One Month"
+                checked={this.state.selectedOption === 'filterProjectsByLastUpdatedOneMonth'} onChange={this.handleOptionChange} />
+              <CustomInput type="radio" name="lastupdated" id="filterProjectsByLastUpdatedTwoMonths" label="Two Months"
+                checked={this.state.selectedOption === 'filterProjectsByLastUpdatedTwoMonths'} onChange={this.handleOptionChange} />
+              <CustomInput type="radio" name="lastupdated" id="filterProjectsByLastUpdatedOneYear" label="One Year"
+                checked={this.state.selectedOption === 'filterProjectsByLastUpdatedOneYear'} onChange={this.handleOptionChange} />
             </DropdownItem>
             <DropdownItem toggle={false}><a href="#" size="sm" color="primary">Show All</a></DropdownItem>
           </DropdownMenu>
