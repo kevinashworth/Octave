@@ -53,7 +53,7 @@ class ProjectFilters extends PureComponent {
       filterProjectsByStatusUnknown: true,
       filterProjectsByStatusWrapped: false,
       filterProjectsByStatusCanceled: false,
-      selectedOption: 'filterProjectsByLastUpdatedTwoWeeks'
+      filterProjectsByLastUpdated: 'filterProjectsByLastUpdatedTwoWeeks'
     };
   }
 
@@ -76,7 +76,7 @@ class ProjectFilters extends PureComponent {
 
   handleOptionChange(event) {
     this.setState({
-      selectedOption: event.target.id
+      filterProjectsByLastUpdated: event.target.id
     });
     this.context.updateCurrentValues({
       // TODO
