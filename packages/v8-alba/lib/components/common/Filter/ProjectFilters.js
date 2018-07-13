@@ -27,7 +27,6 @@ class ProjectFilters extends PureComponent {
     this.handleClick = this.handleClick.bind(this);
     this.handleInputChange = this.handleInputChange.bind(this);
     this.handleOptionChange = this.handleOptionChange.bind(this);
-    this.handleSubmit = this.handleSubmit.bind(this);
     this.state = {
       user: this.props.user,
       dropdownOpen: new Array(3).fill(false),
@@ -74,13 +73,14 @@ class ProjectFilters extends PureComponent {
     });
   }
 
+  // this happens to handle the Do Not Filter link as empty string, which should work
   handleOptionChange(event) {
+    // eslint-disable-next-line no-console
+    console.log('handleOptionChange:', event.target.id);
     this.setState({
       filterProjectsByLastUpdated: event.target.id
     });
-    this.context.updateCurrentValues({
-      // TODO
-    });
+    // this.context.updateCurrentValues({ filterProjectsByLastUpdated: event.target.id });
   }
 
   handleClick(event) {
@@ -103,7 +103,7 @@ class ProjectFilters extends PureComponent {
           <DropdownToggle caret>
             Type
           </DropdownToggle>
-          <DropdownMenu flip={false}>
+          <DropdownMenu>
             <DropdownItem header>Filter projects by type</DropdownItem>
             <DropdownItemStatic>
               <CustomInput type="checkbox" id="filterProjectsByTypeFeatureFilm" label="Feature Film"
@@ -148,23 +148,23 @@ class ProjectFilters extends PureComponent {
           <DropdownToggle caret>
             Last updated
           </DropdownToggle>
-          <DropdownMenu onChange={event => this.handleOptionChange(event)}>
+          <DropdownMenu>
             <DropdownItem header>Filter projects by last updated</DropdownItem>
-            <DropdownItem toggle={false}>
+            <DropdownItemStatic>
               <CustomInput type="radio" name="lastupdated" id="filterProjectsByLastUpdatedOneDay" label="One Day"
-                checked={this.state.selectedOption === 'filterProjectsByLastUpdatedOneDay'} onChange={this.handleOptionChange} />
+                checked={this.state.filterProjectsByLastUpdated === 'filterProjectsByLastUpdatedOneDay'} onChange={this.handleOptionChange} />
               <CustomInput type="radio" name="lastupdated" id="filterProjectsByLastUpdatedOneWeek" label="One Week"
-                checked={this.state.selectedOption === 'filterProjectsByLastUpdatedOneWeek'} onChange={this.handleOptionChange} />
+                checked={this.state.filterProjectsByLastUpdated === 'filterProjectsByLastUpdatedOneWeek'} onChange={this.handleOptionChange} />
               <CustomInput type="radio" name="lastupdated" id="filterProjectsByLastUpdatedTwoWeeks" label="Two Weeks"
-                checked={this.state.selectedOption === 'filterProjectsByLastUpdatedTwoWeeks'} onChange={this.handleOptionChange} />
+                checked={this.state.filterProjectsByLastUpdated === 'filterProjectsByLastUpdatedTwoWeeks'} onChange={this.handleOptionChange} />
               <CustomInput type="radio" name="lastupdated" id="filterProjectsByLastUpdatedOneMonth" label="One Month"
-                checked={this.state.selectedOption === 'filterProjectsByLastUpdatedOneMonth'} onChange={this.handleOptionChange} />
+                checked={this.state.filterProjectsByLastUpdated === 'filterProjectsByLastUpdatedOneMonth'} onChange={this.handleOptionChange} />
               <CustomInput type="radio" name="lastupdated" id="filterProjectsByLastUpdatedTwoMonths" label="Two Months"
-                checked={this.state.selectedOption === 'filterProjectsByLastUpdatedTwoMonths'} onChange={this.handleOptionChange} />
+                checked={this.state.filterProjectsByLastUpdated === 'filterProjectsByLastUpdatedTwoMonths'} onChange={this.handleOptionChange} />
               <CustomInput type="radio" name="lastupdated" id="filterProjectsByLastUpdatedOneYear" label="One Year"
-                checked={this.state.selectedOption === 'filterProjectsByLastUpdatedOneYear'} onChange={this.handleOptionChange} />
-            </DropdownItem>
-            <DropdownItem toggle={false}><a href="#" size="sm" color="primary">Show All</a></DropdownItem>
+                checked={this.state.filterProjectsByLastUpdated === 'filterProjectsByLastUpdatedOneYear'} onChange={this.handleOptionChange} />
+            </DropdownItemStatic>
+            <DropdownItem toggle={false}><a onClick={this.handleOptionChange}>Do Not Filter by Last Updated</a></DropdownItem>
           </DropdownMenu>
         </ButtonDropdown>
         <ButtonDropdown className="ml-2" isOpen={this.state.dropdownOpen[2]} toggle={() => {this.toggle(2)}}>
