@@ -29,6 +29,7 @@ class ProjectFilters extends PureComponent {
     this.handleOptionChange = this.handleOptionChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
     this.state = {
+      user: this.props.user,
       dropdownOpen: new Array(3).fill(false),
       filterProjectsByTypeFeatureFilm: true,
       filterProjectsByTypeFeatureFilmLb: false,
