@@ -1,4 +1,4 @@
-import { Components, registerComponent, withCurrentUser, withList } from 'meteor/vulcan:core';
+import { Components, registerComponent, withList } from 'meteor/vulcan:core';
 import React from 'react';
 import {
   Button,
@@ -20,7 +20,7 @@ const ProjectsTable = ({loading, loadingMore, loadMore, results = [], currentUse
       <Card>
         <CardHeader>
           <i className="fa fa-picture-o"></i> ProjectsTable
-          <Components.ProjectFilters user={currentUser}/>
+          <Components.ProjectFilters/>
         </CardHeader>
       { loading ?
         <CardBody>
@@ -75,4 +75,4 @@ const options = {
   limit: 20
 };
 
-registerComponent('ProjectsTable', ProjectsTable, withCurrentUser, [withList, options]);
+registerComponent('ProjectsTable', ProjectsTable, [withList, options]);

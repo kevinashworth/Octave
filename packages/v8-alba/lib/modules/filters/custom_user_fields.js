@@ -2,7 +2,7 @@ import { extendFragment } from 'meteor/vulcan:core';
 import Users from 'meteor/vulcan:users';
 import _ from 'lodash';
 
-let projectFiltersByType = {
+let filterProjectsByType = {
   "Feature Film": true,
   "Feature Film (LB)": false,
   "Feature Film (MLB)": false,
@@ -19,7 +19,7 @@ let projectFiltersByType = {
   "New Media (<$50k)": false,
 };
 
-let projectFiltersByStatus = {
+let filterProjectsByStatus = {
   "Casting": true,
   "On Hold": false,
   "Shooting": false,
@@ -30,16 +30,16 @@ let projectFiltersByStatus = {
   "Canceled": false,
 };
 
-  // let projectFiltersByLastUpdated = {
+  // let filterProjectsByLastUpdated = {
   //   filterProjectsByLastUpdated: 'filterProjectsByLastUpdatedTwoWeeks'
   // }
 
-let projectFiltersArray = [];
+let filterProjectsArray = [];
 
 const addFields = () => {
-  _.forEach(projectFiltersByType, function(value, key) {
-    const fieldName = _.camelCase(`projectFiltersByType${key}`);
-    projectFiltersArray.push(fieldName);
+  _.forEach(filterProjectsByType, function(value, key) {
+    const fieldName = _.camelCase(`filterProjectsByType${key}`);
+    filterProjectsArray.push(fieldName);
     Users.addField({
       fieldName: fieldName,
       fieldSchema: {
@@ -53,16 +53,16 @@ const addFields = () => {
         editableBy: ["members"],
         // group: {
         //   label: "Type",
-        //   name: "projectFiltersByType",
+        //   name: "filterProjectsByType",
         //   order: 1
         // },
       }
     })
   });
 
-  _.forEach(projectFiltersByStatus, function(value, key) {
-    const fieldName = _.camelCase(`projectFiltersByStatus${key}`);
-    projectFiltersArray.push(fieldName);
+  _.forEach(filterProjectsByStatus, function(value, key) {
+    const fieldName = _.camelCase(`filterProjectsByStatus${key}`);
+    filterProjectsArray.push(fieldName);
     Users.addField({
       fieldName: fieldName,
       fieldSchema: {
@@ -76,14 +76,14 @@ const addFields = () => {
         editableBy: ["members"],
         // group: {
         //   label: "Status",
-        //   name: "projectFiltersByStatus",
+        //   name: "filterProjectsByStatus",
         //   order: 2
         // },
       }
     })
   });
 
-  projectFiltersArray.push("filterProjectsByLastUpdated");
+  filterProjectsArray.push("filterProjectsByLastUpdated");
   Users.addField({
     fieldName: "filterProjectsByLastUpdated",
     fieldSchema: {
@@ -97,13 +97,13 @@ const addFields = () => {
       editableBy: ["members"],
       // group: {
       //   label: "Status",
-      //   name: "projectFiltersByStatus",
+      //   name: "filterProjectsByStatus",
       //   order: 2
       // },
     }
   })
 
-  const graphQLFilterList = projectFiltersArray.join().replace(/,/g, '\n');
+  const graphQLFilterList = filterProjectsArray.join().replace(/,/g, '\n');
 
   // registerFragment(`
   //   fragment UserProjectFiltersList on User {
@@ -113,7 +113,7 @@ const addFields = () => {
   // `);
 
   extendFragment(
-    'UsersDefaultFragment',
+    'UsersCurrent',
     `
     ${graphQLFilterList}
   `

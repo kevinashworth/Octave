@@ -1,5 +1,5 @@
-import { registerComponent } from "meteor/vulcan:core";
-// import Users from 'meteor/vulcan:users';
+import { registerComponent, withCurrentUser, withEdit } from "meteor/vulcan:core";
+import Users from 'meteor/vulcan:users';
 import React, { PureComponent } from 'react';
 import {
   ButtonDropdown,
@@ -27,31 +27,31 @@ class ProjectFilters extends PureComponent {
     this.handleClick = this.handleClick.bind(this);
     this.handleInputChange = this.handleInputChange.bind(this);
     this.handleOptionChange = this.handleOptionChange.bind(this);
+    const user = this.props.currentUser;
     this.state = {
-      user: this.props.user,
       dropdownOpen: new Array(3).fill(false),
-      filterProjectsByTypeFeatureFilm: true,
-      filterProjectsByTypeFeatureFilmLb: false,
-      filterProjectsByTypeFeatureFilmMlb: false,
-      filterProjectsByTypeFeatureFilmUlb: false,
-      filterProjectsByTypePilotOneHour: true,
-      filterProjectsByTypePilot12Hour: true,
-      filterProjectsByTypeTvOneHour: false,
-      filterProjectsByTypeTv12Hour: false,
-      filterProjectsByTypeTvDaytime: false,
-      filterProjectsByTypeTvMiniSeries: false,
-      filterProjectsByTypeTvMovie: false,
-      filterProjectsByTypeNewMediaSvod: true,
-      filterProjectsByTypeNewMediaAvod: true,
-      filterProjectsByTypeNewMedia50K: false,
-      filterProjectsByStatusCasting: true,
-      filterProjectsByStatusOnHold: false,
-      filterProjectsByStatusShooting: false,
-      filterProjectsByStatusOnHiatus: false,
-      filterProjectsByStatusSeeNotes: true,
-      filterProjectsByStatusUnknown: true,
-      filterProjectsByStatusWrapped: false,
-      filterProjectsByStatusCanceled: false,
+      filterProjectsByTypeFeatureFilm: user.filterProjectsByTypeFeatureFilm,
+      filterProjectsByTypeFeatureFilmLb: user.filterProjectsByTypeFeatureFilmLb,
+      filterProjectsByTypeFeatureFilmMlb: user.filterProjectsByTypeFeatureFilmMlb,
+      filterProjectsByTypeFeatureFilmUlb: user.filterProjectsByTypeFeatureFilmUlb,
+      filterProjectsByTypePilotOneHour: user.filterProjectsByTypePilotOneHour,
+      filterProjectsByTypePilot12Hour: user.filterProjectsByTypePilot12Hour,
+      filterProjectsByTypeTvOneHour: user.filterProjectsByTypeTvOneHour,
+      filterProjectsByTypeTv12Hour: user.filterProjectsByTypeTv12Hour,
+      filterProjectsByTypeTvDaytime: user.filterProjectsByTypeTvDaytime,
+      filterProjectsByTypeTvMiniSeries: user.filterProjectsByTypeTvMiniSeries,
+      filterProjectsByTypeTvMovie: user.filterProjectsByTypeTvMovie,
+      filterProjectsByTypeNewMediaSvod: user.filterProjectsByTypeNewMediaSvod,
+      filterProjectsByTypeNewMediaAvod: user.filterProjectsByTypeNewMediaAvod,
+      filterProjectsByTypeNewMedia50K: user.filterProjectsByTypeNewMedia50K,
+      filterProjectsByStatusCasting: user.filterProjectsByStatusCasting,
+      filterProjectsByStatusOnHold: user.filterProjectsByStatusOnHold,
+      filterProjectsByStatusShooting: user.filterProjectsByStatusShooting,
+      filterProjectsByStatusOnHiatus: user.filterProjectsByStatusOnHiatus,
+      filterProjectsByStatusSeeNotes: user.filterProjectsByStatusSeeNotes,
+      filterProjectsByStatusUnknown: user.filterProjectsByStatusUnknown,
+      filterProjectsByStatusWrapped: user.filterProjectsByStatusWrapped,
+      filterProjectsByStatusCanceled: user.filterProjectsByStatusCanceled,
       filterProjectsByLastUpdated: 'filterProjectsByLastUpdatedTwoWeeks'
     };
   }
@@ -71,6 +71,23 @@ class ProjectFilters extends PureComponent {
     this.setState({
       [name]: value
     });
+
+    this.props.editMutation({
+      documentId: this.props.currentUser._id,
+      set: {
+        [name]: value
+      },
+      unset: {}
+    })
+    .then(({data}) => {
+      // eslint-disable-next-line no-console
+      console.info('success:', data);
+    })
+    .catch(error => {
+      // eslint-disable-next-line no-console
+      console.error('failure:', error);
+    });
+
   }
 
   // this happens to handle the Do Not Filter link as empty string, which should work
@@ -205,4 +222,9 @@ ProjectFilters.contextTypes = {
   updateCurrentValues: PropTypes.func,
 };
 
-registerComponent('ProjectFilters', ProjectFilters);
+const withEditOptions = {
+  collection: Users,
+  fragmentName: 'UsersCurrent'
+}
+
+registerComponent('ProjectFilters', ProjectFilters, withCurrentUser, [withEdit, withEditOptions]);
