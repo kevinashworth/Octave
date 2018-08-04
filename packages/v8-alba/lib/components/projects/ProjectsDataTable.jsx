@@ -3,6 +3,9 @@ import React, { PureComponent } from 'react';
 import { Link } from 'react-router';
 import { Button, Card, CardBody, CardFooter, CardHeader } from 'reactstrap';
 import { BootstrapTable, TableHeaderColumn } from 'react-bootstrap-table';
+import _ from 'lodash';
+import moment from 'moment';
+import { DATE_FORMAT_LONG, DATE_FORMAT_SHORT } from '../../modules/constants.js'
 import Projects from '../../modules/projects/collection.js';
 
 // Set initial state. Just options I want to keep.
@@ -10,10 +13,14 @@ import Projects from '../../modules/projects/collection.js';
 let keptState = {
   defaultSearch: "",
   page: 1,
-  sizePerPage: 20,
+  sizePerPage: 50,
   sortName: "projectTitle",
   sortOrder: "asc"
 };
+
+function dateFormatter(cell, row) {
+  return moment(cell).format(DATE_FORMAT_SHORT);
+}
 
 class ProjectsDataTable extends PureComponent {
   constructor(props) {
@@ -110,6 +117,21 @@ class ProjectsDataTable extends PureComponent {
     };
     const hasMore = results && (totalCount > results.length);
 
+    const filteredResults = _.filter(results, function(o) {
+      // compare current time to 1 week ago, but generous, so start of day then, not the time it is now - 1 week plus up to 23:59
+      const now = moment();
+      const dateToCompare = o.updatedAt ? o.updatedAt : o.createdAt;
+      const displayThis = moment(dateToCompare).isAfter(now.subtract(14, 'days').startOf('day'))
+      // if (updatedAt) {
+      //   console.log(updatedAt)
+      //   console.log(moment(updatedAt).format(DATE_FORMAT_LONG));
+      //   console.log(moment(updatedAt).subtract(14, 'days').startOf('day').format(DATE_FORMAT_LONG));
+      // }
+      return _.includes(['Casting', 'On Hiatus', 'On Hold', 'See Notes', 'Unknown'], o.status)
+          && _.includes(['Feature Film', 'Mod. Low Budget Film', '1/2 Hour'], o.projectType)
+          && displayThis;
+    });
+
     return (
       <div className="animated fadeIn">
         <Card>
@@ -118,7 +140,7 @@ class ProjectsDataTable extends PureComponent {
             <Components.ProjectDropdowns/>
           </CardHeader>
           <CardBody>
-            <BootstrapTable data={this.props.results} version="4" condensed striped hover pagination search options={this.state.options} selectRow={selectRow} keyField='_id'>
+            <BootstrapTable data={filteredResults} version="4" condensed striped hover pagination search options={this.state.options} selectRow={selectRow} keyField='_id'>
               <TableHeaderColumn dataField="projectTitle" dataSort dataFormat={
                 (cell, row) => {
                   return (
@@ -130,6 +152,7 @@ class ProjectsDataTable extends PureComponent {
               }>Name</TableHeaderColumn>
               <TableHeaderColumn dataField="projectType" dataSort>Type</TableHeaderColumn>
               <TableHeaderColumn dataField="castingCompany" dataSort>Casting</TableHeaderColumn>
+              <TableHeaderColumn dataField="updatedAt" dataFormat={ dateFormatter } dataSort>Updated</TableHeaderColumn>
               <TableHeaderColumn dataField="status" dataSort>Status</TableHeaderColumn>
             </BootstrapTable>
           </CardBody>

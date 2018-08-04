@@ -28,6 +28,8 @@ registerFragment(/* GraphQL */ `
     notes
     logline
     website
+    season
+    order
     slug
   }
 `);
@@ -37,9 +39,16 @@ registerFragment(/* GraphQL */ `
     _id
     projectTitle
     projectType
+    castingCompany
     contacts
     addresses
+    network
     status
     union
+    notes
+    logline
+    website
+    season
+    order
   }
 `);
