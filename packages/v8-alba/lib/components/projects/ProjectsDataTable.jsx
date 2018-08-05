@@ -137,7 +137,7 @@ class ProjectsDataTable extends PureComponent {
         <Card>
           <CardHeader>
             <i className="fa fa-camera"></i>Projects Data Table
-            <Components.ProjectDropdowns/>
+            <Components.ProjectFilters/>
           </CardHeader>
           <CardBody>
             <BootstrapTable data={filteredResults} version="4" condensed striped hover pagination search options={this.state.options} selectRow={selectRow} keyField='_id'>

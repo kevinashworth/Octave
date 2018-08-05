@@ -1,23 +1,9 @@
 import { extendFragment } from 'meteor/vulcan:core';
 import Users from 'meteor/vulcan:users';
+import { PROJECT_ENUM, STATUS_ENUM } from '../constants.js';
 import _ from 'lodash';
 
-let filterProjectsByType = {
-  "Feature Film": true,
-  "Feature Film (LB)": false,
-  "Feature Film (MLB)": false,
-  "Feature Film (ULB)": false,
-  "Pilot One Hour": true,
-  "Pilot 1/2 Hour": true,
-  "TV One Hour": false,
-  "TV 1/2 Hour": false,
-  "TV Daytime": false,
-  "TV Mini-Series": false,
-  "TV Movie": false,
-  "New Media (SVOD)": true,
-  "New Media (AVOD)": true,
-  "New Media (<$50k)": false,
-};
+const filterProjectsByType = PROJECT_ENUM;
 
 let filterProjectsByStatus = {
   "Casting": true,
@@ -37,28 +23,48 @@ let filterProjectsByStatus = {
 let filterProjectsArray = [];
 
 const addFields = () => {
-  _.forEach(filterProjectsByType, function(value, key) {
-    const fieldName = _.camelCase(`filterProjectsByType${key}`);
-    filterProjectsArray.push(fieldName);
-    Users.addField({
-      fieldName: fieldName,
-      fieldSchema: {
-        label: `${key}`,
-        type: Boolean,
-        optional: true,
-        defaultValue: value,
-        control: "checkbox",
-        viewableBy: ["members"],
-        insertableBy: ["members"],
-        editableBy: ["members"],
-        // group: {
-        //   label: "Type",
-        //   name: "filterProjectsByType",
-        //   order: 1
-        // },
-      }
-    })
-  });
+  // _.forEach(filterProjectsByType, function(value, key) {
+  //   const fieldName = _.camelCase(`filterProjectsByType${key}`);
+  //   filterProjectsArray.push(fieldName);
+  //   Users.addField({
+  //     fieldName: fieldName,
+  //     fieldSchema: {
+  //       label: `${key}`,
+  //       type: Boolean,
+  //       optional: true,
+  //       defaultValue: value,
+  //       control: "checkbox",
+  //       viewableBy: ["members"],
+  //       insertableBy: ["members"],
+  //       editableBy: ["members"],
+  //       // group: {
+  //       //   label: "Type",
+  //       //   name: "filterProjectsByType",
+  //       //   order: 1
+  //       // },
+  //     }
+  //   })
+  // });
+  Users.addField([{
+    fieldName: "filterProjectsByType",
+    fieldSchema: {
+      label: "filterProjectsByType",
+      type: Array,
+      optional: true,
+      defaultValue: filterProjectsByType,
+      viewableBy: ["members"],
+      insertableBy: ["members"],
+      editableBy: ["members"],
+    }
+  },
+  {
+    fieldName: 'filterProjectsByType.$',
+    fieldSchema: {
+      type: String,
+      optional: true
+    }
+  }
+  ])
 
   _.forEach(filterProjectsByStatus, function(value, key) {
     const fieldName = _.camelCase(`filterProjectsByStatus${key}`);
