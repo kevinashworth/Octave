@@ -29,6 +29,31 @@ Migrations.add({
   }
 });
 
+Migrations.add({
+  version: 2,
+  name: 'updatedAt is empty? set to createdAt',
+  up() {
+    Projects.find({updatedAt: {$exists: false}}).forEach(project => {
+      if (project.createdAt) {
+        Projects.update(project._id,
+        {
+          $set: {updatedAt: project.createdAt}
+        })
+      }
+    })
+  },
+  down() {
+    Projects.find({$where: "this.createdAt.getTime() == this.updatedAt.getTime()"}).forEach(project => {
+      if (project.createdAt) {
+        Projects.update(project._id,
+          {
+            $unset: {updatedAt: 1}
+          });
+        }
+    })
+  }
+})
+
 Meteor.startup(() => {
-  Migrations.migrateTo('1');
+  Migrations.migrateTo('2');
 });

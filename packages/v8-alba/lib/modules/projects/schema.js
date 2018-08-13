@@ -57,6 +57,17 @@ const schema = {
 
   // custom properties
 
+  updatedAt: {
+    type: Date,
+    optional: true,
+    viewableBy: ["guests"],
+    onInsert: () => {
+      return new Date();
+    },
+    onEdit: () => {
+      return new Date();
+    }
+  },
   projectTitle: {
     label: "Title",
     type: String,
@@ -184,14 +195,6 @@ const schema = {
       if (modifier.$set.projectTitle) {
         return Utils.slugify(modifier.$set.projectTitle);
       }
-    }
-  },
-  updatedAt: {
-    type: Date,
-    optional: true,
-    viewableBy: ["guests"],
-    onEdit: () => {
-      return new Date();
     }
   },
 };
