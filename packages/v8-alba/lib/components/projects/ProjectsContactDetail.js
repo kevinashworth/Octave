@@ -1,5 +1,6 @@
 import { registerComponent } from 'meteor/vulcan:core';
 import React, { PureComponent } from 'react';
+import { Link } from 'react-router';
 // import PropTypes from 'prop-types';
 import { CardText } from 'reactstrap';
 
@@ -11,7 +12,7 @@ class ProjectsContactDetail extends PureComponent {
     const contact = this.props.contact;
     return (
       <CardText className="mb-0">
-        { contact.contactTitle } <b>{ contact.contactName }</b> ( {contact.contactId} )
+        { contact.contactTitle } <b><Link to={`/contacts/${contact.contactId}`}>{contact.contactName}</Link></b>
       </CardText>
     )
   }
