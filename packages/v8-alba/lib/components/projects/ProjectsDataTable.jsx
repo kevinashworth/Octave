@@ -132,7 +132,7 @@ class ProjectsDataTable extends PureComponent {
       // compare current time to 1 week ago, but generous, so start of day then, not the time it is now - 1 week plus up to 23:59
       const now = moment();
       const dateToCompare = o.updatedAt ? o.updatedAt : o.createdAt;
-      const displayThis = moment(dateToCompare).isAfter(now.subtract(28, 'days').startOf('day'))
+      const displayThis = moment(dateToCompare).isAfter(now.subtract(60, 'days').startOf('day'))
       // if (updatedAt) {
       //   console.log(updatedAt)
       //   console.log(moment(updatedAt).format(DATE_FORMAT_LONG));
