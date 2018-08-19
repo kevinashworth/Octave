@@ -19,11 +19,11 @@ function getFullNameFromContact ({firstName, middleName, lastName}) {
   }
 }
 
-const projectGroup = {
-  name: 'projects',
-  label: 'Projects',
-  order: 10
-}
+// const projectGroup = {
+//   name: 'projects',
+//   label: 'Projects',
+//   order: 10
+// }
 
 const linkGroup = {
   name: 'links',
@@ -55,17 +55,31 @@ export const linkSchema = new SimpleSchema({
   },
 });
 
-export const projectIdsSchema = new SimpleSchema({
+export const projectSchema = new SimpleSchema({
   projectId: {
     type: String,
+    control: "SelectProjectIdNameTitle",
     optional: true,
     viewableBy: ["members"],
     insertableBy: ["admins"],
     editableBy: ["admins"],
+    options: props => props.data.ProjectsList.map(project => ({
+        value: project._id,
+        label: project.projectTitle,
+      })),
   },
   projectTitle: {
     type: String,
     optional: true,
+    hidden: true,
+    viewableBy: ["members"],
+    insertableBy: ["admins"],
+    editableBy: ["admins"],
+  },
+  titleForProject: {
+    type: String,
+    optional: true,
+    hidden: true,
     viewableBy: ["members"],
     insertableBy: ["admins"],
     editableBy: ["admins"],
@@ -228,17 +242,22 @@ const schema = {
 
   // A contact has many projects
 
-  projectIds: {
+  projects: {
     label: "Projects",
     type: Array,
     optional: true,
     viewableBy: ["members"],
     insertableBy: ["admins"],
     editableBy: ["admins"],
-    group: projectGroup
+    query: `
+      ProjectsList{
+        _id
+        projectTitle
+      }
+    `
   },
-  'projectIds.$': {
-    type: projectIdsSchema,
+  'projects.$': {
+    type: projectSchema,
   },
 
   // projectsCount: {
