@@ -158,7 +158,7 @@ const schema = {
     editableBy: ["admins"]
   },
   contacts: {
-    label: "contacts",
+    label: "Contacts",
     type: Array,
     optional: true,
     viewableBy: ["members"],
