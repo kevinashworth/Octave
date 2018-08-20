@@ -10,11 +10,11 @@ const OptimizedInput = pure(Input);
 const OptimizedSelect = onlyUpdateForKeys(['value'])(Select);
 
 /**
-* This version explicity for contactId, contactName, contactTitle
+* This version explicity for projectId, projectTitle, titleForProject
 * Also working on a DRY component called (for now) SelectIdGenericWIP.jsx
 */
 
-class SelectContactIdNameTitle extends PureComponent {
+class SelectProjectIdNameTitle extends PureComponent {
   constructor(props) {
     super(props);
 
@@ -22,10 +22,10 @@ class SelectContactIdNameTitle extends PureComponent {
     this.handleInputChange = this.handleInputChange.bind(this);
 
     const nestedFields = Object.keys(this.props.nestedSchema);
-    const contacts = this.props.document.contacts;
+    const projects = this.props.document.projects;
     const itemIndex = this.props.itemIndex;
-    const contactName = contacts[itemIndex] ? contacts[itemIndex].contactName : ""
-    const contactTitle = contacts[itemIndex] ? contacts[itemIndex].contactTitle : ""
+    const projectTitle = projects[itemIndex] ? projects[itemIndex].projectTitle : ""
+    const titleForProject = projects[itemIndex] ? projects[itemIndex].titleForProject : ""
 
     this.state = {
       selectField: nestedFields.shift(),  // get first field, shift remaining
@@ -33,19 +33,19 @@ class SelectContactIdNameTitle extends PureComponent {
       value: this.props.value,
       path: this.props.path,
       pathPrefix: this.props.parentFieldName + "." + this.props.itemIndex + ".",
-      contactName: contactName,
-      contactTitle: contactTitle,
+      projectTitle: projectTitle,
+      titleForProject: titleForProject,
     };
   }
 
   handleSelectChange = (value) => {
     this.setState({
       value,
-      contactName: value.label
+      projectTitle: value.label
     });
     this.context.updateCurrentValues({
       [this.state.path]: value.value,
-      [this.state.pathPrefix + 'contactName']: value.label
+      [this.state.pathPrefix + 'projectTitle']: value.label
     });
   }
 
@@ -62,27 +62,27 @@ class SelectContactIdNameTitle extends PureComponent {
   render() {
     return (
       <FormGroup>
-        <Label for="contactId">Name from Database</Label>
+        <Label for="projectId">Project Name from Database</Label>
           <OptimizedSelect
-            id="contactId"
+            id="projectId"
             value={this.state.value}
             onChange={this.handleSelectChange}
             options={this.props.options}
             resetValue={{ value: null, label: '' }}
           />
-        <Label for="contactName">Editable Name</Label>
+        <Label for="projectTitle">Editable Project Name</Label>
         <OptimizedInput
           type="text"
-          id="contactName"
-          value={this.state.contactName}
+          id="projectTitle"
+          value={this.state.projectTitle}
           onChange={this.handleInputChange}
           required
         />
-        <Label for="contactTitle">Title for Project</Label>
+        <Label for="titleForProject">Contact's Title for Project</Label>
         <OptimizedInput
           type="text"
-          id="contactTitle"
-          value={this.state.contactTitle}
+          id="titleForProject"
+          value={this.state.titleForProject}
           onChange={this.handleInputChange}
           required
         />
@@ -92,8 +92,8 @@ class SelectContactIdNameTitle extends PureComponent {
   }
 }
 
-SelectContactIdNameTitle.contextTypes = {
+SelectProjectIdNameTitle.contextTypes = {
   updateCurrentValues: PropTypes.func,
 };
 
-registerComponent('SelectContactIdNameTitle', SelectContactIdNameTitle);
+registerComponent('SelectProjectIdNameTitle', SelectProjectIdNameTitle);

@@ -75,13 +75,14 @@ const ContactsSingle = (props) => {
           <CardText dangerouslySetInnerHTML={createAddress()}></CardText>
           <CardText>{ contact.body }</CardText>
         </CardBody>
-        {contact.projectIds &&
+        {contact.projects &&
           <CardBody>
             <CardTitle>Projects</CardTitle>
-            <CardText>
-            {contact.projectIds.map(project =>
-              <CardLink key={project.projectId}><Link to={`/projects/${project.projectId}`}>{project.projectTitle}</Link></CardLink>)}
-            </CardText>
+            {contact.projects.map(project =>
+              <CardText key={project.projectId}>
+                <b><CardLink href={`/projects/${project.projectId}`}>{project.projectTitle}</CardLink></b>
+              </CardText>
+            )}
           </CardBody>
         }
         {contact.links &&

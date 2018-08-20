@@ -31,7 +31,8 @@ import '../components/common/Filter/ContactDropdowns';
 import '../components/common/Filter/ProjectDropdowns';
 import '../components/common/Filter/ProjectFiltersWrapped';
 import '../components/common/Select';
-import '../components/common/SelectIdNameTitle';
+import '../components/common/SelectContactIdNameTitle';
+import '../components/common/SelectProjectIdNameTitle';
 import '../components/common/SelectMultiple';
 
 import '../components/contacts/ContactsDataTable';
