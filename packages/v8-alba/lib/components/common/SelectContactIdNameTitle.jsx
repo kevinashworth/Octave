@@ -61,16 +61,19 @@ class SelectContactIdNameTitle extends PureComponent {
 
   render() {
     return (
+    <div>
       <FormGroup>
-        <Label for="contactId">Name from Database</Label>
-          <OptimizedSelect
-            id="contactId"
-            value={this.state.value}
-            onChange={this.handleSelectChange}
-            options={this.props.options}
-            resetValue={{ value: null, label: '' }}
-          />
-        <Label for="contactName">Editable Name</Label>
+        <Label for="contactId">Contact's Name from Database</Label>
+        <OptimizedSelect
+          id="contactId"
+          value={this.state.value}
+          onChange={this.handleSelectChange}
+          options={this.props.options}
+          resetValue={{ value: null, label: '' }}
+        />
+      </FormGroup>
+      <FormGroup>
+        <Label for="contactName">Editable Contact Name</Label>
         <OptimizedInput
           type="text"
           id="contactName"
@@ -78,7 +81,9 @@ class SelectContactIdNameTitle extends PureComponent {
           onChange={this.handleInputChange}
           required
         />
-        <Label for="contactTitle">Title for Project</Label>
+      </FormGroup>
+      <FormGroup>
+        <Label for="contactTitle">Contact's Title for This Project</Label>
         <OptimizedInput
           type="text"
           id="contactTitle"
@@ -87,7 +92,7 @@ class SelectContactIdNameTitle extends PureComponent {
           required
         />
       </FormGroup>
-
+    </div>
     );
   }
 }
