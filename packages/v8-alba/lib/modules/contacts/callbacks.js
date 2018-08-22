@@ -35,6 +35,8 @@ I get confused, so here's a description:
   contactName: fullName -- which is getFullNameFromContact(contact),
   contactTitle: project.titleForProject
   }
+
+TODO: For some reason, the project's `updatedAt` field doesn't get a `new Date()` `onEdit`
 */
 function ContactEditUpdateProjects (contact) {
   if (!contact.projects) {
@@ -43,35 +45,29 @@ function ContactEditUpdateProjects (contact) {
   const fullName = getFullNameFromContact(contact);
 
   contact.projects.forEach(contactProject => {
-    const project = Projects.findOne(contactProject.projectId);
+    const project = Projects.findOne(contactProject.projectId); // TODO: error handling
+    const newContact = {
+      contactId: contact._id,
+      contactName: fullName,
+      contactTitle: contactProject.titleForProject
+    };
+    let newContacts = [];
 
     // case 1: there are no contacts on the project and project.contacts is undefined
     if (!project.contacts) {
-      Connectors.update(Projects, project._id, { $set: { contacts: [{
-        contactId: contact._id,
-        contactName: fullName,
-        contactTitle: contactProject.titleForProject
-      }] } });
+      newContacts = [newContact];
     } else {
       const i = _.findIndex(project.contacts, {contactId: contact._id});
-      let newContactArray = project.contacts;
-      // case 2: this contact is not on this project but other contacts are and we're adding this contact
+      newContacts = project.contacts;
       if (i < 0) {
-        newContactArray.push({
-          contactId: contact._id,
-          contactName: fullName,
-          contactTitle: contactProject.titleForProject
-        })
-        // case 3: this contact is on this project and we're updating the info
+        // case 2: this contact is not on this project but other contacts are and we're adding this contact
+        newContacts.push(newContact);
       } else {
-        newContactArray[i] = {
-          contactId: contact._id,
-          contactName: fullName,
-          contactTitle: contactProject.titleForProject
-        }
+        // case 3: this contact is on this project and we're updating the info
+        newContacts[i] = newContact;
       }
-      Connectors.update(Projects, project._id, { $set: { contacts: newContactArray } });
     }
+    Connectors.update(Projects, project._id, { $set: { contacts: newContacts } });
   })
 }
 
