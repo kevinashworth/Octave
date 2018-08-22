@@ -2,6 +2,7 @@ import { createCollection, getDefaultResolvers, getDefaultMutations } from "mete
 import schema from "./schema.js";
 import './fragments.js';
 import './permissions.js';
+import './callbacks.js';
 
 const Contacts = createCollection({
   collectionName: "Contacts",
