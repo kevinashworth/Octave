@@ -56,10 +56,21 @@ class ProjectFiltersWrapped extends PureComponent {
   }
 
   handleClick(event) {
-    // eslint-disable-next-line no-console
-    console.info('handleClick: An event was triggered: ', event.target);
-    const i = event.target.id;
-    this.props.toggleProjectTypeFilter(i);
+    // const all = event.target.innerHTML.indexOf("All") !== -1;
+    const none = event.target.innerHTML.indexOf("None") !== -1;
+    const length = this.props.projectTypeFilters.length;
+    var i;
+    if (event.target.innerHTML.indexOf("Toggle") !== -1) {
+      for (i = 0; i < length; i++) {
+        this.props.actions.toggleProjectTypeFilter(i);
+      }
+    } else {
+      for (i = 0; i < length; i++) {
+        if ((this.props.projectTypeFilters[i].value && none) || (!this.props.projectTypeFilters[i].value && !none)) {
+          this.props.actions.toggleProjectTypeFilter(i);
+        }
+      }
+    }
   }
 
   render() {
@@ -78,7 +89,9 @@ class ProjectFiltersWrapped extends PureComponent {
                   checked={project.value} onChange={this.handleInputChange} />
               )}
             </DropdownItemStatic>
-            <DropdownItem toggle={false}><a href="#" size="sm" color="primary">Show All</a></DropdownItem>
+            <DropdownItem onClick={this.handleClick}>All</DropdownItem>
+            <DropdownItem onClick={this.handleClick}>None</DropdownItem>
+            <DropdownItem onClick={this.handleClick}>Toggle</DropdownItem>
           </DropdownMenu>
         </ButtonDropdown>
         <ButtonDropdown className="ml-2" isOpen={this.state.dropdownOpen[1]} toggle={() => {this.toggle(1)}}>
