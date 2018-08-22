@@ -41,21 +41,12 @@ function ContactEditUpdateProjects (contact) {
     return;
   }
   const fullName = getFullNameFromContact(contact);
-  console.group();
-  console.log('Hello from ContactEditUpdateProjects for', fullName);
 
   contact.projects.forEach(contactProject => {
     const project = Projects.findOne(contactProject.projectId);
-    console.log('Project', project.projectTitle, 'has contacts:', project.contacts);
 
     // case 1: there are no contacts on the project and project.contacts is undefined
     if (!project.contacts) {
-      console.log('No contacts found on project', project.projectTitle);
-      console.log('Will $set this as contacts:', [{
-        contactId: contact._id,
-        contactName: fullName,
-        contactTitle: contactProject.titleForProject
-      }]);
       Connectors.update(Projects, project._id, { $set: { contacts: [{
         contactId: contact._id,
         contactName: fullName,
@@ -79,12 +70,9 @@ function ContactEditUpdateProjects (contact) {
           contactTitle: contactProject.titleForProject
         }
       }
-      console.log('Existing contacts found on project', project.projectTitle);
-      console.log('Will $set this as contacts:', newContactArray);
       Connectors.update(Projects, project._id, { $set: { contacts: newContactArray } });
     }
   })
-  console.groupEnd();
 }
 
 addCallback('contacts.edit.after', ContactEditUpdateProjects);
