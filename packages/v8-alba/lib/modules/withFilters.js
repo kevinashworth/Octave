@@ -33,13 +33,15 @@ const initialState = {
   ],
   projectStatusFilters: [
     {projectStatus: "Casting", value: true},
-    {projectStatus: "On Hold", value: true},
+    {projectStatus: "Ordered", value: true},
+    {projectStatus: "Pre-Prod.", value: true},
     {projectStatus: "Shooting", value: true},
+    {projectStatus: "See Notes...", value: true},
     {projectStatus: "On Hiatus", value: true},
-    {projectStatus: "See Notes", value: true},
+    {projectStatus: "On Hold", value: true},
     {projectStatus: "Unknown", value: true},
-    {projectStatus: "Wrapped", value: true},
-    {projectStatus: "Canceled", value: true}
+    {projectStatus: "Wrapped", value: false},
+    {projectStatus: "Canceled", value: false},
   ],
   projectUpdatedFilters: [
     {projectUpdated: "One Day", value: false, moment1: '1', moment2: 'day'},
