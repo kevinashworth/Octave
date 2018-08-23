@@ -41,7 +41,15 @@ const initialState = {
     {projectStatus: "Wrapped", value: true},
     {projectStatus: "Canceled", value: true}
   ],
-  projectUpdatedFilter: "One Month"
+  projectUpdatedFilters: [
+    {projectUpdated: "One Day", value: false, moment1: '1', moment2: 'day'},
+    {projectUpdated: "One Week", value: false, moment1: '1', moment2: 'week'},
+    {projectUpdated: "Two Weeks", value: false, moment1: '2', moment2: 'week'},
+    {projectUpdated: "One Month", value: true, moment1: '1', moment2: 'month'},
+    {projectUpdated: "Two Months", value: false, moment1: '2', moment2: 'month'},
+    {projectUpdated: "One Year", value: false, moment1: '1', moment2: 'year'},
+    {projectUpdated: "All", value: false, moment1: '100', moment2: 'year'},
+  ]
 }
 
 addAction({
@@ -57,6 +65,14 @@ addAction({
     toggleProjectStatusFilter(i) {
       return {
         type: 'TOGGLE_PROJECT_STATUS_FILTER',
+        i
+      }
+    }
+  },
+  projectUpdatedFilters: {
+    toggleProjectUpdatedFilter(i) {
+      return {
+        type: 'TOGGLE_PROJECT_UPDATED_FILTER',
         i
       }
     }
@@ -122,6 +138,20 @@ addReducer({
         return state;
     }
   },
+  projectUpdatedFilters: (state = initialState.projectUpdatedFilters, action) => {
+    switch(action.type) {
+      case 'TOGGLE_PROJECT_UPDATED_FILTER':
+        return state.map((filter, index) => {
+          if (index === Number(action.i)) {
+            return { ...filter, value: true }
+          } else {
+            return { ...filter, value: false }
+          }
+        });
+      default:
+        return state;
+    }
+  },
   messages: (state = [], action) => {
     // default values
     const flashType = action.content && typeof action.content.type !== 'undefined' ? action.content.type : 'error';
@@ -173,11 +203,12 @@ addReducer({
 const mapStateToProps = state => ({
   projectTypeFilters: state.projectTypeFilters,
   projectStatusFilters: state.projectStatusFilters,
+  projectUpdatedFilters: state.projectUpdatedFilters
 });
 const actions = getActions();
 const mapDispatchToProps = dispatch => {
   return {
-     actions: bindActionCreators(Object.assign({}, actions.projectTypeFilters, actions.projectStatusFilters), dispatch)
+     actions: bindActionCreators(Object.assign({}, actions.projectTypeFilters, actions.projectStatusFilters, actions.projectUpdatedFilters), dispatch)
   };
 }
 

@@ -112,7 +112,7 @@ class ProjectsDataTable extends PureComponent {
   }
 
   render() {
-    const { count, totalCount, results, loadingMore, loadMore, projectTypeFilters, projectStatusFilters } = this.props;
+    const { count, totalCount, results, loadingMore, loadMore, projectTypeFilters, projectStatusFilters, projectUpdatedFilters } = this.props;
     const selectRow = {
       mode: 'checkbox'
     };
@@ -127,17 +127,21 @@ class ProjectsDataTable extends PureComponent {
       if (filter.value)
         statusFilters.push(filter.projectStatus);
     });
+    let moment1 = '';
+    let moment2 = '';
+    projectUpdatedFilters.forEach(filter => {
+      if (filter.value) {
+        moment1 = filter.moment1;
+        moment2 = filter.moment2;
+        return;
+      }
+    })
 
     const filteredResults = _.filter(results, function(o) {
-      // compare current time to 1 week ago, but generous, so start of day then, not the time it is now - 1 week plus up to 23:59
+      // compare current time to filter, but generous, so start of day then, not the time it is now - filter plus up to 23:59
       const now = moment();
       const dateToCompare = o.updatedAt ? o.updatedAt : o.createdAt;
-      const displayThis = moment(dateToCompare).isAfter(now.subtract(60, 'days').startOf('day'))
-      // if (updatedAt) {
-      //   console.log(updatedAt)
-      //   console.log(moment(updatedAt).format(DATE_FORMAT_LONG));
-      //   console.log(moment(updatedAt).subtract(14, 'days').startOf('day').format(DATE_FORMAT_LONG));
-      // }
+      const displayThis = moment(dateToCompare).isAfter(now.subtract(moment1, moment2).startOf('day'))
       return _.includes(statusFilters, o.status)
           && _.includes(typeFilters, o.projectType)
           && displayThis;
