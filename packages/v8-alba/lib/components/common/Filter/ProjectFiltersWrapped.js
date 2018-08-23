@@ -22,9 +22,9 @@ class ProjectFiltersWrapped extends PureComponent {
     super(props);
 
     this.toggle = this.toggle.bind(this);
-    this.handleClick = this.handleClick.bind(this);
-    this.handleInputChange = this.handleInputChange.bind(this);
-    this.handleOptionChange = this.handleOptionChange.bind(this);
+    this.handleClickProjectType = this.handleClickProjectType.bind(this);
+    this.handleClickProjectStatus = this.handleClickProjectStatus.bind(this);
+    this.handleChange = this.handleChange.bind(this);
     this.state = {
       dropdownOpen: new Array(3).fill(false),
     };
@@ -37,29 +37,51 @@ class ProjectFiltersWrapped extends PureComponent {
     });
   }
 
-  handleInputChange(event) {
+  handleChange(event) {
     const i = parseInt(event.target.id, 10);
     if (event.target.name === 'projectType')
       this.props.actions.toggleProjectTypeFilter(i);
     if (event.target.name === 'projectStatus')
       this.props.actions.toggleProjectStatusFilter(i);
+    if (event.target.name === 'projectUpdated')
+      this.props.actions.toggleProjectUpdatedFilter(i);
   }
 
-  // this happens to handle the Do Not Filter link as empty string, which should work
-  handleOptionChange(event) {
-    // eslint-disable-next-line no-console
-    console.log('handleOptionChange:', event.target.id);
-    this.setState({
-      filterProjectsByLastUpdated: event.target.id
-    });
-    // this.context.updateCurrentValues({ filterProjectsByLastUpdated: event.target.id });
+  handleClickProjectType(event) {
+    // const all = event.target.innerHTML.indexOf("All") !== -1;
+    const none = event.target.innerHTML.indexOf("None") !== -1;
+    const length = this.props.projectTypeFilters.length;
+    var i;
+    if (event.target.innerHTML.indexOf("Toggle") !== -1) {
+      for (i = 0; i < length; i++) {
+        this.props.actions.toggleProjectTypeFilter(i);
+      }
+    } else {
+      for (i = 0; i < length; i++) {
+        if ((this.props.projectTypeFilters[i].value && none) || (!this.props.projectTypeFilters[i].value && !none)) {
+          this.props.actions.toggleProjectTypeFilter(i);
+        }
+      }
+    }
   }
 
-  handleClick(event) {
-    // eslint-disable-next-line no-console
-    console.info('handleClick: An event was triggered: ', event.target);
-    const i = event.target.id;
-    this.props.toggleProjectTypeFilter(i);
+  // TODO: DRY these two handlers above and below this line
+
+  handleClickProjectStatus(event) {
+    const none = event.target.innerHTML.indexOf("None") !== -1;
+    const length = this.props.projectStatusFilters.length;
+    var i;
+    if (event.target.innerHTML.indexOf("Toggle") !== -1) {
+      for (i = 0; i < length; i++) {
+        this.props.actions.toggleProjectStatusFilter(i);
+      }
+    } else {
+      for (i = 0; i < length; i++) {
+        if ((this.props.projectStatusFilters[i].value && none) || (!this.props.projectStatusFilters[i].value && !none)) {
+          this.props.actions.toggleProjectStatusFilter(i);
+        }
+      }
+    }
   }
 
   render() {
@@ -75,10 +97,12 @@ class ProjectFiltersWrapped extends PureComponent {
               {this.props.projectTypeFilters.map((project, index) =>
                 <CustomInput type="checkbox" name="projectType"
                   id={`${index}-type`} key={`${project.projectType}`} label={`${project.projectType}`}
-                  checked={project.value} onChange={this.handleInputChange} />
+                  checked={project.value} onChange={this.handleChange} />
               )}
             </DropdownItemStatic>
-            <DropdownItem toggle={false}><a href="#" size="sm" color="primary">Show All</a></DropdownItem>
+            <DropdownItem onClick={this.handleClickProjectType} toggle={false}>All</DropdownItem>
+            <DropdownItem onClick={this.handleClickProjectType} toggle={false}>None</DropdownItem>
+            <DropdownItem onClick={this.handleClickProjectType} toggle={false}>Toggle</DropdownItem>
           </DropdownMenu>
         </ButtonDropdown>
         <ButtonDropdown className="ml-2" isOpen={this.state.dropdownOpen[1]} toggle={() => {this.toggle(1)}}>
@@ -88,20 +112,12 @@ class ProjectFiltersWrapped extends PureComponent {
           <DropdownMenu>
             <DropdownItem header>Filter projects by last updated</DropdownItem>
             <DropdownItemStatic>
-              {/* <CustomInput type="radio" name="lastupdated" id="filterProjectsByLastUpdatedOneDay" label="One Day"
-                checked={this.state.filterProjectsByLastUpdated === 'filterProjectsByLastUpdatedOneDay'} onChange={this.handleOptionChange} />
-              <CustomInput type="radio" name="lastupdated" id="filterProjectsByLastUpdatedOneWeek" label="One Week"
-                checked={this.state.filterProjectsByLastUpdated === 'filterProjectsByLastUpdatedOneWeek'} onChange={this.handleOptionChange} />
-              <CustomInput type="radio" name="lastupdated" id="filterProjectsByLastUpdatedTwoWeeks" label="Two Weeks"
-                checked={this.state.filterProjectsByLastUpdated === 'filterProjectsByLastUpdatedTwoWeeks'} onChange={this.handleOptionChange} />
-              <CustomInput type="radio" name="lastupdated" id="filterProjectsByLastUpdatedOneMonth" label="One Month"
-                checked={this.state.filterProjectsByLastUpdated === 'filterProjectsByLastUpdatedOneMonth'} onChange={this.handleOptionChange} />
-              <CustomInput type="radio" name="lastupdated" id="filterProjectsByLastUpdatedTwoMonths" label="Two Months"
-                checked={this.state.filterProjectsByLastUpdated === 'filterProjectsByLastUpdatedTwoMonths'} onChange={this.handleOptionChange} />
-              <CustomInput type="radio" name="lastupdated" id="filterProjectsByLastUpdatedOneYear" label="One Year"
-                checked={this.state.filterProjectsByLastUpdated === 'filterProjectsByLastUpdatedOneYear'} onChange={this.handleOptionChange} /> */}
+              {this.props.projectUpdatedFilters.map((filter, index) =>
+                <CustomInput type="radio" name="projectUpdated"
+                  id={`${index}-updated`} key={`${filter.projectUpdated}`} label={`${filter.projectUpdated}`}
+                  checked={filter.value} onChange={this.handleChange} />
+              )}
             </DropdownItemStatic>
-            <DropdownItem toggle={false}><a onClick={this.handleOptionChange}>Do Not Filter by Last Updated</a></DropdownItem>
           </DropdownMenu>
         </ButtonDropdown>
         <ButtonDropdown className="ml-2" isOpen={this.state.dropdownOpen[2]} toggle={() => {this.toggle(2)}}>
@@ -114,16 +130,12 @@ class ProjectFiltersWrapped extends PureComponent {
               {this.props.projectStatusFilters.map((project, index) =>
                 <CustomInput type="checkbox" name="projectStatus"
                   id={`${index}-status`} key={`${project.projectStatus}`} label={`${project.projectStatus}`}
-                  checked={project.value} onChange={this.handleInputChange} />
+                  checked={project.value} onChange={this.handleChange} />
               )}
             </DropdownItemStatic>
-            {/* <DropdownItem header>Inactive</DropdownItem>
-            <DropdownItemStatic>
-              <CustomInput type="checkbox" id="filterProjectsByStatusWrapped" label="Wrapped"
-                checked={this.state.filterProjectsByStatusWrapped} onChange={this.handleInputChange} />
-              <CustomInput type="checkbox" id="filterProjectsByStatusCanceled" label="Canceled"
-                checked={this.state.filterProjectsByStatusCanceled} onChange={this.handleInputChange} />
-            </DropdownItemStatic> */}
+            <DropdownItem onClick={this.handleClickProjectStatus} toggle={false}>All</DropdownItem>
+            <DropdownItem onClick={this.handleClickProjectStatus} toggle={false}>None</DropdownItem>
+            <DropdownItem onClick={this.handleClickProjectStatus} toggle={false}>Toggle</DropdownItem>
           </DropdownMenu>
         </ButtonDropdown>
       </div>

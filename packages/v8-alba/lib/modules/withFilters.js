@@ -12,36 +12,46 @@ const initialState = {
   projectTypeFilters: [
     {projectType: "Feature Film", value: true},
     {projectType: "Feature Film (LB)", value: true},
-    {projectType: "Low Budget Film", value: true},
     {projectType: "Feature Film (MLB)", value: true},
-    {projectType: "Mod. Low Budget Film", value: true},
     {projectType: "Feature Film (ULB)", value: true},
-    {projectType: "Pilot - One Hour", value: true},
-    {projectType: "Pilot - 1/2 Hour", value: true},
-    {projectType: "One Hour", value: true},
-    {projectType: "1/2 Hour", value: true},
+    {projectType: "Short Film", value: true},
+    {projectType: "Pilot One Hour", value: true},
+    {projectType: "Pilot 1/2 Hour", value: true},
+    {projectType: "Pilot Presentation", value: true},
     {projectType: "TV One Hour", value: true},
     {projectType: "TV 1/2 Hour", value: true},
     {projectType: "TV Daytime", value: true},
     {projectType: "TV Mini-Series", value: true},
     {projectType: "TV Movie", value: true},
-    {projectType: "Movie for Television", value: true},
-    {projectType: "New Media (SVOD)", value: true},
-    {projectType: "New Media (AVOD)", value: true},
-    {projectType: "New Media (<$50k)", value: true},
-    {projectType: "New Media", value: true}
+    {projectType: "TV Telefilm", value: true},
+    {projectType: "TV Talk/Variety", value: true},
+    {projectType: "TV Sketch/Improv", value: true},
+    // {projectType: "New Media (SVOD)", value: true},
+    // {projectType: "New Media (AVOD)", value: true},
+    // {projectType: "New Media (<$50k)", value: true},
+    {projectType: "New Media", value: true},
   ],
   projectStatusFilters: [
     {projectStatus: "Casting", value: true},
-    {projectStatus: "On Hold", value: true},
+    {projectStatus: "Ordered", value: true},
+    {projectStatus: "Pre-Prod.", value: true},
     {projectStatus: "Shooting", value: true},
+    {projectStatus: "See Notes...", value: true},
     {projectStatus: "On Hiatus", value: true},
-    {projectStatus: "See Notes", value: true},
+    {projectStatus: "On Hold", value: true},
     {projectStatus: "Unknown", value: true},
-    {projectStatus: "Wrapped", value: true},
-    {projectStatus: "Canceled", value: true}
+    {projectStatus: "Wrapped", value: false},
+    {projectStatus: "Canceled", value: false},
   ],
-  projectUpdatedFilter: "One Month"
+  projectUpdatedFilters: [
+    {projectUpdated: "One Day", value: false, moment1: '1', moment2: 'day'},
+    {projectUpdated: "One Week", value: false, moment1: '1', moment2: 'week'},
+    {projectUpdated: "Two Weeks", value: false, moment1: '2', moment2: 'week'},
+    {projectUpdated: "One Month", value: true, moment1: '1', moment2: 'month'},
+    {projectUpdated: "Two Months", value: false, moment1: '2', moment2: 'month'},
+    {projectUpdated: "One Year", value: false, moment1: '1', moment2: 'year'},
+    {projectUpdated: "All", value: false, moment1: '100', moment2: 'year'},
+  ]
 }
 
 addAction({
@@ -57,6 +67,14 @@ addAction({
     toggleProjectStatusFilter(i) {
       return {
         type: 'TOGGLE_PROJECT_STATUS_FILTER',
+        i
+      }
+    }
+  },
+  projectUpdatedFilters: {
+    toggleProjectUpdatedFilter(i) {
+      return {
+        type: 'TOGGLE_PROJECT_UPDATED_FILTER',
         i
       }
     }
@@ -122,6 +140,20 @@ addReducer({
         return state;
     }
   },
+  projectUpdatedFilters: (state = initialState.projectUpdatedFilters, action) => {
+    switch(action.type) {
+      case 'TOGGLE_PROJECT_UPDATED_FILTER':
+        return state.map((filter, index) => {
+          if (index === Number(action.i)) {
+            return { ...filter, value: true }
+          } else {
+            return { ...filter, value: false }
+          }
+        });
+      default:
+        return state;
+    }
+  },
   messages: (state = [], action) => {
     // default values
     const flashType = action.content && typeof action.content.type !== 'undefined' ? action.content.type : 'error';
@@ -173,11 +205,12 @@ addReducer({
 const mapStateToProps = state => ({
   projectTypeFilters: state.projectTypeFilters,
   projectStatusFilters: state.projectStatusFilters,
+  projectUpdatedFilters: state.projectUpdatedFilters
 });
 const actions = getActions();
 const mapDispatchToProps = dispatch => {
   return {
-     actions: bindActionCreators(Object.assign({}, actions.projectTypeFilters, actions.projectStatusFilters), dispatch)
+     actions: bindActionCreators(Object.assign({}, actions.projectTypeFilters, actions.projectStatusFilters, actions.projectUpdatedFilters), dispatch)
   };
 }
 
