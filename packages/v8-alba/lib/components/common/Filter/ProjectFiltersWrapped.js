@@ -65,8 +65,9 @@ class ProjectFiltersWrapped extends PureComponent {
     }
   }
 
+  // TODO: DRY these two handlers above and below this line
+
   handleClickProjectStatus(event) {
-    // const all = event.target.innerHTML.indexOf("All") !== -1;
     const none = event.target.innerHTML.indexOf("None") !== -1;
     const length = this.props.projectStatusFilters.length;
     var i;
@@ -117,7 +118,6 @@ class ProjectFiltersWrapped extends PureComponent {
                   checked={filter.value} onChange={this.handleChange} />
               )}
             </DropdownItemStatic>
-            {/* <DropdownItem toggle={false}><a onClick={this.handleRadioChange}>Do Not Filter by Last Updated</a></DropdownItem> */}
           </DropdownMenu>
         </ButtonDropdown>
         <ButtonDropdown className="ml-2" isOpen={this.state.dropdownOpen[2]} toggle={() => {this.toggle(2)}}>
@@ -136,13 +136,6 @@ class ProjectFiltersWrapped extends PureComponent {
             <DropdownItem onClick={this.handleClickProjectStatus} toggle={false}>All</DropdownItem>
             <DropdownItem onClick={this.handleClickProjectStatus} toggle={false}>None</DropdownItem>
             <DropdownItem onClick={this.handleClickProjectStatus} toggle={false}>Toggle</DropdownItem>
-            {/* <DropdownItem header>Inactive</DropdownItem>
-            <DropdownItemStatic>
-              <CustomInput type="checkbox" id="filterProjectsByStatusWrapped" label="Wrapped"
-                checked={this.state.filterProjectsByStatusWrapped} onChange={this.handleCheckboxChange} />
-              <CustomInput type="checkbox" id="filterProjectsByStatusCanceled" label="Canceled"
-                checked={this.state.filterProjectsByStatusCanceled} onChange={this.handleCheckboxChange} />
-            </DropdownItemStatic> */}
           </DropdownMenu>
         </ButtonDropdown>
       </div>
