@@ -30,13 +30,13 @@ const brandDanger = '#f86c6b';
 
 // Card Chart 1
 const cardChartData1 = {
-  labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
+  labels: ['Aug 18', 'Aug 19', 'Aug 20', 'Aug 21', 'Aug 22', 'Aug 23', 'Aug 24'],
   datasets: [
     {
-      label: 'My First dataset',
+      label: 'Episodics',
       backgroundColor: brandPrimary,
       borderColor: 'rgba(255,255,255,.55)',
-      data: [65, 59, 84, 84, 51, 55, 40]
+      data: [100, 100, 101, 110, 115, 118, 122]
     }
   ],
 };
@@ -443,22 +443,8 @@ class Dashboard extends PureComponent {
           <Col xs="12" sm="6" lg="3">
             <Card className="text-white bg-primary">
               <CardBody className="pb-0">
-                <ButtonGroup className="float-right">
-                  <ButtonDropdown id='card1' isOpen={this.state.card1}
-                                  toggle={() => { this.setState({ card1: !this.state.card1 }); }}>
-                    <DropdownToggle caret className="p-0" color="transparent">
-                      <i className="icon-settings"></i>
-                    </DropdownToggle>
-                    <DropdownMenu right>
-                      <DropdownItem>Action</DropdownItem>
-                      <DropdownItem>Another action</DropdownItem>
-                      <DropdownItem disabled>Disabled action</DropdownItem>
-                      <DropdownItem>Something else here</DropdownItem>
-                    </DropdownMenu>
-                  </ButtonDropdown>
-                </ButtonGroup>
-                <h4 className="mb-0">9.823</h4>
-                <p>Members online</p>
+                <h4 className="mb-0">Episodics</h4>
+                <p>Currently Casting</p>
               </CardBody>
               <div className="chart-wrapper px-3" style={{height:'70px'}}>
                 <Line data={cardChartData1} options={cardChartOpts1} height={70}/>
