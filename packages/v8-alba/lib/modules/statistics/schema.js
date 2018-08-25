@@ -5,15 +5,15 @@ export const dataSchema = new SimpleSchema({
     type: Date,
     optional: true,
     viewableBy: ["members"],
-    insertableBy: ["admins"],
-    editableBy: ["admins"],
+    insertableBy: ["members"],
+    editableBy: ["members"],
   },
   quantity: {
     type: Number,
     optional: true,
     viewableBy: ["members"],
-    insertableBy: ["admins"],
-    editableBy: ["admins"],
+    insertableBy: ["members"],
+    editableBy: ["members"],
   },
 });
 
@@ -23,7 +23,7 @@ const schema = {
   _id: {
     type: String,
     optional: true,
-    viewableBy: ["guests"]
+    viewableBy: ["members"]
   },
   createdAt: {
     type: Date,
@@ -44,7 +44,7 @@ const schema = {
   updatedAt: {
     type: Date,
     optional: true,
-    viewableBy: ["guests"],
+    viewableBy: ["members"],
     onInsert: () => {
       return new Date();
     },
@@ -57,8 +57,8 @@ const schema = {
     type: Array,
     optional: true,
     viewableBy: ["members"],
-    insertableBy: ["admins"],
-    editableBy: ["admins"],
+    insertableBy: ["members"],
+    editableBy: ["members"],
   },
   'episodics.$': {
     type: dataSchema,
@@ -68,8 +68,8 @@ const schema = {
     type: Array,
     optional: true,
     viewableBy: ["members"],
-    insertableBy: ["admins"],
-    editableBy: ["admins"],
+    insertableBy: ["members"],
+    editableBy: ["members"],
   },
   'pilots.$': {
     type: dataSchema,
@@ -79,8 +79,8 @@ const schema = {
     type: Array,
     optional: true,
     viewableBy: ["members"],
-    insertableBy: ["admins"],
-    editableBy: ["admins"],
+    insertableBy: ["members"],
+    editableBy: ["members"],
   },
   'features.$': {
     type: dataSchema,
@@ -90,8 +90,8 @@ const schema = {
     type: Array,
     optional: true,
     viewableBy: ["members"],
-    insertableBy: ["admins"],
-    editableBy: ["admins"],
+    insertableBy: ["members"],
+    editableBy: ["members"],
   },
   'others.$': {
     type: dataSchema,
