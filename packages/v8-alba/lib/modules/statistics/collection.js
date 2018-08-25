@@ -1,6 +1,5 @@
 import { createCollection, getDefaultResolvers, getDefaultMutations } from "meteor/vulcan:core";
 import schema from "./schema.js";
-import './cron.js';
 // import './fragments.js';
 // import './permissions.js';
 

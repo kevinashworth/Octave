@@ -1,10 +1,21 @@
+import Users from 'meteor/vulcan:users';
+import { editMutation } from 'meteor/vulcan:core';
+import Projects from '../modules/projects/collection.js';
+import Statistics from '../modules/statistics/collection.js';
 import { CronJob } from 'cron';
-import Projects from '../projects/collection.js';
+
+const currentUser = Users.findOne(); // just get the first user available TODO:
+const theStats = Statistics.findOne();
+let newStats = {}
+newStats.episodics = theStats.episodics;
+newStats.features = theStats.features;
+newStats.pilots = theStats.pilots;
+newStats.others = theStats.others;
 
 const addJob = function () {
   console.log('Before job instantiation');
   const job = new CronJob({
-    cronTime: '0 */1 * * * *',
+    cronTime: '0 */10 * * * *',
     onTick: Meteor.bindEnvironment(function() {
       const d = new Date();
       console.log('Every minute:', d);
@@ -15,18 +26,31 @@ const addJob = function () {
         projectType: { $in: [ "TV One Hour", "TV 1/2 Hour" ] },
         status: "Casting"
       }).count();
+      newStats.episodics.push({ date: new Date(), quantity: episodicsCasting});
       console.log('Episodics casting:', episodicsCasting);
-      const pilotsCasting = Projects.find({
-        projectType: { $in: [ "Pilot One Hour", "Pilot 1/2 Hour", "Pilot Presentation" ] },
-        status: "Casting"
-      }).count();
-      console.log('Pilots casting:', pilotsCasting);
       const featuresCasting = Projects.find({
         projectType: { $in: [ "Feature Film", "Feature Film (LB)", "Feature Film (MLB)", "Feature Film (ULB)" ] },
         status: "Casting"
       }).count();
+      newStats.features.push({ date: new Date(), quantity: featuresCasting});
       console.log('Features casting:', featuresCasting);
-      console.log('Others casting:', casting - (featuresCasting + pilotsCasting + episodicsCasting));
+      const pilotsCasting = Projects.find({
+        projectType: { $in: [ "Pilot One Hour", "Pilot 1/2 Hour", "Pilot Presentation" ] },
+        status: "Casting"
+      }).count();
+      newStats.pilots.push({ date: new Date(), quantity: pilotsCasting});
+      console.log('Pilots casting:', pilotsCasting);
+      const othersCasting = casting - (featuresCasting + pilotsCasting + episodicsCasting);
+      newStats.others.push({ date: new Date(), quantity: othersCasting});
+      console.log('Others casting:', othersCasting);
+      Promise.await(editMutation({
+        action: 'statistics.edit',
+        documentId: theStats._id,
+        collection: Statistics,
+        set: newStats,
+        currentUser,
+        validate: false,
+      }));
     })
   });
   console.log('After job instantiation');
