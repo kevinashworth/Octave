@@ -47,6 +47,7 @@ import '../components/projects/ProjectsAddressDetail';
 import '../components/projects/ProjectsContactDetail';
 import '../components/projects/ProjectsDataTable';
 import '../components/projects/ProjectsEditForm';
+import '../components/projects/ProjectsNewForm';
 import '../components/projects/ProjectsRow';
 import '../components/projects/ProjectsSingle';
 import '../components/projects/ProjectsTable';
