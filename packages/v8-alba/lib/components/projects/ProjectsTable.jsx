@@ -65,6 +65,7 @@ const ProjectsTable = ({loading, loadingMore, loadMore, results = [], currentUse
         </CardFooter>
         }
       </Card>
+      <Components.ProjectsNewForm />
     </div>
   )
 }

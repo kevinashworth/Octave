@@ -5,7 +5,7 @@ import { Button, Card, CardBody, CardFooter, CardHeader } from 'reactstrap';
 import { BootstrapTable, TableHeaderColumn } from 'react-bootstrap-table';
 import _ from 'lodash';
 import moment from 'moment';
-import { DATE_FORMAT_LONG, DATE_FORMAT_SHORT } from '../../modules/constants.js'
+import { DATE_FORMAT_SHORT } from '../../modules/constants.js'
 import Projects from '../../modules/projects/collection.js';
 import withFilters from '../../modules/withFilters.js';
 
@@ -141,7 +141,7 @@ class ProjectsDataTable extends PureComponent {
       // compare current time to filter, but generous, so start of day then, not the time it is now - filter plus up to 23:59
       const now = moment();
       const dateToCompare = o.updatedAt ? o.updatedAt : o.createdAt;
-      const displayThis = moment(dateToCompare).isAfter(now.subtract(moment1, moment2).startOf('day'))
+      const displayThis = moment(dateToCompare).isAfter(now.subtract(moment1, moment2).startOf('day'));
       return _.includes(statusFilters, o.status)
           && _.includes(typeFilters, o.projectType)
           && displayThis;

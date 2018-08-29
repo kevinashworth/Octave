@@ -19,9 +19,9 @@ class ProjectsSingle extends PureComponent {
     }
 
     const project = this.props.document;
-    const displayDate = project.updatedAt ?
-      "Last modified " + moment(project.updatedAt).format(DATE_FORMAT_LONG) :
-      "Created " + moment(project.createdAt).format(DATE_FORMAT_LONG);
+    const displayDate = (project.updatedAt === project.createdAt) ?
+      "Created " + moment(project.createdAt).format(DATE_FORMAT_LONG) :
+      "Last modified " + moment(project.updatedAt).format(DATE_FORMAT_LONG);
 
     return (
       <div className="animated fadeIn">
@@ -64,7 +64,9 @@ class ProjectsSingle extends PureComponent {
           }
           {project.contactId}
         </CardBody>
-        <CardFooter>{displayDate}</CardFooter>
+        <CardFooter>
+          <small className="text-muted">{displayDate}</small>
+        </CardFooter>
       </Card>
     </div>
     );

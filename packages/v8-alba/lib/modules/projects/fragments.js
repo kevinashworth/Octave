@@ -6,7 +6,7 @@ registerFragment(/* GraphQL */ `
     createdAt
     updatedAt
     userId
-    displayName
+    projectTitle
     slug
   }
 `);
