@@ -1,4 +1,5 @@
-import { registerComponent } from 'meteor/vulcan:core';
+import { Components, registerComponent } from 'meteor/vulcan:core';
+// import Statistics from '../../modules/statistics/collection.js';
 import React, { PureComponent } from 'react';
 import {Bar, Line} from 'react-chartjs-2';
 import {
@@ -145,42 +146,6 @@ const cardChartOpts4 = {
     }]
   }
 }
-
-// Social Box Chart
-const socialBoxData = [
-  {data: [65, 59, 84, 84, 51, 55, 40], label: 'facebook'},
-  {data: [1, 13, 9, 17, 34, 41, 38], label: 'twitter'},
-  {data: [78, 81, 80, 45, 34, 12, 40], label: 'linkedin'},
-  {data: [35, 23, 56, 22, 97, 23, 64], label: 'google'}
-];
-
-// sparkline charts
-const sparkLineChartData = [
-  {
-    data: [35, 23, 56, 22, 97, 23, 64],
-    label: 'New Clients'
-  },
-  {
-    data: [65, 59, 84, 84, 51, 55, 40],
-    label: 'Recurring Clients'
-  },
-  {
-    data: [35, 23, 56, 22, 97, 23, 64],
-    label: 'Pageviews'
-  },
-  {
-    data: [65, 59, 84, 84, 51, 55, 40],
-    label: 'Organic'
-  },
-  {
-    data: [78, 81, 80, 45, 34, 12, 40],
-    label: 'CTR'
-  },
-  {
-    data: [1, 13, 9, 17, 34, 41, 38],
-    label: 'Bounce Rate'
-  }
-];
 
 // Main Chart
 
@@ -384,29 +349,24 @@ class Dashboard extends PureComponent {
               <CardFooter>
                 <ul>
                   <li>
-                    <div className="text-muted">Visits</div>
-                    <strong>29.703 Users (40%)</strong>
-                    <Progress className="progress-xs mt-2" color="success" value="40"/>
-                  </li>
-                  <li className="d-none d-md-table-cell">
-                    <div className="text-muted">Unique</div>
-                    <strong>24.093 Users (20%)</strong>
-                    <Progress className="progress-xs mt-2" color="info" value="20"/>
+                    <strong>Episodics</strong>
+                    <div className="text-muted">100 Currently Casting</div>
+                    <Progress className="progress-xs mt-2" color="success" value="100"/>
                   </li>
                   <li>
-                    <div className="text-muted">Pageviews</div>
-                    <strong>78.706 Views (60%)</strong>
-                    <Progress className="progress-xs mt-2" color="warning" value="60"/>
+                    <strong>Features</strong>
+                    <div className="text-muted">48 Currently Casting</div>
+                    <Progress className="progress-xs mt-2" color="info" value="100"/>
                   </li>
-                  <li className="d-none d-md-table-cell">
-                    <div className="text-muted">New Users</div>
-                    <strong>22.123 Users (80%)</strong>
-                    <Progress className="progress-xs mt-2" color="danger" value="80"/>
+                  <li>
+                    <strong>Pilots</strong>
+                    <div className="text-muted">19 Currently Casting</div>
+                    <Progress className="progress-xs mt-2" color="warning" value="100"/>
                   </li>
-                  <li className="d-none d-md-table-cell">
-                    <div className="text-muted">Bounce Rate</div>
-                    <strong>Average 40.15%</strong>
-                    <Progress className="progress-xs mt-2" color="primary" value="40"/>
+                  <li>
+                    <strong>Others</strong>
+                    <div className="text-muted">88 Currently Casting</div>
+                    <Progress className="progress-xs mt-2" color="danger" value="100"/>
                   </li>
                 </ul>
               </CardFooter>
