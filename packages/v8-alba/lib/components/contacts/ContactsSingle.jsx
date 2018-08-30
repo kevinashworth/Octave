@@ -5,7 +5,7 @@ import { Link } from 'react-router';
 import mapProps from 'recompose/mapProps';
 import { Button, Card, CardBody, CardFooter, CardHeader, CardLink, CardText, CardTitle } from 'reactstrap';
 import moment from 'moment';
-import { DATE_FORMAT_LONG } from '../../modules/constants.js'
+import { DATE_FORMAT_LONG, DATE_FORMAT_SHORT } from '../../modules/constants.js'
 import Contacts from '../../modules/contacts/collection.js';
 
 const ContactsSingle = (props) => {
@@ -16,9 +16,9 @@ const ContactsSingle = (props) => {
   } else {
 
     const contact = props.document;
-    const displayDate = contact.updatedAt ?
-      "Last modified " + moment(contact.updatedAt).format(DATE_FORMAT_LONG) :
-      "Created " + moment(contact.createdAt).format(DATE_FORMAT_LONG);
+    const displayDate =
+      "Contact created " + moment(contact.createdAt).format(DATE_FORMAT_SHORT)  + " / " +
+      "Last modified " + moment(contact.updatedAt).format(DATE_FORMAT_LONG);
     const createAddress = () => {
       let streetAddress = "";
       if (contact.street1) {

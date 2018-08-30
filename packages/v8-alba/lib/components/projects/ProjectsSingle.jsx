@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 import mapProps from 'recompose/mapProps';
 import { Button, Card, CardBody, CardFooter, CardHeader, CardLink, CardText } from 'reactstrap';
 import moment from 'moment';
-import { DATE_FORMAT_LONG } from '../../modules/constants.js'
+import { DATE_FORMAT_LONG, DATE_FORMAT_SHORT } from '../../modules/constants.js'
 import Projects from '../../modules/projects/collection.js';
 
 class ProjectsSingle extends PureComponent {
@@ -19,8 +19,8 @@ class ProjectsSingle extends PureComponent {
     }
 
     const project = this.props.document;
-    const displayDate = (project.updatedAt === project.createdAt) ?
-      "Created " + moment(project.createdAt).format(DATE_FORMAT_LONG) :
+    const displayDate =
+      "Project created " + moment(project.createdAt).format(DATE_FORMAT_SHORT) + " / " +
       "Last modified " + moment(project.updatedAt).format(DATE_FORMAT_LONG);
 
     return (
