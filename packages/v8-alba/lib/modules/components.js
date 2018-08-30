@@ -20,6 +20,7 @@ import '../components/common/LayoutAdmin/';
 // Alba views
 
 import '../components/Dashboard/';
+import '../components/Dashboard/LineChart1';
 import '../components/Dashboard/LineChart2';
 
 // Debug
