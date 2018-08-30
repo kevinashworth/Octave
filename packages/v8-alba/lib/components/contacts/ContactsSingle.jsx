@@ -17,7 +17,7 @@ const ContactsSingle = (props) => {
 
     const contact = props.document;
     const displayDate =
-      "Contact created " + moment(contact.createdAt).format(DATE_FORMAT_SHORT)  + " / " +
+      "Contact added to database " + moment(contact.createdAt).format(DATE_FORMAT_SHORT)  + " / " +
       "Last modified " + moment(contact.updatedAt).format(DATE_FORMAT_LONG);
     const createAddress = () => {
       let streetAddress = "";

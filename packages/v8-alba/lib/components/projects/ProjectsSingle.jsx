@@ -20,7 +20,7 @@ class ProjectsSingle extends PureComponent {
 
     const project = this.props.document;
     const displayDate =
-      "Project created " + moment(project.createdAt).format(DATE_FORMAT_SHORT) + " / " +
+      "Project added to database " + moment(project.createdAt).format(DATE_FORMAT_SHORT) + " / " +
       "Last modified " + moment(project.updatedAt).format(DATE_FORMAT_LONG);
 
     return (
