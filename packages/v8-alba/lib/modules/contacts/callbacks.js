@@ -72,3 +72,4 @@ function ContactEditUpdateProjects (contact) {
 }
 
 addCallback('contacts.edit.after', ContactEditUpdateProjects);
+addCallback('contacts.new.after', ContactEditUpdateProjects);
