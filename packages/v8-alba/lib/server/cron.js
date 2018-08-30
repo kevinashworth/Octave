@@ -15,10 +15,10 @@ newStats.others = theStats.others;
 const addJob = function () {
   console.log('Before job instantiation');
   const job = new CronJob({
-    cronTime: '0 0 */1 * * *',
+    cronTime: '0 */10 * * * *',
     onTick: Meteor.bindEnvironment(function() {
       const d = new Date();
-      console.log('Every hour:', d);
+      console.log('Every tenth minute:', d);
       const casting = Projects.find({
         status: "Casting"
       }).count();
