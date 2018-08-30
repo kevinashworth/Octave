@@ -10,9 +10,11 @@ import { newMutation } from 'meteor/vulcan:core';
 import Contacts from '../modules/contacts/collection.js';
 import Projects from '../modules/projects/collection.js';
 import Offices from '../modules/offices/collection.js';
+import Statistics from '../modules/statistics/collection.js';
 import seedContacts from '../components/contacts/_contacts3.js';
 import seedProjects from '../components/projects/_projects.js';
 import seedOffices from '../components/offices/_offices2.js';
+import seedStatistics from '../modules/statistics/_statistics.js';
 
 const createUser = async (username, email) => {
   const user = {
@@ -81,5 +83,16 @@ Meteor.startup(() => {
       currentUser,
       validate: false,
     })));
+  }
+  if (Statistics.find().fetch().length === 0) {
+    // eslint-disable-next-line no-console
+    console.log('// creating dummy statistics');
+    Promise.await(newMutation({
+      action: 'statistics.new',
+      collection: Statistics,
+      document: seedStatistics,
+      currentUser,
+      validate: false,
+    }));
   }
 });

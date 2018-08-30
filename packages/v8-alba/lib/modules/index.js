@@ -3,5 +3,6 @@ import './routes.js';
 
 import './contacts/collection';
 import './projects/collection';
+import './statistics/collection';
 
 // import './filters';
