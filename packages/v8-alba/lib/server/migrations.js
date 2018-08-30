@@ -1,6 +1,7 @@
 // see https://guide.meteor.com/collections.html#migrations
 import { Migrations } from 'meteor/percolate:migrations';
 import Projects from '../modules/projects/collection.js';
+import Contacts from '../modules/contacts/collection.js';
 
 Migrations.add({
   version: 1,
@@ -52,7 +53,7 @@ Migrations.add({
         }
     })
   }
-})
+});
 
 Migrations.add({
   version: 3,
@@ -217,8 +218,33 @@ Migrations.add({
         });
     });
   }
+});
+
+Migrations.add({
+  version: 4,
+  name: 'updatedAt is empty? set to createdAt [for Contacts]',
+  up() {
+    Contacts.find({updatedAt: {$exists: false}}).forEach(contact => {
+      if (contact.createdAt) {
+        Contacts.update(contact._id,
+        {
+          $set: {updatedAt: contact.createdAt}
+        })
+      }
+    })
+  },
+  down() {
+    Contacts.find({$where: "this.createdAt.getTime() == this.updatedAt.getTime()"}).forEach(contact => {
+      if (contact.createdAt) {
+        Contacts.update(contact._id,
+          {
+            $unset: {updatedAt: 1}
+          });
+        }
+    })
+  }
 })
 
 Meteor.startup(() => {
-  Migrations.migrateTo('3');
+  Migrations.migrateTo('4');
 });
