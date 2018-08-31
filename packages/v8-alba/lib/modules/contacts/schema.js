@@ -63,7 +63,7 @@ export const projectSchema = new SimpleSchema({
     viewableBy: ["members"],
     insertableBy: ["admins"],
     editableBy: ["admins"],
-    options: props => props.data.ProjectsList.map(project => ({
+    options: props => props.data.projects.results.map(project => ({
         value: project._id,
         label: project.projectTitle,
       })),
@@ -253,9 +253,11 @@ const schema = {
     insertableBy: ["admins"],
     editableBy: ["admins"],
     query: `
-      ProjectsList{
-        _id
-        projectTitle
+      projects{
+        results{
+          _id
+          projectTitle
+        }
       }
     `
   },

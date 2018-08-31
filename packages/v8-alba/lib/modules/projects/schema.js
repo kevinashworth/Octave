@@ -10,7 +10,7 @@ export const contactSchema = new SimpleSchema({
     viewableBy: ["members"],
     insertableBy: ["admins"],
     editableBy: ["admins"],
-    options: props => props.data.ContactsList.map(contact => ({
+    options: props => props.data.contacts.results.map(contact => ({
         value: contact._id,
         label: contact.fullName,
       })),
@@ -165,9 +165,11 @@ const schema = {
     insertableBy: ["admins"],
     editableBy: ["admins"],
     query: `
-      ContactsList{
-        _id
-        fullName
+      contacts{
+        results{
+          _id
+          fullName
+        }
       }
     `,
   },
