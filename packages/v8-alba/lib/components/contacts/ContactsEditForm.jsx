@@ -16,7 +16,21 @@ const ContactsEditForm = ({documentId, params, router, toggle}) => {
         if (toggle) {
           toggle();
         } else {
-          router.push(`/contacts/${theDocumentId}`);
+          router.push(`/contacts/${theDocumentId}/${document.slug}`);
+        }
+      }}
+      removeSuccessCallback={document => {
+        if (toggle) {
+          toggle();
+        } else {
+          router.push('/contacts/');
+        }
+      }}
+      cancelCallback={document => {
+        if (toggle) {
+          toggle();
+        } else {
+          router.push(`/contacts/${theDocumentId}/${document.slug}`);
         }
       }}
     />
