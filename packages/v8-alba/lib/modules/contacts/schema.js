@@ -215,6 +215,8 @@ const schema = {
     type: String,
     optional: true,
     viewableBy: ["members"],
+    insertableBy: ["admins"],
+    editableBy: ["admins"],
     onInsert: (contact) => {
       return Utils.slugify(getFullNameFromContact(contact));
     },
