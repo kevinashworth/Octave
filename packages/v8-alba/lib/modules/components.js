@@ -27,6 +27,10 @@ import '../components/Dashboard/LineChart2';
 
 import '../components/common/Fragments';
 
+// replaceComponent's
+
+import '../components/common/forms/MyFormSubmit'; // replaceComponent FormSubmit
+
 // V8
 
 import '../components/common/Filter/ContactDropdowns';
