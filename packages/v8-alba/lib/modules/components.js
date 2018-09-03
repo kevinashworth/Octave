@@ -37,6 +37,7 @@ import '../components/common/SelectContactIdNameTitle';
 import '../components/common/SelectProjectIdNameTitle';
 import '../components/common/SelectMultiple';
 
+import '../components/contacts/Contacts';
 import '../components/contacts/ContactsDataTable';
 import '../components/contacts/ContactsEditForm';
 import '../components/contacts/ContactsNewForm';
