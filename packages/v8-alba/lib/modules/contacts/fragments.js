@@ -18,6 +18,7 @@ registerFragment(/* GraphQL */ `
     updatedAt
     userId
     fullName
+    displayName
     firstName
     middleName
     lastName
@@ -40,6 +41,7 @@ registerFragment(/* GraphQL */ `
     firstName
     middleName
     lastName
+    displayName
     title
     body
     street1

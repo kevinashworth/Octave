@@ -243,8 +243,47 @@ Migrations.add({
         }
     })
   }
-})
+});
+
+function getFullNameFromContact ({firstName, middleName, lastName}) {
+  let tempName = "";
+  if (firstName) {
+    tempName += firstName;
+  }
+  if (middleName) {
+    tempName += (" " + middleName);
+  }
+  if (lastName) {
+    tempName += (" " + lastName);
+  }
+  if (tempName.length) {
+    return tempName;
+  } else {
+    return "displayName or fullName Unknown";
+  }
+}
+
+Migrations.add({
+  version: 5,
+  name: 'displayName missing? set it',
+  up() {
+    Contacts.find({displayName: {$exists: false}}).forEach(contact => {
+      Contacts.update(contact._id,
+      {
+        $set: {displayName: getFullNameFromContact(contact)}
+      });
+    })
+  },
+  down() {
+    Contacts.find({displayName: {$exists: true}}).forEach(contact => {
+      Contacts.update(contact._id,
+      {
+        $unset: {displayName: 1}
+      });
+    })
+  }
+});
 
 Meteor.startup(() => {
-  Migrations.migrateTo('4');
+  Migrations.migrateTo('latest');
 });

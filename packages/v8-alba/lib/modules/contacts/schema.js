@@ -19,11 +19,11 @@ function getFullNameFromContact ({firstName, middleName, lastName}) {
   }
 }
 
-// const projectGroup = {
-//   name: 'projects',
-//   label: 'Projects',
-//   order: 10
-// }
+const projectGroup = {
+  name: 'projects',
+  label: 'Projects',
+  order: 10
+}
 
 const linkGroup = {
   name: 'links',
@@ -133,6 +133,24 @@ const schema = {
     viewableBy: ["guests"],
     insertableBy: ["admins"],
     editableBy: ["admins"]
+  },
+  displayName: {
+    type: String,
+    optional: true,
+    viewableBy: ["guests"],
+    insertableBy: ["admins"],
+    editableBy: ["admins"],
+    onInsert: (contact) => getFullNameFromContact(contact),
+    onEdit: (modifier, contact) => {
+      if (modifier.$set.displayName) {
+        return modifier.$set.displayName;
+      }
+      return getFullNameFromContact({
+        firstName: modifier.$set.firstName ? modifier.$set.firstName : null,
+        middleName: modifier.$set.middleName ? modifier.$set.middleName : null,
+        lastName: modifier.$set.lastName ? modifier.$set.lastName : null,
+      });
+    }
   },
   title: {
     label: "Title",
@@ -261,7 +279,8 @@ const schema = {
           projectTitle
         }
       }
-    `
+    `,
+    group: projectGroup
   },
   'projects.$': {
     type: projectSchema,
@@ -298,7 +317,6 @@ const schema = {
   //   }
   // },
 
-
   // GraphQL only fields
 
   fullName: {
@@ -310,16 +328,6 @@ const schema = {
       type: "String",
       resolver: (contact) => getFullNameFromContact(contact)
     },
-  },
-  displayName: {
-    label: "Display Name",
-    type: String,
-    optional: true,
-    viewableBy: ["members"],
-    resolveAs: {
-      type: "String",
-      resolver: (contact) => getFullNameFromContact(contact)
-    }
   },
 
 };
