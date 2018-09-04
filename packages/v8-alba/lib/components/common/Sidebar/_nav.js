@@ -19,25 +19,25 @@ export default {
       name: 'The Info'
     },
     {
-      name: 'Contacts (T)',
-      url: '/contacts',
+      name: 'Contacts',
+      url: '/contacts/table',
       icon: 'icon-people'
     },
     {
       name: 'Contacts (DT)',
-      url: '/contactsdatatable',
+      url: '/contacts/datatable',
       icon: 'icon-people'
     },
-    {
-      name: 'CDT',
-      url: '/cdt',
-      icon: 'icon-people'
-    },
-    {
-      name: 'Contacts & Projects',
-      url: '/contactsandprojects',
-      icon: 'icon-book-open'
-    },
+    // {
+    //   name: 'CDT',
+    //   url: '/cdt',
+    //   icon: 'icon-people'
+    // },
+    // {
+    //   name: 'Contacts & Projects',
+    //   url: '/contactsandprojects',
+    //   icon: 'icon-book-open'
+    // },
     {
       name: 'Offices',
       url: '/offices',

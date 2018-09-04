@@ -1,4 +1,4 @@
-const DATE_FORMAT_LONG = 'MMMM DD YYYY, h:mm A';
+const DATE_FORMAT_LONG = 'MMMM D YYYY, h:mm A';
 const DATE_FORMAT_SHORT = 'YYYY-MM-DD';
 
 const PROJECT_ENUM = [

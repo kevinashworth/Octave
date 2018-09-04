@@ -1,5 +1,6 @@
 import { Utils } from 'meteor/vulcan:core';
 import SimpleSchema from 'simpl-schema';
+import { addressSchema } from '../shared_schemas.js';
 
 function getFullNameFromContact ({firstName, middleName, lastName}) {
   let tempName = "";
@@ -19,11 +20,17 @@ function getFullNameFromContact ({firstName, middleName, lastName}) {
   }
 }
 
-// const projectGroup = {
-//   name: 'projects',
-//   label: 'Projects',
-//   order: 10
-// }
+const addressGroup = {
+  name: 'addresses',
+  label: 'Addresses',
+  order: 5
+}
+
+const projectGroup = {
+  name: 'projects',
+  label: 'Projects',
+  order: 10
+}
 
 const linkGroup = {
   name: 'links',
@@ -134,6 +141,24 @@ const schema = {
     insertableBy: ["admins"],
     editableBy: ["admins"]
   },
+  displayName: {
+    type: String,
+    optional: true,
+    viewableBy: ["guests"],
+    insertableBy: ["admins"],
+    editableBy: ["admins"],
+    onInsert: (contact) => getFullNameFromContact(contact),
+    onEdit: (modifier, contact) => {
+      if (modifier.$set.displayName) {
+        return modifier.$set.displayName;
+      }
+      return getFullNameFromContact({
+        firstName: modifier.$set.firstName ? modifier.$set.firstName : null,
+        middleName: modifier.$set.middleName ? modifier.$set.middleName : null,
+        lastName: modifier.$set.lastName ? modifier.$set.lastName : null,
+      });
+    }
+  },
   title: {
     label: "Title",
     type: String,
@@ -171,45 +196,16 @@ const schema = {
   'links.$': {
     type: linkSchema,
   },
-  street1: {
-    label: "Address",
-    type: String,
+  addresses: {
+    type: Array,
     optional: true,
     viewableBy: ["members"],
     insertableBy: ["admins"],
-    editableBy: ["admins"]
+    editableBy: ["admins"],
+    group: addressGroup
   },
-  street2: {
-    label: "(cont)",
-    type: String,
-    optional: true,
-    viewableBy: ["members"],
-    insertableBy: ["admins"],
-    editableBy: ["admins"]
-  },
-  city: {
-    label: "City",
-    type: String,
-    optional: true,
-    viewableBy: ["members"],
-    insertableBy: ["admins"],
-    editableBy: ["admins"]
-  },
-  state: {
-    label: "State",
-    type: String,
-    optional: true,
-    viewableBy: ["members"],
-    insertableBy: ["admins"],
-    editableBy: ["admins"]
-  },
-  zip: {
-    label: "Zip",
-    type: String,
-    optional: true,
-    viewableBy: ["members"],
-    insertableBy: ["admins"],
-    editableBy: ["admins"]
+  'addresses.$': {
+    type: addressSchema
   },
   slug: {
     type: String,
@@ -261,7 +257,8 @@ const schema = {
           projectTitle
         }
       }
-    `
+    `,
+    group: projectGroup
   },
   'projects.$': {
     type: projectSchema,
@@ -298,7 +295,6 @@ const schema = {
   //   }
   // },
 
-
   // GraphQL only fields
 
   fullName: {
@@ -311,14 +307,100 @@ const schema = {
       resolver: (contact) => getFullNameFromContact(contact)
     },
   },
-  displayName: {
-    label: "Display Name",
+
+  // GraphQL only fields to ease transition from address to addresses, and also to provide a "main" address
+
+  street: {
+    label: "Address",
     type: String,
     optional: true,
     viewableBy: ["members"],
     resolveAs: {
       type: "String",
-      resolver: (contact) => getFullNameFromContact(contact)
+      resolver: (contact) => {
+        if (contact.addresses) {
+          if (contact.addresses[0].street2) {
+            return contact.addresses[0].street1 + " " + contact.addresses[0].street2;
+          }
+          return contact.addresses[0].street1;
+        }
+        return null;
+      }
+    }
+  },
+  street1: {
+    label: "Address",
+    type: String,
+    optional: true,
+    viewableBy: ["members"],
+    resolveAs: {
+      type: "String",
+      resolver: (contact) => {
+        if (contact.addresses) {
+          return contact.addresses[0].street1
+        }
+        return null;
+      }
+    }
+  },
+  street2: {
+    label: "(cont)",
+    type: String,
+    optional: true,
+    viewableBy: ["members"],
+    resolveAs: {
+      type: "String",
+      resolver: (contact) => {
+        if (contact.addresses) {
+          return contact.addresses[0].street2
+        }
+        return null;
+      }
+    }
+  },
+  city: {
+    label: "City",
+    type: String,
+    optional: true,
+    viewableBy: ["members"],
+    resolveAs: {
+      type: "String",
+      resolver: (contact) => {
+        if (contact.addresses) {
+          return contact.addresses[0].city
+        }
+        return null;
+      }
+    }
+  },
+  state: {
+    label: "State",
+    type: String,
+    optional: true,
+    viewableBy: ["members"],
+    resolveAs: {
+      type: "String",
+      resolver: (contact) => {
+        if (contact.addresses) {
+          return contact.addresses[0].state
+        }
+        return null;
+      }
+    }
+  },
+  zip: {
+    label: "Zip",
+    type: String,
+    optional: true,
+    viewableBy: ["members"],
+    resolveAs: {
+      type: "String",
+      resolver: (contact) => {
+        if (contact.addresses) {
+          return contact.addresses[0].zip
+        }
+        return null;
+      }
     }
   },
 

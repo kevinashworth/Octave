@@ -27,6 +27,10 @@ import '../components/Dashboard/LineChart2';
 
 import '../components/common/Fragments';
 
+// replaceComponent's
+
+import '../components/common/forms/MyFormSubmit'; // replaceComponent FormSubmit
+
 // V8
 
 import '../components/common/Filter/ContactDropdowns';
@@ -37,6 +41,7 @@ import '../components/common/SelectContactIdNameTitle';
 import '../components/common/SelectProjectIdNameTitle';
 import '../components/common/SelectMultiple';
 
+import '../components/contacts/Contacts';
 import '../components/contacts/ContactsDataTable';
 import '../components/contacts/ContactsEditForm';
 import '../components/contacts/ContactsNewForm';
