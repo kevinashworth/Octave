@@ -7,7 +7,7 @@ import _ from 'lodash';
 import moment from 'moment';
 import { DATE_FORMAT_SHORT } from '../../modules/constants.js'
 import Projects from '../../modules/projects/collection.js';
-import withFilters from '../../modules/withFilters.js';
+import withProjectFilters from '../../modules/filters/withProjectFilters.js';
 
 // Set initial state. Just options I want to keep.
 // See https://github.com/amannn/react-keep-state
@@ -152,7 +152,7 @@ class ProjectsDataTable extends PureComponent {
         <Card>
           <CardHeader>
             <i className="fa fa-camera"></i>Projects Data Table
-            <Components.ProjectFiltersWrapped/>
+            <Components.ProjectFilters/>
           </CardHeader>
           <CardBody>
             <BootstrapTable data={filteredResults} version="4" condensed striped hover pagination search options={this.state.options} selectRow={selectRow} keyField='_id'>
@@ -192,4 +192,4 @@ const options = {
   enableCache: true
 };
 
-registerComponent('ProjectsDataTable', ProjectsDataTable, withFilters, withCurrentUser, [withList, options]);
+registerComponent('ProjectsDataTable', ProjectsDataTable, withProjectFilters, withCurrentUser, [withList, options]);
