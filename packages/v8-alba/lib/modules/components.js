@@ -33,8 +33,9 @@ import '../components/common/forms/MyFormSubmit'; // replaceComponent FormSubmit
 
 // V8
 
-import '../components/common/Filter/ContactDropdowns';
+import '../components/common/Filter/ContactDropdowns-Static';
 import '../components/common/Filter/ProjectDropdowns-Static';
+import '../components/common/Filter/ContactFilters';
 import '../components/common/Filter/ProjectFilters';
 import '../components/common/Select';
 import '../components/common/SelectContactIdNameTitle';

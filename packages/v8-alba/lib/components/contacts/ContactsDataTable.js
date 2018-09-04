@@ -6,6 +6,7 @@ import { BootstrapTable, TableHeaderColumn } from 'react-bootstrap-table';
 import moment from 'moment';
 import { DATE_FORMAT_SHORT } from '../../modules/constants.js'
 import Contacts from '../../modules/contacts/collection.js';
+import withContactFilters from '../../modules/filters/withContactFilters.js';
 
 // Set initial state. Just options I want to keep.
 // See https://github.com/amannn/react-keep-state
@@ -121,7 +122,7 @@ class ContactsDataTable extends PureComponent {
         <Card>
           <CardHeader>
             <i className="icon-menu"></i>Contacts DataTable
-            <Components.ContactDropdowns/>
+            <Components.ContactFilters/>
           </CardHeader>
           <CardBody>
             <BootstrapTable data={this.props.results} version="4" condensed striped hover pagination search options={this.state.options} selectRow={selectRow} keyField='_id' bordered={false}>
@@ -163,4 +164,4 @@ const options = {
   enableCache: true
 };
 
-registerComponent('ContactsDataTable', ContactsDataTable, withCurrentUser, [withList, options]);
+registerComponent('ContactsDataTable', ContactsDataTable, withContactFilters, withCurrentUser, [withList, options]);
