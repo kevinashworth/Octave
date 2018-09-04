@@ -284,6 +284,33 @@ Migrations.add({
   }
 });
 
+Migrations.add({
+  version: 6,
+  name: 'address -> addresses for Contacts',
+  up() {
+    Contacts.find({addresses: {$exists: false}}).forEach(contact => {
+      if (contact.street1) {
+        Contacts.update(contact._id,
+          {
+            $addToSet: {addresses: { street1: contact.street1, street2: contact.street2, city: contact.city, state: contact.state, zip: contact.zip}},
+            $unset: {address: 1}
+          });
+      }
+    });
+  },
+  down() {
+    Contacts.find({address: {$exists: false}}).forEach(contact => {
+      if (contact.addresses && contact.addresses[0]) {
+        Contacts.update(contact._id,
+          {
+            $set: {street1: contact.addresses[0].street1, street2: contact.addresses[0].street2, city: contact.addresses[0].city, state: contact.addresses[0].state, zip: contact.addresses[0].zip},
+            $unset: {addresses: 1}
+          });
+      }
+    });
+  }
+});
+
 Meteor.startup(() => {
-  Migrations.migrateTo('latest');
+  Migrations.migrateTo('6');
 });

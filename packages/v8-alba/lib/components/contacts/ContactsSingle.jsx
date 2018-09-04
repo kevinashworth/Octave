@@ -19,25 +19,25 @@ const ContactsSingle = (props) => {
     const displayDate =
       "Contact added to database " + moment(contact.createdAt).format(DATE_FORMAT_SHORT)  + " / " +
       "Last modified " + moment(contact.updatedAt).format(DATE_FORMAT_LONG);
-    const createAddress = () => {
+    const createAddress = (address) => {
       let streetAddress = "";
-      if (contact.street1) {
-        streetAddress = contact.street1 + "<br/>";
+      if (address.street1) {
+        streetAddress = address.street1 + "<br/>";
       }
-      if (contact.street2 && contact.street2.trim().length > 0) {
-        streetAddress += contact.street2 + "<br/>";
+      if (address.street2 && address.street2.trim().length > 0) {
+        streetAddress += address.street2 + "<br/>";
       }
-      if (contact.city) {
-        streetAddress += contact.city + ", ";
+      if (address.city) {
+        streetAddress += address.city + ", ";
       }
-      if (contact.state) {
-        streetAddress += contact.state;
+      if (address.state) {
+        streetAddress += address.state;
       }
-      if (contact.zip) {
-        streetAddress += "  " + contact.zip;
+      if (address.zip) {
+        streetAddress += "  " + address.zip;
       }
-      if (contact.street1 && contact.city && contact.state) {
-        streetAddress += `<br/><small><a href="https://maps.google.com/?q=${contact.street1},${contact.city},${contact.state}" target="_maps">Open in Google Maps</a></small>`;
+      if (address.street1 && address.city && address.state) {
+        streetAddress += `<br/><small><a href="https://maps.google.com/?q=${address.street1},${address.city},${address.state}" target="_maps">Open in Google Maps</a></small>`;
       }
       return {__html: streetAddress};
     }
@@ -75,6 +75,14 @@ const ContactsSingle = (props) => {
           <CardText dangerouslySetInnerHTML={createAddress()}></CardText>
           <CardText>{ contact.body }</CardText>
         </CardBody>
+        {contact.addresses &&
+          <CardBody>
+            { contact.addresses[1] && <CardTitle>Addresses</CardTitle>}
+            {contact.addresses.map((address, index) =>
+              <CardText key={`address${index}`} dangerouslySetInnerHTML={createAddress(address)}></CardText>
+            )}
+          </CardBody>
+        }
         {contact.projects &&
           <CardBody>
             <CardTitle>Projects</CardTitle>
