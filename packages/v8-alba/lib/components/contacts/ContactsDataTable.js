@@ -3,6 +3,8 @@ import React, { PureComponent } from 'react';
 import { Link } from 'react-router';
 import { Button, Card, CardBody, CardFooter, CardHeader } from 'reactstrap';
 import { BootstrapTable, TableHeaderColumn } from 'react-bootstrap-table';
+import moment from 'moment';
+import { DATE_FORMAT_SHORT } from '../../modules/constants.js'
 import Contacts from '../../modules/contacts/collection.js';
 
 // Set initial state. Just options I want to keep.
@@ -11,9 +13,13 @@ let keptState = {
   defaultSearch: "",
   page: 1,
   sizePerPage: 20,
-  sortName: "fullName",
-  sortOrder: "asc"
+  sortName: "updatedAt",
+  sortOrder: "desc"
 };
+
+function dateFormatter(cell, row) {
+  return moment(cell).format(DATE_FORMAT_SHORT);
+}
 
 class ContactsDataTable extends PureComponent {
   constructor(props) {
@@ -118,7 +124,7 @@ class ContactsDataTable extends PureComponent {
             <Components.ContactDropdowns/>
           </CardHeader>
           <CardBody>
-            <BootstrapTable data={this.props.results} version="4" condensed striped hover pagination search options={this.state.options} selectRow={selectRow} keyField='_id'>
+            <BootstrapTable data={this.props.results} version="4" condensed striped hover pagination search options={this.state.options} selectRow={selectRow} keyField='_id' bordered={false}>
               <TableHeaderColumn dataField="fullName" dataSort dataFormat={
                 (cell, row) => {
                   return (
@@ -129,11 +135,11 @@ class ContactsDataTable extends PureComponent {
                 }
               }>Name</TableHeaderColumn>
               <TableHeaderColumn dataField="title" dataSort>Title</TableHeaderColumn>
-              <TableHeaderColumn dataField="street1" dataSort>Address</TableHeaderColumn>
-              <TableHeaderColumn dataField="street2">(cont)</TableHeaderColumn>
+              <TableHeaderColumn dataField="street" dataSort width="23%">Address</TableHeaderColumn>
               <TableHeaderColumn dataField="city" dataSort>City</TableHeaderColumn>
-              <TableHeaderColumn dataField="state" dataSort>State</TableHeaderColumn>
-              <TableHeaderColumn dataField="zip" dataSort>Zip</TableHeaderColumn>
+              <TableHeaderColumn dataField="state" dataSort width="8%">State</TableHeaderColumn>
+              <TableHeaderColumn dataField="zip" dataSort width="7%">Zip</TableHeaderColumn>
+              <TableHeaderColumn dataField="updatedAt" dataFormat={dateFormatter} dataSort width="9%">Updated</TableHeaderColumn>
             </BootstrapTable>
           </CardBody>
           {hasMore &&
@@ -153,7 +159,7 @@ class ContactsDataTable extends PureComponent {
 const options = {
   collection: Contacts,
   fragmentName: 'ContactsSingleFragment',
-  limit: 1000,
+  limit: 1006,
   enableCache: true
 };
 
