@@ -41,24 +41,6 @@ const ContactsSingle = (props) => {
       }
       return {__html: streetAddress};
     }
-    const createAltName = () => {
-      let alternateName = "";
-      if (contact.firstName) {
-        alternateName = contact.firstName;
-      }
-      if (contact.middleName) {
-        alternateName += (" " + contact.middleName);
-      }
-      if (contact.lastName) {
-        alternateName += (" " + contact.lastName);
-      }
-      if (contact.fullName !== alternateName) {
-        alternateName = "aka " + alternateName;
-      } else {
-        alternateName = null;
-      }
-      return {__html: alternateName};
-    }
 
     return (
       <div className="animated fadeIn">
@@ -70,10 +52,12 @@ const ContactsSingle = (props) => {
           </div> : null}
         </CardHeader>
         <CardBody>
-          <CardText dangerouslySetInnerHTML={createAltName()}></CardText>
-          <CardText>{ contact.title }<br/>{ contact.gender }</CardText>
-          <CardText dangerouslySetInnerHTML={createAddress()}></CardText>
-          <CardText>{ contact.body }</CardText>
+          <CardText tag="div">
+            { contact.displayName }
+            { contact.title && <div>{contact.title}</div> }
+            { contact.gender && <div>{contact.gender}</div> }
+            { contact.body && <div>{contact.body}</div> }
+          </CardText>
         </CardBody>
         {contact.addresses &&
           <CardBody>
@@ -89,6 +73,7 @@ const ContactsSingle = (props) => {
             {contact.projects.map(project =>
               <CardText key={project.projectId}>
                 <b><CardLink href={`/projects/${project.projectId}`}>{project.projectTitle}</CardLink></b>
+                {project.titleForProject && ` (${project.titleForProject})`}
               </CardText>
             )}
           </CardBody>
