@@ -9,15 +9,63 @@ import {
   PaginationItem,
   PaginationLink
 } from 'reactstrap';
+import _ from 'lodash';
+import moment from 'moment';
 import Contacts from '../../modules/contacts/collection.js';
+import withContactFilters from '../../modules/filters/withContactFilters.js';
 
-const ContactsTable = ({loading, results = [], currentUser}) =>
+const ContactsTable = ({loading, results = [], currentUser,
+                        contactTitleFilters, contactUpdatedFilters, contactLocationFilters}) => {
+  let titleFilters = [];
+  contactTitleFilters.forEach(filter => {
+    if (filter.value)
+      titleFilters.push(filter.contactTitle);
+  });
+  let otherFilters = [];
+  contactTitleFilters.forEach(filter => {
+    if (!filter.value)
+      otherFilters.push(filter.contactTitle);
+  });
+  let locationFilters = [];
+  contactLocationFilters.forEach(filter => {
+    if (filter.value)
+      locationFilters.push(filter.contactLocation);
+  });
+  let moment1 = '';
+  let moment2 = '';
+  contactUpdatedFilters.forEach(filter => {
+    if (filter.value) {
+      moment1 = filter.moment1;
+      moment2 = filter.moment2;
+      return;
+    }
+  });
+
+  const filteredResults = _.filter(results, function(o) {
+    // compare current time to filter, but generous, so start of day then, not the time it is now - filter plus up to 23:59
+    const now = moment();
+    const dateToCompare = o.updatedAt ? o.updatedAt : o.createdAt;
+    const displayThis = moment(dateToCompare).isAfter(now.subtract(moment1, moment2).startOf('day'));
+
+    // if "Other" is not checked, filter per normal via titleFilters:
+    if (!(_.includes(titleFilters, "Other"))) {
+      return _.includes(locationFilters, o.location)
+          && _.includes(titleFilters, o.title)
+          && displayThis;
+    } else { // if "Other" is checked, eliminate based on titles in contactTitleFilters
+    return _.includes(locationFilters, o.location)
+        && !_.includes(otherFilters, o.title)
+        && displayThis;
+    }
+  });
+
+  return (
   <div className="animated fadeIn">
     <Components.AccountsLoginForm />
     <Card>
       <CardHeader>
         <i className="fa fa-align-justify"></i> ContactsTable
-        <Components.ContactDropdowns/>
+        <Components.ContactFilters/>
       </CardHeader>
     { loading ?
       <CardBody>
@@ -37,7 +85,7 @@ const ContactsTable = ({loading, results = [], currentUser}) =>
           </tr>
           </thead>
           <tbody>
-          {results.map(contact => <Components.ContactsRow key={contact._id} documentId={contact._id} currentUser={currentUser} />)}
+          {filteredResults.map(contact => <Components.ContactsRow key={contact._id} documentId={contact._id} currentUser={currentUser} />)}
           </tbody>
         </Table>
         <nav>
@@ -57,6 +105,7 @@ const ContactsTable = ({loading, results = [], currentUser}) =>
     </Card>
     <Components.ContactsNewForm />
   </div>
+)}
 
   const options = {
     collection: Contacts,
@@ -65,4 +114,4 @@ const ContactsTable = ({loading, results = [], currentUser}) =>
     enableCache: true
   };
 
-registerComponent('ContactsTable', ContactsTable, withCurrentUser, [withList, options]);
+registerComponent('ContactsTable', ContactsTable, withContactFilters, withCurrentUser, [withList, options]);
