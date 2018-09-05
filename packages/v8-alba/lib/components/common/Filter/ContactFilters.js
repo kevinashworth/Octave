@@ -23,7 +23,7 @@ class ContactFilters extends PureComponent {
 
     this.toggle = this.toggle.bind(this);
     this.handleClickContactType = this.handleClickContactType.bind(this);
-    this.handleClickContactStatus = this.handleClickContactStatus.bind(this);
+    this.handleClickContactLocation = this.handleClickContactLocation.bind(this);
     this.handleChange = this.handleChange.bind(this);
     this.state = {
       dropdownOpen: new Array(3).fill(false),
@@ -42,7 +42,7 @@ class ContactFilters extends PureComponent {
     if (event.target.name === 'contactTitle')
       this.props.actions.toggleContactTypeFilter(i);
     if (event.target.name === 'contactLocation')
-      this.props.actions.toggleContactStatusFilter(i);
+      this.props.actions.toggleContactLocationFilter(i);
     if (event.target.name === 'contactUpdated')
       this.props.actions.toggleContactUpdatedFilter(i);
   }
@@ -67,18 +67,18 @@ class ContactFilters extends PureComponent {
 
   // TODO: DRY these two handlers above and below this line
 
-  handleClickContactStatus(event) {
+  handleClickContactLocation(event) {
     const none = event.target.innerHTML.indexOf("None") !== -1;
     const length = this.props.contactLocationFilters.length;
     var i;
     if (event.target.innerHTML.indexOf("Toggle") !== -1) {
       for (i = 0; i < length; i++) {
-        this.props.actions.toggleContactStatusFilter(i);
+        this.props.actions.toggleContactLocationFilter(i);
       }
     } else {
       for (i = 0; i < length; i++) {
         if ((this.props.contactLocationFilters[i].value && none) || (!this.props.contactLocationFilters[i].value && !none)) {
-          this.props.actions.toggleContactStatusFilter(i);
+          this.props.actions.toggleContactLocationFilter(i);
         }
       }
     }
@@ -122,7 +122,7 @@ class ContactFilters extends PureComponent {
         </ButtonDropdown>
         <ButtonDropdown className="ml-2" isOpen={this.state.dropdownOpen[2]} toggle={() => {this.toggle(2)}}>
           <DropdownToggle caret>
-            Status
+            Location
           </DropdownToggle>
           <DropdownMenu>
             <DropdownItem header>Filter contacts by location</DropdownItem>
@@ -133,9 +133,9 @@ class ContactFilters extends PureComponent {
                   checked={contact.value} onChange={this.handleChange} />
               )}
             </DropdownItemStatic>
-            <DropdownItem onClick={this.handleClickContactStatus} toggle={false}>All</DropdownItem>
-            <DropdownItem onClick={this.handleClickContactStatus} toggle={false}>None</DropdownItem>
-            <DropdownItem onClick={this.handleClickContactStatus} toggle={false}>Toggle</DropdownItem>
+            <DropdownItem onClick={this.handleClickContactLocation} toggle={false}>All</DropdownItem>
+            <DropdownItem onClick={this.handleClickContactLocation} toggle={false}>None</DropdownItem>
+            <DropdownItem onClick={this.handleClickContactLocation} toggle={false}>Toggle</DropdownItem>
           </DropdownMenu>
         </ButtonDropdown>
       </div>

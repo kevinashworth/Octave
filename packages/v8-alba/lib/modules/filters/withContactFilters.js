@@ -15,8 +15,8 @@ const initialState = {
   ],
   contactLocationFilters: [
     {contactLocation: "CA", value: true},
-    {contactLocation: "NY", value: false},
-    {contactLocation: "Other", value: false},
+    {contactLocation: "NY", value: true},
+    {contactLocation: "Other", value: true},
   ],
   contactUpdatedFilters: [
     {contactUpdated: "One Day", value: false, moment1: '1', moment2: 'day'},
@@ -39,9 +39,9 @@ addAction({
     }
   },
   contactLocationFilters: {
-    toggleContactStatusFilter(i) {
+    toggleContactLocationFilter(i) {
       return {
-        type: 'TOGGLE_CONTACT_STATUS_FILTER',
+        type: 'TOGGLE_CONTACT_LOCATION_FILTER',
         i
       }
     }
@@ -72,7 +72,7 @@ addReducer({
   },
   contactLocationFilters: (state = initialState.contactLocationFilters, action) => {
     switch(action.type) {
-      case 'TOGGLE_CONTACT_STATUS_FILTER':
+      case 'TOGGLE_CONTACT_LOCATION_FILTER':
         return state.map((filter, index) => {
           if (index === Number(action.i)) {
             return { ...filter, value: !filter.value }
