@@ -10,7 +10,7 @@ const initialState = {
   contactTitleFilters: [
     {contactTitle: "Casting Director", value: true},
     {contactTitle: "Casting Associate", value: true},
-    {contactTitle: "Casting Assitant", value: true},
+    {contactTitle: "Casting Assistant", value: true},
     {contactTitle: "Other", value: false},
   ],
   contactLocationFilters: [
@@ -31,9 +31,9 @@ const initialState = {
 
 addAction({
   contactTitleFilters: {
-    toggleContactTypeFilter(i) {
+    toggleContactTitleFilter(i) {
       return {
-        type: 'TOGGLE_CONTACT_TYPE_FILTER',
+        type: 'TOGGLE_CONTACT_TITLE_FILTER',
         i
       }
     }
@@ -59,7 +59,7 @@ addAction({
 addReducer({
   contactTitleFilters: (state = initialState.contactTitleFilters, action) => {
     switch(action.type) {
-      case 'TOGGLE_CONTACT_TYPE_FILTER':
+      case 'TOGGLE_CONTACT_TITLE_FILTER':
         return state.map((filter, index) => {
           if (index === Number(action.i)) {
             return { ...filter, value: !filter.value }

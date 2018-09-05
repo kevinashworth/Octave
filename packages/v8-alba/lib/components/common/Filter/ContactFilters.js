@@ -22,7 +22,7 @@ class ContactFilters extends PureComponent {
     super(props);
 
     this.toggle = this.toggle.bind(this);
-    this.handleClickContactType = this.handleClickContactType.bind(this);
+    this.handleClickContactTitle = this.handleClickContactTitle.bind(this);
     this.handleClickContactLocation = this.handleClickContactLocation.bind(this);
     this.handleChange = this.handleChange.bind(this);
     this.state = {
@@ -40,26 +40,26 @@ class ContactFilters extends PureComponent {
   handleChange(event) {
     const i = parseInt(event.target.id, 10);
     if (event.target.name === 'contactTitle')
-      this.props.actions.toggleContactTypeFilter(i);
+      this.props.actions.toggleContactTitleFilter(i);
     if (event.target.name === 'contactLocation')
       this.props.actions.toggleContactLocationFilter(i);
     if (event.target.name === 'contactUpdated')
       this.props.actions.toggleContactUpdatedFilter(i);
   }
 
-  handleClickContactType(event) {
+  handleClickContactTitle(event) {
     // const all = event.target.innerHTML.indexOf("All") !== -1;
     const none = event.target.innerHTML.indexOf("None") !== -1;
     const length = this.props.contactTitleFilters.length;
     var i;
     if (event.target.innerHTML.indexOf("Toggle") !== -1) {
       for (i = 0; i < length; i++) {
-        this.props.actions.toggleContactTypeFilter(i);
+        this.props.actions.toggleContactTitleFilter(i);
       }
     } else {
       for (i = 0; i < length; i++) {
         if ((this.props.contactTitleFilters[i].value && none) || (!this.props.contactTitleFilters[i].value && !none)) {
-          this.props.actions.toggleContactTypeFilter(i);
+          this.props.actions.toggleContactTitleFilter(i);
         }
       }
     }
@@ -89,7 +89,7 @@ class ContactFilters extends PureComponent {
       <div className="float-right">
         <ButtonDropdown className="ml-2" isOpen={this.state.dropdownOpen[0]} toggle={() => {this.toggle(0)}}>
           <DropdownToggle caret>
-            Type
+            Title
           </DropdownToggle>
           <DropdownMenu>
             <DropdownItem header>Filter contacts by title</DropdownItem>
@@ -100,9 +100,9 @@ class ContactFilters extends PureComponent {
                   checked={contact.value} onChange={this.handleChange} />
               )}
             </DropdownItemStatic>
-            <DropdownItem onClick={this.handleClickContactType} toggle={false}>All</DropdownItem>
-            <DropdownItem onClick={this.handleClickContactType} toggle={false}>None</DropdownItem>
-            <DropdownItem onClick={this.handleClickContactType} toggle={false}>Toggle</DropdownItem>
+            <DropdownItem onClick={this.handleClickContactTitle} toggle={false}>All</DropdownItem>
+            <DropdownItem onClick={this.handleClickContactTitle} toggle={false}>None</DropdownItem>
+            <DropdownItem onClick={this.handleClickContactTitle} toggle={false}>Toggle</DropdownItem>
           </DropdownMenu>
         </ButtonDropdown>
         <ButtonDropdown className="ml-2" isOpen={this.state.dropdownOpen[1]} toggle={() => {this.toggle(1)}}>
