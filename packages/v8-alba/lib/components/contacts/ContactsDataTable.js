@@ -3,6 +3,7 @@ import React, { PureComponent } from 'react';
 import { Link } from 'react-router';
 import { Button, Card, CardBody, CardFooter, CardHeader } from 'reactstrap';
 import { BootstrapTable, TableHeaderColumn } from 'react-bootstrap-table';
+import _ from 'lodash';
 import moment from 'moment';
 import { DATE_FORMAT_SHORT } from '../../modules/constants.js'
 import Contacts from '../../modules/contacts/collection.js';
@@ -111,11 +112,56 @@ class ContactsDataTable extends PureComponent {
   }
 
   render() {
-    const { count, totalCount, results, loadingMore, loadMore } = this.props;
+    const { count, totalCount, results, loadingMore, loadMore,
+            contactTitleFilters, contactUpdatedFilters, contactLocationFilters } = this.props;
     const selectRow = {
       mode: 'checkbox'
     };
     const hasMore = results && (totalCount > results.length);
+    let titleFilters = [];
+    contactTitleFilters.forEach(filter => {
+      if (filter.value)
+        titleFilters.push(filter.contactTitle);
+    });
+    let otherFilters = [];
+    contactTitleFilters.forEach(filter => {
+      if (!filter.value)
+        otherFilters.push(filter.contactTitle);
+    });
+    let locationFilters = [];
+    contactLocationFilters.forEach(filter => {
+      if (filter.value)
+        locationFilters.push(filter.contactLocation);
+    });
+    let moment1 = '';
+    let moment2 = '';
+    contactUpdatedFilters.forEach(filter => {
+      if (filter.value) {
+        moment1 = filter.moment1;
+        moment2 = filter.moment2;
+        return;
+      }
+    });
+
+    const filteredResults = _.filter(results, function(o) {
+      // compare current time to filter, but generous, so start of day then, not the time it is now - filter plus up to 23:59
+      const now = moment();
+      const dateToCompare = o.updatedAt ? o.updatedAt : o.createdAt;
+      const displayThis = moment(dateToCompare).isAfter(now.subtract(moment1, moment2).startOf('day'));
+
+      // if "Other" is not checked, filter per normal via titleFilters:
+      if (!(_.includes(titleFilters, "Other"))) {
+        return _.includes(locationFilters, o.location)
+            && _.includes(titleFilters, o.title)
+            && displayThis;
+      } else { // if "Other" is checked, eliminate based on titles in contactTitleFilters
+      return _.includes(locationFilters, o.location)
+          && !_.includes(otherFilters, o.title)
+          && displayThis;
+      }
+
+    });
+
 
     return (
       <div className="animated fadeIn">
@@ -125,7 +171,7 @@ class ContactsDataTable extends PureComponent {
             <Components.ContactFilters/>
           </CardHeader>
           <CardBody>
-            <BootstrapTable data={this.props.results} version="4" condensed striped hover pagination search options={this.state.options} selectRow={selectRow} keyField='_id' bordered={false}>
+            <BootstrapTable data={filteredResults} version="4" condensed striped hover pagination search options={this.state.options} selectRow={selectRow} keyField='_id' bordered={false}>
               <TableHeaderColumn dataField="fullName" dataSort dataFormat={
                 (cell, row) => {
                   return (
