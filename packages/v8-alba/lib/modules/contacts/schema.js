@@ -1,5 +1,6 @@
 import { Utils } from 'meteor/vulcan:core';
 import SimpleSchema from 'simpl-schema';
+import marked from 'marked';
 import { addressSchema } from '../shared_schemas.js';
 
 function getFullNameFromContact ({firstName, middleName, lastName}) {
@@ -175,6 +176,7 @@ const schema = {
     insertableBy: ["admins"],
     editableBy: ["admins"]
   },
+  // Body (Markdown)
   body: {
     label: "Notes",
     type: String,
@@ -183,6 +185,25 @@ const schema = {
     viewableBy: ["members"],
     insertableBy: ["admins"],
     editableBy: ["admins"]
+  },
+  // HTML version of Body
+  htmlBody: {
+    type: String,
+    optional: true,
+    hidden: true,
+    viewableBy: ["members"],
+    insertableBy: ["admins"],
+    editableBy: ["admins"],
+    onInsert: (project) => {
+      if (project.body) {
+        return Utils.sanitize(marked(project.body));
+      }
+    },
+    onEdit: (modifier, project) => {
+      if (modifier.$set.body) {
+        return Utils.sanitize(marked(modifier.$set.body));
+      }
+    }
   },
   links: {
     label: "Links",

@@ -56,7 +56,11 @@ const ContactsSingle = (props) => {
             { contact.displayName }
             { contact.title && <div>{contact.title}</div> }
             { contact.gender && <div>{contact.gender}</div> }
-            { contact.body && <div>{contact.body}</div> }
+            <hr />
+            {contact.htmlBody ?
+              <div dangerouslySetInnerHTML={{__html: contact.htmlBody}}></div> :
+              <div>{ contact.body }</div>
+            }
           </CardText>
         </CardBody>
         {contact.addresses &&
