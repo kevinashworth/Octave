@@ -45,7 +45,7 @@ const ContactsSingle = (props) => {
     return (
       <div className="animated fadeIn">
       <Components.HeadTags title={`V8 Alba: ${contact.fullName}`} />
-      <Card className="card-accent-primary">
+      <Card className="card-accent-warning">
         <CardHeader tag="h2">{ contact.fullName }{ Contacts.options.mutations.edit.check(props.currentUser, contact) ?
           <div className="float-right">
             <Button tag={Link} to={`/contacts/${contact._id}/edit`}>Edit</Button>
@@ -56,7 +56,11 @@ const ContactsSingle = (props) => {
             { contact.displayName }
             { contact.title && <div>{contact.title}</div> }
             { contact.gender && <div>{contact.gender}</div> }
-            { contact.body && <div>{contact.body}</div> }
+            <hr />
+            {contact.htmlBody ?
+              <div dangerouslySetInnerHTML={{__html: contact.htmlBody}}></div> :
+              <div>{ contact.body }</div>
+            }
           </CardText>
         </CardBody>
         {contact.addresses &&
@@ -72,7 +76,7 @@ const ContactsSingle = (props) => {
             <CardTitle>Projects</CardTitle>
             {contact.projects.map(project =>
               <CardText key={project.projectId}>
-                <b><CardLink href={`/projects/${project.projectId}`}>{project.projectTitle}</CardLink></b>
+                <b><CardLink key={project.projectId}><Link to={`/projects/${project.projectId}`}>{project.projectTitle}</Link></CardLink></b>
                 {project.titleForProject && ` (${project.titleForProject})`}
               </CardText>
             )}

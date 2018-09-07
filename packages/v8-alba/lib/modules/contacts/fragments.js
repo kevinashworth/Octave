@@ -25,6 +25,7 @@ registerFragment(/* GraphQL */ `
     gender
     title
     body
+    htmlBody
     links
     addresses
     location
@@ -47,6 +48,7 @@ registerFragment(/* GraphQL */ `
     displayName
     title
     body
+    htmlBody
     addresses
     location
     street

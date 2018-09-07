@@ -26,7 +26,9 @@ registerFragment(/* GraphQL */ `
     status
     union
     notes
+    htmlNotes
     logline
+    htmlLogline
     website
     season
     order
@@ -46,7 +48,9 @@ registerFragment(/* GraphQL */ `
     status
     union
     notes
+    htmlNotes
     logline
+    htmlLogline
     website
     season
     order
