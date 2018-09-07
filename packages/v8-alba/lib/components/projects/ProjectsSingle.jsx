@@ -3,7 +3,7 @@ import React, { PureComponent } from 'react';
 import { Link } from 'react-router';
 import PropTypes from 'prop-types';
 import mapProps from 'recompose/mapProps';
-import { Button, Card, CardBody, CardFooter, CardHeader, CardLink, CardText } from 'reactstrap';
+import { Button, Card, CardBody, CardFooter, CardHeader, CardLink, CardText, CardTitle } from 'reactstrap';
 import moment from 'moment';
 import { DATE_FORMAT_LONG, DATE_FORMAT_SHORT } from '../../modules/constants.js'
 import Projects from '../../modules/projects/collection.js';
@@ -34,14 +34,12 @@ class ProjectsSingle extends PureComponent {
         </CardHeader>
 
         <CardBody>
-          <CardText className="mb-1">{ project.projectType } {project.network &&
+          <CardTitle className="mb-1">{ project.projectType } {project.network &&
             <span>
-            ({ project.network })
+            &bull; { project.network }
             </span>
-          }</CardText>
-          <CardText>{ project.union }</CardText>
-          <CardText className="mb-1">{ project.logline }</CardText>
-          <CardText className="mb-1">{ project.notes }</CardText>
+          } &bull; { project.union }</CardTitle>
+          <CardText>{ project.status }</CardText>
           {project.htmlLogline ?
             <CardText className="mb-1" dangerouslySetInnerHTML={{__html: project.htmlLogline}}></CardText> :
             <CardText className="mb-1">{ project.logline }</CardText>
