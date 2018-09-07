@@ -42,6 +42,16 @@ class ProjectsSingle extends PureComponent {
           <CardText>{ project.union }</CardText>
           <CardText className="mb-1">{ project.logline }</CardText>
           <CardText className="mb-1">{ project.notes }</CardText>
+          {project.htmlLogline ?
+            <CardText className="mb-1" dangerouslySetInnerHTML={{__html: project.htmlLogline}}></CardText> :
+            <CardText className="mb-1">{ project.logline }</CardText>
+          }
+          <hr/>
+          {project.htmlNotes ?
+            <CardText className="mb-1" dangerouslySetInnerHTML={{__html: project.htmlNotes}}></CardText> :
+            <CardText className="mb-1">{ project.notes }</CardText>
+          }
+          <hr/>
           {project.website &&
           <CardText>
             <CardLink href={project.website}>Open official website <i className="fa fa-external-link"></i></CardLink>

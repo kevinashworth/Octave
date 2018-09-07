@@ -1,5 +1,6 @@
 import { Components, Utils } from 'meteor/vulcan:core';
 import SimpleSchema from 'simpl-schema';
+import marked from 'marked';
 import { addressSchema } from '../shared_schemas.js';
 
 export const contactSchema = new SimpleSchema({
@@ -108,13 +109,34 @@ const schema = {
     insertableBy: ["admins"],
     editableBy: ["admins"]
   },
+  // Logline (Markdown)
   logline: {
     label: "Logline",
     type: String,
     optional: true,
+    control: "textarea", // use a textarea form component
     viewableBy: ["guests"],
     insertableBy: ["admins"],
     editableBy: ["admins"]
+  },
+  // HTML version of Logline
+  htmlLogline: {
+    type: String,
+    optional: true,
+    hidden: true,
+    viewableBy: ["members"],
+    insertableBy: ["admins"],
+    editableBy: ["admins"],
+    onInsert: (project) => {
+      if (project.logline) {
+        return Utils.sanitize(marked('**LOG LINE:** ' + project.logline));
+      }
+    },
+    onEdit: (modifier, project) => {
+      if (modifier.$set.logline) {
+        return Utils.sanitize(marked('**LOG LINE:** ' + modifier.$set.logline));
+      }
+    }
   },
   website: {
     label: "Official Site",
@@ -124,6 +146,7 @@ const schema = {
     insertableBy: ["admins"],
     editableBy: ["admins"]
   },
+  // Notes (Markdown)
   notes: {
     label: "Notes",
     type: String,
@@ -132,6 +155,26 @@ const schema = {
     viewableBy: ["members"],
     insertableBy: ["admins"],
     editableBy: ["admins"]
+  },
+  // HTML version of Notes
+  htmlNotes: {
+    type: String,
+    optional: true,
+    hidden: true,
+    viewableBy: ["members"],
+    insertableBy: ["admins"],
+    editableBy: ["admins"],
+    onInsert: (project) => {
+      if (project.notes) {
+        return Utils.sanitize(marked('**NOTES:** ' + project.notes));
+      }
+    },
+    onEdit: (modifier, project) => {
+      if (modifier.$set.notes) {
+        return Utils.sanitize(marked('**NOTES:** ' + modifier.$set.notes));
+      }
+    }
+
   },
   season: {
     label: "Season",
