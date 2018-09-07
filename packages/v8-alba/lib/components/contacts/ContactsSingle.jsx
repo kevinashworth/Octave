@@ -45,7 +45,7 @@ const ContactsSingle = (props) => {
     return (
       <div className="animated fadeIn">
       <Components.HeadTags title={`V8 Alba: ${contact.fullName}`} />
-      <Card className="card-accent-primary">
+      <Card className="card-accent-warning">
         <CardHeader tag="h2">{ contact.fullName }{ Contacts.options.mutations.edit.check(props.currentUser, contact) ?
           <div className="float-right">
             <Button tag={Link} to={`/contacts/${contact._id}/edit`}>Edit</Button>
