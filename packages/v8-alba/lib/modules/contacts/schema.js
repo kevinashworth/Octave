@@ -388,6 +388,27 @@ const schema = {
       }
     }
   },
+  location: {
+    label: "Location",
+    type: String,
+    optional: true,
+    viewableBy: ["members"],
+    resolveAs: {
+      type: "String",
+      resolver: (contact) => {
+        if (contact.addresses) {
+          const state = contact.addresses[0].state;
+          if (state === "CA" || state.indexOf("Calif") > -1) {
+            return "CA";
+          }
+          if (state === "NY" || state === "N.Y." || state === "New York") {
+            return "NY";
+          }
+        }
+        return "Other";
+      }
+    }
+  },
   zip: {
     label: "Zip",
     type: String,

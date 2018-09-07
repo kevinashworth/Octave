@@ -20,7 +20,7 @@ const ProjectsTable = ({loading, loadingMore, loadMore, results = [], currentUse
       <Card>
         <CardHeader>
           <i className="fa fa-picture-o"></i> ProjectsTable
-          <Components.ProjectFiltersWrapped/>
+          <Components.ProjectFilters/>
         </CardHeader>
       { loading ?
         <CardBody>

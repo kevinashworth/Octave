@@ -1,7 +1,5 @@
 /*
-
-UI state for Project (and Contact) filters
-
+UI state for Project filters
 */
 
 import { getActions, addAction, addReducer } from 'meteor/vulcan:lib';
@@ -47,10 +45,10 @@ const initialState = {
     {projectUpdated: "One Day", value: false, moment1: '1', moment2: 'day'},
     {projectUpdated: "One Week", value: false, moment1: '1', moment2: 'week'},
     {projectUpdated: "Two Weeks", value: false, moment1: '2', moment2: 'week'},
-    {projectUpdated: "One Month", value: true, moment1: '1', moment2: 'month'},
+    {projectUpdated: "One Month", value: false, moment1: '1', moment2: 'month'},
     {projectUpdated: "Two Months", value: false, moment1: '2', moment2: 'month'},
     {projectUpdated: "One Year", value: false, moment1: '1', moment2: 'year'},
-    {projectUpdated: "All", value: false, moment1: '100', moment2: 'year'},
+    {projectUpdated: "All", value: true, moment1: '100', moment2: 'year'},
   ]
 }
 
@@ -214,6 +212,6 @@ const mapDispatchToProps = dispatch => {
   };
 }
 
-const withFilters = component => connect(mapStateToProps, mapDispatchToProps)(component);
+const withProjectFilters = component => connect(mapStateToProps, mapDispatchToProps)(component);
 
-export default withFilters;
+export default withProjectFilters;

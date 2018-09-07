@@ -27,6 +27,7 @@ registerFragment(/* GraphQL */ `
     body
     links
     addresses
+    location
     street
     street1
     street2
@@ -47,6 +48,7 @@ registerFragment(/* GraphQL */ `
     title
     body
     addresses
+    location
     street
     street1
     street2
