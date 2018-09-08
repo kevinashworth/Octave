@@ -46,7 +46,7 @@ No address yet. HELP!<br/>
           <Col xs="12" sm="6" md="4">
             <Card className="card-accent-warning">
               <CardHeader>
-                <b><Link to={`http://localhost:4004/contacts/erEkjhsHDYujxgsMC/danielle-aufiero`}>Danielle Aufiero</Link></b>
+                <b><Link to={`/contacts/erEkjhsHDYujxgsMC/danielle-aufiero`}>Danielle Aufiero</Link></b>
               </CardHeader>
               <CardBody>
                 Casting Director<br/>
@@ -78,28 +78,21 @@ Alexa L. Fogel Casting
             </Card>
           </Col>
           <Col xs="12" sm="6" md="4">
-            <Card className="border-warning">
-              <CardHeader>
-                Card outline warning
-              </CardHeader>
-              <CardBody>
-                Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut
-                laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation
-                ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat.
-              </CardBody>
-            </Card>
-          </Col>
-          <Col xs="12" sm="6" md="4">
-            <Card className="border-danger">
-              <CardHeader>
-                Card outline danger
-              </CardHeader>
-              <CardBody>
-                Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut
-                laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation
-                ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat.
-              </CardBody>
-            </Card>
+          <Card className="card-accent-warning">
+            <CardHeader>
+              <b><Link to={`/contacts/ynWJFmnBWSDKTHHaS/alison-goodman`}>Alison Goodman</Link></b>
+            </CardHeader>
+            <CardBody>
+              Casting Associate<br/>
+              <b><Link to={`/projects/Sgsmc4S32AybDdRbA`}>The Politician</Link></b><br/>
+              5225 Wilshire Blvd<br/>
+              Room 419<br/>
+              Los Angeles CA 90036<br/>
+            </CardBody>
+            <CardFooter>
+              <small className="text-muted">Contact updated Sept 7</small>
+            </CardFooter>
+          </Card>
           </Col>
         </Row>
 
@@ -237,8 +230,7 @@ Alexa L. Fogel Casting
                 ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat.
               </CardBody>
             </Card>
-            import { Components, registerComponent } from 'meteor/vulcan:core';
-      </Col>
+          </Col>
         </Row>
       </div>
     )
