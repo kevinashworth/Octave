@@ -1,4 +1,4 @@
-import { registerComponent, Components } from 'meteor/vulcan:lib';
+import { replaceComponent, Components } from 'meteor/vulcan:lib';
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import { Button, Modal, ModalBody, ModalFooter, ModalHeader } from 'reactstrap';
@@ -67,4 +67,4 @@ MyModalTrigger.defaultProps = {
   size: 'large'
 }
 
-registerComponent('MyModalTrigger', MyModalTrigger);
+replaceComponent('ModalTrigger', MyModalTrigger);
