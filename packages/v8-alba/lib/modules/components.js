@@ -1,5 +1,5 @@
 
-// Alba components
+// Alba components largely unchanged
 
 import '../components/common/Breadcrumb/';
 import '../components/common/Footer/';
@@ -9,27 +9,27 @@ import '../components/common/SidebarFooter/';
 import '../components/common/SidebarForm/';
 import '../components/common/SidebarHeader/';
 import '../components/common/SidebarMinimizer/';
-import '../components/common/Modals.jsx';
-import '../components/common/ModalTrigger.jsx';
-
-// Alba containers
-
 import '../components/common/LayoutFull/'; // replaceComponent Full
 import '../components/common/LayoutAdmin/';
 
-// Alba views
+// Alba components with changes
 
-import '../components/Dashboard/';
-import '../components/Dashboard/LineChart1';
-import '../components/Dashboard/LineChart2';
+import '../components/common/Dashboard/';
+import '../components/common/Dashboard/LineChart1';
+import '../components/common/Dashboard/LineChart2';
+import '../components/common/LatestUpdates/';
+import '../components/common/MyModalTrigger.jsx'; // replaceComponent ModalTrigger
+import '../components/common/forms/MyFormSubmit'; // replaceComponent FormSubmit
+import '../components/common/forms/MyFormSubmit'; // replaceComponent FormSubmit
+import '../components/common/forms/MyFormSubmit'; // replaceComponent FormSubmit
 
 // Debug
 
 import '../components/common/Fragments';
 
-// replaceComponent's
+// Testing
 
-import '../components/common/forms/MyFormSubmit'; // replaceComponent FormSubmit
+import '../components/common/Modals.jsx';
 
 // V8
 

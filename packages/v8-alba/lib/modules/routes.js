@@ -3,6 +3,7 @@ import { addRoute } from 'meteor/vulcan:core';
 addRoute([
   {path: '/',                    name: 'Home',           componentName: 'Dashboard'}, // <Redirect from='/' to='/dashboard'/>
   {path: '/dashboard',           name: 'Dashboard',      componentName: 'Dashboard'},
+  {path: '/latest',              name: 'LatestUpdates',  componentName: 'LatestUpdates'},
   {path: '/modals',              name: 'Modals Test',    componentName: 'Modals'},
   {path: '/offices',                    name: 'Offices',         componentName: 'OfficesListGroup'},
   {path: '/offices/:_id/edit',          name: 'offices.edit',    componentName: 'OfficesEditForm'},
