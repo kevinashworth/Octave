@@ -20,8 +20,6 @@ import '../components/common/Dashboard/LineChart2';
 import '../components/common/LatestUpdates/';
 import '../components/common/MyModalTrigger.jsx'; // replaceComponent ModalTrigger
 import '../components/common/forms/MyFormSubmit'; // replaceComponent FormSubmit
-import '../components/common/forms/MyFormSubmit'; // replaceComponent FormSubmit
-import '../components/common/forms/MyFormSubmit'; // replaceComponent FormSubmit
 
 // Debug
 
@@ -49,7 +47,6 @@ import '../components/contacts/ContactsNewForm';
 import '../components/contacts/ContactsRow';
 import '../components/contacts/ContactsSingle';
 import '../components/contacts/ContactsTable';
-import '../components/contacts/CDT';
 
 import '../components/projects/ProjectsAddressDetail';
 import '../components/projects/ProjectsContactDetail';

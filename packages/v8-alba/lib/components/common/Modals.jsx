@@ -12,9 +12,9 @@ class Modals extends PureComponent {
             <i className="fa fa-align-justify"></i> ModalTrigger
           </CardHeader>
           <CardBody>
-            <Components.MyModalTrigger title="Where is the title?" component={<Button>Launch it with a Button</Button>}>
+            <Components.ModalTrigger title="Where is the title?" component={<Button>Launch it with a Button</Button>}>
               <Components.ContactsEditForm documentId="teM76tkmvtJHfhRDT"/>
-            </Components.MyModalTrigger>
+            </Components.ModalTrigger>
           </CardBody>
         </Card>
         <Components.Loading />
