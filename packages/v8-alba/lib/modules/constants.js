@@ -1,5 +1,6 @@
 const DATE_FORMAT_LONG = 'MMMM D YYYY, h:mm A';
 const DATE_FORMAT_SHORT = 'YYYY-MM-DD';
+const DATE_FORMAT_SHORT_FRIENDLY = 'MMM D';
 
 const PROJECT_ENUM = [
   "Feature Film",
@@ -32,6 +33,7 @@ const STATUS_ENUM = [
 module.exports = {
   DATE_FORMAT_LONG,
   DATE_FORMAT_SHORT,
+  DATE_FORMAT_SHORT_FRIENDLY,
   PROJECT_ENUM,
   STATUS_ENUM
 }
