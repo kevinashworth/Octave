@@ -24,7 +24,7 @@ class LatestContactUpdates extends Component {
               <CardBody>
                 {contact.title}<br/>
                 {contact.city}<br/>
-                {contact.projects.length} projects<br/>
+                {contact.projects.length === 1 ? `1 project` : `${contact.projects.length} projects`}<br/>
               </CardBody>
               <CardFooter>
                 <small className="text-muted">Contact updated {moment(contact.updatedAt).format(DATE_FORMAT_SHORT_FRIENDLY)}</small>
@@ -32,40 +32,6 @@ class LatestContactUpdates extends Component {
             </Card>
           </Col>
         )}
-        <Col xs="12" sm="6" md="4">
-          <Card className="card-accent-warning">
-            <CardHeader>
-              <b><Link to={`/contacts/erEkjhsHDYujxgsMC/danielle-aufiero`}>Danielle Aufiero</Link></b>
-            </CardHeader>
-            <CardBody>
-              Casting Director<br/>
-              <b><Link to={`/projects/KhCguaTjuKQLAajJA/on-my-block`}>On My Block</Link></b><br/>
-              588 N Larchmont Blvd<br/>
-              2nd Floor<br/>
-              Los Angeles CA 90004<br/>
-            </CardBody>
-            <CardFooter>
-              <small className="text-muted">Contact updated Sept 7</small>
-            </CardFooter>
-          </Card>
-        </Col>
-        <Col xs="12" sm="6" md="4">
-        <Card className="card-accent-warning">
-          <CardHeader>
-            <b><Link to={`/contacts/ynWJFmnBWSDKTHHaS/alison-goodman`}>Alison Goodman</Link></b>
-          </CardHeader>
-          <CardBody>
-            Casting Associate<br/>
-            <b><Link to={`/projects/Sgsmc4S32AybDdRbA`}>The Politician</Link></b><br/>
-            5225 Wilshire Blvd<br/>
-            Room 419<br/>
-            Los Angeles CA 90036<br/>
-          </CardBody>
-          <CardFooter>
-            <small className="text-muted">Contact updated Sept 7</small>
-          </CardFooter>
-        </Card>
-        </Col>
       </Row>
     )
   }
@@ -74,7 +40,7 @@ class LatestContactUpdates extends Component {
 const contactOptions = {
   collection: Contacts,
   fragmentName: 'ContactsSingleFragment',
-  limit: 4
+  limit: 6
 };
 
 registerComponent('LatestContactUpdates', LatestContactUpdates, [withMulti, contactOptions]);
