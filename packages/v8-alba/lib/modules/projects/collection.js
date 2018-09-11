@@ -1,8 +1,5 @@
 import { createCollection, getDefaultResolvers, getDefaultMutations } from "meteor/vulcan:core";
-import schema from "./schema.js";
-import './fragments.js';
-import './permissions.js';
-import './callbacks.js';
+import schema from './schema.js';
 
 const Projects = createCollection({
   collectionName: "Projects",
@@ -15,14 +12,6 @@ const Projects = createCollection({
 
   mutations: getDefaultMutations('Projects'),
 
-});
-
-
-// default sort by createdAt timestamp in descending order
-Projects.addDefaultView(terms => {
-  return {
-    options: {sort: {createdAt: -1}}
-  };
 });
 
 export default Projects;
