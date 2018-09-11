@@ -14,7 +14,7 @@ import {
   Row
 } from 'reactstrap';
 import moment from 'moment';
-import Statistics from '../../modules/statistics/collection.js';
+import Statistics from '../../../modules/statistics/collection.js';
 
 const brandDanger = '#f86c6b';
 const brandInfo = '#67c2ef';

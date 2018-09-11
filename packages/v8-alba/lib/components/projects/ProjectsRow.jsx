@@ -68,9 +68,9 @@ const ProjectsRow = ({loading, document, currentUser}) => {
           <Badge color={badgeColor}>{project.status}</Badge>
         </td>
         <td>{Projects.options.mutations.edit.check(currentUser, project) ?
-          <Components.MyModalTrigger title="Edit Project" component={<Button>Edit</Button>}>
+          <Components.ModalTrigger title="Edit Project" component={<Button>Edit</Button>}>
             <Components.ProjectsEditForm currentUser={currentUser} documentId={project._id} />
-          </Components.MyModalTrigger>
+          </Components.ModalTrigger>
           : null
         }</td>
       </tr>

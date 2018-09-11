@@ -11,7 +11,7 @@ import {
   ButtonGroup,
 } from 'reactstrap';
 import moment from 'moment';
-import Statistics from '../../modules/statistics/collection.js';
+import Statistics from '../../../modules/statistics/collection.js';
 
 const brandInfo = '#67c2ef';
 
