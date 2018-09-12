@@ -4,20 +4,20 @@ import marked from 'marked';
 import { addressSchema } from '../shared_schemas.js';
 
 function getFullNameFromContact ({firstName, middleName, lastName}) {
-  let tempName = "";
+  let tempName = '';
   if (firstName) {
     tempName += firstName;
   }
   if (middleName) {
-    tempName += (" " + middleName);
+    tempName += (' ' + middleName);
   }
   if (lastName) {
-    tempName += (" " + lastName);
+    tempName += (' ' + lastName);
   }
   if (tempName.length) {
     return tempName;
   } else {
-    return "displayName or fullName Unknown";
+    return 'displayName or fullName Unknown';
   }
 }
 
@@ -43,34 +43,34 @@ export const linkSchema = new SimpleSchema({
   platformName: {
     type: String,
     optional: true,
-    viewableBy: ["members"],
-    insertableBy: ["admins"],
-    editableBy: ["admins"],
+    viewableBy: ['members'],
+    insertableBy: ['admins'],
+    editableBy: ['admins'],
   },
   profileName: {
     type: String,
     optional: true,
-    viewableBy: ["members"],
-    insertableBy: ["admins"],
-    editableBy: ["admins"],
+    viewableBy: ['members'],
+    insertableBy: ['admins'],
+    editableBy: ['admins'],
   },
   profileLink: {
     type: String,
     optional: true,
-    viewableBy: ["members"],
-    insertableBy: ["admins"],
-    editableBy: ["admins"],
+    viewableBy: ['members'],
+    insertableBy: ['admins'],
+    editableBy: ['admins'],
   },
 });
 
 export const projectSchema = new SimpleSchema({
   projectId: {
     type: String,
-    control: "SelectProjectIdNameTitle",
+    control: 'SelectProjectIdNameTitle',
     optional: true,
-    viewableBy: ["members"],
-    insertableBy: ["admins"],
-    editableBy: ["admins"],
+    viewableBy: ['members'],
+    insertableBy: ['admins'],
+    editableBy: ['admins'],
     options: props => props.data.projects.results.map(project => ({
         value: project._id,
         label: project.projectTitle,
@@ -80,17 +80,17 @@ export const projectSchema = new SimpleSchema({
     type: String,
     optional: true,
     hidden: true,
-    viewableBy: ["members"],
-    insertableBy: ["admins"],
-    editableBy: ["admins"],
+    viewableBy: ['members'],
+    insertableBy: ['admins'],
+    editableBy: ['admins'],
   },
   titleForProject: {
     type: String,
     optional: true,
     hidden: true,
-    viewableBy: ["members"],
-    insertableBy: ["admins"],
-    editableBy: ["admins"],
+    viewableBy: ['members'],
+    insertableBy: ['admins'],
+    editableBy: ['admins'],
   },
 });
 
@@ -100,12 +100,12 @@ const schema = {
   _id: {
     type: String,
     optional: true,
-    viewableBy: ["guests"]
+    viewableBy: 'guests'
   },
   createdAt: {
     type: Date,
     optional: true,
-    viewableBy: ["members"],
+    viewableBy: 'guests',
     onInsert: () => {
       return new Date();
     }
@@ -113,41 +113,41 @@ const schema = {
   userId: {
     type: String,
     optional: true,
-    viewableBy: ["members"]
+    viewableBy: ['members']
   },
 
   // custom properties
 
   firstName: {
-    label: "First",
+    label: 'First',
     type: String,
     optional: true,
-    viewableBy: ["guests"],
-    insertableBy: ["admins"],
-    editableBy: ["admins"]
+    viewableBy: 'guests',
+    insertableBy: ['admins'],
+    editableBy: ['admins']
   },
   middleName: {
-    label: "Middle",
+    label: 'Middle',
     type: String,
     optional: true,
-    viewableBy: ["guests"],
-    insertableBy: ["admins"],
-    editableBy: ["admins"]
+    viewableBy: 'guests',
+    insertableBy: ['admins'],
+    editableBy: ['admins']
   },
   lastName: {
-    label: "Last",
+    label: 'Last',
     type: String,
     optional: true,
-    viewableBy: ["guests"],
-    insertableBy: ["admins"],
-    editableBy: ["admins"]
+    viewableBy: 'guests',
+    insertableBy: ['admins'],
+    editableBy: ['admins']
   },
   displayName: {
     type: String,
     optional: true,
-    viewableBy: ["guests"],
-    insertableBy: ["admins"],
-    editableBy: ["admins"],
+    viewableBy: 'guests',
+    insertableBy: ['admins'],
+    editableBy: ['admins'],
     onInsert: (contact) => getFullNameFromContact(contact),
     onEdit: (modifier, contact) => {
       if (modifier.$set.displayName) {
@@ -161,39 +161,39 @@ const schema = {
     }
   },
   title: {
-    label: "Title",
+    label: 'Title',
     type: String,
     optional: true,
-    viewableBy: ["guests"],
-    insertableBy: ["admins"],
-    editableBy: ["admins"]
+    viewableBy: 'guests',
+    insertableBy: ['admins'],
+    editableBy: ['admins']
   },
   gender: {
-    label: "Gender",
+    label: 'Gender',
     type: String,
     optional: true,
-    viewableBy: ["guests"],
-    insertableBy: ["admins"],
-    editableBy: ["admins"]
+    viewableBy: 'guests',
+    insertableBy: ['admins'],
+    editableBy: ['admins']
   },
   // Body (Markdown)
   body: {
-    label: "Notes",
+    label: 'Notes',
     type: String,
     optional: true,
-    control: "textarea", // use a textarea form component
-    viewableBy: ["members"],
-    insertableBy: ["admins"],
-    editableBy: ["admins"]
+    control: 'textarea', // use a textarea form component
+    viewableBy: ['admins'],
+    insertableBy: ['admins'],
+    editableBy: ['admins']
   },
   // HTML version of Body
   htmlBody: {
     type: String,
     optional: true,
     hidden: true,
-    viewableBy: ["members"],
-    insertableBy: ["admins"],
-    editableBy: ["admins"],
+    viewableBy: ['members'],
+    insertableBy: ['admins'],
+    editableBy: ['admins'],
     onInsert: (project) => {
       if (project.body) {
         return Utils.sanitize(marked(project.body));
@@ -206,12 +206,12 @@ const schema = {
     }
   },
   links: {
-    label: "Links",
+    label: 'Links',
     type: Array,
     optional: true,
-    viewableBy: ["members"],
-    insertableBy: ["admins"],
-    editableBy: ["admins"],
+    viewableBy: ['members'],
+    insertableBy: ['admins'],
+    editableBy: ['admins'],
     group: linkGroup
   },
   'links.$': {
@@ -220,9 +220,9 @@ const schema = {
   addresses: {
     type: Array,
     optional: true,
-    viewableBy: ["members"],
-    insertableBy: ["admins"],
-    editableBy: ["admins"],
+    viewableBy: ['members'],
+    insertableBy: ['admins'],
+    editableBy: ['admins'],
     group: addressGroup
   },
   'addresses.$': {
@@ -231,9 +231,9 @@ const schema = {
   slug: {
     type: String,
     optional: true,
-    viewableBy: ["members"],
-    insertableBy: ["admins"],
-    editableBy: ["admins"],
+    viewableBy: 'guests',
+    insertableBy: ['admins'],
+    editableBy: ['admins'],
     onInsert: (contact) => {
       return Utils.slugify(getFullNameFromContact(contact));
     },
@@ -253,7 +253,7 @@ const schema = {
   updatedAt: {
     type: Date,
     optional: true,
-    viewableBy: ["guests"],
+    viewableBy: 'guests',
     onInsert: () => {
       return new Date();
     },
@@ -265,12 +265,12 @@ const schema = {
   // A contact has many projects
 
   projects: {
-    label: "Projects",
+    label: 'Projects',
     type: Array,
     optional: true,
-    viewableBy: ["members"],
-    insertableBy: ["admins"],
-    editableBy: ["admins"],
+    viewableBy: ['members'],
+    insertableBy: ['admins'],
+    editableBy: ['admins'],
     query: `
       projects{
         results{
@@ -319,29 +319,29 @@ const schema = {
   // GraphQL only fields
 
   fullName: {
-    label: "Full Name",
+    label: 'Full Name',
     type: String,
     optional: true,
-    viewableBy: ["members"],
+    viewableBy: 'guests',
     resolveAs: {
-      type: "String",
+      type: 'String',
       resolver: (contact) => getFullNameFromContact(contact)
     },
   },
 
-  // GraphQL only fields to ease transition from address to addresses, and also to provide a "main" address
+  // GraphQL only fields to ease transition from address to addresses, and also to provide a 'main' address
 
   street: {
-    label: "Address",
+    label: 'Address',
     type: String,
     optional: true,
-    viewableBy: ["members"],
+    viewableBy: ['members'],
     resolveAs: {
-      type: "String",
+      type: 'String',
       resolver: (contact) => {
         if (contact.addresses) {
           if (contact.addresses[0].street2) {
-            return contact.addresses[0].street1 + " " + contact.addresses[0].street2;
+            return contact.addresses[0].street1 + ' ' + contact.addresses[0].street2;
           }
           return contact.addresses[0].street1;
         }
@@ -350,12 +350,12 @@ const schema = {
     }
   },
   street1: {
-    label: "Address",
+    label: 'Address',
     type: String,
     optional: true,
-    viewableBy: ["members"],
+    viewableBy: ['members'],
     resolveAs: {
-      type: "String",
+      type: 'String',
       resolver: (contact) => {
         if (contact.addresses) {
           return contact.addresses[0].street1
@@ -365,12 +365,12 @@ const schema = {
     }
   },
   street2: {
-    label: "(cont)",
+    label: '(cont)',
     type: String,
     optional: true,
-    viewableBy: ["members"],
+    viewableBy: ['members'],
     resolveAs: {
-      type: "String",
+      type: 'String',
       resolver: (contact) => {
         if (contact.addresses) {
           return contact.addresses[0].street2
@@ -380,12 +380,12 @@ const schema = {
     }
   },
   city: {
-    label: "City",
+    label: 'City',
     type: String,
     optional: true,
-    viewableBy: ["members"],
+    viewableBy: ['members'],
     resolveAs: {
-      type: "String",
+      type: 'String',
       resolver: (contact) => {
         if (contact.addresses) {
           return contact.addresses[0].city
@@ -395,12 +395,12 @@ const schema = {
     }
   },
   state: {
-    label: "State",
+    label: 'State',
     type: String,
     optional: true,
-    viewableBy: ["members"],
+    viewableBy: ['members'],
     resolveAs: {
-      type: "String",
+      type: 'String',
       resolver: (contact) => {
         if (contact.addresses) {
           return contact.addresses[0].state
@@ -410,33 +410,33 @@ const schema = {
     }
   },
   location: {
-    label: "Location",
+    label: 'Location',
     type: String,
     optional: true,
-    viewableBy: ["members"],
+    viewableBy: 'guests',
     resolveAs: {
-      type: "String",
+      type: 'String',
       resolver: (contact) => {
         if (contact.addresses) {
-          const state = contact.addresses[0].state;
-          if (state === "CA" || state.indexOf("Calif") > -1) {
-            return "CA";
+          const state = contact.addresses[0].state.toLowerCase();
+          if (state == 'ca' || state.indexOf('calif') > -1) {
+            return 'CA';
           }
-          if (state === "NY" || state === "N.Y." || state === "New York") {
-            return "NY";
+          if (state == 'ny' || state == 'n.y.' || state === 'new york') {
+            return 'NY';
           }
         }
-        return "Other";
+        return 'Other';
       }
     }
   },
   zip: {
-    label: "Zip",
+    label: 'Zip',
     type: String,
     optional: true,
-    viewableBy: ["members"],
+    viewableBy: ['members'],
     resolveAs: {
-      type: "String",
+      type: 'String',
       resolver: (contact) => {
         if (contact.addresses) {
           return contact.addresses[0].zip
