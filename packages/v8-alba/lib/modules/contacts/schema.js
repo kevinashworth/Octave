@@ -417,14 +417,18 @@ const schema = {
     resolveAs: {
       type: 'String',
       resolver: (contact) => {
+        let state = '';
+        if (contact.state) {
+          state = contact.state.toLowerCase();
+        }
         if (contact.addresses) {
-          const state = contact.addresses[0].state.toLowerCase();
-          if (state == 'ca' || state.indexOf('calif') > -1) {
-            return 'CA';
-          }
-          if (state == 'ny' || state == 'n.y.' || state === 'new york') {
-            return 'NY';
-          }
+          state = contact.addresses[0].state.toLowerCase();
+        }
+        if (state == 'ca' || state.indexOf('calif') > -1) {
+          return 'CA';
+        }
+        if (state == 'ny' || state == 'n.y.' || state === 'new york') {
+          return 'NY';
         }
         return 'Other';
       }
