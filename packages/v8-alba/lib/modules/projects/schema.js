@@ -40,12 +40,12 @@ const schema = {
   _id: {
     type: String,
     optional: true,
-    viewableBy: ['guests']
+    canRead: 'guests'
   },
   createdAt: {
     type: Date,
     optional: true,
-    viewableBy: ['members'],
+    canRead: 'guests',
     onInsert: () => {
       return new Date();
     }
@@ -61,7 +61,7 @@ const schema = {
   updatedAt: {
     type: Date,
     optional: true,
-    viewableBy: ['guests'],
+    canRead: 'guests',
     onInsert: () => {
       return new Date();
     },
@@ -73,7 +73,7 @@ const schema = {
     label: 'Title',
     type: String,
     optional: true,
-    viewableBy: ['guests'],
+    canRead: 'guests',
     insertableBy: ['admins'],
     editableBy: ['admins']
   },
@@ -81,7 +81,7 @@ const schema = {
     label: 'Type',
     type: String,
     optional: true,
-    viewableBy: ['guests'],
+    canRead: 'guests',
     insertableBy: ['admins'],
     editableBy: ['admins']
   },
@@ -89,7 +89,7 @@ const schema = {
     label: 'Union',
     type: String,
     optional: true,
-    viewableBy: ['guests'],
+    canRead: 'guests',
     insertableBy: ['admins'],
     editableBy: ['admins']
   },
@@ -97,7 +97,7 @@ const schema = {
     label: 'Network',
     type: String,
     optional: true,
-    viewableBy: ['guests'],
+    canRead: 'guests',
     insertableBy: ['admins'],
     editableBy: ['admins']
   },
@@ -105,7 +105,7 @@ const schema = {
     label: 'Status',
     type: String,
     optional: true,
-    viewableBy: ['guests'],
+    canRead: 'guests',
     insertableBy: ['admins'],
     editableBy: ['admins']
   },
@@ -115,7 +115,7 @@ const schema = {
     type: String,
     optional: true,
     control: 'textarea', // use a textarea form component
-    viewableBy: ['guests'],
+    canRead: 'guests',
     insertableBy: ['admins'],
     editableBy: ['admins']
   },
@@ -142,7 +142,7 @@ const schema = {
     label: 'Official Site',
     type: String,
     optional: true,
-    viewableBy: ['guests'],
+    canRead: 'guests',
     insertableBy: ['admins'],
     editableBy: ['admins']
   },
@@ -180,7 +180,7 @@ const schema = {
     label: 'Season',
     type: String,
     optional: true,
-    viewableBy: ['guests'],
+    viewableBy: ['members'],
     insertableBy: ['admins'],
     editableBy: ['admins']
   },
@@ -188,7 +188,7 @@ const schema = {
     label: 'Order',
     type: String,
     optional: true,
-    viewableBy: ['guests'],
+    viewableBy: ['members'],
     insertableBy: ['admins'],
     editableBy: ['admins']
   },
@@ -196,7 +196,7 @@ const schema = {
     label: 'Casting Company',
     type: String,
     optional: true,
-    viewableBy: ['guests'],
+    viewableBy: ['members'],
     insertableBy: ['admins'],
     editableBy: ['admins']
   },
@@ -232,7 +232,7 @@ const schema = {
   slug: {
     type: String,
     optional: true,
-    viewableBy: ['guests'],
+    canRead: 'guests',
     onInsert: (project) => {
       return Utils.slugify(project.projectTitle);
     },
