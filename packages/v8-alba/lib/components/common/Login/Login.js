@@ -1,24 +1,20 @@
 import { registerComponent, Components } from 'meteor/vulcan:core';
-import React, {Component} from 'react';
-import {Container, Row, Col, CardGroup, Card, CardBody, Button, Input, InputGroup} from 'reactstrap';
+import React, { Component } from 'react';
+import { Card, CardBody, Col, Row } from 'reactstrap';
 
 class Login extends Component {
   render() {
     return (
       <div className="animated fadeIn">
-        <Container>
-          <Row className="justify-content-center">
-            <Col md="6">
-              <CardGroup>
-                <Card className="p-4">
-                  <CardBody>
-                    <Components.AccountsLoginForm />
-                  </CardBody>
-                </Card>
-              </CardGroup>
-            </Col>
-          </Row>
-        </Container>
+        <Row className="justify-content-center">
+          <Col md="6">
+            <Card className="p-4">
+              <CardBody>
+                <Components.AccountsLoginForm />
+              </CardBody>
+            </Card>
+          </Col>
+        </Row>
       </div>
     );
   }
