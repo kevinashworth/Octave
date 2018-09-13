@@ -1,4 +1,4 @@
-import { Components, registerComponent, withMulti } from 'meteor/vulcan:core';
+import { Components, registerComponent, withAccess, withMulti } from 'meteor/vulcan:core';
 import React, { Component } from 'react';
 import { Link } from 'react-router';
 import { Card, CardBody, CardFooter, CardHeader, Col, Row } from 'reactstrap';
@@ -150,4 +150,9 @@ class LatestUpdates extends Component {
   }
 }
 
-registerComponent('LatestUpdates', LatestUpdates);
+const accessOptions = {
+  groups: ['members', 'admins'],
+  redirect: '/login'
+}
+
+registerComponent('LatestUpdates', LatestUpdates, [withAccess, accessOptions]);

@@ -1,4 +1,4 @@
-import { Components, registerComponent } from 'meteor/vulcan:core';
+import { Components, registerComponent, withAccess } from 'meteor/vulcan:core';
 // import Statistics from '../../modules/statistics/collection.js';
 import React, { PureComponent } from 'react';
 import {Bar, Line} from 'react-chartjs-2';
@@ -254,4 +254,9 @@ class Dashboard extends PureComponent {
   }
 }
 
-registerComponent('Dashboard', Dashboard);
+const accessOptions = {
+  groups: ['members','admins'],
+  redirect: '/login'
+}
+
+registerComponent('Dashboard', Dashboard, [withAccess, accessOptions]);

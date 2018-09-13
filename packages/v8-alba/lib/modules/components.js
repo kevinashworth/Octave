@@ -11,6 +11,7 @@ import '../components/common/SidebarHeader/';
 import '../components/common/SidebarMinimizer/';
 import '../components/common/LayoutFull/'; // replaceComponent Full
 import '../components/common/LayoutAdmin/';
+import '../components/common/Login/';
 
 // Alba components with changes
 

@@ -5,6 +5,11 @@ export default {
       name: 'Home',
     },
     {
+      name: 'Login/Logout',
+      url: '/login',
+      icon: 'icon-login',
+    },
+    {
       name: 'Dashboard',
       url: '/dashboard',
       icon: 'icon-speedometer',
