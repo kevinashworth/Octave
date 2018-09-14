@@ -6,11 +6,11 @@ import { addressSchema } from '../shared_schemas.js';
 export const contactSchema = new SimpleSchema({
   contactId: {
     type: String,
-    control: "SelectContactIdNameTitle",
+    control: 'SelectContactIdNameTitle',
     optional: true,
-    viewableBy: ["members"],
-    insertableBy: ["admins"],
-    editableBy: ["admins"],
+    viewableBy: ['members'],
+    insertableBy: ['admins'],
+    editableBy: ['admins'],
     options: props => props.data.contacts.results.map(contact => ({
         value: contact._id,
         label: contact.fullName,
@@ -20,17 +20,17 @@ export const contactSchema = new SimpleSchema({
     type: String,
     optional: true,
     hidden: true,
-    viewableBy: ["members"],
-    insertableBy: ["admins"],
-    editableBy: ["admins"],
+    viewableBy: ['members'],
+    insertableBy: ['admins'],
+    editableBy: ['admins'],
   },
   contactTitle: {
     type: String,
     optional: true,
     hidden: true,
-    viewableBy: ["members"],
-    insertableBy: ["admins"],
-    editableBy: ["admins"],
+    viewableBy: ['members'],
+    insertableBy: ['admins'],
+    editableBy: ['admins'],
   },
 });
 
@@ -40,12 +40,12 @@ const schema = {
   _id: {
     type: String,
     optional: true,
-    viewableBy: ["guests"]
+    canRead: 'guests'
   },
   createdAt: {
     type: Date,
     optional: true,
-    viewableBy: ["members"],
+    canRead: 'guests',
     onInsert: () => {
       return new Date();
     }
@@ -53,7 +53,7 @@ const schema = {
   userId: {
     type: String,
     optional: true,
-    viewableBy: ["members"]
+    viewableBy: ['members']
   },
 
   // custom properties
@@ -61,7 +61,7 @@ const schema = {
   updatedAt: {
     type: Date,
     optional: true,
-    viewableBy: ["guests"],
+    canRead: 'guests',
     onInsert: () => {
       return new Date();
     },
@@ -70,63 +70,63 @@ const schema = {
     }
   },
   projectTitle: {
-    label: "Title",
+    label: 'Title',
     type: String,
     optional: true,
-    viewableBy: ["guests"],
-    insertableBy: ["admins"],
-    editableBy: ["admins"]
+    canRead: 'guests',
+    insertableBy: ['admins'],
+    editableBy: ['admins']
   },
   projectType: {
-    label: "Type",
+    label: 'Type',
     type: String,
     optional: true,
-    viewableBy: ["guests"],
-    insertableBy: ["admins"],
-    editableBy: ["admins"]
+    canRead: 'guests',
+    insertableBy: ['admins'],
+    editableBy: ['admins']
   },
   union: {
-    label: "Union",
+    label: 'Union',
     type: String,
     optional: true,
-    viewableBy: ["guests"],
-    insertableBy: ["admins"],
-    editableBy: ["admins"]
+    canRead: 'guests',
+    insertableBy: ['admins'],
+    editableBy: ['admins']
   },
   network: {
-    label: "Network",
+    label: 'Network',
     type: String,
     optional: true,
-    viewableBy: ["guests"],
-    insertableBy: ["admins"],
-    editableBy: ["admins"]
+    canRead: 'guests',
+    insertableBy: ['admins'],
+    editableBy: ['admins']
   },
   status: {
-    label: "Status",
+    label: 'Status',
     type: String,
     optional: true,
-    viewableBy: ["guests"],
-    insertableBy: ["admins"],
-    editableBy: ["admins"]
+    canRead: 'guests',
+    insertableBy: ['admins'],
+    editableBy: ['admins']
   },
   // Logline (Markdown)
   logline: {
-    label: "Logline",
+    label: 'Logline',
     type: String,
     optional: true,
-    control: "textarea", // use a textarea form component
-    viewableBy: ["guests"],
-    insertableBy: ["admins"],
-    editableBy: ["admins"]
+    control: 'textarea', // use a textarea form component
+    canRead: 'guests',
+    insertableBy: ['admins'],
+    editableBy: ['admins']
   },
   // HTML version of Logline
   htmlLogline: {
     type: String,
     optional: true,
     hidden: true,
-    viewableBy: ["members"],
-    insertableBy: ["admins"],
-    editableBy: ["admins"],
+    viewableBy: ['members'],
+    insertableBy: ['admins'],
+    editableBy: ['admins'],
     onInsert: (project) => {
       if (project.logline) {
         return Utils.sanitize(marked('**LOG LINE:** ' + project.logline));
@@ -139,31 +139,31 @@ const schema = {
     }
   },
   website: {
-    label: "Official Site",
+    label: 'Official Site',
     type: String,
     optional: true,
-    viewableBy: ["guests"],
-    insertableBy: ["admins"],
-    editableBy: ["admins"]
+    canRead: 'guests',
+    insertableBy: ['admins'],
+    editableBy: ['admins']
   },
   // Notes (Markdown)
   notes: {
-    label: "Notes",
+    label: 'Notes',
     type: String,
     optional: true,
-    control: "textarea", // use a textarea form component
-    viewableBy: ["members"],
-    insertableBy: ["admins"],
-    editableBy: ["admins"]
+    control: 'textarea', // use a textarea form component
+    viewableBy: ['members'],
+    insertableBy: ['admins'],
+    editableBy: ['admins']
   },
   // HTML version of Notes
   htmlNotes: {
     type: String,
     optional: true,
     hidden: true,
-    viewableBy: ["members"],
-    insertableBy: ["admins"],
-    editableBy: ["admins"],
+    viewableBy: ['members'],
+    insertableBy: ['admins'],
+    editableBy: ['admins'],
     onInsert: (project) => {
       if (project.notes) {
         return Utils.sanitize(marked('**NOTES:** ' + project.notes));
@@ -177,36 +177,36 @@ const schema = {
 
   },
   season: {
-    label: "Season",
+    label: 'Season',
     type: String,
     optional: true,
-    viewableBy: ["guests"],
-    insertableBy: ["admins"],
-    editableBy: ["admins"]
+    viewableBy: ['members'],
+    insertableBy: ['admins'],
+    editableBy: ['admins']
   },
   order: {
-    label: "Order",
+    label: 'Order',
     type: String,
     optional: true,
-    viewableBy: ["guests"],
-    insertableBy: ["admins"],
-    editableBy: ["admins"]
+    viewableBy: ['members'],
+    insertableBy: ['admins'],
+    editableBy: ['admins']
   },
   castingCompany: {
-    label: "Casting Company",
+    label: 'Casting Company',
     type: String,
     optional: true,
-    viewableBy: ["guests"],
-    insertableBy: ["admins"],
-    editableBy: ["admins"]
+    viewableBy: ['members'],
+    insertableBy: ['admins'],
+    editableBy: ['admins']
   },
   contacts: {
-    label: "Contacts",
+    label: 'Contacts',
     type: Array,
     optional: true,
-    viewableBy: ["members"],
-    insertableBy: ["admins"],
-    editableBy: ["admins"],
+    viewableBy: ['members'],
+    insertableBy: ['admins'],
+    editableBy: ['admins'],
     query: `
       contacts{
         results{
@@ -222,9 +222,9 @@ const schema = {
   addresses: {
     type: Array,
     optional: true,
-    viewableBy: ["members"],
-    insertableBy: ["admins"],
-    editableBy: ["admins"],
+    viewableBy: ['members'],
+    insertableBy: ['admins'],
+    editableBy: ['admins'],
   },
   'addresses.$': {
     type: addressSchema
@@ -232,7 +232,7 @@ const schema = {
   slug: {
     type: String,
     optional: true,
-    viewableBy: ["guests"],
+    canRead: 'guests',
     onInsert: (project) => {
       return Utils.slugify(project.projectTitle);
     },

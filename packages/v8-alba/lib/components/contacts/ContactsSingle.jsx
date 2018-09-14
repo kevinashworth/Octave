@@ -76,7 +76,7 @@ const ContactsSingle = (props) => {
             <CardTitle>Projects</CardTitle>
             {contact.projects.map(project =>
               <CardText key={project.projectId}>
-                <b><CardLink key={project.projectId}><Link to={`/projects/${project.projectId}`}>{project.projectTitle}</Link></CardLink></b>
+                <b><Link to={`/projects/${project.projectId}`}>{project.projectTitle}</Link></b>
                 {project.titleForProject && ` (${project.titleForProject})`}
               </CardText>
             )}

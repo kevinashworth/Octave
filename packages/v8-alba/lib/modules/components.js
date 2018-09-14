@@ -11,6 +11,7 @@ import '../components/common/SidebarHeader/';
 import '../components/common/SidebarMinimizer/';
 import '../components/common/LayoutFull/'; // replaceComponent Full
 import '../components/common/LayoutAdmin/';
+import '../components/common/Login/';
 
 // Alba components with changes
 
@@ -46,8 +47,9 @@ import '../components/contacts/ContactsEditForm';
 import '../components/contacts/ContactsNewForm';
 import '../components/contacts/ContactsRow';
 import '../components/contacts/ContactsSingle';
-import '../components/contacts/ContactsTable';
+// import '../components/contacts/ContactsTable';
 
+import '../components/projects/Projects';
 import '../components/projects/ProjectsAddressDetail';
 import '../components/projects/ProjectsContactDetail';
 import '../components/projects/ProjectsDataTable';
@@ -55,7 +57,7 @@ import '../components/projects/ProjectsEditForm';
 import '../components/projects/ProjectsNewForm';
 import '../components/projects/ProjectsRow';
 import '../components/projects/ProjectsSingle';
-import '../components/projects/ProjectsTable';
+// import '../components/projects/ProjectsTable';
 
 import '../components/offices/OfficesContactDetail';
 import '../components/offices/OfficesEditForm';
