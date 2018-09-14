@@ -167,7 +167,7 @@ class ContactsDataTable extends PureComponent {
       <div className="animated fadeIn">
         <Card>
           <CardHeader>
-            <i className="icon-menu"></i>Contacts DataTable
+            <i className="icon-people"></i>Contacts
             <Components.ContactFilters/>
           </CardHeader>
           <CardBody>

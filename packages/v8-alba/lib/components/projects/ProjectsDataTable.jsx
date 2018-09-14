@@ -152,7 +152,7 @@ class ProjectsDataTable extends PureComponent {
       <div className="animated fadeIn">
         <Card>
           <CardHeader>
-            <i className="fa fa-camera"></i>Projects Data Table
+            <i className="fa fa-camera"></i>Projects
             <Components.ProjectFilters/>
           </CardHeader>
           <CardBody>

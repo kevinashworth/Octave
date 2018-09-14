@@ -4,7 +4,7 @@ import { withRouter } from 'react-router';
 
 const Contacts = ({ children, router }) => (
   <div>
-    { children ? children : router.push('/contacts/table') }
+    { children ? children : router.push('/contacts/datatable') }
   </div>
 );
 
