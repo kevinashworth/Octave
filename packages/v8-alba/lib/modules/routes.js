@@ -4,6 +4,7 @@ addRoute([
   {path: '/',                    name: 'Home',           componentName: 'Dashboard'}, // <Redirect from='/' to='/dashboard'/>
   {path: '/dashboard',           name: 'Dashboard',      componentName: 'Dashboard'},
   {path: '/latest',              name: 'Latest Updates', componentName: 'LatestUpdates'},
+  {path: '/login' ,              name: 'Login',          componentName: 'Login'},
   // {path: '/modals',              name: 'Modals Test',    componentName: 'Modals'},
   // {path: '/offices',                    name: 'Offices',         componentName: 'OfficesListGroup'},
   // {path: '/offices/:_id/edit',          name: 'offices.edit',    componentName: 'OfficesEditForm'},
