@@ -112,7 +112,7 @@ class ContactsDataTable extends PureComponent {
   }
 
   render() {
-    const { count, totalCount, results, loadingMore, loadMore,
+    const { count, totalCount, results, loadingMore, loadMore, currentUser,
             contactTitleFilters, contactUpdatedFilters, contactLocationFilters } = this.props;
     const selectRow = {
       mode: 'checkbox'
@@ -196,6 +196,14 @@ class ContactsDataTable extends PureComponent {
               <Button onClick={e => {e.preventDefault(); loadMore();}}>Load More ({count}/{totalCount})</Button>
             }
           </CardFooter>
+          }
+          {Contacts.options.mutations.new.check(currentUser) ?
+          <CardFooter>
+            <Components.ModalTrigger title="New Contact" component={<Button>Add a Contact</Button>}>
+              <Components.ContactsNewForm currentUser={currentUser} />
+            </Components.ModalTrigger>
+          </CardFooter>
+            : null
           }
         </Card>
       </div>

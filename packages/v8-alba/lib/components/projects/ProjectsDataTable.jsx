@@ -112,7 +112,8 @@ class ProjectsDataTable extends PureComponent {
   }
 
   render() {
-    const { count, totalCount, results, loadingMore, loadMore, projectTypeFilters, projectStatusFilters, projectUpdatedFilters } = this.props;
+    const { count, totalCount, results, loadingMore, loadMore, currentUser,
+            projectTypeFilters, projectStatusFilters, projectUpdatedFilters } = this.props;
     const selectRow = {
       mode: 'checkbox'
     };
@@ -178,6 +179,14 @@ class ProjectsDataTable extends PureComponent {
               <Button onClick={e => {e.preventDefault(); loadMore();}}>Load More ({count}/{totalCount})</Button>
             }
           </CardFooter>
+          }
+          {Projects.options.mutations.new.check(currentUser) ?
+          <CardFooter>
+            <Components.ModalTrigger title="New Project" component={<Button>Add a Project</Button>}>
+              <Components.ProjectsNewForm currentUser={currentUser} />
+            </Components.ModalTrigger>
+          </CardFooter>
+            : null
           }
         </Card>
       </div>
