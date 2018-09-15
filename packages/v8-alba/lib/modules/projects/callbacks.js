@@ -1,5 +1,8 @@
-import { Connectors, addCallback } from 'meteor/vulcan:core';
+import { addCallback, Connectors, editMutation } from 'meteor/vulcan:core';
+import Users from 'meteor/vulcan:users';
 import Contacts from '../contacts/collection.js';
+import Projects from './collection.js';
+import Statistics from '../statistics/collection.js';
 import _ from 'lodash';
 
 /*
@@ -52,5 +55,48 @@ function ProjectEditUpdateContacts (project) {
   })
 }
 
-addCallback('projects.edit.after', ProjectEditUpdateContacts);
-addCallback('projects.new.after', ProjectEditUpdateContacts);
+/* THe non-cron approach: When adding a project, update statistics */
+function ProjectNewUpdateStatistics (project) {
+  const currentUser = Users.findOne(); // just get the first user available TODO:
+  const theStats = Statistics.findOne();
+  let newStats = {}
+  newStats.episodics = theStats.episodics;
+  newStats.features = theStats.features;
+  // newStats.pilots = theStats.pilots;
+  // newStats.others = theStats.others;
+
+  switch (project.projectType) {
+    case "TV One Hour":
+    case "TV 1/2 Hour":
+      const episodicsCasting = Projects.find({
+        projectType: { $in: [ "TV One Hour", "TV 1/2 Hour" ] },
+        status: "Casting"
+      }).count() + 1;
+      newStats.episodics.push({ date: new Date(), quantity: episodicsCasting});
+      break;
+    case "Feature Film":
+    case "Feature Film (LB)":
+    case "Feature Film (MLB)":
+    case "Feature Film (ULB)":
+      const featuresCasting = Projects.find({
+        projectType: { $in: [ "Feature Film", "Feature Film (LB)", "Feature Film (MLB)", "Feature Film (ULB)" ] },
+        status: "Casting"
+      }).count() + 1;
+      newStats.features.push({ date: new Date(), quantity: featuresCasting});
+      break;
+  }
+
+  Promise.await(editMutation({
+    action: 'statistic.update',
+    documentId: theStats._id,
+    collection: Statistics,
+    set: newStats,
+    currentUser,
+    validate: false,
+  }));
+
+}
+
+addCallback('project.update.after', ProjectEditUpdateContacts);
+addCallback('project.create.after', ProjectEditUpdateContacts);
+addCallback('project.create.after', ProjectNewUpdateStatistics);
