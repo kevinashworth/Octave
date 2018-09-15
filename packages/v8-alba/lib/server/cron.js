@@ -44,7 +44,7 @@ const addJob = function () {
       newStats.others.push({ date: new Date(), quantity: othersCasting});
       console.log('Others casting:', othersCasting);
       Promise.await(editMutation({
-        action: 'statistics.edit',
+        action: 'statistic.update',
         documentId: theStats._id,
         collection: Statistics,
         set: newStats,
