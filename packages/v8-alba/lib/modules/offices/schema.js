@@ -26,7 +26,7 @@ const linkGroup = {
   order: 30
 }
 
-export const linkSchema = new SimpleSchema({
+const linkSchema = new SimpleSchema({
   platformName: {
     type: String,
     optional: true,
@@ -50,7 +50,7 @@ export const linkSchema = new SimpleSchema({
   },
 });
 
-export const projectIdsSchema = new SimpleSchema({
+const projectIdsSchema = new SimpleSchema({
   projectId: {
     type: String,
     optional: true,
@@ -67,7 +67,7 @@ export const projectIdsSchema = new SimpleSchema({
   },
 });
 
-// export const contactsIdsSchema = new SimpleSchema({
+// const contactsIdsSchema = new SimpleSchema({
 //   contactId: {
 //     type: String,
 //     optional: true,

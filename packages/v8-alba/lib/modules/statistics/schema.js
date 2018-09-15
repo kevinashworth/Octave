@@ -1,6 +1,6 @@
 import SimpleSchema from 'simpl-schema';
 
-export const dataSchema = new SimpleSchema({
+const dataSchema = new SimpleSchema({
   date: {
     type: Date,
     optional: true,

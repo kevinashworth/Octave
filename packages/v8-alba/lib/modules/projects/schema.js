@@ -3,7 +3,7 @@ import SimpleSchema from 'simpl-schema';
 import marked from 'marked';
 import { addressSchema } from '../shared_schemas.js';
 
-export const contactSchema = new SimpleSchema({
+const contactSchema = new SimpleSchema({
   contactId: {
     type: String,
     control: 'SelectContactIdNameTitle',
