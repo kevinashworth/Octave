@@ -1,10 +1,11 @@
+import { replaceComponent, Components } from 'meteor/vulcan:core';
 import React, {Component} from 'react';
-import {Container, Row, Col, Button, Input, InputGroupAddon, InputGroup, InputGroupButton} from 'reactstrap';
+import { Container, Row, Col, Button, Input, InputGroup } from 'reactstrap';
 
 class Page404 extends Component {
   render() {
     return (
-      <div className="app flex-row align-items-center">
+      <div className="animated fadeIn">
         <Container>
           <Row className="justify-content-center">
             <Col md="6">
@@ -32,4 +33,4 @@ class Page404 extends Component {
   }
 }
 
-export default Page404;
+replaceComponent('Error404', Page404);

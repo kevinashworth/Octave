@@ -11,10 +11,11 @@ import '../components/common/SidebarHeader/';
 import '../components/common/SidebarMinimizer/';
 import '../components/common/LayoutFull/'; // replaceComponent Full
 import '../components/common/LayoutAdmin/';
-import '../components/common/Login/';
+import '../components/common/Page404/'; // replaceComponent Error404
 
 // Alba components with changes
 
+import '../components/common/Login/';
 import '../components/common/Dashboard/';
 import '../components/common/Dashboard/LineChart1';
 import '../components/common/Dashboard/LineChart2';
