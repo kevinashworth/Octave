@@ -72,7 +72,7 @@ function ProjectNewUpdateStatistics (project) {
       const episodicsCasting = Projects.find({
         projectType: { $in: [ 'TV One Hour', 'TV 1/2 Hour' ] },
         status: 'Casting'
-      }).count() + 1;
+      }).count();
       newStats.episodics.push({ date: moment().format("YYYY-MM-DD HH:mm:ss"), quantity: episodicsCasting});
       break;
     case 'Feature Film':
@@ -82,7 +82,7 @@ function ProjectNewUpdateStatistics (project) {
       const featuresCasting = Projects.find({
         projectType: { $in: [ 'Feature Film', 'Feature Film (LB)', 'Feature Film (MLB)', 'Feature Film (ULB)' ] },
         status: 'Casting'
-      }).count() + 1;
+      }).count();
       newStats.features.push({ date: moment().format("YYYY-MM-DD HH:mm:ss"), quantity: featuresCasting});
       break;
     case 'Pilot One Hour':
@@ -91,7 +91,7 @@ function ProjectNewUpdateStatistics (project) {
       const pilotsCasting = Projects.find({
         projectType: { $in: [ 'Pilot One Hour', 'Pilot 1/2 Hour', 'Pilot Presentation' ] },
         status: 'Casting'
-      }).count() + 1;
+      }).count();
       newStats.pilots.push({ date: moment().format("YYYY-MM-DD HH:mm:ss"), quantity: pilotsCasting});
       break;
     default:
@@ -99,7 +99,7 @@ function ProjectNewUpdateStatistics (project) {
       const othersCasting = Projects.find({
         projectType: { $in: [ 'Short Film', 'TV Daytime', 'TV Mini-Series', 'TV Movie', 'TV Telefilm', 'TV Talk/Variety', 'TV Sketch/Improv', 'New Media' ] },
         status: 'Casting'
-      }).count() + 1;
+      }).count();
       newStats.others.push({ date: moment().format("YYYY-MM-DD HH:mm:ss"), quantity: othersCasting});
   }
   Promise.await(editMutation({
@@ -114,4 +114,4 @@ function ProjectNewUpdateStatistics (project) {
 
 addCallback('project.update.after', ProjectEditUpdateContacts);
 addCallback('project.create.after', ProjectEditUpdateContacts);
-addCallback('project.create.after', ProjectNewUpdateStatistics);
+addCallback('project.create.async', ProjectNewUpdateStatistics);
