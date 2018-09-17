@@ -14,6 +14,7 @@ import {
   Row
 } from 'reactstrap';
 import moment from 'moment';
+import _ from 'lodash';
 import Statistics from '../../../modules/statistics/collection.js';
 
 const brandDanger = '#f86c6b';
@@ -36,15 +37,34 @@ class LineChart1 extends PureComponent {
     }
 
     const theStats = this.props.document;
+    var data1 = theStats.episodics.map(stat => {
+      return {
+      x: moment(stat.date).format('MMM D'),
+      y: stat.quantity
+    }});
+    var data2 = theStats.features.map(stat => {
+      return {
+      x: moment(stat.date).format('MMM D'),
+      y: stat.quantity
+    }});
+    var data3 = theStats.pilots.map(stat => {
+      return {
+      x: moment(stat.date).format('MMM D'),
+      y: stat.quantity
+    }});
+    var data4 = theStats.others.map(stat => {
+      return {
+      x: moment(stat.date).format('MMM D'),
+      y: stat.quantity
+    }});
 
-    // Main Chart
-    var data1 = this.props.document.episodics.map(stat => stat.quantity);
-    var data2 = this.props.document.features.map(stat => stat.quantity);
-    var data3 = this.props.document.pilots.map(stat => stat.quantity);
-    var data4 = this.props.document.others.map(stat => stat.quantity);
+    const allData = theStats.episodics.concat(theStats.features, theStats.pilots, theStats.others);
+    const sortedData = _.sortBy(allData, 'date');
+    const allDates = sortedData.map(stat => moment(stat.date).format('MMM D'));
+    const dateLabels = _.uniqBy(allDates); // TODO: Is there a sipmler way to get this?
 
     const mainChart = {
-      labels: this.props.document.episodics.map(stat => moment(stat.date).format('MMM D')),
+      labels: dateLabels,
       datasets: [
         {
           label: 'Episodics',
