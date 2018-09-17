@@ -2,7 +2,7 @@ import { Components, getFragment, registerComponent, withCurrentUser } from 'met
 import React from 'react';
 import Projects from '../../modules/projects/collection.js';
 
-const ProjectsNewForm = ({currentUser}) =>
+const ProjectsNewForm = ({currentUser, toggle}) =>
   <div className="animated fadeIn">
     {Projects.options.mutations.new.check(currentUser) ?
       <div style={ { marginBottom: '20px', paddingBottom: '20px', borderBottom: '1px solid #ccc' } }>
@@ -10,6 +10,11 @@ const ProjectsNewForm = ({currentUser}) =>
         <Components.SmartForm
           collection={Projects}
           mutationFragment={getFragment('ProjectsItemFragment')}
+          successCallback={document => {
+            if (toggle) {
+              toggle();
+            }
+          }}
         />
       </div> :
       null

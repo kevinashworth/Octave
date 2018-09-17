@@ -2,18 +2,18 @@ import SimpleSchema from 'simpl-schema';
 
 const dataSchema = new SimpleSchema({
   date: {
-    type: Date,
+    type: String, // YYYY-MM-DD HH:mm:ss
     optional: true,
-    viewableBy: ["members"],
-    insertableBy: ["members"],
-    editableBy: ["members"],
+    viewableBy: ['members'],
+    insertableBy: ['members'],
+    editableBy: ['members'],
   },
   quantity: {
     type: Number,
     optional: true,
-    viewableBy: ["members"],
-    insertableBy: ["members"],
-    editableBy: ["members"],
+    viewableBy: ['members'],
+    insertableBy: ['members'],
+    editableBy: ['members'],
   },
 });
 
@@ -23,12 +23,12 @@ const schema = {
   _id: {
     type: String,
     optional: true,
-    viewableBy: ["members"]
+    viewableBy: ['members']
   },
   createdAt: {
     type: Date,
     optional: true,
-    viewableBy: ["members"],
+    viewableBy: ['members'],
     onInsert: () => {
       return new Date();
     }
@@ -36,7 +36,7 @@ const schema = {
   userId: {
     type: String,
     optional: true,
-    viewableBy: ["members"]
+    viewableBy: ['members']
   },
 
   // custom properties
@@ -44,7 +44,7 @@ const schema = {
   updatedAt: {
     type: Date,
     optional: true,
-    viewableBy: ["members"],
+    viewableBy: ['members'],
     onInsert: () => {
       return new Date();
     },
@@ -53,45 +53,45 @@ const schema = {
     }
   },
   episodics: {
-    label: "Episodics",
+    label: 'Episodics',
     type: Array,
     optional: true,
-    viewableBy: ["members"],
-    insertableBy: ["members"],
-    editableBy: ["members"],
+    viewableBy: ['members'],
+    insertableBy: ['members'],
+    editableBy: ['members'],
   },
   'episodics.$': {
     type: dataSchema,
   },
   pilots: {
-    label: "Pilots",
+    label: 'Pilots',
     type: Array,
     optional: true,
-    viewableBy: ["members"],
-    insertableBy: ["members"],
-    editableBy: ["members"],
+    viewableBy: ['members'],
+    insertableBy: ['members'],
+    editableBy: ['members'],
   },
   'pilots.$': {
     type: dataSchema,
   },
   features: {
-    label: "Features",
+    label: 'Features',
     type: Array,
     optional: true,
-    viewableBy: ["members"],
-    insertableBy: ["members"],
-    editableBy: ["members"],
+    viewableBy: ['members'],
+    insertableBy: ['members'],
+    editableBy: ['members'],
   },
   'features.$': {
     type: dataSchema,
   },
   others: {
-    label: "Others",
+    label: 'Others',
     type: Array,
     optional: true,
-    viewableBy: ["members"],
-    insertableBy: ["members"],
-    editableBy: ["members"],
+    viewableBy: ['members'],
+    insertableBy: ['members'],
+    editableBy: ['members'],
   },
   'others.$': {
     type: dataSchema,

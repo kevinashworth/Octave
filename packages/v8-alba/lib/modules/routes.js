@@ -38,3 +38,8 @@ addRoute([
   {path: '/projects/:_id/edit',    name: 'projects.edit',      componentName: 'ProjectsEditForm'},
   {path: '/projects/:_id(/:slug)', name: 'projects.single',    componentName: 'ProjectsSingle'},
 ], 'Projects');
+
+addRoute([
+  {path: '/statistics/list',         name: 'StatisticsList',       componentName: 'StatisticsList'},
+  {path: '/statistics/:_id/edit',    name: 'StatisticsEditForm',   componentName: 'StatisticsEditForm'},
+]);

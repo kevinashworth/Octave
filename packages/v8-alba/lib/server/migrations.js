@@ -2,6 +2,9 @@
 import { Migrations } from 'meteor/percolate:migrations';
 import Projects from '../modules/projects/collection.js';
 import Contacts from '../modules/contacts/collection.js';
+import Statistics from '../modules/statistics/collection.js';
+import moment from 'moment';
+import reducedStats from '../modules/statistics/_stats-reduced.js';
 
 Migrations.add({
   version: 1,
@@ -311,6 +314,87 @@ Migrations.add({
   }
 });
 
+Migrations.add({
+  version: 7,
+  name: 'Statistics Dates as strings',
+  up() {
+    const theStats = Statistics.findOne();
+    let newStats = {}
+    newStats.episodics = theStats.episodics.map((o) => {
+      return {
+        date: moment(o.date).format("YYYY-MM-DD HH:mm:ss"),
+        quantity: o.quantity
+      }
+    });
+    newStats.features = theStats.features.map((o) => {
+      return {
+        date: moment(o.date).format("YYYY-MM-DD HH:mm:ss"),
+        quantity: o.quantity
+      }
+    });
+    newStats.pilots = theStats.pilots.map((o) => {
+      return {
+        date: moment(o.date).format("YYYY-MM-DD HH:mm:ss"),
+        quantity: o.quantity
+      }
+    });
+    newStats.others = theStats.others.map((o) => {
+      return {
+        date: moment(o.date).format("YYYY-MM-DD HH:mm:ss"),
+        quantity: o.quantity
+      }
+    });
+    Statistics.update(theStats._id, {
+      $set: newStats
+    })
+  },
+  down() {
+    const theStats = Statistics.findOne();
+    let newStats = {}
+    newStats.episodics = theStats.episodics.map((o) => {
+      return {
+        date: new Date(o.date),
+        quantity: o.quantity
+      }
+    });
+    newStats.features = theStats.features.map((o) => {
+      return {
+        date: new Date(o.date),
+        quantity: o.quantity
+      }
+    });
+    newStats.pilots = theStats.pilots.map((o) => {
+      return {
+        date: new Date(o.date),
+        quantity: o.quantity
+      }
+    });
+    newStats.others = theStats.others.map((o) => {
+      return {
+        date: new Date(o.date),
+        quantity: o.quantity
+      }
+    });
+    Statistics.update(theStats._id, {
+      $set: newStats
+    })
+  }
+});
+
+Migrations.add({
+  version: 8,
+  name: 'Reduce statistics. (There is no undo)',
+  up: function() {
+    const theStats = Statistics.findOne();
+    let newStats = {};
+    newStats = reducedStats;
+    Statistics.update(theStats._id, {
+      $set: newStats
+    })
+  },
+  down: function() {/* There is no undoing this one. */}
+});
+
 Meteor.startup(() => {
-  Migrations.migrateTo('6');
+  Migrations.migrateTo('8');
 });
