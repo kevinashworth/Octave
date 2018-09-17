@@ -4,6 +4,7 @@ import Contacts from '../contacts/collection.js';
 import Projects from './collection.js';
 import Statistics from '../statistics/collection.js';
 import _ from 'lodash';
+import moment from 'moment';
 
 /*
 When updating a contact on a project, also update that contact with the project.
@@ -21,7 +22,7 @@ I get confused, so here's a description:
   titleForProject: contact.contactTitle
   }
 
-TODO: For some reason, the contact's `updatedAt` field doesn't get a `new Date()` `onEdit`
+TODO: For some reason, the contact's `updatedAt` field doesn't get a `moment().format("YYYY-MM-DD HH:mm:ss")` `onEdit`
 */
 function ProjectEditUpdateContacts (project) {
   if (!project.contacts) {
@@ -62,30 +63,45 @@ function ProjectNewUpdateStatistics (project) {
   let newStats = {}
   newStats.episodics = theStats.episodics;
   newStats.features = theStats.features;
-  // newStats.pilots = theStats.pilots;
-  // newStats.others = theStats.others;
+  newStats.pilots = theStats.pilots;
+  newStats.others = theStats.others;
 
   switch (project.projectType) {
-    case "TV One Hour":
-    case "TV 1/2 Hour":
+    case 'TV One Hour':
+    case 'TV 1/2 Hour':
       const episodicsCasting = Projects.find({
-        projectType: { $in: [ "TV One Hour", "TV 1/2 Hour" ] },
-        status: "Casting"
+        projectType: { $in: [ 'TV One Hour', 'TV 1/2 Hour' ] },
+        status: 'Casting'
       }).count() + 1;
-      newStats.episodics.push({ date: new Date(), quantity: episodicsCasting});
+      newStats.episodics.push({ date: moment().format("YYYY-MM-DD HH:mm:ss"), quantity: episodicsCasting});
       break;
-    case "Feature Film":
-    case "Feature Film (LB)":
-    case "Feature Film (MLB)":
-    case "Feature Film (ULB)":
+    case 'Feature Film':
+    case 'Feature Film (LB)':
+    case 'Feature Film (MLB)':
+    case 'Feature Film (ULB)':
       const featuresCasting = Projects.find({
-        projectType: { $in: [ "Feature Film", "Feature Film (LB)", "Feature Film (MLB)", "Feature Film (ULB)" ] },
-        status: "Casting"
+        projectType: { $in: [ 'Feature Film', 'Feature Film (LB)', 'Feature Film (MLB)', 'Feature Film (ULB)' ] },
+        status: 'Casting'
       }).count() + 1;
-      newStats.features.push({ date: new Date(), quantity: featuresCasting});
+      newStats.features.push({ date: moment().format("YYYY-MM-DD HH:mm:ss"), quantity: featuresCasting});
       break;
+    case 'Pilot One Hour':
+    case 'Pilot 1/2 Hour':
+    case 'Pilot Presentation':
+      const pilotsCasting = Projects.find({
+        projectType: { $in: [ 'Pilot One Hour', 'Pilot 1/2 Hour', 'Pilot Presentation' ] },
+        status: 'Casting'
+      }).count() + 1;
+      newStats.pilots.push({ date: moment().format("YYYY-MM-DD HH:mm:ss"), quantity: pilotsCasting});
+      break;
+    default:
+    // ???
+      const othersCasting = Projects.find({
+        projectType: { $in: [ 'Short Film', 'TV Daytime', 'TV Mini-Series', 'TV Movie', 'TV Telefilm', 'TV Talk/Variety', 'TV Sketch/Improv', 'New Media' ] },
+        status: 'Casting'
+      }).count() + 1;
+      newStats.others.push({ date: moment().format("YYYY-MM-DD HH:mm:ss"), quantity: othersCasting});
   }
-
   Promise.await(editMutation({
     action: 'statistic.update',
     documentId: theStats._id,
@@ -94,7 +110,6 @@ function ProjectNewUpdateStatistics (project) {
     currentUser,
     validate: false,
   }));
-
 }
 
 addCallback('project.update.after', ProjectEditUpdateContacts);

@@ -30,6 +30,9 @@ import '../components/common/Fragments';
 // Testing
 
 import '../components/common/Modals.jsx';
+// import '../components/statistics/Statistics.jsx';
+import '../components/statistics/StatisticsEditForm.jsx';
+import '../components/statistics/StatisticsList.jsx';
 
 // V8
 
