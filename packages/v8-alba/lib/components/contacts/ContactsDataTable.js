@@ -1,4 +1,5 @@
-import { Components, registerComponent, withCurrentUser, withList } from 'meteor/vulcan:core';
+import { Components, registerComponent, withCurrentUser, withDelete, withMulti } from 'meteor/vulcan:core';
+import Users from 'meteor/vulcan:users';
 import React, { PureComponent } from 'react';
 import { Link } from 'react-router';
 import { Button, Card, CardBody, CardFooter, CardHeader } from 'reactstrap';
@@ -41,12 +42,12 @@ class ContactsDataTable extends PureComponent {
       );
     }
 
-    function rowClickHandler(row, columnIndex, rowIndex, event) {
-      // eslint-disable-next-line no-console
-      console.log(`You clicked row ${row._id} (${rowIndex}, ${columnIndex}):`);
-      // eslint-disable-next-line no-console
-      console.log(event);
-    }
+    // function rowClickHandler(row, columnIndex, rowIndex, event) {
+    //   // eslint-disable-next-line no-console
+    //   console.log(`You clicked row ${row._id} (${rowIndex}, ${columnIndex}):`);
+    //   // eslint-disable-next-line no-console
+    //   console.log(event);
+    // }
 
     const sortChangeHandler = (sortName, sortOrder) => {
       this.setState((prevState) => ({
@@ -64,6 +65,17 @@ class ContactsDataTable extends PureComponent {
       this.setState((prevState) => ({
         options: {...prevState.options, sizePerPage}
       }));
+    }
+
+    const onDeleteRow = (rows) => {
+      if (confirm(`Really truly delete ${rows.length} contacts at once? (There is no undo!)`)) {
+        rows.forEach(async (row) => {
+          const documentId = row;
+          await this.props.deleteContact({
+            selector: { documentId },
+          });
+        });
+      }
     }
 
     this.state = {
@@ -87,11 +99,11 @@ class ContactsDataTable extends PureComponent {
         paginationShowsTotal: renderShowsTotal,
         paginationPosition: 'both',
         onPageChange: pageChangeHandler,
-        onRowClick: rowClickHandler,
         onSizePerPageList: sizePerPageListHandler,
         onSortChange: sortChangeHandler,
         onSearchChange: searchChangeHandler,
         clearSearch: true,
+        onDeleteRow: onDeleteRow,
 
         // Retrieve the last state
         ...keptState
@@ -162,6 +174,7 @@ class ContactsDataTable extends PureComponent {
 
     });
 
+    const canDelete = Users.canDo(currentUser, `contact.delete.all`);
 
     return (
       <div className="animated fadeIn">
@@ -171,7 +184,9 @@ class ContactsDataTable extends PureComponent {
             <Components.ContactFilters/>
           </CardHeader>
           <CardBody>
-            <BootstrapTable data={filteredResults} version="4" condensed striped hover pagination search options={this.state.options} selectRow={selectRow} keyField='_id' bordered={false}>
+            <BootstrapTable data={filteredResults} version="4" condensed striped hover pagination search
+              options={this.state.options} selectRow={selectRow} keyField='_id' bordered={false}
+              deleteRow={canDelete}>
               <TableHeaderColumn dataField="fullName" dataSort dataFormat={
                 (cell, row) => {
                   return (
@@ -218,4 +233,9 @@ const options = {
   enableCache: true
 };
 
-registerComponent('ContactsDataTable', ContactsDataTable, withContactFilters, withCurrentUser, [withList, options]);
+const deleteOptions = {
+  collection: Contacts
+}
+
+registerComponent('ContactsDataTable', ContactsDataTable,
+                    withContactFilters, withCurrentUser, [withMulti, options], [withDelete, deleteOptions]);
