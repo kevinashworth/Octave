@@ -15,23 +15,29 @@ class LatestContactUpdates extends Component {
 
     return (
       <Row>
-        {this.props.results.map(contact =>
-          <Col xs="12" sm="6" md="4" key={contact._id}>
-            <Card className="card-accent-warning">
-              <CardHeader>
-                <b><Link to={`/contacts/${contact._id}/${contact.slug}`}>{contact.displayName}</Link></b>
-              </CardHeader>
-              <CardBody>
-                {contact.title}<br/>
-                {contact.city}<br/>
-                {contact.projects.length === 1 ? `1 project` : `${contact.projects.length} projects`}<br/>
-              </CardBody>
-              <CardFooter>
-                <small className="text-muted">Contact updated {moment(contact.updatedAt).format(DATE_FORMAT_SHORT_FRIENDLY)}</small>
-              </CardFooter>
-            </Card>
-          </Col>
-        )}
+        {this.props.results.map(contact => {
+          const isItNew = moment(contact.updatedAt).isBefore(moment(contact.createdAt).add(1, 'day'));
+          let displayHtml = isItNew ?
+            '<b>New!</b> Contact added ' :
+            'Contact updated ';
+          displayHtml += moment(contact.updatedAt).format(DATE_FORMAT_SHORT_FRIENDLY);
+          return (
+            <Col xs="12" sm="6" md="4" key={contact._id}>
+              <Card className="card-accent-warning">
+                <CardHeader>
+                  <b><Link to={`/contacts/${contact._id}/${contact.slug}`}>{contact.displayName}</Link></b>
+                </CardHeader>
+                <CardBody>
+                  {contact.title}<br/>
+                  {contact.city}<br/>
+                </CardBody>
+                <CardFooter>
+                  <small className="text-muted" dangerouslySetInnerHTML={{__html: displayHtml}}></small>
+                </CardFooter>
+              </Card>
+            </Col>
+          )
+        })}
       </Row>
     )
   }
@@ -43,7 +49,11 @@ const contactOptions = {
   limit: 6
 };
 
-registerComponent('LatestContactUpdates', LatestContactUpdates, [withMulti, contactOptions]);
+registerComponent({
+  name: 'LatestContactUpdates',
+  component: LatestContactUpdates,
+  hocs: [[withMulti, contactOptions]]
+});
 
 class LatestActiveProjectUpdates extends Component {
   render() {
@@ -60,23 +70,23 @@ class LatestActiveProjectUpdates extends Component {
             'Project updated ';
           displayHtml += moment(project.updatedAt).format(DATE_FORMAT_SHORT_FRIENDLY);
           return (
-          <Col xs="12" sm="6" md="4" key={project._id}>
-            <Card className="card-accent-danger">
-              <CardHeader>
-                <b><Link to={`/projects/${project._id}/${project.slug}`}>{project.projectTitle}</Link></b>
-              </CardHeader>
-              <CardBody>
-                {project.projectType.indexOf('TV') === 0 || project.projectType.indexOf('Pilot') === 0
-                  ? `${project.projectType} • ${project.network}` : `${project.projectType}`}<br/>
-                {project.status}<br/>
-                {project.castingCompany}<br/>
-              </CardBody>
-              <CardFooter>
-                <small className="text-muted" dangerouslySetInnerHTML={{__html: displayHtml}}></small>
-              </CardFooter>
-            </Card>
-          </Col>
-        )
+            <Col xs="12" sm="6" md="4" key={project._id}>
+              <Card className="card-accent-danger">
+                <CardHeader>
+                  <b><Link to={`/projects/${project._id}/${project.slug}`}>{project.projectTitle}</Link></b>
+                </CardHeader>
+                <CardBody>
+                  {project.projectType.indexOf('TV') === 0 || project.projectType.indexOf('Pilot') === 0
+                    ? `${project.projectType} • ${project.network}` : `${project.projectType}`}<br/>
+                  {project.status}<br/>
+                  {project.castingCompany}<br/>
+                </CardBody>
+                <CardFooter>
+                  <small className="text-muted" dangerouslySetInnerHTML={{__html: displayHtml}}></small>
+                </CardFooter>
+              </Card>
+            </Col>
+          )
         })}
       </Row>
     )
@@ -88,12 +98,16 @@ const projectOptions = {
   fragmentName: 'ProjectsSingleFragment',
   limit: 6,
   terms: {
-   view: 'collectionWithStatus',
-   status: { $in: ['Casting', 'Ordered', 'Pre-Prod.', 'Shooting', 'See Notes...', 'On Hiatus', 'On Hold', 'Unknown']}
- }
+    view: 'collectionWithStatus',
+    status: { $in: ['Casting', 'Ordered', 'Pre-Prod.', 'Shooting', 'See Notes...', 'On Hiatus', 'On Hold', 'Unknown'] }
+  }
 };
 
-registerComponent({name: 'LatestActiveProjectUpdates', component: LatestActiveProjectUpdates, hocs: [[withMulti, projectOptions]]});
+registerComponent({
+  name: 'LatestActiveProjectUpdates',
+  component: LatestActiveProjectUpdates,
+  hocs: [[withMulti, projectOptions]]
+});
 
 class LatestInactiveProjectUpdates extends Component {
   render() {
@@ -131,12 +145,16 @@ const projectOptionsInactive = {
   fragmentName: 'ProjectsSingleFragment',
   limit: 6,
   terms: {
-   view: 'collectionWithStatus',
-   status: { $in: ['Canceled', 'Wrapped']}
- }
+    view: 'collectionWithStatus',
+    status: { $in: ['Canceled', 'Wrapped'] }
+  }
 };
 
-registerComponent({name: 'LatestInactiveProjectUpdates', component: LatestInactiveProjectUpdates, hocs: [[withMulti, projectOptionsInactive]]});
+registerComponent({
+  name: 'LatestInactiveProjectUpdates',
+  component: LatestInactiveProjectUpdates,
+  hocs: [[withMulti, projectOptionsInactive]]
+});
 
 class LatestUpdates extends Component {
   render() {
@@ -155,4 +173,8 @@ const accessOptions = {
   redirect: '/login'
 }
 
-registerComponent('LatestUpdates', LatestUpdates, [withAccess, accessOptions]);
+registerComponent({
+  name: 'LatestUpdates',
+  component: LatestUpdates,
+  hocs: [[withAccess, accessOptions]]
+});
