@@ -17,8 +17,8 @@ import '../components/common/Page404/'; // replaceComponent Error404
 
 import '../components/common/Login/';
 import '../components/common/Dashboard/';
-import '../components/common/Dashboard/LineChart1';
-import '../components/common/Dashboard/LineChart2';
+import '../components/common/Dashboard/LineChartLarge';
+import '../components/common/Dashboard/LineChartSmall';
 import '../components/common/LatestUpdates/';
 import '../components/common/MyModalTrigger.jsx'; // replaceComponent ModalTrigger
 import '../components/common/forms/MyFormSubmit'; // replaceComponent FormSubmit

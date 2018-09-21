@@ -14,11 +14,11 @@ accounts-password@1.5.1
 
 ############ Your Packages ############
 
-v8-alba
-
 vulcan:debug
 vulcan:ui-bootstrap
 
 fortawesome:fontawesome
 jss:flag-icon
 percolate:migrations
+
+v8-alba

@@ -19,7 +19,7 @@ I get confused, so here's a description:
   {
   projectId: project._id,
   projectTitle: project.projectTitle,
-  titleForProject: contact.contactTitle
+  titleForProject: projectContact.contactTitle
   }
 
 TODO: For some reason, the contact's `updatedAt` field doesn't get a `moment().format("YYYY-MM-DD HH:mm:ss")` `onEdit`
@@ -34,7 +34,7 @@ function ProjectEditUpdateContacts (project) {
     const newProject = {
       projectId: project._id,
       projectTitle: project.projectTitle,
-      titleForProject: contact.contactTitle
+      titleForProject: projectContact.contactTitle
     };
     let newProjects = [];
 
@@ -57,7 +57,8 @@ function ProjectEditUpdateContacts (project) {
 }
 
 /* THe non-cron approach: When adding a project, update statistics */
-function ProjectNewUpdateStatistics (project) {
+function ProjectNewUpdateStatistics ({ insertedDocument }) {
+  const project = insertedDocument;
   const currentUser = Users.findOne(); // just get the first user available TODO:
   const theStats = Statistics.findOne();
   let newStats = {}
@@ -94,13 +95,21 @@ function ProjectNewUpdateStatistics (project) {
       }).count();
       newStats.pilots.push({ date: moment().format("YYYY-MM-DD HH:mm:ss"), quantity: pilotsCasting});
       break;
-    default:
-    // ???
+    case 'Short Film':
+    case 'TV Daytime':
+    case 'TV Mini-Series':
+    case 'TV Movie':
+    case 'TV Telefilm':
+    case 'TV Talk/Variety':
+    case 'TV Sketch/Improv':
+    case 'New Media':
       const othersCasting = Projects.find({
         projectType: { $in: [ 'Short Film', 'TV Daytime', 'TV Mini-Series', 'TV Movie', 'TV Telefilm', 'TV Talk/Variety', 'TV Sketch/Improv', 'New Media' ] },
         status: 'Casting'
       }).count();
       newStats.others.push({ date: moment().format("YYYY-MM-DD HH:mm:ss"), quantity: othersCasting});
+      break;
+    // default:
   }
   Promise.await(editMutation({
     action: 'statistic.update',
