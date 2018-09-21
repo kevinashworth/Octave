@@ -11,7 +11,7 @@ class LineChartSmall extends PureComponent {
   }
 
   render() {
-    const { bgColor = 'info', theSmallStats, subtitle, title } = this.props;
+    const { bgColor, theSmallStats, subtitle, title } = this.props;
     if (this.props.loading) {
       return (<div><Components.Loading/></div>);
     }
