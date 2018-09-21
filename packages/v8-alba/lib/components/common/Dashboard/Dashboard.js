@@ -1,84 +1,18 @@
-import { Components, registerComponent, withAccess } from 'meteor/vulcan:core';
-// import Statistics from '../../modules/statistics/collection.js';
+import { Components, registerComponent, withAccess, withMulti } from 'meteor/vulcan:core';
 import React, { PureComponent } from 'react';
 import {Bar, Line} from 'react-chartjs-2';
 import {
-  Badge,
   Row,
   Col,
-  Progress,
   Dropdown,
   DropdownToggle,
   DropdownMenu,
   DropdownItem,
   Card,
-  CardHeader,
   CardBody,
-  CardFooter,
-  CardTitle,
-  Button,
-  ButtonToolbar,
   ButtonGroup,
   ButtonDropdown,
-  Table
 } from 'reactstrap';
-
-const brandPrimary = '#20a8d8';
-const brandSuccess = '#4dbd74';
-const brandInfo = '#67c2ef';
-const brandWarning = '#f8cb00';
-const brandDanger = '#f86c6b';
-
-// Card Chart 1
-const cardChartData1 = {
-  labels: ['Aug 18', 'Aug 19', 'Aug 20', 'Aug 21', 'Aug 22', 'Aug 23', 'Aug 24'],
-  datasets: [
-    {
-      label: 'Episodics',
-      backgroundColor: brandPrimary,
-      borderColor: 'rgba(255,255,255,.55)',
-      data: [100, 100, 101, 110, 115, 118, 122]
-    }
-  ],
-};
-
-const cardChartOpts1 = {
-  maintainAspectRatio: false,
-  legend: {
-    display: false
-  },
-  scales: {
-    xAxes: [{
-      gridLines: {
-        color: 'transparent',
-        zeroLineColor: 'transparent'
-      },
-      ticks: {
-        fontSize: 2,
-        fontColor: 'transparent',
-      }
-
-    }],
-    yAxes: [{
-      display: false,
-      ticks: {
-        display: false,
-        min: Math.min.apply(Math, cardChartData1.datasets[0].data) - 5,
-        max: Math.max.apply(Math, cardChartData1.datasets[0].data) + 5,
-      }
-    }],
-  },
-  elements: {
-    line: {
-      borderWidth: 1
-    },
-    point: {
-      radius: 4,
-      hitRadius: 10,
-      hoverRadius: 4,
-    },
-  }
-}
 
 // Card Chart 3
 const cardChartData3 = {
@@ -156,7 +90,7 @@ class Dashboard extends PureComponent {
 
     this.state = {
       dropdownOpen: false,
-      radioSelected: 2
+      radioSelected: 2,
     };
   }
 
@@ -173,24 +107,28 @@ class Dashboard extends PureComponent {
   }
 
   render() {
+    if (this.props.loading) {
+      return <Components.Loading />
+    }
 
+    const theStats = this.props.results[0];
     return (
       <div className="animated fadeIn">
         <Row>
           <Col xs="12" sm="6" lg="3">
-            <Card className="text-white bg-primary">
-              <CardBody className="pb-0">
-                <h4 className="mb-0">Episodics</h4>
-                <p>Currently Casting</p>
-              </CardBody>
-              <div className="chart-wrapper px-3" style={{height:'70px'}}>
-                <Line data={cardChartData1} options={cardChartOpts1} height={70}/>
-              </div>
-            </Card>
+            <Components.LineChartSmall
+              bgColor='primary'
+              theSmallStats={theStats.features}
+              title={'Features'}
+              subtitle={'Currently casting'} />
           </Col>
 
           <Col xs="12" sm="6" lg="3">
-            <Components.LineChart2 documentId={"HSEC7MWC9RFCJLEMP"} />
+            <Components.LineChartSmall
+              bgColor='info'
+              theSmallStats={theStats.episodics}
+              title={'Episodics'}
+              subtitle={'Currently casting'} />
           </Col>
 
           <Col xs="12" sm="6" lg="3">
@@ -259,4 +197,9 @@ const accessOptions = {
   redirect: '/login'
 }
 
-registerComponent('Dashboard', Dashboard, [withAccess, accessOptions]);
+const multiOptions = {
+  collectionName: 'Statistics',
+  limit: 1
+}
+
+registerComponent('Dashboard', Dashboard, [withAccess, accessOptions], [withMulti, multiOptions]);
