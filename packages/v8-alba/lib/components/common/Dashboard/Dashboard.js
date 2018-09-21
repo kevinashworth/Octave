@@ -50,7 +50,7 @@ class Dashboard extends PureComponent {
         </Row>
         <Row>
           <Col>
-            <Components.LineChart1 documentId={"HSEC7MWC9RFCJLEMP"} />
+            <Components.LineChartLarge theStats={theStats} />
           </Col>
         </Row>
 
