@@ -30,10 +30,22 @@ const STATUS_ENUM = [
   "Canceled"
 ];
 
+const CASTING_TITLES_ENUM = [
+  { value: 'Casting Director', label: 'Casting Director' },
+  { value: 'Associate', label: 'Associate' },
+  { value: 'Assistant', label: 'Assistant' },
+  { value: 'Intern', label: 'Intern' },
+  { value: 'Casting Director / Associate', label: 'Casting Director / Associate' },
+  { value: 'Associate / Assistant', label: 'Associate / Assistant' },
+  { value: 'Assistant / Intern', label: 'Assistant / Intern' },
+  { value: 'Unknown', label: 'Unknown' },
+];
+
 module.exports = {
   DATE_FORMAT_LONG,
   DATE_FORMAT_SHORT,
   DATE_FORMAT_SHORT_FRIENDLY,
   PROJECT_ENUM,
-  STATUS_ENUM
+  STATUS_ENUM,
+  CASTING_TITLES_ENUM
 }

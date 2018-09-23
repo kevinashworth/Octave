@@ -2,6 +2,7 @@ import { Utils } from 'meteor/vulcan:core';
 import SimpleSchema from 'simpl-schema';
 import marked from 'marked';
 import { addressSchema } from '../shared_schemas.js';
+import { CASTING_TITLES_ENUM } from '../constants.js';
 
 function getFullNameFromContact ({firstName, middleName, lastName}) {
   let tempName = '';
@@ -164,6 +165,10 @@ const schema = {
     label: 'Title',
     type: String,
     optional: true,
+    input: 'select',
+    options: () => {
+      return CASTING_TITLES_ENUM;
+    },
     viewableBy: 'guests',
     insertableBy: ['members'],
     editableBy: ['members']
