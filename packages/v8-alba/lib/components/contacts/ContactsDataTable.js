@@ -166,10 +166,15 @@ class ContactsDataTable extends PureComponent {
         return _.includes(locationFilters, o.location)
             && _.includes(titleFilters, o.title)
             && displayThis;
-      } else { // if "Other" is checked, eliminate based on titles in contactTitleFilters
-      return _.includes(locationFilters, o.location)
-          && !_.includes(otherFilters, o.title)
-          && displayThis;
+      } else if (_.every(titleFilters, {value: true})) {
+        // if "Other" is checked and so are all the titles, do not filter by title
+        return _.includes(locationFilters, o.location)
+            && displayThis;
+      } else {
+        // if "Other" is checked and some are not checked, eliminate based on titles in contactTitleFilters
+        return _.includes(locationFilters, o.location)
+            && !_.includes(otherFilters, o.title)
+            && displayThis;
       }
 
     });
