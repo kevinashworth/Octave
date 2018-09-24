@@ -156,7 +156,8 @@ class ProjectsDataTable extends PureComponent {
             <Components.ProjectFilters/>
           </CardHeader>
           <CardBody>
-            <BootstrapTable data={filteredResults} version="4" condensed striped hover pagination search options={this.state.options} selectRow={selectRow} keyField='_id'>
+            <BootstrapTable data={filteredResults} version="4" condensed striped hover pagination search
+              options={this.state.options} selectRow={selectRow} keyField='_id' bordered={false}>
               <TableHeaderColumn dataField="projectTitle" dataSort dataFormat={
                 (cell, row) => {
                   return (
