@@ -54,7 +54,6 @@ class ContactFilters extends PureComponent {
       } else {
         this.setState({ updatedColor: 'danger' });
       }
-
     }
     if (event.target.name === 'contactLocation') {
       this.props.actions.toggleContactLocationFilter(i);

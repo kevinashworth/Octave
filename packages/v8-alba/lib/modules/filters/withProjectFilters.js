@@ -5,42 +5,19 @@ UI state for Project filters
 import { getActions, addAction, addReducer } from 'meteor/vulcan:lib';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
+import { PROJECT_TYPES_ENUM, PROJECT_STATUSES_ENUM } from '../constants.js';
+
+const projectTypeListBuilder = PROJECT_TYPES_ENUM.map((option) => {
+  return { projectType: option.label, value: true }
+});
+
+const projectStatusListBuilder = PROJECT_STATUSES_ENUM.map((option) => {
+  return { projectStatus: option.label, value: true }
+});
 
 const initialState = {
-  projectTypeFilters: [
-    {projectType: "Feature Film", value: true},
-    {projectType: "Feature Film (LB)", value: true},
-    {projectType: "Feature Film (MLB)", value: true},
-    {projectType: "Feature Film (ULB)", value: true},
-    {projectType: "Short Film", value: true},
-    {projectType: "Pilot One Hour", value: true},
-    {projectType: "Pilot 1/2 Hour", value: true},
-    {projectType: "Pilot Presentation", value: true},
-    {projectType: "TV One Hour", value: true},
-    {projectType: "TV 1/2 Hour", value: true},
-    {projectType: "TV Daytime", value: true},
-    {projectType: "TV Mini-Series", value: true},
-    {projectType: "TV Movie", value: true},
-    {projectType: "TV Telefilm", value: true},
-    {projectType: "TV Talk/Variety", value: true},
-    {projectType: "TV Sketch/Improv", value: true},
-    // {projectType: "New Media (SVOD)", value: true},
-    // {projectType: "New Media (AVOD)", value: true},
-    // {projectType: "New Media (<$50k)", value: true},
-    {projectType: "New Media", value: true},
-  ],
-  projectStatusFilters: [
-    {projectStatus: "Casting", value: true},
-    {projectStatus: "Ordered", value: true},
-    {projectStatus: "Pre-Prod.", value: true},
-    {projectStatus: "Shooting", value: true},
-    {projectStatus: "See Notes...", value: true},
-    {projectStatus: "On Hiatus", value: true},
-    {projectStatus: "On Hold", value: true},
-    {projectStatus: "Unknown", value: true},
-    {projectStatus: "Wrapped", value: true},
-    {projectStatus: "Canceled", value: true},
-  ],
+  projectTypeFilters: projectTypeListBuilder,
+  projectStatusFilters: projectStatusListBuilder,
   projectUpdatedFilters: [
     {projectUpdated: "One Day", value: false, moment1: '1', moment2: 'day'},
     {projectUpdated: "One Week", value: false, moment1: '1', moment2: 'week'},

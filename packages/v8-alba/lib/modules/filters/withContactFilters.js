@@ -7,9 +7,9 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { CASTING_TITLES_ENUM } from '../constants.js';
 
-var contactTitleListBuilder = CASTING_TITLES_ENUM.map((option) =>{
-  return { contactTitle: option.label, value: true } }
-);
+var contactTitleListBuilder = CASTING_TITLES_ENUM.map((option) => {
+  return { contactTitle: option.label, value: true }
+});
 contactTitleListBuilder.push(
   { contactTitle: "Other", value: true }
 );
