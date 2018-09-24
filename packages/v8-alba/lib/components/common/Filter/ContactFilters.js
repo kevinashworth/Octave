@@ -27,6 +27,9 @@ class ContactFilters extends PureComponent {
     this.handleChange = this.handleChange.bind(this);
     this.state = {
       dropdownOpen: new Array(3).fill(false),
+      titleColor: 'secondary',
+      updatedColor: 'secondary',
+      locationColor: 'secondary'
     };
   }
 
@@ -39,16 +42,28 @@ class ContactFilters extends PureComponent {
 
   handleChange(event) {
     const i = parseInt(event.target.id, 10);
-    if (event.target.name === 'contactTitle')
+    if (event.target.name === 'contactTitle') {
       this.props.actions.toggleContactTitleFilter(i);
-    if (event.target.name === 'contactLocation')
-      this.props.actions.toggleContactLocationFilter(i);
-    if (event.target.name === 'contactUpdated')
+      this.setState({ titleColor: 'danger' });
+    }
+    if (event.target.name === 'contactUpdated') {
+      const all = event.target.labels[0].innerHTML.indexOf("All") !== -1;
       this.props.actions.toggleContactUpdatedFilter(i);
+      if (all) {
+        this.setState({ updatedColor: 'secondary' });
+      } else {
+        this.setState({ updatedColor: 'danger' });
+      }
+
+    }
+    if (event.target.name === 'contactLocation') {
+      this.props.actions.toggleContactLocationFilter(i);
+      this.setState({ locationColor: 'danger' });
+    }
   }
 
   handleClickContactTitle(event) {
-    // const all = event.target.innerHTML.indexOf("All") !== -1;
+    const all = event.target.innerHTML.indexOf("All") !== -1;
     const none = event.target.innerHTML.indexOf("None") !== -1;
     const length = this.props.contactTitleFilters.length;
     var i;
@@ -63,11 +78,15 @@ class ContactFilters extends PureComponent {
         }
       }
     }
+    if (all) {
+      this.setState({ titleColor: 'secondary' });
+    }
   }
 
   // TODO: DRY these two handlers above and below this line
 
   handleClickContactLocation(event) {
+    const all = event.target.innerHTML.indexOf("All") !== -1;
     const none = event.target.innerHTML.indexOf("None") !== -1;
     const length = this.props.contactLocationFilters.length;
     var i;
@@ -82,13 +101,16 @@ class ContactFilters extends PureComponent {
         }
       }
     }
+    if (all) {
+      this.setState({ locationColor: 'secondary' });
+    }
   }
 
   render() {
     return (
       <div className="float-right">
         <ButtonDropdown className="ml-2" isOpen={this.state.dropdownOpen[0]} toggle={() => {this.toggle(0)}}>
-          <DropdownToggle caret>
+          <DropdownToggle caret color={this.state.titleColor}>
             Title
           </DropdownToggle>
           <DropdownMenu>
@@ -106,7 +128,7 @@ class ContactFilters extends PureComponent {
           </DropdownMenu>
         </ButtonDropdown>
         <ButtonDropdown className="ml-2" isOpen={this.state.dropdownOpen[1]} toggle={() => {this.toggle(1)}}>
-          <DropdownToggle caret>
+          <DropdownToggle caret color={this.state.updatedColor}>
             Last updated
           </DropdownToggle>
           <DropdownMenu>
@@ -121,7 +143,7 @@ class ContactFilters extends PureComponent {
           </DropdownMenu>
         </ButtonDropdown>
         <ButtonDropdown className="ml-2" isOpen={this.state.dropdownOpen[2]} toggle={() => {this.toggle(2)}}>
-          <DropdownToggle caret>
+          <DropdownToggle caret color={this.state.locationColor}>
             Location
           </DropdownToggle>
           <DropdownMenu>
