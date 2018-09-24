@@ -38,8 +38,8 @@ const initialState = {
     {projectStatus: "On Hiatus", value: true},
     {projectStatus: "On Hold", value: true},
     {projectStatus: "Unknown", value: true},
-    {projectStatus: "Wrapped", value: false},
-    {projectStatus: "Canceled", value: false},
+    {projectStatus: "Wrapped", value: true},
+    {projectStatus: "Canceled", value: true},
   ],
   projectUpdatedFilters: [
     {projectUpdated: "One Day", value: false, moment1: '1', moment2: 'day'},
