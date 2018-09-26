@@ -6,10 +6,6 @@ import moment from 'moment'
 import { brandColors } from './brandColors.js'
 
 class LineChartSmall extends PureComponent {
-  constructor (props) {
-    super(props)
-  }
-
   render () {
     const { bgColor, theSmallStats, subtitle, title } = this.props
     if (this.props.loading) {

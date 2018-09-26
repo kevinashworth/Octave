@@ -1,4 +1,4 @@
-import { Components, registerComponent, withCurrentUser, withDocument } from 'meteor/vulcan:core'
+import { registerComponent, withCurrentUser, withDocument } from 'meteor/vulcan:core'
 import React from 'react'
 import { Link } from 'react-router'
 import { Badge, ListGroupItem } from 'reactstrap'

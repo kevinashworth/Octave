@@ -1,9 +1,5 @@
+import { Components, Fragments, registerComponent } from 'meteor/vulcan:lib'
 import React from 'react'
-import {
-  registerComponent,
-  Components,
-  Fragments
-} from 'meteor/vulcan:lib'
 
 const FragmentsDashboard = props => (
   <div className='fragments'>

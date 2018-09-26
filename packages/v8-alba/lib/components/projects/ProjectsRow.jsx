@@ -42,21 +42,21 @@ const ProjectsRow = ({ loading, document, currentUser }) => {
         break
     }
 
-    let fake_company = ''
+    let fakeCompany = ''
     if (!project.castingCompany && project.contacts) {
       const reducer = (accumulator, currentValue) => {
-        if (currentValue.contactTitle == 'Casting Director') {
+        if (currentValue.contactTitle === 'Casting Director') {
           return accumulator + currentValue.contactName + '/'
         }
         return accumulator
       }
-      fake_company = project.contacts.reduce(reducer, '')
+      fakeCompany = project.contacts.reduce(reducer, '')
 
-      if (fake_company.length > 0) {
-        fake_company = fake_company.slice(0, -1)
-        fake_company += ' Casting'
+      if (fakeCompany.length > 0) {
+        fakeCompany = fakeCompany.slice(0, -1)
+        fakeCompany += ' Casting'
       } else {
-        fake_company = 'Unknown Casting Office'
+        fakeCompany = 'Unknown Casting Office'
       }
     }
 
@@ -65,7 +65,7 @@ const ProjectsRow = ({ loading, document, currentUser }) => {
         <td><Link to={`/projects/${project._id}/${project.slug}`}>{project.projectTitle}</Link></td>
         <td>{project.projectType}</td>
         <td>{displayDate}</td>
-        <td>{project.castingCompany ? project.castingCompany : fake_company}</td>
+        <td>{project.castingCompany ? project.castingCompany : fakeCompany}</td>
         <td>
           <Badge color={badgeColor}>{project.status}</Badge>
         </td>

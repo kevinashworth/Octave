@@ -1,6 +1,6 @@
 import { Components, getFragment, registerComponent, withCurrentUser } from 'meteor/vulcan:core'
 import Users from 'meteor/vulcan:users'
-import React, { PureComponent } from 'react'
+import React from 'react'
 import projectFiltersArray from '../../../modules/filters/custom_fields.js'
 
 const ProjectFilters = ({ currentUser }) => {

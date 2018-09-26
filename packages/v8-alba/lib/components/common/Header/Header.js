@@ -3,10 +3,6 @@ import React, { PureComponent } from 'react'
 import { NavbarBrand, NavbarToggler } from 'reactstrap'
 
 class Header extends PureComponent {
-  constructor (props) {
-    super(props)
-  }
-
   sidebarToggle (e) {
     e.preventDefault()
     document.body.classList.toggle('sidebar-hidden')

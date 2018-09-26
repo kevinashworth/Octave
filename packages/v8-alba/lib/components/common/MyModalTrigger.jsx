@@ -1,4 +1,4 @@
-import { replaceComponent, Components } from 'meteor/vulcan:lib'
+import { replaceComponent } from 'meteor/vulcan:lib'
 import React, { PureComponent } from 'react'
 import PropTypes from 'prop-types'
 import { Button, Modal, ModalBody, ModalFooter, ModalHeader } from 'reactstrap'

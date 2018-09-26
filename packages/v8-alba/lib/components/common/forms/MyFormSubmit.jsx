@@ -1,8 +1,6 @@
+import { Components, FormattedMessage, replaceComponent } from 'meteor/vulcan:core'
 import React from 'react'
 import PropTypes from 'prop-types'
-import { Components } from 'meteor/vulcan:core'
-import { replaceComponent } from 'meteor/vulcan:core'
-import { FormattedMessage } from 'meteor/vulcan:i18n'
 
 const MyFormSubmit = ({
   submitLabel,

@@ -3,10 +3,6 @@ import React, { PureComponent } from 'react'
 import { Col, Row } from 'reactstrap'
 
 class Dashboard extends PureComponent {
-  constructor (props) {
-    super(props)
-  }
-
   render () {
     if (this.props.loading) {
       return <Components.Loading />

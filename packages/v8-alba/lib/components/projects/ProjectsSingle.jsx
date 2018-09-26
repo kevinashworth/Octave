@@ -1,7 +1,6 @@
 import { Components, registerComponent, withCurrentUser, withDocument } from 'meteor/vulcan:core'
 import React, { PureComponent } from 'react'
 import { Link } from 'react-router'
-import PropTypes from 'prop-types'
 import mapProps from 'recompose/mapProps'
 import { Button, Card, CardBody, CardFooter, CardHeader, CardLink, CardText, CardTitle } from 'reactstrap'
 import moment from 'moment'

@@ -68,7 +68,7 @@ class ContactsDataTable extends PureComponent {
     }
 
     const onDeleteRow = (rows) => {
-      if (confirm(`Really truly delete ${rows.length} contacts at once? (There is no undo!)`)) {
+      if (window.confirm(`Really truly delete ${rows.length} contacts at once? (There is no undo!)`)) {
         rows.forEach(async (row) => {
           const documentId = row
           await this.props.deleteContact({

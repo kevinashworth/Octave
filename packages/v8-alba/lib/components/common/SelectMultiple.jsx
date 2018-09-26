@@ -1,31 +1,31 @@
-import { registerComponent } from 'meteor/vulcan:lib';
-import React, { PureComponent } from 'react';
-import Select from 'react-select';
-import PropTypes from 'prop-types';
+import { registerComponent } from 'meteor/vulcan:lib'
+import React, { PureComponent } from 'react'
+import Select from 'react-select'
+import PropTypes from 'prop-types'
 
 class MySelectMultiple extends PureComponent {
-  constructor(props) {
-    super(props);
-    this.handleChange = this.handleChange.bind(this);
+  constructor (props) {
+    super(props)
+    this.handleChange = this.handleChange.bind(this)
     this.state = {
       value: this.props.value,
       path: this.props.path
-    };
+    }
   }
 
   handleChange = (value) => {
-    this.setState({ value });
-    console.table(`Selected values: ${value}`);
-    this.context.updateCurrentValues({[this.state.path]: value});
+    this.setState({ value })
+    console.table(`Selected values: ${value}`)
+    this.context.updateCurrentValues({ [this.state.path]: value })
   }
 
-  render() {
+  render () {
     return (
-      <div className="form-group row">
-        <label className="control-label col-sm-3">{this.props.label}</label>
-        <div className="col-sm-9">
+      <div className='form-group row'>
+        <label className='control-label col-sm-3'>{this.props.label}</label>
+        <div className='col-sm-9'>
           <Select
-            name="form-field-name"
+            name='form-field-name'
             value={this.state.value}
             onChange={this.handleChange}
             options={this.props.options}
@@ -34,12 +34,12 @@ class MySelectMultiple extends PureComponent {
           />
         </div>
       </div>
-    );
+    )
   }
 }
 
 MySelectMultiple.contextTypes = {
-  updateCurrentValues: PropTypes.func,
-};
+  updateCurrentValues: PropTypes.func
+}
 
-registerComponent('MySelectMultiple', MySelectMultiple);
+registerComponent('MySelectMultiple', MySelectMultiple)

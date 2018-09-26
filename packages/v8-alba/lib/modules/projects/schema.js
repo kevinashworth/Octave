@@ -1,4 +1,4 @@
-import { Components, Utils } from 'meteor/vulcan:core'
+import { Utils } from 'meteor/vulcan:core'
 import SimpleSchema from 'simpl-schema'
 import marked from 'marked'
 import { addressSchema } from '../shared_schemas.js'

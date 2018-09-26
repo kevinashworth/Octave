@@ -1,4 +1,4 @@
-import { replaceComponent, Components } from 'meteor/vulcan:core'
+import { replaceComponent } from 'meteor/vulcan:core'
 import React, { Component } from 'react'
 import { Container, Row, Col, Button, Input, InputGroup } from 'reactstrap'
 
