@@ -2,7 +2,7 @@ import { Components, registerComponent, withCurrentUser, withList } from 'meteor
 import React, { PureComponent } from 'react';
 import { Link } from 'react-router';
 import { Button, Card, CardBody, CardFooter, CardHeader } from 'reactstrap';
-import { BootstrapTable, TableHeaderColumn } from 'react-bootstrap-table';
+import { BootstrapTable, ClearSearchButton, SearchField, TableHeaderColumn } from 'react-bootstrap-table';
 import _ from 'lodash';
 import moment from 'moment';
 import { DATE_FORMAT_SHORT } from '../../modules/constants.js'
@@ -66,7 +66,32 @@ class ProjectsDataTable extends PureComponent {
       }));
     }
 
+    const createCustomSearchField = (props) => {
+      if (props.defaultValue.length) {
+        this.setState({ searchColor: 'btn-danger' });
+      } else {
+        this.setState({ searchColor: 'btn-secondary' });
+      }
+      return (
+        <SearchField/>
+      );
+    }
+
+    const handleClearButtonClick = (onClick) => {
+      this.setState({ searchColor: 'btn-secondary' });
+      onClick();
+    }
+
+    const createCustomClearButton = (onClick) => {
+      return (
+        <ClearSearchButton
+          btnContextual={this.state.searchColor}
+          onClick = { e => handleClearButtonClick(onClick) }/>
+      );
+    }
+
     this.state = {
+      searchColor: 'btn-secondary',
       options: {
         sortIndicator: true,
         paginationSize: 5,
@@ -92,6 +117,8 @@ class ProjectsDataTable extends PureComponent {
         onSortChange: sortChangeHandler,
         onSearchChange: searchChangeHandler,
         clearSearch: true,
+        clearSearchBtn: createCustomClearButton,
+        searchField: createCustomSearchField,
 
         // Retrieve the last state
         ...keptState
@@ -156,7 +183,8 @@ class ProjectsDataTable extends PureComponent {
             <Components.ProjectFilters/>
           </CardHeader>
           <CardBody>
-            <BootstrapTable data={filteredResults} version="4" condensed striped hover pagination search options={this.state.options} selectRow={selectRow} keyField='_id'>
+            <BootstrapTable data={filteredResults} version="4" condensed striped hover pagination search
+              options={this.state.options} selectRow={selectRow} keyField='_id' bordered={false}>
               <TableHeaderColumn dataField="projectTitle" dataSort dataFormat={
                 (cell, row) => {
                   return (

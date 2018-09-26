@@ -2,6 +2,7 @@ import { Components, Utils } from 'meteor/vulcan:core';
 import SimpleSchema from 'simpl-schema';
 import marked from 'marked';
 import { addressSchema } from '../shared_schemas.js';
+import { CASTING_TITLES_ENUM, PROJECT_TYPES_ENUM, PROJECT_STATUSES_ENUM } from '../constants.js';
 
 const contactSchema = new SimpleSchema({
   contactId: {
@@ -27,6 +28,9 @@ const contactSchema = new SimpleSchema({
   contactTitle: {
     type: String,
     optional: true,
+    options: () => {
+      return CASTING_TITLES_ENUM;
+    },
     hidden: true,
     viewableBy: ['members'],
     insertableBy: ['admins'],
@@ -81,6 +85,10 @@ const schema = {
     label: 'Type',
     type: String,
     optional: true,
+    input: 'select',
+    options: () => {
+      return PROJECT_TYPES_ENUM;
+    },
     canRead: 'guests',
     insertableBy: ['admins'],
     editableBy: ['admins']
@@ -105,6 +113,10 @@ const schema = {
     label: 'Status',
     type: String,
     optional: true,
+    input: 'select',
+    options: () => {
+      return PROJECT_STATUSES_ENUM;
+    },
     canRead: 'guests',
     insertableBy: ['admins'],
     editableBy: ['admins']

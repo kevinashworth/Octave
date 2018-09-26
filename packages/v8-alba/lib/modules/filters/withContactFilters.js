@@ -5,14 +5,17 @@ UI state for Contact filters
 import { getActions, addAction, addReducer } from 'meteor/vulcan:lib';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
+import { CASTING_TITLES_ENUM } from '../constants.js';
+
+var contactTitleListBuilder = CASTING_TITLES_ENUM.map((option) => {
+  return { contactTitle: option.label, value: true }
+});
+contactTitleListBuilder.push(
+  { contactTitle: "Other", value: true }
+);
 
 const initialState = {
-  contactTitleFilters: [
-    {contactTitle: "Casting Director", value: true},
-    {contactTitle: "Casting Associate", value: true},
-    {contactTitle: "Casting Assistant", value: true},
-    {contactTitle: "Other", value: false},
-  ],
+  contactTitleFilters: contactTitleListBuilder,
   contactLocationFilters: [
     {contactLocation: "CA", value: true},
     {contactLocation: "NY", value: true},

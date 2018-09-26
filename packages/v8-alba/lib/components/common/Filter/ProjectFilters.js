@@ -27,6 +27,9 @@ class ProjectFilters extends PureComponent {
     this.handleChange = this.handleChange.bind(this);
     this.state = {
       dropdownOpen: new Array(3).fill(false),
+      typeColor: 'secondary',
+      updatedColor: 'secondary',
+      statusColor: 'secondary'
     };
   }
 
@@ -39,16 +42,27 @@ class ProjectFilters extends PureComponent {
 
   handleChange(event) {
     const i = parseInt(event.target.id, 10);
-    if (event.target.name === 'projectType')
+    if (event.target.name === 'projectType') {
       this.props.actions.toggleProjectTypeFilter(i);
-    if (event.target.name === 'projectStatus')
-      this.props.actions.toggleProjectStatusFilter(i);
-    if (event.target.name === 'projectUpdated')
+      this.setState({ typeColor: 'danger' });
+    }
+    if (event.target.name === 'projectUpdated') {
+      const all = event.target.labels[0].innerHTML.indexOf("All") !== -1;
       this.props.actions.toggleProjectUpdatedFilter(i);
+      if (all) {
+        this.setState({ updatedColor: 'secondary' });
+      } else {
+        this.setState({ updatedColor: 'danger' });
+      }
+    }
+    if (event.target.name === 'projectStatus') {
+      this.props.actions.toggleProjectStatusFilter(i);
+      this.setState({ statusColor: 'danger' });
+    }
   }
 
   handleClickProjectType(event) {
-    // const all = event.target.innerHTML.indexOf("All") !== -1;
+    const all = event.target.innerHTML.indexOf("All") !== -1;
     const none = event.target.innerHTML.indexOf("None") !== -1;
     const length = this.props.projectTypeFilters.length;
     var i;
@@ -63,11 +77,15 @@ class ProjectFilters extends PureComponent {
         }
       }
     }
+    if (all) {
+      this.setState({ typeColor: 'secondary' });
+    }
   }
 
   // TODO: DRY these two handlers above and below this line
 
   handleClickProjectStatus(event) {
+    const all = event.target.innerHTML.indexOf("All") !== -1;
     const none = event.target.innerHTML.indexOf("None") !== -1;
     const length = this.props.projectStatusFilters.length;
     var i;
@@ -82,13 +100,16 @@ class ProjectFilters extends PureComponent {
         }
       }
     }
+    if (all) {
+      this.setState({ statusColor: 'secondary' });
+    }
   }
 
   render() {
     return (
       <div className="float-right">
         <ButtonDropdown className="ml-2" isOpen={this.state.dropdownOpen[0]} toggle={() => {this.toggle(0)}}>
-          <DropdownToggle caret>
+          <DropdownToggle caret color={this.state.typeColor}>
             Type
           </DropdownToggle>
           <DropdownMenu>
@@ -106,7 +127,7 @@ class ProjectFilters extends PureComponent {
           </DropdownMenu>
         </ButtonDropdown>
         <ButtonDropdown className="ml-2" isOpen={this.state.dropdownOpen[1]} toggle={() => {this.toggle(1)}}>
-          <DropdownToggle caret>
+          <DropdownToggle caret color={this.state.updatedColor}>
             Last updated
           </DropdownToggle>
           <DropdownMenu>
@@ -121,7 +142,7 @@ class ProjectFilters extends PureComponent {
           </DropdownMenu>
         </ButtonDropdown>
         <ButtonDropdown className="ml-2" isOpen={this.state.dropdownOpen[2]} toggle={() => {this.toggle(2)}}>
-          <DropdownToggle caret>
+          <DropdownToggle caret color={this.state.statusColor}>
             Status
           </DropdownToggle>
           <DropdownMenu>
