@@ -136,7 +136,7 @@ class LineChartLarge extends PureComponent {
           <Row>
             <Col sm='5'>
               <CardTitle className='mb-0'>Number of TV &amp; Film Projects Casting</CardTitle>
-              <div className='small text-muted'>{`${dateLabels[0]} &emdash; ${dateLabels[dateLabels.length - 1]}`}</div>
+              <div className='small text-muted'>{`${dateLabels[0]} – ${dateLabels[dateLabels.length - 1]}`}</div>
             </Col>
             <Col sm='7' className='d-none d-sm-inline-block'>
               <Button color='primary' className='float-right'><i className='icon-cloud-download' /></Button>
