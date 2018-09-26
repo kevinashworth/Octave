@@ -7,7 +7,7 @@
   "scripts": {
     "prestart": "node .vulcan/prestart_vulcan.js",
     "start": "meteor --port 4004 --settings settings.json",
-    "lint": "eslint --cache --ext .jsx,js packages"
+    "lint": "standard 'packages/v8-alba/**/*.js' 'packages/v8-alba/**/*.jsx' --fix"
   },
   "dependencies": {
     "@babel/runtime": "^7.0.0-beta.46",
@@ -114,6 +114,7 @@
     "eslint-plugin-jsx-a11y": "^2.2.3",
     "eslint-plugin-meteor": "^4.2.1",
     "eslint-plugin-react": "^6.7.1",
+    "standard": "*",
     "why-did-you-update": "^0.1.1"
   },
   "postcss": {
@@ -124,5 +125,12 @@
         ]
       }
     }
+  },
+  "standard": {
+    "ignore": [
+      "packages/v8-alba/package.js",
+      "packages/v8-alba/db.update.js",
+      "**/package.json"
+    ]
   }
 }
