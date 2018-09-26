@@ -3,7 +3,7 @@ import Users from 'meteor/vulcan:users';
 import React, { PureComponent } from 'react';
 import { Link } from 'react-router';
 import { Button, Card, CardBody, CardFooter, CardHeader } from 'reactstrap';
-import { BootstrapTable, TableHeaderColumn } from 'react-bootstrap-table';
+import { BootstrapTable, ClearSearchButton, SearchField, TableHeaderColumn } from 'react-bootstrap-table';
 import _ from 'lodash';
 import moment from 'moment';
 import { DATE_FORMAT_SHORT } from '../../modules/constants.js'
@@ -78,7 +78,32 @@ class ContactsDataTable extends PureComponent {
       }
     }
 
+    const createCustomSearchField = (props) => {
+      if (props.defaultValue.length) {
+        this.setState({ searchColor: 'btn-danger' });
+      } else {
+        this.setState({ searchColor: 'btn-secondary' });
+      }
+      return (
+        <SearchField/>
+      );
+    }
+
+    const handleClearButtonClick = (onClick) => {
+      this.setState({ searchColor: 'btn-secondary' });
+      onClick();
+    }
+
+    const createCustomClearButton = (onClick) => {
+      return (
+        <ClearSearchButton
+          btnContextual={this.state.searchColor}
+          onClick = { e => handleClearButtonClick(onClick) }/>
+      );
+    }
+
     this.state = {
+      searchColor: 'btn-secondary',
       options: {
         sortIndicator: true,
         paginationSize: 5,
@@ -103,6 +128,8 @@ class ContactsDataTable extends PureComponent {
         onSortChange: sortChangeHandler,
         onSearchChange: searchChangeHandler,
         clearSearch: true,
+        clearSearchBtn: createCustomClearButton,
+        searchField: createCustomSearchField,
         onDeleteRow: onDeleteRow,
 
         // Retrieve the last state
