@@ -1,4 +1,4 @@
-import { registerFragment } from "meteor/vulcan:core";
+import { registerFragment } from 'meteor/vulcan:core'
 
 registerFragment(/* GraphQL */ `
   fragment ProjectsItemFragment on Project {
@@ -9,7 +9,7 @@ registerFragment(/* GraphQL */ `
     projectTitle
     slug
   }
-`);
+`)
 
 registerFragment(/* GraphQL */ `
   fragment ProjectsSingleFragment on Project {
@@ -34,7 +34,7 @@ registerFragment(/* GraphQL */ `
     order
     slug
   }
-`);
+`)
 
 registerFragment(/* GraphQL */ `
   fragment ProjectsEditFragment on Project {
@@ -55,4 +55,4 @@ registerFragment(/* GraphQL */ `
     season
     order
   }
-`);
+`)

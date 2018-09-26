@@ -2,22 +2,22 @@ export default {
   items: [
     {
       title: true,
-      name: 'Home',
+      name: 'Home'
     },
     {
       name: 'Login/Logout',
       url: '/login',
-      icon: 'icon-login',
+      icon: 'icon-login'
     },
     {
       name: 'Dashboard',
       url: '/dashboard',
-      icon: 'icon-speedometer',
+      icon: 'icon-speedometer'
     },
     {
       name: 'Latest Updates',
       url: '/latest',
-      icon: 'icon-clock',
+      icon: 'icon-clock'
     },
     {
       title: true,
@@ -57,11 +57,11 @@ export default {
       name: 'Projects',
       url: '/projects/datatable',
       icon: 'fa fa-camera'
-    },
+    }
     // {
     //   name: 'Modals',
     //   url: '/modals',
     //   icon: 'fa fa-external-link'
     // }
   ]
-};
+}

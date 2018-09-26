@@ -1,27 +1,26 @@
-import { createCollection, getDefaultResolvers, getDefaultMutations } from "meteor/vulcan:core";
-import schema from "./schema.js";
-import './fragments.js';
-import './permissions.js';
+import { createCollection, getDefaultResolvers, getDefaultMutations } from 'meteor/vulcan:core'
+import schema from './schema.js'
+import './fragments.js'
+import './permissions.js'
 
 const Offices = createCollection({
-  collectionName: "Offices",
+  collectionName: 'Offices',
 
-  typeName: "Office",
+  typeName: 'Office',
 
   schema,
 
   resolvers: getDefaultResolvers('Offices'),
 
-  mutations: getDefaultMutations('Offices'),
+  mutations: getDefaultMutations('Offices')
 
-});
-
+})
 
 // default sort by createdAt timestamp in descending order
 Offices.addDefaultView(terms => {
   return {
-    options: {sort: {createdAt: -1}}
-  };
-});
+    options: { sort: { createdAt: -1 } }
+  }
+})
 
-export default Offices;
+export default Offices

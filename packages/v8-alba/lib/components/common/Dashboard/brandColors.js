@@ -3,5 +3,5 @@ export const brandColors = {
   success: '#79c447',
   info: '#67c2ef',
   warning: '#fabb3d',
-  danger: '#ff5454',
+  danger: '#ff5454'
 }

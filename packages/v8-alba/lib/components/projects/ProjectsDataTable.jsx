@@ -1,93 +1,93 @@
-import { Components, registerComponent, withCurrentUser, withList } from 'meteor/vulcan:core';
-import React, { PureComponent } from 'react';
-import { Link } from 'react-router';
-import { Button, Card, CardBody, CardFooter, CardHeader } from 'reactstrap';
-import { BootstrapTable, ClearSearchButton, SearchField, TableHeaderColumn } from 'react-bootstrap-table';
-import _ from 'lodash';
-import moment from 'moment';
+import { Components, registerComponent, withCurrentUser, withList } from 'meteor/vulcan:core'
+import React, { PureComponent } from 'react'
+import { Link } from 'react-router'
+import { Button, Card, CardBody, CardFooter, CardHeader } from 'reactstrap'
+import { BootstrapTable, ClearSearchButton, SearchField, TableHeaderColumn } from 'react-bootstrap-table'
+import _ from 'lodash'
+import moment from 'moment'
 import { DATE_FORMAT_SHORT } from '../../modules/constants.js'
-import Projects from '../../modules/projects/collection.js';
-import withProjectFilters from '../../modules/filters/withProjectFilters.js';
+import Projects from '../../modules/projects/collection.js'
+import withProjectFilters from '../../modules/filters/withProjectFilters.js'
 
 // Set initial state. Just options I want to keep.
 // See https://github.com/amannn/react-keep-state
 let keptState = {
-  defaultSearch: "",
+  defaultSearch: '',
   page: 1,
   sizePerPage: 50,
-  sortName: "projectTitle",
-  sortOrder: "asc"
-};
+  sortName: 'projectTitle',
+  sortOrder: 'asc'
+}
 
-function dateFormatter(cell, row) {
-  return moment(cell).format(DATE_FORMAT_SHORT);
+function dateFormatter (cell, row) {
+  return moment(cell).format(DATE_FORMAT_SHORT)
 }
 
 class ProjectsDataTable extends PureComponent {
-  constructor(props) {
-    super(props);
+  constructor (props) {
+    super(props)
 
     const pageChangeHandler = (page, sizePerPage) => {
       this.setState((prevState) => ({
-        options: {...prevState.options, page, sizePerPage}
-      }));
+        options: { ...prevState.options, page, sizePerPage }
+      }))
     }
 
-    function renderShowsTotal(start, to, total) {
+    function renderShowsTotal (start, to, total) {
       return (
         <span>
           Showing projects { start } to { to } out of { total } &nbsp;&nbsp;
         </span>
-      );
+      )
     }
 
-    function rowClickHandler(row, columnIndex, rowIndex, event) {
+    function rowClickHandler (row, columnIndex, rowIndex, event) {
       // eslint-disable-next-line no-console
-      console.log(`You clicked row ${row._id} (${rowIndex}, ${columnIndex}):`);
+      console.log(`You clicked row ${row._id} (${rowIndex}, ${columnIndex}):`)
       // eslint-disable-next-line no-console
-      console.log(event);
+      console.log(event)
     }
 
     const sortChangeHandler = (sortName, sortOrder) => {
       this.setState((prevState) => ({
-        options: {...prevState.options, sortName, sortOrder}
-      }));
+        options: { ...prevState.options, sortName, sortOrder }
+      }))
     }
 
     const searchChangeHandler = (searchText) => {
       this.setState((prevState) => ({
-        options: {...prevState.options, defaultSearch: searchText}
-      }));
+        options: { ...prevState.options, defaultSearch: searchText }
+      }))
     }
 
     const sizePerPageListHandler = (sizePerPage) => {
       this.setState((prevState) => ({
-        options: {...prevState.options, sizePerPage}
-      }));
+        options: { ...prevState.options, sizePerPage }
+      }))
     }
 
     const createCustomSearchField = (props) => {
       if (props.defaultValue.length) {
-        this.setState({ searchColor: 'btn-danger' });
+        this.setState({ searchColor: 'btn-danger' })
       } else {
-        this.setState({ searchColor: 'btn-secondary' });
+        this.setState({ searchColor: 'btn-secondary' })
       }
       return (
-        <SearchField/>
-      );
+        <SearchField />
+      )
     }
 
     const handleClearButtonClick = (onClick) => {
-      this.setState({ searchColor: 'btn-secondary' });
-      onClick();
+      this.setState({ searchColor: 'btn-secondary' })
+      onClick()
     }
 
     const createCustomClearButton = (onClick) => {
       return (
         <ClearSearchButton
           btnContextual={this.state.searchColor}
-          onClick = { e => handleClearButtonClick(onClick) }/>
-      );
+          onClick={e => handleClearButtonClick(onClick)} />
+      )
     }
 
     this.state = {
@@ -126,66 +126,63 @@ class ProjectsDataTable extends PureComponent {
     }
   }
 
-  componentWillUnmount() {
+  componentWillUnmount () {
     // Remember state for the next mount
-    const { options } = this.state;
+    const { options } = this.state
     keptState = {
       defaultSearch: options.defaultSearch,
       page: options.page,
       sizePerPage: options.sizePerPage,
       sortName: options.sortName,
       sortOrder: options.sortOrder
-    };
+    }
   }
 
-  render() {
+  render () {
     const { count, totalCount, results, loadingMore, loadMore, currentUser,
-            projectTypeFilters, projectStatusFilters, projectUpdatedFilters } = this.props;
+      projectTypeFilters, projectStatusFilters, projectUpdatedFilters } = this.props
     const selectRow = {
       mode: 'checkbox'
-    };
-    const hasMore = results && (totalCount > results.length);
-    let typeFilters = [];
+    }
+    const hasMore = results && (totalCount > results.length)
+    let typeFilters = []
     projectTypeFilters.forEach(filter => {
-      if (filter.value)
-        typeFilters.push(filter.projectType);
-    });
-    let statusFilters = [];
+      if (filter.value) { typeFilters.push(filter.projectType) }
+    })
+    let statusFilters = []
     projectStatusFilters.forEach(filter => {
-      if (filter.value)
-        statusFilters.push(filter.projectStatus);
-    });
-    let moment1 = '';
-    let moment2 = '';
+      if (filter.value) { statusFilters.push(filter.projectStatus) }
+    })
+    let moment1 = ''
+    let moment2 = ''
     projectUpdatedFilters.forEach(filter => {
       if (filter.value) {
-        moment1 = filter.moment1;
-        moment2 = filter.moment2;
-        return;
+        moment1 = filter.moment1
+        moment2 = filter.moment2
       }
     })
 
-    const filteredResults = _.filter(results, function(o) {
+    const filteredResults = _.filter(results, function (o) {
       // compare current time to filter, but generous, so start of day then, not the time it is now - filter plus up to 23:59
-      const now = moment();
-      const dateToCompare = o.updatedAt ? o.updatedAt : o.createdAt;
-      const displayThis = moment(dateToCompare).isAfter(now.subtract(moment1, moment2).startOf('day'));
-      return _.includes(statusFilters, o.status)
-          && _.includes(typeFilters, o.projectType)
-          && displayThis;
-    });
+      const now = moment()
+      const dateToCompare = o.updatedAt ? o.updatedAt : o.createdAt
+      const displayThis = moment(dateToCompare).isAfter(now.subtract(moment1, moment2).startOf('day'))
+      return _.includes(statusFilters, o.status) &&
+          _.includes(typeFilters, o.projectType) &&
+          displayThis
+    })
 
     return (
-      <div className="animated fadeIn">
+      <div className='animated fadeIn'>
         <Card>
           <CardHeader>
-            <i className="fa fa-camera"></i>Projects
-            <Components.ProjectFilters/>
+            <i className='fa fa-camera' />Projects
+            <Components.ProjectFilters />
           </CardHeader>
           <CardBody>
-            <BootstrapTable data={filteredResults} version="4" condensed striped hover pagination search
+            <BootstrapTable data={filteredResults} version='4' condensed striped hover pagination search
               options={this.state.options} selectRow={selectRow} keyField='_id' bordered={false}>
-              <TableHeaderColumn dataField="projectTitle" dataSort dataFormat={
+              <TableHeaderColumn dataField='projectTitle' dataSort dataFormat={
                 (cell, row) => {
                   return (
                     <Link to={`/projects/${row._id}/${row.slug}`}>
@@ -194,31 +191,31 @@ class ProjectsDataTable extends PureComponent {
                   )
                 }
               }>Name</TableHeaderColumn>
-              <TableHeaderColumn dataField="projectType" dataSort>Type</TableHeaderColumn>
-              <TableHeaderColumn dataField="castingCompany" dataSort>Casting</TableHeaderColumn>
-              <TableHeaderColumn dataField="updatedAt" dataFormat={ dateFormatter } dataSort>Updated</TableHeaderColumn>
-              <TableHeaderColumn dataField="status" dataSort>Status</TableHeaderColumn>
+              <TableHeaderColumn dataField='projectType' dataSort>Type</TableHeaderColumn>
+              <TableHeaderColumn dataField='castingCompany' dataSort>Casting</TableHeaderColumn>
+              <TableHeaderColumn dataField='updatedAt' dataFormat={dateFormatter} dataSort>Updated</TableHeaderColumn>
+              <TableHeaderColumn dataField='status' dataSort>Status</TableHeaderColumn>
             </BootstrapTable>
           </CardBody>
           {hasMore &&
           <CardFooter>
-            {loadingMore ?
-              <Components.Loading/> :
-              <Button onClick={e => {e.preventDefault(); loadMore();}}>Load More ({count}/{totalCount})</Button>
+            {loadingMore
+              ? <Components.Loading />
+              : <Button onClick={e => { e.preventDefault(); loadMore() }}>Load More ({count}/{totalCount})</Button>
             }
           </CardFooter>
           }
-          {Projects.options.mutations.new.check(currentUser) ?
-          <CardFooter>
-            <Components.ModalTrigger title="New Project" component={<Button>Add a Project</Button>}>
-              <Components.ProjectsNewForm currentUser={currentUser} />
-            </Components.ModalTrigger>
-          </CardFooter>
+          {Projects.options.mutations.new.check(currentUser)
+            ? <CardFooter>
+              <Components.ModalTrigger title='New Project' component={<Button>Add a Project</Button>}>
+                <Components.ProjectsNewForm currentUser={currentUser} />
+              </Components.ModalTrigger>
+            </CardFooter>
             : null
           }
         </Card>
       </div>
-    );
+    )
   }
 }
 
@@ -227,6 +224,6 @@ const options = {
   fragmentName: 'ProjectsSingleFragment',
   limit: 1000,
   enableCache: true
-};
+}
 
-registerComponent('ProjectsDataTable', ProjectsDataTable, withProjectFilters, withCurrentUser, [withList, options]);
+registerComponent('ProjectsDataTable', ProjectsDataTable, withProjectFilters, withCurrentUser, [withList, options])

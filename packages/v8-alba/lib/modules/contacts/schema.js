@@ -1,24 +1,24 @@
-import { Utils } from 'meteor/vulcan:core';
-import SimpleSchema from 'simpl-schema';
-import marked from 'marked';
-import { addressSchema } from '../shared_schemas.js';
-import { CASTING_TITLES_ENUM } from '../constants.js';
+import { Utils } from 'meteor/vulcan:core'
+import SimpleSchema from 'simpl-schema'
+import marked from 'marked'
+import { addressSchema } from '../shared_schemas.js'
+import { CASTING_TITLES_ENUM } from '../constants.js'
 
-function getFullNameFromContact ({firstName, middleName, lastName}) {
-  let tempName = '';
+function getFullNameFromContact ({ firstName, middleName, lastName }) {
+  let tempName = ''
   if (firstName) {
-    tempName += firstName;
+    tempName += firstName
   }
   if (middleName) {
-    tempName += (' ' + middleName);
+    tempName += (' ' + middleName)
   }
   if (lastName) {
-    tempName += (' ' + lastName);
+    tempName += (' ' + lastName)
   }
   if (tempName.length) {
-    return tempName;
+    return tempName
   } else {
-    return 'displayName or fullName Unknown';
+    return 'displayName or fullName Unknown'
   }
 }
 
@@ -46,23 +46,23 @@ export const linkSchema = new SimpleSchema({
     optional: true,
     viewableBy: ['members'],
     insertableBy: ['members'],
-    editableBy: ['members'],
+    editableBy: ['members']
   },
   profileName: {
     type: String,
     optional: true,
     viewableBy: ['members'],
     insertableBy: ['members'],
-    editableBy: ['members'],
+    editableBy: ['members']
   },
   profileLink: {
     type: String,
     optional: true,
     viewableBy: ['members'],
     insertableBy: ['members'],
-    editableBy: ['members'],
-  },
-});
+    editableBy: ['members']
+  }
+})
 
 export const projectSchema = new SimpleSchema({
   projectId: {
@@ -73,9 +73,9 @@ export const projectSchema = new SimpleSchema({
     insertableBy: ['members'],
     editableBy: ['members'],
     options: props => props.data.projects.results.map(project => ({
-        value: project._id,
-        label: project.projectTitle,
-      })),
+      value: project._id,
+      label: project.projectTitle
+    }))
   },
   projectTitle: {
     type: String,
@@ -83,7 +83,7 @@ export const projectSchema = new SimpleSchema({
     hidden: true,
     viewableBy: ['members'],
     insertableBy: ['members'],
-    editableBy: ['members'],
+    editableBy: ['members']
   },
   titleForProject: {
     type: String,
@@ -91,9 +91,9 @@ export const projectSchema = new SimpleSchema({
     hidden: true,
     viewableBy: ['members'],
     insertableBy: ['members'],
-    editableBy: ['members'],
-  },
-});
+    editableBy: ['members']
+  }
+})
 
 const schema = {
   // default properties
@@ -108,7 +108,7 @@ const schema = {
     optional: true,
     viewableBy: 'guests',
     onInsert: () => {
-      return new Date();
+      return new Date()
     }
   },
   userId: {
@@ -152,13 +152,13 @@ const schema = {
     onInsert: (contact) => getFullNameFromContact(contact),
     onEdit: (modifier, contact) => {
       if (modifier.$set.displayName) {
-        return modifier.$set.displayName;
+        return modifier.$set.displayName
       }
       return getFullNameFromContact({
         firstName: modifier.$set.firstName ? modifier.$set.firstName : null,
         middleName: modifier.$set.middleName ? modifier.$set.middleName : null,
-        lastName: modifier.$set.lastName ? modifier.$set.lastName : null,
-      });
+        lastName: modifier.$set.lastName ? modifier.$set.lastName : null
+      })
     }
   },
   title: {
@@ -167,7 +167,7 @@ const schema = {
     optional: true,
     input: 'select',
     options: () => {
-      return CASTING_TITLES_ENUM;
+      return CASTING_TITLES_ENUM
     },
     viewableBy: 'guests',
     insertableBy: ['members'],
@@ -201,12 +201,12 @@ const schema = {
     editableBy: ['members'],
     onInsert: (project) => {
       if (project.body) {
-        return Utils.sanitize(marked(project.body));
+        return Utils.sanitize(marked(project.body))
       }
     },
     onEdit: (modifier, project) => {
       if (modifier.$set.body) {
-        return Utils.sanitize(marked(modifier.$set.body));
+        return Utils.sanitize(marked(modifier.$set.body))
       }
     }
   },
@@ -220,7 +220,7 @@ const schema = {
     group: linkGroup
   },
   'links.$': {
-    type: linkSchema,
+    type: linkSchema
   },
   addresses: {
     type: Array,
@@ -240,14 +240,14 @@ const schema = {
     insertableBy: ['members'],
     editableBy: ['members'],
     onInsert: (contact) => {
-      return Utils.slugify(getFullNameFromContact(contact));
+      return Utils.slugify(getFullNameFromContact(contact))
     },
     onEdit: (modifier, contact) => {
       return Utils.slugify(getFullNameFromContact({
         firstName: modifier.$set.firstName ? modifier.$set.firstName : null,
         middleName: modifier.$set.middleName ? modifier.$set.middleName : null,
-        lastName: modifier.$set.lastName ? modifier.$set.lastName : null,
-      }));
+        lastName: modifier.$set.lastName ? modifier.$set.lastName : null
+      }))
     }
     // onEdit: (modifier, contact) => {
     //   if (modifier.$set.firstName || modifier.$set.middleName || modifier.$set.lastName) {
@@ -260,10 +260,10 @@ const schema = {
     optional: true,
     viewableBy: 'guests',
     onInsert: () => {
-      return new Date();
+      return new Date()
     },
     onEdit: () => {
-      return new Date();
+      return new Date()
     }
   },
 
@@ -287,7 +287,7 @@ const schema = {
     group: projectGroup
   },
   'projects.$': {
-    type: projectSchema,
+    type: projectSchema
   },
 
   // projectsCount: {
@@ -331,7 +331,7 @@ const schema = {
     resolveAs: {
       type: 'String',
       resolver: (contact) => getFullNameFromContact(contact)
-    },
+    }
   },
 
   // GraphQL only fields to ease transition from address to addresses, and also to provide a 'main' address
@@ -346,11 +346,11 @@ const schema = {
       resolver: (contact) => {
         if (contact.addresses) {
           if (contact.addresses[0].street2) {
-            return contact.addresses[0].street1 + ' ' + contact.addresses[0].street2;
+            return contact.addresses[0].street1 + ' ' + contact.addresses[0].street2
           }
-          return contact.addresses[0].street1;
+          return contact.addresses[0].street1
         }
-        return null;
+        return null
       }
     }
   },
@@ -365,7 +365,7 @@ const schema = {
         if (contact.addresses) {
           return contact.addresses[0].street1
         }
-        return null;
+        return null
       }
     }
   },
@@ -380,7 +380,7 @@ const schema = {
         if (contact.addresses) {
           return contact.addresses[0].street2
         }
-        return null;
+        return null
       }
     }
   },
@@ -395,7 +395,7 @@ const schema = {
         if (contact.addresses) {
           return contact.addresses[0].city
         }
-        return null;
+        return null
       }
     }
   },
@@ -410,7 +410,7 @@ const schema = {
         if (contact.addresses) {
           return contact.addresses[0].state
         }
-        return null;
+        return null
       }
     }
   },
@@ -422,20 +422,20 @@ const schema = {
     resolveAs: {
       type: 'String',
       resolver: (contact) => {
-        let state = '';
+        let state = ''
         if (contact.state) {
-          state = contact.state.toLowerCase();
+          state = contact.state.toLowerCase()
         }
         if (contact.addresses) {
-          state = contact.addresses[0].state.toLowerCase();
+          state = contact.addresses[0].state.toLowerCase()
         }
-        if (state == 'ca' || state.indexOf('calif') > -1) {
-          return 'CA';
+        if (state === 'ca' || state.indexOf('calif') > -1) {
+          return 'CA'
         }
-        if (state == 'ny' || state == 'n.y.' || state === 'new york') {
-          return 'NY';
+        if (state === 'ny' || state === 'n.y.' || state === 'new york') {
+          return 'NY'
         }
-        return 'Other';
+        return 'Other'
       }
     }
   },
@@ -450,11 +450,11 @@ const schema = {
         if (contact.addresses) {
           return contact.addresses[0].zip
         }
-        return null;
+        return null
       }
     }
-  },
+  }
 
-};
+}
 
-export default schema;
+export default schema

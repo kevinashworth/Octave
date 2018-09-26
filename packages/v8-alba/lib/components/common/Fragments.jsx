@@ -1,12 +1,12 @@
-import React from "react";
+import React from 'react'
 import {
   registerComponent,
   Components,
   Fragments
-} from "meteor/vulcan:lib";
+} from 'meteor/vulcan:lib'
 
 const FragmentsDashboard = props => (
-  <div className="fragments">
+  <div className='fragments'>
     <Components.Datatable
       showSearch={false}
       showNew={false}
@@ -14,10 +14,10 @@ const FragmentsDashboard = props => (
       data={Object.values(Fragments)}
       columns={[
         // "fragmentObject",
-        "fragmentText"
+        'fragmentText'
       ]}
     />
   </div>
-);
+)
 
-registerComponent("Fragments", FragmentsDashboard);
+registerComponent('Fragments', FragmentsDashboard)

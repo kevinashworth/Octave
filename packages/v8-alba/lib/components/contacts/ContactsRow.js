@@ -1,14 +1,14 @@
-import { Components, registerComponent, withCurrentUser, withDocument } from 'meteor/vulcan:core';
-import React from 'react';
-import { Link } from 'react-router';
-import { Button } from 'reactstrap';
-import Contacts from '../../modules/contacts/collection.js';
+import { Components, registerComponent, withCurrentUser, withDocument } from 'meteor/vulcan:core'
+import React from 'react'
+import { Link } from 'react-router'
+import { Button } from 'reactstrap'
+import Contacts from '../../modules/contacts/collection.js'
 
-const ContactsRow = ({loading, document, currentUser}) => {
-  const contact = document;
+const ContactsRow = ({ loading, document, currentUser }) => {
+  const contact = document
   if (loading) {
     return (
-      <tr></tr>
+      <tr />
     )
   } else {
     return (
@@ -19,8 +19,8 @@ const ContactsRow = ({loading, document, currentUser}) => {
         <td>{contact.city}</td>
         <td>{contact.state}</td>
         <td>{contact.zip}</td>
-        <td>{Contacts.options.mutations.edit.check(currentUser, contact) ?
-          <Components.ModalTrigger title="Edit Contact" component={<Button style={{"padding":"0"}} color="link">Edit</Button>}>
+        <td>{Contacts.options.mutations.edit.check(currentUser, contact)
+          ? <Components.ModalTrigger title='Edit Contact' component={<Button style={{ 'padding': '0' }} color='link'>Edit</Button>}>
             <Components.ContactsEditForm currentUser={currentUser} documentId={contact._id} />
           </Components.ModalTrigger>
           : null
@@ -33,7 +33,7 @@ const ContactsRow = ({loading, document, currentUser}) => {
 const options = {
   collection: Contacts,
   queryName: 'contactsSingleQuery',
-  fragmentName: 'ContactsSingleFragment',
-};
+  fragmentName: 'ContactsSingleFragment'
+}
 
-registerComponent('ContactsRow', ContactsRow, withCurrentUser, [withDocument, options]);
+registerComponent('ContactsRow', ContactsRow, withCurrentUser, [withDocument, options])

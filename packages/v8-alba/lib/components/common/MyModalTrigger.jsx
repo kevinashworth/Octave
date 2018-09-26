@@ -1,25 +1,24 @@
-import { replaceComponent, Components } from 'meteor/vulcan:lib';
-import React, { PureComponent } from 'react';
-import PropTypes from 'prop-types';
-import { Button, Modal, ModalBody, ModalFooter, ModalHeader } from 'reactstrap';
+import { replaceComponent, Components } from 'meteor/vulcan:lib'
+import React, { PureComponent } from 'react'
+import PropTypes from 'prop-types'
+import { Button, Modal, ModalBody, ModalFooter, ModalHeader } from 'reactstrap'
 
 class MyModalTrigger extends PureComponent {
-
-  constructor() {
-    super();
+  constructor () {
+    super()
     this.state = {
       modalIsOpen: false
-    };
-    this.toggle = this.toggle.bind(this);
+    }
+    this.toggle = this.toggle.bind(this)
   }
 
-  toggle() {
+  toggle () {
     this.setState({
       modalIsOpen: !this.state.modalIsOpen
-    });
+    })
   }
 
-  renderHeader() {
+  renderHeader () {
     return (
       <ModalHeader toggle={this.toggle}>
         {this.props.title}
@@ -27,13 +26,12 @@ class MyModalTrigger extends PureComponent {
     )
   }
 
-  render() {
-
-    const triggerComponent = this.props.component ? React.cloneElement(this.props.component, { onClick: this.toggle }) : <a href="#" onClick={this.toggle}>{this.props.label}</a>;
-    const childrenComponent = React.cloneElement(this.props.children, {toggle: this.toggle});
+  render () {
+    const triggerComponent = this.props.component ? React.cloneElement(this.props.component, { onClick: this.toggle }) : <a href='#' onClick={this.toggle}>{this.props.label}</a>
+    const childrenComponent = React.cloneElement(this.props.children, { toggle: this.toggle })
 
     return (
-      <div className="modal-trigger">
+      <div className='modal-trigger'>
         {triggerComponent}
         <Modal
           className={this.props.className}
@@ -47,7 +45,7 @@ class MyModalTrigger extends PureComponent {
             {childrenComponent}
           </ModalBody>
           <ModalFooter>
-            <Button color="secondary" onClick={this.toggle}>Cancel</Button>
+            <Button color='secondary' onClick={this.toggle}>Cancel</Button>
           </ModalFooter>
         </Modal>
       </div>
@@ -60,11 +58,11 @@ MyModalTrigger.propTypes = {
   label: PropTypes.string,
   component: PropTypes.object,
   size: PropTypes.string,
-  title: PropTypes.oneOfType([PropTypes.string, PropTypes.element]),
+  title: PropTypes.oneOfType([PropTypes.string, PropTypes.element])
 }
 
 MyModalTrigger.defaultProps = {
   size: 'large'
 }
 
-replaceComponent('ModalTrigger', MyModalTrigger);
+replaceComponent('ModalTrigger', MyModalTrigger)

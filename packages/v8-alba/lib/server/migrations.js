@@ -1,400 +1,400 @@
 // see https://guide.meteor.com/collections.html#migrations
-import { Migrations } from 'meteor/percolate:migrations';
-import Projects from '../modules/projects/collection.js';
-import Contacts from '../modules/contacts/collection.js';
-import Statistics from '../modules/statistics/collection.js';
-import moment from 'moment';
-import reducedStats from '../modules/statistics/_stats-reduced.js';
+import { Migrations } from 'meteor/percolate:migrations'
+import Projects from '../modules/projects/collection.js'
+import Contacts from '../modules/contacts/collection.js'
+import Statistics from '../modules/statistics/collection.js'
+import moment from 'moment'
+import reducedStats from '../modules/statistics/_stats-reduced.js'
 
 Migrations.add({
   version: 1,
   name: 'address -> addresses',
-  up() {
-    Projects.find({addresses: {$exists: false}}).forEach(project => {
+  up () {
+    Projects.find({ addresses: { $exists: false } }).forEach(project => {
       if (project.address) {
         Projects.update(project._id,
           {
-            $addToSet: {addresses: project.address},
-            $unset: {address: 1, project_id: 1}
-          });
+            $addToSet: { addresses: project.address },
+            $unset: { address: 1, project_id: 1 }
+          })
       }
-    });
+    })
   },
-  down() {
-    Projects.find({address: {$exists: false}}).forEach(project => {
+  down () {
+    Projects.find({ address: { $exists: false } }).forEach(project => {
       if (project.addresses && project.addresses[0]) {
         Projects.update(project._id,
           {
-            $set: {address: project.addresses[0]},
-            $unset: {addresses: 1}
-          });
+            $set: { address: project.addresses[0] },
+            $unset: { addresses: 1 }
+          })
       }
-    });
+    })
   }
-});
+})
 
 Migrations.add({
   version: 2,
   name: 'updatedAt is empty? set to createdAt',
-  up() {
-    Projects.find({updatedAt: {$exists: false}}).forEach(project => {
-      if (project.createdAt) {
-        Projects.update(project._id,
-        {
-          $set: {updatedAt: project.createdAt}
-        })
-      }
-    })
-  },
-  down() {
-    Projects.find({$where: "this.createdAt.getTime() == this.updatedAt.getTime()"}).forEach(project => {
+  up () {
+    Projects.find({ updatedAt: { $exists: false } }).forEach(project => {
       if (project.createdAt) {
         Projects.update(project._id,
           {
-            $unset: {updatedAt: 1}
-          });
-        }
+            $set: { updatedAt: project.createdAt }
+          })
+      }
+    })
+  },
+  down () {
+    Projects.find({ $where: 'this.createdAt.getTime() == this.updatedAt.getTime()' }).forEach(project => {
+      if (project.createdAt) {
+        Projects.update(project._id,
+          {
+            $unset: { updatedAt: 1 }
+          })
+      }
     })
   }
-});
+})
 
 Migrations.add({
   version: 3,
   name: 'Better projectType naming',
-  up() {
-    Projects.find({projectType: {$eq: "Ultra Low Budget Film"}}).forEach(project => {
+  up () {
+    Projects.find({ projectType: { $eq: 'Ultra Low Budget Film' } }).forEach(project => {
       Projects.update(project._id,
-      {
-        $set: {projectType: "Feature Film (ULB)"}
-      })
-    });
-    Projects.find({projectType: {$eq: "Mod. Low Budget Film"}}).forEach(project => {
+        {
+          $set: { projectType: 'Feature Film (ULB)' }
+        })
+    })
+    Projects.find({ projectType: { $eq: 'Mod. Low Budget Film' } }).forEach(project => {
       Projects.update(project._id,
-      {
-        $set: {projectType: "Feature Film (MLB)"}
-      })
-    });
-    Projects.find({projectType: {$eq: "Low Budget Film"}}).forEach(project => {
+        {
+          $set: { projectType: 'Feature Film (MLB)' }
+        })
+    })
+    Projects.find({ projectType: { $eq: 'Low Budget Film' } }).forEach(project => {
       Projects.update(project._id,
-      {
-        $set: {projectType: "Feature Film (LB)"}
-      })
-    });
-    Projects.find({projectType: {$eq: "One Hour"}}).forEach(project => {
+        {
+          $set: { projectType: 'Feature Film (LB)' }
+        })
+    })
+    Projects.find({ projectType: { $eq: 'One Hour' } }).forEach(project => {
       Projects.update(project._id,
-      {
-        $set: {projectType: "TV One Hour"}
-      })
-    });
-    Projects.find({projectType: {$eq: "1/2 Hour"}}).forEach(project => {
+        {
+          $set: { projectType: 'TV One Hour' }
+        })
+    })
+    Projects.find({ projectType: { $eq: '1/2 Hour' } }).forEach(project => {
       Projects.update(project._id,
-      {
-        $set: {projectType: "TV 1/2 Hour"}
-      })
-    });
-    Projects.find({projectType: {$eq: "Pilot - One Hour"}}).forEach(project => {
+        {
+          $set: { projectType: 'TV 1/2 Hour' }
+        })
+    })
+    Projects.find({ projectType: { $eq: 'Pilot - One Hour' } }).forEach(project => {
       Projects.update(project._id,
-      {
-        $set: {projectType: "Pilot One Hour"}
-      })
-    });
-    Projects.find({projectType: {$eq: "Pilot - 1/2 Hour"}}).forEach(project => {
+        {
+          $set: { projectType: 'Pilot One Hour' }
+        })
+    })
+    Projects.find({ projectType: { $eq: 'Pilot - 1/2 Hour' } }).forEach(project => {
       Projects.update(project._id,
-      {
-        $set: {projectType: "Pilot 1/2 Hour"}
-      })
-    });
-    Projects.find({projectType: {$eq: "Daytime"}}).forEach(project => {
+        {
+          $set: { projectType: 'Pilot 1/2 Hour' }
+        })
+    })
+    Projects.find({ projectType: { $eq: 'Daytime' } }).forEach(project => {
       Projects.update(project._id,
-      {
-        $set: {projectType: "TV Daytime"}
-      })
-    });
-    Projects.find({projectType: {$eq: "Mini-Series"}}).forEach(project => {
+        {
+          $set: { projectType: 'TV Daytime' }
+        })
+    })
+    Projects.find({ projectType: { $eq: 'Mini-Series' } }).forEach(project => {
       Projects.update(project._id,
-      {
-        $set: {projectType: "TV Mini-Series"}
-      })
-    });
-    Projects.find({projectType: {$eq: "Movie for Television"}}).forEach(project => {
+        {
+          $set: { projectType: 'TV Mini-Series' }
+        })
+    })
+    Projects.find({ projectType: { $eq: 'Movie for Television' } }).forEach(project => {
       Projects.update(project._id,
-      {
-        $set: {projectType: "TV Movie"}
-      })
-    });
-    Projects.find({projectType: {$eq: "Telefilm"}}).forEach(project => {
+        {
+          $set: { projectType: 'TV Movie' }
+        })
+    })
+    Projects.find({ projectType: { $eq: 'Telefilm' } }).forEach(project => {
       Projects.update(project._id,
-      {
-        $set: {projectType: "TV Telefilm"}
-      })
-    });
-    Projects.find({projectType: {$eq: "Talk/Variety"}}).forEach(project => {
+        {
+          $set: { projectType: 'TV Telefilm' }
+        })
+    })
+    Projects.find({ projectType: { $eq: 'Talk/Variety' } }).forEach(project => {
       Projects.update(project._id,
-      {
-        $set: {projectType: "TV Talk/Variety"}
-      })
-    });
-    Projects.find({projectType: {$eq: "Sketch/Improv"}}).forEach(project => {
+        {
+          $set: { projectType: 'TV Talk/Variety' }
+        })
+    })
+    Projects.find({ projectType: { $eq: 'Sketch/Improv' } }).forEach(project => {
       Projects.update(project._id,
-      {
-        $set: {projectType: "TV Sketch/Improv"}
-      })
-    });
+        {
+          $set: { projectType: 'TV Sketch/Improv' }
+        })
+    })
   },
-  down() {
-    Projects.find({projectType: {$eq: "Feature Film (ULB)"}}).forEach(project => {
+  down () {
+    Projects.find({ projectType: { $eq: 'Feature Film (ULB)' } }).forEach(project => {
       Projects.update(project._id,
         {
-          $set: {projectType: "Ultra Low Budget Film"}
-        });
-    });
-    Projects.find({projectType: {$eq: "Feature Film (MLB)"}}).forEach(project => {
+          $set: { projectType: 'Ultra Low Budget Film' }
+        })
+    })
+    Projects.find({ projectType: { $eq: 'Feature Film (MLB)' } }).forEach(project => {
       Projects.update(project._id,
         {
-          $set: {projectType: "Mod. Low Budget Film"}
-        });
-    });
-    Projects.find({projectType: {$eq: "Feature Film (LB)"}}).forEach(project => {
+          $set: { projectType: 'Mod. Low Budget Film' }
+        })
+    })
+    Projects.find({ projectType: { $eq: 'Feature Film (LB)' } }).forEach(project => {
       Projects.update(project._id,
         {
-          $set: {projectType: "Low Budget Film"}
-        });
-    });
-    Projects.find({projectType: {$eq: "TV One Hour"}}).forEach(project => {
+          $set: { projectType: 'Low Budget Film' }
+        })
+    })
+    Projects.find({ projectType: { $eq: 'TV One Hour' } }).forEach(project => {
       Projects.update(project._id,
         {
-          $set: {projectType: "One Hour"}
-        });
-    });
-    Projects.find({projectType: {$eq: "TV 1/2 Hour"}}).forEach(project => {
+          $set: { projectType: 'One Hour' }
+        })
+    })
+    Projects.find({ projectType: { $eq: 'TV 1/2 Hour' } }).forEach(project => {
       Projects.update(project._id,
         {
-          $set: {projectType: "1/2 Hour"}
-        });
-    });
-    Projects.find({projectType: {$eq: "Pilot One Hour"}}).forEach(project => {
+          $set: { projectType: '1/2 Hour' }
+        })
+    })
+    Projects.find({ projectType: { $eq: 'Pilot One Hour' } }).forEach(project => {
       Projects.update(project._id,
         {
-          $set: {projectType: "Pilot - One Hour"}
-        });
-    });
-    Projects.find({projectType: {$eq: "Pilot 1/2 Hour"}}).forEach(project => {
+          $set: { projectType: 'Pilot - One Hour' }
+        })
+    })
+    Projects.find({ projectType: { $eq: 'Pilot 1/2 Hour' } }).forEach(project => {
       Projects.update(project._id,
         {
-          $set: {projectType: "Pilot - 1/2 Hour"}
-        });
-    });
-    Projects.find({projectType: {$eq: "TV Daytime"}}).forEach(project => {
+          $set: { projectType: 'Pilot - 1/2 Hour' }
+        })
+    })
+    Projects.find({ projectType: { $eq: 'TV Daytime' } }).forEach(project => {
       Projects.update(project._id,
         {
-          $set: {projectType: "Daytime"}
-        });
-    });
-    Projects.find({projectType: {$eq: "TV Mini-Series"}}).forEach(project => {
+          $set: { projectType: 'Daytime' }
+        })
+    })
+    Projects.find({ projectType: { $eq: 'TV Mini-Series' } }).forEach(project => {
       Projects.update(project._id,
         {
-          $set: {projectType: "Mini-Series"}
-        });
-    });
-    Projects.find({projectType: {$eq: "TV Movie"}}).forEach(project => {
+          $set: { projectType: 'Mini-Series' }
+        })
+    })
+    Projects.find({ projectType: { $eq: 'TV Movie' } }).forEach(project => {
       Projects.update(project._id,
         {
-          $set: {projectType: "Movie for Television"}
-        });
-    });
-    Projects.find({projectType: {$eq: "TV Telefilm"}}).forEach(project => {
+          $set: { projectType: 'Movie for Television' }
+        })
+    })
+    Projects.find({ projectType: { $eq: 'TV Telefilm' } }).forEach(project => {
       Projects.update(project._id,
         {
-          $set: {projectType: "Telefilm"}
-        });
-    });
-    Projects.find({projectType: {$eq: "TV Talk/Variety"}}).forEach(project => {
+          $set: { projectType: 'Telefilm' }
+        })
+    })
+    Projects.find({ projectType: { $eq: 'TV Talk/Variety' } }).forEach(project => {
       Projects.update(project._id,
         {
-          $set: {projectType: "Talk/Variety"}
-        });
-    });
-    Projects.find({projectType: {$eq: "TV Sketch/Improv"}}).forEach(project => {
+          $set: { projectType: 'Talk/Variety' }
+        })
+    })
+    Projects.find({ projectType: { $eq: 'TV Sketch/Improv' } }).forEach(project => {
       Projects.update(project._id,
         {
-          $set: {projectType: "Sketch/Improv"}
-        });
-    });
+          $set: { projectType: 'Sketch/Improv' }
+        })
+    })
   }
-});
+})
 
 Migrations.add({
   version: 4,
   name: 'updatedAt is empty? set to createdAt [for Contacts]',
-  up() {
-    Contacts.find({updatedAt: {$exists: false}}).forEach(contact => {
-      if (contact.createdAt) {
-        Contacts.update(contact._id,
-        {
-          $set: {updatedAt: contact.createdAt}
-        })
-      }
-    })
-  },
-  down() {
-    Contacts.find({$where: "this.createdAt.getTime() == this.updatedAt.getTime()"}).forEach(contact => {
+  up () {
+    Contacts.find({ updatedAt: { $exists: false } }).forEach(contact => {
       if (contact.createdAt) {
         Contacts.update(contact._id,
           {
-            $unset: {updatedAt: 1}
-          });
-        }
+            $set: { updatedAt: contact.createdAt }
+          })
+      }
+    })
+  },
+  down () {
+    Contacts.find({ $where: 'this.createdAt.getTime() == this.updatedAt.getTime()' }).forEach(contact => {
+      if (contact.createdAt) {
+        Contacts.update(contact._id,
+          {
+            $unset: { updatedAt: 1 }
+          })
+      }
     })
   }
-});
+})
 
-function getFullNameFromContact ({firstName, middleName, lastName}) {
-  let tempName = "";
+function getFullNameFromContact ({ firstName, middleName, lastName }) {
+  let tempName = ''
   if (firstName) {
-    tempName += firstName;
+    tempName += firstName
   }
   if (middleName) {
-    tempName += (" " + middleName);
+    tempName += (' ' + middleName)
   }
   if (lastName) {
-    tempName += (" " + lastName);
+    tempName += (' ' + lastName)
   }
   if (tempName.length) {
-    return tempName;
+    return tempName
   } else {
-    return "displayName or fullName Unknown";
+    return 'displayName or fullName Unknown'
   }
 }
 
 Migrations.add({
   version: 5,
   name: 'displayName missing? set it',
-  up() {
-    Contacts.find({displayName: {$exists: false}}).forEach(contact => {
+  up () {
+    Contacts.find({ displayName: { $exists: false } }).forEach(contact => {
       Contacts.update(contact._id,
-      {
-        $set: {displayName: getFullNameFromContact(contact)}
-      });
+        {
+          $set: { displayName: getFullNameFromContact(contact) }
+        })
     })
   },
-  down() {
-    Contacts.find({displayName: {$exists: true}}).forEach(contact => {
+  down () {
+    Contacts.find({ displayName: { $exists: true } }).forEach(contact => {
       Contacts.update(contact._id,
-      {
-        $unset: {displayName: 1}
-      });
+        {
+          $unset: { displayName: 1 }
+        })
     })
   }
-});
+})
 
 Migrations.add({
   version: 6,
   name: 'address -> addresses for Contacts',
-  up() {
-    Contacts.find({addresses: {$exists: false}}).forEach(contact => {
+  up () {
+    Contacts.find({ addresses: { $exists: false } }).forEach(contact => {
       if (contact.street1) {
         Contacts.update(contact._id,
           {
-            $addToSet: {addresses: { street1: contact.street1, street2: contact.street2, city: contact.city, state: contact.state, zip: contact.zip}},
-            $unset: {address: 1}
-          });
+            $addToSet: { addresses: { street1: contact.street1, street2: contact.street2, city: contact.city, state: contact.state, zip: contact.zip } },
+            $unset: { address: 1 }
+          })
       }
-    });
+    })
   },
-  down() {
-    Contacts.find({address: {$exists: false}}).forEach(contact => {
+  down () {
+    Contacts.find({ address: { $exists: false } }).forEach(contact => {
       if (contact.addresses && contact.addresses[0]) {
         Contacts.update(contact._id,
           {
-            $set: {street1: contact.addresses[0].street1, street2: contact.addresses[0].street2, city: contact.addresses[0].city, state: contact.addresses[0].state, zip: contact.addresses[0].zip},
-            $unset: {addresses: 1}
-          });
+            $set: { street1: contact.addresses[0].street1, street2: contact.addresses[0].street2, city: contact.addresses[0].city, state: contact.addresses[0].state, zip: contact.addresses[0].zip },
+            $unset: { addresses: 1 }
+          })
       }
-    });
+    })
   }
-});
+})
 
 Migrations.add({
   version: 7,
   name: 'Statistics Dates as strings',
-  up() {
-    const theStats = Statistics.findOne();
+  up () {
+    const theStats = Statistics.findOne()
     let newStats = {}
     newStats.episodics = theStats.episodics.map((o) => {
       return {
-        date: moment(o.date).format("YYYY-MM-DD HH:mm:ss"),
+        date: moment(o.date).format('YYYY-MM-DD HH:mm:ss'),
         quantity: o.quantity
       }
-    });
+    })
     newStats.features = theStats.features.map((o) => {
       return {
-        date: moment(o.date).format("YYYY-MM-DD HH:mm:ss"),
+        date: moment(o.date).format('YYYY-MM-DD HH:mm:ss'),
         quantity: o.quantity
       }
-    });
+    })
     newStats.pilots = theStats.pilots.map((o) => {
       return {
-        date: moment(o.date).format("YYYY-MM-DD HH:mm:ss"),
+        date: moment(o.date).format('YYYY-MM-DD HH:mm:ss'),
         quantity: o.quantity
       }
-    });
+    })
     newStats.others = theStats.others.map((o) => {
       return {
-        date: moment(o.date).format("YYYY-MM-DD HH:mm:ss"),
+        date: moment(o.date).format('YYYY-MM-DD HH:mm:ss'),
         quantity: o.quantity
       }
-    });
+    })
     Statistics.update(theStats._id, {
       $set: newStats
     })
   },
-  down() {
-    const theStats = Statistics.findOne();
+  down () {
+    const theStats = Statistics.findOne()
     let newStats = {}
     newStats.episodics = theStats.episodics.map((o) => {
       return {
         date: new Date(o.date),
         quantity: o.quantity
       }
-    });
+    })
     newStats.features = theStats.features.map((o) => {
       return {
         date: new Date(o.date),
         quantity: o.quantity
       }
-    });
+    })
     newStats.pilots = theStats.pilots.map((o) => {
       return {
         date: new Date(o.date),
         quantity: o.quantity
       }
-    });
+    })
     newStats.others = theStats.others.map((o) => {
       return {
         date: new Date(o.date),
         quantity: o.quantity
       }
-    });
+    })
     Statistics.update(theStats._id, {
       $set: newStats
     })
   }
-});
+})
 
 Migrations.add({
   version: 8,
   name: 'Reduce statistics. (There is no undo)',
-  up: function() {
-    const theStats = Statistics.findOne();
-    let newStats = {};
-    newStats = reducedStats;
+  up: function () {
+    const theStats = Statistics.findOne()
+    let newStats = {}
+    newStats = reducedStats
     Statistics.update(theStats._id, {
       $set: newStats
     })
   },
-  down: function() {/* There is no undoing this one. */}
-});
+  down: function () { /* There is no undoing this one. */ }
+})
 
 Meteor.startup(() => {
-  Migrations.migrateTo('8');
-});
+  Migrations.migrateTo('8')
+})

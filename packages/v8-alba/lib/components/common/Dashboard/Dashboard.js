@@ -1,22 +1,22 @@
-import { Components, registerComponent, withAccess, withMulti } from 'meteor/vulcan:core';
-import React, { PureComponent } from 'react';
-import { Col, Row } from 'reactstrap';
+import { Components, registerComponent, withAccess, withMulti } from 'meteor/vulcan:core'
+import React, { PureComponent } from 'react'
+import { Col, Row } from 'reactstrap'
 
 class Dashboard extends PureComponent {
-  constructor(props) {
-    super(props);
+  constructor (props) {
+    super(props)
   }
 
-  render() {
+  render () {
     if (this.props.loading) {
       return <Components.Loading />
     }
 
-    const theStats = this.props.results[0];
+    const theStats = this.props.results[0]
     return (
-      <div className="animated fadeIn">
+      <div className='animated fadeIn'>
         <Row>
-          <Col xs="12" sm="6" lg="3">
+          <Col xs='12' sm='6' lg='3'>
             <Components.LineChartSmall
               bgColor='info'
               theSmallStats={theStats.features}
@@ -24,7 +24,7 @@ class Dashboard extends PureComponent {
               subtitle={'Currently casting'} />
           </Col>
 
-          <Col xs="12" sm="6" lg="3">
+          <Col xs='12' sm='6' lg='3'>
             <Components.LineChartSmall
               bgColor='success'
               theSmallStats={theStats.episodics}
@@ -32,7 +32,7 @@ class Dashboard extends PureComponent {
               subtitle={'Currently casting'} />
           </Col>
 
-          <Col xs="12" sm="6" lg="3">
+          <Col xs='12' sm='6' lg='3'>
             <Components.LineChartSmall
               bgColor='warning'
               theSmallStats={theStats.pilots}
@@ -40,7 +40,7 @@ class Dashboard extends PureComponent {
               subtitle={'Currently casting'} />
           </Col>
 
-          <Col xs="12" sm="6" lg="3">
+          <Col xs='12' sm='6' lg='3'>
             <Components.LineChartSmall
               bgColor='danger'
               theSmallStats={theStats.others}
@@ -60,7 +60,7 @@ class Dashboard extends PureComponent {
 }
 
 const accessOptions = {
-  groups: ['members','admins'],
+  groups: ['members', 'admins'],
   redirect: '/login'
 }
 
@@ -69,4 +69,4 @@ const multiOptions = {
   limit: 1
 }
 
-registerComponent('Dashboard', Dashboard, [withAccess, accessOptions], [withMulti, multiOptions]);
+registerComponent('Dashboard', Dashboard, [withAccess, accessOptions], [withMulti, multiOptions])

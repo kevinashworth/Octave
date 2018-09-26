@@ -1,22 +1,22 @@
-import { Connectors, addCallback } from 'meteor/vulcan:core';
-import Projects from '../projects/collection.js';
-import _ from 'lodash';
+import { Connectors, addCallback } from 'meteor/vulcan:core'
+import Projects from '../projects/collection.js'
+import _ from 'lodash'
 
-function getFullNameFromContact ({firstName, middleName, lastName}) {
-  let tempName = "";
+function getFullNameFromContact ({ firstName, middleName, lastName }) {
+  let tempName = ''
   if (firstName) {
-    tempName += firstName;
+    tempName += firstName
   }
   if (middleName) {
-    tempName += (" " + middleName);
+    tempName += (' ' + middleName)
   }
   if (lastName) {
-    tempName += (" " + lastName);
+    tempName += (' ' + lastName)
   }
   if (tempName.length) {
-    return tempName;
+    return tempName
   } else {
-    return "displayName or fullName Unknown";
+    return 'displayName or fullName Unknown'
   }
 }
 
@@ -40,36 +40,36 @@ TODO: For some reason, the project's `updatedAt` field doesn't get a `new Date()
 */
 function ContactEditUpdateProjects (contact) {
   if (!contact.projects) {
-    return;
+    return
   }
-  const fullName = getFullNameFromContact(contact);
+  const fullName = getFullNameFromContact(contact)
 
   contact.projects.forEach(contactProject => {
-    const project = Projects.findOne(contactProject.projectId); // TODO: error handling
+    const project = Projects.findOne(contactProject.projectId) // TODO: error handling
     const newContact = {
       contactId: contact._id,
       contactName: fullName,
       contactTitle: contactProject.titleForProject
-    };
-    let newContacts = [];
+    }
+    let newContacts = []
 
     // case 1: there are no contacts on the project and project.contacts is undefined
     if (!project.contacts) {
-      newContacts = [newContact];
+      newContacts = [newContact]
     } else {
-      const i = _.findIndex(project.contacts, {contactId: contact._id});
-      newContacts = project.contacts;
+      const i = _.findIndex(project.contacts, { contactId: contact._id })
+      newContacts = project.contacts
       if (i < 0) {
         // case 2: this contact is not on this project but other contacts are and we're adding this contact
-        newContacts.push(newContact);
+        newContacts.push(newContact)
       } else {
         // case 3: this contact is on this project and we're updating the info
-        newContacts[i] = newContact;
+        newContacts[i] = newContact
       }
     }
-    Connectors.update(Projects, project._id, { $set: { contacts: newContacts } });
+    Connectors.update(Projects, project._id, { $set: { contacts: newContacts } })
   })
 }
 
-addCallback('contacts.edit.after', ContactEditUpdateProjects);
-addCallback('contacts.new.after', ContactEditUpdateProjects);
+addCallback('contacts.edit.after', ContactEditUpdateProjects)
+addCallback('contacts.new.after', ContactEditUpdateProjects)
