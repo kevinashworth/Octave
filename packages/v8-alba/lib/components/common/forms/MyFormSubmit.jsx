@@ -1,4 +1,5 @@
-import { Components, FormattedMessage, replaceComponent } from 'meteor/vulcan:core'
+import { Components, replaceComponent } from 'meteor/vulcan:core'
+import { FormattedMessage } from 'meteor/vulcan:i18n'
 import React from 'react'
 import PropTypes from 'prop-types'
 
