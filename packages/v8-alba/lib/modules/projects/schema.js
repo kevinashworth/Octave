@@ -245,6 +245,8 @@ const schema = {
     type: String,
     optional: true,
     canRead: 'guests',
+    canCreate: ['members'],
+    canUpdate: ['members'],
     onInsert: (project) => {
       return Utils.slugify(project.projectTitle)
     },
