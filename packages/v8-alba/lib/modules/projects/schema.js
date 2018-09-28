@@ -40,9 +40,6 @@ const contactSchema = new SimpleSchema({
   contactTitle: {
     type: String,
     optional: true,
-    options: () => {
-      return CASTING_TITLES_ENUM
-    },
     hidden: true,
     viewableBy: ['members'],
     insertableBy: ['admins'],
