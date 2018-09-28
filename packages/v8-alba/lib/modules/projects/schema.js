@@ -4,6 +4,18 @@ import marked from 'marked'
 import { addressSchema } from '../shared_schemas.js'
 import { CASTING_TITLES_ENUM, PROJECT_TYPES_ENUM, PROJECT_STATUSES_ENUM } from '../constants.js'
 
+const addressGroup = {
+  name: 'addresses',
+  label: 'Addresses',
+  order: 10
+}
+
+const contactGroup = {
+  name: 'contacts',
+  label: 'Contacts',
+  order: 20
+}
+
 const contactSchema = new SimpleSchema({
   contactId: {
     type: String,
@@ -212,35 +224,6 @@ const schema = {
     insertableBy: ['admins'],
     editableBy: ['admins']
   },
-  contacts: {
-    label: 'Contacts',
-    type: Array,
-    optional: true,
-    viewableBy: ['members'],
-    insertableBy: ['admins'],
-    editableBy: ['admins'],
-    query: `
-      contacts{
-        results{
-          _id
-          fullName
-        }
-      }
-    `
-  },
-  'contacts.$': {
-    type: contactSchema
-  },
-  addresses: {
-    type: Array,
-    optional: true,
-    viewableBy: ['members'],
-    insertableBy: ['admins'],
-    editableBy: ['admins']
-  },
-  'addresses.$': {
-    type: addressSchema
-  },
   slug: {
     type: String,
     optional: true,
@@ -258,6 +241,37 @@ const schema = {
         return Utils.slugify(modifier.$set.projectTitle)
       }
     }
+  },
+  contacts: {
+    label: 'Contacts',
+    type: Array,
+    optional: true,
+    viewableBy: ['members'],
+    insertableBy: ['admins'],
+    editableBy: ['admins'],
+    query: `
+      contacts{
+        results{
+          _id
+          fullName
+        }
+      }
+    `,
+    group: contactGroup
+  },
+  'contacts.$': {
+    type: contactSchema
+  },
+  addresses: {
+    type: Array,
+    optional: true,
+    viewableBy: ['members'],
+    insertableBy: ['admins'],
+    editableBy: ['admins'],
+    group: addressGroup
+  },
+  'addresses.$': {
+    type: addressSchema
   }
 }
 
