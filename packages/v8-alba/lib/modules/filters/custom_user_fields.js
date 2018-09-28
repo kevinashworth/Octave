@@ -1,10 +1,10 @@
-import { extendFragment } from 'meteor/vulcan:core';
-import Users from 'meteor/vulcan:users';
-import { PROJECT_ENUM } from '../constants.js';
+import { extendFragment } from 'meteor/vulcan:core'
+import Users from 'meteor/vulcan:users'
+import { PROJECT_ENUM } from '../constants.js'
 
 const addFields = () => {
   // eslint-disable-next-line no-console
-  console.log('adding PROJECT_ENUM:', PROJECT_ENUM);
+  console.log('adding PROJECT_ENUM:', PROJECT_ENUM)
   Users.addField([
     {
       fieldName: 'projectTypeFilters',
@@ -14,7 +14,7 @@ const addFields = () => {
         defaultValue: PROJECT_ENUM,
         viewableBy: ['members'],
         insertableBy: ['members'],
-        editableBy: ['members'],
+        editableBy: ['members']
       }
     },
     {
@@ -24,12 +24,12 @@ const addFields = () => {
         optional: true
       }
     }
-  ]);
+  ])
 
   extendFragment(
-    'UsersCurrent',`
+    'UsersCurrent', `
     projectTypeFilters
-  `);
-};
+  `)
+}
 
-addFields();
+addFields()

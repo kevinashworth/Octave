@@ -1,11 +1,11 @@
-import { registerComponent } from 'meteor/vulcan:core';
-import React, { PureComponent } from 'react';
-import { Link } from 'react-router';
-import PropTypes from 'prop-types';
-import { CardText } from 'reactstrap';
+import { registerComponent } from 'meteor/vulcan:core'
+import React, { PureComponent } from 'react'
+import { Link } from 'react-router'
+import PropTypes from 'prop-types'
+import { CardText } from 'reactstrap'
 
 class OfficesContactDetail extends PureComponent {
-  render() {
+  render () {
     const contact = {
       _id: this.props.contact.value,
       contactName: this.props.contact.label
@@ -24,8 +24,8 @@ class OfficesContactDetail extends PureComponent {
 OfficesContactDetail.propTypes = {
   contact: PropTypes.shape({
     value: PropTypes.string.isRequired,
-    label: PropTypes.string.isRequired,
+    label: PropTypes.string.isRequired
   })
-};
+}
 
-registerComponent('OfficesContactDetail', OfficesContactDetail);
+registerComponent('OfficesContactDetail', OfficesContactDetail)

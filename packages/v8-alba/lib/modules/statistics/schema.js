@@ -1,4 +1,4 @@
-import SimpleSchema from 'simpl-schema';
+import SimpleSchema from 'simpl-schema'
 
 const dataSchema = new SimpleSchema({
   date: {
@@ -6,16 +6,16 @@ const dataSchema = new SimpleSchema({
     optional: true,
     viewableBy: ['members'],
     insertableBy: ['members'],
-    editableBy: ['members'],
+    editableBy: ['members']
   },
   quantity: {
     type: Number,
     optional: true,
     viewableBy: ['members'],
     insertableBy: ['members'],
-    editableBy: ['members'],
-  },
-});
+    editableBy: ['members']
+  }
+})
 
 const schema = {
   // default properties
@@ -30,7 +30,7 @@ const schema = {
     optional: true,
     viewableBy: ['members'],
     onInsert: () => {
-      return new Date();
+      return new Date()
     }
   },
   userId: {
@@ -46,10 +46,10 @@ const schema = {
     optional: true,
     viewableBy: ['members'],
     onInsert: () => {
-      return new Date();
+      return new Date()
     },
     onEdit: () => {
-      return new Date();
+      return new Date()
     }
   },
   episodics: {
@@ -58,10 +58,10 @@ const schema = {
     optional: true,
     viewableBy: ['members'],
     insertableBy: ['members'],
-    editableBy: ['members'],
+    editableBy: ['members']
   },
   'episodics.$': {
-    type: dataSchema,
+    type: dataSchema
   },
   pilots: {
     label: 'Pilots',
@@ -69,10 +69,10 @@ const schema = {
     optional: true,
     viewableBy: ['members'],
     insertableBy: ['members'],
-    editableBy: ['members'],
+    editableBy: ['members']
   },
   'pilots.$': {
-    type: dataSchema,
+    type: dataSchema
   },
   features: {
     label: 'Features',
@@ -80,10 +80,10 @@ const schema = {
     optional: true,
     viewableBy: ['members'],
     insertableBy: ['members'],
-    editableBy: ['members'],
+    editableBy: ['members']
   },
   'features.$': {
-    type: dataSchema,
+    type: dataSchema
   },
   others: {
     label: 'Others',
@@ -91,11 +91,11 @@ const schema = {
     optional: true,
     viewableBy: ['members'],
     insertableBy: ['members'],
-    editableBy: ['members'],
+    editableBy: ['members']
   },
   'others.$': {
-    type: dataSchema,
-  },
-};
+    type: dataSchema
+  }
+}
 
-export default schema;
+export default schema

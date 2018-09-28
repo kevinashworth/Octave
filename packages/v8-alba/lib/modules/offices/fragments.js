@@ -1,4 +1,4 @@
-import { registerFragment } from "meteor/vulcan:core";
+import { registerFragment } from 'meteor/vulcan:core'
 
 registerFragment(/* GraphQL */ `
   fragment OfficesItemFragment on Office {
@@ -9,7 +9,7 @@ registerFragment(/* GraphQL */ `
     displayName
     slug
   }
-`);
+`)
 
 registerFragment(/* GraphQL */ `
   fragment OfficesSingleFragment on Office {
@@ -33,7 +33,7 @@ registerFragment(/* GraphQL */ `
     zip
     slug
   }
-`);
+`)
 
 registerFragment(/* GraphQL */ `
   fragment OfficesEditFragment on Office {
@@ -52,4 +52,4 @@ registerFragment(/* GraphQL */ `
     state
     zip
   }
-`);
+`)

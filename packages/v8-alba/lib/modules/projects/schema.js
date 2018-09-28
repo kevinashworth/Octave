@@ -1,8 +1,8 @@
-import { Components, Utils } from 'meteor/vulcan:core';
-import SimpleSchema from 'simpl-schema';
-import marked from 'marked';
-import { addressSchema } from '../shared_schemas.js';
-import { CASTING_TITLES_ENUM, PROJECT_TYPES_ENUM, PROJECT_STATUSES_ENUM } from '../constants.js';
+import { Utils } from 'meteor/vulcan:core'
+import SimpleSchema from 'simpl-schema'
+import marked from 'marked'
+import { addressSchema } from '../shared_schemas.js'
+import { CASTING_TITLES_ENUM, PROJECT_TYPES_ENUM, PROJECT_STATUSES_ENUM } from '../constants.js'
 
 const contactSchema = new SimpleSchema({
   contactId: {
@@ -13,9 +13,9 @@ const contactSchema = new SimpleSchema({
     insertableBy: ['admins'],
     editableBy: ['admins'],
     options: props => props.data.contacts.results.map(contact => ({
-        value: contact._id,
-        label: contact.fullName,
-      })),
+      value: contact._id,
+      label: contact.fullName
+    }))
   },
   contactName: {
     type: String,
@@ -23,20 +23,20 @@ const contactSchema = new SimpleSchema({
     hidden: true,
     viewableBy: ['members'],
     insertableBy: ['admins'],
-    editableBy: ['admins'],
+    editableBy: ['admins']
   },
   contactTitle: {
     type: String,
     optional: true,
     options: () => {
-      return CASTING_TITLES_ENUM;
+      return CASTING_TITLES_ENUM
     },
     hidden: true,
     viewableBy: ['members'],
     insertableBy: ['admins'],
-    editableBy: ['admins'],
-  },
-});
+    editableBy: ['admins']
+  }
+})
 
 const schema = {
   // default properties
@@ -51,7 +51,7 @@ const schema = {
     optional: true,
     canRead: 'guests',
     onInsert: () => {
-      return new Date();
+      return new Date()
     }
   },
   userId: {
@@ -67,10 +67,10 @@ const schema = {
     optional: true,
     canRead: 'guests',
     onInsert: () => {
-      return new Date();
+      return new Date()
     },
     onEdit: () => {
-      return new Date();
+      return new Date()
     }
   },
   projectTitle: {
@@ -87,7 +87,7 @@ const schema = {
     optional: true,
     input: 'select',
     options: () => {
-      return PROJECT_TYPES_ENUM;
+      return PROJECT_TYPES_ENUM
     },
     canRead: 'guests',
     insertableBy: ['admins'],
@@ -115,7 +115,7 @@ const schema = {
     optional: true,
     input: 'select',
     options: () => {
-      return PROJECT_STATUSES_ENUM;
+      return PROJECT_STATUSES_ENUM
     },
     canRead: 'guests',
     insertableBy: ['admins'],
@@ -141,12 +141,12 @@ const schema = {
     editableBy: ['admins'],
     onInsert: (project) => {
       if (project.logline) {
-        return Utils.sanitize(marked('**LOG LINE:** ' + project.logline));
+        return Utils.sanitize(marked('**LOG LINE:** ' + project.logline))
       }
     },
     onEdit: (modifier, project) => {
       if (modifier.$set.logline) {
-        return Utils.sanitize(marked('**LOG LINE:** ' + modifier.$set.logline));
+        return Utils.sanitize(marked('**LOG LINE:** ' + modifier.$set.logline))
       }
     }
   },
@@ -178,12 +178,12 @@ const schema = {
     editableBy: ['admins'],
     onInsert: (project) => {
       if (project.notes) {
-        return Utils.sanitize(marked('**NOTES:** ' + project.notes));
+        return Utils.sanitize(marked('**NOTES:** ' + project.notes))
       }
     },
     onEdit: (modifier, project) => {
       if (modifier.$set.notes) {
-        return Utils.sanitize(marked('**NOTES:** ' + modifier.$set.notes));
+        return Utils.sanitize(marked('**NOTES:** ' + modifier.$set.notes))
       }
     }
 
@@ -226,17 +226,17 @@ const schema = {
           fullName
         }
       }
-    `,
+    `
   },
   'contacts.$': {
-    type: contactSchema,
+    type: contactSchema
   },
   addresses: {
     type: Array,
     optional: true,
     viewableBy: ['members'],
     insertableBy: ['admins'],
-    editableBy: ['admins'],
+    editableBy: ['admins']
   },
   'addresses.$': {
     type: addressSchema
@@ -246,14 +246,14 @@ const schema = {
     optional: true,
     canRead: 'guests',
     onInsert: (project) => {
-      return Utils.slugify(project.projectTitle);
+      return Utils.slugify(project.projectTitle)
     },
     onEdit: (modifier, project) => {
       if (modifier.$set.projectTitle) {
-        return Utils.slugify(modifier.$set.projectTitle);
+        return Utils.slugify(modifier.$set.projectTitle)
       }
     }
-  },
-};
+  }
+}
 
-export default schema;
+export default schema

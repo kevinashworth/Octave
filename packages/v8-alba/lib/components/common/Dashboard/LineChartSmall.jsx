@@ -1,19 +1,15 @@
-import { Components, registerComponent } from 'meteor/vulcan:core';
-import React, { PureComponent } from 'react';
-import {Line} from 'react-chartjs-2';
-import { Card,  CardBody } from 'reactstrap';
-import moment from 'moment';
-import { brandColors } from './brandColors.js';
+import { Components, registerComponent } from 'meteor/vulcan:core'
+import React, { PureComponent } from 'react'
+import { Line } from 'react-chartjs-2'
+import { Card, CardBody } from 'reactstrap'
+import moment from 'moment'
+import { brandColors } from './brandColors.js'
 
 class LineChartSmall extends PureComponent {
-  constructor(props) {
-    super(props);
-  }
-
-  render() {
-    const { bgColor, theSmallStats, subtitle, title } = this.props;
+  render () {
+    const { bgColor, theSmallStats, subtitle, title } = this.props
     if (this.props.loading) {
-      return (<div><Components.Loading/></div>);
+      return (<div><Components.Loading /></div>)
     }
 
     const cardChartData = {
@@ -25,8 +21,8 @@ class LineChartSmall extends PureComponent {
           borderColor: 'rgba(255,255,255,.55)',
           data: theSmallStats.map(stat => stat.quantity)
         }
-      ],
-    };
+      ]
+    }
 
     const cardChartOpts = {
       maintainAspectRatio: false,
@@ -41,7 +37,7 @@ class LineChartSmall extends PureComponent {
           },
           ticks: {
             fontSize: 2,
-            fontColor: 'transparent',
+            fontColor: 'transparent'
           }
 
         }],
@@ -50,9 +46,9 @@ class LineChartSmall extends PureComponent {
           ticks: {
             display: false,
             min: Math.min.apply(Math, cardChartData.datasets[0].data) - 5,
-            max: Math.max.apply(Math, cardChartData.datasets[0].data) + 5,
+            max: Math.max.apply(Math, cardChartData.datasets[0].data) + 5
           }
-        }],
+        }]
       },
       elements: {
         line: {
@@ -61,23 +57,23 @@ class LineChartSmall extends PureComponent {
         point: {
           radius: 4,
           hitRadius: 10,
-          hoverRadius: 4,
-        },
+          hoverRadius: 4
+        }
       }
     }
 
     return (
       <Card className={`text-white bg-${bgColor}`}>
-        <CardBody className="pb-0">
-          <h4 className="mb-0">{title}</h4>
+        <CardBody className='pb-0'>
+          <h4 className='mb-0'>{title}</h4>
           <p>{subtitle}</p>
         </CardBody>
-        <div className="chart-wrapper px-3" style={{height:'70px'}}>
-          <Line data={cardChartData} options={cardChartOpts} height={70}/>
+        <div className='chart-wrapper px-3' style={{ height: '70px' }}>
+          <Line data={cardChartData} options={cardChartOpts} height={70} />
         </div>
       </Card>
     )
   }
 }
 
-registerComponent('LineChartSmall', LineChartSmall);
+registerComponent('LineChartSmall', LineChartSmall)

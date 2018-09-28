@@ -1,10 +1,10 @@
-import { registerComponent } from 'meteor/vulcan:core';
-import React from 'react';
+import { registerComponent } from 'meteor/vulcan:core'
+import React from 'react'
 
 const LayoutAdmin = ({ children }) => (
-  <div className="app">
+  <div className='app'>
     {children}
   </div>
-);
+)
 
-registerComponent('LayoutAdmin', LayoutAdmin);
+registerComponent('LayoutAdmin', LayoutAdmin)

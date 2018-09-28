@@ -1,11 +1,12 @@
-import { Utils } from 'meteor/vulcan:core';
-import SimpleSchema from 'simpl-schema';
+import { Utils } from 'meteor/vulcan:core'
+import SimpleSchema from 'simpl-schema'
+import _ from 'lodash'
 
 function getContactsAsOptions (contacts) {
   return contacts.map(contact => ({
     value: contact._id,
-    label: contact.fullName,
-  }));
+    label: contact.fullName
+  }))
 }
 
 const contactGroup = {
@@ -30,42 +31,42 @@ const linkSchema = new SimpleSchema({
   platformName: {
     type: String,
     optional: true,
-    viewableBy: ["members"],
-    insertableBy: ["admins"],
-    editableBy: ["admins"],
+    viewableBy: ['members'],
+    insertableBy: ['admins'],
+    editableBy: ['admins']
   },
   profileName: {
     type: String,
     optional: true,
-    viewableBy: ["members"],
-    insertableBy: ["admins"],
-    editableBy: ["admins"],
+    viewableBy: ['members'],
+    insertableBy: ['admins'],
+    editableBy: ['admins']
   },
   profileLink: {
     type: String,
     optional: true,
-    viewableBy: ["members"],
-    insertableBy: ["admins"],
-    editableBy: ["admins"],
-  },
-});
+    viewableBy: ['members'],
+    insertableBy: ['admins'],
+    editableBy: ['admins']
+  }
+})
 
 const projectIdsSchema = new SimpleSchema({
   projectId: {
     type: String,
     optional: true,
-    viewableBy: ["members"],
-    insertableBy: ["admins"],
-    editableBy: ["admins"],
+    viewableBy: ['members'],
+    insertableBy: ['admins'],
+    editableBy: ['admins']
   },
   projectTitle: {
     type: String,
     optional: true,
-    viewableBy: ["members"],
-    insertableBy: ["admins"],
-    editableBy: ["admins"],
-  },
-});
+    viewableBy: ['members'],
+    insertableBy: ['admins'],
+    editableBy: ['admins']
+  }
+})
 
 // const contactsIdsSchema = new SimpleSchema({
 //   contactId: {
@@ -97,128 +98,128 @@ const schema = {
   _id: {
     type: String,
     optional: true,
-    viewableBy: ["guests"]
+    viewableBy: ['guests']
   },
   createdAt: {
     type: Date,
     optional: true,
-    viewableBy: ["members"],
+    viewableBy: ['members'],
     onInsert: () => {
-      return new Date();
+      return new Date()
     }
   },
   userId: {
     type: String,
     optional: true,
-    viewableBy: ["members"]
+    viewableBy: ['members']
   },
 
   // custom properties
 
   displayName: {
-    label: "Display Name",
+    label: 'Display Name',
     type: String,
     optional: true,
-    viewableBy: ["guests"],
-    insertableBy: ["admins"],
-    editableBy: ["admins"]
+    viewableBy: ['guests'],
+    insertableBy: ['admins'],
+    editableBy: ['admins']
   },
   body: {
-    label: "Notes",
+    label: 'Notes',
     type: String,
     optional: true,
-    control: "textarea", // use a textarea form component
-    viewableBy: ["members"],
-    insertableBy: ["admins"],
-    editableBy: ["admins"]
+    control: 'textarea', // use a textarea form component
+    viewableBy: ['members'],
+    insertableBy: ['admins'],
+    editableBy: ['admins']
   },
   links: {
-    label: "Links",
+    label: 'Links',
     type: Array,
     optional: true,
-    viewableBy: ["members"],
-    insertableBy: ["admins"],
-    editableBy: ["admins"],
+    viewableBy: ['members'],
+    insertableBy: ['admins'],
+    editableBy: ['admins'],
     group: linkGroup
   },
   'links.$': {
-    type: linkSchema,
+    type: linkSchema
   },
   street1: {
-    label: "Address",
+    label: 'Address',
     type: String,
     optional: true,
-    viewableBy: ["members"],
-    insertableBy: ["admins"],
-    editableBy: ["admins"]
+    viewableBy: ['members'],
+    insertableBy: ['admins'],
+    editableBy: ['admins']
   },
   street2: {
-    label: "(cont)",
+    label: '(cont)',
     type: String,
     optional: true,
-    viewableBy: ["members"],
-    insertableBy: ["admins"],
-    editableBy: ["admins"]
+    viewableBy: ['members'],
+    insertableBy: ['admins'],
+    editableBy: ['admins']
   },
   city: {
-    label: "City",
+    label: 'City',
     type: String,
     optional: true,
-    viewableBy: ["members"],
-    insertableBy: ["admins"],
-    editableBy: ["admins"]
+    viewableBy: ['members'],
+    insertableBy: ['admins'],
+    editableBy: ['admins']
   },
   state: {
-    label: "State",
+    label: 'State',
     type: String,
     optional: true,
-    viewableBy: ["members"],
-    insertableBy: ["admins"],
-    editableBy: ["admins"]
+    viewableBy: ['members'],
+    insertableBy: ['admins'],
+    editableBy: ['admins']
   },
   zip: {
-    label: "Zip",
+    label: 'Zip',
     type: String,
     optional: true,
-    viewableBy: ["members"],
-    insertableBy: ["admins"],
-    editableBy: ["admins"]
+    viewableBy: ['members'],
+    insertableBy: ['admins'],
+    editableBy: ['admins']
   },
   slug: {
     type: String,
     optional: true,
-    viewableBy: ["members"],
+    viewableBy: ['members'],
     onInsert: (contact) => {
-      return Utils.slugify(contact.displayName);
+      return Utils.slugify(contact.displayName)
     },
     onEdit: (modifier, contact) => {
       if (modifier.$set.displayName) {
-        return Utils.slugify(modifier.$set.displayName);
+        return Utils.slugify(modifier.$set.displayName)
       }
     }
   },
   updatedAt: {
     type: Date,
     optional: true,
-    viewableBy: ["guests"],
+    viewableBy: ['guests'],
     onEdit: () => {
-      return new Date();
+      return new Date()
     }
   },
 
   // An office has many projects
 
   projectIds: {
-    label: "Projects",
+    label: 'Projects',
     type: Array,
     optional: true,
-    viewableBy: ["members"],
-    insertableBy: ["admins"],
-    editableBy: ["admins"],
+    viewableBy: ['members'],
+    insertableBy: ['admins'],
+    editableBy: ['admins'],
     group: projectGroup
   },
   'projectIds.$': {
-    type: projectIdsSchema,
+    type: projectIdsSchema
   },
 
   // An office has many contacts
@@ -226,12 +227,12 @@ const schema = {
   contactIds: {
     type: Array,
     optional: true,
-    control: "MySelectMultiple",
-    viewableBy: ["members"],
-    insertableBy: ["admins"],
-    editableBy: ["admins"],
+    control: 'MySelectMultiple',
+    viewableBy: ['members'],
+    insertableBy: ['admins'],
+    editableBy: ['admins'],
     options: props => {
-      return getContactsAsOptions(props.data.ContactsList);
+      return getContactsAsOptions(props.data.ContactsList)
     },
     query: `
       ContactsList{
@@ -242,12 +243,12 @@ const schema = {
     resolveAs: {
       fieldName: 'contacts',
       type: '[Contact]',
-      resolver: async (office, args, {currentUser, Users, Contacts}) => {
-        if (!office.contactIds) return [];
-        const contacts = _.compact(await Contacts.loader.loadMany(office.contactIds));
-        return Users.restrictViewableFields(currentUser, Contacts, contacts);
+      resolver: async (office, args, { currentUser, Users, Contacts }) => {
+        if (!office.contactIds) return []
+        const contacts = _.compact(await Contacts.loader.loadMany(office.contactIds))
+        return Users.restrictViewableFields(currentUser, Contacts, contacts)
       },
-      addOriginalField: true,
+      addOriginalField: true
     },
     group: contactGroup
   },
@@ -272,6 +273,6 @@ const schema = {
     optional: true
   }
 
-};
+}
 
-export default schema;
+export default schema

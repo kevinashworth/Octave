@@ -1,9 +1,8 @@
-import { registerComponent } from 'meteor/vulcan:core';
-import React, { PureComponent } from 'react';
+import { registerComponent } from 'meteor/vulcan:core'
+import { PureComponent } from 'react'
 
 class SidebarForm extends PureComponent {
-
-  render() {
+  render () {
     return null
     // Uncomment following code lines to add Sidebar Form
     // return (
@@ -12,4 +11,4 @@ class SidebarForm extends PureComponent {
   }
 }
 
-registerComponent('SidebarForm', SidebarForm);
+registerComponent('SidebarForm', SidebarForm)

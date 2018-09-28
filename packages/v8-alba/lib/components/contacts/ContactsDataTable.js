@@ -1,45 +1,45 @@
-import { Components, registerComponent, withCurrentUser, withDelete, withMulti } from 'meteor/vulcan:core';
-import Users from 'meteor/vulcan:users';
-import React, { PureComponent } from 'react';
-import { Link } from 'react-router';
-import { Button, Card, CardBody, CardFooter, CardHeader } from 'reactstrap';
-import { BootstrapTable, ClearSearchButton, SearchField, TableHeaderColumn } from 'react-bootstrap-table';
-import _ from 'lodash';
-import moment from 'moment';
+import { Components, registerComponent, withCurrentUser, withDelete, withMulti } from 'meteor/vulcan:core'
+import Users from 'meteor/vulcan:users'
+import React, { PureComponent } from 'react'
+import { Link } from 'react-router'
+import { Button, Card, CardBody, CardFooter, CardHeader } from 'reactstrap'
+import { BootstrapTable, ClearSearchButton, SearchField, TableHeaderColumn } from 'react-bootstrap-table'
+import _ from 'lodash'
+import moment from 'moment'
 import { DATE_FORMAT_SHORT } from '../../modules/constants.js'
-import Contacts from '../../modules/contacts/collection.js';
-import withContactFilters from '../../modules/filters/withContactFilters.js';
+import Contacts from '../../modules/contacts/collection.js'
+import withContactFilters from '../../modules/filters/withContactFilters.js'
 
 // Set initial state. Just options I want to keep.
 // See https://github.com/amannn/react-keep-state
 let keptState = {
-  defaultSearch: "",
+  defaultSearch: '',
   page: 1,
   sizePerPage: 20,
-  sortName: "updatedAt",
-  sortOrder: "desc"
-};
+  sortName: 'updatedAt',
+  sortOrder: 'desc'
+}
 
-function dateFormatter(cell, row) {
-  return moment(cell).format(DATE_FORMAT_SHORT);
+function dateFormatter (cell, row) {
+  return moment(cell).format(DATE_FORMAT_SHORT)
 }
 
 class ContactsDataTable extends PureComponent {
-  constructor(props) {
-    super(props);
+  constructor (props) {
+    super(props)
 
     const pageChangeHandler = (page, sizePerPage) => {
       this.setState((prevState) => ({
-        options: {...prevState.options, page, sizePerPage}
-      }));
+        options: { ...prevState.options, page, sizePerPage }
+      }))
     }
 
-    function renderShowsTotal(start, to, total) {
+    function renderShowsTotal (start, to, total) {
       return (
         <span>
           Showing contacts { start } to { to } out of { total } &nbsp;&nbsp;
         </span>
-      );
+      )
     }
 
     // function rowClickHandler(row, columnIndex, rowIndex, event) {
@@ -51,55 +51,55 @@ class ContactsDataTable extends PureComponent {
 
     const sortChangeHandler = (sortName, sortOrder) => {
       this.setState((prevState) => ({
-        options: {...prevState.options, sortName, sortOrder}
-      }));
+        options: { ...prevState.options, sortName, sortOrder }
+      }))
     }
 
     const searchChangeHandler = (searchText) => {
       this.setState((prevState) => ({
-        options: {...prevState.options, defaultSearch: searchText}
-      }));
+        options: { ...prevState.options, defaultSearch: searchText }
+      }))
     }
 
     const sizePerPageListHandler = (sizePerPage) => {
       this.setState((prevState) => ({
-        options: {...prevState.options, sizePerPage}
-      }));
+        options: { ...prevState.options, sizePerPage }
+      }))
     }
 
     const onDeleteRow = (rows) => {
-      if (confirm(`Really truly delete ${rows.length} contacts at once? (There is no undo!)`)) {
+      if (window.confirm(`Really truly delete ${rows.length} contacts at once? (There is no undo!)`)) {
         rows.forEach(async (row) => {
-          const documentId = row;
+          const documentId = row
           await this.props.deleteContact({
-            selector: { documentId },
-          });
-        });
+            selector: { documentId }
+          })
+        })
       }
     }
 
     const createCustomSearchField = (props) => {
       if (props.defaultValue.length) {
-        this.setState({ searchColor: 'btn-danger' });
+        this.setState({ searchColor: 'btn-danger' })
       } else {
-        this.setState({ searchColor: 'btn-secondary' });
+        this.setState({ searchColor: 'btn-secondary' })
       }
       return (
-        <SearchField/>
-      );
+        <SearchField />
+      )
     }
 
     const handleClearButtonClick = (onClick) => {
-      this.setState({ searchColor: 'btn-secondary' });
-      onClick();
+      this.setState({ searchColor: 'btn-secondary' })
+      onClick()
     }
 
     const createCustomClearButton = (onClick) => {
       return (
         <ClearSearchButton
           btnContextual={this.state.searchColor}
-          onClick = { e => handleClearButtonClick(onClick) }/>
-      );
+          onClick={e => handleClearButtonClick(onClick)} />
+      )
     }
 
     this.state = {
@@ -138,88 +138,83 @@ class ContactsDataTable extends PureComponent {
     }
   }
 
-  componentWillUnmount() {
+  componentWillUnmount () {
     // Remember state for the next mount
-    const { options } = this.state;
+    const { options } = this.state
     keptState = {
       defaultSearch: options.defaultSearch,
       page: options.page,
       sizePerPage: options.sizePerPage,
       sortName: options.sortName,
       sortOrder: options.sortOrder
-    };
+    }
   }
 
-  render() {
+  render () {
     const { count, totalCount, results, loadingMore, loadMore, currentUser,
-            contactTitleFilters, contactUpdatedFilters, contactLocationFilters } = this.props;
+      contactTitleFilters, contactUpdatedFilters, contactLocationFilters } = this.props
     const selectRow = {
       mode: 'checkbox'
-    };
-    const hasMore = results && (totalCount > results.length);
-    let titleFilters = [];
+    }
+    const hasMore = results && (totalCount > results.length)
+    let titleFilters = []
     contactTitleFilters.forEach(filter => {
-      if (filter.value)
-        titleFilters.push(filter.contactTitle);
-    });
-    let otherFilters = [];
+      if (filter.value) { titleFilters.push(filter.contactTitle) }
+    })
+    let otherFilters = []
     contactTitleFilters.forEach(filter => {
-      if (!filter.value)
-        otherFilters.push(filter.contactTitle);
-    });
-    let locationFilters = [];
+      if (!filter.value) { otherFilters.push(filter.contactTitle) }
+    })
+    let locationFilters = []
     contactLocationFilters.forEach(filter => {
-      if (filter.value)
-        locationFilters.push(filter.contactLocation);
-    });
-    let moment1 = '';
-    let moment2 = '';
+      if (filter.value) { locationFilters.push(filter.contactLocation) }
+    })
+    let moment1 = ''
+    let moment2 = ''
     contactUpdatedFilters.forEach(filter => {
       if (filter.value) {
-        moment1 = filter.moment1;
-        moment2 = filter.moment2;
-        return;
+        moment1 = filter.moment1
+        moment2 = filter.moment2
       }
-    });
+    })
 
-    const filteredResults = _.filter(results, function(o) {
+    const filteredResults = _.filter(results, function (o) {
       // compare current time to filter, but generous, so start of day then, not the time it is now - filter plus up to 23:59
-      const now = moment();
-      const dateToCompare = o.updatedAt ? o.updatedAt : o.createdAt;
-      const displayThis = moment(dateToCompare).isAfter(now.subtract(moment1, moment2).startOf('day'));
+      const now = moment()
+      const dateToCompare = o.updatedAt ? o.updatedAt : o.createdAt
+      const displayThis = moment(dateToCompare).isAfter(now.subtract(moment1, moment2).startOf('day'))
 
       // if "Other" is not checked, filter per normal via titleFilters:
-      if (!(_.includes(titleFilters, "Other"))) {
-        return _.includes(locationFilters, o.location)
-            && _.includes(titleFilters, o.title)
-            && displayThis;
-      } else if (_.every(titleFilters, {value: true})) {
+      if (!(_.includes(titleFilters, 'Other'))) {
+        return _.includes(locationFilters, o.location) &&
+            _.includes(titleFilters, o.title) &&
+            displayThis
+      } else if (_.every(titleFilters, { value: true })) {
         // if "Other" is checked and so are all the titles, do not filter by title
-        return _.includes(locationFilters, o.location)
-            && displayThis;
+        return _.includes(locationFilters, o.location) &&
+            displayThis
       } else {
         // if "Other" is checked and some are not checked, eliminate based on titles in contactTitleFilters
-        return _.includes(locationFilters, o.location)
-            && !_.includes(otherFilters, o.title)
-            && displayThis;
+        return _.includes(locationFilters, o.location) &&
+            !_.includes(otherFilters, o.title) &&
+            displayThis
       }
+    })
 
-    });
-
-    const canDelete = Users.canDo(currentUser, `contact.delete.all`);
+    const canDelete = Users.canDo(currentUser, `contact.delete.all`)
 
     return (
-      <div className="animated fadeIn">
+      <div className='animated fadeIn'>
         <Card>
           <CardHeader>
-            <i className="icon-people"></i>Contacts
-            <Components.ContactFilters/>
+            <i className='icon-people' />Contacts
+            <Components.ContactFilters />
           </CardHeader>
           <CardBody>
-            <BootstrapTable data={filteredResults} version="4" condensed striped hover pagination search
+            <BootstrapTable data={filteredResults} version='4' condensed striped hover pagination search
               options={this.state.options} selectRow={selectRow} keyField='_id' bordered={false}
               deleteRow={canDelete}>
-              <TableHeaderColumn dataField="fullName" dataSort dataFormat={
+              <TableHeaderColumn dataField='fullName' dataSort dataFormat={
                 (cell, row) => {
                   return (
                     <Link to={`/contacts/${row._id}/${row.slug}`}>
@@ -228,33 +223,33 @@ class ContactsDataTable extends PureComponent {
                   )
                 }
               }>Name</TableHeaderColumn>
-              <TableHeaderColumn dataField="title" dataSort>Title</TableHeaderColumn>
-              <TableHeaderColumn dataField="street" dataSort width="23%">Address</TableHeaderColumn>
-              <TableHeaderColumn dataField="city" dataSort>City</TableHeaderColumn>
-              <TableHeaderColumn dataField="state" dataSort width="8%">State</TableHeaderColumn>
-              <TableHeaderColumn dataField="zip" dataSort width="7%">Zip</TableHeaderColumn>
-              <TableHeaderColumn dataField="updatedAt" dataFormat={dateFormatter} dataSort width="9%">Updated</TableHeaderColumn>
+              <TableHeaderColumn dataField='title' dataSort>Title</TableHeaderColumn>
+              <TableHeaderColumn dataField='street' dataSort width='23%'>Address</TableHeaderColumn>
+              <TableHeaderColumn dataField='city' dataSort>City</TableHeaderColumn>
+              <TableHeaderColumn dataField='state' dataSort width='8%'>State</TableHeaderColumn>
+              <TableHeaderColumn dataField='zip' dataSort width='7%'>Zip</TableHeaderColumn>
+              <TableHeaderColumn dataField='updatedAt' dataFormat={dateFormatter} dataSort width='9%'>Updated</TableHeaderColumn>
             </BootstrapTable>
           </CardBody>
           {hasMore &&
           <CardFooter>
-            {loadingMore ?
-              <Components.Loading/> :
-              <Button onClick={e => {e.preventDefault(); loadMore();}}>Load More ({count}/{totalCount})</Button>
+            {loadingMore
+              ? <Components.Loading />
+              : <Button onClick={e => { e.preventDefault(); loadMore() }}>Load More ({count}/{totalCount})</Button>
             }
           </CardFooter>
           }
-          {Contacts.options.mutations.new.check(currentUser) ?
-          <CardFooter>
-            <Components.ModalTrigger title="New Contact" component={<Button>Add a Contact</Button>}>
-              <Components.ContactsNewForm currentUser={currentUser} />
-            </Components.ModalTrigger>
-          </CardFooter>
+          {Contacts.options.mutations.new.check(currentUser)
+            ? <CardFooter>
+              <Components.ModalTrigger title='New Contact' component={<Button>Add a Contact</Button>}>
+                <Components.ContactsNewForm currentUser={currentUser} />
+              </Components.ModalTrigger>
+            </CardFooter>
             : null
           }
         </Card>
       </div>
-    );
+    )
   }
 }
 
@@ -263,11 +258,11 @@ const options = {
   fragmentName: 'ContactsSingleFragment',
   limit: 1006,
   enableCache: true
-};
+}
 
 const deleteOptions = {
   collection: Contacts
 }
 
 registerComponent('ContactsDataTable', ContactsDataTable,
-                    withContactFilters, withCurrentUser, [withMulti, options], [withDelete, deleteOptions]);
+  withContactFilters, withCurrentUser, [withMulti, options], [withDelete, deleteOptions])

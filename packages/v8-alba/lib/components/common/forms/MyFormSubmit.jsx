@@ -1,8 +1,7 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import { Components } from 'meteor/vulcan:core';
-import { replaceComponent } from 'meteor/vulcan:core';
-import { FormattedMessage } from 'meteor/vulcan:i18n';
+import { Components, replaceComponent } from 'meteor/vulcan:core'
+import { FormattedMessage } from 'meteor/vulcan:i18n'
+import React from 'react'
+import PropTypes from 'prop-types'
 
 const MyFormSubmit = ({
   submitLabel,
@@ -13,52 +12,52 @@ const MyFormSubmit = ({
   document,
   deleteDocument,
   collectionName,
-  classes,
+  classes
 }, {
   isChanged,
-  clearForm,
+  clearForm
 }) => (
-  <div className="form-submit">
-    <Components.Button type="submit" variant="primary">
-      {submitLabel ? submitLabel : <FormattedMessage id="forms.submit" />}
+  <div className='form-submit'>
+    <Components.Button type='submit' variant='primary'>
+      {submitLabel || <FormattedMessage id='forms.submit' />}
     </Components.Button>
 
     {cancelCallback ? (
       <a
-        className="form-cancel btn btn-secondary"
+        className='form-cancel btn btn-secondary'
         onClick={e => {
-          e.preventDefault();
-          cancelCallback(document);
+          e.preventDefault()
+          cancelCallback(document)
         }}
       >
-        {cancelLabel ? cancelLabel : <FormattedMessage id="forms.cancel" />}
+        {cancelLabel || <FormattedMessage id='forms.cancel' />}
       </a>
     ) : null}
 
     {revertCallback ? (
       <a
-        className="form-cancel"
+        className='form-cancel'
         onClick={e => {
-          e.preventDefault();
-          clearForm({ clearErrors: true, clearCurrentValues: true, clearDeletedValues: true });
-          revertCallback(document);
+          e.preventDefault()
+          clearForm({ clearErrors: true, clearCurrentValues: true, clearDeletedValues: true })
+          revertCallback(document)
         }}
       >
-      {revertLabel ? revertLabel : <FormattedMessage id="forms.revert"/>}
+        {revertLabel || <FormattedMessage id='forms.revert' />}
       </a>
     ) : null}
 
     {deleteDocument ? (
       <div>
         <hr />
-        <a href="javascript:void(0)" onClick={deleteDocument} className={`delete-link ${collectionName}-delete-link btn btn-danger`}>
-          <FormattedMessage id="forms.delete" />
+        <a href='javascript:void(0)' onClick={deleteDocument} className={`delete-link ${collectionName}-delete-link btn btn-danger`}>
+          <FormattedMessage id='forms.delete' />
         </a>
         <br />
       </div>
     ) : null}
   </div>
-);
+)
 
 MyFormSubmit.propTypes = {
   submitLabel: PropTypes.string,
@@ -69,13 +68,12 @@ MyFormSubmit.propTypes = {
   document: PropTypes.object,
   deleteDocument: PropTypes.func,
   collectionName: PropTypes.string,
-  classes: PropTypes.object,
-};
+  classes: PropTypes.object
+}
 
 MyFormSubmit.contextTypes = {
   isChanged: PropTypes.func,
-  clearForm: PropTypes.func,
-};
+  clearForm: PropTypes.func
+}
 
-
-replaceComponent('FormSubmit', MyFormSubmit);
+replaceComponent('FormSubmit', MyFormSubmit)

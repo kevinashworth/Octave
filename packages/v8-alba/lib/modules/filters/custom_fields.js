@@ -1,122 +1,122 @@
-import { registerFragment } from 'meteor/vulcan:core';
-import Users from 'meteor/vulcan:users';
-import _ from 'lodash';
+import { registerFragment } from 'meteor/vulcan:core'
+import Users from 'meteor/vulcan:users'
+import _ from 'lodash'
 
 const projectFilters = [
   {
-    name: "Filter projects by type",
+    name: 'Filter projects by type',
     order: 1,
-    label: "Type",
+    label: 'Type',
     filters: [
       {
-        name: "Feature Film",
+        name: 'Feature Film',
         show: true
       }, {
-        name: "Feature Film (LB)",
+        name: 'Feature Film (LB)',
         show: true
       }, {
-        name: "Feature Film (MLB)",
+        name: 'Feature Film (MLB)',
         show: true
       }, {
-        name: "Feature Film (ULB)",
+        name: 'Feature Film (ULB)',
         show: false
       }, {
-        name: "Pilot One Hour",
+        name: 'Pilot One Hour',
         show: true
       }, {
-        name: "Pilot 1/2 Hour",
+        name: 'Pilot 1/2 Hour',
         show: true
       }, {
-        name: "TV One Hour",
+        name: 'TV One Hour',
         show: true
       }, {
-        name: "TV 1/2 Hour",
+        name: 'TV 1/2 Hour',
         show: true
       }, {
-        name: "TV Daytime",
+        name: 'TV Daytime',
         show: true
       }, {
-        name: "TV Mini-Series",
+        name: 'TV Mini-Series',
         show: true
       }, {
-        name: "TV Movie",
+        name: 'TV Movie',
         show: true
       }, {
-        name: "New Media (SVOD)",
+        name: 'New Media (SVOD)',
         show: true
       }, {
-        name: "New Media (AVOD)",
+        name: 'New Media (AVOD)',
         show: true
       }, {
-        name: "New Media (<$50k)",
+        name: 'New Media (<$50k)',
         show: false
       }
     ]
   }, {
-    name: "Filter projects by last updated",
+    name: 'Filter projects by last updated',
     order: 2,
-    label: "Last updated",
+    label: 'Last updated',
     filters: [
       {
-        name: "One Day",
+        name: 'One Day',
         show: false
       }, {
-        name: "One Week",
+        name: 'One Week',
         show: false
       }, {
-        name: "Two Weeks",
+        name: 'Two Weeks',
         show: true
       }, {
-        name: "One Month",
+        name: 'One Month',
         show: false
       }, {
-        name: "Two Months",
+        name: 'Two Months',
         show: false
       }
     ]
   }, {
-    name: "Filter projects by status",
+    name: 'Filter projects by status',
     order: 3,
-    label: "Status",
+    label: 'Status',
     filters: [
-      { header: "Filter by status" },
+      { header: 'Filter by status' },
       {
-        name: "Casting",
+        name: 'Casting',
         show: true
       }, {
-        name: "On Hold",
+        name: 'On Hold',
         show: false
       }, {
-        name: "Shooting",
+        name: 'Shooting',
         show: true
       }, {
-        name: "On Hiatus",
+        name: 'On Hiatus',
         show: false
       }, {
-        name: "See Notes",
+        name: 'See Notes',
         show: true
-      },{
-        name: "Unknown",
+      }, {
+        name: 'Unknown',
         show: true
       },
-      { header: "Inactive" },
+      { header: 'Inactive' },
       {
-        name: "Wrapped",
+        name: 'Wrapped',
         show: false
       }, {
-        name: "Canceled",
+        name: 'Canceled',
         show: false
       }
     ]
   }
-];
+]
 
-let projectFiltersArray = [];
+let projectFiltersArray = []
 
 const addFields = () => {
   projectFilters[0].filters.forEach(filter => {
-    const fieldName = _.camelCase(`${projectFilters[0].name} ${filter.name}`);
-    projectFiltersArray.push(fieldName);
+    const fieldName = _.camelCase(`${projectFilters[0].name} ${filter.name}`)
+    projectFiltersArray.push(fieldName)
     Users.addField({
       fieldName: fieldName,
       fieldSchema: {
@@ -124,22 +124,22 @@ const addFields = () => {
         type: Boolean,
         optional: true,
         defaultValue: filter.show,
-        control: "checkbox",
-        viewableBy: ["members"],
-        insertableBy: ["members"],
-        editableBy: ["members"],
+        control: 'checkbox',
+        viewableBy: ['members'],
+        insertableBy: ['members'],
+        editableBy: ['members'],
         group: {
           label: projectFilters[0].label,
           name: projectFilters[0].name,
           order: projectFilters[0].order
-        },
+        }
       }
-    });
-  });
+    })
+  })
 
   projectFilters[1].filters.forEach(filter => {
-    const fieldName = _.camelCase(`${projectFilters[1].name} ${filter.name}`);
-    projectFiltersArray.push(fieldName);
+    const fieldName = _.camelCase(`${projectFilters[1].name} ${filter.name}`)
+    projectFiltersArray.push(fieldName)
     Users.addField({
       fieldName: fieldName,
       fieldSchema: {
@@ -147,25 +147,25 @@ const addFields = () => {
         type: Boolean,
         optional: true,
         defaultValue: filter.show,
-        control: "checkbox",
-        viewableBy: ["members"],
-        insertableBy: ["members"],
-        editableBy: ["members"],
+        control: 'checkbox',
+        viewableBy: ['members'],
+        insertableBy: ['members'],
+        editableBy: ['members'],
         group: {
           label: projectFilters[1].label,
           name: projectFilters[1].name,
           order: projectFilters[1].order
-        },
+        }
       }
-    });
-  });
+    })
+  })
 
   projectFilters[2].filters.forEach(filter => {
-    const fieldName = _.camelCase(`${projectFilters[2].name} ${filter.name}`);
+    const fieldName = _.camelCase(`${projectFilters[2].name} ${filter.name}`)
     if (filter.header) {
       // TODO
     } else {
-      projectFiltersArray.push(fieldName);
+      projectFiltersArray.push(fieldName)
       Users.addField({
         fieldName: fieldName,
         fieldSchema: {
@@ -173,32 +173,31 @@ const addFields = () => {
           type: Boolean,
           optional: true,
           defaultValue: filter.show,
-          control: "checkbox",
-          viewableBy: ["members"],
-          insertableBy: ["members"],
-          editableBy: ["members"],
+          control: 'checkbox',
+          viewableBy: ['members'],
+          insertableBy: ['members'],
+          editableBy: ['members'],
           group: {
             label: projectFilters[2].label,
             name: projectFilters[2].name,
             order: projectFilters[2].order
-          },
+          }
         }
-      });
+      })
     }
-  });
+  })
 
-  const graphQLFilterList = projectFiltersArray.join().replace(/,/g, '\n');
+  const graphQLFilterList = projectFiltersArray.join().replace(/,/g, '\n')
 
   registerFragment(`
     fragment UserProjectFilterList on User {
       _id
       ${graphQLFilterList}
     }
-  `);
-};
-
+  `)
+}
 
 // Add filter options for projects
-addFields();
+addFields()
 
-export default projectFiltersArray;
+export default projectFiltersArray
