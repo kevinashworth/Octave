@@ -243,6 +243,9 @@ const schema = {
       return Utils.slugify(getFullNameFromContact(contact))
     },
     onEdit: (modifier, contact) => {
+      if (modifier.$set.slug) {
+        return Utils.slugify(modifier.$set.slug)
+      }
       return Utils.slugify(getFullNameFromContact({
         firstName: modifier.$set.firstName ? modifier.$set.firstName : null,
         middleName: modifier.$set.middleName ? modifier.$set.middleName : null,

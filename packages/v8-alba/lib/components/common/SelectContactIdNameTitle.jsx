@@ -3,6 +3,7 @@ import React, { PureComponent } from 'react'
 import { FormGroup, Input, Label } from 'reactstrap'
 import Select from 'react-virtualized-select'
 import PropTypes from 'prop-types'
+import { CASTING_TITLES_ENUM } from '../../modules/constants.js'
 
 import pure from 'recompose/pure'
 import onlyUpdateForKeys from 'recompose/onlyUpdateForKeys'
@@ -18,8 +19,9 @@ class SelectContactIdNameTitle extends PureComponent {
   constructor (props) {
     super(props)
 
-    this.handleSelectChange = this.handleSelectChange.bind(this)
+    this.handleSelectNameChange = this.handleSelectNameChange.bind(this)
     this.handleInputChange = this.handleInputChange.bind(this)
+    this.handleSelectTitleChange = this.handleSelectTitleChange.bind(this)
 
     const nestedFields = Object.keys(this.props.nestedSchema)
     const contacts = this.props.document.contacts
@@ -38,7 +40,7 @@ class SelectContactIdNameTitle extends PureComponent {
     }
   }
 
-  handleSelectChange = (value) => {
+  handleSelectNameChange (value) {
     this.setState({
       value,
       contactName: value.label
@@ -49,13 +51,22 @@ class SelectContactIdNameTitle extends PureComponent {
     })
   }
 
-  handleInputChange = ({ target }) => {
+  handleInputChange ({ target }) {
     this.setState({
       [target.id]: target.value
     })
     const path = this.state.pathPrefix + target.id
     this.context.updateCurrentValues({
       [path]: target.value
+    })
+  }
+
+  handleSelectTitleChange (value) {
+    this.setState({
+      contactTitle: value.label
+    })
+    this.context.updateCurrentValues({
+      [this.state.pathPrefix + 'contactTitle']: value.label
     })
   }
 
@@ -67,7 +78,7 @@ class SelectContactIdNameTitle extends PureComponent {
           <OptimizedSelect
             id='contactId'
             value={this.state.value}
-            onChange={this.handleSelectChange}
+            onChange={this.handleSelectNameChange}
             options={this.props.options}
             resetValue={{ value: null, label: '' }}
           />
@@ -84,11 +95,12 @@ class SelectContactIdNameTitle extends PureComponent {
         </FormGroup>
         <FormGroup>
           <Label for='contactTitle'>Contact's Title for This Project</Label>
-          <OptimizedInput
-            type='text'
+          <OptimizedSelect
             id='contactTitle'
             value={this.state.contactTitle}
-            onChange={this.handleInputChange}
+            onChange={this.handleSelectTitleChange}
+            options={CASTING_TITLES_ENUM}
+            resetValue={{ value: null, label: '' }}
             required
           />
         </FormGroup>

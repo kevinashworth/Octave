@@ -4,6 +4,18 @@ import marked from 'marked'
 import { addressSchema } from '../shared_schemas.js'
 import { CASTING_TITLES_ENUM, PROJECT_TYPES_ENUM, PROJECT_STATUSES_ENUM } from '../constants.js'
 
+const addressGroup = {
+  name: 'addresses',
+  label: 'Addresses',
+  order: 10
+}
+
+const contactGroup = {
+  name: 'contacts',
+  label: 'Contacts',
+  order: 20
+}
+
 const contactSchema = new SimpleSchema({
   contactId: {
     type: String,
@@ -28,9 +40,6 @@ const contactSchema = new SimpleSchema({
   contactTitle: {
     type: String,
     optional: true,
-    options: () => {
-      return CASTING_TITLES_ENUM
-    },
     hidden: true,
     viewableBy: ['members'],
     insertableBy: ['admins'],
@@ -212,6 +221,24 @@ const schema = {
     insertableBy: ['admins'],
     editableBy: ['admins']
   },
+  slug: {
+    type: String,
+    optional: true,
+    canRead: 'guests',
+    canCreate: ['members'],
+    canUpdate: ['members'],
+    onInsert: (project) => {
+      return Utils.slugify(project.projectTitle)
+    },
+    onEdit: (modifier, project) => {
+      if (modifier.$set.slug) {
+        return Utils.slugify(modifier.$set.slug)
+      }
+      if (modifier.$set.projectTitle) {
+        return Utils.slugify(modifier.$set.projectTitle)
+      }
+    }
+  },
   contacts: {
     label: 'Contacts',
     type: Array,
@@ -226,7 +253,8 @@ const schema = {
           fullName
         }
       }
-    `
+    `,
+    group: contactGroup
   },
   'contacts.$': {
     type: contactSchema
@@ -236,23 +264,11 @@ const schema = {
     optional: true,
     viewableBy: ['members'],
     insertableBy: ['admins'],
-    editableBy: ['admins']
+    editableBy: ['admins'],
+    group: addressGroup
   },
   'addresses.$': {
     type: addressSchema
-  },
-  slug: {
-    type: String,
-    optional: true,
-    canRead: 'guests',
-    onInsert: (project) => {
-      return Utils.slugify(project.projectTitle)
-    },
-    onEdit: (modifier, project) => {
-      if (modifier.$set.projectTitle) {
-        return Utils.slugify(modifier.$set.projectTitle)
-      }
-    }
   }
 }
 
