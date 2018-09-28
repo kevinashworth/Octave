@@ -251,6 +251,9 @@ const schema = {
       return Utils.slugify(project.projectTitle)
     },
     onEdit: (modifier, project) => {
+      if (modifier.$set.slug) {
+        return Utils.slugify(modifier.$set.slug)
+      }
       if (modifier.$set.projectTitle) {
         return Utils.slugify(modifier.$set.projectTitle)
       }
