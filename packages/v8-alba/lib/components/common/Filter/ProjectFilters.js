@@ -117,7 +117,7 @@ class ProjectFilters extends PureComponent {
         this.props.actions.toggleProjectStatusFilter(i)
       }
     } else if (active) {
-      for (i = 0; i < length - 2; i++) {
+      for (i = 0; i < length - 3; i++) {  // Canceled, Wrapped, Unknown are not considered Active
         this.props.actions.setProjectStatusFilter(i)
       }
       for (; i < length; i++) {
