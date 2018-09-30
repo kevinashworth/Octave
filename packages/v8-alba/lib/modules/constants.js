@@ -19,17 +19,6 @@ const PROJECT_ENUM = [
   'New Media (<$50k)'
 ]
 
-const STATUS_ENUM = [
-  'Casting',
-  'On Hold',
-  'Shooting',
-  'On Hiatus',
-  'See Notes',
-  'Unknown',
-  'Wrapped',
-  'Canceled'
-]
-
 const CASTING_TITLES_ENUM = [
   { value: 'Casting Director', label: 'Casting Director' },
   { value: 'Associate', label: 'Associate' },
@@ -69,6 +58,7 @@ const PROJECT_STATUSES_ENUM = [
   { projectStatus: 'See Notes', label: 'See Notes' },
   { projectStatus: 'On Hiatus', label: 'On Hiatus' },
   { projectStatus: 'On Hold', label: 'On Hold' },
+  { projectStatus: 'Relocated', label: 'Relocated' },
   { projectStatus: 'Unknown', label: 'Unknown' },
   { projectStatus: 'Wrapped', label: 'Wrapped' },
   { projectStatus: 'Canceled', label: 'Canceled' }
@@ -79,7 +69,6 @@ module.exports = {
   DATE_FORMAT_SHORT,
   DATE_FORMAT_SHORT_FRIENDLY,
   PROJECT_ENUM,
-  STATUS_ENUM,
   CASTING_TITLES_ENUM,
   PROJECT_TYPES_ENUM,
   PROJECT_STATUSES_ENUM
