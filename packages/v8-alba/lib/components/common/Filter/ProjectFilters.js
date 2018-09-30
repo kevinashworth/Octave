@@ -17,6 +17,14 @@ const DropdownItemStatic = styled.div`
   white-space: nowrap;
 `
 
+// Set initial state. Just options I want to keep.
+// See https://github.com/amannn/react-keep-state
+let keptState = {
+  typeColor: 'secondary',
+  updatedColor: 'secondary',
+  statusColor: 'secondary'
+}
+
 class ProjectFilters extends PureComponent {
   constructor (props) {
     super(props)
@@ -27,9 +35,18 @@ class ProjectFilters extends PureComponent {
     this.handleChange = this.handleChange.bind(this)
     this.state = {
       dropdownOpen: new Array(3).fill(false),
-      typeColor: 'secondary',
-      updatedColor: 'secondary',
-      statusColor: 'secondary'
+
+      // Retrieve the last state
+      ...keptState
+    }
+  }
+
+  componentWillUnmount () {
+    // Remember state for the next mount
+    keptState = {
+      typeColor: this.state.typeColor,
+      updatedColor: this.state.updatedColor,
+      statusColor: this.state.statusColor
     }
   }
 
