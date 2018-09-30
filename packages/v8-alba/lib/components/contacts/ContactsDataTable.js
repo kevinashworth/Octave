@@ -1,5 +1,4 @@
-import { Components, registerComponent, withCurrentUser, withDelete, withMulti } from 'meteor/vulcan:core'
-import Users from 'meteor/vulcan:users'
+import { Components, registerComponent, withCurrentUser, withMulti } from 'meteor/vulcan:core'
 import React, { PureComponent } from 'react'
 import { Link } from 'react-router'
 import { Button, Card, CardBody, CardFooter, CardHeader } from 'reactstrap'
@@ -67,17 +66,6 @@ class ContactsDataTable extends PureComponent {
       }))
     }
 
-    const onDeleteRow = (rows) => {
-      if (window.confirm(`Really truly delete ${rows.length} contacts at once? (There is no undo!)`)) {
-        rows.forEach(async (row) => {
-          const documentId = row
-          await this.props.deleteContact({
-            selector: { documentId }
-          })
-        })
-      }
-    }
-
     const createCustomSearchField = (props) => {
       if (props.defaultValue.length) {
         this.setState({ searchColor: 'btn-danger' })
@@ -130,8 +118,6 @@ class ContactsDataTable extends PureComponent {
         clearSearch: true,
         clearSearchBtn: createCustomClearButton,
         searchField: createCustomSearchField,
-        onDeleteRow: onDeleteRow,
-
         // Retrieve the last state
         ...keptState
       }
@@ -201,8 +187,6 @@ class ContactsDataTable extends PureComponent {
       }
     })
 
-    const canDelete = Users.canDo(currentUser, `contact.delete.all`)
-
     return (
       <div className='animated fadeIn'>
         <Card>
@@ -212,8 +196,7 @@ class ContactsDataTable extends PureComponent {
           </CardHeader>
           <CardBody>
             <BootstrapTable data={filteredResults} version='4' condensed striped hover pagination search
-              options={this.state.options} selectRow={selectRow} keyField='_id' bordered={false}
-              deleteRow={canDelete}>
+              options={this.state.options} selectRow={selectRow} keyField='_id' bordered={false}>
               <TableHeaderColumn dataField='fullName' dataSort dataFormat={
                 (cell, row) => {
                   return (
@@ -263,9 +246,5 @@ const options = {
   enableCache: true
 }
 
-const deleteOptions = {
-  collection: Contacts
-}
-
 registerComponent('ContactsDataTable', ContactsDataTable,
-  withContactFilters, withCurrentUser, [withMulti, options], [withDelete, deleteOptions])
+  withContactFilters, withCurrentUser, [withMulti, options])
