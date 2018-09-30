@@ -17,6 +17,14 @@ const DropdownItemStatic = styled.div`
   white-space: nowrap;
 `
 
+// Set initial state. Just options I want to keep.
+// See https://github.com/amannn/react-keep-state
+let keptState = {
+  titleColor: 'secondary',
+  updatedColor: 'secondary',
+  locationColor: 'secondary'
+}
+
 class ContactFilters extends PureComponent {
   constructor (props) {
     super(props)
@@ -27,9 +35,17 @@ class ContactFilters extends PureComponent {
     this.handleChange = this.handleChange.bind(this)
     this.state = {
       dropdownOpen: new Array(3).fill(false),
-      titleColor: 'secondary',
-      updatedColor: 'secondary',
-      locationColor: 'secondary'
+      // Retrieve the last state
+      ...keptState
+    }
+  }
+
+  componentWillUnmount () {
+    // Remember state for the next mount
+    keptState = {
+      titleColor: this.state.titleColor,
+      updatedColor: this.state.updatedColor,
+      locationColor: this.state.locationColor
     }
   }
 
@@ -64,13 +80,14 @@ class ContactFilters extends PureComponent {
   handleClickContactTitle (event) {
     const all = event.target.innerHTML.indexOf('All') !== -1
     const none = event.target.innerHTML.indexOf('None') !== -1
+    const toggle = event.target.innerHTML.indexOf('Toggle') !== -1
     const length = this.props.contactTitleFilters.length
     var i
-    if (event.target.innerHTML.indexOf('Toggle') !== -1) {
+    if (toggle) {
       for (i = 0; i < length; i++) {
         this.props.actions.toggleContactTitleFilter(i)
       }
-    } else {
+    } else { // for All and for None
       for (i = 0; i < length; i++) {
         if ((this.props.contactTitleFilters[i].value && none) || (!this.props.contactTitleFilters[i].value && !none)) {
           this.props.actions.toggleContactTitleFilter(i)
@@ -80,6 +97,9 @@ class ContactFilters extends PureComponent {
     if (all) {
       this.setState({ titleColor: 'secondary' })
     }
+    if (none) {
+      this.setState({ titleColor: 'danger' })
+    }
   }
 
   // TODO: DRY these two handlers above and below this line
@@ -87,13 +107,14 @@ class ContactFilters extends PureComponent {
   handleClickContactLocation (event) {
     const all = event.target.innerHTML.indexOf('All') !== -1
     const none = event.target.innerHTML.indexOf('None') !== -1
+    const toggle = event.target.innerHTML.indexOf('Toggle') !== -1
     const length = this.props.contactLocationFilters.length
     var i
-    if (event.target.innerHTML.indexOf('Toggle') !== -1) {
+    if (toggle) {
       for (i = 0; i < length; i++) {
         this.props.actions.toggleContactLocationFilter(i)
       }
-    } else {
+    } else { // for All and for None
       for (i = 0; i < length; i++) {
         if ((this.props.contactLocationFilters[i].value && none) || (!this.props.contactLocationFilters[i].value && !none)) {
           this.props.actions.toggleContactLocationFilter(i)
@@ -102,6 +123,9 @@ class ContactFilters extends PureComponent {
     }
     if (all) {
       this.setState({ locationColor: 'secondary' })
+    }
+    if (none) {
+      this.setState({ locationColor: 'danger' })
     }
   }
 
