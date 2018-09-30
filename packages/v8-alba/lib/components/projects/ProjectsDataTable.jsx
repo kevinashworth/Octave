@@ -195,6 +195,11 @@ class ProjectsDataTable extends PureComponent {
               <TableHeaderColumn dataField='castingCompany' dataSort>Casting</TableHeaderColumn>
               <TableHeaderColumn dataField='updatedAt' dataFormat={dateFormatter} dataSort>Updated</TableHeaderColumn>
               <TableHeaderColumn dataField='status' dataSort>Status</TableHeaderColumn>
+              <TableHeaderColumn dataField='logline' hidden>Hidden</TableHeaderColumn>
+              <TableHeaderColumn dataField='notes' hidden>Hidden</TableHeaderColumn>
+              <TableHeaderColumn dataField='allContactNames' hidden>Hidden</TableHeaderColumn>
+              <TableHeaderColumn dataField='allAddresses' hidden>Hidden</TableHeaderColumn>
+              <TableHeaderColumn dataField='network' hidden>Hidden</TableHeaderColumn>
             </BootstrapTable>
           </CardBody>
           {hasMore &&
