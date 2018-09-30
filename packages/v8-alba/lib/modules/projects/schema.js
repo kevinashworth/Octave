@@ -2,7 +2,7 @@ import { Utils } from 'meteor/vulcan:core'
 import SimpleSchema from 'simpl-schema'
 import marked from 'marked'
 import { addressSchema } from '../shared_schemas.js'
-import { CASTING_TITLES_ENUM, PROJECT_TYPES_ENUM, PROJECT_STATUSES_ENUM } from '../constants.js'
+import { PROJECT_TYPES_ENUM, PROJECT_STATUSES_ENUM } from '../constants.js'
 
 const addressGroup = {
   name: 'addresses',
