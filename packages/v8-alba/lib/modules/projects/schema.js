@@ -16,6 +16,30 @@ const contactGroup = {
   order: 20
 }
 
+function getFullAddress ({ street1, street2, city, state, zip }) {
+  let tempAddress = ''
+  if (street1) {
+    tempAddress += street1
+  }
+  if (street2) {
+    tempAddress += (' ' + street2)
+  }
+  if (city) {
+    tempAddress += (' ' + city)
+  }
+  if (state) {
+    tempAddress += (' ' + state)
+  }
+  if (zip) {
+    tempAddress += (' ' + zip)
+  }
+  if (tempAddress.length) {
+    return tempAddress
+  } else {
+    return null
+  }
+}
+
 const contactSchema = new SimpleSchema({
   contactId: {
     type: String,
@@ -259,6 +283,22 @@ const schema = {
   'contacts.$': {
     type: contactSchema
   },
+  allContactNames: {
+    type: String,
+    optional: true,
+    canRead: ['members'],
+    resolveAs: {
+      resolver: (project) => {
+        if (project.contacts) {
+          const reduced = project.contacts.reduce(function (acc, cur) {
+            return { contactName: acc.contactName + ' ' + cur.contactName }
+          }, { contactName: '' })
+          return reduced.contactName
+        }
+        return null
+      }
+    }
+  },
   addresses: {
     type: Array,
     optional: true,
@@ -269,6 +309,21 @@ const schema = {
   },
   'addresses.$': {
     type: addressSchema
+  },
+  allAddresses: {
+    type: String,
+    optional: true,
+    canRead: ['members'],
+    resolveAs: {
+      resolver: (project) => {
+        if (project.addresses) {
+          return project.addresses.reduce(function (acc, cur) {
+            return acc + ' ' + getFullAddress(cur)
+          }, '')
+        }
+        return null
+      }
+    }
   }
 }
 

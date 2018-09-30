@@ -21,7 +21,9 @@ registerFragment(/* GraphQL */ `
     projectType
     castingCompany
     addresses
+    allAddresses
     contacts
+    allContactNames
     network
     status
     union
