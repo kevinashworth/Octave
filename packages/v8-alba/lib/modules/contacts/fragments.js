@@ -27,7 +27,9 @@ registerFragment(/* GraphQL */ `
     body
     htmlBody
     links
+    allLinks
     addresses
+    allAddresses
     location
     street
     street1

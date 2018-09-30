@@ -3,6 +3,7 @@ import SimpleSchema from 'simpl-schema'
 import marked from 'marked'
 import { addressSchema } from '../shared_schemas.js'
 import { PROJECT_TYPES_ENUM, PROJECT_STATUSES_ENUM } from '../constants.js'
+import { getFullAddress } from '../helpers.js'
 
 const addressGroup = {
   name: 'addresses',
@@ -14,30 +15,6 @@ const contactGroup = {
   name: 'contacts',
   label: 'Contacts',
   order: 20
-}
-
-function getFullAddress ({ street1, street2, city, state, zip }) {
-  let tempAddress = ''
-  if (street1) {
-    tempAddress += street1
-  }
-  if (street2) {
-    tempAddress += (' ' + street2)
-  }
-  if (city) {
-    tempAddress += (' ' + city)
-  }
-  if (state) {
-    tempAddress += (' ' + state)
-  }
-  if (zip) {
-    tempAddress += (' ' + zip)
-  }
-  if (tempAddress.length) {
-    return tempAddress
-  } else {
-    return null
-  }
 }
 
 const contactSchema = new SimpleSchema({

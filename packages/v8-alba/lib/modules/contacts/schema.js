@@ -3,24 +3,7 @@ import SimpleSchema from 'simpl-schema'
 import marked from 'marked'
 import { addressSchema } from '../shared_schemas.js'
 import { CASTING_TITLES_ENUM } from '../constants.js'
-
-function getFullNameFromContact ({ firstName, middleName, lastName }) {
-  let tempName = ''
-  if (firstName) {
-    tempName += firstName
-  }
-  if (middleName) {
-    tempName += (' ' + middleName)
-  }
-  if (lastName) {
-    tempName += (' ' + lastName)
-  }
-  if (tempName.length) {
-    return tempName
-  } else {
-    return 'displayName or fullName Unknown'
-  }
-}
+import { getFullAddress, getFullNameFromContact } from '../helpers.js'
 
 const addressGroup = {
   name: 'addresses',
@@ -222,6 +205,22 @@ const schema = {
   'links.$': {
     type: linkSchema
   },
+  allLinks: {
+    type: String,
+    optional: true,
+    canRead: ['members'],
+    resolveAs: {
+      resolver: (contact) => {
+        if (contact.links) {
+          const reduced = contact.links.reduce(function (acc, cur) {
+            return { theGoods: acc.theGoods + cur.platformName + cur.profileName + cur.profileLink }
+          }, { theGoods: '' })
+          return reduced.theGoods
+        }
+        return null
+      }
+    }
+  },
   addresses: {
     type: Array,
     optional: true,
@@ -232,6 +231,21 @@ const schema = {
   },
   'addresses.$': {
     type: addressSchema
+  },
+  allAddresses: {
+    type: String,
+    optional: true,
+    canRead: ['members'],
+    resolveAs: {
+      resolver: (project) => {
+        if (project.addresses) {
+          return project.addresses.reduce(function (acc, cur) {
+            return acc + ' ' + getFullAddress(cur)
+          }, '')
+        }
+        return null
+      }
+    }
   },
   slug: {
     type: String,
