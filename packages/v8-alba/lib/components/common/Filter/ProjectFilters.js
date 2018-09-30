@@ -87,13 +87,23 @@ class ProjectFilters extends PureComponent {
   handleClickProjectStatus (event) {
     const all = event.target.innerHTML.indexOf('All') !== -1
     const none = event.target.innerHTML.indexOf('None') !== -1
+    const active = event.target.innerHTML.indexOf('Active') !== -1
+    const toggle = event.target.innerHTML.indexOf('Toggle') !== -1
     const length = this.props.projectStatusFilters.length
     var i
-    if (event.target.innerHTML.indexOf('Toggle') !== -1) {
+    if (toggle) {
       for (i = 0; i < length; i++) {
         this.props.actions.toggleProjectStatusFilter(i)
       }
-    } else {
+    } else if (active) {
+      for (i = 0; i < length - 2; i++) {
+        this.props.actions.setProjectStatusFilter(i)
+      }
+      for (; i < length; i++) {
+        this.props.actions.clearProjectStatusFilter(i)
+      }
+      this.setState({ statusColor: 'primary' })
+    } else { // for All and for None
       for (i = 0; i < length; i++) {
         if ((this.props.projectStatusFilters[i].value && none) || (!this.props.projectStatusFilters[i].value && !none)) {
           this.props.actions.toggleProjectStatusFilter(i)
@@ -155,6 +165,7 @@ class ProjectFilters extends PureComponent {
               )}
             </DropdownItemStatic>
             <DropdownItem onClick={this.handleClickProjectStatus} toggle={false}>All</DropdownItem>
+            <DropdownItem onClick={this.handleClickProjectStatus} toggle={false}>Active</DropdownItem>
             <DropdownItem onClick={this.handleClickProjectStatus} toggle={false}>None</DropdownItem>
             <DropdownItem onClick={this.handleClickProjectStatus} toggle={false}>Toggle</DropdownItem>
           </DropdownMenu>
