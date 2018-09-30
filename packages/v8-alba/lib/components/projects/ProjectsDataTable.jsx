@@ -73,7 +73,7 @@ class ProjectsDataTable extends PureComponent {
         this.setState({ searchColor: 'btn-secondary' })
       }
       return (
-        <SearchField />
+        <SearchField defaultValue={props.defaultValue} />
       )
     }
 
