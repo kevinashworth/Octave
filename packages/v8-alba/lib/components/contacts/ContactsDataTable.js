@@ -41,13 +41,6 @@ class ContactsDataTable extends PureComponent {
       )
     }
 
-    // function rowClickHandler(row, columnIndex, rowIndex, event) {
-    //   // eslint-disable-next-line no-console
-    //   console.log(`You clicked row ${row._id} (${rowIndex}, ${columnIndex}):`);
-    //   // eslint-disable-next-line no-console
-    //   console.log(event);
-    // }
-
     const sortChangeHandler = (sortName, sortOrder) => {
       this.setState((prevState) => ({
         options: { ...prevState.options, sortName, sortOrder }

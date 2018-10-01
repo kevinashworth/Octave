@@ -119,7 +119,6 @@ class ProjectsDataTable extends PureComponent {
         clearSearch: true,
         clearSearchBtn: createCustomClearButton,
         searchField: createCustomSearchField,
-
         // Retrieve the last state
         ...keptState
       }
@@ -190,11 +189,11 @@ class ProjectsDataTable extends PureComponent {
                     </Link>
                   )
                 }
-              }>Name</TableHeaderColumn>
+              } width='23%'>Name</TableHeaderColumn>
               <TableHeaderColumn dataField='projectType' dataSort>Type</TableHeaderColumn>
-              <TableHeaderColumn dataField='castingCompany' dataSort>Casting</TableHeaderColumn>
-              <TableHeaderColumn dataField='updatedAt' dataFormat={dateFormatter} dataSort>Updated</TableHeaderColumn>
+              <TableHeaderColumn dataField='castingCompany' dataSort width='23%'>Casting</TableHeaderColumn>
               <TableHeaderColumn dataField='status' dataSort>Status</TableHeaderColumn>
+              <TableHeaderColumn dataField='updatedAt' dataFormat={dateFormatter} dataSort width='9%'>Updated</TableHeaderColumn>
               <TableHeaderColumn dataField='logline' hidden>Hidden</TableHeaderColumn>
               <TableHeaderColumn dataField='notes' hidden>Hidden</TableHeaderColumn>
               <TableHeaderColumn dataField='allContactNames' hidden>Hidden</TableHeaderColumn>
