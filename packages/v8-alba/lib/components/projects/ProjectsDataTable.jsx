@@ -1,7 +1,7 @@
 import { Components, registerComponent, withCurrentUser, withList } from 'meteor/vulcan:core'
 import React, { PureComponent } from 'react'
 import { Link } from 'react-router'
-import { Button, Card, CardBody, CardFooter, CardHeader } from 'reactstrap'
+import { Button, Card, CardBody, CardFooter, CardHeader, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap'
 import { BootstrapTable, ClearSearchButton, SearchField, TableHeaderColumn } from 'react-bootstrap-table'
 import _ from 'lodash'
 import moment from 'moment'
@@ -41,11 +41,9 @@ class ProjectsDataTable extends PureComponent {
       )
     }
 
-    function rowClickHandler (row, columnIndex, rowIndex, event) {
-      // eslint-disable-next-line no-console
-      console.log(`You clicked row ${row._id} (${rowIndex}, ${columnIndex}):`)
-      // eslint-disable-next-line no-console
-      console.log(event)
+    const rowClickHandler = (row, columnIndex, rowIndex, event) => {
+      this.setState({ project: row })
+      this.setState({ modal: true })
     }
 
     const sortChangeHandler = (sortName, sortOrder) => {
@@ -92,6 +90,8 @@ class ProjectsDataTable extends PureComponent {
 
     this.state = {
       searchColor: 'btn-secondary',
+      modal: false,
+      project: null,
       options: {
         sortIndicator: true,
         paginationSize: 5,
@@ -112,10 +112,10 @@ class ProjectsDataTable extends PureComponent {
         paginationShowsTotal: renderShowsTotal,
         paginationPosition: 'both',
         onPageChange: pageChangeHandler,
-        onRowClick: rowClickHandler,
         onSizePerPageList: sizePerPageListHandler,
         onSortChange: sortChangeHandler,
         onSearchChange: searchChangeHandler,
+        onRowClick: rowClickHandler,
         clearSearch: true,
         clearSearchBtn: createCustomClearButton,
         searchField: createCustomSearchField,
@@ -123,6 +123,7 @@ class ProjectsDataTable extends PureComponent {
         ...keptState
       }
     }
+    this.toggle = this.toggle.bind(this)
   }
 
   componentWillUnmount () {
@@ -137,12 +138,15 @@ class ProjectsDataTable extends PureComponent {
     }
   }
 
+  toggle () {
+    this.setState({
+      modal: !this.state.modal
+    })
+  }
+
   render () {
     const { count, totalCount, results, loadingMore, loadMore, currentUser,
       projectTypeFilters, projectStatusFilters, projectUpdatedFilters } = this.props
-    const selectRow = {
-      mode: 'checkbox'
-    }
     const hasMore = results && (totalCount > results.length)
     let typeFilters = []
     projectTypeFilters.forEach(filter => {
@@ -173,14 +177,23 @@ class ProjectsDataTable extends PureComponent {
 
     return (
       <div className='animated fadeIn'>
+        <Modal isOpen={this.state.modal} toggle={this.toggle} className={this.props.className}>
+          <ModalBody>
+            <Components.ProjectsExpandRow document={this.state.project} />
+          </ModalBody>
+          <ModalFooter>
+            <Button color='secondary' onClick={this.toggle}>Cancel</Button>
+          </ModalFooter>
+        </Modal>
         <Card>
           <CardHeader>
             <i className='fa fa-camera' />Projects
             <Components.ProjectFilters />
           </CardHeader>
           <CardBody>
-            <BootstrapTable data={filteredResults} version='4' condensed striped hover pagination search
-              options={this.state.options} selectRow={selectRow} keyField='_id' bordered={false}>
+            <BootstrapTable condensed hover pagination search striped
+              data={filteredResults}
+              bordered={false} keyField='_id' options={this.state.options} version='4'>
               <TableHeaderColumn dataField='projectTitle' dataSort dataFormat={
                 (cell, row) => {
                   return (
