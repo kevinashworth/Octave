@@ -59,11 +59,11 @@ class ProjectFilters extends PureComponent {
 
   handleChange (event) {
     const i = parseInt(event.target.id, 10)
-    if (event.target.name === 'projectType') {
+    if (event.target.name === 'project-type') {
       this.props.actions.toggleProjectTypeFilter(i)
       this.setState({ typeColor: 'danger' })
     }
-    if (event.target.name === 'projectUpdated') {
+    if (event.target.name === 'project-updated') {
       const all = event.target.labels[0].innerHTML.indexOf('All') !== -1
       this.props.actions.toggleProjectUpdatedFilter(i)
       if (all) {
@@ -72,7 +72,7 @@ class ProjectFilters extends PureComponent {
         this.setState({ updatedColor: 'danger' })
       }
     }
-    if (event.target.name === 'projectStatus') {
+    if (event.target.name === 'project-status') {
       this.props.actions.toggleProjectStatusFilter(i)
       this.setState({ statusColor: 'danger' })
     }
@@ -150,7 +150,7 @@ class ProjectFilters extends PureComponent {
             <DropdownItem header>Filter projects by type</DropdownItem>
             <DropdownItemStatic>
               {this.props.projectTypeFilters.map((project, index) =>
-                <CustomInput type='checkbox' name='projectType'
+                <CustomInput type='checkbox' name='project-type'
                   id={`${index}-type`} key={`${project.projectType}`} label={`${project.projectType}`}
                   checked={project.value} onChange={this.handleChange} />
               )}
@@ -168,7 +168,7 @@ class ProjectFilters extends PureComponent {
             <DropdownItem header>Filter projects by last updated</DropdownItem>
             <DropdownItemStatic>
               {this.props.projectUpdatedFilters.map((filter, index) =>
-                <CustomInput type='radio' name='projectUpdated'
+                <CustomInput type='radio' name='project-updated'
                   id={`${index}-updated`} key={`${filter.projectUpdated}`} label={`${filter.projectUpdated}`}
                   checked={filter.value} onChange={this.handleChange} />
               )}
@@ -183,7 +183,7 @@ class ProjectFilters extends PureComponent {
             <DropdownItem header>Filter projects by status</DropdownItem>
             <DropdownItemStatic>
               {this.props.projectStatusFilters.map((project, index) =>
-                <CustomInput type='checkbox' name='projectStatus'
+                <CustomInput type='checkbox' name='project-status'
                   id={`${index}-status`} key={`${project.projectStatus}`} label={`${project.projectStatus}`}
                   checked={project.value} onChange={this.handleChange} />
               )}
