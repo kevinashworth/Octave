@@ -1,7 +1,7 @@
 import { Components, registerComponent, withCurrentUser, withMulti } from 'meteor/vulcan:core'
 import React, { PureComponent } from 'react'
 import { Link } from 'react-router'
-import { Button, Card, CardBody, CardFooter, CardHeader } from 'reactstrap'
+import { Button, Card, CardBody, CardFooter, CardHeader, Modal, ModalBody, ModalHeader } from 'reactstrap'
 import { BootstrapTable, ClearSearchButton, SearchField, TableHeaderColumn } from 'react-bootstrap-table'
 import _ from 'lodash'
 import moment from 'moment'
@@ -40,6 +40,12 @@ class ContactsDataTable extends PureComponent {
         </span>
       )
     }
+
+    const rowClickHandler = (row, columnIndex, rowIndex, event) => {
+      this.setState({ contact: row })
+      this.setState({ modal: true })
+    }
+
 
     const sortChangeHandler = (sortName, sortOrder) => {
       this.setState((prevState) => ({
@@ -85,6 +91,8 @@ class ContactsDataTable extends PureComponent {
 
     this.state = {
       searchColor: 'btn-secondary',
+      modal: false,
+      contact: null,
       options: {
         sortIndicator: true,
         paginationSize: 5,
@@ -108,6 +116,7 @@ class ContactsDataTable extends PureComponent {
         onSizePerPageList: sizePerPageListHandler,
         onSortChange: sortChangeHandler,
         onSearchChange: searchChangeHandler,
+        onRowClick: rowClickHandler,
         clearSearch: true,
         clearSearchBtn: createCustomClearButton,
         searchField: createCustomSearchField,
@@ -127,6 +136,12 @@ class ContactsDataTable extends PureComponent {
       sortName: options.sortName,
       sortOrder: options.sortOrder
     }
+  }
+
+  toggle () {
+    this.setState({
+      modal: !this.state.modal
+    })
   }
 
   render () {
@@ -182,6 +197,17 @@ class ContactsDataTable extends PureComponent {
 
     return (
       <div className='animated fadeIn'>
+        <Modal isOpen={this.state.modal} toggle={this.toggle}>
+          {this.state.contact
+            ? <ModalHeader toggle={this.toggle}>
+                <Link to={`/contacts/${this.state.contact._id}/${this.state.contact.slug}`}>{this.state.contact.fullName}</Link>
+              </ModalHeader>
+            : null
+          }
+          <ModalBody>
+            <Components.ContactModal document={this.state.contact} />
+          </ModalBody>
+        </Modal>
         <Card>
           <CardHeader>
             <i className='icon-people' />Contacts
