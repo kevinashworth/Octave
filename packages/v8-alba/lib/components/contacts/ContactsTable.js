@@ -1,4 +1,4 @@
-import { Components, registerComponent, withCurrentUser, withList } from 'meteor/vulcan:core'
+import { Components, registerComponent, withCurrentUser, withMulti } from 'meteor/vulcan:core'
 import React from 'react'
 import {
   Card,
@@ -111,4 +111,4 @@ const options = {
   enableCache: true
 }
 
-registerComponent('ContactsTable', ContactsTable, withContactFilters, withCurrentUser, [withList, options])
+registerComponent('ContactsTable', ContactsTable, withContactFilters, withCurrentUser, [withMulti, options])

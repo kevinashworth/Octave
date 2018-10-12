@@ -1,4 +1,4 @@
-import { Components, registerComponent, withCurrentUser, withList } from 'meteor/vulcan:core'
+import { Components, registerComponent, withCurrentUser, withMulti } from 'meteor/vulcan:core'
 import React from 'react'
 import { Button, Card, CardBody, CardFooter, CardHeader, ListGroup } from 'reactstrap'
 import Offices from '../../modules/offices/collection.js'
@@ -35,4 +35,4 @@ const options = {
   limit: 20
 }
 
-registerComponent('OfficesListGroup', OfficesListGroup, withCurrentUser, [withList, options])
+registerComponent('OfficesListGroup', OfficesListGroup, withCurrentUser, [withMulti, options])
