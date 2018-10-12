@@ -2,7 +2,7 @@ import { Components, registerComponent, withCurrentUser } from 'meteor/vulcan:co
 import React from 'react'
 import { Link } from 'react-router'
 import PropTypes from 'prop-types'
-import { Button, Card, CardBody, CardFooter, CardLink, CardText, CardTitle } from 'reactstrap'
+import { Card, CardBody, CardFooter, CardText, CardTitle } from 'reactstrap'
 import moment from 'moment'
 import { DATE_FORMAT_SHORT } from '../../modules/constants.js'
 

@@ -72,5 +72,4 @@ ProjectModal.propTypes = {
   document: PropTypes.object.isRequired
 }
 
-
 registerComponent('ProjectModal', ProjectModal, withCurrentUser)
