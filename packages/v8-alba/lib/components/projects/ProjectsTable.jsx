@@ -1,4 +1,4 @@
-import { Components, registerComponent, withList } from 'meteor/vulcan:core'
+import { Components, registerComponent, withMulti } from 'meteor/vulcan:core'
 import React from 'react'
 import {
   Button,
@@ -76,4 +76,4 @@ const options = {
   limit: 20
 }
 
-registerComponent('ProjectsTable', ProjectsTable, [withList, options])
+registerComponent('ProjectsTable', ProjectsTable, [withMulti, options])

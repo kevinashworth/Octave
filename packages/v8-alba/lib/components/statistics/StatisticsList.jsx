@@ -1,4 +1,4 @@
-import { Components, registerComponent, withCurrentUser, withList } from 'meteor/vulcan:core'
+import { Components, registerComponent, withCurrentUser, withMulti } from 'meteor/vulcan:core'
 import React from 'react'
 import { Button, Card, CardBody, CardFooter, CardHeader, ListGroup } from 'reactstrap'
 import Statistics from '../../modules/statistics/collection.js'
@@ -36,4 +36,4 @@ const options = {
   collection: Statistics
 }
 
-registerComponent('StatisticsList', StatisticsList, withCurrentUser, [withList, options])
+registerComponent('StatisticsList', StatisticsList, withCurrentUser, [withMulti, options])

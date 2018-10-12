@@ -1,8 +1,7 @@
-import { Components, registerComponent, withCurrentUser, withDelete, withMulti } from 'meteor/vulcan:core'
-import Users from 'meteor/vulcan:users'
+import { Components, registerComponent, withCurrentUser, withMulti } from 'meteor/vulcan:core'
 import React, { PureComponent } from 'react'
 import { Link } from 'react-router'
-import { Button, Card, CardBody, CardFooter, CardHeader } from 'reactstrap'
+import { Button, Card, CardBody, CardFooter, CardHeader, Modal, ModalBody, ModalHeader } from 'reactstrap'
 import { BootstrapTable, ClearSearchButton, SearchField, TableHeaderColumn } from 'react-bootstrap-table'
 import _ from 'lodash'
 import moment from 'moment'
@@ -42,12 +41,10 @@ class ContactsDataTable extends PureComponent {
       )
     }
 
-    // function rowClickHandler(row, columnIndex, rowIndex, event) {
-    //   // eslint-disable-next-line no-console
-    //   console.log(`You clicked row ${row._id} (${rowIndex}, ${columnIndex}):`);
-    //   // eslint-disable-next-line no-console
-    //   console.log(event);
-    // }
+    const rowClickHandler = (row, columnIndex, rowIndex, event) => {
+      this.setState({ contact: row })
+      this.setState({ modal: true })
+    }
 
     const sortChangeHandler = (sortName, sortOrder) => {
       this.setState((prevState) => ({
@@ -67,17 +64,6 @@ class ContactsDataTable extends PureComponent {
       }))
     }
 
-    const onDeleteRow = (rows) => {
-      if (window.confirm(`Really truly delete ${rows.length} contacts at once? (There is no undo!)`)) {
-        rows.forEach(async (row) => {
-          const documentId = row
-          await this.props.deleteContact({
-            selector: { documentId }
-          })
-        })
-      }
-    }
-
     const createCustomSearchField = (props) => {
       if (props.defaultValue.length) {
         this.setState({ searchColor: 'btn-danger' })
@@ -85,7 +71,7 @@ class ContactsDataTable extends PureComponent {
         this.setState({ searchColor: 'btn-secondary' })
       }
       return (
-        <SearchField />
+        <SearchField defaultValue={props.defaultValue} />
       )
     }
 
@@ -104,6 +90,8 @@ class ContactsDataTable extends PureComponent {
 
     this.state = {
       searchColor: 'btn-secondary',
+      modal: false,
+      contact: null,
       options: {
         sortIndicator: true,
         paginationSize: 5,
@@ -127,15 +115,15 @@ class ContactsDataTable extends PureComponent {
         onSizePerPageList: sizePerPageListHandler,
         onSortChange: sortChangeHandler,
         onSearchChange: searchChangeHandler,
+        onRowClick: rowClickHandler,
         clearSearch: true,
         clearSearchBtn: createCustomClearButton,
         searchField: createCustomSearchField,
-        onDeleteRow: onDeleteRow,
-
         // Retrieve the last state
         ...keptState
       }
     }
+    this.toggle = this.toggle.bind(this)
   }
 
   componentWillUnmount () {
@@ -148,6 +136,12 @@ class ContactsDataTable extends PureComponent {
       sortName: options.sortName,
       sortOrder: options.sortOrder
     }
+  }
+
+  toggle () {
+    this.setState({
+      modal: !this.state.modal
+    })
   }
 
   render () {
@@ -201,10 +195,19 @@ class ContactsDataTable extends PureComponent {
       }
     })
 
-    const canDelete = Users.canDo(currentUser, `contact.delete.all`)
-
     return (
       <div className='animated fadeIn'>
+        <Modal isOpen={this.state.modal} toggle={this.toggle} modalTransition={{ timeout: 100 }}>
+          {this.state.contact
+            ? <ModalHeader toggle={this.toggle}>
+              <Link to={`/contacts/${this.state.contact._id}/${this.state.contact.slug}`}>{this.state.contact.fullName}</Link>
+            </ModalHeader>
+            : null
+          }
+          <ModalBody>
+            <Components.ContactModal document={this.state.contact} />
+          </ModalBody>
+        </Modal>
         <Card>
           <CardHeader>
             <i className='icon-people' />Contacts
@@ -212,8 +215,7 @@ class ContactsDataTable extends PureComponent {
           </CardHeader>
           <CardBody>
             <BootstrapTable data={filteredResults} version='4' condensed striped hover pagination search
-              options={this.state.options} selectRow={selectRow} keyField='_id' bordered={false}
-              deleteRow={canDelete}>
+              options={this.state.options} selectRow={selectRow} keyField='_id' bordered={false}>
               <TableHeaderColumn dataField='fullName' dataSort dataFormat={
                 (cell, row) => {
                   return (
@@ -229,6 +231,9 @@ class ContactsDataTable extends PureComponent {
               <TableHeaderColumn dataField='state' dataSort width='8%'>State</TableHeaderColumn>
               <TableHeaderColumn dataField='zip' dataSort width='7%'>Zip</TableHeaderColumn>
               <TableHeaderColumn dataField='updatedAt' dataFormat={dateFormatter} dataSort width='9%'>Updated</TableHeaderColumn>
+              <TableHeaderColumn dataField='allLinks' hidden>Hidden</TableHeaderColumn>
+              <TableHeaderColumn dataField='allAddresses' hidden>Hidden</TableHeaderColumn>
+              <TableHeaderColumn dataField='body' hidden>Hidden</TableHeaderColumn>
             </BootstrapTable>
           </CardBody>
           {hasMore &&
@@ -256,13 +261,8 @@ class ContactsDataTable extends PureComponent {
 const options = {
   collection: Contacts,
   fragmentName: 'ContactsSingleFragment',
-  limit: 1006,
+  limit: 1000,
   enableCache: true
 }
 
-const deleteOptions = {
-  collection: Contacts
-}
-
-registerComponent('ContactsDataTable', ContactsDataTable,
-  withContactFilters, withCurrentUser, [withMulti, options], [withDelete, deleteOptions])
+registerComponent('ContactsDataTable', ContactsDataTable, withContactFilters, withCurrentUser, [withMulti, options])

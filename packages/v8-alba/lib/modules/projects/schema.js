@@ -2,7 +2,8 @@ import { Utils } from 'meteor/vulcan:core'
 import SimpleSchema from 'simpl-schema'
 import marked from 'marked'
 import { addressSchema } from '../shared_schemas.js'
-import { CASTING_TITLES_ENUM, PROJECT_TYPES_ENUM, PROJECT_STATUSES_ENUM } from '../constants.js'
+import { PROJECT_TYPES_ENUM, PROJECT_STATUSES_ENUM } from '../constants.js'
+import { getFullAddress } from '../helpers.js'
 
 const addressGroup = {
   name: 'addresses',
@@ -93,7 +94,7 @@ const schema = {
   projectType: {
     label: 'Type',
     type: String,
-    optional: true,
+    optional: false,
     input: 'select',
     options: () => {
       return PROJECT_TYPES_ENUM
@@ -106,6 +107,7 @@ const schema = {
     label: 'Union',
     type: String,
     optional: true,
+    defaultValue: 'SAG-AFTRA',
     canRead: 'guests',
     insertableBy: ['admins'],
     editableBy: ['admins']
@@ -121,7 +123,7 @@ const schema = {
   status: {
     label: 'Status',
     type: String,
-    optional: true,
+    optional: false,
     input: 'select',
     options: () => {
       return PROJECT_STATUSES_ENUM
@@ -259,6 +261,22 @@ const schema = {
   'contacts.$': {
     type: contactSchema
   },
+  allContactNames: {
+    type: String,
+    optional: true,
+    canRead: ['members'],
+    resolveAs: {
+      resolver: (project) => {
+        if (project.contacts) {
+          const reduced = project.contacts.reduce(function (acc, cur) {
+            return { contactName: acc.contactName + ' ' + cur.contactName }
+          }, { contactName: '' })
+          return reduced.contactName
+        }
+        return null
+      }
+    }
+  },
   addresses: {
     type: Array,
     optional: true,
@@ -269,6 +287,21 @@ const schema = {
   },
   'addresses.$': {
     type: addressSchema
+  },
+  allAddresses: {
+    type: String,
+    optional: true,
+    canRead: ['members'],
+    resolveAs: {
+      resolver: (project) => {
+        if (project.addresses) {
+          return project.addresses.reduce(function (acc, cur) {
+            return acc + ' ' + getFullAddress(cur)
+          }, '')
+        }
+        return null
+      }
+    }
   }
 }
 

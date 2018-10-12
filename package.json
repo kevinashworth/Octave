@@ -7,7 +7,8 @@
   "scripts": {
     "prestart": "node .vulcan/prestart_vulcan.js",
     "start": "meteor --port 4004 --settings settings.json",
-    "lint": "standard 'packages/v8-alba/**/*.js' 'packages/v8-alba/**/*.jsx' --fix"
+    "lint": "standard 'packages/v8-alba/**/*.js' 'packages/v8-alba/**/*.jsx' --fix",
+    "lintnofix": "standard 'packages/v8-alba/**/*.js' 'packages/v8-alba/**/*.jsx'"
   },
   "dependencies": {
     "@babel/runtime": "^7.0.0-beta.46",
@@ -129,7 +130,7 @@
   "standard": {
     "ignore": [
       "packages/v8-alba/package.js",
-      "packages/v8-alba/db.update.js",
+      "packages/v8-alba/notes-to-self/db.update.js",
       "**/package.json",
       "packages/v8-alba/lib/components/common/SelectIdGenericWIP.jsx",
       "packages/v8-alba/lib/server/migrations.js",

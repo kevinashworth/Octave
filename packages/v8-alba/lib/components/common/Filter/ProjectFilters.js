@@ -17,6 +17,14 @@ const DropdownItemStatic = styled.div`
   white-space: nowrap;
 `
 
+// Set initial state. Just options I want to keep.
+// See https://github.com/amannn/react-keep-state
+let keptState = {
+  typeColor: 'secondary',
+  updatedColor: 'secondary',
+  statusColor: 'secondary'
+}
+
 class ProjectFilters extends PureComponent {
   constructor (props) {
     super(props)
@@ -27,9 +35,18 @@ class ProjectFilters extends PureComponent {
     this.handleChange = this.handleChange.bind(this)
     this.state = {
       dropdownOpen: new Array(3).fill(false),
-      typeColor: 'secondary',
-      updatedColor: 'secondary',
-      statusColor: 'secondary'
+
+      // Retrieve the last state
+      ...keptState
+    }
+  }
+
+  componentWillUnmount () {
+    // Remember state for the next mount
+    keptState = {
+      typeColor: this.state.typeColor,
+      updatedColor: this.state.updatedColor,
+      statusColor: this.state.statusColor
     }
   }
 
@@ -42,11 +59,11 @@ class ProjectFilters extends PureComponent {
 
   handleChange (event) {
     const i = parseInt(event.target.id, 10)
-    if (event.target.name === 'projectType') {
+    if (event.target.name === 'project-type') {
       this.props.actions.toggleProjectTypeFilter(i)
       this.setState({ typeColor: 'danger' })
     }
-    if (event.target.name === 'projectUpdated') {
+    if (event.target.name === 'project-updated') {
       const all = event.target.labels[0].innerHTML.indexOf('All') !== -1
       this.props.actions.toggleProjectUpdatedFilter(i)
       if (all) {
@@ -55,7 +72,7 @@ class ProjectFilters extends PureComponent {
         this.setState({ updatedColor: 'danger' })
       }
     }
-    if (event.target.name === 'projectStatus') {
+    if (event.target.name === 'project-status') {
       this.props.actions.toggleProjectStatusFilter(i)
       this.setState({ statusColor: 'danger' })
     }
@@ -64,13 +81,14 @@ class ProjectFilters extends PureComponent {
   handleClickProjectType (event) {
     const all = event.target.innerHTML.indexOf('All') !== -1
     const none = event.target.innerHTML.indexOf('None') !== -1
+    const toggle = event.target.innerHTML.indexOf('Toggle') !== -1
     const length = this.props.projectTypeFilters.length
     var i
-    if (event.target.innerHTML.indexOf('Toggle') !== -1) {
+    if (toggle) {
       for (i = 0; i < length; i++) {
         this.props.actions.toggleProjectTypeFilter(i)
       }
-    } else {
+    } else { // for All and for None
       for (i = 0; i < length; i++) {
         if ((this.props.projectTypeFilters[i].value && none) || (!this.props.projectTypeFilters[i].value && !none)) {
           this.props.actions.toggleProjectTypeFilter(i)
@@ -80,6 +98,9 @@ class ProjectFilters extends PureComponent {
     if (all) {
       this.setState({ typeColor: 'secondary' })
     }
+    if (none) {
+      this.setState({ typeColor: 'danger' })
+    }
   }
 
   // TODO: DRY these two handlers above and below this line
@@ -87,13 +108,23 @@ class ProjectFilters extends PureComponent {
   handleClickProjectStatus (event) {
     const all = event.target.innerHTML.indexOf('All') !== -1
     const none = event.target.innerHTML.indexOf('None') !== -1
+    const active = event.target.innerHTML.indexOf('Active') !== -1
+    const toggle = event.target.innerHTML.indexOf('Toggle') !== -1
     const length = this.props.projectStatusFilters.length
     var i
-    if (event.target.innerHTML.indexOf('Toggle') !== -1) {
+    if (toggle) {
       for (i = 0; i < length; i++) {
         this.props.actions.toggleProjectStatusFilter(i)
       }
-    } else {
+    } else if (active) {
+      for (i = 0; i < length - 4; i++) { // Canceled, Wrapped, Unknown, Relocated are not considered Active
+        this.props.actions.setProjectStatusFilter(i)
+      }
+      for (; i < length; i++) {
+        this.props.actions.clearProjectStatusFilter(i)
+      }
+      this.setState({ statusColor: 'primary' })
+    } else { // for All and for None
       for (i = 0; i < length; i++) {
         if ((this.props.projectStatusFilters[i].value && none) || (!this.props.projectStatusFilters[i].value && !none)) {
           this.props.actions.toggleProjectStatusFilter(i)
@@ -102,6 +133,9 @@ class ProjectFilters extends PureComponent {
     }
     if (all) {
       this.setState({ statusColor: 'secondary' })
+    }
+    if (none) {
+      this.setState({ statusColor: 'danger' })
     }
   }
 
@@ -116,7 +150,7 @@ class ProjectFilters extends PureComponent {
             <DropdownItem header>Filter projects by type</DropdownItem>
             <DropdownItemStatic>
               {this.props.projectTypeFilters.map((project, index) =>
-                <CustomInput type='checkbox' name='projectType'
+                <CustomInput type='checkbox' name='project-type'
                   id={`${index}-type`} key={`${project.projectType}`} label={`${project.projectType}`}
                   checked={project.value} onChange={this.handleChange} />
               )}
@@ -134,7 +168,7 @@ class ProjectFilters extends PureComponent {
             <DropdownItem header>Filter projects by last updated</DropdownItem>
             <DropdownItemStatic>
               {this.props.projectUpdatedFilters.map((filter, index) =>
-                <CustomInput type='radio' name='projectUpdated'
+                <CustomInput type='radio' name='project-updated'
                   id={`${index}-updated`} key={`${filter.projectUpdated}`} label={`${filter.projectUpdated}`}
                   checked={filter.value} onChange={this.handleChange} />
               )}
@@ -149,12 +183,13 @@ class ProjectFilters extends PureComponent {
             <DropdownItem header>Filter projects by status</DropdownItem>
             <DropdownItemStatic>
               {this.props.projectStatusFilters.map((project, index) =>
-                <CustomInput type='checkbox' name='projectStatus'
+                <CustomInput type='checkbox' name='project-status'
                   id={`${index}-status`} key={`${project.projectStatus}`} label={`${project.projectStatus}`}
                   checked={project.value} onChange={this.handleChange} />
               )}
             </DropdownItemStatic>
             <DropdownItem onClick={this.handleClickProjectStatus} toggle={false}>All</DropdownItem>
+            <DropdownItem onClick={this.handleClickProjectStatus} toggle={false}>Active</DropdownItem>
             <DropdownItem onClick={this.handleClickProjectStatus} toggle={false}>None</DropdownItem>
             <DropdownItem onClick={this.handleClickProjectStatus} toggle={false}>Toggle</DropdownItem>
           </DropdownMenu>

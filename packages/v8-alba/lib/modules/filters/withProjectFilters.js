@@ -44,6 +44,18 @@ addAction({
         type: 'TOGGLE_PROJECT_STATUS_FILTER',
         i
       }
+    },
+    setProjectStatusFilter (i) {
+      return {
+        type: 'SET_PROJECT_STATUS_FILTER',
+        i
+      }
+    },
+    clearProjectStatusFilter (i) {
+      return {
+        type: 'CLEAR_PROJECT_STATUS_FILTER',
+        i
+      }
     }
   },
   projectUpdatedFilters: {
@@ -108,6 +120,20 @@ addReducer({
         return state.map((filter, index) => {
           if (index === Number(action.i)) {
             return { ...filter, value: !filter.value }
+          }
+          return filter
+        })
+      case 'SET_PROJECT_STATUS_FILTER':
+        return state.map((filter, index) => {
+          if (index === Number(action.i)) {
+            return { ...filter, value: true }
+          }
+          return filter
+        })
+      case 'CLEAR_PROJECT_STATUS_FILTER':
+        return state.map((filter, index) => {
+          if (index === Number(action.i)) {
+            return { ...filter, value: false }
           }
           return filter
         })

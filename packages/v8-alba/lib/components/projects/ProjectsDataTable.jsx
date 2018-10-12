@@ -1,7 +1,7 @@
-import { Components, registerComponent, withCurrentUser, withList } from 'meteor/vulcan:core'
+import { Components, registerComponent, withCurrentUser, withMulti } from 'meteor/vulcan:core'
 import React, { PureComponent } from 'react'
 import { Link } from 'react-router'
-import { Button, Card, CardBody, CardFooter, CardHeader } from 'reactstrap'
+import { Button, Card, CardBody, CardFooter, CardHeader, Modal, ModalBody, ModalHeader } from 'reactstrap'
 import { BootstrapTable, ClearSearchButton, SearchField, TableHeaderColumn } from 'react-bootstrap-table'
 import _ from 'lodash'
 import moment from 'moment'
@@ -41,11 +41,9 @@ class ProjectsDataTable extends PureComponent {
       )
     }
 
-    function rowClickHandler (row, columnIndex, rowIndex, event) {
-      // eslint-disable-next-line no-console
-      console.log(`You clicked row ${row._id} (${rowIndex}, ${columnIndex}):`)
-      // eslint-disable-next-line no-console
-      console.log(event)
+    const rowClickHandler = (row, columnIndex, rowIndex, event) => {
+      this.setState({ project: row })
+      this.setState({ modal: true })
     }
 
     const sortChangeHandler = (sortName, sortOrder) => {
@@ -73,7 +71,7 @@ class ProjectsDataTable extends PureComponent {
         this.setState({ searchColor: 'btn-secondary' })
       }
       return (
-        <SearchField />
+        <SearchField defaultValue={props.defaultValue} />
       )
     }
 
@@ -92,6 +90,8 @@ class ProjectsDataTable extends PureComponent {
 
     this.state = {
       searchColor: 'btn-secondary',
+      modal: false,
+      project: null,
       options: {
         sortIndicator: true,
         paginationSize: 5,
@@ -112,18 +112,18 @@ class ProjectsDataTable extends PureComponent {
         paginationShowsTotal: renderShowsTotal,
         paginationPosition: 'both',
         onPageChange: pageChangeHandler,
-        onRowClick: rowClickHandler,
         onSizePerPageList: sizePerPageListHandler,
         onSortChange: sortChangeHandler,
         onSearchChange: searchChangeHandler,
+        onRowClick: rowClickHandler,
         clearSearch: true,
         clearSearchBtn: createCustomClearButton,
         searchField: createCustomSearchField,
-
         // Retrieve the last state
         ...keptState
       }
     }
+    this.toggle = this.toggle.bind(this)
   }
 
   componentWillUnmount () {
@@ -138,12 +138,15 @@ class ProjectsDataTable extends PureComponent {
     }
   }
 
+  toggle () {
+    this.setState({
+      modal: !this.state.modal
+    })
+  }
+
   render () {
     const { count, totalCount, results, loadingMore, loadMore, currentUser,
       projectTypeFilters, projectStatusFilters, projectUpdatedFilters } = this.props
-    const selectRow = {
-      mode: 'checkbox'
-    }
     const hasMore = results && (totalCount > results.length)
     let typeFilters = []
     projectTypeFilters.forEach(filter => {
@@ -174,14 +177,26 @@ class ProjectsDataTable extends PureComponent {
 
     return (
       <div className='animated fadeIn'>
+        <Modal isOpen={this.state.modal} toggle={this.toggle} modalTransition={{ timeout: 100 }}>
+          {this.state.project
+            ? <ModalHeader toggle={this.toggle}>
+              <Link to={`/projects/${this.state.project._id}/${this.state.project.slug}`}>{this.state.project.projectTitle}</Link>
+            </ModalHeader>
+            : null
+          }
+          <ModalBody>
+            <Components.ProjectModal document={this.state.project} />
+          </ModalBody>
+        </Modal>
         <Card>
           <CardHeader>
             <i className='fa fa-camera' />Projects
             <Components.ProjectFilters />
           </CardHeader>
           <CardBody>
-            <BootstrapTable data={filteredResults} version='4' condensed striped hover pagination search
-              options={this.state.options} selectRow={selectRow} keyField='_id' bordered={false}>
+            <BootstrapTable condensed hover pagination search striped
+              data={filteredResults}
+              bordered={false} keyField='_id' options={this.state.options} version='4'>
               <TableHeaderColumn dataField='projectTitle' dataSort dataFormat={
                 (cell, row) => {
                   return (
@@ -190,11 +205,16 @@ class ProjectsDataTable extends PureComponent {
                     </Link>
                   )
                 }
-              }>Name</TableHeaderColumn>
+              } width='23%'>Name</TableHeaderColumn>
               <TableHeaderColumn dataField='projectType' dataSort>Type</TableHeaderColumn>
-              <TableHeaderColumn dataField='castingCompany' dataSort>Casting</TableHeaderColumn>
-              <TableHeaderColumn dataField='updatedAt' dataFormat={dateFormatter} dataSort>Updated</TableHeaderColumn>
+              <TableHeaderColumn dataField='castingCompany' dataSort width='23%'>Casting</TableHeaderColumn>
               <TableHeaderColumn dataField='status' dataSort>Status</TableHeaderColumn>
+              <TableHeaderColumn dataField='updatedAt' dataFormat={dateFormatter} dataSort width='9%'>Updated</TableHeaderColumn>
+              <TableHeaderColumn dataField='logline' hidden>Hidden</TableHeaderColumn>
+              <TableHeaderColumn dataField='notes' hidden>Hidden</TableHeaderColumn>
+              <TableHeaderColumn dataField='allContactNames' hidden>Hidden</TableHeaderColumn>
+              <TableHeaderColumn dataField='allAddresses' hidden>Hidden</TableHeaderColumn>
+              <TableHeaderColumn dataField='network' hidden>Hidden</TableHeaderColumn>
             </BootstrapTable>
           </CardBody>
           {hasMore &&
@@ -226,4 +246,4 @@ const options = {
   enableCache: true
 }
 
-registerComponent('ProjectsDataTable', ProjectsDataTable, withProjectFilters, withCurrentUser, [withList, options])
+registerComponent('ProjectsDataTable', ProjectsDataTable, withProjectFilters, withCurrentUser, [withMulti, options])
