@@ -1,7 +1,7 @@
 import { Components, registerComponent, withCurrentUser, withList } from 'meteor/vulcan:core'
 import React, { PureComponent } from 'react'
 import { Link } from 'react-router'
-import { Button, Card, CardBody, CardFooter, CardHeader, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap'
+import { Button, Card, CardBody, CardFooter, CardHeader, Modal, ModalBody, ModalHeader } from 'reactstrap'
 import { BootstrapTable, ClearSearchButton, SearchField, TableHeaderColumn } from 'react-bootstrap-table'
 import _ from 'lodash'
 import moment from 'moment'
@@ -177,13 +177,16 @@ class ProjectsDataTable extends PureComponent {
 
     return (
       <div className='animated fadeIn'>
-        <Modal isOpen={this.state.modal} toggle={this.toggle} className={this.props.className}>
+        <Modal isOpen={this.state.modal} toggle={this.toggle}>
+          {this.state.project
+            ? <ModalHeader toggle={this.toggle}>
+                <Link to={`/projects/${this.state.project._id}/${this.state.project.slug}`}>{this.state.project.projectTitle}</Link>
+              </ModalHeader>
+            : null
+          }
           <ModalBody>
-            <Components.ProjectsExpandRow document={this.state.project} />
+            <Components.ProjectModal document={this.state.project} />
           </ModalBody>
-          <ModalFooter>
-            <Button color='secondary' onClick={this.toggle}>Cancel</Button>
-          </ModalFooter>
         </Modal>
         <Card>
           <CardHeader>

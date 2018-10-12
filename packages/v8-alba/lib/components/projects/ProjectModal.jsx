@@ -1,10 +1,10 @@
 import { Components, registerComponent, withCurrentUser } from 'meteor/vulcan:core'
 import React, { PureComponent } from 'react'
-import { Card, CardBody, CardFooter, CardHeader, CardLink, CardText, CardTitle } from 'reactstrap'
+import { Card, CardBody, CardFooter, CardLink, CardText, CardTitle } from 'reactstrap'
 import moment from 'moment'
-import { DATE_FORMAT_LONG, DATE_FORMAT_SHORT } from '../../modules/constants.js'
+import { DATE_FORMAT_SHORT } from '../../modules/constants.js'
 
-class ProjectsExpandRow extends PureComponent {
+class ProjectModal extends PureComponent {
   render () {
     if (this.props.loading) {
       return (<div><Components.Loading /></div>)
@@ -16,13 +16,12 @@ class ProjectsExpandRow extends PureComponent {
 
     const project = this.props.document
     const displayDate =
-      'Project added to database ' + moment(project.createdAt).format(DATE_FORMAT_SHORT) + ' / ' +
-      'Last modified ' + moment(project.updatedAt).format(DATE_FORMAT_LONG)
+      'Project added ' + moment(project.createdAt).format(DATE_FORMAT_SHORT) + ' / ' +
+      'Last modified ' + moment(project.updatedAt).format(DATE_FORMAT_SHORT)
 
     return (
-      <div className='animated fadeIn'>
+      <div>
         <Card className='card-accent-danger'>
-          <CardHeader tag='h2'>{ project.projectTitle }</CardHeader>
           <CardBody>
             <CardTitle className='mb-1'>{ project.projectType } {project.network &&
             <span>
@@ -30,9 +29,14 @@ class ProjectsExpandRow extends PureComponent {
             </span>
             } &bull; { project.union }</CardTitle>
             <CardText>{ project.status }</CardText>
-            <CardText className='mb-1'>{ project.logline }</CardText>
-            <hr />
-            <CardText className='mb-1'>{ project.notes }</CardText>
+            {project.htmlLogline
+              ? <CardText className='mb-1' dangerouslySetInnerHTML={{ __html: project.htmlLogline }} />
+              : <CardText className='mb-1'>{ project.logline }</CardText>
+            }<hr />
+            {project.htmlNotes
+              ? <CardText className='mb-1' dangerouslySetInnerHTML={{ __html: project.htmlNotes }} />
+              : <CardText className='mb-1'>{ project.notes }</CardText>
+            }
             <hr />
             {project.website &&
             <CardText>
@@ -63,4 +67,4 @@ class ProjectsExpandRow extends PureComponent {
   }
 }
 
-registerComponent('ProjectsExpandRow', ProjectsExpandRow, withCurrentUser)
+registerComponent('ProjectModal', ProjectModal, withCurrentUser)
