@@ -47,7 +47,6 @@ const ContactModal = (props) => {
       <Card className='card-accent-warning'>
         <CardBody>
           <CardText tag='div'>
-            { contact.displayName }
             { contact.title && <div>{contact.title}</div> }
             { contact.gender && <div>{contact.gender}</div> }
             <hr />
@@ -76,16 +75,6 @@ const ContactModal = (props) => {
           )}
         </CardBody>
         }
-        {contact.links &&
-        <CardBody>
-          <CardText>
-            {contact.links.map(link =>
-              <Button className={`btn-${link.platformName.toLowerCase()} text-white`} key={link.profileLink}>
-                <span><CardLink href={link.profileLink} target='_links'>{link.profileName}</CardLink></span>
-              </Button>)}
-          </CardText>
-        </CardBody>
-        }
         <CardFooter>
           <small className='text-muted'>{displayDate}</small>
         </CardFooter>
@@ -95,7 +84,7 @@ const ContactModal = (props) => {
 }
 
 ContactModal.propTypes = {
-  document: PropTypes.object.isRequired,
+  document: PropTypes.object.isRequired
 }
 
 registerComponent('ContactModal', ContactModal, withCurrentUser)
