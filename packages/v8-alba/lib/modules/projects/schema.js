@@ -94,7 +94,7 @@ const schema = {
   projectType: {
     label: 'Type',
     type: String,
-    optional: true,
+    optional: false,
     input: 'select',
     options: () => {
       return PROJECT_TYPES_ENUM
@@ -107,6 +107,7 @@ const schema = {
     label: 'Union',
     type: String,
     optional: true,
+    defaultValue: 'SAG-AFTRA',
     canRead: 'guests',
     insertableBy: ['admins'],
     editableBy: ['admins']
@@ -122,7 +123,7 @@ const schema = {
   status: {
     label: 'Status',
     type: String,
-    optional: true,
+    optional: false,
     input: 'select',
     options: () => {
       return PROJECT_STATUSES_ENUM
