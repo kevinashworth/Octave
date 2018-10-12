@@ -46,7 +46,6 @@ class ContactsDataTable extends PureComponent {
       this.setState({ modal: true })
     }
 
-
     const sortChangeHandler = (sortName, sortOrder) => {
       this.setState((prevState) => ({
         options: { ...prevState.options, sortName, sortOrder }
@@ -124,6 +123,7 @@ class ContactsDataTable extends PureComponent {
         ...keptState
       }
     }
+    this.toggle = this.toggle.bind(this)
   }
 
   componentWillUnmount () {
@@ -197,11 +197,11 @@ class ContactsDataTable extends PureComponent {
 
     return (
       <div className='animated fadeIn'>
-        <Modal isOpen={this.state.modal} toggle={this.toggle}>
+        <Modal isOpen={this.state.modal} toggle={this.toggle} modalTransition={{ timeout: 100 }}>
           {this.state.contact
             ? <ModalHeader toggle={this.toggle}>
-                <Link to={`/contacts/${this.state.contact._id}/${this.state.contact.slug}`}>{this.state.contact.fullName}</Link>
-              </ModalHeader>
+              <Link to={`/contacts/${this.state.contact._id}/${this.state.contact.slug}`}>{this.state.contact.fullName}</Link>
+            </ModalHeader>
             : null
           }
           <ModalBody>
@@ -261,9 +261,8 @@ class ContactsDataTable extends PureComponent {
 const options = {
   collection: Contacts,
   fragmentName: 'ContactsSingleFragment',
-  limit: 1006,
+  limit: 1000,
   enableCache: true
 }
 
-registerComponent('ContactsDataTable', ContactsDataTable,
-  withContactFilters, withCurrentUser, [withMulti, options])
+registerComponent('ContactsDataTable', ContactsDataTable, withContactFilters, withCurrentUser, [withMulti, options])

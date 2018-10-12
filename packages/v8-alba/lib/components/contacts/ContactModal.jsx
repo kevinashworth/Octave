@@ -43,7 +43,7 @@ const ContactModal = (props) => {
   }
 
   return (
-    <div className='animated fadeIn'>
+    <div>
       <Card className='card-accent-warning'>
         <CardBody>
           <CardText tag='div'>

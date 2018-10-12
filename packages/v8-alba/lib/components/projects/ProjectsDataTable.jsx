@@ -1,4 +1,4 @@
-import { Components, registerComponent, withCurrentUser, withList } from 'meteor/vulcan:core'
+import { Components, registerComponent, withCurrentUser, withMulti } from 'meteor/vulcan:core'
 import React, { PureComponent } from 'react'
 import { Link } from 'react-router'
 import { Button, Card, CardBody, CardFooter, CardHeader, Modal, ModalBody, ModalHeader } from 'reactstrap'
@@ -177,11 +177,11 @@ class ProjectsDataTable extends PureComponent {
 
     return (
       <div className='animated fadeIn'>
-        <Modal isOpen={this.state.modal} toggle={this.toggle}>
+        <Modal isOpen={this.state.modal} toggle={this.toggle} modalTransition={{ timeout: 100 }}>
           {this.state.project
             ? <ModalHeader toggle={this.toggle}>
-                <Link to={`/projects/${this.state.project._id}/${this.state.project.slug}`}>{this.state.project.projectTitle}</Link>
-              </ModalHeader>
+              <Link to={`/projects/${this.state.project._id}/${this.state.project.slug}`}>{this.state.project.projectTitle}</Link>
+            </ModalHeader>
             : null
           }
           <ModalBody>
@@ -246,4 +246,4 @@ const options = {
   enableCache: true
 }
 
-registerComponent('ProjectsDataTable', ProjectsDataTable, withProjectFilters, withCurrentUser, [withList, options])
+registerComponent('ProjectsDataTable', ProjectsDataTable, withProjectFilters, withCurrentUser, [withMulti, options])

@@ -1,5 +1,6 @@
 import { Components, registerComponent, withCurrentUser } from 'meteor/vulcan:core'
 import React, { PureComponent } from 'react'
+import PropTypes from 'prop-types'
 import { Card, CardBody, CardFooter, CardLink, CardText, CardTitle } from 'reactstrap'
 import moment from 'moment'
 import { DATE_FORMAT_SHORT } from '../../modules/constants.js'
@@ -66,5 +67,10 @@ class ProjectModal extends PureComponent {
     )
   }
 }
+
+ProjectModal.propTypes = {
+  document: PropTypes.object.isRequired
+}
+
 
 registerComponent('ProjectModal', ProjectModal, withCurrentUser)
