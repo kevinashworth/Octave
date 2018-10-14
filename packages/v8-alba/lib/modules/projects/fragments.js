@@ -26,6 +26,7 @@ registerFragment(/* GraphQL */ `
     allContactNames
     network
     status
+    renewed
     union
     notes
     htmlNotes
