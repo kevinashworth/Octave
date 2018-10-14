@@ -61,7 +61,7 @@ import '../components/projects/ProjectsDataTable'
 import '../components/projects/ProjectsEditForm'
 import '../components/projects/ProjectsNewForm'
 import '../components/projects/ProjectsRow'
-import '../components/projects/ProjectsSingle'
+import '../components/projects/ProjectSingle'
 // import '../components/projects/ProjectsTable';
 
 import '../components/offices/OfficesContactDetail'

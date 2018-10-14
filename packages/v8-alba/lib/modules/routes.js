@@ -36,7 +36,7 @@ addRoute([
 addRoute([
   { path: '/projects/datatable', name: 'Projects', componentName: 'ProjectsDataTable' },
   { path: '/projects/:_id/edit', name: 'projects.edit', componentName: 'ProjectsEditForm' },
-  { path: '/projects/:_id(/:slug)', name: 'projects.single', componentName: 'ProjectsSingle' }
+  { path: '/projects/:_id(/:slug)', name: 'projects.single', componentName: 'ProjectSingle' }
 ], 'Projects')
 
 addRoute([

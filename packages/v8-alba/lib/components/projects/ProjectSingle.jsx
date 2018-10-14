@@ -7,7 +7,26 @@ import moment from 'moment'
 import { DATE_FORMAT_LONG, DATE_FORMAT_SHORT } from '../../modules/constants.js'
 import Projects from '../../modules/projects/collection.js'
 
-class ProjectsSingle extends PureComponent {
+class ProjectSingle extends PureComponent {
+  seasonorder (project) {
+    if (!project.season) {
+      return null
+    }
+    var so = 'Season and Order Info Missing'
+    if (project.renewed && project.status === 'On Hiatus') {
+      so = `Renewed for Season ${project.season}`
+    } else if (project.status === 'On Hiatus') {
+      so = `Completed Season ${project.season}`
+    }
+    if (project.status === 'Casting') {
+      so = `Current Season ${project.season}`
+    }
+    if (project.order) {
+      so += `| Episode Order ${project.order}`
+    }
+    return so
+  }
+
   render () {
     if (this.props.loading) {
       return (<div><Components.Loading /></div>)
@@ -18,6 +37,7 @@ class ProjectsSingle extends PureComponent {
     }
 
     const project = this.props.document
+    const seasonorder = this.seasonorder(project)
     const displayDate =
       'Project added to database ' + moment(project.createdAt).format(DATE_FORMAT_SHORT) + ' / ' +
       'Last modified ' + moment(project.updatedAt).format(DATE_FORMAT_LONG)
@@ -34,19 +54,23 @@ class ProjectsSingle extends PureComponent {
 
           <CardBody>
             <CardTitle className='mb-1'>{ project.projectType } {project.network &&
-            <span>
-            &bull; { project.network }
-            </span>
-            } &bull; { project.union }</CardTitle>
-            <CardText>{ project.status }</CardText>
+              <span>
+              | { project.network }
+              </span>
+            } | { project.union }
+            </CardTitle>
+            <CardText className='mb-1'>{ project.status }</CardText>
+            { seasonorder &&
+              <CardText>{ seasonorder }</CardText>
+              }
             {project.htmlLogline
-              ? <CardText className='mb-1' dangerouslySetInnerHTML={{ __html: project.htmlLogline }} />
-              : <CardText className='mb-1'>{ project.logline }</CardText>
+            ? <CardText className='mb-1' dangerouslySetInnerHTML={{ __html: project.htmlLogline }} />
+            : <CardText className='mb-1'>{ project.logline }</CardText>
             }
             <hr />
             {project.htmlNotes
-              ? <CardText className='mb-1' dangerouslySetInnerHTML={{ __html: project.htmlNotes }} />
-              : <CardText className='mb-1'>{ project.notes }</CardText>
+            ? <CardText className='mb-1' dangerouslySetInnerHTML={{ __html: project.htmlNotes }} />
+            : <CardText className='mb-1'>{ project.notes }</CardText>
             }
             <hr />
             {project.website &&
@@ -86,4 +110,4 @@ const options = {
 
 const mapPropsFunction = props => ({ ...props, documentId: props.params._id, slug: props.params.slug })
 
-registerComponent('ProjectsSingle', ProjectsSingle, withCurrentUser, mapProps(mapPropsFunction), [withDocument, options])
+registerComponent('ProjectSingle', ProjectSingle, withCurrentUser, mapProps(mapPropsFunction), [withDocument, options])
