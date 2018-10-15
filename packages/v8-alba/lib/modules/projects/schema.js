@@ -132,6 +132,14 @@ const schema = {
     insertableBy: ['admins'],
     editableBy: ['admins']
   },
+  renewed: {
+    label: 'On Hiatus but Renewed',
+    type: Boolean,
+    optional: true,
+    canRead: 'guests',
+    insertableBy: ['admins'],
+    editableBy: ['admins']
+  },
   // Logline (Markdown)
   logline: {
     label: 'Logline',
