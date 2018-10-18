@@ -3,6 +3,7 @@ import React, { PureComponent } from 'react'
 import { FormGroup, Input, Label } from 'reactstrap'
 import Select from 'react-virtualized-select'
 import PropTypes from 'prop-types'
+import { CASTING_TITLES_ENUM } from '../../modules/constants.js'
 
 import pure from 'recompose/pure'
 import onlyUpdateForKeys from 'recompose/onlyUpdateForKeys'
@@ -18,8 +19,9 @@ class SelectProjectIdNameTitle extends PureComponent {
   constructor (props) {
     super(props)
 
-    this.handleSelectChange = this.handleSelectChange.bind(this)
+    this.handleSelectNameChange = this.handleSelectNameChange.bind(this)
     this.handleInputChange = this.handleInputChange.bind(this)
+    this.handleSelectTitleChange = this.handleSelectTitleChange.bind(this)
 
     const nestedFields = Object.keys(this.props.nestedSchema)
     const projects = this.props.document.projects
@@ -38,7 +40,7 @@ class SelectProjectIdNameTitle extends PureComponent {
     }
   }
 
-  handleSelectChange = (value) => {
+  handleSelectNameChange (value) {
     this.setState({
       value,
       projectTitle: value.label
@@ -49,7 +51,7 @@ class SelectProjectIdNameTitle extends PureComponent {
     })
   }
 
-  handleInputChange = ({ target }) => {
+  handleInputChange ({ target }) {
     this.setState({
       [target.id]: target.value
     })
@@ -59,35 +61,50 @@ class SelectProjectIdNameTitle extends PureComponent {
     })
   }
 
+  handleSelectTitleChange (value) {
+    this.setState({
+      titleForProject: value.label
+    })
+    this.context.updateCurrentValues({
+      [this.state.pathPrefix + 'titleForProject']: value.label
+    })
+  }
+
   render () {
     return (
-      <FormGroup>
-        <Label for='projectId'>Project Name from Database</Label>
-        <OptimizedSelect
-          id='projectId'
-          value={this.state.value}
-          onChange={this.handleSelectChange}
-          options={this.props.options}
-          resetValue={{ value: null, label: '' }}
-        />
-        <Label for='projectTitle'>Editable Project Name</Label>
-        <OptimizedInput
-          type='text'
-          id='projectTitle'
-          value={this.state.projectTitle}
-          onChange={this.handleInputChange}
-          required
-        />
-        <Label for='titleForProject'>Contact's Title for Project</Label>
-        <OptimizedInput
-          type='text'
-          id='titleForProject'
-          value={this.state.titleForProject}
-          onChange={this.handleInputChange}
-          required
-        />
-      </FormGroup>
-
+      <div>
+        <FormGroup>
+          <Label for='projectId'>Project Name from Database</Label>
+          <OptimizedSelect
+            id='projectId'
+            value={this.state.value}
+            onChange={this.handleSelectNameChange}
+            options={this.props.options}
+            resetValue={{ value: null, label: '' }}
+          />
+        </FormGroup>
+        <FormGroup>
+          <Label for='projectTitle'>Editable Project Name</Label>
+          <OptimizedInput
+            type='text'
+            id='projectTitle'
+            value={this.state.projectTitle}
+            onChange={this.handleInputChange}
+            required
+          />
+        </FormGroup>
+        <FormGroup>
+          <Label for='titleForProject'>Contact's Title for This Project</Label>
+          <OptimizedSelect
+            id='titleForProject'
+            value={this.state.titleForProject}
+            onChange={this.handleSelectTitleChange}
+            options={CASTING_TITLES_ENUM}
+            resetValue={{ value: null, label: '' }}
+            required
+          />
+        </FormGroup>
+      </div>
     )
   }
 }

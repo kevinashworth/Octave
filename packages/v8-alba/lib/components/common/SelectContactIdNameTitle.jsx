@@ -74,7 +74,7 @@ class SelectContactIdNameTitle extends PureComponent {
     return (
       <div>
         <FormGroup>
-          <Label for='contactId'>Contact's Name from Database</Label>
+          <Label for='contactId'>Contact Name from Database</Label>
           <OptimizedSelect
             id='contactId'
             value={this.state.value}
