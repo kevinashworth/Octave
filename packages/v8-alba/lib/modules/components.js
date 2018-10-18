@@ -42,7 +42,6 @@ import '../components/common/Filter/ProjectFilters'
 import '../components/common/Select'
 import '../components/common/SelectContactIdNameTitle'
 import '../components/common/SelectProjectIdNameTitle'
-import '../components/common/SelectMultiple'
 
 import '../components/contacts/ContactModal'
 import '../components/contacts/Contacts'

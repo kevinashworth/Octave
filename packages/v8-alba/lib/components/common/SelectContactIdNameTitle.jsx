@@ -12,16 +12,16 @@ const OptimizedSelect = onlyUpdateForKeys(['value'])(Select)
 
 /**
 * This version explicity for contactId, contactName, contactTitle
-* Also working on a DRY component called (for now) SelectIdGenericWIP.jsx
+* TODO: a DRY component of this to not repeat all this code in SelectProjectIdNameTitle.jsx
 */
 
 class SelectContactIdNameTitle extends PureComponent {
   constructor (props) {
     super(props)
 
-    this.handleSelectNameChange = this.handleSelectNameChange.bind(this)
-    this.handleInputChange = this.handleInputChange.bind(this)
-    this.handleSelectTitleChange = this.handleSelectTitleChange.bind(this)
+    this.handleIdChange = this.handleIdChange.bind(this)
+    this.handleNameChange = this.handleNameChange.bind(this)
+    this.handleTitleChange = this.handleTitleChange.bind(this)
 
     const nestedFields = Object.keys(this.props.nestedSchema)
     const contacts = this.props.document.contacts
@@ -40,7 +40,7 @@ class SelectContactIdNameTitle extends PureComponent {
     }
   }
 
-  handleSelectNameChange (value) {
+  handleIdChange (value) {
     this.setState({
       value,
       contactName: value.label
@@ -51,7 +51,7 @@ class SelectContactIdNameTitle extends PureComponent {
     })
   }
 
-  handleInputChange ({ target }) {
+  handleNameChange ({ target }) {
     this.setState({
       [target.id]: target.value
     })
@@ -61,7 +61,7 @@ class SelectContactIdNameTitle extends PureComponent {
     })
   }
 
-  handleSelectTitleChange (value) {
+  handleTitleChange (value) {
     this.setState({
       contactTitle: value.label
     })
@@ -78,7 +78,7 @@ class SelectContactIdNameTitle extends PureComponent {
           <OptimizedSelect
             id='contactId'
             value={this.state.value}
-            onChange={this.handleSelectNameChange}
+            onChange={this.handleIdChange}
             options={this.props.options}
             resetValue={{ value: null, label: '' }}
           />
@@ -89,7 +89,7 @@ class SelectContactIdNameTitle extends PureComponent {
             type='text'
             id='contactName'
             value={this.state.contactName}
-            onChange={this.handleInputChange}
+            onChange={this.handleNameChange}
             required
           />
         </FormGroup>
@@ -98,7 +98,7 @@ class SelectContactIdNameTitle extends PureComponent {
           <OptimizedSelect
             id='contactTitle'
             value={this.state.contactTitle}
-            onChange={this.handleSelectTitleChange}
+            onChange={this.handleTitleChange}
             options={CASTING_TITLES_ENUM}
             resetValue={{ value: null, label: '' }}
             required
