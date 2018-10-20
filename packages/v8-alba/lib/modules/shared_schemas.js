@@ -1,6 +1,6 @@
 import SimpleSchema from 'simpl-schema'
 
-export const addressSchema = new SimpleSchema({
+export const addressSchema = {
   street1: {
     type: String,
     optional: true,
@@ -36,4 +36,6 @@ export const addressSchema = new SimpleSchema({
     insertableBy: ['admins'],
     editableBy: ['admins']
   }
-})
+}
+
+export const addressSubSchema = new SimpleSchema(addressSchema)
