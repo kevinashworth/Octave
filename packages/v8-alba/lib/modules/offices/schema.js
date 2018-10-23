@@ -1,7 +1,7 @@
 import { Utils } from 'meteor/vulcan:core'
 import SimpleSchema from 'simpl-schema'
 import marked from 'marked'
-import { addressSubSchema } from '../shared_schemas.js'
+import { addressSchema, linkSubSchema } from '../shared_schemas.js'
 import { getFullAddress } from '../helpers.js'
 // import _ from 'lodash'
 
@@ -35,47 +35,6 @@ const linkGroup = {
   label: 'Links',
   order: 40
 }
-
-const linkSchema = new SimpleSchema({
-  platformName: {
-    type: String,
-    optional: true,
-    viewableBy: ['members'],
-    insertableBy: ['admins'],
-    editableBy: ['admins']
-  },
-  profileName: {
-    type: String,
-    optional: true,
-    viewableBy: ['members'],
-    insertableBy: ['admins'],
-    editableBy: ['admins']
-  },
-  profileLink: {
-    type: String,
-    optional: true,
-    viewableBy: ['members'],
-    insertableBy: ['admins'],
-    editableBy: ['admins']
-  }
-})
-
-// const contactSubSchema = new SimpleSchema({
-//   contactId: {
-//     type: String,
-//     optional: true,
-//     canRead: ['members'],
-//     canCreate: ['admins'],
-//     canUpdate: ['admins']
-//   },
-//   contactName: {
-//     type: String,
-//     optional: true,
-//     canRead: ['members'],
-//     canCreate: ['admins'],
-//     canUpdate: ['admins']
-//   }
-// })
 
 const contactSchema = new SimpleSchema({
   contactId: {
@@ -202,7 +161,7 @@ const schema = {
     group: linkGroup
   },
   'links.$': {
-    type: linkSchema
+    type: linkSubSchema
   },
   addresses: {
     type: Array,
@@ -213,7 +172,7 @@ const schema = {
     group: addressGroup
   },
   'addresses.$': {
-    type: addressSubSchema
+    type: addressSchema
   },
   allAddresses: {
     type: String,

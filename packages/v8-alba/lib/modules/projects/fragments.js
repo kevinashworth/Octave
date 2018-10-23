@@ -35,6 +35,7 @@ registerFragment(/* GraphQL */ `
     website
     season
     order
+    links
     slug
   }
 `)

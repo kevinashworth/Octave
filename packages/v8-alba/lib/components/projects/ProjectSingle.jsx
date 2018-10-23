@@ -94,6 +94,16 @@ class ProjectSingle extends PureComponent {
             }
             {project.contactId}
           </CardBody>
+          {project.links &&
+          <CardBody>
+            <CardText>
+              {project.links.map(link =>
+                <Button className={`btn-${link.platformName.toLowerCase()} text-white`} key={link.profileLink}>
+                  <span><CardLink href={link.profileLink} target='_links'>{link.profileName}</CardLink></span>
+                </Button>)}
+            </CardText>
+          </CardBody>
+          }
           <CardFooter>
             <small className='text-muted'>{displayDate}</small>
           </CardFooter>

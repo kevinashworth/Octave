@@ -39,3 +39,27 @@ export const addressSchema = {
 }
 
 export const addressSubSchema = new SimpleSchema(addressSchema)
+
+export const linkSubSchema = new SimpleSchema({
+  platformName: {
+    type: String,
+    optional: true,
+    canRead: ['members'],
+    canCreate: ['admins'],
+    canUpdate: ['admins']
+  },
+  profileName: {
+    type: String,
+    optional: true,
+    canRead: ['members'],
+    canCreate: ['admins'],
+    canUpdate: ['admins']
+  },
+  profileLink: {
+    type: String,
+    optional: true,
+    canRead: ['members'],
+    canCreate: ['admins'],
+    canUpdate: ['admins']
+  }
+})
