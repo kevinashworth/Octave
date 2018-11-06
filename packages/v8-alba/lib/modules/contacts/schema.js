@@ -3,7 +3,8 @@ import SimpleSchema from 'simpl-schema'
 import marked from 'marked'
 import { addressSchema } from '../shared_schemas.js'
 import { CASTING_TITLES_ENUM } from '../constants.js'
-import { getFullAddress, getFullNameFromContact } from '../helpers.js'
+import { getFullAddress, getFullNameFromContact, isEmptyValue } from '../helpers.js'
+import Places from '../places/collection.js'
 
 const addressGroup = {
   name: 'addresses',
@@ -353,7 +354,7 @@ const schema = {
 
   // GraphQL only fields to ease transition from address to addresses, and also to provide a 'main' address
 
-  street: {
+  theStreet: {
     label: 'Address',
     type: String,
     optional: true,
@@ -361,77 +362,130 @@ const schema = {
     resolveAs: {
       type: 'String',
       resolver: (contact) => {
-        if (contact.addresses) {
-          if (contact.addresses[0].street2) {
-            return contact.addresses[0].street1 + ' ' + contact.addresses[0].street2
+        if (contact.theStreet2) {
+          return contact.theStreet1 + ' ' + contact.theStreet2
+        }
+        return contact.theStreet1
+      }
+    }
+  },
+  theStreet1: {
+    label: 'Address',
+    type: String,
+    optional: true,
+    viewableBy: ['members'],
+    resolveAs: {
+      type: 'String',
+      resolver: async (contact) => {
+        try {
+          if (!isEmptyValue(contact.addresses)) {
+            return contact.addresses[0].street1
           }
-          return contact.addresses[0].street1
+          if (!isEmptyValue(contact.places)) {
+            const theId = contact.places[0].placeId
+            const place = await Places.loader.load(theId);
+            return place.street1
+          }
+        }
+        catch(e) {
+          // eslint-disable-next-line no-console
+          console.info('Problem in theStreet1 for', contact._id)
+          // eslint-disable-next-line no-console
+          console.error(e)
+          return "Blvd of Broken Dreams"
         }
         return null
       }
     }
   },
-  street1: {
-    label: 'Address',
-    type: String,
-    optional: true,
-    viewableBy: ['members'],
-    resolveAs: {
-      type: 'String',
-      resolver: (contact) => {
-        if (contact.addresses) {
-          return contact.addresses[0].street1
-        }
-        return null
-      }
-    }
-  },
-  street2: {
+  theStreet2: {
     label: '(cont)',
     type: String,
     optional: true,
     viewableBy: ['members'],
     resolveAs: {
       type: 'String',
-      resolver: (contact) => {
-        if (contact.addresses) {
-          return contact.addresses[0].street2
+      resolver: async (contact) => {
+        try {
+          if (!isEmptyValue(contact.addresses)) {
+            return contact.addresses[0].street2
+          }
+          if (!isEmptyValue(contact.places)) {
+            const theId = contact.places[0].placeId
+            const place = await Places.loader.load(theId);
+            return place.street2
+          }
+        }
+        catch(e) {
+          // eslint-disable-next-line no-console
+          console.info('Problem in theStreet2 for', contact._id)
+          // eslint-disable-next-line no-console
+          console.error(e)
+          return "Suite Nothing"
         }
         return null
       }
     }
   },
-  city: {
+  theCity: {
     label: 'City',
     type: String,
     optional: true,
     viewableBy: ['members'],
     resolveAs: {
       type: 'String',
-      resolver: (contact) => {
-        if (contact.addresses) {
-          return contact.addresses[0].city
+      resolver: async (contact) => {
+        try {
+          if (!isEmptyValue(contact.addresses)) {
+            return contact.addresses[0].city
+          }
+          if (!isEmptyValue(contact.places)) {
+            const theId = contact.places[0].placeId
+            const place = await Places.loader.load(theId);
+            return place.city
+          }
+        }
+        catch(e) {
+          // eslint-disable-next-line no-console
+          console.info('Problem in theCity for', contact._id)
+          // eslint-disable-next-line no-console
+          console.error(e)
+          return "Leicester City"
         }
         return null
       }
     }
   },
-  state: {
+  theState: {
     label: 'State',
     type: String,
     optional: true,
     viewableBy: ['members'],
     resolveAs: {
       type: 'String',
-      resolver: (contact) => {
-        if (contact.addresses) {
-          return contact.addresses[0].state
+      resolver: async (contact) => {
+        try {
+          if (!isEmptyValue(contact.addresses)) {
+            return contact.addresses[0].state
+          }
+          if (!isEmptyValue(contact.places)) {
+            const theId = contact.places[0].placeId
+            const place = await Places.loader.load(theId);
+            return place.state
+          }
+        }
+        catch(e) {
+          // eslint-disable-next-line no-console
+          console.info('Problem in theState for', contact._id)
+          // eslint-disable-next-line no-console
+          console.error(e)
+          return "State of Denial"
         }
         return null
       }
     }
   },
-  location: {
+  theLocation: {
     label: 'Location',
     type: String,
     optional: true,
@@ -443,7 +497,7 @@ const schema = {
         if (contact.state) {
           state = contact.state.toLowerCase()
         }
-        if (contact.addresses) {
+        if (!isEmptyValue(contact.addresses)) {
           state = contact.addresses[0].state.toLowerCase()
         }
         if (state === 'ca' || state.indexOf('calif') > -1) {
@@ -456,7 +510,7 @@ const schema = {
       }
     }
   },
-  zip: {
+  theZip: {
     label: 'Zip',
     type: String,
     optional: true,
@@ -464,7 +518,7 @@ const schema = {
     resolveAs: {
       type: 'String',
       resolver: (contact) => {
-        if (contact.addresses) {
+        if (!isEmptyValue(contact.addresses)) {
           return contact.addresses[0].zip
         }
         return null

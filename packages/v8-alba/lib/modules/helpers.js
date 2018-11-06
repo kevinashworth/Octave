@@ -39,3 +39,29 @@ export function getFullAddress ({ street1, street2, city, state, zip }) {
     return null
   }
 }
+
+export const dangerouslyCreateAddress = (office) => {
+  let streetAddress = ''
+  if (office.street1) {
+    streetAddress = office.street1 + '<br/>'
+  }
+  if (office.street2 && office.street2.trim().length > 0) {
+    streetAddress += office.street2 + '<br/>'
+  }
+  if (office.city) {
+    streetAddress += office.city + ', '
+  }
+  if (office.state) {
+    streetAddress += office.state
+  }
+  if (office.zip) {
+    streetAddress += '  ' + office.zip
+  }
+  if (office.street1 && office.city && office.state) {
+    streetAddress += `<br/><small><a href="https://maps.google.com/?q=${office.street1},${office.city},${office.state}" target="_maps">Open in Google Maps</a></small>`
+  }
+  return { __html: streetAddress }
+}
+
+// copied from Vulcan/packages/vulcan-forms/lib/modules/utils.js
+export const isEmptyValue = value => (typeof value === 'undefined' || value === null || value === '' || Array.isArray(value) && value.length === 0);

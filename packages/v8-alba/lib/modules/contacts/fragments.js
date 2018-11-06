@@ -30,13 +30,13 @@ registerFragment(/* GraphQL */ `
     allLinks
     addresses
     allAddresses
-    location
-    street
-    street1
-    street2
-    city
-    state
-    zip
+    theLocation
+    theStreet
+    theStreet1
+    theStreet2
+    theCity
+    theState
+    theZip
     projects
     slug
   }
@@ -52,13 +52,13 @@ registerFragment(/* GraphQL */ `
     body
     htmlBody
     addresses
-    location
-    street
-    street1
-    street2
-    city
-    state
-    zip
+    theLocation
+    theStreet
+    theStreet1
+    theStreet2
+    theCity
+    theState
+    theZip
     slug
   }
 `)
