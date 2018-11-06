@@ -492,13 +492,24 @@ const schema = {
     viewableBy: 'guests',
     resolveAs: {
       type: 'String',
-      resolver: (contact) => {
-        let state = ''
-        if (contact.state) {
-          state = contact.state.toLowerCase()
+      resolver: async (contact) => { // have to repeat theState code, not available on its own
+        var state = ''
+        try {
+          if (!isEmptyValue(contact.addresses)) {
+            state = contact.addresses[0].state.toLowerCase()
+          }
+          if (state === '' || !isEmptyValue(contact.places)) {
+            const theId = contact.places[0].placeId
+            const place = await Places.loader.load(theId);
+            state = place.state.toLowerCase()
+          }
         }
-        if (!isEmptyValue(contact.addresses)) {
-          state = contact.addresses[0].state.toLowerCase()
+        catch(e) {
+          // eslint-disable-next-line no-console
+          console.info('Problem in theLocation for', contact._id)
+          // eslint-disable-next-line no-console
+          console.error(e)
+          return "Locomotion"
         }
         if (state === 'ca' || state.indexOf('calif') > -1) {
           return 'CA'
