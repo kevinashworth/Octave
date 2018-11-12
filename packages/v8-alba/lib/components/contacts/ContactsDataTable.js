@@ -180,16 +180,16 @@ class ContactsDataTable extends PureComponent {
 
       // if "Other" is not checked, filter per normal via titleFilters:
       if (!(_.includes(titleFilters, 'Other'))) {
-        return _.includes(locationFilters, o.location) &&
+        return _.includes(locationFilters, o.theLocation) &&
             _.includes(titleFilters, o.title) &&
             displayThis
       } else if (_.every(titleFilters, { value: true })) {
         // if "Other" is checked and so are all the titles, do not filter by title
-        return _.includes(locationFilters, o.location) &&
+        return _.includes(locationFilters, o.theLocation) &&
             displayThis
       } else {
         // if "Other" is checked and some are not checked, eliminate based on titles in contactTitleFilters
-        return _.includes(locationFilters, o.location) &&
+        return _.includes(locationFilters, o.theLocation) &&
             !_.includes(otherFilters, o.title) &&
             displayThis
       }
@@ -227,9 +227,9 @@ class ContactsDataTable extends PureComponent {
               }>Name</TableHeaderColumn>
               <TableHeaderColumn dataField='title' dataSort>Title</TableHeaderColumn>
               <TableHeaderColumn dataField='street' dataSort width='23%'>Address</TableHeaderColumn>
-              <TableHeaderColumn dataField='city' dataSort>City</TableHeaderColumn>
-              <TableHeaderColumn dataField='state' dataSort width='8%'>State</TableHeaderColumn>
-              <TableHeaderColumn dataField='zip' dataSort width='7%'>Zip</TableHeaderColumn>
+              <TableHeaderColumn dataField='theCity' dataSort>City</TableHeaderColumn>
+              <TableHeaderColumn dataField='theState' dataSort width='8%'>State</TableHeaderColumn>
+              <TableHeaderColumn dataField='theZip' dataSort width='7%'>Zip</TableHeaderColumn>
               <TableHeaderColumn dataField='updatedAt' dataFormat={dateFormatter} dataSort width='9%'>Updated</TableHeaderColumn>
               <TableHeaderColumn dataField='allLinks' hidden>Hidden</TableHeaderColumn>
               <TableHeaderColumn dataField='allAddresses' hidden>Hidden</TableHeaderColumn>

@@ -29,7 +29,7 @@ class LatestContactUpdates extends Component {
                 </CardHeader>
                 <CardBody>
                   {contact.title}<br />
-                  {contact.city}<br />
+                  {contact.theCity} {contact.theState}<br />
                 </CardBody>
                 <CardFooter>
                   <small className='text-muted' dangerouslySetInnerHTML={{ __html: displayHtml }} />

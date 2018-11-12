@@ -6,6 +6,7 @@ import mapProps from 'recompose/mapProps'
 import { Button, Card, CardBody, CardFooter, CardHeader, CardLink, CardText, CardTitle } from 'reactstrap'
 import moment from 'moment'
 import { DATE_FORMAT_LONG, DATE_FORMAT_SHORT } from '../../modules/constants.js'
+import { dangerouslyCreateAddress } from '../../modules/helpers.js'
 import Contacts from '../../modules/contacts/collection.js'
 
 const ContactsSingle = (props) => {
@@ -18,28 +19,6 @@ const ContactsSingle = (props) => {
     const displayDate =
       'Contact added to database ' + moment(contact.createdAt).format(DATE_FORMAT_SHORT) + ' / ' +
       'Last modified ' + moment(contact.updatedAt).format(DATE_FORMAT_LONG)
-    const createAddress = (address) => {
-      let streetAddress = ''
-      if (address.street1) {
-        streetAddress = address.street1 + '<br/>'
-      }
-      if (address.street2 && address.street2.trim().length > 0) {
-        streetAddress += address.street2 + '<br/>'
-      }
-      if (address.city) {
-        streetAddress += address.city + ', '
-      }
-      if (address.state) {
-        streetAddress += address.state
-      }
-      if (address.zip) {
-        streetAddress += '  ' + address.zip
-      }
-      if (address.street1 && address.city && address.state) {
-        streetAddress += `<br/><small><a href="https://maps.google.com/?q=${address.street1},${address.city},${address.state}" target="_maps">Open in Google Maps</a></small>`
-      }
-      return { __html: streetAddress }
-    }
 
     return (
       <div className='animated fadeIn'>
@@ -66,7 +45,7 @@ const ContactsSingle = (props) => {
           <CardBody>
             { contact.addresses[1] && <CardTitle>Addresses</CardTitle>}
             {contact.addresses.map((address, index) =>
-              <CardText key={`address${index}`} dangerouslySetInnerHTML={createAddress(address)} />
+              <CardText key={`address${index}`} dangerouslySetInnerHTML={dangerouslyCreateAddress(address)} />
             )}
           </CardBody>
           }

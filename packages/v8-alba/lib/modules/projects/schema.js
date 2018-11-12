@@ -1,7 +1,7 @@
 import { Utils } from 'meteor/vulcan:core'
 import SimpleSchema from 'simpl-schema'
 import marked from 'marked'
-import { addressSchema } from '../shared_schemas.js'
+import { addressSubSchema } from '../shared_schemas.js'
 import { PROJECT_TYPES_ENUM, PROJECT_STATUSES_ENUM } from '../constants.js'
 import { getFullAddress } from '../helpers.js'
 
@@ -294,7 +294,7 @@ const schema = {
     group: addressGroup
   },
   'addresses.$': {
-    type: addressSchema
+    type: addressSubSchema
   },
   allAddresses: {
     type: String,

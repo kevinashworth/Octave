@@ -5,6 +5,7 @@ import { Button, Card, CardBody, CardFooter, CardHeader, CardLink, CardText } fr
 import mapProps from 'recompose/mapProps'
 import moment from 'moment'
 import { DATE_FORMAT_LONG } from '../../modules/constants.js'
+import { dangerouslyCreateAddress } from '../../modules/helpers.js'
 import Offices from '../../modules/offices/collection.js'
 
 class OfficesSingle extends PureComponent {
@@ -31,7 +32,9 @@ class OfficesSingle extends PureComponent {
               <Button tag={Link} to={`/offices/${office._id}/edit`}>Edit</Button>
             </div> : null}
           </CardHeader>
-
+          <CardBody>
+            <CardText dangerouslySetInnerHTML={dangerouslyCreateAddress(office)} />
+          </CardBody>
           <CardBody>
             <CardText className='mb-1'>{ office.body }</CardText>
           </CardBody>
