@@ -4,7 +4,6 @@ import marked from 'marked'
 import { addressSubSchema } from '../shared_schemas.js'
 import { CASTING_TITLES_ENUM } from '../constants.js'
 import { getFullAddress, getFullNameFromContact, isEmptyValue } from '../helpers.js'
-import Places from '../places/collection.js'
 
 const addressGroup = {
   name: 'addresses',
@@ -376,15 +375,10 @@ const schema = {
     viewableBy: ['members'],
     resolveAs: {
       type: 'String',
-      resolver: async (contact) => {
+      resolver: (contact) => {
         try {
           if (!isEmptyValue(contact.addresses)) {
             return contact.addresses[0].street1
-          }
-          if (!isEmptyValue(contact.places)) {
-            const theId = contact.places[0].placeId
-            const place = await Places.loader.load(theId);
-            return place.street1
           }
         }
         catch(e) {
@@ -405,15 +399,10 @@ const schema = {
     viewableBy: ['members'],
     resolveAs: {
       type: 'String',
-      resolver: async (contact) => {
+      resolver: (contact) => {
         try {
           if (!isEmptyValue(contact.addresses)) {
             return contact.addresses[0].street2
-          }
-          if (!isEmptyValue(contact.places)) {
-            const theId = contact.places[0].placeId
-            const place = await Places.loader.load(theId);
-            return place.street2
           }
         }
         catch(e) {
@@ -434,15 +423,10 @@ const schema = {
     viewableBy: ['members'],
     resolveAs: {
       type: 'String',
-      resolver: async (contact) => {
+      resolver: (contact) => {
         try {
           if (!isEmptyValue(contact.addresses)) {
             return contact.addresses[0].city
-          }
-          if (!isEmptyValue(contact.places)) {
-            const theId = contact.places[0].placeId
-            const place = await Places.loader.load(theId);
-            return place.city
           }
         }
         catch(e) {
@@ -463,15 +447,10 @@ const schema = {
     viewableBy: ['members'],
     resolveAs: {
       type: 'String',
-      resolver: async (contact) => {
+      resolver: (contact) => {
         try {
           if (!isEmptyValue(contact.addresses)) {
             return contact.addresses[0].state
-          }
-          if (!isEmptyValue(contact.places)) {
-            const theId = contact.places[0].placeId
-            const place = await Places.loader.load(theId);
-            return place.state
           }
         }
         catch(e) {
@@ -492,16 +471,11 @@ const schema = {
     viewableBy: 'guests',
     resolveAs: {
       type: 'String',
-      resolver: async (contact) => { // have to repeat theState code, not available on its own
+      resolver: (contact) => { // have to repeat theState code, not available on its own
         var state = ''
         try {
           if (!isEmptyValue(contact.addresses)) {
             state = contact.addresses[0].state.toLowerCase()
-          }
-          if (state === '' || !isEmptyValue(contact.places)) {
-            const theId = contact.places[0].placeId
-            const place = await Places.loader.load(theId);
-            state = place.state.toLowerCase()
           }
         }
         catch(e) {
