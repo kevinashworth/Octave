@@ -64,4 +64,4 @@ export const dangerouslyCreateAddress = (office) => {
 }
 
 // copied from Vulcan/packages/vulcan-forms/lib/modules/utils.js
-export const isEmptyValue = value => (typeof value === 'undefined' || value === null || value === '' || Array.isArray(value) && value.length === 0);
+export const isEmptyValue = value => (typeof value === 'undefined' || value === null || value === '' || Array.isArray(value) && value.length === 0); // eslint-disable-line

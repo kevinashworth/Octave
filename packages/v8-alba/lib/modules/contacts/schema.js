@@ -380,13 +380,12 @@ const schema = {
           if (!isEmptyValue(contact.addresses)) {
             return contact.addresses[0].street1
           }
-        }
-        catch(e) {
+        } catch (e) {
           // eslint-disable-next-line no-console
           console.info('Problem in theStreet1 for', contact._id)
           // eslint-disable-next-line no-console
           console.error(e)
-          return "Blvd of Broken Dreams"
+          return 'Blvd of Broken Dreams'
         }
         return null
       }
@@ -404,13 +403,12 @@ const schema = {
           if (!isEmptyValue(contact.addresses)) {
             return contact.addresses[0].street2
           }
-        }
-        catch(e) {
+        } catch (e) {
           // eslint-disable-next-line no-console
           console.info('Problem in theStreet2 for', contact._id)
           // eslint-disable-next-line no-console
           console.error(e)
-          return "Suite Nothing"
+          return 'Suite Nothing'
         }
         return null
       }
@@ -428,13 +426,12 @@ const schema = {
           if (!isEmptyValue(contact.addresses)) {
             return contact.addresses[0].city
           }
-        }
-        catch(e) {
+        } catch (e) {
           // eslint-disable-next-line no-console
           console.info('Problem in theCity for', contact._id)
           // eslint-disable-next-line no-console
           console.error(e)
-          return "Leicester City"
+          return 'Leicester City'
         }
         return null
       }
@@ -452,13 +449,12 @@ const schema = {
           if (!isEmptyValue(contact.addresses)) {
             return contact.addresses[0].state
           }
-        }
-        catch(e) {
+        } catch (e) {
           // eslint-disable-next-line no-console
           console.info('Problem in theState for', contact._id)
           // eslint-disable-next-line no-console
           console.error(e)
-          return "State of Denial"
+          return 'State of Denial'
         }
         return null
       }
@@ -477,13 +473,12 @@ const schema = {
           if (!isEmptyValue(contact.addresses)) {
             state = contact.addresses[0].state.toLowerCase()
           }
-        }
-        catch(e) {
+        } catch (e) {
           // eslint-disable-next-line no-console
           console.info('Problem in theLocation for', contact._id)
           // eslint-disable-next-line no-console
           console.error(e)
-          return "Locomotion"
+          return 'Locomotion'
         }
         if (state === 'ca' || state.indexOf('calif') > -1) {
           return 'CA'
