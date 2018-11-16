@@ -1,5 +1,7 @@
 import { Utils } from 'meteor/vulcan:core'
 import SimpleSchema from 'simpl-schema'
+import { addressSubSchema } from '../shared_schemas.js'
+import { getFullAddress } from '../helpers.js'
 import _ from 'lodash'
 
 function getContactsAsOptions (contacts) {
@@ -21,10 +23,16 @@ const projectGroup = {
   order: 20
 }
 
+const addressGroup = {
+  name: 'addresses',
+  label: 'Addresses',
+  order: 30
+}
+
 const linkGroup = {
   name: 'links',
   label: 'Links',
-  order: 30
+  order: 40
 }
 
 const linkSchema = new SimpleSchema({
@@ -67,30 +75,6 @@ const projectIdsSchema = new SimpleSchema({
     editableBy: ['admins']
   }
 })
-
-// const contactsIdsSchema = new SimpleSchema({
-//   contactId: {
-//     type: String,
-//     optional: true,
-//     viewableBy: ["members"],
-//     insertableBy: ["admins"],
-//     editableBy: ["admins"],
-//   },
-//   contactName: {
-//     type: String,
-//     optional: true,
-//     viewableBy: ["members"],
-//     insertableBy: ["admins"],
-//     editableBy: ["admins"],
-//   },
-//   contactTitle: {
-//     type: String,
-//     optional: true,
-//     viewableBy: ["members"],
-//     insertableBy: ["admins"],
-//     editableBy: ["admins"],
-//   },
-// });
 
 const schema = {
   // default properties
@@ -145,45 +129,31 @@ const schema = {
   'links.$': {
     type: linkSchema
   },
-  street1: {
-    label: 'Address',
-    type: String,
+  addresses: {
+    type: Array,
     optional: true,
     viewableBy: ['members'],
-    insertableBy: ['admins'],
-    editableBy: ['admins']
+    insertableBy: ['members'],
+    editableBy: ['members'],
+    group: addressGroup
   },
-  street2: {
-    label: '(cont)',
-    type: String,
-    optional: true,
-    viewableBy: ['members'],
-    insertableBy: ['admins'],
-    editableBy: ['admins']
+  'addresses.$': {
+    type: addressSubSchema
   },
-  city: {
-    label: 'City',
+  allAddresses: {
     type: String,
     optional: true,
-    viewableBy: ['members'],
-    insertableBy: ['admins'],
-    editableBy: ['admins']
-  },
-  state: {
-    label: 'State',
-    type: String,
-    optional: true,
-    viewableBy: ['members'],
-    insertableBy: ['admins'],
-    editableBy: ['admins']
-  },
-  zip: {
-    label: 'Zip',
-    type: String,
-    optional: true,
-    viewableBy: ['members'],
-    insertableBy: ['admins'],
-    editableBy: ['admins']
+    canRead: ['members'],
+    resolveAs: {
+      resolver: (o) => {
+        if (o.addresses) {
+          return o.addresses.reduce(function (acc, cur) {
+            return acc + ' ' + getFullAddress(cur)
+          }, '')
+        }
+        return null
+      }
+    }
   },
   slug: {
     type: String,
