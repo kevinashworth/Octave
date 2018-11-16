@@ -1,5 +1,6 @@
 import { Utils } from 'meteor/vulcan:core'
 import SimpleSchema from 'simpl-schema'
+import marked from 'marked'
 import { addressSubSchema } from '../shared_schemas.js'
 import { getFullAddress } from '../helpers.js'
 import _ from 'lodash'
@@ -59,20 +60,43 @@ const linkSchema = new SimpleSchema({
   }
 })
 
-const projectIdsSchema = new SimpleSchema({
+// const contactSubSchema = new SimpleSchema({
+//   contactId: {
+//     type: String,
+//     optional: true,
+//     canRead: ['members'],
+//     canCreate: ['admins'],
+//     canUpdate: ['admins']
+//   },
+//   contactName: {
+//     type: String,
+//     optional: true,
+//     canRead: ['members'],
+//     canCreate: ['admins'],
+//     canUpdate: ['admins']
+//   }
+// })
+
+const projectSubSchema = new SimpleSchema({
   projectId: {
     type: String,
+    control: 'SelectProjectIdName',
     optional: true,
-    viewableBy: ['members'],
-    insertableBy: ['admins'],
-    editableBy: ['admins']
+    canRead: ['members'],
+    canCreate: ['members'],
+    canUpdate: ['members'],
+    options: props => props.data.projects.results.map(project => ({
+      value: project._id,
+      label: project.projectTitle
+    }))
   },
   projectTitle: {
     type: String,
     optional: true,
-    viewableBy: ['members'],
-    insertableBy: ['admins'],
-    editableBy: ['admins']
+    hidden: true, // because taken care of in SelectProjectIdName.jsx
+    canRead: ['members'],
+    canCreate: ['members'],
+    canUpdate: ['members']
   }
 })
 
@@ -108,14 +132,34 @@ const schema = {
     insertableBy: ['admins'],
     editableBy: ['admins']
   },
+  // Body (Markdown)
   body: {
     label: 'Notes',
     type: String,
     optional: true,
     control: 'textarea', // use a textarea form component
+    viewableBy: ['members', 'admins'],
+    insertableBy: ['members'],
+    editableBy: ['members']
+  },
+  // HTML version of Body
+  htmlBody: {
+    type: String,
+    optional: true,
+    hidden: true,
     viewableBy: ['members'],
-    insertableBy: ['admins'],
-    editableBy: ['admins']
+    insertableBy: ['members'],
+    editableBy: ['members'],
+    onInsert: (project) => {
+      if (project.body) {
+        return Utils.sanitize(marked(project.body))
+      }
+    },
+    onEdit: (modifier, project) => {
+      if (modifier.$set.body) {
+        return Utils.sanitize(marked(modifier.$set.body))
+      }
+    }
   },
   links: {
     label: 'Links',
@@ -178,18 +222,24 @@ const schema = {
   },
 
   // An office has many projects
-
-  projectIds: {
-    label: 'Projects',
+  projects: {
     type: Array,
     optional: true,
-    viewableBy: ['members'],
-    insertableBy: ['admins'],
-    editableBy: ['admins'],
+    canRead: ['members'],
+    canCreate: ['members'],
+    canUpdate: ['members'],
+    query: `
+      projects{
+        results{
+          _id
+          projectTitle
+        }
+      }
+    `,
     group: projectGroup
   },
-  'projectIds.$': {
-    type: projectIdsSchema
+  'projects.$': {
+    type: projectSubSchema
   },
 
   // An office has many contacts
@@ -241,8 +291,60 @@ const schema = {
   'contactIds.$.title': {
     type: String,
     optional: true
-  }
+  },
 
+  // GraphQL-only fields to provide flexibility
+
+  fullAddress: {
+    label: 'Full Address',
+    type: String,
+    optional: true,
+    canRead: 'guests',
+    resolveAs: {
+      type: 'String',
+      resolver: (o) => getFullAddress(o)
+    }
+  },
+  street: {
+    label: 'Address',
+    type: String,
+    optional: true,
+    canRead: ['members'],
+    resolveAs: {
+      type: 'String',
+      resolver: (o) => {
+        if (o.street1) {
+          if (o.street2) {
+            return o.street1 + ' ' + o.street2
+          }
+          return o.street1
+        }
+        return null
+      }
+    }
+  },
+  location: {
+    label: 'Location',
+    type: String,
+    optional: true,
+    canRead: 'guests',
+    resolveAs: {
+      type: 'String',
+      resolver: (o) => {
+        let state = ''
+        if (o.state) {
+          state = o.state.toLowerCase()
+        }
+        if (state === 'ca' || state.indexOf('calif') > -1) {
+          return 'CA'
+        }
+        if (state === 'ny' || state === 'n.y.' || state === 'new york') {
+          return 'NY'
+        }
+        return 'Other'
+      }
+    }
+  }
 }
 
 export default schema
