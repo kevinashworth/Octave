@@ -35,6 +35,7 @@ import '../components/statistics/StatisticsList.jsx'
 
 // V8
 
+import '../components/common/AddressDetail'
 import '../components/common/Filter/ContactDropdowns-Static'
 import '../components/common/Filter/ProjectDropdowns-Static'
 import '../components/common/Filter/ContactFilters'
@@ -63,6 +64,7 @@ import '../components/projects/ProjectsRow'
 import '../components/projects/ProjectSingle'
 // import '../components/projects/ProjectsTable';
 
+import '../components/offices/Offices'
 import '../components/offices/OfficesContactDetail'
 import '../components/offices/OfficesEditForm'
 import '../components/offices/OfficesItem'

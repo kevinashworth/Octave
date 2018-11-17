@@ -43,11 +43,11 @@ export default {
     //   url: '/contactsandprojects',
     //   icon: 'icon-book-open'
     // },
-    // {
-    //   name: 'Offices',
-    //   url: '/offices',
-    //   icon: 'icon-briefcase',
-    // },
+    {
+      name: 'Offices',
+      url: '/offices',
+      icon: 'icon-briefcase'
+    },
     // {
     //   name: 'Projects (T)',
     //   url: '/projects',

@@ -6,9 +6,6 @@ addRoute([
   { path: '/latest', name: 'Latest Updates', componentName: 'LatestUpdates' },
   { path: '/login', name: 'Login', componentName: 'Login' },
   // {path: '/modals',              name: 'Modals Test',    componentName: 'Modals'},
-  // {path: '/offices',                    name: 'Offices',         componentName: 'OfficesListGroup'},
-  // {path: '/offices/:_id/edit',          name: 'offices.edit',    componentName: 'OfficesEditForm'},
-  // {path: '/offices/:_id(/:slug)',       name: 'offices.single',  componentName: 'OfficesSingle'},
   // {path: '/projects',                   name: 'Projects (T)',    componentName: 'ProjectsTable'},
   { name: 'fragments', path: '/fragments', componentName: 'Fragments', layoutName: 'AdminLayout' }
 ])
@@ -28,6 +25,16 @@ addRoute([
   { path: '/contacts/:_id/edit', name: 'Edit Contact', componentName: 'ContactsEditForm' },
   { path: '/contacts/:_id(/:slug)', name: 'contacts.single', componentName: 'ContactsSingle' }
 ], 'Contacts')
+
+addRoute([
+  { path: '/offices', name: 'Offices', componentName: 'Offices' }, 'Home'
+])
+
+addRoute([
+  { path: '/offices/list', name: 'Offices', componentName: 'OfficesListGroup' },
+  { path: '/offices/:_id/edit', name: 'offices.edit', componentName: 'OfficesEditForm' },
+  { path: '/offices/:_id(/:slug)', name: 'offices.single', componentName: 'OfficesSingle' }
+], 'Offices')
 
 addRoute([
   { path: '/projects', name: 'Projects', componentName: 'Projects' }, 'Home'
