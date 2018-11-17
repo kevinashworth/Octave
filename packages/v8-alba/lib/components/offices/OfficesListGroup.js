@@ -24,6 +24,14 @@ const OfficesListGroup = ({ loading, loadingMore, loadMore, results = [], curren
             }
           </CardFooter>
         }
+        {Offices.options.mutations.new.check(currentUser)
+          ? <CardFooter>
+              <Components.ModalTrigger title='New Office' component={<Button>Add an Office</Button>}>
+                <Components.OfficesNewForm currentUser={currentUser} />
+              </Components.ModalTrigger>
+            </CardFooter>
+          : null
+        }
       </Card>
     </div>
   )
