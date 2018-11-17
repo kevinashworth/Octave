@@ -3,14 +3,14 @@ import SimpleSchema from 'simpl-schema'
 import marked from 'marked'
 import { addressSubSchema } from '../shared_schemas.js'
 import { getFullAddress } from '../helpers.js'
-import _ from 'lodash'
+// import _ from 'lodash'
 
-function getContactsAsOptions (contacts) {
-  return contacts.map(contact => ({
-    value: contact._id,
-    label: contact.fullName
-  }))
-}
+// function getContactsAsOptions (contacts) {
+//   return contacts.map(contact => ({
+//     value: contact._id,
+//     label: contact.fullName
+//   }))
+// }
 
 const contactGroup = {
   name: 'contacts',
@@ -76,6 +76,37 @@ const linkSchema = new SimpleSchema({
 //     canUpdate: ['admins']
 //   }
 // })
+
+const contactSchema = new SimpleSchema({
+  contactId: {
+    type: String,
+    control: 'SelectContactIdNameTitle',
+    optional: true,
+    viewableBy: ['members'],
+    insertableBy: ['admins'],
+    editableBy: ['admins'],
+    options: props => props.data.contacts.results.map(contact => ({
+      value: contact._id,
+      label: contact.fullName
+    }))
+  },
+  contactName: {
+    type: String,
+    optional: true,
+    hidden: true,
+    viewableBy: ['members'],
+    insertableBy: ['admins'],
+    editableBy: ['admins']
+  },
+  contactTitle: {
+    type: String,
+    optional: true,
+    hidden: true,
+    viewableBy: ['members'],
+    insertableBy: ['admins'],
+    editableBy: ['admins']
+  }
+})
 
 const projectSubSchema = new SimpleSchema({
   projectId: {
@@ -243,54 +274,41 @@ const schema = {
   },
 
   // An office has many contacts
-
-  contactIds: {
+  contacts: {
+    label: 'Contacts',
     type: Array,
     optional: true,
-    control: 'MySelectMultiple',
     viewableBy: ['members'],
     insertableBy: ['admins'],
     editableBy: ['admins'],
-    options: props => {
-      return getContactsAsOptions(props.data.ContactsList)
-    },
     query: `
-      ContactsList{
-        _id
-        fullName
+      contacts{
+        results{
+          _id
+          fullName
+        }
       }
     `,
-    resolveAs: {
-      fieldName: 'contacts',
-      type: '[Contact]',
-      resolver: async (office, args, { currentUser, Users, Contacts }) => {
-        if (!office.contactIds) return []
-        const contacts = _.compact(await Contacts.loader.loadMany(office.contactIds))
-        return Users.restrictViewableFields(currentUser, Contacts, contacts)
-      },
-      addOriginalField: true
-    },
     group: contactGroup
   },
-  'contactIds.$': {
-    type: Object,
-    optional: true
+  'contacts.$': {
+    type: contactSchema
   },
-  'contactIds.$.value': {
+  allContactNames: {
     type: String,
     optional: true,
-    label: 'contactId',
-    description: 'contactId'
-  },
-  'contactIds.$.label': {
-    type: String,
-    optional: true,
-    label: 'contactName',
-    description: 'contactName'
-  },
-  'contactIds.$.title': {
-    type: String,
-    optional: true
+    canRead: ['members'],
+    resolveAs: {
+      resolver: (o) => {
+        if (o.contacts) {
+          const reduced = o.contacts.reduce(function (acc, cur) {
+            return { contactName: acc.contactName + ' ' + cur.contactName }
+          }, { contactName: '' })
+          return reduced.contactName
+        }
+        return null
+      }
+    }
   },
 
   // GraphQL-only fields to provide flexibility

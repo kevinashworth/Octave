@@ -13,7 +13,7 @@ const OfficesItem = ({ loading, document, currentUser }) => {
     )
   } else {
     const office = document
-    const badge = office.projectIds ? office.projectIds.length : null
+    const badge = office.projects ? office.projects.length : null
     const displayDate = office.updatedAt
       ? 'Last modified ' + moment(office.updatedAt).format(DATE_FORMAT_SHORT)
       : 'Created ' + moment(office.createdAt).format(DATE_FORMAT_SHORT)

@@ -1,7 +1,7 @@
 import { registerComponent } from 'meteor/vulcan:core'
 import React, { PureComponent } from 'react'
 import { Link } from 'react-router'
-import PropTypes from 'prop-types'
+// import PropTypes from 'prop-types'
 import { CardText } from 'reactstrap'
 
 class OfficesPersonDetail extends PureComponent {
@@ -18,12 +18,12 @@ class OfficesPersonDetail extends PureComponent {
   }
 }
 
-OfficesPersonDetail.propTypes = {
-  person: PropTypes.shape({
-    name: PropTypes.string.isRequired,
-    contactId: PropTypes.string.isRequired,
-    personnelTitle: PropTypes.string
-  })
-}
-
+// OfficesPersonDetail.propTypes = {
+//   person: PropTypes.shape({
+//     name: PropTypes.string.isRequired,
+//     contactId: PropTypes.string.isRequired,
+//     personnelTitle: PropTypes.string
+//   })
+// }
+//
 registerComponent('OfficesPersonDetail', OfficesPersonDetail)

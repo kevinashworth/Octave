@@ -6,16 +6,10 @@ import { CardText } from 'reactstrap'
 
 class OfficesContactDetail extends PureComponent {
   render () {
-    const contact = {
-      _id: this.props.contact.value,
-      contactName: this.props.contact.label
-    }
+    const contact = this.props.contact
     return (
-      <CardText>
-        <b>{ contact.contactName }</b> ({contact._id})
-        <Link to={`/contacts/${contact._id}`}>
-          {contact.name}
-        </Link>
+      <CardText className='mb-0'>
+        { contact.contactTitle } <b><Link to={`/contacts/${contact.contactId}`}>{contact.contactName}</Link></b>
       </CardText>
     )
   }
@@ -23,8 +17,9 @@ class OfficesContactDetail extends PureComponent {
 
 OfficesContactDetail.propTypes = {
   contact: PropTypes.shape({
-    value: PropTypes.string.isRequired,
-    label: PropTypes.string.isRequired
+    contactId: PropTypes.string.isRequired,
+    contactName: PropTypes.string.isRequired,
+    contactTitle: PropTypes.string.isRequired
   })
 }
 
