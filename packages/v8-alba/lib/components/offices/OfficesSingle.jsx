@@ -36,14 +36,16 @@ class OfficesSingle extends PureComponent {
             <CardText dangerouslySetInnerHTML={dangerouslyCreateAddress(office)} />
           </CardBody>
           <CardBody>
+            {office.addresses &&
+              office.addresses.map((o, index) => <Components.AddressDetail key={index} address={o} />)
+            }
+          </CardBody>
+          <CardBody>
             <CardText className='mb-1'>{ office.body }</CardText>
           </CardBody>
           <CardBody>
             {office.contacts &&
-            office.contacts.map(person => <Components.OfficesPersonDetail key={person.contactId} person={person} />)
-            }
-            {office.contactIds &&
-            office.contactIds.map(contact => <Components.OfficesContactDetail key={contact.value} contact={contact} />)
+            office.contacts.map(o => <Components.ContactDetail key={o.contactId} contact={o} />)
             }
           </CardBody>
           {office.links &&

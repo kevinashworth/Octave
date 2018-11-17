@@ -36,6 +36,7 @@ import '../components/statistics/StatisticsList.jsx'
 // V8
 
 import '../components/common/AddressDetail'
+import '../components/common/ContactDetail'
 import '../components/common/Filter/ContactDropdowns-Static'
 import '../components/common/Filter/ProjectDropdowns-Static'
 import '../components/common/Filter/ContactFilters'
