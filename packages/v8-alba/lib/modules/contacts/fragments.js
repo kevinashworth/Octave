@@ -38,6 +38,7 @@ registerFragment(/* GraphQL */ `
     theState
     theZip
     projects
+    offices
     slug
   }
 `)

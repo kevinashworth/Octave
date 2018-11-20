@@ -5,49 +5,31 @@ import { addressSubSchema, linkSubSchema } from '../shared_schemas.js'
 import { CASTING_TITLES_ENUM } from '../constants.js'
 import { getFullAddress, getFullNameFromContact, isEmptyValue } from '../helpers.js'
 
-const addressGroup = {
-  name: 'addresses',
-  label: 'Addresses',
-  order: 5
-}
-
 const projectGroup = {
   name: 'projects',
   label: 'Projects',
   order: 10
 }
 
-const linkGroup = {
-  name: 'links',
-  label: 'Links',
+const officeGroup = {
+  name: 'officees',
+  label: 'Offices (Preferred Over Addresses)',
   order: 20
 }
 
-export const linkSchema = new SimpleSchema({
-  platformName: {
-    type: String,
-    optional: true,
-    viewableBy: ['members'],
-    insertableBy: ['members'],
-    editableBy: ['members']
-  },
-  profileName: {
-    type: String,
-    optional: true,
-    viewableBy: ['members'],
-    insertableBy: ['members'],
-    editableBy: ['members']
-  },
-  profileLink: {
-    type: String,
-    optional: true,
-    viewableBy: ['members'],
-    insertableBy: ['members'],
-    editableBy: ['members']
-  }
-})
+const addressGroup = {
+  name: 'addresses',
+  label: 'Addresses (Not Available Under Offices)',
+  order: 30
+}
 
-export const projectSchema = new SimpleSchema({
+const linkGroup = {
+  name: 'links',
+  label: 'Links',
+  order: 40
+}
+
+const projectSubSchema = new SimpleSchema({
   projectId: {
     type: String,
     control: 'SelectProjectIdNameTitle',
@@ -75,6 +57,21 @@ export const projectSchema = new SimpleSchema({
     viewableBy: ['members'],
     insertableBy: ['members'],
     editableBy: ['members']
+  }
+})
+
+const officeSubSchema = new SimpleSchema({
+  officeId: {
+    type: String,
+    control: 'MySelect',
+    optional: true,
+    canRead: ['members'],
+    canCreate: ['members'],
+    canUpdate: ['members'],
+    options: props => props.data.offices.results.map(o => ({
+      value: o._id,
+      label: o.displayName
+    }))
   }
 })
 
@@ -284,8 +281,29 @@ const schema = {
     }
   },
 
-  // A contact has many projects
+  // A contact has many offices
+  offices: {
+    label: 'Offices',
+    type: Array,
+    optional: true,
+    canRead: ['members'],
+    canCreate: ['members'],
+    canUpdate: ['members'],
+    query: `
+      offices{
+        results{
+          _id
+          displayName
+        }
+      }
+    `,
+    group: officeGroup
+  },
+  'offices.$': {
+    type: officeSubSchema
+  },
 
+  // A contact has many projects
   projects: {
     label: 'Projects',
     type: Array,
@@ -304,7 +322,7 @@ const schema = {
     group: projectGroup
   },
   'projects.$': {
-    type: projectSchema
+    type: projectSubSchema
   },
 
   // projectsCount: {

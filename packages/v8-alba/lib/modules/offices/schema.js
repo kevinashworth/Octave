@@ -1,7 +1,7 @@
 import { Utils } from 'meteor/vulcan:core'
 import SimpleSchema from 'simpl-schema'
 import marked from 'marked'
-import { addressSchema, linkSubSchema } from '../shared_schemas.js'
+import { addressSubSchema, linkSubSchema } from '../shared_schemas.js'
 import { getFullAddress } from '../helpers.js'
 // import _ from 'lodash'
 
@@ -172,7 +172,7 @@ const schema = {
     group: addressGroup
   },
   'addresses.$': {
-    type: addressSchema
+    type: addressSubSchema
   },
   allAddresses: {
     type: String,

@@ -41,6 +41,14 @@ const ContactsSingle = (props) => {
               }
             </CardText>
           </CardBody>
+          {contact.offices &&
+          <CardBody>
+            <CardTitle>Offices</CardTitle>
+            {contact.offices.map((o, index) =>
+              <CardText key={o.officeId}>{o.officeId}</CardText>
+            )}
+          </CardBody>
+          }
           {contact.addresses &&
           <CardBody>
             { contact.addresses[1] && <CardTitle>Addresses</CardTitle>}
