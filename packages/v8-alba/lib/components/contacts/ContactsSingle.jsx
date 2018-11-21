@@ -45,7 +45,7 @@ const ContactsSingle = (props) => {
           <CardBody>
             <CardTitle>Offices</CardTitle>
             {contact.offices.map((o, index) =>
-              <CardText key={o.officeId}>{o.officeId}</CardText>
+              <Components.OfficeMini key={o.officeId} documentId={o.officeId} />
             )}
           </CardBody>
           }

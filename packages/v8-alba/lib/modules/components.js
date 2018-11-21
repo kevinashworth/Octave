@@ -66,6 +66,7 @@ import '../components/projects/ProjectSingle'
 // import '../components/projects/ProjectsTable';
 
 import '../components/offices/Offices'
+import '../components/offices/OfficeMini'
 import '../components/offices/OfficesContactDetail'
 import '../components/offices/OfficesEditForm'
 import '../components/offices/OfficesItem'
