@@ -35,6 +35,8 @@ import '../components/statistics/StatisticsList.jsx'
 
 // V8
 
+import '../components/common/AddressDetail'
+import '../components/common/ContactDetail'
 import '../components/common/Filter/ContactDropdowns-Static'
 import '../components/common/Filter/ProjectDropdowns-Static'
 import '../components/common/Filter/ContactFilters'
@@ -52,6 +54,7 @@ import '../components/contacts/ContactsRow'
 import '../components/contacts/ContactsSingle'
 // import '../components/contacts/ContactsTable';
 
+import '../components/projects/ProjectMini'
 import '../components/projects/ProjectModal'
 import '../components/projects/Projects'
 import '../components/projects/ProjectsAddressDetail'
@@ -63,9 +66,12 @@ import '../components/projects/ProjectsRow'
 import '../components/projects/ProjectSingle'
 // import '../components/projects/ProjectsTable';
 
+import '../components/offices/Offices'
+import '../components/offices/OfficeMini'
 import '../components/offices/OfficesContactDetail'
 import '../components/offices/OfficesEditForm'
 import '../components/offices/OfficesItem'
 import '../components/offices/OfficesListGroup'
+import '../components/offices/OfficesNewForm'
 import '../components/offices/OfficesPersonDetail'
 import '../components/offices/OfficesSingle'

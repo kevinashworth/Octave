@@ -84,6 +84,9 @@ class ProjectSingle extends PureComponent {
             <CardText className='mb-0'>
               <b>{ project.castingCompany }</b>
             </CardText>
+            {project.castingOffice &&
+              <Components.OfficeMini documentId={project.castingOffice} />
+            }
             {project.contacts
               ? project.contacts.map(contact => <Components.ProjectsContactDetail key={contact.contactId} contact={contact} />)
               : <CardText>No contacts yet. ADD ONE!</CardText>
@@ -94,6 +97,16 @@ class ProjectSingle extends PureComponent {
             }
             {project.contactId}
           </CardBody>
+          {project.links &&
+          <CardBody>
+            <CardText>
+              {project.links.map(link =>
+                <Button className={`btn-${link.platformName.toLowerCase()} text-white`} key={link.profileLink}>
+                  <span><CardLink href={link.profileLink} target='_links'>{link.profileName}</CardLink></span>
+                </Button>)}
+            </CardText>
+          </CardBody>
+          }
           <CardFooter>
             <small className='text-muted'>{displayDate}</small>
           </CardFooter>

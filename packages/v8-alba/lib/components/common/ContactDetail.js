@@ -4,7 +4,7 @@ import { Link } from 'react-router'
 import PropTypes from 'prop-types'
 import { CardText } from 'reactstrap'
 
-class OfficesContactDetail extends PureComponent {
+class ContactDetail extends PureComponent {
   render () {
     const contact = this.props.contact
     return (
@@ -15,7 +15,7 @@ class OfficesContactDetail extends PureComponent {
   }
 }
 
-OfficesContactDetail.propTypes = {
+ContactDetail.propTypes = {
   contact: PropTypes.shape({
     contactId: PropTypes.string.isRequired,
     contactName: PropTypes.string.isRequired,
@@ -23,4 +23,4 @@ OfficesContactDetail.propTypes = {
   })
 }
 
-registerComponent('OfficesContactDetail', OfficesContactDetail)
+registerComponent('ContactDetail', ContactDetail)

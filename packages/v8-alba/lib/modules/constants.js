@@ -51,17 +51,17 @@ const PROJECT_TYPES_ENUM = [
 ]
 
 const PROJECT_STATUSES_ENUM = [
-  { projectStatus: 'Casting', label: 'Casting' },
-  { projectStatus: 'Ordered', label: 'Ordered' },
-  { projectStatus: 'Pre-Prod.', label: 'Pre-Prod.' },
-  { projectStatus: 'Shooting', label: 'Shooting' },
-  { projectStatus: 'See Notes', label: 'See Notes' },
-  { projectStatus: 'On Hiatus', label: 'On Hiatus' },
-  { projectStatus: 'On Hold', label: 'On Hold' },
-  { projectStatus: 'Relocated', label: 'Relocated' },
-  { projectStatus: 'Unknown', label: 'Unknown' },
-  { projectStatus: 'Wrapped', label: 'Wrapped' },
-  { projectStatus: 'Canceled', label: 'Canceled' }
+  { value: 'Casting', label: 'Casting' },
+  { value: 'Ordered', label: 'Ordered' },
+  { value: 'Pre-Prod.', label: 'Pre-Prod.' },
+  { value: 'Shooting', label: 'Shooting' },
+  { value: 'See Notes', label: 'See Notes' },
+  { value: 'On Hiatus', label: 'On Hiatus' },
+  { value: 'On Hold', label: 'On Hold' },
+  { value: 'Relocated', label: 'Relocated' },
+  { value: 'Unknown', label: 'Unknown' },
+  { value: 'Wrapped', label: 'Wrapped' },
+  { value: 'Canceled', label: 'Canceled' }
 ]
 
 module.exports = {

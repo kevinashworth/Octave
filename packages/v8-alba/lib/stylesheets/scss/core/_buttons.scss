@@ -25,6 +25,12 @@ button {
   }
 }
 
+.btn-website,
+.btn-netflix,
+.btn-cbs,
+.btn-wikipedia,
+.btn-vudu,
+.btn-freeform,
 .btn-imdb,
 .btn-facebook,
 .btn-twitter,
@@ -102,6 +108,120 @@ button {
     @include button-social-size($input-btn-padding-y-sm, $input-btn-padding-x-sm, $font-size-sm, $line-height-sm, $btn-border-radius-sm);
   }
 
+}
+
+.btn-website {
+  $color: $website;
+
+  background: $color;
+  &::before {
+    content: "\f26c";
+    background: darken($color, 5%);
+
+  }
+
+  &:hover {
+    background: darken($color, 5%);
+
+    &::before {
+      background: darken($color, 10%);
+    }
+  }
+}
+
+.btn-netflix {
+  $color: $netflix;
+
+  background: $color;
+  &::before {
+    content: "\f26c";
+    background: darken($color, 5%);
+
+  }
+
+  &:hover {
+    background: darken($color, 5%);
+
+    &::before {
+      background: darken($color, 10%);
+    }
+  }
+}
+
+.btn-vudu {
+  $color: $vudu;
+
+  background: $color;
+  &::before {
+    content: "\f26c";
+    background: darken($color, 5%);
+
+  }
+
+  &:hover {
+    background: darken($color, 5%);
+
+    &::before {
+      background: darken($color, 10%);
+    }
+  }
+}
+
+.btn-cbs {
+  $color: $cbs;
+
+  background: $color;
+  &::before {
+    content: "\f26c";
+    background: darken($color, 5%);
+
+  }
+
+  &:hover {
+    background: darken($color, 5%);
+
+    &::before {
+      background: darken($color, 10%);
+    }
+  }
+}
+
+.btn-wikipedia {
+  $color: $wikipedia;
+
+  background: $color;
+  &::before {
+    content: "\f266";
+    background: darken($color, 5%);
+
+  }
+
+  &:hover {
+    background: darken($color, 5%);
+
+    &::before {
+      background: darken($color, 10%);
+    }
+  }
+}
+
+.btn-freeform {
+  $color: $freeform;
+
+  background: $color;
+  &::before {
+    content: "\f26c";
+    background: darken($color, 5%);
+
+  }
+
+  &:hover {
+    background: darken($color, 5%);
+
+    &::before {
+      background: darken($color, 10%);
+    }
+  }
 }
 
 .btn-imdb {

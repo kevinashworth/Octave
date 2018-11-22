@@ -13,8 +13,9 @@ class MySelect extends PureComponent {
     }
   }
 
-  handleChange = (value) => {
+  handleChange (value) {
     this.setState({ value })
+    // eslint-disable-next-line no-console
     console.log(`Selected label: ${value.label}\nSelected value: ${value.value}`)
     this.context.updateCurrentValues({ [this.state.path]: value.value })
   }

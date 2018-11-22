@@ -1,7 +1,7 @@
 import { Utils } from 'meteor/vulcan:core'
 import SimpleSchema from 'simpl-schema'
 import marked from 'marked'
-import { addressSubSchema } from '../shared_schemas.js'
+import { addressSubSchema, linkSubSchema } from '../shared_schemas.js'
 import { PROJECT_TYPES_ENUM, PROJECT_STATUSES_ENUM } from '../constants.js'
 import { getFullAddress } from '../helpers.js'
 
@@ -15,6 +15,12 @@ const contactGroup = {
   name: 'contacts',
   label: 'Contacts',
   order: 20
+}
+
+const linkGroup = {
+  name: 'links',
+  label: 'Links',
+  order: 30
 }
 
 const contactSchema = new SimpleSchema({
@@ -227,9 +233,30 @@ const schema = {
     label: 'Casting Company',
     type: String,
     optional: true,
-    viewableBy: ['members'],
-    insertableBy: ['admins'],
-    editableBy: ['admins']
+    canRead: ['members'],
+    canCreate: ['admins'],
+    canUpdate: ['admins']
+  },
+  castingOffice: {
+    label: 'Casting Office',
+    type: String,
+    control: 'MySelect',
+    optional: true,
+    canRead: ['members'],
+    canCreate: ['admins'],
+    canUpdate: ['admins'],
+    options: props => props.data.offices.results.map(office => ({
+      value: office._id,
+      label: office.displayName
+    })),
+    query: `
+      offices{
+        results{
+          _id
+          displayName
+        }
+      }
+    `
   },
   slug: {
     type: String,
@@ -248,6 +275,18 @@ const schema = {
         return Utils.slugify(modifier.$set.projectTitle)
       }
     }
+  },
+  links: {
+    label: 'Links',
+    type: Array,
+    optional: true,
+    viewableBy: ['members'],
+    insertableBy: ['members'],
+    editableBy: ['members'],
+    group: linkGroup
+  },
+  'links.$': {
+    type: linkSubSchema
   },
   contacts: {
     label: 'Contacts',

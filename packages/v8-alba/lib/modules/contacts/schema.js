@@ -1,15 +1,9 @@
 import { Utils } from 'meteor/vulcan:core'
 import SimpleSchema from 'simpl-schema'
 import marked from 'marked'
-import { addressSubSchema } from '../shared_schemas.js'
+import { addressSubSchema, linkSubSchema } from '../shared_schemas.js'
 import { CASTING_TITLES_ENUM } from '../constants.js'
 import { getFullAddress, getFullNameFromContact, isEmptyValue } from '../helpers.js'
-
-const addressGroup = {
-  name: 'addresses',
-  label: 'Addresses',
-  order: 5
-}
 
 const projectGroup = {
   name: 'projects',
@@ -17,37 +11,25 @@ const projectGroup = {
   order: 10
 }
 
-const linkGroup = {
-  name: 'links',
-  label: 'Links',
+const officeGroup = {
+  name: 'officees',
+  label: 'Offices (Preferred Over Addresses)',
   order: 20
 }
 
-export const linkSchema = new SimpleSchema({
-  platformName: {
-    type: String,
-    optional: true,
-    viewableBy: ['members'],
-    insertableBy: ['members'],
-    editableBy: ['members']
-  },
-  profileName: {
-    type: String,
-    optional: true,
-    viewableBy: ['members'],
-    insertableBy: ['members'],
-    editableBy: ['members']
-  },
-  profileLink: {
-    type: String,
-    optional: true,
-    viewableBy: ['members'],
-    insertableBy: ['members'],
-    editableBy: ['members']
-  }
-})
+const addressGroup = {
+  name: 'addresses',
+  label: 'Addresses (Not Available Under Offices)',
+  order: 30
+}
 
-export const projectSchema = new SimpleSchema({
+const linkGroup = {
+  name: 'links',
+  label: 'Links',
+  order: 40
+}
+
+const projectSubSchema = new SimpleSchema({
   projectId: {
     type: String,
     control: 'SelectProjectIdNameTitle',
@@ -75,6 +57,21 @@ export const projectSchema = new SimpleSchema({
     viewableBy: ['members'],
     insertableBy: ['members'],
     editableBy: ['members']
+  }
+})
+
+const officeSubSchema = new SimpleSchema({
+  officeId: {
+    type: String,
+    control: 'MySelect',
+    optional: true,
+    canRead: ['members'],
+    canCreate: ['members'],
+    canUpdate: ['members'],
+    options: props => props.data.offices.results.map(o => ({
+      value: o._id,
+      label: o.displayName
+    }))
   }
 })
 
@@ -203,7 +200,7 @@ const schema = {
     group: linkGroup
   },
   'links.$': {
-    type: linkSchema
+    type: linkSubSchema
   },
   allLinks: {
     type: String,
@@ -284,8 +281,29 @@ const schema = {
     }
   },
 
-  // A contact has many projects
+  // A contact has many offices
+  offices: {
+    label: 'Offices',
+    type: Array,
+    optional: true,
+    canRead: ['members'],
+    canCreate: ['members'],
+    canUpdate: ['members'],
+    query: `
+      offices{
+        results{
+          _id
+          displayName
+        }
+      }
+    `,
+    group: officeGroup
+  },
+  'offices.$': {
+    type: officeSubSchema
+  },
 
+  // A contact has many projects
   projects: {
     label: 'Projects',
     type: Array,
@@ -304,7 +322,7 @@ const schema = {
     group: projectGroup
   },
   'projects.$': {
-    type: projectSchema
+    type: projectSubSchema
   },
 
   // projectsCount: {
@@ -380,13 +398,12 @@ const schema = {
           if (!isEmptyValue(contact.addresses)) {
             return contact.addresses[0].street1
           }
-        }
-        catch(e) {
+        } catch (e) {
           // eslint-disable-next-line no-console
           console.info('Problem in theStreet1 for', contact._id)
           // eslint-disable-next-line no-console
           console.error(e)
-          return "Blvd of Broken Dreams"
+          return 'Blvd of Broken Dreams'
         }
         return null
       }
@@ -404,13 +421,12 @@ const schema = {
           if (!isEmptyValue(contact.addresses)) {
             return contact.addresses[0].street2
           }
-        }
-        catch(e) {
+        } catch (e) {
           // eslint-disable-next-line no-console
           console.info('Problem in theStreet2 for', contact._id)
           // eslint-disable-next-line no-console
           console.error(e)
-          return "Suite Nothing"
+          return 'Suite Nothing'
         }
         return null
       }
@@ -428,13 +444,12 @@ const schema = {
           if (!isEmptyValue(contact.addresses)) {
             return contact.addresses[0].city
           }
-        }
-        catch(e) {
+        } catch (e) {
           // eslint-disable-next-line no-console
           console.info('Problem in theCity for', contact._id)
           // eslint-disable-next-line no-console
           console.error(e)
-          return "Leicester City"
+          return 'Leicester City'
         }
         return null
       }
@@ -452,13 +467,12 @@ const schema = {
           if (!isEmptyValue(contact.addresses)) {
             return contact.addresses[0].state
           }
-        }
-        catch(e) {
+        } catch (e) {
           // eslint-disable-next-line no-console
           console.info('Problem in theState for', contact._id)
           // eslint-disable-next-line no-console
           console.error(e)
-          return "State of Denial"
+          return 'State of Denial'
         }
         return null
       }
@@ -477,13 +491,12 @@ const schema = {
           if (!isEmptyValue(contact.addresses)) {
             state = contact.addresses[0].state.toLowerCase()
           }
-        }
-        catch(e) {
+        } catch (e) {
           // eslint-disable-next-line no-console
           console.info('Problem in theLocation for', contact._id)
           // eslint-disable-next-line no-console
           console.error(e)
-          return "Locomotion"
+          return 'Locomotion'
         }
         if (state === 'ca' || state.indexOf('calif') > -1) {
           return 'CA'

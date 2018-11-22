@@ -20,6 +20,7 @@ registerFragment(/* GraphQL */ `
     projectTitle
     projectType
     castingCompany
+    castingOffice
     addresses
     allAddresses
     contacts
@@ -35,6 +36,7 @@ registerFragment(/* GraphQL */ `
     website
     season
     order
+    links
     slug
   }
 `)
