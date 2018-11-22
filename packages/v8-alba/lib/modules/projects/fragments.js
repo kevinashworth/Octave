@@ -20,6 +20,7 @@ registerFragment(/* GraphQL */ `
     projectTitle
     projectType
     castingCompany
+    castingOffice
     addresses
     allAddresses
     contacts

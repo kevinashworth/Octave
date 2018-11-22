@@ -233,9 +233,30 @@ const schema = {
     label: 'Casting Company',
     type: String,
     optional: true,
-    viewableBy: ['members'],
-    insertableBy: ['admins'],
-    editableBy: ['admins']
+    canRead: ['members'],
+    canCreate: ['admins'],
+    canUpdate: ['admins']
+  },
+  castingOffice: {
+    label: 'Casting Office',
+    type: String,
+    control: 'MySelect',
+    optional: true,
+    canRead: ['members'],
+    canCreate: ['admins'],
+    canUpdate: ['admins'],
+    options: props => props.data.offices.results.map(office => ({
+      value: office._id,
+      label: office.displayName
+    })),
+    query: `
+      offices{
+        results{
+          _id
+          displayName
+        }
+      }
+    `
   },
   slug: {
     type: String,
