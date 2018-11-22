@@ -148,7 +148,7 @@ const projectOptions = {
   limit: 6,
   terms: {
     view: 'collectionWithStatus',
-    status: { $in: ['Casting', 'Ordered', 'Pre-Prod.', 'Shooting', 'See Notes...', 'On Hiatus', 'On Hold', 'Unknown'] }
+    status: { $in: ['Casting', 'Ordered', 'Pre-Prod.', 'Shooting', 'See Notes', 'On Hiatus', 'On Hold'] }
   }
 }
 
@@ -195,7 +195,7 @@ const projectOptionsInactive = {
   limit: 6,
   terms: {
     view: 'collectionWithStatus',
-    status: { $in: ['Canceled', 'Wrapped'] }
+    status: { $in: ['Canceled', 'Wrapped', 'Unknown'] }
   }
 }
 

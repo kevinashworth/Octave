@@ -34,7 +34,7 @@ const ProjectsRow = ({ loading, document, currentUser }) => {
       case 'Shooting':
         badgeColor = 'light'
         break
-      case 'See Notes...':
+      case 'See Notes':
         badgeColor = 'dark'
         break
       case 'Pre-Prod.':
