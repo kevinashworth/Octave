@@ -19,12 +19,12 @@ const OfficeMini = (props) => {
 
   return (
     <Card className='card-accent-primary'>
-      <CardHeader tag='h6'><Link to={`/offices/${office._id}`}>{officeName}</Link></CardHeader>
+      <CardHeader tag='h6'><Link to={`/offices/${office._id}/${office.slug}`}>{officeName}</Link></CardHeader>
       <CardBody>
         {office.addresses &&
           office.addresses.map(address => {
             return (
-              <CardText dangerouslySetInnerHTML={dangerouslyCreateAddress(address)} />
+              <CardText key={address.street1 + address.street2} dangerouslySetInnerHTML={dangerouslyCreateAddress(address)} />
             )
           })
         }

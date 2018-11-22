@@ -84,6 +84,9 @@ class ProjectSingle extends PureComponent {
             <CardText className='mb-0'>
               <b>{ project.castingCompany }</b>
             </CardText>
+            {project.castingOffice &&
+              <Components.OfficeMini documentId={project.castingOffice} />
+            }
             {project.contacts
               ? project.contacts.map(contact => <Components.ProjectsContactDetail key={contact.contactId} contact={contact} />)
               : <CardText>No contacts yet. ADD ONE!</CardText>
