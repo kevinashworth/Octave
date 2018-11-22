@@ -54,6 +54,7 @@ import '../components/contacts/ContactsRow'
 import '../components/contacts/ContactsSingle'
 // import '../components/contacts/ContactsTable';
 
+import '../components/projects/ProjectMini'
 import '../components/projects/ProjectModal'
 import '../components/projects/Projects'
 import '../components/projects/ProjectsAddressDetail'

@@ -70,7 +70,7 @@ const contactSchema = new SimpleSchema({
 const projectSubSchema = new SimpleSchema({
   projectId: {
     type: String,
-    control: 'SelectProjectIdName',
+    control: 'MySelect',
     optional: true,
     canRead: ['members'],
     canCreate: ['members'],
@@ -79,14 +79,6 @@ const projectSubSchema = new SimpleSchema({
       value: project._id,
       label: project.projectTitle
     }))
-  },
-  projectTitle: {
-    type: String,
-    optional: true,
-    hidden: true, // because taken care of in SelectProjectIdName.jsx
-    canRead: ['members'],
-    canCreate: ['members'],
-    canUpdate: ['members']
   }
 })
 

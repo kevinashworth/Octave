@@ -48,6 +48,14 @@ class OfficesSingle extends PureComponent {
             office.contacts.map(o => <Components.ContactDetail key={o.contactId} contact={o} />)
             }
           </CardBody>
+          <CardBody>
+            {office.projects &&
+              <CardText className='mb-0'><b>Projects</b></CardText>
+            }
+            {office.projects &&
+              office.projects.map(o => <Components.ProjectMini key={o.projectId} documentId={o.projectId} />)
+            }
+          </CardBody>
           {office.links &&
           <CardBody>
             <CardText>
