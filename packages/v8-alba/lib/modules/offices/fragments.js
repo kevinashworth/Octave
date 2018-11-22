@@ -26,6 +26,11 @@ registerFragment(/* GraphQL */ `
     addresses
     street
     location
+    fullAddress
+    theStreet
+    theCity
+    theState
+    theLocation
     slug
   }
 `)

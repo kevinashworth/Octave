@@ -3,6 +3,7 @@ import React, { Component } from 'react'
 import { Link } from 'react-router'
 import { Card, CardBody, CardFooter, CardHeader, Col, Row } from 'reactstrap'
 import Contacts from '../../../modules/contacts/collection.js'
+import Offices from '../../../modules/offices/collection.js'
 import Projects from '../../../modules/projects/collection.js'
 import moment from 'moment'
 import { DATE_FORMAT_SHORT_FRIENDLY } from '../../../modules/constants.js'
@@ -53,6 +54,54 @@ registerComponent({
   name: 'LatestContactUpdates',
   component: LatestContactUpdates,
   hocs: [[withMulti, contactOptions]]
+})
+
+class LatestOfficeUpdates extends Component {
+  render () {
+    if (this.props.loading) {
+      return (<div><Components.Loading /></div>)
+    }
+
+    return (
+      <Row>
+        {this.props.results.map(office => {
+          const isItNew = moment(office.updatedAt).isBefore(moment(office.createdAt).add(1, 'day'))
+          let displayHtml = isItNew
+            ? '<b>New!</b> Office added '
+            : 'Office updated '
+          displayHtml += moment(office.updatedAt).format(DATE_FORMAT_SHORT_FRIENDLY)
+          return (
+            <Col xs='12' sm='6' md='4' key={office._id}>
+              <Card className='card-accent-primary'>
+                <CardHeader>
+                  <b><Link to={`/offices/${office._id}/${office.slug}`}>{office.displayName}</Link></b>
+                </CardHeader>
+                <CardBody>
+                  {office.theCity} {office.theState}<br />
+                  {office.projects ? office.projects.length + ' Projects' : null}
+                </CardBody>
+                <CardFooter>
+                  <small className='text-muted' dangerouslySetInnerHTML={{ __html: displayHtml }} />
+                </CardFooter>
+              </Card>
+            </Col>
+          )
+        })}
+      </Row>
+    )
+  }
+}
+
+const officeOptions = {
+  collection: Offices,
+  fragmentName: 'OfficesSingleFragment',
+  limit: 6
+}
+
+registerComponent({
+  name: 'LatestOfficeUpdates',
+  component: LatestOfficeUpdates,
+  hocs: [[withMulti, officeOptions]]
 })
 
 class LatestActiveProjectUpdates extends Component {
@@ -161,6 +210,7 @@ class LatestUpdates extends Component {
     return (
       <div className='animated fadeIn'>
         <Components.LatestContactUpdates />
+        <Components.LatestOfficeUpdates />
         <Components.LatestActiveProjectUpdates />
         <Components.LatestInactiveProjectUpdates />
       </div>

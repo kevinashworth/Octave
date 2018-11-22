@@ -2,7 +2,7 @@ import { Utils } from 'meteor/vulcan:core'
 import SimpleSchema from 'simpl-schema'
 import marked from 'marked'
 import { addressSubSchema, linkSubSchema } from '../shared_schemas.js'
-import { getFullAddress } from '../helpers.js'
+import { getFullAddress, isEmptyValue } from '../helpers.js'
 // import _ from 'lodash'
 
 // function getContactsAsOptions (contacts) {
@@ -311,6 +311,161 @@ const schema = {
           return 'NY'
         }
         return 'Other'
+      }
+    }
+  },
+
+  // GraphQL only fields to ease transition from address to addresses, and also to provide a 'main' address
+
+  theStreet: {
+    label: 'Address',
+    type: String,
+    optional: true,
+    viewableBy: ['members'],
+    resolveAs: {
+      type: 'String',
+      resolver: (contact) => {
+        if (contact.theStreet2) {
+          return contact.theStreet1 + ' ' + contact.theStreet2
+        }
+        return contact.theStreet1
+      }
+    }
+  },
+  theStreet1: {
+    label: 'Address',
+    type: String,
+    optional: true,
+    viewableBy: ['members'],
+    resolveAs: {
+      type: 'String',
+      resolver: (contact) => {
+        try {
+          if (!isEmptyValue(contact.addresses)) {
+            return contact.addresses[0].street1
+          }
+        } catch (e) {
+          // eslint-disable-next-line no-console
+          console.info('Problem in theStreet1 for', contact._id)
+          // eslint-disable-next-line no-console
+          console.error(e)
+          return 'Blvd of Broken Dreams'
+        }
+        return null
+      }
+    }
+  },
+  theStreet2: {
+    label: '(cont)',
+    type: String,
+    optional: true,
+    viewableBy: ['members'],
+    resolveAs: {
+      type: 'String',
+      resolver: (contact) => {
+        try {
+          if (!isEmptyValue(contact.addresses)) {
+            return contact.addresses[0].street2
+          }
+        } catch (e) {
+          // eslint-disable-next-line no-console
+          console.info('Problem in theStreet2 for', contact._id)
+          // eslint-disable-next-line no-console
+          console.error(e)
+          return 'Suite Nothing'
+        }
+        return null
+      }
+    }
+  },
+  theCity: {
+    label: 'City',
+    type: String,
+    optional: true,
+    viewableBy: ['members'],
+    resolveAs: {
+      type: 'String',
+      resolver: (contact) => {
+        try {
+          if (!isEmptyValue(contact.addresses)) {
+            return contact.addresses[0].city
+          }
+        } catch (e) {
+          // eslint-disable-next-line no-console
+          console.info('Problem in theCity for', contact._id)
+          // eslint-disable-next-line no-console
+          console.error(e)
+          return 'Leicester City'
+        }
+        return null
+      }
+    }
+  },
+  theState: {
+    label: 'State',
+    type: String,
+    optional: true,
+    viewableBy: ['members'],
+    resolveAs: {
+      type: 'String',
+      resolver: (contact) => {
+        try {
+          if (!isEmptyValue(contact.addresses)) {
+            return contact.addresses[0].state
+          }
+        } catch (e) {
+          // eslint-disable-next-line no-console
+          console.info('Problem in theState for', contact._id)
+          // eslint-disable-next-line no-console
+          console.error(e)
+          return 'State of Denial'
+        }
+        return null
+      }
+    }
+  },
+  theLocation: {
+    label: 'Location',
+    type: String,
+    optional: true,
+    viewableBy: 'guests',
+    resolveAs: {
+      type: 'String',
+      resolver: (contact) => { // have to repeat theState code, not available on its own
+        var state = ''
+        try {
+          if (!isEmptyValue(contact.addresses)) {
+            state = contact.addresses[0].state.toLowerCase()
+          }
+        } catch (e) {
+          // eslint-disable-next-line no-console
+          console.info('Problem in theLocation for', contact._id)
+          // eslint-disable-next-line no-console
+          console.error(e)
+          return 'Locomotion'
+        }
+        if (state === 'ca' || state.indexOf('calif') > -1) {
+          return 'CA'
+        }
+        if (state === 'ny' || state === 'n.y.' || state === 'new york') {
+          return 'NY'
+        }
+        return 'Other'
+      }
+    }
+  },
+  theZip: {
+    label: 'Zip',
+    type: String,
+    optional: true,
+    viewableBy: ['members'],
+    resolveAs: {
+      type: 'String',
+      resolver: (contact) => {
+        if (!isEmptyValue(contact.addresses)) {
+          return contact.addresses[0].zip
+        }
+        return null
       }
     }
   }

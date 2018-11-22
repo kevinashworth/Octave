@@ -17,10 +17,10 @@ const Offices = createCollection({
 
 })
 
-// default sort by createdAt timestamp in descending order
+// default sort by updatedAt timestamp in descending order
 Offices.addDefaultView(terms => {
   return {
-    options: { sort: { createdAt: -1 } }
+    options: { sort: { updatedAt: -1 } }
   }
 })
 
