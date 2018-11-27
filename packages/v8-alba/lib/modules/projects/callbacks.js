@@ -1,8 +1,10 @@
 import { addCallback, Connectors, editMutation } from 'meteor/vulcan:core'
 import Users from 'meteor/vulcan:users'
 import Contacts from '../contacts/collection.js'
+import Offices from '../offices/collection.js'
 import Projects from './collection.js'
 import Statistics from '../statistics/collection.js'
+import { isEmptyValue } from '../helpers.js'
 import _ from 'lodash'
 import moment from 'moment'
 
@@ -10,17 +12,17 @@ import moment from 'moment'
 When updating a contact on a project, also update that contact with the project.
 I get confused, so here's a description:
 
-  Where i represents the contact(s) we're adding to our project,
-  project.contacts[i] has { contactId, contactName, contactTitle }
+Where i represents the contact(s) we're adding to our project,
+project.contacts[i] has { contactId, contactName, contactTitle }
 
-  But we actually get all contacts, not just i, the new ones.
+But we actually get all contacts, not just i, the new ones.
 
-  So for each of the project.contacts we update contact.projects of the Contact with _id === contactId with
-  {
+So for each of the project.contacts we update contact.projects of the Contact with _id === contactId with
+{
   projectId: project._id,
   projectTitle: project.projectTitle,
   titleForProject: projectContact.contactTitle
-  }
+}
 
 TODO: For some reason, the contact's `updatedAt` field doesn't get a `moment().format("YYYY-MM-DD HH:mm:ss")` `onEdit`
 */
@@ -54,6 +56,89 @@ function ProjectEditUpdateContacts (project) {
     }
     Connectors.update(Contacts, contact._id, { $set: { projects: newProjects } })
   })
+}
+
+/*
+When updating a office on a project, also update that office with the project.
+I get confused, so here's a description:
+
+Where i represents the office(s) we're adding to our project,
+project.offices[i] has { officeId, officeName }
+
+But we actually get all offices, not just i, the new ones.
+
+So for each of the project.offices we update office.projects of the Office with _id === officeId with
+{
+  projectId: project._id,
+  projectTitle: project.projectTitle
+}
+*/
+function ProjectEditUpdateOffice (project) {
+  if (!project.castingOffice) {
+    return
+  }
+
+  const office = Offices.findOne(project.castingOffice) // TODO: error handling
+  const newProject = {
+    projectId: project._id
+  }
+  let newProjects = []
+
+  // case 1: there are no projects on the office and office.projects is undefined
+  if (!office.projects) {
+    newProjects = [newProject]
+  } else {
+    const i = _.findIndex(office.projects, { projectId: project._id })
+    newProjects = office.projects
+    if (i < 0) {
+      // case 2: this project is not on this office but other projects are and we're adding this project
+      newProjects.push(newProject)
+    } else {
+      // case 3: this project is on this office and we're updating the info
+      newProjects[i] = newProject
+    }
+  }
+  Connectors.update(Offices, office._id, { $set: { projects: newProjects } })
+}
+
+function ProjectEditUpdateOfficeBefore (data, { currentUser, document, newDocument, collection, context }) {
+  const oldOffice = document.castingOffice
+  console.log('document:')
+  console.log(document)
+  console.log('newDocument:')
+  console.log(newDocument)
+  // this is an office getting removed from the project,
+  // so we also need to remove the project from that office
+  const newOffice = newDocument.castingOffice
+  console.log('oldOffice:')
+  console.log(oldOffice)
+  console.log('newOffice:')
+  console.log(newOffice)
+  var doIt = false
+  if (oldOffice && !newOffice)
+    doIt = true
+  if (newOffice && oldOffice && oldOffice.length === newOffice.length && oldOffice !== newOffice )
+    doIt = true
+  // only do this when removing or replacing, so
+  // newOffice is undefined and oldOffice is an _id or
+  // they're both _id's
+  if (doIt) {
+    const office = Offices.findOne(oldOffice) // TODO: error handling
+    var projects = office.projects
+    console.log('office:')
+    console.log(office)
+    console.log('projects:')
+    console.log(projects)
+    if (!isEmptyValue(projects)) {
+      const i = _.findIndex(projects, { projectId: document._id })
+      console.log('i:')
+      console.log(i)
+      projects.splice(i, 1)
+      console.log('projects spliced:')
+      console.log(projects)
+      Connectors.update(Offices, office._id, { $set: { projects: projects } })
+    }
+  }
 }
 
 /* THe non-cron approach: When adding a project, update statistics */
@@ -122,5 +207,8 @@ function ProjectNewUpdateStatistics ({ insertedDocument }) {
 }
 
 addCallback('project.update.after', ProjectEditUpdateContacts)
+addCallback('project.update.after', ProjectEditUpdateOffice)
+addCallback('project.update.before', ProjectEditUpdateOfficeBefore)
 addCallback('project.create.after', ProjectEditUpdateContacts)
+addCallback('project.create.after', ProjectEditUpdateOffice)
 addCallback('project.create.async', ProjectNewUpdateStatistics)
