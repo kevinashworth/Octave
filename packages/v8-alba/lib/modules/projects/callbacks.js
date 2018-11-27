@@ -103,39 +103,24 @@ function ProjectEditUpdateOffice (project) {
 
 function ProjectEditUpdateOfficeBefore (data, { currentUser, document, newDocument, collection, context }) {
   const oldOffice = document.castingOffice
-  console.log('document:')
-  console.log(document)
-  console.log('newDocument:')
-  console.log(newDocument)
+  const newOffice = newDocument.castingOffice
   // this is an office getting removed from the project,
   // so we also need to remove the project from that office
-  const newOffice = newDocument.castingOffice
-  console.log('oldOffice:')
-  console.log(oldOffice)
-  console.log('newOffice:')
-  console.log(newOffice)
   var doIt = false
-  if (oldOffice && !newOffice)
+  if (oldOffice && !newOffice) {
     doIt = true
-  if (newOffice && oldOffice && oldOffice.length === newOffice.length && oldOffice !== newOffice )
+  }
+  if (newOffice && oldOffice && oldOffice.length === newOffice.length && oldOffice !== newOffice) {
     doIt = true
+  }
   // only do this when removing or replacing, so
-  // newOffice is undefined and oldOffice is an _id or
-  // they're both _id's
+  // newOffice is undefined and oldOffice is an _id or they're both _id's
   if (doIt) {
     const office = Offices.findOne(oldOffice) // TODO: error handling
     var projects = office.projects
-    console.log('office:')
-    console.log(office)
-    console.log('projects:')
-    console.log(projects)
     if (!isEmptyValue(projects)) {
       const i = _.findIndex(projects, { projectId: document._id })
-      console.log('i:')
-      console.log(i)
       projects.splice(i, 1)
-      console.log('projects spliced:')
-      console.log(projects)
       Connectors.update(Offices, office._id, { $set: { projects: projects } })
     }
   }
