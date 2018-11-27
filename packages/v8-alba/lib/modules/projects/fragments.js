@@ -47,6 +47,7 @@ registerFragment(/* GraphQL */ `
     projectTitle
     projectType
     castingCompany
+    castingOffice
     contacts
     addresses
     network
