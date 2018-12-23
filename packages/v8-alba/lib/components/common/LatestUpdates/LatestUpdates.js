@@ -5,6 +5,7 @@ import { Card, CardBody, CardFooter, CardHeader, Col, Row } from 'reactstrap'
 import Contacts from '../../../modules/contacts/collection.js'
 import Offices from '../../../modules/offices/collection.js'
 import Projects from '../../../modules/projects/collection.js'
+import PastProjects from '../../../modules/past-projects/collection.js'
 import moment from 'moment'
 import { DATE_FORMAT_SHORT_FRIENDLY } from '../../../modules/constants.js'
 
@@ -179,7 +180,7 @@ class LatestInactiveProjectUpdates extends Component {
                 {project.castingCompany}<br />
               </CardBody>
               <CardFooter>
-                <small className='text-muted'>Project past {moment(project.updatedAt).format(DATE_FORMAT_SHORT_FRIENDLY)}</small>
+                <small className='text-muted'>Project archived {moment(project.updatedAt).format(DATE_FORMAT_SHORT_FRIENDLY)}</small>
               </CardFooter>
             </Card>
           </Col>
@@ -205,6 +206,49 @@ registerComponent({
   hocs: [[withMulti, projectOptionsInactive]]
 })
 
+class LatestPastProjectUpdates extends Component {
+  render () {
+    if (this.props.loading) {
+      return (<div><Components.Loading /></div>)
+    }
+
+    return (
+      <Row>
+        {this.props.results.map(project =>
+          <Col xs='12' sm='6' md='4' key={project._id}>
+            <Card className='card-accent-secondary'>
+              <CardHeader>
+                <b><Link to={`/past-projects/${project._id}/${project.slug}`}>{project.projectTitle}</Link></b>
+              </CardHeader>
+              <CardBody>
+                {project.projectType.indexOf('TV') === 0 || project.projectType.indexOf('Pilot') === 0
+                  ? `${project.projectType} • ${project.network}` : `${project.projectType}`}<br />
+                {project.status}<br />
+                {project.castingCompany}<br />
+              </CardBody>
+              <CardFooter>
+                <small className='text-muted'>Past Project as of {moment(project.updatedAt).format(DATE_FORMAT_SHORT_FRIENDLY)}</small>
+              </CardFooter>
+            </Card>
+          </Col>
+        )}
+      </Row>
+    )
+  }
+}
+
+const projectOptionsPast = {
+  collection: PastProjects,
+  fragmentName: 'PastProjectsSingleFragment',
+  limit: 6
+}
+
+registerComponent({
+  name: 'LatestPastProjectUpdates',
+  component: LatestPastProjectUpdates,
+  hocs: [[withMulti, projectOptionsPast]]
+})
+
 class LatestUpdates extends Component {
   render () {
     return (
@@ -213,6 +257,7 @@ class LatestUpdates extends Component {
         <Components.LatestOfficeUpdates />
         <Components.LatestActiveProjectUpdates />
         <Components.LatestInactiveProjectUpdates />
+        <Components.LatestPastProjectUpdates />
       </div>
     )
   }
