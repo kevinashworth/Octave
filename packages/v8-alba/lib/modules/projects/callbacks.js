@@ -10,23 +10,23 @@ import { PAST_PROJECT_STATUSES_ARRAY } from '../constants.js'
 import _ from 'lodash'
 import moment from 'moment'
 
-let browserHistory;
+let browserHistory
 try {
-  browserHistory = require('react-router').browserHistory;
-} catch(e) {
+  browserHistory = require('react-router').browserHistory
+} catch (e) {
   // swallow errors
 }
-function redirect(redirect) {
+function redirect (redirect) {
   if (Meteor.isClient) {
     if (window.history) {
       // Run after all app specific redirects, i.e. to the login screen.
       Meteor.setTimeout(() => {
         if (browserHistory) {
-          browserHistory.push(redirect);
+          browserHistory.push(redirect)
         } else {
-          window.history.pushState( {} , 'redirect', redirect );
+          window.history.pushState({}, 'redirect', redirect)
         }
-      }, 100);
+      }, 100)
     }
   }
 }

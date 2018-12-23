@@ -17,7 +17,7 @@ export default [
       'city': 'Los Angeles',
       'state': 'CA',
       'zip': '90036'
-    },
+    }
   }, {
     'website': 'https://www.netflix.com/title/80099656',
     'projectTitle': 'Frontier',
@@ -27,7 +27,7 @@ export default [
     'status': 'On Hiatus',
     'logline': "In the late 1700's in the New World, men come scraping out a new life for themselves-lawfully or not...",
     'notes': 'Shooting in Newfoundland. (Bridget is not currently at this office.)',
-    'castingCompany': 'Denise Chamian Casting',
+    'castingCompany': 'Denise Chamian Casting'
   }, {
     'projectTitle': 'Trial By Fire',
     'projectType': 'Feature Film',
@@ -42,5 +42,5 @@ export default [
       'city': 'Beverly Hills',
       'state': 'CA',
       'zip': '90211'
-    },
+    }
   }]
