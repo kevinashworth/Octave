@@ -1,12 +1,35 @@
-import { addCallback, Connectors, editMutation } from 'meteor/vulcan:core'
+import { addCallback, Connectors, createMutator, deleteMutator, updateMutator } from 'meteor/vulcan:core'
 import Users from 'meteor/vulcan:users'
 import Contacts from '../contacts/collection.js'
 import Offices from '../offices/collection.js'
 import Projects from './collection.js'
+import PastProjects from '../past-projects/collection.js'
 import Statistics from '../statistics/collection.js'
 import { isEmptyValue } from '../helpers.js'
+import { PAST_PROJECT_STATUSES_ARRAY } from '../constants.js'
 import _ from 'lodash'
 import moment from 'moment'
+
+let browserHistory;
+try {
+  browserHistory = require('react-router').browserHistory;
+} catch(e) {
+  // swallow errors
+}
+function redirect(redirect) {
+  if (Meteor.isClient) {
+    if (window.history) {
+      // Run after all app specific redirects, i.e. to the login screen.
+      Meteor.setTimeout(() => {
+        if (browserHistory) {
+          browserHistory.push(redirect);
+        } else {
+          window.history.pushState( {} , 'redirect', redirect );
+        }
+      }, 100);
+    }
+  }
+}
 
 /*
 When updating a contact on a project, also update that contact with the project.
@@ -181,7 +204,7 @@ function ProjectNewUpdateStatistics ({ insertedDocument }) {
       break
     // default:
   }
-  Promise.await(editMutation({
+  Promise.await(updateMutator({
     action: 'statistic.update',
     documentId: theStats._id,
     collection: Statistics,
@@ -191,6 +214,52 @@ function ProjectNewUpdateStatistics ({ insertedDocument }) {
   }))
 }
 
+async function ProjectUpdateStatus ({ currentUser, document, newDocument }) {
+  // if the new status is now an active project, create new project then remove this past project
+  const newIsPast = _.includes(PAST_PROJECT_STATUSES_ARRAY, newDocument.status)
+  console.log('ProjectUpdateStatus says newIsPast is', newIsPast)
+
+  const createNewPastProject = async () => {
+    try {
+      return await createMutator({
+        collection: PastProjects,
+        document: newDocument,
+        currentUser: currentUser,
+        validate: false
+      })
+    } catch (err) {
+      console.error('error in createNewProject:', err)
+    }
+  }
+
+  const deleteProject = async () => {
+    try {
+      return await deleteMutator({
+        collection: Projects,
+        documentId: document._id,
+        currentUser: currentUser,
+        validate: false
+      })
+    } catch (err) {
+      console.error('error in deletePastProject:', err)
+    }
+  }
+
+  if (newIsPast) {
+    const newProject = await createNewPastProject()
+    console.log('PastProjectUpdateStatus created project', newProject)
+    // if the new project is created and matches (TODO: matches what, exactly?), delete current
+    if (newProject.data.projectTitle === newDocument.projectTitle) {
+      const deletedProject = await deleteProject()
+      console.log('ProjectUpdateStatus deleted  project', deletedProject)
+      await redirect('/projects/')
+      return null
+    }
+  }
+  return newDocument
+}
+
+addCallback('project.update.async', ProjectUpdateStatus)
 addCallback('project.update.after', ProjectEditUpdateContacts)
 addCallback('project.update.after', ProjectEditUpdateOffice)
 addCallback('project.update.before', ProjectEditUpdateOfficeBefore)
