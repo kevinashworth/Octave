@@ -179,7 +179,7 @@ class LatestInactiveProjectUpdates extends Component {
                 {project.castingCompany}<br />
               </CardBody>
               <CardFooter>
-                <small className='text-muted'>Project archived {moment(project.updatedAt).format(DATE_FORMAT_SHORT_FRIENDLY)}</small>
+                <small className='text-muted'>Project past {moment(project.updatedAt).format(DATE_FORMAT_SHORT_FRIENDLY)}</small>
               </CardFooter>
             </Card>
           </Col>
