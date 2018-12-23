@@ -105,7 +105,7 @@ registerComponent({
   hocs: [[withMulti, officeOptions]]
 })
 
-class LatestActiveProjectUpdates extends Component {
+class LatestProjectUpdates extends Component {
   render () {
     if (this.props.loading) {
       return (<div><Components.Loading /></div>)
@@ -146,64 +146,13 @@ class LatestActiveProjectUpdates extends Component {
 const projectOptions = {
   collection: Projects,
   fragmentName: 'ProjectsSingleFragment',
-  limit: 6,
-  terms: {
-    view: 'collectionWithStatus',
-    status: { $in: ['Casting', 'Ordered', 'Pre-Prod.', 'Shooting', 'See Notes', 'On Hiatus', 'On Hold'] }
-  }
+  limit: 6
 }
 
 registerComponent({
-  name: 'LatestActiveProjectUpdates',
-  component: LatestActiveProjectUpdates,
+  name: 'LatestProjectUpdates',
+  component: LatestProjectUpdates,
   hocs: [[withMulti, projectOptions]]
-})
-
-class LatestInactiveProjectUpdates extends Component {
-  render () {
-    if (this.props.loading) {
-      return (<div><Components.Loading /></div>)
-    }
-
-    return (
-      <Row>
-        {this.props.results.map(project =>
-          <Col xs='12' sm='6' md='4' key={project._id}>
-            <Card className='card-accent-secondary'>
-              <CardHeader>
-                <b><Link to={`/projects/${project._id}/${project.slug}`}>{project.projectTitle}</Link></b>
-              </CardHeader>
-              <CardBody>
-                {project.projectType.indexOf('TV') === 0 || project.projectType.indexOf('Pilot') === 0
-                  ? `${project.projectType} • ${project.network}` : `${project.projectType}`}<br />
-                {project.status}<br />
-                {project.castingCompany}<br />
-              </CardBody>
-              <CardFooter>
-                <small className='text-muted'>Project archived {moment(project.updatedAt).format(DATE_FORMAT_SHORT_FRIENDLY)}</small>
-              </CardFooter>
-            </Card>
-          </Col>
-        )}
-      </Row>
-    )
-  }
-}
-
-const projectOptionsInactive = {
-  collection: Projects,
-  fragmentName: 'ProjectsSingleFragment',
-  limit: 6,
-  terms: {
-    view: 'collectionWithStatus',
-    status: { $in: ['Canceled', 'Wrapped', 'Unknown'] }
-  }
-}
-
-registerComponent({
-  name: 'LatestInactiveProjectUpdates',
-  component: LatestInactiveProjectUpdates,
-  hocs: [[withMulti, projectOptionsInactive]]
 })
 
 class LatestPastProjectUpdates extends Component {
@@ -255,8 +204,7 @@ class LatestUpdates extends Component {
       <div className='animated fadeIn'>
         <Components.LatestContactUpdates />
         <Components.LatestOfficeUpdates />
-        <Components.LatestActiveProjectUpdates />
-        <Components.LatestInactiveProjectUpdates />
+        <Components.LatestProjectUpdates />
         <Components.LatestPastProjectUpdates />
       </div>
     )

@@ -1,8 +1,10 @@
 // see https://guide.meteor.com/collections.html#migrations
 import { Migrations } from 'meteor/percolate:migrations'
-import Projects from '../modules/projects/collection.js'
 import Contacts from '../modules/contacts/collection.js'
+import Projects from '../modules/projects/collection.js'
+import PastProjects from '../modules/past-projects/collection.js'
 import Statistics from '../modules/statistics/collection.js'
+import { PAST_PROJECT_STATUSES_ARRAY } from '../modules/constants.js'
 import moment from 'moment'
 import reducedStats from '../modules/statistics/_stats-reduced.js'
 
@@ -395,6 +397,19 @@ Migrations.add({
   down: function () { /* There is no undoing this one. */ }
 })
 
+Migrations.add({
+  version: 9,
+  name: 'Move past projects into PastProjects. (Currently there is no undo.)',
+  up: function () {
+    Projects.find({ status: { $in: PAST_PROJECT_STATUSES_ARRAY } }).forEach((project, index) => {
+      console.log('9:', project._id)
+      console.log('9:', PastProjects.insert(project))
+      console.log('9:', Projects.remove(project._id))
+    })
+  },
+  down: function () { /* There is no undoing this one. */ }
+})
+
 Meteor.startup(() => {
-  Migrations.migrateTo('8')
+  Migrations.migrateTo('9')
 })
