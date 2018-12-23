@@ -9,10 +9,12 @@ import Users from 'meteor/vulcan:users'
 import { newMutation } from 'meteor/vulcan:core'
 import Contacts from '../modules/contacts/collection.js'
 import Projects from '../modules/projects/collection.js'
+import PastProjects from '../modules/past-projects/collection.js'
 import Offices from '../modules/offices/collection.js'
 import Statistics from '../modules/statistics/collection.js'
 import seedContacts from '../components/contacts/_contacts3.js'
 import seedProjects from '../components/projects/_projects.js'
+import seedPastProjects from '../components/past-projects/_3past-projects.js'
 import seedOffices from '../components/offices/_offices2.js'
 import seedStatistics from '../modules/statistics/_statistics.js'
 
@@ -68,6 +70,17 @@ Meteor.startup(() => {
     Promise.awaitAll(seedProjects.map(document => newMutation({
       action: 'projects.new',
       collection: Projects,
+      document,
+      currentUser,
+      validate: false
+    })))
+  }
+  if (PastProjects.find().fetch().length === 0) {
+    // eslint-disable-next-line no-console
+    console.log('// creating dummy past-projects')
+    Promise.awaitAll(seedPastProjects.map(document => newMutation({
+      action: 'past-projects.create',
+      collection: PastProjects,
       document,
       currentUser,
       validate: false
