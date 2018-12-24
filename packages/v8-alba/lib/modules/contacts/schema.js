@@ -29,6 +29,12 @@ const linkGroup = {
   order: 40
 }
 
+const pastProjectGroup = {
+  name: 'pastProjects',
+  label: 'Past Projects',
+  order: 50
+}
+
 const projectSubSchema = new SimpleSchema({
   projectId: {
     type: String,
@@ -38,6 +44,37 @@ const projectSubSchema = new SimpleSchema({
     insertableBy: ['members'],
     editableBy: ['members'],
     options: props => props.data.projects.results.map(project => ({
+      value: project._id,
+      label: project.projectTitle
+    }))
+  },
+  projectTitle: {
+    type: String,
+    optional: true,
+    hidden: true,
+    viewableBy: ['members'],
+    insertableBy: ['members'],
+    editableBy: ['members']
+  },
+  titleForProject: {
+    type: String,
+    optional: true,
+    hidden: true,
+    viewableBy: ['members'],
+    insertableBy: ['members'],
+    editableBy: ['members']
+  }
+})
+
+const pastProjectSubSchema = new SimpleSchema({
+  projectId: {
+    type: String,
+    control: 'SelectProjectIdNameTitle',
+    optional: true,
+    viewableBy: ['members'],
+    insertableBy: ['members'],
+    editableBy: ['members'],
+    options: props => props.data.pastProjects.results.map(project => ({
       value: project._id,
       label: project.projectTitle
     }))
@@ -325,36 +362,27 @@ const schema = {
     type: projectSubSchema
   },
 
-  // projectsCount: {
-  //   type: Number,
-  //   optional: true,
-  //   viewableBy: ['guests'],
-  //   resolveAs: {
-  //     type: 'Int',
-  //     resolver: (contact, args, { Projects }) => {
-  //       const projectsCount = Projects.find({ contactId: contact._id }).count();
-  //       return projectsCount;
-  //     },
-  //   }
-  // },
-  // projects: {
-  //   type: Object,
-  //   optional: true,
-  //   viewableBy: ['members'],
-  //   resolveAs: {
-  //     arguments: 'limit: Int = 5',
-  //     type: '[Project]',
-  //     resolver: (contact, { limit }, { currentUser, Users, Projects }) => {
-  //       const projects = Projects.find({_id: {$in: contactIds}}, { limit }).fetch();
-  //
-  //       // restrict documents fields
-  //       const viewableProjects = _.filter(projects, projects => Projects.checkAccess(currentUser, projects));
-  //       const restrictedProjects = Users.restrictViewableFields(currentUser, Projects, viewableProjects);
-  //
-  //       return restrictedProjects;
-  //     }
-  //   }
-  // },
+  // A contact has many pastProjects
+  pastProjects: {
+    label: 'Past Projects',
+    type: Array,
+    optional: true,
+    viewableBy: ['members'],
+    insertableBy: ['members'],
+    editableBy: ['members'],
+    query: `
+      pastProjects{
+        results{
+          _id
+          projectTitle
+        }
+      }
+    `,
+    group: pastProjectGroup
+  },
+  'pastProjects.$': {
+    type: pastProjectSubSchema
+  },
 
   // GraphQL only fields
 

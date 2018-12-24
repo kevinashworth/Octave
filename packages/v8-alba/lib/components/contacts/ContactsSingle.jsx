@@ -68,6 +68,17 @@ const ContactsSingle = (props) => {
             )}
           </CardBody>
           }
+          {contact.pastProjects &&
+          <CardBody>
+            <CardTitle>Past Projects</CardTitle>
+            {contact.pastProjects.map(project =>
+              <CardText key={project.projectId}>
+                <b><Link to={`/past-projects/${project.projectId}`}>{project.projectTitle}</Link></b>
+                {project.titleForProject && ` (${project.titleForProject})`}
+              </CardText>
+            )}
+          </CardBody>
+          }
           {contact.links &&
           <CardBody>
             <CardText>
