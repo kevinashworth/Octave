@@ -7,27 +7,6 @@ import { isEmptyValue } from '../helpers.js'
 import { ACTIVE_PROJECT_STATUSES_ARRAY } from '../constants.js'
 import _ from 'lodash'
 
-let browserHistory
-try {
-  browserHistory = require('react-router').browserHistory
-} catch (e) {
-  // swallow errors
-}
-function redirect (redirect) {
-  if (Meteor.isClient) {
-    if (window.history) {
-      // Run after all app specific redirects, i.e. to the login screen.
-      Meteor.setTimeout(() => {
-        if (browserHistory) {
-          browserHistory.push(redirect)
-        } else {
-          window.history.pushState({}, 'redirect', redirect)
-        }
-      }, 100)
-    }
-  }
-}
-
 /*
 When updating a contact on a pastproject, also update that contact with the pastproject.
 I get confused, so here's a description:
@@ -184,16 +163,13 @@ async function PastProjectUpdateStatus ({ currentUser, document, newDocument }) 
     if (newProject.data.projectTitle === newDocument.projectTitle) {
       const deletedPastProject = await deletePastProject()
       console.log('PastProjectUpdateStatus deleted past project', deletedPastProject)
-      await redirect('/past-projects/')
-      return null
     }
   }
-  return newDocument
 }
 
 addCallback('pastproject.update.async', PastProjectUpdateStatus)
-// addCallback('pastproject.update.after', PastProjectEditUpdateContacts)
-// addCallback('pastproject.update.after', PastProjectEditUpdateOffice)
-// addCallback('pastproject.update.before', PastProjectEditUpdateOfficeBefore)
-// addCallback('pastproject.create.after', PastProjectEditUpdateContacts)
-// addCallback('pastproject.create.after', PastProjectEditUpdateOffice)
+addCallback('pastproject.update.after', PastProjectEditUpdateContacts)
+addCallback('pastproject.update.after', PastProjectEditUpdateOffice)
+addCallback('pastproject.update.before', PastProjectEditUpdateOfficeBefore)
+addCallback('pastproject.create.after', PastProjectEditUpdateContacts)
+addCallback('pastproject.create.after', PastProjectEditUpdateOffice)

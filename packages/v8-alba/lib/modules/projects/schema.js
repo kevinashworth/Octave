@@ -66,8 +66,10 @@ const schema = {
     type: Date,
     optional: true,
     canRead: 'guests',
-    onInsert: () => {
-      return new Date()
+    onInsert: (o) => {
+      if (!o.createdAt) { // keep createdAt from a past-project being made a project
+        return new Date()
+      }
     }
   },
   userId: {

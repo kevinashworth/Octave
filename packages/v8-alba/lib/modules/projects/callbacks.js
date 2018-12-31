@@ -10,27 +10,6 @@ import { PAST_PROJECT_STATUSES_ARRAY } from '../constants.js'
 import _ from 'lodash'
 import moment from 'moment'
 
-let browserHistory
-try {
-  browserHistory = require('react-router').browserHistory
-} catch (e) {
-  // swallow errors
-}
-function redirect (redirect) {
-  if (Meteor.isClient) {
-    if (window.history) {
-      // Run after all app specific redirects, i.e. to the login screen.
-      Meteor.setTimeout(() => {
-        if (browserHistory) {
-          browserHistory.push(redirect)
-        } else {
-          window.history.pushState({}, 'redirect', redirect)
-        }
-      }, 100)
-    }
-  }
-}
-
 /*
 When updating a contact on a project, also update that contact with the project.
 I get confused, so here's a description:
@@ -252,11 +231,8 @@ async function ProjectUpdateStatus ({ currentUser, document, newDocument }) {
     if (newProject.data.projectTitle === newDocument.projectTitle) {
       const deletedProject = await deleteProject()
       console.log('ProjectUpdateStatus deleted  project', deletedProject)
-      await redirect('/projects/')
-      return null
     }
   }
-  return newDocument
 }
 
 addCallback('project.update.async', ProjectUpdateStatus)

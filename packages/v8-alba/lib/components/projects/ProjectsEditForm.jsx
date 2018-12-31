@@ -3,6 +3,8 @@ import Users from 'meteor/vulcan:users'
 import React from 'react'
 import { withRouter } from 'react-router'
 import Projects from '../../modules/projects/collection.js'
+import { PAST_PROJECT_STATUSES_ARRAY } from '../../modules/constants.js'
+import _ from 'lodash'
 
 const ProjectsEditForm = ({ documentId, params, router, toggle, currentUser }) => {
   const theDocumentId = documentId || params._id
@@ -14,7 +16,9 @@ const ProjectsEditForm = ({ documentId, params, router, toggle, currentUser }) =
         mutationFragment={getFragment('ProjectsEditFragment')}
         showRemove={Users.canDo(currentUser, ['project.delete.own', 'project.delete.all'])}
         successCallback={document => {
-          if (toggle) {
+          if (_.includes(PAST_PROJECT_STATUSES_ARRAY, document.status)) {
+            router.push(`/past-projects/${theDocumentId}/${document.slug}`)
+          } else if (toggle) {
             toggle()
           } else {
             router.push(`/projects/${theDocumentId}/${document.slug}`)
