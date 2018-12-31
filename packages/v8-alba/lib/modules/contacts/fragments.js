@@ -38,6 +38,7 @@ registerFragment(/* GraphQL */ `
     theState
     theZip
     projects
+    pastProjects
     offices
     slug
   }
@@ -60,6 +61,8 @@ registerFragment(/* GraphQL */ `
     theCity
     theState
     theZip
+    projects
+    pastProjects
     slug
   }
 `)

@@ -50,19 +50,28 @@ const PROJECT_TYPES_ENUM = [
   { value: 'New Media', label: 'New Media' }
 ]
 
-const PROJECT_STATUSES_ENUM = [
+const ACTIVE_PROJECT_STATUSES_ENUM = [
   { value: 'Casting', label: 'Casting' },
   { value: 'Ordered', label: 'Ordered' },
   { value: 'Pre-Prod.', label: 'Pre-Prod.' },
   { value: 'Shooting', label: 'Shooting' },
   { value: 'See Notes', label: 'See Notes' },
   { value: 'On Hiatus', label: 'On Hiatus' },
-  { value: 'On Hold', label: 'On Hold' },
+  { value: 'On Hold', label: 'On Hold' }
+]
+
+const PAST_PROJECT_STATUSES_ENUM = [
   { value: 'Relocated', label: 'Relocated' },
   { value: 'Unknown', label: 'Unknown' },
   { value: 'Wrapped', label: 'Wrapped' },
   { value: 'Canceled', label: 'Canceled' }
 ]
+
+const PROJECT_STATUSES_ENUM = ACTIVE_PROJECT_STATUSES_ENUM.concat(PAST_PROJECT_STATUSES_ENUM)
+
+const ACTIVE_PROJECT_STATUSES_ARRAY = ACTIVE_PROJECT_STATUSES_ENUM.map(o => o.label)
+const PAST_PROJECT_STATUSES_ARRAY = PAST_PROJECT_STATUSES_ENUM.map(o => o.label)
+const PROJECT_STATUSES_ARRAY = ACTIVE_PROJECT_STATUSES_ARRAY.concat(PAST_PROJECT_STATUSES_ARRAY)
 
 module.exports = {
   DATE_FORMAT_LONG,
@@ -71,5 +80,10 @@ module.exports = {
   PROJECT_ENUM,
   CASTING_TITLES_ENUM,
   PROJECT_TYPES_ENUM,
-  PROJECT_STATUSES_ENUM
+  ACTIVE_PROJECT_STATUSES_ENUM,
+  PAST_PROJECT_STATUSES_ENUM,
+  PROJECT_STATUSES_ENUM,
+  ACTIVE_PROJECT_STATUSES_ARRAY,
+  PAST_PROJECT_STATUSES_ARRAY,
+  PROJECT_STATUSES_ARRAY
 }

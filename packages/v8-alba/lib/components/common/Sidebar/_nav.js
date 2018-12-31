@@ -57,6 +57,11 @@ export default {
       name: 'Projects',
       url: '/projects/datatable',
       icon: 'fa fa-camera'
+    },
+    {
+      name: 'Past Projects',
+      url: '/past-projects/datatable',
+      icon: 'fa fa-camera'
     }
     // {
     //   name: 'Modals',

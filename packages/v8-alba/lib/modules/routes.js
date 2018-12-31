@@ -31,7 +31,7 @@ addRoute([
 ])
 
 addRoute([
-  { path: '/offices/list', name: 'Offices', componentName: 'OfficesListGroup' },
+  { path: '/offices/list', name: 'Offices List', componentName: 'OfficesListGroup' },
   { path: '/offices/:_id/edit', name: 'offices.edit', componentName: 'OfficesEditForm' },
   { path: '/offices/:_id(/:slug)', name: 'offices.single', componentName: 'OfficesSingle' }
 ], 'Offices')
@@ -41,10 +41,20 @@ addRoute([
 ])
 
 addRoute([
-  { path: '/projects/datatable', name: 'Projects', componentName: 'ProjectsDataTable' },
+  { path: '/projects/datatable', name: 'Projects Table', componentName: 'ProjectsDataTable' },
   { path: '/projects/:_id/edit', name: 'projects.edit', componentName: 'ProjectsEditForm' },
   { path: '/projects/:_id(/:slug)', name: 'projects.single', componentName: 'ProjectSingle' }
 ], 'Projects')
+
+addRoute([
+  { path: '/past-projects', name: 'Past Projects', componentName: 'PastProjects' }, 'Home'
+])
+
+addRoute([
+  { path: '/past-projects/datatable', name: 'Past Projects Table', componentName: 'PastProjectsDataTable' },
+  { path: '/past-projects/:_id/edit', name: 'pastprojects.edit', componentName: 'PastProjectsEditForm' },
+  { path: '/past-projects/:_id(/:slug)', name: 'pastprojects.single', componentName: 'PastProjectSingle' }
+], 'Past Projects')
 
 addRoute([
   { path: '/statistics/list', name: 'StatisticsList', componentName: 'StatisticsList' },

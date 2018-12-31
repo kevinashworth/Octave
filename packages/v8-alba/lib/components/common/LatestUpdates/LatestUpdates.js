@@ -5,6 +5,7 @@ import { Card, CardBody, CardFooter, CardHeader, Col, Row } from 'reactstrap'
 import Contacts from '../../../modules/contacts/collection.js'
 import Offices from '../../../modules/offices/collection.js'
 import Projects from '../../../modules/projects/collection.js'
+import PastProjects from '../../../modules/past-projects/collection.js'
 import moment from 'moment'
 import { DATE_FORMAT_SHORT_FRIENDLY } from '../../../modules/constants.js'
 
@@ -104,7 +105,7 @@ registerComponent({
   hocs: [[withMulti, officeOptions]]
 })
 
-class LatestActiveProjectUpdates extends Component {
+class LatestProjectUpdates extends Component {
   render () {
     if (this.props.loading) {
       return (<div><Components.Loading /></div>)
@@ -145,20 +146,16 @@ class LatestActiveProjectUpdates extends Component {
 const projectOptions = {
   collection: Projects,
   fragmentName: 'ProjectsSingleFragment',
-  limit: 6,
-  terms: {
-    view: 'collectionWithStatus',
-    status: { $in: ['Casting', 'Ordered', 'Pre-Prod.', 'Shooting', 'See Notes', 'On Hiatus', 'On Hold'] }
-  }
+  limit: 6
 }
 
 registerComponent({
-  name: 'LatestActiveProjectUpdates',
-  component: LatestActiveProjectUpdates,
+  name: 'LatestProjectUpdates',
+  component: LatestProjectUpdates,
   hocs: [[withMulti, projectOptions]]
 })
 
-class LatestInactiveProjectUpdates extends Component {
+class LatestPastProjectUpdates extends Component {
   render () {
     if (this.props.loading) {
       return (<div><Components.Loading /></div>)
@@ -170,7 +167,7 @@ class LatestInactiveProjectUpdates extends Component {
           <Col xs='12' sm='6' md='4' key={project._id}>
             <Card className='card-accent-secondary'>
               <CardHeader>
-                <b><Link to={`/projects/${project._id}/${project.slug}`}>{project.projectTitle}</Link></b>
+                <b><Link to={`/past-projects/${project._id}/${project.slug}`}>{project.projectTitle}</Link></b>
               </CardHeader>
               <CardBody>
                 {project.projectType.indexOf('TV') === 0 || project.projectType.indexOf('Pilot') === 0
@@ -179,7 +176,7 @@ class LatestInactiveProjectUpdates extends Component {
                 {project.castingCompany}<br />
               </CardBody>
               <CardFooter>
-                <small className='text-muted'>Project archived {moment(project.updatedAt).format(DATE_FORMAT_SHORT_FRIENDLY)}</small>
+                <small className='text-muted'>Past Project as of {moment(project.updatedAt).format(DATE_FORMAT_SHORT_FRIENDLY)}</small>
               </CardFooter>
             </Card>
           </Col>
@@ -189,20 +186,16 @@ class LatestInactiveProjectUpdates extends Component {
   }
 }
 
-const projectOptionsInactive = {
-  collection: Projects,
-  fragmentName: 'ProjectsSingleFragment',
-  limit: 6,
-  terms: {
-    view: 'collectionWithStatus',
-    status: { $in: ['Canceled', 'Wrapped', 'Unknown'] }
-  }
+const projectOptionsPast = {
+  collection: PastProjects,
+  fragmentName: 'PastProjectsSingleFragment',
+  limit: 6
 }
 
 registerComponent({
-  name: 'LatestInactiveProjectUpdates',
-  component: LatestInactiveProjectUpdates,
-  hocs: [[withMulti, projectOptionsInactive]]
+  name: 'LatestPastProjectUpdates',
+  component: LatestPastProjectUpdates,
+  hocs: [[withMulti, projectOptionsPast]]
 })
 
 class LatestUpdates extends Component {
@@ -211,8 +204,8 @@ class LatestUpdates extends Component {
       <div className='animated fadeIn'>
         <Components.LatestContactUpdates />
         <Components.LatestOfficeUpdates />
-        <Components.LatestActiveProjectUpdates />
-        <Components.LatestInactiveProjectUpdates />
+        <Components.LatestProjectUpdates />
+        <Components.LatestPastProjectUpdates />
       </div>
     )
   }
