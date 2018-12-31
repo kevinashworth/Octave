@@ -73,7 +73,7 @@ class PastProjectFilters extends PureComponent {
       }
     }
     if (event.target.name === 'project-status') {
-      this.props.actions.toggleProjectStatusFilter(i)
+      this.props.actions.togglePastProjectStatusFilter(i)
       this.setState({ statusColor: 'danger' })
     }
   }
@@ -114,7 +114,7 @@ class PastProjectFilters extends PureComponent {
     var i
     if (toggle) {
       for (i = 0; i < length; i++) {
-        this.props.actions.toggleProjectStatusFilter(i)
+        this.props.actions.togglePastProjectStatusFilter(i)
       }
     } else if (active) {
       for (i = 0; i < length - 4; i++) { // Canceled, Wrapped, Unknown, Relocated are not considered Active

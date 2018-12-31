@@ -154,7 +154,7 @@ class PastProjectsDataTable extends PureComponent {
     })
     let statusFilters = []
     pastProjectStatusFilters.forEach(filter => {
-      if (filter.value) { statusFilters.push(filter.projectStatus) }
+      if (filter.value) { statusFilters.push(filter.pastProjectStatus) }
     })
     let moment1 = ''
     let moment2 = ''
@@ -195,7 +195,7 @@ class PastProjectsDataTable extends PureComponent {
           </CardHeader>
           <CardBody>
             <BootstrapTable condensed hover pagination search striped
-              data={results}
+              data={filteredResults}
               bordered={false} keyField='_id' options={this.state.options} version='4'>
               <TableHeaderColumn dataField='projectTitle' dataSort dataFormat={
                 (cell, row) => {
