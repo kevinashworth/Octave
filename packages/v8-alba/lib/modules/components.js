@@ -43,6 +43,7 @@ import '../components/common/Filter/PastProjectFilters'
 import '../components/common/Select'
 import '../components/common/SelectContactIdNameTitle'
 import '../components/common/SelectProjectIdNameTitle'
+import '../components/common/SelectPastProjectIdNameTitle'
 
 import '../components/contacts/ContactModal'
 import '../components/contacts/Contacts'

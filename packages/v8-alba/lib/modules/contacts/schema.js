@@ -69,7 +69,7 @@ const projectSubSchema = new SimpleSchema({
 const pastProjectSubSchema = new SimpleSchema({
   projectId: {
     type: String,
-    control: 'SelectProjectIdNameTitle',
+    control: 'SelectPastProjectIdNameTitle',
     optional: true,
     viewableBy: ['members'],
     insertableBy: ['members'],
