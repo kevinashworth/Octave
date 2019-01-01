@@ -58,7 +58,8 @@ function ProjectEditUpdateContacts (project) {
           newPastProjects[i] = newProject
         }
       }
-      Connectors.update(Contacts, contact._id, { $set: { pastProjects: newPastProjects } })
+      const sortedPastProjects = _.sortBy(newPastProjects, ['projectTitle'])
+      Connectors.update(Contacts, contact._id, { $set: { pastProjects: sortedPastProjects } })
 
       // also remove the project from contact.projects
       if (!isEmptyValue(contact.projects)) {
