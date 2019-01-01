@@ -64,9 +64,9 @@ class ProjectSingle extends PureComponent {
             { seasonorder &&
               <CardText>{ seasonorder }</CardText>
             }
-            {project.htmlLogline
-              ? <CardText className='mb-1' dangerouslySetInnerHTML={{ __html: project.htmlLogline }} />
-              : <CardText className='mb-1'>{ project.logline }</CardText>
+            {project.htmlSummary
+              ? <CardText className='mb-1' dangerouslySetInnerHTML={{ __html: project.htmlSummary }} />
+              : <CardText className='mb-1'>{ project.summary }</CardText>
             }
             <hr />
             {project.htmlNotes

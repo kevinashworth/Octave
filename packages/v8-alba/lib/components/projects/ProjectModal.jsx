@@ -30,9 +30,9 @@ class ProjectModal extends PureComponent {
             </span>
             } &bull; { project.union }</CardTitle>
             <CardText>{ project.status }</CardText>
-            {project.htmlLogline
-              ? <CardText className='mb-1' dangerouslySetInnerHTML={{ __html: project.htmlLogline }} />
-              : <CardText className='mb-1'>{ project.logline }</CardText>
+            {project.htmlSummary
+              ? <CardText className='mb-1' dangerouslySetInnerHTML={{ __html: project.htmlSummary }} />
+              : <CardText className='mb-1'>{ project.summary }</CardText>
             }<hr />
             {project.htmlNotes
               ? <CardText className='mb-1' dangerouslySetInnerHTML={{ __html: project.htmlNotes }} />

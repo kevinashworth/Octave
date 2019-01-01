@@ -210,7 +210,7 @@ class PastProjectsDataTable extends PureComponent {
               <TableHeaderColumn dataField='castingCompany' dataSort width='23%'>Casting</TableHeaderColumn>
               <TableHeaderColumn dataField='status' dataSort>Status</TableHeaderColumn>
               <TableHeaderColumn dataField='updatedAt' dataFormat={dateFormatter} dataSort width='9%'>Updated</TableHeaderColumn>
-              <TableHeaderColumn dataField='logline' hidden>Hidden</TableHeaderColumn>
+              <TableHeaderColumn dataField='summary' hidden>Hidden</TableHeaderColumn>
               <TableHeaderColumn dataField='notes' hidden>Hidden</TableHeaderColumn>
               <TableHeaderColumn dataField='allContactNames' hidden>Hidden</TableHeaderColumn>
               <TableHeaderColumn dataField='allAddresses' hidden>Hidden</TableHeaderColumn>

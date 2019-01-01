@@ -9,7 +9,7 @@ export default [
     'union': 'SAG-AFTRA',
     'network': 'Amazon',
     'status': 'On Hiatus',
-    'logline': 'A political thriller about the Director of the State Department and his two sons, a senator and an intelligence officer working undercover as a spy...',
+    'summary': 'A political thriller about the Director of the State Department and his two sons, a senator and an intelligence officer working undercover as a spy...',
     'notes': 'Shoots and casts in Chicago.',
     'season': '1',
     'order': '10',
@@ -48,7 +48,7 @@ export default [
     'union': 'SAG-AFTRA',
     'network': 'Netflix',
     'status': 'On Hiatus',
-    'logline': "In the late 1700's in the New World, men come scraping out a new life for themselves-lawfully or not...",
+    'summary': "In the late 1700's in the New World, men come scraping out a new life for themselves-lawfully or not...",
     'notes': 'Shooting in Newfoundland. (Bridget is not currently at this office.)',
     'castingCompany': 'Denise Chamian Casting',
     'personnel': [
@@ -81,7 +81,7 @@ export default [
     'projectType': 'Feature Film',
     'union': 'SAG-AFTRA',
     'status': 'Casting',
-    'logline': 'Based on the trial of TODD WILMINGHAM, a Texas man executed for killing his children in a house fire. The case has been surrounded by controversy due to false evidence and testimony...',
+    'summary': 'Based on the trial of TODD WILMINGHAM, a Texas man executed for killing his children in a house fire. The case has been surrounded by controversy due to false evidence and testimony...',
     'notes': 'Shooting in Atlanta beginning in September. With Laura Dern, Shia Lebeouf... From Marshall Herskovitz, Edward Zwick...',
     'castingCompany': 'Vickie Thomas Casting',
     'address': {

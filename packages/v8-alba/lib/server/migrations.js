@@ -1,4 +1,5 @@
 // see https://guide.meteor.com/collections.html#migrations
+import { Utils } from 'meteor/vulcan:core'
 import { Migrations } from 'meteor/percolate:migrations'
 import Contacts from '../modules/contacts/collection.js'
 import Projects from '../modules/projects/collection.js'
@@ -6,6 +7,7 @@ import PastProjects from '../modules/past-projects/collection.js'
 import Statistics from '../modules/statistics/collection.js'
 import { PAST_PROJECT_STATUSES_ARRAY } from '../modules/constants.js'
 import moment from 'moment'
+import marked from 'marked'
 import reducedStats from '../modules/statistics/_stats-reduced.js'
 
 Migrations.add({
@@ -402,14 +404,54 @@ Migrations.add({
   name: 'Move past projects into PastProjects. (Currently there is no undo.)',
   up: function () {
     Projects.find({ status: { $in: PAST_PROJECT_STATUSES_ARRAY } }).forEach((project, index) => {
-      console.log('9:', project._id)
-      console.log('9:', PastProjects.insert(project))
-      console.log('9:', Projects.remove(project._id))
+      PastProjects.insert(project)
+      Projects.remove(project._id)
     })
   },
   down: function () { /* There is no undoing this one. */ }
 })
 
+Migrations.add({
+  version: 10,
+  name: 'Change logline to summary.',
+  up: function () {
+    Projects.find({ logline: { $exists: true } }).forEach((project) => {
+      const newHtmlSummaryToBeSure = Utils.sanitize(marked('**SUMMARY:** ' + project.logline))
+      Projects.update(project._id,
+        {
+          $set: { summary: project.logline, htmlSummary: newHtmlSummaryToBeSure },
+          $unset: { logline: 1, htmlLogline: 1 }
+        })
+    })
+    PastProjects.find({ logline: { $exists: true } }).forEach((project) => {
+      const newHtmlSummaryToBeSure = Utils.sanitize(marked('**SUMMARY:** ' + project.logline))
+      PastProjects.update(project._id,
+        {
+          $set: { summary: project.logline, htmlSummary: newHtmlSummaryToBeSure },
+          $unset: { logline: 1, htmlLogline: 1 }
+        })
+    })
+  },
+  down: function () {
+    Projects.find({ summary: { $exists: true } }).forEach((project) => {
+      const newHtmlLoglineToBeSure = Utils.sanitize(marked('**LOG LINE:** ' + project.summary))
+      Projects.update(project._id,
+        {
+          $set: { logline: project.summary, htmlLogline: newHtmlLoglineToBeSure },
+          $unset: { summary: 1, htmlSummary: 1 }
+        })
+    })
+    PastProjects.find({ summary: { $exists: true } }).forEach((project) => {
+      const newHtmlLoglineToBeSure = Utils.sanitize(marked('**LOG LINE:** ' + project.summary))
+      PastProjects.update(project._id,
+        {
+          $set: { logline: project.summary, htmlLogline: newHtmlLoglineToBeSure },
+          $unset: { summary: 1, htmlSummary: 1 }
+        })
+    })
+  }
+})
+
 Meteor.startup(() => {
-  Migrations.migrateTo('9')
+  Migrations.migrateTo('10')
 })

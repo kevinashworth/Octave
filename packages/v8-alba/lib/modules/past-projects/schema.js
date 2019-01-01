@@ -148,9 +148,9 @@ const schema = {
     insertableBy: ['admins'],
     editableBy: ['admins']
   },
-  // Logline (Markdown)
-  logline: {
-    label: 'Logline',
+  // Summary (Markdown)
+  summary: {
+    label: 'Summary',
     type: String,
     optional: true,
     control: 'textarea', // use a textarea form component
@@ -158,8 +158,8 @@ const schema = {
     insertableBy: ['admins'],
     editableBy: ['admins']
   },
-  // HTML version of Logline
-  htmlLogline: {
+  // HTML version of Summary
+  htmlSummary: {
     type: String,
     optional: true,
     hidden: true,
@@ -167,13 +167,13 @@ const schema = {
     insertableBy: ['admins'],
     editableBy: ['admins'],
     onInsert: (project) => {
-      if (project.logline) {
-        return Utils.sanitize(marked('**LOG LINE:** ' + project.logline))
+      if (project.summary) {
+        return Utils.sanitize(marked('**SUMMARY:** ' + project.summary))
       }
     },
     onEdit: (modifier, project) => {
-      if (modifier.$set.logline) {
-        return Utils.sanitize(marked('**LOG LINE:** ' + modifier.$set.logline))
+      if (modifier.$set.summary) {
+        return Utils.sanitize(marked('**SUMMARY:** ' + modifier.$set.summary))
       }
     }
   },
