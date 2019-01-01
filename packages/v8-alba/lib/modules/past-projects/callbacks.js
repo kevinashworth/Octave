@@ -39,21 +39,39 @@ function PastProjectEditUpdateContacts (project) {
     }
     let newProjects = []
 
-    // case 1: there are no contacts on the project and project.contacts is undefined
-    if (!contact.projects) {
-      newProjects = [newProject]
-    } else {
-      const i = _.findIndex(contact.projects, { projectId: project._id })
-      newProjects = contact.projects
-      if (i < 0) {
-        // case 2: this contact is not on this project but other contacts are and we're adding this contact
-        newProjects.push(newProject)
+    if (_.includes(ACTIVE_PROJECT_STATUSES_ARRAY, project.status)) {
+      // case 1: there are no contacts on the project and project.contacts is undefined
+      if (!contact.projects) {
+        newProjects = [newProject]
       } else {
-        // case 3: this contact is on this project and we're updating the info
-        newProjects[i] = newProject
+        const i = _.findIndex(contact.projects, { projectId: project._id })
+        newProjects = contact.projects
+        if (i < 0) {
+          // case 2: this contact is not on this project but other contacts are and we're adding this contact
+          newProjects.push(newProject)
+        } else {
+          // case 3: this contact is on this project and we're updating the info
+          newProjects[i] = newProject
+        }
       }
+      Connectors.update(Contacts, contact._id, { $set: { projects: newProjects } })
+    } else {
+      // case 1: there are no contacts on the project and project.contacts is undefined
+      if (!contact.pastProjects) {
+        newProjects = [newProject]
+      } else {
+        const i = _.findIndex(contact.pastProjects, { projectId: project._id })
+        newProjects = contact.pastProjects
+        if (i < 0) {
+          // case 2: this contact is not on this project but other contacts are and we're adding this contact
+          newProjects.push(newProject)
+        } else {
+          // case 3: this contact is on this project and we're updating the info
+          newProjects[i] = newProject
+        }
+      }
+      Connectors.update(Contacts, contact._id, { $set: { pastProjects: newProjects } })
     }
-    Connectors.update(Contacts, contact._id, { $set: { projects: newProjects } })
   })
 }
 

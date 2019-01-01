@@ -40,23 +40,54 @@ function ProjectEditUpdateContacts (project) {
       projectTitle: project.projectTitle,
       titleForProject: projectContact.contactTitle
     }
-    let newProjects = []
 
-    // case 1: there are no contacts on the project and project.contacts is undefined
-    if (!contact.projects) {
-      newProjects = [newProject]
-    } else {
-      const i = _.findIndex(contact.projects, { projectId: project._id })
-      newProjects = contact.projects
-      if (i < 0) {
-        // case 2: this contact is not on this project but other contacts are and we're adding this contact
-        newProjects.push(newProject)
+    if (_.includes(PAST_PROJECT_STATUSES_ARRAY, project.status)) {
+      // project is becoming a past-project
+      var newPastProjects = []
+      // case 1: there are no pastProjects on the contact and contact.pastProjects is undefined
+      if (!contact.pastProjects) {
+        newPastProjects = [newProject]
       } else {
-        // case 3: this contact is on this project and we're updating the info
-        newProjects[i] = newProject
+        const i = _.findIndex(contact.pastProjects, { projectId: project._id })
+        newPastProjects = contact.pastProjects
+        if (i < 0) {
+          // case 2: this past-project is not on this contact but other past-projects are and we're adding this past-project
+          newPastProjects.push(newProject)
+        } else {
+          // case 3: this past-project is on this contact and we're updating the info
+          newPastProjects[i] = newProject
+        }
       }
+      Connectors.update(Contacts, contact._id, { $set: { pastProjects: newPastProjects } })
+
+      // also remove the project from contact.projects
+      if (!isEmptyValue(contact.projects)) {
+        var newProjects = contact.projects
+        const i = _.findIndex(contact.projects, { projectId: project._id })
+        if (i > -1) {
+          newProjects.splice(i, 1)
+          Connectors.update(Contacts, contact._id, { $set: { projects: newProjects } })
+        }
+      }
+    } else {
+      // project remains a project
+      newProjects = []
+      // case 1: there are no projects on the contact and contact.projects is undefined
+      if (isEmptyValue(contact.projects)) {
+        newProjects = [newProject]
+      } else {
+        const i = _.findIndex(contact.projects, { projectId: project._id })
+        newProjects = contact.projects
+        if (i < 0) {
+          // case 2: this project is not on this contact but other projects are and we're adding this project
+          newProjects.push(newProject)
+        } else {
+          // case 3: this project is on this contact and we're updating the info
+          newProjects[i] = newProject
+        }
+      }
+      Connectors.update(Contacts, contact._id, { $set: { projects: newProjects } })
     }
-    Connectors.update(Contacts, contact._id, { $set: { projects: newProjects } })
   })
 }
 
@@ -198,39 +229,39 @@ async function ProjectUpdateStatus ({ currentUser, document, newDocument }) {
   const newIsPast = _.includes(PAST_PROJECT_STATUSES_ARRAY, newDocument.status)
   console.log('ProjectUpdateStatus says newIsPast is', newIsPast)
 
-  const createNewPastProject = async () => {
-    try {
-      return await createMutator({
-        collection: PastProjects,
-        document: newDocument,
-        currentUser: currentUser,
-        validate: false
-      })
-    } catch (err) {
-      console.error('error in createNewProject:', err)
-    }
-  }
-
-  const deleteProject = async () => {
-    try {
-      return await deleteMutator({
-        collection: Projects,
-        documentId: document._id,
-        currentUser: currentUser,
-        validate: false
-      })
-    } catch (err) {
-      console.error('error in deletePastProject:', err)
-    }
-  }
-
   if (newIsPast) {
+    const createNewPastProject = async () => {
+      try {
+        return await createMutator({
+          collection: PastProjects,
+          document: newDocument,
+          currentUser: currentUser,
+          validate: false
+        })
+      } catch (err) {
+        console.error('error in createNewProject:', err)
+      }
+    }
+
+    const deleteProject = async () => {
+      try {
+        return await deleteMutator({
+          collection: Projects,
+          documentId: document._id,
+          currentUser: currentUser,
+          validate: false
+        })
+      } catch (err) {
+        console.error('error in deletePastProject:', err)
+      }
+    }
+
     const newProject = await createNewPastProject()
     console.log('PastProjectUpdateStatus created project', newProject)
     // if the new project is created and matches (TODO: matches what, exactly?), delete current
     if (newProject.data.projectTitle === newDocument.projectTitle) {
       const deletedProject = await deleteProject()
-      console.log('ProjectUpdateStatus deleted  project', deletedProject)
+      console.log('ProjectUpdateStatus deleted project', deletedProject)
     }
   }
 }
