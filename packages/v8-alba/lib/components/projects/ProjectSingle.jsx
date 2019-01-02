@@ -89,11 +89,11 @@ class ProjectSingle extends PureComponent {
             }
             {project.contacts
               ? project.contacts.map(contact => <Components.ProjectsContactDetail key={contact.contactId} contact={contact} />)
-              : <CardText>No contacts yet. ADD ONE!</CardText>
+              : <CardText>No contacts yet.</CardText>
             }
             {project.addresses
               ? project.addresses.map(address => <Components.ProjectsAddressDetail key={address} address={address} />)
-              : <CardText>No addresses yet. ADD ONE!</CardText>
+              : <CardText>No addresses yet.</CardText>
             }
             {project.contactId}
           </CardBody>
