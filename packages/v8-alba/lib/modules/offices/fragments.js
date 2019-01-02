@@ -22,6 +22,7 @@ registerFragment(/* GraphQL */ `
     htmlBody
     links
     projects
+    pastProjects
     contacts
     addresses
     street

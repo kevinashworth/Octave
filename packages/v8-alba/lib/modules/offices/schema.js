@@ -36,6 +36,12 @@ const linkGroup = {
   order: 40
 }
 
+const pastProjectGroup = {
+  name: 'pastProjects',
+  label: 'Past Projects',
+  order: 50
+}
+
 const contactSchema = new SimpleSchema({
   contactId: {
     type: String,
@@ -76,6 +82,21 @@ const projectSubSchema = new SimpleSchema({
     canCreate: ['members'],
     canUpdate: ['members'],
     options: props => props.data.projects.results.map(project => ({
+      value: project._id,
+      label: project.projectTitle
+    }))
+  }
+})
+
+const pastProjectSubSchema = new SimpleSchema({
+  projectId: {
+    type: String,
+    control: 'MySelect',
+    optional: true,
+    canRead: ['members'],
+    canCreate: ['members'],
+    canUpdate: ['members'],
+    options: props => props.data.pastProjects.results.map(project => ({
       value: project._id,
       label: project.projectTitle
     }))
@@ -222,6 +243,28 @@ const schema = {
   },
   'projects.$': {
     type: projectSubSchema
+  },
+
+  // A contact has many pastProjects
+  pastProjects: {
+    label: 'Past Projects',
+    type: Array,
+    optional: true,
+    viewableBy: ['members'],
+    insertableBy: ['members'],
+    editableBy: ['members'],
+    query: `
+      pastProjects{
+        results{
+          _id
+          projectTitle
+        }
+      }
+    `,
+    group: pastProjectGroup
+  },
+  'pastProjects.$': {
+    type: pastProjectSubSchema
   },
 
   // An office has many contacts
