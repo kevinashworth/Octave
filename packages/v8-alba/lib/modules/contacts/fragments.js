@@ -30,13 +30,8 @@ registerFragment(/* GraphQL */ `
     allLinks
     addresses
     allAddresses
+    theAddress
     theLocation
-    theStreet
-    theStreet1
-    theStreet2
-    theCity
-    theState
-    theZip
     projects
     pastProjects
     offices

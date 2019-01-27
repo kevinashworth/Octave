@@ -1,9 +1,10 @@
 import { Utils } from 'meteor/vulcan:core'
 import SimpleSchema from 'simpl-schema'
 import marked from 'marked'
+// import Offices from '../offices/collection.js'
 import { addressSubSchema, linkSubSchema } from '../shared_schemas.js'
 import { CASTING_TITLES_ENUM } from '../constants.js'
-import { getFullAddress, getFullNameFromContact, isEmptyValue } from '../helpers.js'
+import { getAddress, getFullAddress, getFullNameFromContact } from '../helpers.js'
 
 const projectGroup = {
   name: 'projects',
@@ -40,9 +41,9 @@ const projectSubSchema = new SimpleSchema({
     type: String,
     control: 'SelectProjectIdNameTitle',
     optional: true,
-    viewableBy: ['members'],
-    insertableBy: ['members'],
-    editableBy: ['members'],
+    canRead: ['members'],
+    canCreate: ['members'],
+    canUpdate: ['members'],
     options: props => props.data.projects.results.map(project => ({
       value: project._id,
       label: project.projectTitle
@@ -52,17 +53,17 @@ const projectSubSchema = new SimpleSchema({
     type: String,
     optional: true,
     hidden: true,
-    viewableBy: ['members'],
-    insertableBy: ['members'],
-    editableBy: ['members']
+    canRead: ['members'],
+    canCreate: ['members'],
+    canUpdate: ['members']
   },
   titleForProject: {
     type: String,
     optional: true,
     hidden: true,
-    viewableBy: ['members'],
-    insertableBy: ['members'],
-    editableBy: ['members']
+    canRead: ['members'],
+    canCreate: ['members'],
+    canUpdate: ['members']
   }
 })
 
@@ -71,9 +72,9 @@ const pastProjectSubSchema = new SimpleSchema({
     type: String,
     control: 'SelectPastProjectIdNameTitle',
     optional: true,
-    viewableBy: ['members'],
-    insertableBy: ['members'],
-    editableBy: ['members'],
+    canRead: ['members'],
+    canCreate: ['members'],
+    canUpdate: ['members'],
     options: props => props.data.pastProjects.results.map(project => ({
       value: project._id,
       label: project.projectTitle
@@ -83,17 +84,17 @@ const pastProjectSubSchema = new SimpleSchema({
     type: String,
     optional: true,
     hidden: true,
-    viewableBy: ['members'],
-    insertableBy: ['members'],
-    editableBy: ['members']
+    canRead: ['members'],
+    canCreate: ['members'],
+    canUpdate: ['members']
   },
   titleForProject: {
     type: String,
     optional: true,
     hidden: true,
-    viewableBy: ['members'],
-    insertableBy: ['members'],
-    editableBy: ['members']
+    canRead: ['members'],
+    canCreate: ['members'],
+    canUpdate: ['members']
   }
 })
 
@@ -118,12 +119,12 @@ const schema = {
   _id: {
     type: String,
     optional: true,
-    viewableBy: 'guests'
+    canRead: 'guests'
   },
   createdAt: {
     type: Date,
     optional: true,
-    viewableBy: 'guests',
+    canRead: 'guests',
     onInsert: () => {
       return new Date()
     }
@@ -131,7 +132,7 @@ const schema = {
   userId: {
     type: String,
     optional: true,
-    viewableBy: ['members']
+    canRead: ['members']
   },
 
   // custom properties
@@ -140,32 +141,32 @@ const schema = {
     label: 'First',
     type: String,
     optional: true,
-    viewableBy: 'guests',
-    insertableBy: ['members'],
-    editableBy: ['members']
+    canRead: 'guests',
+    canCreate: ['members'],
+    canUpdate: ['members']
   },
   middleName: {
     label: 'Middle',
     type: String,
     optional: true,
-    viewableBy: 'guests',
-    insertableBy: ['members'],
-    editableBy: ['members']
+    canRead: 'guests',
+    canCreate: ['members'],
+    canUpdate: ['members']
   },
   lastName: {
     label: 'Last',
     type: String,
     optional: true,
-    viewableBy: 'guests',
-    insertableBy: ['members'],
-    editableBy: ['members']
+    canRead: 'guests',
+    canCreate: ['members'],
+    canUpdate: ['members']
   },
   displayName: {
     type: String,
     optional: true,
-    viewableBy: 'guests',
-    insertableBy: ['members'],
-    editableBy: ['members'],
+    canRead: 'guests',
+    canCreate: ['members'],
+    canUpdate: ['members'],
     onInsert: (contact) => getFullNameFromContact(contact),
     onEdit: (modifier, contact) => {
       if (modifier.$set.displayName) {
@@ -186,42 +187,42 @@ const schema = {
     options: () => {
       return CASTING_TITLES_ENUM
     },
-    viewableBy: 'guests',
-    insertableBy: ['members'],
-    editableBy: ['members']
+    canRead: 'guests',
+    canCreate: ['members'],
+    canUpdate: ['members']
   },
   gender: {
     label: 'Gender',
     type: String,
     optional: true,
-    viewableBy: 'guests',
-    insertableBy: ['members'],
-    editableBy: ['members']
+    canRead: 'guests',
+    canCreate: ['members'],
+    canUpdate: ['members']
   },
   // Body (Markdown)
   body: {
     label: 'Notes',
     type: String,
     optional: true,
-    control: 'textarea', // use a textarea form component
-    viewableBy: ['members', 'admins'],
-    insertableBy: ['members'],
-    editableBy: ['members']
+    control: 'textarea',
+    canRead: ['members', 'admins'],
+    canCreate: ['members'],
+    canUpdate: ['members']
   },
   // HTML version of Body
   htmlBody: {
     type: String,
     optional: true,
     hidden: true,
-    viewableBy: ['members'],
-    insertableBy: ['members'],
-    editableBy: ['members'],
-    onInsert: (project) => {
-      if (project.body) {
-        return Utils.sanitize(marked(project.body))
+    canRead: ['members'],
+    canCreate: ['members'],
+    canUpdate: ['members'],
+    onInsert: (o) => {
+      if (o.body) {
+        return Utils.sanitize(marked(o.body))
       }
     },
-    onEdit: (modifier, project) => {
+    onEdit: (modifier, o) => {
       if (modifier.$set.body) {
         return Utils.sanitize(marked(modifier.$set.body))
       }
@@ -231,9 +232,9 @@ const schema = {
     label: 'Links',
     type: Array,
     optional: true,
-    viewableBy: ['members'],
-    insertableBy: ['members'],
-    editableBy: ['members'],
+    canRead: ['members'],
+    canCreate: ['members'],
+    canUpdate: ['members'],
     group: linkGroup
   },
   'links.$': {
@@ -244,9 +245,9 @@ const schema = {
     optional: true,
     canRead: ['members'],
     resolveAs: {
-      resolver: (contact) => {
-        if (contact.links) {
-          const reduced = contact.links.reduce(function (acc, cur) {
+      resolver: (o) => {
+        if (o.links) {
+          const reduced = o.links.reduce(function (acc, cur) {
             return { theGoods: acc.theGoods + cur.platformName + cur.profileName + cur.profileLink }
           }, { theGoods: '' })
           return reduced.theGoods
@@ -258,9 +259,9 @@ const schema = {
   addresses: {
     type: Array,
     optional: true,
-    viewableBy: ['members'],
-    insertableBy: ['members'],
-    editableBy: ['members'],
+    canRead: ['members'],
+    canCreate: ['members'],
+    canUpdate: ['members'],
     group: addressGroup
   },
   'addresses.$': {
@@ -271,9 +272,9 @@ const schema = {
     optional: true,
     canRead: ['members'],
     resolveAs: {
-      resolver: (project) => {
-        if (project.addresses) {
-          return project.addresses.reduce(function (acc, cur) {
+      resolver: (o) => {
+        if (o.addresses) {
+          return o.addresses.reduce(function (acc, cur) {
             return acc + ' ' + getFullAddress(cur)
           }, '')
         }
@@ -284,13 +285,13 @@ const schema = {
   slug: {
     type: String,
     optional: true,
-    viewableBy: 'guests',
-    insertableBy: ['members'],
-    editableBy: ['members'],
-    onInsert: (contact) => {
-      return Utils.slugify(getFullNameFromContact(contact))
+    canRead: 'guests',
+    canCreate: ['members'],
+    canUpdate: ['members'],
+    onInsert: (o) => {
+      return Utils.slugify(getFullNameFromContact(o))
     },
-    onEdit: (modifier, contact) => {
+    onEdit: (modifier, o) => {
       if (modifier.$set.slug) {
         return Utils.slugify(modifier.$set.slug)
       }
@@ -309,7 +310,7 @@ const schema = {
   updatedAt: {
     type: Date,
     optional: true,
-    viewableBy: 'guests',
+    canRead: 'guests',
     onInsert: () => {
       return new Date()
     },
@@ -345,9 +346,9 @@ const schema = {
     label: 'Projects',
     type: Array,
     optional: true,
-    viewableBy: ['members'],
-    insertableBy: ['members'],
-    editableBy: ['members'],
+    canRead: ['members'],
+    canCreate: ['members'],
+    canUpdate: ['members'],
     query: `
       projects{
         results{
@@ -367,9 +368,9 @@ const schema = {
     label: 'Past Projects',
     type: Array,
     optional: true,
-    viewableBy: ['members'],
-    insertableBy: ['members'],
-    editableBy: ['members'],
+    canRead: ['members'],
+    canCreate: ['members'],
+    canUpdate: ['members'],
     query: `
       pastProjects{
         results{
@@ -390,141 +391,159 @@ const schema = {
     label: 'Full Name',
     type: String,
     optional: true,
-    viewableBy: 'guests',
+    canRead: 'guests',
     resolveAs: {
       type: 'String',
-      resolver: (contact) => getFullNameFromContact(contact)
+      resolver: (o) => getFullNameFromContact(o)
     }
   },
 
   // GraphQL only fields to ease transition from address to addresses, and also to provide a 'main' address
 
-  theStreet: {
+  theAddress: {
     label: 'Address',
-    type: String,
+    type: addressSubSchema,
     optional: true,
-    viewableBy: ['members'],
+    canRead: ['members'],
     resolveAs: {
-      type: 'String',
-      resolver: (contact) => {
-        if (contact.theStreet2) {
-          return contact.theStreet1 + ' ' + contact.theStreet2
-        }
-        return contact.theStreet1
-      }
-    }
-  },
-  theStreet1: {
-    label: 'Address',
-    type: String,
-    optional: true,
-    viewableBy: ['members'],
-    resolveAs: {
-      type: 'String',
-      resolver: (contact) => {
+      resolver: (o) => {
+        var address = null
         try {
-          if (!isEmptyValue(contact.addresses)) {
-            return contact.addresses[0].street1
-          }
+          address = getAddress({ contact: o })
         } catch (e) {
           // eslint-disable-next-line no-console
-          console.info('Problem in theStreet1 for', contact._id)
+          console.info('Problem in theAddress for', o._id)
           // eslint-disable-next-line no-console
           console.error(e)
           return 'Blvd of Broken Dreams'
         }
-        return null
+        return address
       }
     }
   },
-  theStreet2: {
-    label: '(cont)',
-    type: String,
-    optional: true,
-    viewableBy: ['members'],
-    resolveAs: {
-      type: 'String',
-      resolver: (contact) => {
-        try {
-          if (!isEmptyValue(contact.addresses)) {
-            return contact.addresses[0].street2
-          }
-        } catch (e) {
-          // eslint-disable-next-line no-console
-          console.info('Problem in theStreet2 for', contact._id)
-          // eslint-disable-next-line no-console
-          console.error(e)
-          return 'Suite Nothing'
-        }
-        return null
-      }
-    }
-  },
-  theCity: {
-    label: 'City',
-    type: String,
-    optional: true,
-    viewableBy: ['members'],
-    resolveAs: {
-      type: 'String',
-      resolver: (contact) => {
-        try {
-          if (!isEmptyValue(contact.addresses)) {
-            return contact.addresses[0].city
-          }
-        } catch (e) {
-          // eslint-disable-next-line no-console
-          console.info('Problem in theCity for', contact._id)
-          // eslint-disable-next-line no-console
-          console.error(e)
-          return 'Leicester City'
-        }
-        return null
-      }
-    }
-  },
-  theState: {
-    label: 'State',
-    type: String,
-    optional: true,
-    viewableBy: ['members'],
-    resolveAs: {
-      type: 'String',
-      resolver: (contact) => {
-        try {
-          if (!isEmptyValue(contact.addresses)) {
-            return contact.addresses[0].state
-          }
-        } catch (e) {
-          // eslint-disable-next-line no-console
-          console.info('Problem in theState for', contact._id)
-          // eslint-disable-next-line no-console
-          console.error(e)
-          return 'State of Denial'
-        }
-        return null
-      }
-    }
-  },
+  // theStreet: {
+  //   label: 'Address',
+  //   type: String,
+  //   optional: true,
+  //   canRead: ['members'],
+  //   resolveAs: {
+  //     type: 'String',
+  //     resolver: (o) => {
+  //       if (o.theStreet2) {
+  //         return o.theStreet1 + ' ' + o.theStreet2
+  //       }
+  //       return o.theStreet1
+  //     }
+  //   }
+  // },
+  // theStreet1: {
+  //   label: 'Address',
+  //   type: String,
+  //   optional: true,
+  //   canRead: ['members'],
+  //   resolveAs: {
+  //     type: 'String',
+  //     resolver: (o) => {
+  //       var street1 = null
+  //       try {
+  //         street1 = getAddress({ contact: o }).street1
+  //       } catch (e) {
+  //         // eslint-disable-next-line no-console
+  //         console.info('Problem in theStreet1 for', o._id)
+  //         // eslint-disable-next-line no-console
+  //         console.error(e)
+  //         return 'Blvd of Broken Dreams'
+  //       }
+  //       return street1
+  //     }
+  //   }
+  // },
+  // theStreet2: {
+  //   label: '(cont)',
+  //   type: String,
+  //   optional: true,
+  //   canRead: ['members'],
+  //   resolveAs: {
+  //     type: 'String',
+  //     resolver: (o) => {
+  //       var street2 = null
+  //       try {
+  //         street2 = getAddress({ contact: o }).street2
+  //       } catch (e) {
+  //         // eslint-disable-next-line no-console
+  //         console.info('Problem in theStreet2 for', o._id)
+  //         // eslint-disable-next-line no-console
+  //         console.error(e)
+  //         return 'Suite Nothing'
+  //       }
+  //       return street2
+  //     }
+  //   }
+  // },
+  // theCity: {
+  //   label: 'City',
+  //   type: String,
+  //   optional: true,
+  //   canRead: ['members'],
+  //   resolveAs: {
+  //     type: 'String',
+  //     resolver: (o) => {
+  //       var city = null
+  //       try {
+  //         city = getAddress({ contact: o }).city
+  //       } catch (e) {
+  //         // eslint-disable-next-line no-console
+  //         console.info('Problem in theCity for', o._id)
+  //         // eslint-disable-next-line no-console
+  //         console.error(e)
+  //         return 'Leicester City'
+  //       }
+  //       return city
+  //     }
+  //   }
+  // },
+  // theState: {
+  //   label: 'State',
+  //   type: String,
+  //   optional: true,
+  //   canRead: ['members'],
+  //   resolveAs: {
+  //     type: 'String',
+  //     resolver: (o) => {
+  //       var state = null
+  //       try {
+  //         state = getAddress({ contact: o }).state
+  //       } catch (e) {
+  //         // eslint-disable-next-line no-console
+  //         console.info('Problem in theState for', o._id)
+  //         // eslint-disable-next-line no-console
+  //         console.error(e)
+  //         return 'State of Denial'
+  //       }
+  //       return state
+  //     }
+  //   }
+  // },
   theLocation: {
     label: 'Location',
     type: String,
     optional: true,
-    viewableBy: 'guests',
+    canRead: 'guests',
     resolveAs: {
       type: 'String',
-      resolver: (contact) => { // have to repeat theState code, not available on its own
-        var state = ''
+      resolver: (o) => { // have to repeat theState code, not available on its own
+        var state = null
         try {
-          if (!isEmptyValue(contact.addresses)) {
-            state = contact.addresses[0].state.toLowerCase()
-          }
+          state = getAddress({ contact: o }).state
         } catch (e) {
           // eslint-disable-next-line no-console
-          console.info('Problem in theLocation for', contact._id)
+          console.info('Problem in theLocation for', o._id)
           // eslint-disable-next-line no-console
           console.error(e)
           return 'Locomotion'
+        }
+        if (!state) {
+          return 'Location Unknown'
         }
         if (state === 'ca' || state.indexOf('calif') > -1) {
           return 'CA'
@@ -535,22 +554,29 @@ const schema = {
         return 'Other'
       }
     }
-  },
-  theZip: {
-    label: 'Zip',
-    type: String,
-    optional: true,
-    viewableBy: ['members'],
-    resolveAs: {
-      type: 'String',
-      resolver: (contact) => {
-        if (!isEmptyValue(contact.addresses)) {
-          return contact.addresses[0].zip
-        }
-        return null
-      }
-    }
   }
+  // theZip: {
+  //   label: 'Zip',
+  //   type: String,
+  //   optional: true,
+  //   canRead: ['members'],
+  //   resolveAs: {
+  //     type: 'String',
+  //     resolver: (o) => {
+  //       var zip = null
+  //       try {
+  //         zip = getAddress({ contact: o }).zip
+  //       } catch (e) {
+  //         // eslint-disable-next-line no-console
+  //         console.info('Problem in theZip for', o._id)
+  //         // eslint-disable-next-line no-console
+  //         console.error(e)
+  //         return 'Zip-a-Dee-Doo-Dah'
+  //       }
+  //       return zip
+  //     }
+  //   }
+  // }
 
 }
 

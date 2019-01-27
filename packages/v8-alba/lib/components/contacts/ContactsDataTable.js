@@ -8,6 +8,7 @@ import moment from 'moment'
 import { DATE_FORMAT_SHORT } from '../../modules/constants.js'
 import Contacts from '../../modules/contacts/collection.js'
 import withContactFilters from '../../modules/filters/withContactFilters.js'
+import {createAddress} from '../../modules/helpers.js'
 
 // Set initial state. Just options I want to keep.
 // See https://github.com/amannn/react-keep-state
@@ -226,13 +227,9 @@ class ContactsDataTable extends PureComponent {
                 }
               }>Name</TableHeaderColumn>
               <TableHeaderColumn dataField='title' dataSort>Title</TableHeaderColumn>
-              <TableHeaderColumn dataField='street' dataSort width='23%'>Address</TableHeaderColumn>
-              <TableHeaderColumn dataField='theCity' dataSort>City</TableHeaderColumn>
-              <TableHeaderColumn dataField='theState' dataSort width='8%'>State</TableHeaderColumn>
-              <TableHeaderColumn dataField='theZip' dataSort width='7%'>Zip</TableHeaderColumn>
+              <TableHeaderColumn dataField='theAddress' dataSort dataFormat={createAddress}>theAddress</TableHeaderColumn>
               <TableHeaderColumn dataField='updatedAt' dataFormat={dateFormatter} dataSort width='9%'>Updated</TableHeaderColumn>
               <TableHeaderColumn dataField='allLinks' hidden>Hidden</TableHeaderColumn>
-              <TableHeaderColumn dataField='allAddresses' hidden>Hidden</TableHeaderColumn>
               <TableHeaderColumn dataField='body' hidden>Hidden</TableHeaderColumn>
             </BootstrapTable>
           </CardBody>
