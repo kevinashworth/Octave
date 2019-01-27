@@ -153,12 +153,12 @@ const schema = {
     viewableBy: ['members'],
     insertableBy: ['members'],
     editableBy: ['members'],
-    onInsert: (project) => {
-      if (project.body) {
-        return Utils.sanitize(marked(project.body))
+    onInsert: (o) => {
+      if (o.body) {
+        return Utils.sanitize(marked(o.body))
       }
     },
-    onEdit: (modifier, project) => {
+    onEdit: (modifier, o) => {
       if (modifier.$set.body) {
         return Utils.sanitize(marked(modifier.$set.body))
       }
@@ -206,10 +206,10 @@ const schema = {
     type: String,
     optional: true,
     viewableBy: ['members'],
-    onInsert: (contact) => {
-      return Utils.slugify(contact.displayName)
+    onInsert: (o) => {
+      return Utils.slugify(o.displayName)
     },
-    onEdit: (modifier, contact) => {
+    onEdit: (modifier, o) => {
       if (modifier.$set.displayName) {
         return Utils.slugify(modifier.$set.displayName)
       }
@@ -367,11 +367,11 @@ const schema = {
     viewableBy: ['members'],
     resolveAs: {
       type: 'String',
-      resolver: (contact) => {
-        if (contact.theStreet2) {
-          return contact.theStreet1 + ' ' + contact.theStreet2
+      resolver: (o) => {
+        if (o.theStreet2) {
+          return o.theStreet1 + ' ' + o.theStreet2
         }
-        return contact.theStreet1
+        return o.theStreet1
       }
     }
   },
@@ -382,14 +382,14 @@ const schema = {
     viewableBy: ['members'],
     resolveAs: {
       type: 'String',
-      resolver: (contact) => {
+      resolver: (o) => {
         try {
-          if (!isEmptyValue(contact.addresses)) {
-            return contact.addresses[0].street1
+          if (!isEmptyValue(o.addresses)) {
+            return o.addresses[0].street1
           }
         } catch (e) {
           // eslint-disable-next-line no-console
-          console.info('Problem in theStreet1 for', contact._id)
+          console.info('Problem in theStreet1 for', o._id)
           // eslint-disable-next-line no-console
           console.error(e)
           return 'Blvd of Broken Dreams'
@@ -405,14 +405,14 @@ const schema = {
     viewableBy: ['members'],
     resolveAs: {
       type: 'String',
-      resolver: (contact) => {
+      resolver: (o) => {
         try {
-          if (!isEmptyValue(contact.addresses)) {
-            return contact.addresses[0].street2
+          if (!isEmptyValue(o.addresses)) {
+            return o.addresses[0].street2
           }
         } catch (e) {
           // eslint-disable-next-line no-console
-          console.info('Problem in theStreet2 for', contact._id)
+          console.info('Problem in theStreet2 for', o._id)
           // eslint-disable-next-line no-console
           console.error(e)
           return 'Suite Nothing'
@@ -428,14 +428,14 @@ const schema = {
     viewableBy: ['members'],
     resolveAs: {
       type: 'String',
-      resolver: (contact) => {
+      resolver: (o) => {
         try {
-          if (!isEmptyValue(contact.addresses)) {
-            return contact.addresses[0].city
+          if (!isEmptyValue(o.addresses)) {
+            return o.addresses[0].city
           }
         } catch (e) {
           // eslint-disable-next-line no-console
-          console.info('Problem in theCity for', contact._id)
+          console.info('Problem in theCity for', o._id)
           // eslint-disable-next-line no-console
           console.error(e)
           return 'Leicester City'
@@ -451,14 +451,14 @@ const schema = {
     viewableBy: ['members'],
     resolveAs: {
       type: 'String',
-      resolver: (contact) => {
+      resolver: (o) => {
         try {
-          if (!isEmptyValue(contact.addresses)) {
-            return contact.addresses[0].state
+          if (!isEmptyValue(o.addresses)) {
+            return o.addresses[0].state
           }
         } catch (e) {
           // eslint-disable-next-line no-console
-          console.info('Problem in theState for', contact._id)
+          console.info('Problem in theState for', o._id)
           // eslint-disable-next-line no-console
           console.error(e)
           return 'State of Denial'
@@ -474,15 +474,15 @@ const schema = {
     viewableBy: 'guests',
     resolveAs: {
       type: 'String',
-      resolver: (contact) => { // have to repeat theState code, not available on its own
+      resolver: (o) => { // have to repeat theState code, not available on its own
         var state = ''
         try {
-          if (!isEmptyValue(contact.addresses)) {
-            state = contact.addresses[0].state.toLowerCase()
+          if (!isEmptyValue(o.addresses)) {
+            state = o.addresses[0].state.toLowerCase()
           }
         } catch (e) {
           // eslint-disable-next-line no-console
-          console.info('Problem in theLocation for', contact._id)
+          console.info('Problem in theLocation for', o._id)
           // eslint-disable-next-line no-console
           console.error(e)
           return 'Locomotion'
@@ -504,9 +504,9 @@ const schema = {
     viewableBy: ['members'],
     resolveAs: {
       type: 'String',
-      resolver: (contact) => {
-        if (!isEmptyValue(contact.addresses)) {
-          return contact.addresses[0].zip
+      resolver: (o) => {
+        if (!isEmptyValue(o.addresses)) {
+          return o.addresses[0].zip
         }
         return null
       }

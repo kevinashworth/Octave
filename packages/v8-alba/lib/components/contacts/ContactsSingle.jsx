@@ -6,7 +6,7 @@ import mapProps from 'recompose/mapProps'
 import { Button, Card, CardBody, CardFooter, CardHeader, CardLink, CardText, CardTitle, Collapse } from 'reactstrap'
 import moment from 'moment'
 import { DATE_FORMAT_LONG, DATE_FORMAT_SHORT } from '../../modules/constants.js'
-import { dangerouslyCreateAddress } from '../../modules/helpers.js'
+import { dangerouslyCreateAddress, isEmptyValue } from '../../modules/helpers.js'
 import Contacts from '../../modules/contacts/collection.js'
 
 class ContactsSingle extends PureComponent {
@@ -53,17 +53,17 @@ class ContactsSingle extends PureComponent {
                 }
               </CardText>
             </CardBody>
-            {contact.offices &&
+            {!isEmptyValue(contact.offices) &&
             <CardBody>
               <CardTitle>Offices</CardTitle>
               {contact.offices.map((o, index) =>
-                <Components.OfficeMini key={o.officeId} documentId={o.officeId} />
+                <Components.OfficeMini key={index} documentId={o.officeId} />
               )}
             </CardBody>
             }
             {contact.addresses &&
             <CardBody>
-              { contact.addresses[1] && <CardTitle>Addresses</CardTitle>}
+              {contact.addresses[0] && <CardTitle>Addresses</CardTitle>}
               {contact.addresses.map((address, index) =>
                 <CardText key={`address${index}`} dangerouslySetInnerHTML={dangerouslyCreateAddress(address)} />
               )}
