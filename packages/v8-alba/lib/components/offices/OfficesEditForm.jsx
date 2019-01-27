@@ -19,6 +19,20 @@ const OfficesEditForm = ({ documentId, params, router, toggle }) => {
             router.push(`/offices/${theDocumentId}`)
           }
         }}
+        cancelCallback={document => {
+          if (toggle) {
+            toggle()
+          } else {
+            router.push(`/offices/${theDocumentId}`)
+          }
+        }}
+        removeSuccessCallback={document => {
+          if (toggle) {
+            toggle()
+          } else {
+            router.push('/offices/')
+          }
+        }}
       />
     </div>
   )
