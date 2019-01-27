@@ -1,7 +1,7 @@
 import { Components, registerComponent, withCurrentUser, withDocument } from 'meteor/vulcan:core'
 import React, { PureComponent } from 'react'
 import { Link } from 'react-router'
-import { Button, Card, CardBody, CardFooter, CardHeader, CardLink, CardText } from 'reactstrap'
+import { Button, Card, CardBody, CardFooter, CardHeader, CardLink, CardText, CardTitle, Collapse } from 'reactstrap'
 import mapProps from 'recompose/mapProps'
 import moment from 'moment'
 import { DATE_FORMAT_LONG } from '../../modules/constants.js'
@@ -9,6 +9,16 @@ import { dangerouslyCreateAddress } from '../../modules/helpers.js'
 import Offices from '../../modules/offices/collection.js'
 
 class OfficesSingle extends PureComponent {
+  constructor (props) {
+    super(props)
+    this.toggle = this.toggle.bind(this)
+    this.state = { collapse: false }
+  }
+
+  toggle () {
+    this.setState({ collapse: !this.state.collapse })
+  }
+
   render () {
     if (this.props.loading) {
       return (<div><Components.Loading /></div>)
@@ -50,10 +60,10 @@ class OfficesSingle extends PureComponent {
           </CardBody>
           <CardBody>
             {office.projects &&
-              <CardText className='mb-0'><b>Projects</b></CardText>
+              <CardTitle><b>Projects</b></CardTitle>
             }
             {office.projects &&
-              office.projects.map(o => <Components.ProjectMini key={o.projectId} documentId={o.projectId} />)
+              office.projects.map((o, index) => <Components.ProjectMini key={`ProjectMini${index}`} documentId={o.projectId} />)
             }
           </CardBody>
           {office.links &&
@@ -68,6 +78,20 @@ class OfficesSingle extends PureComponent {
           }
           <CardFooter>{displayDate}</CardFooter>
         </Card>
+        {office.pastProjects &&
+        <div>
+          <Button color='link' onClick={this.toggle}
+            style={{ marginBottom: '1rem' }}>{`${this.state.collapse ? 'Hide' : 'Show'} Past Projects`}</Button>
+          <Collapse isOpen={this.state.collapse}>
+            <Card>
+              <CardBody>
+                <CardTitle>Past Projects</CardTitle>
+                {office.pastProjects.map((o, index) => <Components.PastProjectMini key={`PastProjectMini${index}`} documentId={o.projectId} />)}
+              </CardBody>
+            </Card>
+          </Collapse>
+        </div>
+        }
       </div>
     )
   }
