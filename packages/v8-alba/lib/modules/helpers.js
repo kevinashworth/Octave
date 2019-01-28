@@ -116,13 +116,6 @@ export const getAddress = ({ contact, office, project }) => {
   // get the first address we find, always looking in this order:
   // first on the project, office, contact,
   // then on the first listing address listed in its projects, offices, contacts
-  // var theDummyAddress = {
-  //   street1: 'Blvd of Broken Dreams',
-  //   street2: 'Suite Nothing',
-  //   city: 'Leicester City',
-  //   state: 'State of Denial',
-  //   zip: 'Zip-a-Dee-Doo-Dah'
-  // }
   var theDummyAddress = {
     street1: '',
     street2: '',
