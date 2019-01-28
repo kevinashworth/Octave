@@ -90,6 +90,27 @@ export const dangerouslyCreateAddress = (office) => {
 // copied from Vulcan/packages/vulcan-forms/lib/modules/utils.js
 export const isEmptyValue = value => (typeof value === 'undefined' || value === null || value === '' || Array.isArray(value) && value.length === 0); // eslint-disable-line
 
+export const getLocation = (address) => { // have to repeat theState code, not available on its own
+  var state = null
+  try {
+    state = address.state.toLowerCase()
+  } catch (e) {
+    // eslint-disable-next-line no-console
+    // console.error(e)
+    return 'Other'
+  }
+  if (!state) {
+    return 'Other'
+  }
+  if (state === 'ca' || state.indexOf('calif') > -1) {
+    return 'CA'
+  }
+  if (state === 'ny' || state === 'n.y.' || state === 'new york') {
+    return 'NY'
+  }
+  return 'Other'
+}
+
 export const getAddress = ({ contact, office, project }) => {
   debugger
   // get the first address we find, always looking in this order:
@@ -107,7 +128,8 @@ export const getAddress = ({ contact, office, project }) => {
     street2: '',
     city: '',
     state: '',
-    zip: ''
+    zip: '',
+    location: ''
   }
   var theAddress = theDummyAddress
 
@@ -146,6 +168,7 @@ export const getAddress = ({ contact, office, project }) => {
     }
   }
   if (!_.isEqual(theAddress, theDummyAddress)) {
+    theAddress.location = getLocation(theAddress)
     return theAddress
   }
 
@@ -184,6 +207,7 @@ export const getAddress = ({ contact, office, project }) => {
     }
   }
   if (!_.isEqual(theAddress, theDummyAddress)) {
+    theAddress.location = getLocation(theAddress)
     return theAddress
   }
 
@@ -221,6 +245,7 @@ export const getAddress = ({ contact, office, project }) => {
       }
     }
   }
+  theAddress.location = getLocation(theAddress)
   return theAddress
 }
 

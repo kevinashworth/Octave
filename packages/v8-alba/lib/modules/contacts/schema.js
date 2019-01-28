@@ -4,7 +4,7 @@ import marked from 'marked'
 // import Offices from '../offices/collection.js'
 import { addressSubSchema, linkSubSchema } from '../shared_schemas.js'
 import { CASTING_TITLES_ENUM } from '../constants.js'
-import { getAddress, getFullAddress, getFullNameFromContact } from '../helpers.js'
+import { getAddress, getFullAddress, getFullNameFromContact, getLocation } from '../helpers.js'
 
 const projectGroup = {
   name: 'projects',
@@ -418,7 +418,8 @@ const schema = {
           return 'Blvd of Broken Dreams'
         }
         return address
-      }
+      },
+      addOriginalField: true
     }
   },
   // theStreet: {
@@ -524,37 +525,18 @@ const schema = {
   //     }
   //   }
   // },
-  theLocation: {
-    label: 'Location',
-    type: String,
-    optional: true,
-    canRead: 'guests',
-    resolveAs: {
-      type: 'String',
-      resolver: (o) => { // have to repeat theState code, not available on its own
-        var state = null
-        try {
-          state = getAddress({ contact: o }).state
-        } catch (e) {
-          // eslint-disable-next-line no-console
-          console.info('Problem in theLocation for', o._id)
-          // eslint-disable-next-line no-console
-          console.error(e)
-          return 'Locomotion'
-        }
-        if (!state) {
-          return 'Location Unknown'
-        }
-        if (state === 'ca' || state.indexOf('calif') > -1) {
-          return 'CA'
-        }
-        if (state === 'ny' || state === 'n.y.' || state === 'new york') {
-          return 'NY'
-        }
-        return 'Other'
-      }
-    }
-  }
+  // theLocation: {
+  //   label: 'Location',
+  //   type: String,
+  //   optional: true,
+  //   canRead: 'guests',
+  //   resolveAs: {
+  //     type: 'String',
+  //     resolver: (o) => {
+  //       getLocation(o.theAddress)
+  //     }
+  //   }
+  // }
   // theZip: {
   //   label: 'Zip',
   //   type: String,

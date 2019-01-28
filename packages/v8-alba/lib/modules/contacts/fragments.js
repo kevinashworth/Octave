@@ -31,7 +31,6 @@ registerFragment(/* GraphQL */ `
     addresses
     allAddresses
     theAddress
-    theLocation
     projects
     pastProjects
     offices
@@ -49,13 +48,7 @@ registerFragment(/* GraphQL */ `
     body
     htmlBody
     addresses
-    theLocation
-    theStreet
-    theStreet1
-    theStreet2
-    theCity
-    theState
-    theZip
+    theAddress
     projects
     pastProjects
     slug

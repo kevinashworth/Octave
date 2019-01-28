@@ -181,16 +181,16 @@ class ContactsDataTable extends PureComponent {
 
       // if "Other" is not checked, filter per normal via titleFilters:
       if (!(_.includes(titleFilters, 'Other'))) {
-        return _.includes(locationFilters, o.theLocation) &&
+        return _.includes(locationFilters, o.theAddress.location) &&
             _.includes(titleFilters, o.title) &&
             displayThis
       } else if (_.every(titleFilters, { value: true })) {
         // if "Other" is checked and so are all the titles, do not filter by title
-        return _.includes(locationFilters, o.theLocation) &&
+        return _.includes(locationFilters, o.theAddress.location) &&
             displayThis
       } else {
         // if "Other" is checked and some are not checked, eliminate based on titles in contactTitleFilters
-        return _.includes(locationFilters, o.theLocation) &&
+        return _.includes(locationFilters, o.theAddress.location) &&
             !_.includes(otherFilters, o.title) &&
             displayThis
       }
