@@ -1,3 +1,4 @@
+import _ from 'lodash'
 import Contacts from './contacts/collection.js'
 import Offices from './offices/collection.js'
 import Projects from './projects/collection.js'
@@ -112,7 +113,6 @@ export const getLocation = (address) => { // have to repeat theState code, not a
 }
 
 export const getAddress = ({ contact, office, project }) => {
-  debugger
   // get the first address we find, always looking in this order:
   // first on the project, office, contact,
   // then on the first listing address listed in its projects, offices, contacts
@@ -126,11 +126,14 @@ export const getAddress = ({ contact, office, project }) => {
   }
   var theAddress = theDummyAddress
 
-  breakproject: if (project) {
+  if (project) {
     if (!isEmptyValue(project.addresses)) {
       if (!isEmptyValue(project.addresses[0])) {
         theAddress = project.addresses[0]
-        break breakproject
+        if (!_.isEqual(theAddress, theDummyAddress)) {
+          theAddress.location = getLocation(theAddress)
+          return theAddress
+        }
       }
     }
     if (!isEmptyValue(project.offices)) {
@@ -140,7 +143,10 @@ export const getAddress = ({ contact, office, project }) => {
           if (!isEmptyValue(office.addresses)) {
             if (!isEmptyValue(office.addresses[0])) {
               theAddress = office.addresses[0]
-              break breakproject
+              if (!_.isEqual(theAddress, theDummyAddress)) {
+                theAddress.location = getLocation(theAddress)
+                return theAddress
+              }
             }
           }
         }
@@ -153,23 +159,25 @@ export const getAddress = ({ contact, office, project }) => {
           if (!isEmptyValue(contact.addresses)) {
             if (!isEmptyValue(contact.addresses[0])) {
               theAddress = contact.addresses[0]
-              break breakproject
+              if (!_.isEqual(theAddress, theDummyAddress)) {
+                theAddress.location = getLocation(theAddress)
+                return theAddress
+              }
             }
           }
         }
       }
     }
   }
-  if (!_.isEqual(theAddress, theDummyAddress)) {
-    theAddress.location = getLocation(theAddress)
-    return theAddress
-  }
 
-  breakoffice: if (office) {
+  if (office) {
     if (!isEmptyValue(office.addresses)) {
       if (!isEmptyValue(office.addresses[0])) {
         theAddress = office.addresses[0]
-        break breakoffice
+        if (!_.isEqual(theAddress, theDummyAddress)) {
+          theAddress.location = getLocation(theAddress)
+          return theAddress
+        }
       }
     }
     if (!isEmptyValue(office.projects)) {
@@ -179,7 +187,10 @@ export const getAddress = ({ contact, office, project }) => {
           if (!isEmptyValue(project.addresses)) {
             if (!isEmptyValue(project.addresses[0])) {
               theAddress = project.addresses[0]
-              break breakoffice
+              if (!_.isEqual(theAddress, theDummyAddress)) {
+                theAddress.location = getLocation(theAddress)
+                return theAddress
+              }
             }
           }
         }
@@ -192,23 +203,25 @@ export const getAddress = ({ contact, office, project }) => {
           if (!isEmptyValue(contact.addresses)) {
             if (!isEmptyValue(contact.addresses[0])) {
               theAddress = contact.addresses[0]
-              break breakoffice
+              if (!_.isEqual(theAddress, theDummyAddress)) {
+                theAddress.location = getLocation(theAddress)
+                return theAddress
+              }
             }
           }
         }
       }
     }
   }
-  if (!_.isEqual(theAddress, theDummyAddress)) {
-    theAddress.location = getLocation(theAddress)
-    return theAddress
-  }
 
-  breakcontact: if (contact) {
+  if (contact) {
     if (!isEmptyValue(contact.addresses)) {
       if (!isEmptyValue(contact.addresses[0])) {
         theAddress = contact.addresses[0]
-        break breakcontact
+        if (!_.isEqual(theAddress, theDummyAddress)) {
+          theAddress.location = getLocation(theAddress)
+          return theAddress
+        }
       }
     }
     if (!isEmptyValue(contact.projects)) {
@@ -218,7 +231,10 @@ export const getAddress = ({ contact, office, project }) => {
           if (!isEmptyValue(project.addresses)) {
             if (!isEmptyValue(project.addresses[0])) {
               theAddress = project.addresses[0]
-              break breakcontact
+              if (!_.isEqual(theAddress, theDummyAddress)) {
+                theAddress.location = getLocation(theAddress)
+                return theAddress
+              }
             }
           }
         }
@@ -231,15 +247,16 @@ export const getAddress = ({ contact, office, project }) => {
           if (!isEmptyValue(office.addresses)) {
             if (!isEmptyValue(office.addresses[0])) {
               theAddress = office.addresses[0]
-              break breakcontact
+              if (!_.isEqual(theAddress, theDummyAddress)) {
+                theAddress.location = getLocation(theAddress)
+                return theAddress
+              }
             }
           }
         }
       }
     }
   }
-  theAddress.location = getLocation(theAddress)
-  return theAddress
 }
 
 export const getLatestAddress = ({ contact, office, project }) => {

@@ -4,7 +4,7 @@ import marked from 'marked'
 // import Offices from '../offices/collection.js'
 import { addressSubSchema, linkSubSchema } from '../shared_schemas.js'
 import { CASTING_TITLES_ENUM } from '../constants.js'
-import { getAddress, getFullAddress, getFullNameFromContact, getLocation } from '../helpers.js'
+import { getAddress, getFullAddress, getFullNameFromContact } from '../helpers.js'
 
 const projectGroup = {
   name: 'projects',
@@ -421,7 +421,7 @@ const schema = {
       },
       addOriginalField: true
     }
-  },
+  }
 }
 
 export default schema

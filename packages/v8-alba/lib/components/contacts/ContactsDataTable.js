@@ -8,7 +8,7 @@ import moment from 'moment'
 import { DATE_FORMAT_SHORT } from '../../modules/constants.js'
 import Contacts from '../../modules/contacts/collection.js'
 import withContactFilters from '../../modules/filters/withContactFilters.js'
-import {createAddress} from '../../modules/helpers.js'
+import { createAddress } from '../../modules/helpers.js'
 
 // Set initial state. Just options I want to keep.
 // See https://github.com/amannn/react-keep-state
