@@ -257,6 +257,8 @@ export const getAddress = ({ contact, office, project }) => {
       }
     }
   }
+
+  return theDummyAddress
 }
 
 export const getLatestAddress = ({ contact, office, project }) => {
