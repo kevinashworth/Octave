@@ -65,7 +65,7 @@
     "react": "^16.4.1",
     "react-addons-pure-render-mixin": "^15.4.1",
     "react-apollo": "^1.4.15",
-    "react-bootstrap": "^1.0.0-beta.3",
+    "react-bootstrap": "^1.0.0-beta.5",
     "react-bootstrap-table": "^4.3.1",
     "react-breadcrumbs": "^1.6.6",
     "react-chartjs-2": "^2.7.4",
