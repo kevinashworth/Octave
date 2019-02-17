@@ -225,7 +225,7 @@ function ProjectNewUpdateStatistics ({ newDocument }) {
   }))
 }
 
-async function ProjectUpdateStatus ({ currentUser, document, newDocument }) {
+async function ProjectUpdateStatus (newDocument, { currentUser, document }) {
   // if the new status is now an active project, create new project then remove this past project
   const newIsPast = _.includes(PAST_PROJECT_STATUSES_ARRAY, newDocument.status)
   console.log('ProjectUpdateStatus says newIsPast is', newIsPast)
