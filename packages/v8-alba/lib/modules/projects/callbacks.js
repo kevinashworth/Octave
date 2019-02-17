@@ -161,8 +161,8 @@ function ProjectEditUpdateOfficeBefore (data, { currentUser, document, newDocume
 }
 
 /* THe non-cron approach: When adding a project, update statistics */
-function ProjectNewUpdateStatistics ({ insertedDocument }) {
-  const project = insertedDocument
+function ProjectNewUpdateStatistics ({ newDocument }) {
+  const project = newDocument
   const currentUser = Users.findOne() // just get the first user available TODO:
   const theStats = Statistics.findOne()
   let newStats = {}
