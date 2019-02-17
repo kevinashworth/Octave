@@ -44,12 +44,12 @@ function OfficeEditUpdatePastProjects (office) {
   })
 }
 
-function OfficeEditUpdateContacts (data, { document, newDocument }) {
+function OfficeEditUpdateContacts (data, { document }) {
   console.group()
   console.log('Hello from OfficeEditUpdateContacts')
 
   const oldOffice = document
-  const newOffice = newDocument
+  const newOffice = data
 
   if (_.isEqual(oldOffice.contacts, newOffice.contacts)) {
     console.log('No change in contacts')

@@ -135,9 +135,9 @@ function ProjectEditUpdateOffice (project) {
   Connectors.update(Offices, office._id, { $set: { projects: newProjects } })
 }
 
-function ProjectEditUpdateOfficeBefore (data, { currentUser, document, newDocument, collection, context }) {
+function ProjectEditUpdateOfficeBefore (data, { currentUser, document }) {
   const oldOffice = document.castingOffice
-  const newOffice = newDocument.castingOffice
+  const newOffice = data.castingOffice
   // this is an office getting removed from the project,
   // so we also need to remove the project from that office
   var doIt = false
