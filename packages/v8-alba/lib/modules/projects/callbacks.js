@@ -225,9 +225,9 @@ function ProjectNewUpdateStatistics ({ newDocument }) {
   }))
 }
 
-async function ProjectUpdateStatus (newDocument, { currentUser, document }) {
+async function ProjectUpdateStatus ({ currentUser, document, oldDocument }) {
   // if the new status is now an active project, create new project then remove this past project
-  const newIsPast = _.includes(PAST_PROJECT_STATUSES_ARRAY, newDocument.status)
+  const newIsPast = _.includes(PAST_PROJECT_STATUSES_ARRAY, document.status)
   console.log('ProjectUpdateStatus says newIsPast is', newIsPast)
 
   if (newIsPast) {
@@ -235,7 +235,7 @@ async function ProjectUpdateStatus (newDocument, { currentUser, document }) {
       try {
         return await createMutator({
           collection: PastProjects,
-          document: newDocument,
+          document: document,
           currentUser: currentUser,
           validate: false
         })
@@ -260,7 +260,7 @@ async function ProjectUpdateStatus (newDocument, { currentUser, document }) {
     const newProject = await createNewPastProject()
     console.log('PastProjectUpdateStatus created project', newProject)
     // if the new project is created and matches (TODO: matches what, exactly?), delete current
-    if (newProject.data.projectTitle === newDocument.projectTitle) {
+    if (newProject.data.projectTitle === document.projectTitle) {
       const deletedProject = await deleteProject()
       console.log('ProjectUpdateStatus deleted project', deletedProject)
     }
