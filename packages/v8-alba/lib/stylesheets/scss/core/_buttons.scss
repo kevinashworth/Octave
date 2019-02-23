@@ -32,6 +32,7 @@ button {
 .btn-vudu,
 .btn-freeform,
 .btn-imdb,
+.btn-imdbpro,
 .btn-facebook,
 .btn-twitter,
 .btn-linkedin,
@@ -226,6 +227,25 @@ button {
 
 .btn-imdb {
   $color: #f5de50 !default;
+
+  background: $color;
+  &::before {
+    content: "\f2d8";
+    background: darken($color, 5%);
+
+  }
+
+  &:hover {
+    background: darken($color, 5%);
+
+    &::before {
+      background: darken($color, 10%);
+    }
+  }
+}
+
+.btn-imdbpro {
+  $color: #333 !default;
 
   background: $color;
   &::before {
