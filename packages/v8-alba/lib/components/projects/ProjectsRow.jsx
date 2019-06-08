@@ -1,6 +1,6 @@
 import { Components, registerComponent, withCurrentUser, withDocument } from 'meteor/vulcan:core'
 import React from 'react'
-import { Link } from 'react-router'
+import { Link } from 'react-router-dom'
 import { Badge, Button } from 'reactstrap'
 import moment from 'moment'
 import { DATE_FORMAT_SHORT } from '../../modules/constants.js'

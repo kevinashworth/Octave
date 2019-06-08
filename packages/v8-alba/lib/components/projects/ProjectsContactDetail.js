@@ -1,6 +1,6 @@
 import { registerComponent } from 'meteor/vulcan:core'
 import React, { PureComponent } from 'react'
-import { Link } from 'react-router'
+import { Link } from 'react-router-dom'
 // import PropTypes from 'prop-types';
 import { CardText } from 'reactstrap'
 

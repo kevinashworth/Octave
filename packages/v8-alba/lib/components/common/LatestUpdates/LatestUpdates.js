@@ -1,6 +1,6 @@
 import { Components, registerComponent, withAccess, withMulti } from 'meteor/vulcan:core'
 import React, { Component } from 'react'
-import { Link } from 'react-router'
+import { Link } from 'react-router-dom'
 import { Card, CardBody, CardFooter, CardHeader, Col, Row } from 'reactstrap'
 import Contacts from '../../../modules/contacts/collection.js'
 import Offices from '../../../modules/offices/collection.js'

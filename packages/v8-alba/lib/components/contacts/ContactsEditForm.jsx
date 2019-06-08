@@ -1,10 +1,10 @@
 import { Components, getFragment, registerComponent, withCurrentUser } from 'meteor/vulcan:core'
 import Users from 'meteor/vulcan:users'
 import React from 'react'
-import { withRouter } from 'react-router'
+import { withRouter } from 'react-router-dom'
 import Contacts from '../../modules/contacts/collection.js'
 
-const ContactsEditForm = ({ documentId, params, router, toggle, currentUser }) => {
+const ContactsEditForm = ({ documentId, params, history, toggle, currentUser }) => {
   const theDocumentId = documentId || params._id
   return (
     <div className='animated fadeIn'>
@@ -17,21 +17,21 @@ const ContactsEditForm = ({ documentId, params, router, toggle, currentUser }) =
           if (toggle) {
             toggle()
           } else {
-            router.push(`/contacts/${theDocumentId}/${document.slug}`)
+            history.push(`/contacts/${theDocumentId}/${document.slug}`)
           }
         }}
         removeSuccessCallback={document => {
           if (toggle) {
             toggle()
           } else {
-            router.push('/contacts/')
+            history.push('/contacts/')
           }
         }}
         cancelCallback={document => {
           if (toggle) {
             toggle()
           } else {
-            router.push(`/contacts/${theDocumentId}/${document.slug}`)
+            history.push(`/contacts/${theDocumentId}/${document.slug}`)
           }
         }}
       />

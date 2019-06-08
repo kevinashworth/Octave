@@ -1,6 +1,6 @@
 import { Components, registerComponent } from 'meteor/vulcan:core'
 import React from 'react'
-import { withRouter } from 'react-router'
+import { withRouter } from 'react-router-dom'
 import Statistics from '../../modules/statistics/collection.js'
 
 const StatisticsEditForm = ({ loading, documentId, params, router, toggle }) => {

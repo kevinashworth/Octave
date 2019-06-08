@@ -1,10 +1,10 @@
 import { registerComponent } from 'meteor/vulcan:core'
 import React from 'react'
-import { withRouter } from 'react-router'
+import { withRouter } from 'react-router-dom'
 
-const PastProjects = ({ children, router }) => (
+const PastProjects = ({ children, history }) => (
   <div>
-    { children || router.push('/past-projects/datatable') }
+    { children || history.push('/past-projects/datatable') }
   </div>
 )
 

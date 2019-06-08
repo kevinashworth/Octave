@@ -1,6 +1,6 @@
 import { Components, registerComponent, withCurrentUser, withDocument } from 'meteor/vulcan:core'
 import React from 'react'
-import { Link } from 'react-router'
+import { Link } from 'react-router-dom'
 import { Button } from 'reactstrap'
 import Contacts from '../../modules/contacts/collection.js'
 

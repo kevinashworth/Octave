@@ -1,6 +1,6 @@
 import { Components, registerComponent, withCurrentUser, withSingle } from 'meteor/vulcan:core'
 import React from 'react'
-import { Link } from 'react-router'
+import { Link } from 'react-router-dom'
 import PropTypes from 'prop-types'
 import { CardText } from 'reactstrap'
 import PastProjects from '../../modules/past-projects/collection.js'

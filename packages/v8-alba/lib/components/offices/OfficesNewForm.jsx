@@ -1,9 +1,9 @@
 import { Components, getFragment, registerComponent } from 'meteor/vulcan:core'
 import React from 'react'
-import { withRouter } from 'react-router'
+import { withRouter } from 'react-router-dom'
 import Offices from '../../modules/offices/collection.js'
 
-const OfficesNewForm = ({ documentId, params, router, toggle }) => {
+const OfficesNewForm = ({ documentId, params, history, toggle }) => {
   const theDocumentId = documentId || params._id
   return (
     <div className='animated fadeIn'>
@@ -15,7 +15,7 @@ const OfficesNewForm = ({ documentId, params, router, toggle }) => {
           if (toggle) {
             toggle()
           } else {
-            router.push(`/offices/${theDocumentId}`)
+            history.push(`/offices/${theDocumentId}`)
           }
         }}
       />

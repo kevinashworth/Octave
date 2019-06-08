@@ -1,6 +1,7 @@
 import { registerComponent, Components } from 'meteor/vulcan:core'
 import React, { PureComponent } from 'react'
-import { withRouter, Link } from 'react-router'
+import { withRouter } from 'react-router-dom'
+import { NavLink } from 'react-router-dom'
 import { Badge, Nav, NavItem, NavLink as RsNavLink } from 'reactstrap'
 import classNames from 'classnames'
 import nav from './_nav'
@@ -98,9 +99,9 @@ class Sidebar extends PureComponent {
             ? <RsNavLink href={url} className={classes.link} active>
               <i className={classes.icon} />{item.name}{badge(item.badge)}
             </RsNavLink>
-            : <Link to={url} className={classes.link} activeClassName='active' onClick={this.hideMobile}>
+            : <NavLink to={url} className={classes.link} activeClassName='active' onClick={this.hideMobile}>
               <i className={classes.icon} />{item.name}{badge(item.badge)}
-            </Link>
+            </NavLink>
           }
         </NavItem>
       )

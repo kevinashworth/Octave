@@ -1,6 +1,6 @@
 import { Components, registerComponent, withCurrentUser, withSingle } from 'meteor/vulcan:core'
 import React from 'react'
-import { Link } from 'react-router'
+import { Link } from 'react-router-dom'
 import PropTypes from 'prop-types'
 import { Card, CardBody, CardHeader, CardText } from 'reactstrap'
 import { dangerouslyCreateAddress } from '../../modules/helpers.js'
