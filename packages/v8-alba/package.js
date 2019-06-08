@@ -9,6 +9,7 @@ Package.onUse(function (api) {
     'vulcan:core',
     'vulcan:forms',
     'vulcan:accounts',
+    'vulcan:redux',
     'fourseven:scss',
     'percolate:migrations'
   ]);
