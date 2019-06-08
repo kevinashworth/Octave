@@ -406,6 +406,7 @@ const schema = {
     optional: true,
     canRead: ['members'],
     resolveAs: {
+      fieldName: 'theMainAddress',
       resolver: (o) => {
         var address = null
         try {

@@ -46,6 +46,13 @@ export function getFullAddress ({ street1, street2, city, state, zip }) {
 }
 
 export const createAddress = (office) => {
+  if (!office)
+    return {
+      street1: '',
+      city: '',
+      state: '',
+      zip: ''
+    }
   let streetAddress = ''
   if (office.street1) {
     streetAddress = office.street1 + ' '
