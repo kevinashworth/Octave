@@ -1,7 +1,7 @@
 
 // Alba components largely unchanged
 
-import '../components/common/Breadcrumb/'
+import '../components/common/Breadcrumbs/'
 import '../components/common/Footer/'
 import '../components/common/Header/'
 import '../components/common/Sidebar/'

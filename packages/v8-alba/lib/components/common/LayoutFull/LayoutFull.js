@@ -8,7 +8,6 @@ const LayoutFull = ({ children }) => (
     <div className='app-body'>
       <Components.Sidebar {...this.props} />
       <main className='main'>
-        <Components.Breadcrumb />
         <Container fluid>
           {children}
         </Container>
