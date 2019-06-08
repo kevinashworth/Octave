@@ -1,7 +1,7 @@
 import { Components, registerComponent, withCurrentUser, withDocument } from 'meteor/vulcan:core'
 import { FormattedMessage } from 'meteor/vulcan:i18n'
 import React, { PureComponent } from 'react'
-import { Link } from 'react-router'
+import { Link, withRouter } from 'react-router-dom'
 import mapProps from 'recompose/mapProps'
 import { Button, Card, CardBody, CardFooter, CardHeader, CardLink, CardText, CardTitle, Collapse } from 'reactstrap'
 import moment from 'moment'
@@ -129,6 +129,16 @@ const options = {
   fragmentName: 'ContactsSingleFragment'
 }
 
-const mapPropsFunction = props => ({ ...props, documentId: props.params._id, slug: props.params.slug })
+const routeParamOptions = {
+  match: {
+    params: '_id'
+  }
+}
 
-registerComponent('ContactsSingle', ContactsSingle, withCurrentUser, mapProps(mapPropsFunction), [withDocument, options])
+const mapPropsFunction = props => ({ ...props, documentId: props.match && props.match.params._id })
+
+registerComponent({
+  name: 'ContactsSingle',
+  component: ContactsSingle,
+  hocs: [withCurrentUser, mapProps(mapPropsFunction), [withDocument, options]]
+});

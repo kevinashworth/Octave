@@ -1,6 +1,6 @@
-import { Components, registerComponent, withCurrentUser, withDocument } from 'meteor/vulcan:core'
+import { Components, registerComponent, withCurrentUser, withSingle } from 'meteor/vulcan:core'
 import React, { PureComponent } from 'react'
-import { Link } from 'react-router'
+import { Link } from 'react-router-dom'
 import { Button, Card, CardBody, CardFooter, CardHeader, CardLink, CardText, CardTitle, Collapse } from 'reactstrap'
 import mapProps from 'recompose/mapProps'
 import moment from 'moment'
@@ -19,13 +19,25 @@ class OfficesSingle extends PureComponent {
     this.setState({ collapse: !this.state.collapse })
   }
 
+  async componentDidMount() {
+    try {
+      const {
+        documentId,
+      } = this.props;
+    } catch(error) {
+      console.log(error); ``
+    }
+  }
+
   render () {
     if (this.props.loading) {
       return (<div><Components.Loading /></div>)
     }
 
     if (!this.props.document) {
+      console.log('this.props:', this.props)
       return (<div><Components.FormattedMessage id='app.404' /></div>)
+      console.log('that is a 404')
     }
 
     const office = this.props.document
@@ -103,6 +115,6 @@ const options = {
   fragmentName: 'OfficesSingleFragment'
 }
 
-const mapPropsFunction = props => ({ ...props, documentId: props.params._id, slug: props.params.slug })
+const mapPropsFunction = props => ({ ...props, documentId: props.match && props.match.params._id })
 
-registerComponent('OfficesSingle', OfficesSingle, withCurrentUser, mapProps(mapPropsFunction), [withDocument, options])
+registerComponent('OfficesSingle', OfficesSingle, withCurrentUser, mapProps(mapPropsFunction), [withSingle, options])

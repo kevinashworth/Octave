@@ -2,7 +2,7 @@
 UI state for Contact filters
 */
 
-import { getActions, addAction, addReducer } from 'meteor/vulcan:lib'
+import { getActions, addAction, addReducer } from 'meteor/vulcan:redux'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import { CASTING_TITLES_ENUM } from '../constants.js'
@@ -102,7 +102,7 @@ addReducer({
   }
 })
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state = initialState) => ({
   contactTitleFilters: state.contactTitleFilters,
   contactLocationFilters: state.contactLocationFilters,
   contactUpdatedFilters: state.contactUpdatedFilters

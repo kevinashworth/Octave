@@ -2,7 +2,7 @@
 UI state for Project filters
 */
 
-import { getActions, addAction, addReducer } from 'meteor/vulcan:lib'
+import { getActions, addAction, addReducer } from 'meteor/vulcan:redux'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import { PROJECT_TYPES_ENUM, PROJECT_STATUSES_ENUM } from '../constants.js'
