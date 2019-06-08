@@ -1,40 +1,55 @@
 import { Components, registerComponent, withCurrentUser, Utils } from 'meteor/vulcan:core';
-import React from 'react';
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { withRouter } from 'react-router';
+import { withRouter } from 'react-router-dom';
 import Users from 'meteor/vulcan:users';
+import qs from 'qs';
 
-const PostsViews = (props, context) => {
-  let views = ['top', 'new', 'best'];
-  const adminViews = ['pending', 'rejected', 'scheduled'];
+class PostsViews extends Component {
+  getQuery = () => {
+    return qs.parse(this.props.location.search, { ignoreQueryPrefix: true }) || {};
+  };
 
-  if (Users.canDo(props.currentUser, 'posts.edit.all')) {
-    views = views.concat(adminViews);
-  }
+  getMenuItems = () => {
+    const currentView = this.getQuery().view;
 
-  const query = _.clone(props.router.location.query);
+    let views = ['top', 'new', 'best'];
+    
+    if (Users.isAdmin(this.props.currentUser)) {
+      views = [...views, 'pending', 'rejected', 'scheduled'];
+    }
 
-  return (
-    <div className="posts-views">
-      <Components.Dropdown
-        variant="default"
-        id="views-dropdown"
-        className="views btn-secondary"
-        labelId={'posts.view'}
-        menuItems={[
-          ...views.map(view => ({
-            to: { pathname: Utils.getRoutePath('posts.list'), query: { ...query, view: view } },
-            labelId: `posts.${view}`,
-          })),
-          {
-            to: `/daily`,
-            labelId: `posts.daily`,
+    return [
+      ...views.map(view => ({
+        to: { pathname: Utils.getRoutePath('posts.list'), search: qs.stringify({ ...this.getQuery(), view }) },
+        labelId: `posts.${view}`,
+        linkProps: {
+          isActive: () => {
+            return view === currentView || this.props.location.pathname === Utils.getRoutePath('posts.list') && view === 'top' && !currentView;
           },
-        ]}
-      />
-    </div>
-  );
-};
+        },
+      })),
+      {
+        to: '/daily',
+        labelId: 'posts.daily',
+      },
+    ];
+  };
+
+  render() {
+    return (
+      <div className="posts-views">
+        <Components.Dropdown
+          buttonProps={{ variant: 'secondary' }}
+          id="views-dropdown"
+          className="views"
+          labelId={'posts.view'}
+          menuItems={this.getMenuItems()}
+        />
+      </div>
+    );
+  }
+}
 
 PostsViews.propTypes = {
   currentUser: PropTypes.object,

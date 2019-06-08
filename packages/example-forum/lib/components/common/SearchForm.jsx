@@ -1,81 +1,106 @@
 import { registerComponent, Components, Utils } from 'meteor/vulcan:core';
 import React, { Component } from 'react';
-import PropTypes from 'prop-types';
 import { intlShape } from 'meteor/vulcan:i18n';
-import Formsy from 'formsy-react';
-import FRC from 'formsy-react-components';
-import { withRouter, Link } from 'react-router'
+import { withRouter } from 'react-router';
+import { Link } from 'react-router-dom';
 
-const Input = FRC.Input;
+import qs from 'qs';
 
 // see: http://stackoverflow.com/questions/1909441/jquery-keyup-delay
-const delay = (function(){
+const delay = (function() {
   var timer = 0;
-  return function(callback, ms){
-    clearTimeout (timer);
+  return function(callback, ms) {
+    clearTimeout(timer);
     timer = setTimeout(callback, ms);
   };
 })();
 
-class SearchForm extends Component{
-
+class SearchForm extends Component {
   constructor(props) {
     super(props);
-    this.search = this.search.bind(this);
     this.state = {
-      pathname: props.router.location.pathname,
-      search: props.router.location.query.query || ''
-    }
+      pathname: props.location.pathname,
+      search: this.getQuery().query || '',
+    };
   }
+
+  getQuery = () => {
+    return qs.parse(this.props.location.search, { ignoreQueryPrefix: true }) || {};
+  };
 
   // note: why do we need this?
   componentWillReceiveProps(nextProps) {
     this.setState({
-      search: this.props.router.location.query.query || ''
+      search: this.getQuery().query || '',
     });
   }
 
-  search(data) {
-
-    const router = this.props.router;
-    const routerQuery = _.clone(router.location.query);
+  handleSearch = e => {
+    const value = e.target.value;
+    const { location, history } = this.props;
+    const routerQuery = this.getQuery();
     delete routerQuery.query;
 
-    const query = data.searchQuery === '' ? routerQuery : {...routerQuery, query: data.searchQuery};
+    const query = value === '' ? routerQuery : { ...routerQuery, query: value };
+    this.setState({ search: value });
 
     delay(() => {
       // only update the route if the path hasn't changed in the meantime
-      if (this.state.pathname === router.location.pathname) {
-        router.push({pathname: Utils.getRoutePath('posts.list'), query: query});
+      if (this.state.pathname === location.pathname) {
+        history.push({
+          pathname: Utils.getRoutePath('posts.list'),
+          search: qs.stringify(query),
+        });
       }
-    }, 700 );
-
-  }
+    }, 700);
+  };
 
   render() {
-
-    const resetQuery = _.clone(this.props.location.query);
-    delete resetQuery.query;
+    const { history } = this.props;
+    const { search } = this.state;
+    // eslint-disable-next-line no-unused-vars
+    const { query, ...resetQuery } = this.getQuery();
 
     return (
       <div className="search-form">
-        <Formsy.Form onChange={this.search}>
-          <Input
-            name="searchQuery"
-            value={this.state.search}
-            placeholder={this.context.intl.formatMessage({id: "posts.search"})}
-            type="text"
-            layout="elementOnly"
+        <Components.FormElement>
+          <Components.FormComponentText
+            inputProperties={{
+              name: 'searchQuery',
+              value: search,
+              placeholder: this.context.intl.formatMessage({ id: 'posts.search' }),
+              type: 'text',
+              layout: 'elementOnly',
+              onChange: this.handleSearch,
+            }}
           />
-          {this.state.search !== '' ? <Link className="search-form-reset" to={{pathname: '/', query: resetQuery}}><Components.Icon name="close" /></Link> : null}
-        </Formsy.Form>
+          {this.state.search !== '' ? (
+            <button
+              className="search-form-reset"
+              onClick={(e) => {
+                e.preventDefault();
+                this.setState({ search: '' });
+                history.push({
+                  pathname: Utils.getRoutePath('posts.list'),
+                  search: qs.stringify(resetQuery),
+                });
+              }}
+            >
+              <Components.Icon name="close" />
+            </button>
+          ) : null}
+        </Components.FormElement>
       </div>
-    )
+    );
   }
 }
 
 SearchForm.contextTypes = {
-  intl: intlShape
+  intl: intlShape,
 };
 
-registerComponent({ name: 'SearchForm', component: SearchForm, hocs: [withRouter] });
+registerComponent({
+  name: 'SearchForm',
+  component: SearchForm,
+  hocs: [withRouter],
+});

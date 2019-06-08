@@ -13,7 +13,6 @@ import '../components/common/Vote.jsx';
 // posts
 
 import '../components/posts/PostsHome.jsx';
-import '../components/posts/PostsSingle.jsx';
 import '../components/posts/PostsNewButton.jsx';
 import '../components/posts/PostsLoadMore.jsx';
 import '../components/posts/PostsNoMore.jsx';
@@ -53,7 +52,6 @@ import '../components/categories/CategoriesDashboard.jsx';
 
 // users
 
-import '../components/users/UsersSingle.jsx';
 import '../components/users/UsersAccount.jsx';
 import '../components/users/UsersEditForm.jsx';
 import '../components/users/UsersProfile.jsx';
@@ -61,4 +59,3 @@ import '../components/users/UsersProfileCheck.jsx';
 import '../components/users/UsersAvatar.jsx';
 import '../components/users/UsersName.jsx';
 import '../components/users/UsersMenu.jsx';
-import '../components/users/UsersAccountMenu.jsx';

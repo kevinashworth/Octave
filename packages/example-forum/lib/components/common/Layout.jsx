@@ -4,13 +4,13 @@ import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import Helmet from 'react-helmet';
 
-const Layout = ({currentUser, children, currentRoute}) =>
+const Layout = ({currentUser, children }) =>
 
-  <div className={classNames('wrapper', `wrapper-${currentRoute.name.replace('.', '-')}`)} id="wrapper">
+  <div className={classNames('wrapper')} id="wrapper">
 
     <Helmet>
-      <link name="bootstrap" rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.5/css/bootstrap.min.css"/>
-      <link name="font-awesome" rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"/>
+      <link name="bootstrap" rel="stylesheet" type="text/css" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css"/>
+      <link name="font-awesome" rel="stylesheet" type="text/css" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"/>
     </Helmet>
    
     <Components.HeadTags />

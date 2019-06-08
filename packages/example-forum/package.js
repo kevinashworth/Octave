@@ -1,8 +1,8 @@
 Package.describe({
-  name: "example-forum",
-  summary: "Vulcan forum package",
+  name: 'example-forum',
+  summary: 'Vulcan forum package',
   version: '1.12.12',
-  git: "https://github.com/VulcanJS/Vulcan.git"
+  git: 'https://github.com/VulcanJS/Vulcan.git'
 });
 
 Package.onUse(function (api) {
@@ -15,19 +15,20 @@ Package.onUse(function (api) {
     'fourseven:scss@4.5.0',
 
     // vulcan core
-    'vulcan:core@1.12.12',
+    'vulcan:core@1.13.0',
 
     // vulcan packages
-    'vulcan:ui-bootstrap@1.12.12',
-    'vulcan:voting@1.12.12',
-    'vulcan:accounts@1.12.12',
-    'vulcan:email@1.12.12',
-    'vulcan:forms@1.12.12',
-    'vulcan:newsletter@1.12.12',
-    'vulcan:events@1.12.12',
-    'vulcan:embed@1.12.12',
-    'vulcan:admin@1.12.12',
+    'vulcan:ui-bootstrap@1.13.0',
+    'vulcan:voting@1.13.0',
+    'vulcan:accounts@1.13.0',
+    'vulcan:email@1.13.0',
+    'vulcan:forms@1.13.0',
+    'vulcan:newsletter@1.13.0',
+    'vulcan:events@1.13.0',
+    'vulcan:embed@1.13.0',
+    'vulcan:admin@1.13.0',
 
+    'vulcan:redux@1.12.8'
   ]);
 
   api.addAssets([
@@ -62,7 +63,7 @@ Package.onUse(function (api) {
     'lib/stylesheets/main.scss'
   ], ['client']);
 
-  api.mainModule("lib/server/main.js", "server");
-  api.mainModule("lib/client/main.js", "client");
+  api.mainModule('lib/server/main.js', 'server');
+  api.mainModule('lib/client/main.js', 'client');
 
 });
