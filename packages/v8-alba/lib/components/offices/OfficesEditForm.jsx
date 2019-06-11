@@ -3,8 +3,8 @@ import React from 'react'
 import { withRouter } from 'react-router-dom'
 import Offices from '../../modules/offices/collection.js'
 
-const OfficesEditForm = ({ documentId, params, history, toggle }) => {
-  const theDocumentId = documentId || params._id
+const OfficesEditForm = ({ documentId, match, history, toggle }) => {
+  const theDocumentId = documentId || match.params._id
   return (
     <div className='animated fadeIn'>
       <Components.SmartForm

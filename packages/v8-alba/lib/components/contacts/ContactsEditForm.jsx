@@ -4,15 +4,15 @@ import React from 'react'
 import { withRouter } from 'react-router-dom'
 import Contacts from '../../modules/contacts/collection.js'
 
-const ContactsEditForm = ({ documentId, params, history, toggle, currentUser }) => {
-  const theDocumentId = documentId || params._id
+const ContactsEditForm = ({ documentId, match, history, toggle, currentUser }) => {
+  const theDocumentId = documentId || match.params._id
   return (
     <div className='animated fadeIn'>
       <Components.SmartForm
         collection={Contacts}
         documentId={theDocumentId}
         mutationFragment={getFragment('ContactsEditFragment')}
-        showRemove={Users.canDo(currentUser, `contact.delete.own`)}
+        showRemove={Users.canDo(currentUser, 'contact.delete.own')}
         successCallback={document => {
           if (toggle) {
             toggle()

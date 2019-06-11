@@ -6,8 +6,8 @@ import Projects from '../../modules/projects/collection.js'
 import { PAST_PROJECT_STATUSES_ARRAY } from '../../modules/constants.js'
 import _ from 'lodash'
 
-const ProjectsEditForm = ({ documentId, params, history, toggle, currentUser }) => {
-  const theDocumentId = documentId || params._id
+const ProjectsEditForm = ({ documentId, match, history, toggle, currentUser }) => {
+  const theDocumentId = documentId || match && match.params._id
   return (
     <div className='animated fadeIn'>
       <Components.SmartForm
