@@ -17,8 +17,6 @@ Package.onUse(function (api) {
 
   ]);
 
-  ])
-
   api.addFiles('lib/stylesheets/bootstrap.min.css')
 
   api.mainModule('lib/server/main.js', 'server')
