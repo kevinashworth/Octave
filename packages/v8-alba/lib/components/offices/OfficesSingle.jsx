@@ -1,4 +1,5 @@
 import { Components, registerComponent, withCurrentUser, withSingle } from 'meteor/vulcan:core'
+import { FormattedMessage } from 'meteor/vulcan:i18n'
 import React, { PureComponent } from 'react'
 import { Link } from 'react-router-dom'
 import { Button, Card, CardBody, CardFooter, CardHeader, CardLink, CardText, CardTitle, Collapse } from 'reactstrap'
@@ -35,9 +36,7 @@ class OfficesSingle extends PureComponent {
     }
 
     if (!this.props.document) {
-      console.log('this.props:', this.props)
-      return (<div><Components.FormattedMessage id='app.404' /></div>)
-      console.log('that is a 404')
+      return (<div><FormattedMessage id='app.404' /></div>)
     }
 
     const office = this.props.document
@@ -70,14 +69,16 @@ class OfficesSingle extends PureComponent {
             office.contacts.map(o => <Components.ContactDetail key={o.contactId} contact={o} />)
             }
           </CardBody>
-          <CardBody>
-            {office.projects &&
-              <CardTitle><b>Projects</b></CardTitle>
-            }
-            {office.projects &&
-              office.projects.map((o, index) => <Components.ProjectMini key={`ProjectMini${index}`} documentId={o.projectId} />)
-            }
-          </CardBody>
+          <Components.ErrorBoundary>
+            <CardBody>
+              {office.projects &&
+                <CardTitle><b>Projects</b></CardTitle>
+              }
+              {office.projects &&
+                office.projects.map((o, index) => <Components.ProjectMini key={`ProjectMini${index}`} documentId={o.projectId} />)
+              }
+            </CardBody>
+          </Components.ErrorBoundary>
           {office.links &&
           <CardBody>
             <CardText>

@@ -1,4 +1,5 @@
 import { Components, registerComponent, withCurrentUser } from 'meteor/vulcan:core'
+import { FormattedMessage } from 'meteor/vulcan:i18n'
 import React from 'react'
 import { Link } from 'react-router-dom'
 import PropTypes from 'prop-types'
@@ -12,7 +13,7 @@ const ContactModal = (props) => {
   }
 
   if (!props.document) {
-    return (<div><Components.FormattedMessage id='app.404' /></div>)
+    return (<div><FormattedMessage id='app.404' /></div>)
   }
 
   const contact = props.document

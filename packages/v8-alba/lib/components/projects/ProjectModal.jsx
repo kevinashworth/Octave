@@ -1,4 +1,5 @@
 import { Components, registerComponent, withCurrentUser } from 'meteor/vulcan:core'
+import { FormattedMessage } from 'meteor/vulcan:i18n'
 import React, { PureComponent } from 'react'
 import PropTypes from 'prop-types'
 import { Card, CardBody, CardFooter, CardLink, CardText, CardTitle } from 'reactstrap'
@@ -12,7 +13,7 @@ class ProjectModal extends PureComponent {
     }
 
     if (!this.props.document) {
-      return (<div><Components.FormattedMessage id='app.404' /></div>)
+      return (<div><FormattedMessage id='app.404' /></div>)
     }
 
     const project = this.props.document

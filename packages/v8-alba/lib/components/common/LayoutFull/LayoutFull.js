@@ -8,9 +8,11 @@ const LayoutFull = ({ children }) => (
     <div className='app-body'>
       <Components.Sidebar {...this.props} />
       <main className='main'>
-        <Container fluid>
-          {children}
-        </Container>
+        <Components.ErrorBoundary>
+          <Container fluid>
+            {children}
+          </Container>
+      </Components.ErrorBoundary>
       </main>
     </div>
     <Components.Footer />
