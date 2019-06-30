@@ -30,6 +30,7 @@ import '../components/common/Fragments'
 // Testing
 
 import '../components/common/Modals.jsx'
+import '../components/common/ErrorBoundary.jsx'
 import '../components/statistics/StatisticsEditForm.jsx'
 import '../components/statistics/StatisticsList.jsx'
 

@@ -70,14 +70,16 @@ class OfficesSingle extends PureComponent {
             office.contacts.map(o => <Components.ContactDetail key={o.contactId} contact={o} />)
             }
           </CardBody>
-          <CardBody>
-            {office.projects &&
-              <CardTitle><b>Projects</b></CardTitle>
-            }
-            {office.projects &&
-              office.projects.map((o, index) => <Components.ProjectMini key={`ProjectMini${index}`} documentId={o.projectId} />)
-            }
-          </CardBody>
+          <Components.ErrorBoundary>
+            <CardBody>
+              {office.projects &&
+                <CardTitle><b>Projects</b></CardTitle>
+              }
+              {!isEmptyValue(office.projects) &&
+                office.projects.map((o, index) => <Components.ProjectMini key={`ProjectMini${index}`} documentId={o.projectId} />)
+              }
+            </CardBody>
+          </Components.ErrorBoundary>
           {office.links &&
           <CardBody>
             <CardText>
