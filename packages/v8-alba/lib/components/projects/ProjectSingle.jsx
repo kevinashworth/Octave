@@ -1,4 +1,5 @@
 import { Components, registerComponent, withCurrentUser, withDocument } from 'meteor/vulcan:core'
+import { FormattedMessage } from 'meteor/vulcan:i18n'
 import React, { PureComponent } from 'react'
 import { Link } from 'react-router-dom'
 import mapProps from 'recompose/mapProps'
@@ -34,7 +35,7 @@ class ProjectSingle extends PureComponent {
     }
 
     if (!this.props.document) {
-      return (<div><Components.FormattedMessage id='app.404' /></div>)
+      return (<div><FormattedMessage id='app.404' /></div>)
     }
 
     const project = this.props.document
