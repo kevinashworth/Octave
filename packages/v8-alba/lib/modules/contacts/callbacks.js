@@ -32,12 +32,10 @@ I get confused, so here's a description:
 
   So for each of the contact.projects we update project.contacts of the Project with _id === projectId with
   {
-  contactId: contact._id,
-  contactName: fullName -- which is getFullNameFromContact(contact),
-  contactTitle: project.titleForProject
+    contactId: contact._id,
+    contactName: fullName -- which is getFullNameFromContact(contact),
+    contactTitle: project.titleForProject
   }
-
-TODO: For some reason, the project's `updatedAt` field doesn't get a `new Date()` `onEdit`
 */
 function ContactEditUpdateProjects (contact) {
   if (!contact.projects) {
@@ -68,7 +66,13 @@ function ContactEditUpdateProjects (contact) {
         newContacts[i] = newContact
       }
     }
-    Connectors.update(Projects, project._id, { $set: { contacts: newContacts } })
+    Connectors.update(Projects, project._id, { $set: {
+      contacts: newContacts,
+      updatedAt: new Date()
+    } })
+  })
+}
+
 /*
 When updating an office on a contact, also update that office with the contact.
 I get confused, so here's a description:

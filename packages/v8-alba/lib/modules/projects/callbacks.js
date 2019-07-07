@@ -93,7 +93,7 @@ function ProjectEditUpdateContacts (project) {
 }
 
 /*
-When updating a office on a project, also update that office with the project.
+When updating an office on a project, also update that office with the project.
 I get confused, so here's a description:
 
 Where i represents the office(s) we're adding to our project,
