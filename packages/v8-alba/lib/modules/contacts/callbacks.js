@@ -71,5 +71,5 @@ function ContactEditUpdateProjects (contact) {
   })
 }
 
-addCallback('contacts.edit.after', ContactEditUpdateProjects)
-addCallback('contacts.new.after', ContactEditUpdateProjects)
+addCallback('contact.update.after', ContactEditUpdateProjects)
+addCallback('contact.create.after', ContactEditUpdateProjects)
