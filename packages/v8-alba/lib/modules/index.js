@@ -1,3 +1,5 @@
+import '../redux/redux.js';
+
 import './components.js'
 import './routes.js'
 
