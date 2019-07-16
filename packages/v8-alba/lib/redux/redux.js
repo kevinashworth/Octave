@@ -74,108 +74,90 @@ initialState = {
 }
 
 addAction({
-  contactTitleFilters: {
-    toggleContactTitleFilter (i) {
-      return {
-        type: 'TOGGLE_CONTACT_TITLE_FILTER',
-        i
-      }
+  toggleContactTitleFilter (i) {
+    return {
+      type: 'TOGGLE_CONTACT_TITLE_FILTER',
+      i
     }
   },
-  contactLocationFilters: {
-    toggleContactLocationFilter (i) {
-      return {
-        type: 'TOGGLE_CONTACT_LOCATION_FILTER',
-        i
-      }
+  toggleContactLocationFilter (i) {
+    return {
+      type: 'TOGGLE_CONTACT_LOCATION_FILTER',
+      i
     }
   },
-  contactUpdatedFilters: {
-    toggleContactUpdatedFilter (i) {
-      return {
-        type: 'TOGGLE_CONTACT_UPDATED_FILTER',
-        i
-      }
+  toggleContactUpdatedFilter (i) {
+    return {
+      type: 'TOGGLE_CONTACT_UPDATED_FILTER',
+      i
     }
-  }
+  },
 })
 
 addAction({
-  pastProjectTypeFilters: {
-    toggleProjectTypeFilter (i) {
-      return {
-        type: 'TOGGLE_PROJECT_TYPE_FILTER',
-        i
-      }
+  togglePastProjectTypeFilter (i) {
+    return {
+      type: 'TOGGLE_PAST_PROJECT_TYPE_FILTER',
+      i
     }
   },
-  pastProjectStatusFilters: {
-    togglepastProjectStatusFilter (i) {
-      return {
-        type: 'TOGGLE_PROJECT_STATUS_FILTER',
-        i
-      }
-    },
-    setpastProjectStatusFilter (i) {
-      return {
-        type: 'SET_PROJECT_STATUS_FILTER',
-        i
-      }
-    },
-    clearpastProjectStatusFilter (i) {
-      return {
-        type: 'CLEAR_PROJECT_STATUS_FILTER',
-        i
-      }
+  togglePastProjectStatusFilter (i) {
+    return {
+      type: 'TOGGLE_PAST_PROJECT_STATUS_FILTER',
+      i
     }
   },
-  pastProjectUpdatedFilters: {
-    toggleProjectUpdatedFilter (i) {
-      return {
-        type: 'TOGGLE_PROJECT_UPDATED_FILTER',
-        i
-      }
+  setPastProjectStatusFilter (i) {
+    return {
+      type: 'SET_PAST_PROJECT_STATUS_FILTER',
+      i
     }
-  }
+  },
+  clearPastProjectStatusFilter (i) {
+    return {
+      type: 'CLEAR_PAST_PROJECT_STATUS_FILTER',
+      i
+    }
+  },
+  togglePastProjectUpdatedFilter (i) {
+    return {
+      type: 'TOGGLE_PAST_PROJECT_UPDATED_FILTER',
+      i
+    }
+  },
 })
 
 addAction({
-  projectTypeFilters: {
-    toggleProjectTypeFilter (i) {
-      return {
-        type: 'TOGGLE_PROJECT_TYPE_FILTER',
-        i
-      }
+  toggleProjectTypeFilter (i) {
+    return {
+      type: 'TOGGLE_PROJECT_TYPE_FILTER',
+      i
     }
   },
-  projectStatusFilters: {
-    toggleProjectStatusFilter (i) {
-      return {
-        type: 'TOGGLE_PROJECT_STATUS_FILTER',
-        i
-      }
-    },
-    setProjectStatusFilter (i) {
-      return {
-        type: 'SET_PROJECT_STATUS_FILTER',
-        i
-      }
-    },
-    clearProjectStatusFilter (i) {
-      return {
-        type: 'CLEAR_PROJECT_STATUS_FILTER',
-        i
-      }
+  toggleProjectStatusFilter (i) {
+    return {
+      type: 'TOGGLE_PROJECT_STATUS_FILTER',
+      i
     }
   },
-  projectUpdatedFilters: {
-    toggleProjectUpdatedFilter (i) {
-      return {
-        type: 'TOGGLE_PROJECT_UPDATED_FILTER',
-        i
-      }
+  setProjectStatusFilter (i) {
+    return {
+      type: 'SET_PROJECT_STATUS_FILTER',
+      i
     }
-  }
+  },
+  clearProjectStatusFilter (i) {
+    return {
+      type: 'CLEAR_PROJECT_STATUS_FILTER',
+      i
+    }
+  },
+  toggleProjectUpdatedFilter (i) {
+    return {
+      type: 'TOGGLE_PROJECT_UPDATED_FILTER',
+      i
+    }
+  },
 })
 
 addReducer({
@@ -224,7 +206,7 @@ addReducer({
 addReducer({
   pastProjectTypeFilters: (state = initialState.pastProjectTypeFilters, action) => {
     switch (action.type) {
-      case 'TOGGLE_PROJECT_TYPE_FILTER':
+      case 'TOGGLE_PAST_PROJECT_TYPE_FILTER':
         return state.map((filter, index) => {
           if (index === Number(action.i)) {
             return { ...filter, value: !filter.value }
@@ -237,21 +219,21 @@ addReducer({
   },
   pastProjectStatusFilters: (state = initialState.pastProjectStatusFilters, action) => {
     switch (action.type) {
-      case 'TOGGLE_PROJECT_STATUS_FILTER':
+      case 'TOGGLE_PAST_PROJECT_STATUS_FILTER':
         return state.map((filter, index) => {
           if (index === Number(action.i)) {
             return { ...filter, value: !filter.value }
           }
           return filter
         })
-      case 'SET_PROJECT_STATUS_FILTER':
+      case 'SET_PAST_PROJECT_STATUS_FILTER':
         return state.map((filter, index) => {
           if (index === Number(action.i)) {
             return { ...filter, value: true }
           }
           return filter
         })
-      case 'CLEAR_PROJECT_STATUS_FILTER':
+      case 'CLEAR_PAST_PROJECT_STATUS_FILTER':
         return state.map((filter, index) => {
           if (index === Number(action.i)) {
             return { ...filter, value: false }
@@ -264,7 +246,7 @@ addReducer({
   },
   pastProjectUpdatedFilters: (state = initialState.pastProjectUpdatedFilters, action) => {
     switch (action.type) {
-      case 'TOGGLE_PROJECT_UPDATED_FILTER':
+      case 'TOGGLE_PAST_PROJECT_UPDATED_FILTER':
         return state.map((filter, index) => {
           if (index === Number(action.i)) {
             return { ...filter, value: true }
