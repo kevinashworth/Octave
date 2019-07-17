@@ -14,7 +14,8 @@ let initialState = {
   contactLocationFilters: [
     { contactLocation: 'CA', value: true },
     { contactLocation: 'NY', value: true },
-    { contactLocation: 'Other', value: true }
+    { contactLocation: 'Other', value: true },
+    { contactLocation: 'Unknown', value: true }
   ],
   contactUpdatedFilters: [
     { contactUpdated: 'One Day', value: false, moment1: '1', moment2: 'day' },

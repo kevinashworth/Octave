@@ -37,7 +37,7 @@ import '../components/statistics/StatisticsList.jsx'
 
 import '../components/common/AddressDetail'
 import '../components/common/ContactDetail'
-// import '../components/common/Filter/ContactFilters'
+import '../components/common/Filter/ContactFilters'
 // import '../components/common/Filter/ProjectFilters'
 import '../components/common/Filter/PastProjectFilters'
 import '../components/common/Select'
