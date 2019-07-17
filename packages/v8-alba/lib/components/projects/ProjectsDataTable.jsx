@@ -7,7 +7,7 @@ import _ from 'lodash'
 import moment from 'moment'
 import { DATE_FORMAT_SHORT } from '../../modules/constants.js'
 import Projects from '../../modules/projects/collection.js'
-// import withProjectFilters from '../../modules/filters/withProjectFilters.js'
+import withFilters from '../../modules/hocs/withFilters.js'
 
 // Set initial state. Just options I want to keep.
 // See https://github.com/amannn/react-keep-state
@@ -145,34 +145,35 @@ class ProjectsDataTable extends PureComponent {
   }
 
   render () {
-    const { count, totalCount, results, loadingMore, loadMore, currentUser } = this.props
+    const { count, totalCount, results, loadingMore, loadMore, currentUser,
+            projectTypeFilters, projectStatusFilters, projectUpdatedFilters } = this.props
     const hasMore = results && (totalCount > results.length)
-    // let typeFilters = []
-    // projectTypeFilters.forEach(filter => {
-    //   if (filter.value) { typeFilters.push(filter.projectType) }
-    // })
-    // let statusFilters = []
-    // projectStatusFilters.forEach(filter => {
-    //   if (filter.value) { statusFilters.push(filter.projectStatus) }
-    // })
-    // let moment1 = ''
-    // let moment2 = ''
-    // projectUpdatedFilters.forEach(filter => {
-    //   if (filter.value) {
-    //     moment1 = filter.moment1
-    //     moment2 = filter.moment2
-    //   }
-    // })
-    //
-    // const filteredResults = _.filter(results, function (o) {
-    //   // compare current time to filter, but generous, so start of day then, not the time it is now - filter plus up to 23:59
-    //   const now = moment()
-    //   const dateToCompare = o.updatedAt ? o.updatedAt : o.createdAt
-    //   const displayThis = moment(dateToCompare).isAfter(now.subtract(moment1, moment2).startOf('day'))
-    //   return _.includes(statusFilters, o.status) &&
-    //       _.includes(typeFilters, o.projectType) &&
-    //       displayThis
-    // })
+    let typeFilters = []
+    projectTypeFilters.forEach(filter => {
+      if (filter.value) { typeFilters.push(filter.projectType) }
+    })
+    let statusFilters = []
+    projectStatusFilters.forEach(filter => {
+      if (filter.value) { statusFilters.push(filter.projectStatus) }
+    })
+    let moment1 = ''
+    let moment2 = ''
+    projectUpdatedFilters.forEach(filter => {
+      if (filter.value) {
+        moment1 = filter.moment1
+        moment2 = filter.moment2
+      }
+    })
+
+    const filteredResults = _.filter(results, function (o) {
+      // compare current time to filter, but generous, so start of day then, not the time it is now - filter plus up to 23:59
+      const now = moment()
+      const dateToCompare = o.updatedAt ? o.updatedAt : o.createdAt
+      const displayThis = moment(dateToCompare).isAfter(now.subtract(moment1, moment2).startOf('day'))
+      return _.includes(statusFilters, o.status) &&
+          _.includes(typeFilters, o.projectType) &&
+          displayThis
+    })
 
     return (
       <div className='animated fadeIn'>
@@ -190,10 +191,11 @@ class ProjectsDataTable extends PureComponent {
         <Card>
           <CardHeader>
             <i className='fa fa-camera' />Projects
+              <Components.ProjectFilters />
           </CardHeader>
           <CardBody>
             <BootstrapTable condensed hover pagination search striped
-              data={results}
+              data={filteredResults}
               bordered={false} keyField='_id' options={this.state.options} version='4'>
               <TableHeaderColumn dataField='projectTitle' dataSort dataFormat={
                 (cell, row) => {
@@ -244,5 +246,8 @@ const options = {
   enableCache: true
 }
 
-// registerComponent('ProjectsDataTable', ProjectsDataTable, withProjectFilters, withCurrentUser, [withMulti, options])
-registerComponent('ProjectsDataTable', ProjectsDataTable, withCurrentUser, [withMulti, options])
+registerComponent({
+  name: 'ProjectsDataTable',
+  component: ProjectsDataTable,
+  hocs: [withCurrentUser, withFilters, [withMulti, options]]
+})
