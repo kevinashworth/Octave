@@ -1,4 +1,4 @@
-import { Components, registerComponent, withCurrentUser, withMulti } from 'meteor/vulcan:core'
+import { Components, registerComponent, withMulti } from 'meteor/vulcan:core'
 import React, { PureComponent } from 'react'
 import { Link } from 'react-router-dom'
 import { Button, Card, CardBody, CardFooter, CardHeader, Modal, ModalBody, ModalHeader } from 'reactstrap'
@@ -7,7 +7,7 @@ import _ from 'lodash'
 import moment from 'moment'
 import { DATE_FORMAT_SHORT } from '../../modules/constants.js'
 import PastProjects from '../../modules/past-projects/collection.js'
-// import withPastProjectFilters from '../../modules/filters/withPastProjectFilters.js'
+import withFilters from '../../modules/hocs/withFilters.js'
 
 // Set initial state. Just options I want to keep.
 // See https://github.com/amannn/react-keep-state
@@ -145,34 +145,35 @@ class PastProjectsDataTable extends PureComponent {
   }
 
   render () {
-    const { count, totalCount, results, loadingMore, loadMore } = this.props
+    const { count, totalCount, results, loadingMore, loadMore,
+            pastProjectTypeFilters, pastProjectStatusFilters, pastProjectUpdatedFilters } = this.props
     const hasMore = results && (totalCount > results.length)
-    // let typeFilters = []
-    // projectTypeFilters.forEach(filter => {
-    //   if (filter.value) { typeFilters.push(filter.projectType) }
-    // })
-    // let statusFilters = []
-    // pastProjectStatusFilters.forEach(filter => {
-    //   if (filter.value) { statusFilters.push(filter.pastProjectStatus) }
-    // })
-    // let moment1 = ''
-    // let moment2 = ''
-    // projectUpdatedFilters.forEach(filter => {
-    //   if (filter.value) {
-    //     moment1 = filter.moment1
-    //     moment2 = filter.moment2
-    //   }
-    // })
-    //
-    // const filteredResults = _.filter(results, function (o) {
-    //   // compare current time to filter, but generous, so start of day then, not the time it is now - filter plus up to 23:59
-    //   const now = moment()
-    //   const dateToCompare = o.updatedAt ? o.updatedAt : o.createdAt
-    //   const displayThis = moment(dateToCompare).isAfter(now.subtract(moment1, moment2).startOf('day'))
-    //   return _.includes(statusFilters, o.status) &&
-    //       _.includes(typeFilters, o.projectType) &&
-    //       displayThis
-    // })
+    let typeFilters = []
+    pastProjectTypeFilters.forEach(filter => {
+      if (filter.value) { typeFilters.push(filter.projectType) }
+    })
+    let statusFilters = []
+    pastProjectStatusFilters.forEach(filter => {
+      if (filter.value) { statusFilters.push(filter.pastProjectStatus) }
+    })
+    let moment1 = ''
+    let moment2 = ''
+    pastProjectUpdatedFilters.forEach(filter => {
+      if (filter.value) {
+        moment1 = filter.moment1
+        moment2 = filter.moment2
+      }
+    })
+
+    const filteredResults = _.filter(results, function (o) {
+      // compare current time to filter, but generous, so start of day then, not the time it is now - filter plus up to 23:59
+      const now = moment()
+      const dateToCompare = o.updatedAt ? o.updatedAt : o.createdAt
+      const displayThis = moment(dateToCompare).isAfter(now.subtract(moment1, moment2).startOf('day'))
+      return _.includes(statusFilters, o.status) &&
+          _.includes(typeFilters, o.projectType) &&
+          displayThis
+    })
 
     return (
       <div className='animated fadeIn'>
@@ -190,10 +191,11 @@ class PastProjectsDataTable extends PureComponent {
         <Card>
           <CardHeader>
             <i className='fa fa-camera' />Past Projects
+            <Components.PastProjectFilters />
           </CardHeader>
           <CardBody>
             <BootstrapTable condensed hover pagination search striped
-              data={results}
+              data={filteredResults}
               bordered={false} keyField='_id' options={this.state.options} version='4'>
               <TableHeaderColumn dataField='projectTitle' dataSort dataFormat={
                 (cell, row) => {
@@ -236,5 +238,8 @@ const options = {
   enableCache: true
 }
 
-// registerComponent('PastProjectsDataTable', PastProjectsDataTable, withPastProjectFilters, withCurrentUser, [withMulti, options])
-registerComponent('PastProjectsDataTable', PastProjectsDataTable, withCurrentUser, [withMulti, options])
+registerComponent({
+  name: 'PastProjectsDataTable',
+  component: PastProjectsDataTable,
+  hocs: [withFilters, [withMulti, options]]
+})

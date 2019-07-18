@@ -3416,9 +3416,10 @@ bcrypt-pbkdf@^1.0.0:
   dependencies:
     tweetnacl "^0.14.3"
 
-bcrypt@^3.0.5:
+bcrypt@^3.0.6:
   version "3.0.6"
   resolved "https://registry.yarnpkg.com/bcrypt/-/bcrypt-3.0.6.tgz#f607846df62d27e60d5e795612c4f67d70206eb2"
+  integrity sha512-taA5bCTfXe7FUjKroKky9EXpdhkVvhE5owfxfLYodbrAR1Ul3juLmIQmIQBK4L9a5BuUcE6cqmwT+Da20lF9tg==
   dependencies:
     nan "2.13.2"
     node-pre-gyp "0.12.0"
@@ -9637,6 +9638,7 @@ react-bootstrap-table@^4.3.1:
 react-breadcrumbs@^2.1.6:
   version "2.1.6"
   resolved "https://registry.yarnpkg.com/react-breadcrumbs/-/react-breadcrumbs-2.1.6.tgz#e54e718e2ac46e726b6589a19eee30d024fcf5be"
+  integrity sha512-eq6EhI6BPkFob0a9CbdhUTiaZ5JY8ld3q/9Cselj5vbZp/r6UN62goCYZZXyzGs1R5uYUiQyjrlsQehYutUy/Q==
   dependencies:
     lodash.isequal "^4.5.0"
     redux "^3.6.0"
