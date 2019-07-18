@@ -1,4 +1,4 @@
-import { Components, registerComponent, withCurrentUser, withMulti } from 'meteor/vulcan:core'
+import { Components, registerComponent, withMulti } from 'meteor/vulcan:core'
 import React, { PureComponent } from 'react'
 import { Link } from 'react-router-dom'
 import { Button, Card, CardBody, CardFooter, CardHeader, Modal, ModalBody, ModalHeader } from 'reactstrap'
@@ -7,7 +7,6 @@ import _ from 'lodash'
 import moment from 'moment'
 import { DATE_FORMAT_SHORT } from '../../modules/constants.js'
 import PastProjects from '../../modules/past-projects/collection.js'
-// import withPastProjectFilters from '../../modules/filters/withPastProjectFilters.js'
 import withFilters from '../../modules/hocs/withFilters.js'
 
 // Set initial state. Just options I want to keep.
@@ -239,10 +238,8 @@ const options = {
   enableCache: true
 }
 
-// registerComponent('PastProjectsDataTable', PastProjectsDataTable, withPastProjectFilters, withCurrentUser, [withMulti, options])
-// registerComponent('PastProjectsDataTable', PastProjectsDataTable, withCurrentUser, [withMulti, options])
 registerComponent({
   name: 'PastProjectsDataTable',
   component: PastProjectsDataTable,
-  hocs: [withCurrentUser, withFilters, [withMulti, options]]
+  hocs: [withFilters, [withMulti, options]]
 })
