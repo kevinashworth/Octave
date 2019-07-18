@@ -272,8 +272,7 @@ class ContactsDataTable extends PureComponent {
 const options = {
   collection: Contacts,
   fragmentName: 'ContactsSingleFragment',
-  limit: 1000,
-  enableCache: true
+  limit: 1000
 }
 
 registerComponent('ContactsDataTable', ContactsDataTable, withFilters, withCurrentUser, [withMulti, options])

@@ -242,8 +242,7 @@ class ProjectsDataTable extends PureComponent {
 const options = {
   collection: Projects,
   fragmentName: 'ProjectsSingleFragment',
-  limit: 1000,
-  enableCache: true
+  limit: 1000
 }
 
 registerComponent({
