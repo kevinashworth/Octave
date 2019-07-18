@@ -257,6 +257,7 @@ const schema = {
           _id
           displayName
         }
+        totalCount
       }
     `
   },
@@ -303,6 +304,7 @@ const schema = {
           _id
           fullName
         }
+        totalCount
       }
     `,
     group: contactGroup

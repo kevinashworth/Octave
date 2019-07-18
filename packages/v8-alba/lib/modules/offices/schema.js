@@ -237,6 +237,7 @@ const schema = {
           _id
           projectTitle
         }
+        totalCount
       }
     `,
     group: projectGroup
@@ -259,6 +260,7 @@ const schema = {
           _id
           projectTitle
         }
+        totalCount
       }
     `,
     group: pastProjectGroup
@@ -281,6 +283,7 @@ const schema = {
           _id
           fullName
         }
+        totalCount
       }
     `,
     group: contactGroup
