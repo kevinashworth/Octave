@@ -40,7 +40,7 @@ const OfficesListGroup = ({ loading, loadingMore, loadMore, results = [], curren
 const options = {
   collection: Offices,
   fragmentName: 'OfficesSingleFragment',
-  limit: 20
+  limit: 50
 }
 
 registerComponent('OfficesListGroup', OfficesListGroup, withCurrentUser, [withMulti, options])
