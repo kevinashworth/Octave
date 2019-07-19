@@ -41,17 +41,23 @@ registerFragment(/* GraphQL */ `
   }
 `)
 
-registerFragment(/* GraphQL */ `
+registerFragment( /* GraphQL */ `
   fragment ProjectsEditFragment on Project {
     _id
+    createdAt
+    updatedAt
+    userId
     projectTitle
     projectType
     castingCompany
     castingOffice
     contacts
     addresses
+    allAddresses
+    allContactNames
     network
     status
+    renewed
     union
     notes
     htmlNotes
@@ -60,6 +66,7 @@ registerFragment(/* GraphQL */ `
     website
     season
     order
+    links
     slug
   }
 `)

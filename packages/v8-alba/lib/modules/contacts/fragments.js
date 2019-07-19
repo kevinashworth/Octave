@@ -31,6 +31,7 @@ registerFragment(/* GraphQL */ `
     addresses
     allAddresses
     theAddress
+    theAddressString
     projects
     pastProjects
     offices
@@ -40,17 +41,26 @@ registerFragment(/* GraphQL */ `
 
 registerFragment(/* GraphQL */ `
   fragment ContactsEditFragment on Contact {
+    _id
+    createdAt
+    updatedAt
+    userId
+    fullName
     firstName
     middleName
     lastName
     displayName
+    gender
     title
     body
     htmlBody
+    links
     addresses
+    allAddresses
     theAddress
     projects
     pastProjects
+    offices
     slug
   }
 `)

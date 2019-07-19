@@ -333,6 +333,7 @@ const schema = {
           _id
           displayName
         }
+        totalCount
       }
     `,
     group: officeGroup
@@ -355,6 +356,7 @@ const schema = {
           _id
           projectTitle
         }
+        totalCount
       }
     `,
     group: projectGroup
@@ -377,6 +379,7 @@ const schema = {
           _id
           projectTitle
         }
+        totalCount
       }
     `,
     group: pastProjectGroup
@@ -401,12 +404,11 @@ const schema = {
   // GraphQL only fields to ease transition from address to addresses, and also to provide a 'main' address
 
   theAddress: {
-    label: 'Address',
+    label: 'Address Object',
     type: addressSubSchema,
     optional: true,
     canRead: ['members'],
     resolveAs: {
-      fieldName: 'theMainAddress',
       resolver: (o) => {
         var address = null
         try {
@@ -419,8 +421,29 @@ const schema = {
           return 'Blvd of Broken Dreams'
         }
         return address
-      },
-      addOriginalField: true
+      }
+    }
+  },
+
+  theAddressString: {
+    label: 'Address String',
+    type: String,
+    optional: true,
+    canRead: ['members'],
+    resolveAs: {
+      resolver: (o) => {
+        var address = null
+        try {
+          address = getFullAddress(getAddress({ contact: o }))
+        } catch (e) {
+          // eslint-disable-next-line no-console
+          console.info('Problem in theAddressString for', o._id)
+          // eslint-disable-next-line no-console
+          console.error(e)
+          return ''
+        }
+        return address
+      }
     }
   }
 }

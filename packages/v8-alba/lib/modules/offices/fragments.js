@@ -38,6 +38,10 @@ registerFragment(/* GraphQL */ `
 
 registerFragment(/* GraphQL */ `
   fragment OfficesEditFragment on Office {
+    _id
+    createdAt
+    updatedAt
+    userId
     displayName
     body
     links
@@ -46,5 +50,11 @@ registerFragment(/* GraphQL */ `
     addresses
     street
     location
+    fullAddress
+    theStreet
+    theCity
+    theState
+    theLocation
+    slug
   }
 `)
