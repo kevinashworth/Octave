@@ -47,43 +47,32 @@ function OfficeEditUpdatePastProjects (data, { document }) {
 }
 
 function OfficeEditUpdateContacts (data, { document, oldDocument }) {
-  console.group()
-  console.log('Hello from OfficeEditUpdateContacts')
-
-  const oldOffice = oldDocument
   const newOffice = document
+  const oldOffice = oldDocument
 
   if (_.isEqual(oldOffice.contacts, newOffice.contacts)) {
-    console.log('No change in contacts')
     return
   }
 
   const oldOfficeContactsLength = oldOffice.contacts ? oldOffice.contacts.length : 0
   const newOfficeContactsLength = newOffice.contacts ? newOffice.contacts.length : 0
 
-  if (oldOfficeContactsLength === newOfficeContactsLength === 0) {
-    console.log('No contacts')
-    console.log('Goodbye from OfficeEditUpdateContacts')
-    console.groupEnd()
+  if (oldOfficeContactsLength === newOfficeContactsLength && newOfficeContactsLength === 0) {
     return
   }
 
-  var office = null
+  let office = null
   if (oldOfficeContactsLength > newOfficeContactsLength) {
     office = oldOffice
-    console.log('Using oldOffice contacts')
   } else {
     office = newOffice
-    console.log('Using newOffice contacts')
   }
 
   office.contacts.forEach(officeContact => {
     const contact = Contacts.findOne(officeContact.contactId)
-    console.log('1 contact:', contact)
     const newOffice = {
       officeId: office._id
     }
-    console.log('2 newOffice:', newOffice)
     var newOffices = []
     // case 1:
     if (!contact.offices) {
@@ -99,15 +88,14 @@ function OfficeEditUpdateContacts (data, { document, oldDocument }) {
         newOffices[i] = newOffice
       }
     }
-    console.log('3 newOffices:', newOffices)
     Connectors.update(Contacts, contact._id, { $set: { offices: newOffices } })
   })
-  console.log('Goodbye from OfficeEditUpdateContacts')
-  console.groupEnd()
 }
 
+addCallback('office.create.after', OfficeEditUpdateContacts)
 addCallback('office.create.after', OfficeEditUpdateProjects)
 addCallback('office.create.after', OfficeEditUpdatePastProjects)
+
+addCallback('office.update.before', OfficeEditUpdateContacts)
 addCallback('office.update.after', OfficeEditUpdateProjects)
 addCallback('office.update.after', OfficeEditUpdatePastProjects)
-addCallback('office.update.before', OfficeEditUpdateContacts)

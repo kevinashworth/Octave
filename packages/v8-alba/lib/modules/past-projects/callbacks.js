@@ -1,11 +1,13 @@
-import { addCallback, Connectors, createMutator, deleteMutator } from 'meteor/vulcan:core'
+import { addCallback, Connectors, createMutator, deleteMutator, updateMutator } from 'meteor/vulcan:core'
 import Contacts from '../contacts/collection.js'
 import Offices from '../offices/collection.js'
 import Projects from '../projects/collection.js'
 import PastProjects from './collection.js'
+import Statistics from '../statistics/collection.js'
 import { isEmptyValue } from '../helpers.js'
 import { ACTIVE_PROJECT_STATUSES_ARRAY } from '../constants.js'
 import _ from 'lodash'
+import moment from 'moment'
 
 /*
 When updating a contact on a pastproject, also update that contact with the pastproject.
@@ -25,7 +27,8 @@ So for each of the pastproject.contacts we update contact.pastprojects of the Co
 
 TODO: For some reason, the contact's `updatedAt` field doesn't get a `moment().format("YYYY-MM-DD HH:mm:ss")` `onEdit`
 */
-function PastProjectEditUpdateContacts (project) {
+function PastProjectEditUpdateContacts (data, { document }) {
+  const project = document
   if (!project.contacts) {
     return
   }
@@ -132,7 +135,7 @@ function PastProjectEditUpdateOffice (data, { document }) {
   Connectors.update(Offices, office._id, { $set: { pastProjects: newPastProjects } })
 }
 
-function PastProjectEditUpdateOfficeBefore (data, { currentUser, document, oldDocument, collection, context }) {
+function PastProjectEditUpdateOfficeBefore (data, { currentUser, document, oldDocument }) {
   const oldOffice = oldDocument.castingOfficeId
   const newOffice = document.castingOfficeId
   // this is an office getting removed from the project,
@@ -158,20 +161,84 @@ function PastProjectEditUpdateOfficeBefore (data, { currentUser, document, oldDo
   }
 }
 
+/* When adding a past-project, update statistics */
+function PastProjectCreateUpdateStatisticsAsync ({ currentUser, document }) {
+  const project = document
+  const theStats = Statistics.findOne()
+  let newStats = {}
+  newStats.episodics = theStats.episodics
+  newStats.features = theStats.features
+  newStats.pilots = theStats.pilots
+  newStats.others = theStats.others
+
+  switch (project.projectType) {
+    case 'TV One Hour':
+    case 'TV 1/2 Hour':
+      const episodicsCasting = Projects.find({
+        projectType: { $in: [ 'TV One Hour', 'TV 1/2 Hour' ] },
+        status: 'Casting'
+      }).count()
+      newStats.episodics.push({ date: moment().format('YYYY-MM-DD HH:mm:ss'), quantity: episodicsCasting })
+      break
+    case 'Feature Film':
+    case 'Feature Film (LB)':
+    case 'Feature Film (MLB)':
+    case 'Feature Film (ULB)':
+      const featuresCasting = Projects.find({
+        projectType: { $in: [ 'Feature Film', 'Feature Film (LB)', 'Feature Film (MLB)', 'Feature Film (ULB)' ] },
+        status: 'Casting'
+      }).count()
+      newStats.features.push({ date: moment().format('YYYY-MM-DD HH:mm:ss'), quantity: featuresCasting })
+      break
+    case 'Pilot One Hour':
+    case 'Pilot 1/2 Hour':
+    case 'Pilot Presentation':
+      const pilotsCasting = Projects.find({
+        projectType: { $in: [ 'Pilot One Hour', 'Pilot 1/2 Hour', 'Pilot Presentation' ] },
+        status: 'Casting'
+      }).count()
+      newStats.pilots.push({ date: moment().format('YYYY-MM-DD HH:mm:ss'), quantity: pilotsCasting })
+      break
+    case 'Short Film':
+    case 'TV Daytime':
+    case 'TV Mini-Series':
+    case 'TV Movie':
+    case 'TV Telefilm':
+    case 'TV Talk/Variety':
+    case 'TV Sketch/Improv':
+    case 'New Media':
+      const othersCasting = Projects.find({
+        projectType: { $in: [ 'Short Film', 'TV Daytime', 'TV Mini-Series', 'TV Movie', 'TV Telefilm', 'TV Talk/Variety', 'TV Sketch/Improv', 'New Media' ] },
+        status: 'Casting'
+      }).count()
+      newStats.others.push({ date: moment().format('YYYY-MM-DD HH:mm:ss'), quantity: othersCasting })
+      break
+    // default:
+  }
+  Promise.await(updateMutator({
+    action: 'statistic.update',
+    documentId: theStats._id,
+    collection: Statistics,
+    set: newStats,
+    currentUser,
+    validate: false
+  }))
+}
+
 async function PastProjectUpdateStatusAsync ({ currentUser, document, oldDocument }) {
   // if the new status is now an active project, create a new project then remove this past-project
   const newStatusIsActive = _.includes(ACTIVE_PROJECT_STATUSES_ARRAY, document.status)
-  console.log('PastProjectUpdateStatusAsync says newStatusIsActive is', newStatusIsActive)
 
   const createNewProject = async () => {
     try {
       return await createMutator({
         collection: Projects,
-        document: document,
-        currentUser: currentUser,
+        document,
+        currentUser,
         validate: false
       })
     } catch (err) {
+      // eslint-disable-next-line no-console
       console.error('error in createNewProject:', err)
     }
   }
@@ -181,22 +248,21 @@ async function PastProjectUpdateStatusAsync ({ currentUser, document, oldDocumen
       return await deleteMutator({
         collection: PastProjects,
         documentId: document._id,
-        currentUser: currentUser,
+        currentUser,
         validate: false
       })
     } catch (err) {
+      // eslint-disable-next-line no-console
       console.error('error in deletePastProject:', err)
     }
   }
 
   if (newStatusIsActive) {
     const newProject = (await createNewProject()).data
-    console.log('PastProjectUpdateStatusAsync created project:', newProject)
 
     // if the new project is created and matches (TODO: matches what, exactly?), delete current
     if (newProject.projectTitle === document.projectTitle) {
-      const deletedPastProject = await deletePastProject()
-      console.log('PastProjectUpdateStatusAsync deleted past-project:', deletedPastProject)
+      await deletePastProject()
     }
 
     if (document.castingOfficeId) {
@@ -221,9 +287,11 @@ async function PastProjectUpdateStatusAsync ({ currentUser, document, oldDocumen
   }
 }
 
-addCallback('pastproject.update.async', PastProjectUpdateStatusAsync)
-addCallback('pastproject.update.after', PastProjectEditUpdateContacts)
-addCallback('pastproject.update.after', PastProjectEditUpdateOffice)
-addCallback('pastproject.update.before', PastProjectEditUpdateOfficeBefore)
 addCallback('pastproject.create.after', PastProjectEditUpdateContacts)
 addCallback('pastproject.create.after', PastProjectEditUpdateOffice)
+addCallback('pastproject.create.async', PastProjectCreateUpdateStatisticsAsync)
+
+addCallback('pastproject.update.before', PastProjectEditUpdateOfficeBefore)
+addCallback('pastproject.update.after', PastProjectEditUpdateContacts)
+addCallback('pastproject.update.after', PastProjectEditUpdateOffice)
+addCallback('pastproject.update.async', PastProjectUpdateStatusAsync)

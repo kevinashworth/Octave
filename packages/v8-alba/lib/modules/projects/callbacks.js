@@ -1,5 +1,4 @@
 import { addCallback, Connectors, createMutator, deleteMutator, updateMutator } from 'meteor/vulcan:core'
-import Users from 'meteor/vulcan:users'
 import Contacts from '../contacts/collection.js'
 import Offices from '../offices/collection.js'
 import Projects from './collection.js'
@@ -162,10 +161,9 @@ function ProjectEditUpdateOfficeBefore (data, { currentUser, document, oldDocume
   }
 }
 
-/* THe non-cron approach: When adding a project, update statistics */
-function ProjectNewUpdateStatisticsAsync ({ newDocument }) {
-  const project = newDocument
-  const currentUser = Users.findOne() // just get the first user available TODO:
+/* When adding a project, update statistics */
+function ProjectCreateUpdateStatisticsAsync ({ currentUser, document }) {
+  const project = document
   const theStats = Statistics.findOne()
   let newStats = {}
   newStats.episodics = theStats.episodics
@@ -230,17 +228,17 @@ function ProjectNewUpdateStatisticsAsync ({ newDocument }) {
 async function ProjectUpdateStatusAsync ({ currentUser, document, oldDocument }) {
   // if the new status is now a past-project, create a new past-project then remove this active project
   const newStatusIsPast = _.includes(PAST_PROJECT_STATUSES_ARRAY, document.status)
-  console.log('ProjectUpdateStatusAsync says newStatusIsPast is', newStatusIsPast)
 
   const createNewPastProject = async () => {
     try {
       return await createMutator({
         collection: PastProjects,
-        document: document,
-        currentUser: currentUser,
+        document,
+        currentUser,
         validate: false
       })
     } catch (err) {
+      // eslint-disable-next-line no-console
       console.error('error in createNewPastProject:', err)
     }
   }
@@ -250,22 +248,21 @@ async function ProjectUpdateStatusAsync ({ currentUser, document, oldDocument })
       return await deleteMutator({
         collection: Projects,
         documentId: document._id,
-        currentUser: currentUser,
+        currentUser,
         validate: false
       })
     } catch (err) {
+      // eslint-disable-next-line no-console
       console.error('error in deleteProject:', err)
     }
   }
 
   if (newStatusIsPast) {
     const newPastProject = (await createNewPastProject()).data
-    console.log('ProjectUpdateStatusAsync created project:', newPastProject)
 
     // if the new project is created and matches (TODO: matches what, exactly?), delete current
     if (newPastProject.projectTitle === document.projectTitle) {
-      const deletedPastProject = await deleteProject()
-      console.log('ProjectUpdateStatusAsync deleted past-project:', deletedPastProject)
+      await deleteProject()
     }
 
     if (document.castingOfficeId) {
@@ -290,10 +287,11 @@ async function ProjectUpdateStatusAsync ({ currentUser, document, oldDocument })
   }
 }
 
-addCallback('project.update.async', ProjectUpdateStatusAsync)
-addCallback('project.update.after', ProjectEditUpdateContacts)
-addCallback('project.update.after', ProjectEditUpdateOffice)
-addCallback('project.update.before', ProjectEditUpdateOfficeBefore)
 addCallback('project.create.after', ProjectEditUpdateContacts)
 addCallback('project.create.after', ProjectEditUpdateOffice)
-addCallback('project.create.async', ProjectNewUpdateStatisticsAsync)
+addCallback('project.create.async', ProjectCreateUpdateStatisticsAsync)
+
+addCallback('project.update.before', ProjectEditUpdateOfficeBefore)
+addCallback('project.update.after', ProjectEditUpdateContacts)
+addCallback('project.update.after', ProjectEditUpdateOffice)
+addCallback('project.update.async', ProjectUpdateStatusAsync)
