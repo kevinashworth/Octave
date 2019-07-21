@@ -231,6 +231,24 @@ const schema = {
     insertableBy: ['admins'],
     editableBy: ['admins']
   },
+  casting: {
+    label: 'Casting Calculated',
+    type: String,
+    optional: true,
+    canRead: ['members'],
+    resolveAs: {
+      type: 'String',
+      resolver: async (o, args, { Offices }) => {
+        if (o.castingCompany && o.castingCompany.length)
+          return o.castingCompany
+        if (o.castingOfficeId) {
+          const office = await Offices.loader.load(o.castingOfficeId)
+          return office.displayName
+        }
+        return null
+      }
+    },
+  },
   castingCompany: {
     label: 'Casting Company',
     type: String,
@@ -239,7 +257,7 @@ const schema = {
     canCreate: ['admins'],
     canUpdate: ['admins']
   },
-  castingOffice: {
+  castingOfficeId: {
     label: 'Casting Office',
     type: String,
     control: 'MySelect',
@@ -259,7 +277,14 @@ const schema = {
         }
         totalCount
       }
-    `
+    `,
+    resolveAs: {
+      fieldName: 'castingOffice',
+      type: 'Office',
+      resolver: (o, args, { Offices }) =>
+        o.castingOfficeId && Offices.loader.load(o.castingOfficeId),
+      addOriginalField: true,
+    }
   },
   slug: {
     type: String,

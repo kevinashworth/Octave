@@ -7,6 +7,12 @@ registerFragment(/* GraphQL */ `
     updatedAt
     userId
     projectTitle
+    casting
+    castingCompany
+    castingOfficeId
+    castingOffice{
+      displayName
+    }
     slug
   }
 `)
@@ -19,8 +25,12 @@ registerFragment( /* GraphQL */ `
     userId
     projectTitle
     projectType
+    casting
     castingCompany
-    castingOffice
+    castingOfficeId
+    castingOffice{
+      displayName
+    }
     addresses
     allAddresses
     contacts
@@ -50,7 +60,7 @@ registerFragment( /* GraphQL */ `
     projectTitle
     projectType
     castingCompany
-    castingOffice
+    castingOfficeId
     contacts
     addresses
     network

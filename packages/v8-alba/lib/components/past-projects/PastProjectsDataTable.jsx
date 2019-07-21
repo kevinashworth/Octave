@@ -207,7 +207,7 @@ class PastProjectsDataTable extends PureComponent {
                 }
               } width='23%'>Name</TableHeaderColumn>
               <TableHeaderColumn dataField='projectType' dataSort>Type</TableHeaderColumn>
-              <TableHeaderColumn dataField='castingCompany' dataSort width='23%'>Casting</TableHeaderColumn>
+              <TableHeaderColumn dataField='casting' dataSort width='23%'>Casting</TableHeaderColumn>
               <TableHeaderColumn dataField='status' dataSort>Status</TableHeaderColumn>
               <TableHeaderColumn dataField='updatedAt' dataFormat={dateFormatter} dataSort width='9%'>Updated</TableHeaderColumn>
               <TableHeaderColumn dataField='summary' hidden>Hidden</TableHeaderColumn>
