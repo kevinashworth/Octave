@@ -41,7 +41,7 @@ class PastProjectSingle extends PureComponent {
     const project = this.props.document
     const seasonorder = this.seasonorder(project)
     const displayDate =
-      'PastProject added to database ' + moment(project.createdAt).format(DATE_FORMAT_SHORT) + ' / ' +
+      'Project first added to database ' + moment(project.createdAt).format(DATE_FORMAT_SHORT) + ' / ' +
       'Last modified ' + moment(project.updatedAt).format(DATE_FORMAT_LONG)
 
     return (
