@@ -90,51 +90,51 @@ function PastProjectEditUpdateContacts (project) {
 }
 
 /*
-When updating a office on a project, also update that office with the project.
+When updating a office on a pastProject, also update that office with the pastProject.
 I get confused, so here's a description:
 
-Where i represents the office(s) we're adding to our project,
-project.offices[i] has { officeId, officeName }
+Where i represents the office(s) we're adding to our pastProject,
+pastProject.offices[i] has { officeId, officeName }
 
 But we actually get all offices, not just i, the new ones.
 
-So for each of the project.offices we update office.projects of the Office with _id === officeId with
+So for each of the pastProject.offices we update office.pastProjects of the Office with _id === officeId with
 {
-  projectId: project._id,
-  projectTitle: project.projectTitle
+  projectId: pastProject._id
 }
 */
-function PastProjectEditUpdateOffice (project) {
-  if (!project.castingOffice) {
+function PastProjectEditUpdateOffice (data, { document }) {
+  const pastProject = document
+  if (!pastProject.castingOfficeId) {
     return
   }
 
-  const office = Offices.findOne(project.castingOffice) // TODO: error handling
-  const newProject = {
-    projectId: project._id
+  const office = Offices.findOne(pastProject.castingOfficeId) // TODO: error handling
+  const newPastProject = {
+    projectId: pastProject._id
   }
-  let newProjects = []
+  let newPastProjects = []
 
-  // case 1: there are no projects on the office and office.projects is undefined
-  if (!office.projects) {
-    newProjects = [newProject]
+  // case 1: there are no pastProjects on the office and office.pastProjects is undefined
+  if (!office.pastProjects) {
+    newPastProjects = [newPastProject]
   } else {
-    const i = _.findIndex(office.projects, { projectId: project._id })
-    newProjects = office.projects
+    const i = _.findIndex(office.pastProjects, { projectId: pastProject._id })
+    newPastProjects = office.pastProjects
     if (i < 0) {
-      // case 2: this project is not on this office but other projects are and we're adding this project
-      newProjects.push(newProject)
+      // case 2: this pastProject is not on this office but other pastProjects are and we're adding this pastProject
+      newPastProjects.push(newPastProject)
     } else {
-      // case 3: this project is on this office and we're updating the info
-      newProjects[i] = newProject
+      // case 3: this pastProject is on this office and we're updating the info
+      newPastProjects[i] = newPastProject
     }
   }
-  Connectors.update(Offices, office._id, { $set: { projects: newProjects } })
+  Connectors.update(Offices, office._id, { $set: { pastProjects: newPastProjects } })
 }
 
-function PastProjectEditUpdateOfficeBefore (data, { currentUser, document, newDocument, collection, context }) {
-  const oldOffice = document.castingOffice
-  const newOffice = newDocument.castingOffice
+function PastProjectEditUpdateOfficeBefore (data, { currentUser, document, oldDocument, collection, context }) {
+  const oldOffice = oldDocument.castingOfficeId
+  const newOffice = document.castingOfficeId
   // this is an office getting removed from the project,
   // so we also need to remove the project from that office
   var doIt = false
@@ -148,25 +148,26 @@ function PastProjectEditUpdateOfficeBefore (data, { currentUser, document, newDo
   // newOffice is undefined and oldOffice is an _id or they're both _id's
   if (doIt) {
     const office = Offices.findOne(oldOffice) // TODO: error handling
-    var projects = office.projects
-    if (!isEmptyValue(projects)) {
-      const i = _.findIndex(projects, { projectId: document._id })
-      projects.splice(i, 1)
-      Connectors.update(Offices, office._id, { $set: { projects: projects } })
+    var pastProjects = office.pastProjects
+    if (!isEmptyValue(pastProjects)) {
+      _.remove(pastProjects, function(p) {
+        return p._id === document._id
+      })
+      Connectors.update(Offices, office._id, { $set: { pastProjects: pastProjects } })
     }
   }
 }
 
-async function PastProjectUpdateStatus ({ currentUser, document, newDocument }) {
-  // if the new status is now an active project, create new project then remove this past project
-  const newIsActive = _.includes(ACTIVE_PROJECT_STATUSES_ARRAY, newDocument.status)
-  console.log('PastProjectUpdateStatus says newIsActive is', newIsActive)
+async function PastProjectUpdateStatusAsync ({ currentUser, document, oldDocument }) {
+  // if the new status is now an active project, create a new project then remove this past-project
+  const newStatusIsActive = _.includes(ACTIVE_PROJECT_STATUSES_ARRAY, document.status)
+  console.log('PastProjectUpdateStatusAsync says newStatusIsActive is', newStatusIsActive)
 
   const createNewProject = async () => {
     try {
       return await createMutator({
         collection: Projects,
-        document: newDocument,
+        document: document,
         currentUser: currentUser,
         validate: false
       })
@@ -188,18 +189,39 @@ async function PastProjectUpdateStatus ({ currentUser, document, newDocument }) 
     }
   }
 
-  if (newIsActive) {
-    const newProject = await createNewProject()
-    console.log('PastProjectUpdateStatus created project', newProject)
+  if (newStatusIsActive) {
+    const newProject = (await createNewProject()).data
+    console.log('PastProjectUpdateStatusAsync created project:', newProject)
+
     // if the new project is created and matches (TODO: matches what, exactly?), delete current
-    if (newProject.data.projectTitle === newDocument.projectTitle) {
+    if (newProject.projectTitle === document.projectTitle) {
       const deletedPastProject = await deletePastProject()
-      console.log('PastProjectUpdateStatus deleted past project', deletedPastProject)
+      console.log('PastProjectUpdateStatusAsync deleted past-project:', deletedPastProject)
+    }
+
+    if (document.castingOfficeId) {
+      let pastProjects = []
+      let projects = []
+      const office = Offices.findOne(document.castingOfficeId)
+      if (office.pastProjects && office.pastProjects.length) {
+        pastProjects = office.pastProjects
+        _.remove(pastProjects, function(p) {
+          return p._id === document._id
+        })
+      }
+      if (office.projects && office.projects.length) {
+        projects = office.projects
+      }
+      projects.push({ projectId: newProject._id })
+      Connectors.update(Offices, document.castingOfficeId, { $set: {
+        pastProjects,
+        projects
+      } })
     }
   }
 }
 
-addCallback('pastproject.update.async', PastProjectUpdateStatus)
+addCallback('pastproject.update.async', PastProjectUpdateStatusAsync)
 addCallback('pastproject.update.after', PastProjectEditUpdateContacts)
 addCallback('pastproject.update.after', PastProjectEditUpdateOffice)
 addCallback('pastproject.update.before', PastProjectEditUpdateOfficeBefore)

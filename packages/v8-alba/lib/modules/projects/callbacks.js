@@ -28,7 +28,8 @@ So for each of the project.contacts we update contact.projects of the Contact wi
 
 TODO: For some reason, the contact's `updatedAt` field doesn't get a `moment().format("YYYY-MM-DD HH:mm:ss")` `onEdit`
 */
-function ProjectEditUpdateContacts (project) {
+function ProjectEditUpdateContacts (data, { document }) {
+  const project = document
   if (!project.contacts) {
     return
   }
@@ -107,12 +108,13 @@ So for each of the project.offices we update office.projects of the Office with 
   projectTitle: project.projectTitle
 }
 */
-function ProjectEditUpdateOffice (project) {
-  if (!project.castingOffice) {
+function ProjectEditUpdateOffice (data, { document }) {
+  const project = document
+  if (!project.castingOfficeId) {
     return
   }
 
-  const office = Offices.findOne(project.castingOffice) // TODO: error handling
+  const office = Offices.findOne(project.castingOfficeId) // TODO: error handling
   const newProject = {
     projectId: project._id
   }
@@ -135,9 +137,9 @@ function ProjectEditUpdateOffice (project) {
   Connectors.update(Offices, office._id, { $set: { projects: newProjects } })
 }
 
-function ProjectEditUpdateOfficeBefore (data, { currentUser, document }) {
-  const oldOffice = document.castingOffice
-  const newOffice = data.castingOffice
+function ProjectEditUpdateOfficeBefore (data, { currentUser, document, oldDocument }) {
+  const oldOffice = oldDocument.castingOfficeId
+  const newOffice = document.castingOfficeId
   // this is an office getting removed from the project,
   // so we also need to remove the project from that office
   var doIt = false
@@ -161,7 +163,7 @@ function ProjectEditUpdateOfficeBefore (data, { currentUser, document }) {
 }
 
 /* THe non-cron approach: When adding a project, update statistics */
-function ProjectNewUpdateStatistics ({ newDocument }) {
+function ProjectNewUpdateStatisticsAsync ({ newDocument }) {
   const project = newDocument
   const currentUser = Users.findOne() // just get the first user available TODO:
   const theStats = Statistics.findOne()
@@ -225,52 +227,73 @@ function ProjectNewUpdateStatistics ({ newDocument }) {
   }))
 }
 
-async function ProjectUpdateStatus ({ currentUser, document, oldDocument }) {
-  // if the new status is now an active project, create new project then remove this past project
-  const newIsPast = _.includes(PAST_PROJECT_STATUSES_ARRAY, document.status)
-  console.log('ProjectUpdateStatus says newIsPast is', newIsPast)
+async function ProjectUpdateStatusAsync ({ currentUser, document, oldDocument }) {
+  // if the new status is now a past-project, create a new past-project then remove this active project
+  const newStatusIsPast = _.includes(PAST_PROJECT_STATUSES_ARRAY, document.status)
+  console.log('ProjectUpdateStatusAsync says newStatusIsPast is', newStatusIsPast)
 
-  if (newIsPast) {
-    const createNewPastProject = async () => {
-      try {
-        return await createMutator({
-          collection: PastProjects,
-          document: document,
-          currentUser: currentUser,
-          validate: false
-        })
-      } catch (err) {
-        console.error('error in createNewProject:', err)
-      }
+  const createNewPastProject = async () => {
+    try {
+      return await createMutator({
+        collection: PastProjects,
+        document: document,
+        currentUser: currentUser,
+        validate: false
+      })
+    } catch (err) {
+      console.error('error in createNewPastProject:', err)
     }
+  }
 
-    const deleteProject = async () => {
-      try {
-        return await deleteMutator({
-          collection: Projects,
-          documentId: document._id,
-          currentUser: currentUser,
-          validate: false
-        })
-      } catch (err) {
-        console.error('error in deletePastProject:', err)
-      }
+  const deleteProject = async () => {
+    try {
+      return await deleteMutator({
+        collection: Projects,
+        documentId: document._id,
+        currentUser: currentUser,
+        validate: false
+      })
+    } catch (err) {
+      console.error('error in deleteProject:', err)
     }
+  }
 
-    const newProject = await createNewPastProject()
-    console.log('PastProjectUpdateStatus created project', newProject)
+  if (newStatusIsPast) {
+    const newPastProject = (await createNewPastProject()).data
+    console.log('ProjectUpdateStatusAsync created project:', newPastProject)
+
     // if the new project is created and matches (TODO: matches what, exactly?), delete current
-    if (newProject.data.projectTitle === document.projectTitle) {
-      const deletedProject = await deleteProject()
-      console.log('ProjectUpdateStatus deleted project', deletedProject)
+    if (newPastProject.projectTitle === document.projectTitle) {
+      const deletedPastProject = await deleteProject()
+      console.log('ProjectUpdateStatusAsync deleted past-project:', deletedPastProject)
+    }
+
+    if (document.castingOfficeId) {
+      let pastProjects = []
+      let projects = []
+      const office = Offices.findOne(document.castingOfficeId)
+      if (office.projects && office.projects.length) {
+        projects = office.projects
+        _.remove(projects, function(p) {
+          return p._id === document._id
+        })
+      }
+      if (office.pastProjects && office.pastProjects.length) {
+        pastProjects = office.pastProjects
+      }
+      pastProjects.push({ projectId: newPastProject._id })
+      Connectors.update(Offices, document.castingOfficeId, { $set: {
+        pastProjects,
+        projects
+      } })
     }
   }
 }
 
-addCallback('project.update.async', ProjectUpdateStatus)
+addCallback('project.update.async', ProjectUpdateStatusAsync)
 addCallback('project.update.after', ProjectEditUpdateContacts)
 addCallback('project.update.after', ProjectEditUpdateOffice)
 addCallback('project.update.before', ProjectEditUpdateOfficeBefore)
 addCallback('project.create.after', ProjectEditUpdateContacts)
 addCallback('project.create.after', ProjectEditUpdateOffice)
-addCallback('project.create.async', ProjectNewUpdateStatistics)
+addCallback('project.create.async', ProjectNewUpdateStatisticsAsync)

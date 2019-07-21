@@ -13,14 +13,15 @@ office.projects[i] has { projectId }
 
 But we actually get all projects, not just i, the new ones.
 
-So for each of the office.projects we update project.castingOffice of the Project with _id === projectId with
+So for each of the office.projects we update project.castingOfficeId of the Project with _id === projectId with
 {
   officeId: office._id
 }
 
 TODO: For some reason, the project's `updatedAt` field doesn't get a `new Date()` `onEdit`
 */
-function OfficeEditUpdateProjects (office) {
+function OfficeEditUpdateProjects (data, { document }) {
+  const office = document
   if (!office.projects) {
     return
   }
@@ -28,11 +29,12 @@ function OfficeEditUpdateProjects (office) {
   office.projects.forEach(officeProject => {
     const project = Projects.findOne(officeProject.projectId) // TODO: error handling
     const newOffice = office._id
-    Connectors.update(Projects, project._id, { $set: { castingOffice: newOffice } })
+    Connectors.update(Projects, project._id, { $set: { castingOfficeId: newOffice } })
   })
 }
 
-function OfficeEditUpdatePastProjects (office) {
+function OfficeEditUpdatePastProjects (data, { document }) {
+  const office = document
   if (!office.pastProjects) {
     return
   }
@@ -40,35 +42,39 @@ function OfficeEditUpdatePastProjects (office) {
   office.pastProjects.forEach(officeProject => {
     const project = PastProjects.findOne(officeProject.projectId) // TODO: error handling
     const newOffice = office._id
-    Connectors.update(PastProjects, project._id, { $set: { castingOffice: newOffice } })
+    Connectors.update(PastProjects, project._id, { $set: { castingOfficeId: newOffice } })
   })
 }
 
-function OfficeEditUpdateContacts (data, { document }) {
+function OfficeEditUpdateContacts (data, { document, oldDocument }) {
   console.group()
   console.log('Hello from OfficeEditUpdateContacts')
 
-  const oldOffice = document
-  const newOffice = data
+  const oldOffice = oldDocument
+  const newOffice = document
 
   if (_.isEqual(oldOffice.contacts, newOffice.contacts)) {
     console.log('No change in contacts')
     return
   }
 
-  var office = null
+  const oldOfficeContactsLength = oldOffice.contacts ? oldOffice.contacts.length : 0
+  const newOfficeContactsLength = newOffice.contacts ? newOffice.contacts.length : 0
 
-  if (oldOffice.contacts.length > newOffice.contacts.length) {
+  if (oldOfficeContactsLength === newOfficeContactsLength === 0) {
+    console.log('No contacts')
+    console.log('Goodbye from OfficeEditUpdateContacts')
+    console.groupEnd()
+    return
+  }
+
+  var office = null
+  if (oldOfficeContactsLength > newOfficeContactsLength) {
     office = oldOffice
     console.log('Using oldOffice contacts')
   } else {
     office = newOffice
     console.log('Using newOffice contacts')
-  }
-
-  if (!office.contacts) {
-    console.log('No contacts')
-    return
   }
 
   office.contacts.forEach(officeContact => {
