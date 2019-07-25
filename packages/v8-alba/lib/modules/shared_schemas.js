@@ -35,6 +35,14 @@ export const addressSchema = {
     viewableBy: ['members'],
     insertableBy: ['admins'],
     editableBy: ['admins']
+  },
+  location: {
+    type: String,
+    optional: true,
+    hidden: true,
+    viewableBy: ['members'],
+    insertableBy: ['admins'],
+    editableBy: ['admins']
   }
 }
 
