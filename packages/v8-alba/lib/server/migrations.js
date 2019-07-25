@@ -9,6 +9,7 @@ import { PAST_PROJECT_STATUSES_ARRAY } from '../modules/constants.js'
 import moment from 'moment'
 import marked from 'marked'
 import reducedStats from '../modules/statistics/_stats-reduced.js'
+import { getAddress, getFullAddress, getFullNameFromContact } from '../modules/helpers.js'
 
 Migrations.add({
   version: 1,
@@ -252,24 +253,6 @@ Migrations.add({
   }
 })
 
-function getFullNameFromContact ({ firstName, middleName, lastName }) {
-  let tempName = ''
-  if (firstName) {
-    tempName += firstName
-  }
-  if (middleName) {
-    tempName += (' ' + middleName)
-  }
-  if (lastName) {
-    tempName += (' ' + lastName)
-  }
-  if (tempName.length) {
-    return tempName
-  } else {
-    return 'displayName or fullName Unknown'
-  }
-}
-
 Migrations.add({
   version: 5,
   name: 'displayName missing? set it',
@@ -452,6 +435,29 @@ Migrations.add({
   }
 })
 
+Migrations.add({
+  version: 11,
+  name: 'Add addressString to all contacts; will become an onUpdate calculation.',
+  up: function () {
+    Contacts.find().forEach((contact) => {
+      let addressString = ''
+      try {
+        addressString = getFullAddress(getAddress({ contact }))
+      } catch (e) {
+        // eslint-disable-next-line no-console
+        console.error('Error in addressString for', contact._id, ':')
+        // eslint-disable-next-line no-console
+        console.error(e)
+      }
+      Contacts.update(contact._id,
+        {
+          $set: { addressString: addressString }
+        })
+    })
+  },
+  down: function () { /* There is no undoing this one. */ }
+})
+
 Meteor.startup(() => {
-  Migrations.migrateTo('10')
+  Migrations.migrateTo('11')
 })

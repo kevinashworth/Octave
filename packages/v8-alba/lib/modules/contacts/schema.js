@@ -282,6 +282,37 @@ const schema = {
       }
     }
   },
+  addressString: {
+    label: 'Computed Address String',
+    type: String,
+    optional: true,
+    hidden: true,
+    canRead: ['members'],
+    canCreate: ['members'],
+    canUpdate: ['members'],
+    onCreate: ({ newDocument, currentUser }) => {
+      try {
+        return getFullAddress(getAddress({ contact: newDocument }))
+      } catch (e) {
+        // eslint-disable-next-line no-console
+        console.error('Error in addressString for', newDocument._id, ':')
+        // eslint-disable-next-line no-console
+        console.error(e)
+        return ''
+      }
+    },
+    onUpdate: ({ data, document, currentUser }) => {
+      try {
+        return getFullAddress(getAddress({ contact: document }))
+      } catch (e) {
+        // eslint-disable-next-line no-console
+        console.error('Error in addressString for', document._id, ':')
+        // eslint-disable-next-line no-console
+        console.error(e)
+        return ''
+      }
+    }
+  },
   slug: {
     type: String,
     optional: true,
@@ -401,7 +432,9 @@ const schema = {
     }
   },
 
-  // GraphQL only fields to ease transition from address to addresses, and also to provide a 'main' address
+  // GraphQL only field to ease transition from address to addresses,
+  // and also to provide a 'main' address
+  // and this is used for caculating `location`
 
   theAddress: {
     label: 'Address Object',
@@ -419,28 +452,6 @@ const schema = {
           // eslint-disable-next-line no-console
           console.error(e)
           return 'Blvd of Broken Dreams'
-        }
-        return address
-      }
-    }
-  },
-
-  theAddressString: {
-    label: 'Address String',
-    type: String,
-    optional: true,
-    canRead: ['members'],
-    resolveAs: {
-      resolver: (o) => {
-        var address = null
-        try {
-          address = getFullAddress(getAddress({ contact: o }))
-        } catch (e) {
-          // eslint-disable-next-line no-console
-          console.info('Problem in theAddressString for', o._id)
-          // eslint-disable-next-line no-console
-          console.error(e)
-          return ''
         }
         return address
       }

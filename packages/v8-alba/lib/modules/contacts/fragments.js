@@ -31,7 +31,7 @@ registerFragment(/* GraphQL */ `
     addresses
     allAddresses
     theAddress
-    theAddressString
+    addressString
     projects
     pastProjects
     offices

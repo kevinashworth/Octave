@@ -240,7 +240,7 @@ class ContactsDataTable extends PureComponent {
                 }
               }>Name</TableHeaderColumn>
               <TableHeaderColumn dataField='title' dataSort>Title</TableHeaderColumn>
-              <TableHeaderColumn dataField='theAddressString' dataSort >Address</TableHeaderColumn>
+              <TableHeaderColumn dataField='addressString' dataSort>Address</TableHeaderColumn>
               <TableHeaderColumn dataField='updatedAt' dataFormat={dateFormatter} dataSort width='9%'>Updated</TableHeaderColumn>
               <TableHeaderColumn dataField='allLinks' hidden>Hidden</TableHeaderColumn>
               <TableHeaderColumn dataField='body' hidden>Hidden</TableHeaderColumn>
