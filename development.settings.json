@@ -1,0 +1,41 @@
+{
+  "public": {
+    "title": "V8 Alba",
+    "tagline": "Alba 1.8.14",
+
+    "faviconUrl": "/img/favicon.png",
+
+    "locale": "en"
+  },
+  "debug": true,
+  "private": {
+    "mlabuser": "v8-developer",
+    "mlabpass": "vee8eight"
+  },
+
+  "defaultEmail": "hello@world.com",
+  "mailUrl": "smtp://username%40yourdomain.mailgun.org:yourpassword123@smtp.mailgun.org:587/",
+
+  "oAuth": {
+    "twitter": {
+      "consumerKey": "foo",
+      "secret": "bar"
+    },
+    "facebook": {
+      "appId": "foo",
+      "secret": "bar"
+    }
+  },
+
+  "cron": {
+    "mongoBackup": {
+      "enable": false,
+      "aws": {
+        "bucket": "v8-alba-mongo-backup"
+      }
+    }
+  },
+  "AWS": {
+    "REGION": "us-west-1"
+  }
+}
