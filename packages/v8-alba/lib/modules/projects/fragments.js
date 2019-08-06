@@ -51,6 +51,23 @@ registerFragment(/* GraphQL */ `
   }
 `)
 
+registerFragment(/* GraphQL */ `
+  fragment ProjectsDataTableFragment on Project {
+    _id
+    projectTitle
+    projectType
+    casting
+    status
+    updatedAt
+    summary
+    notes
+    allContactNames
+    allAddresses
+    network
+    slug
+  }
+`)
+
 registerFragment( /* GraphQL */ `
   fragment ProjectsEditFragment on Project {
     _id

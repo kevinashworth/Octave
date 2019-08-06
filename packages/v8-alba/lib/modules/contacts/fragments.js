@@ -40,6 +40,19 @@ registerFragment(/* GraphQL */ `
 `)
 
 registerFragment(/* GraphQL */ `
+  fragment ContactsDataTableFragment on Contact {
+    _id
+    fullName
+    title
+    addressString
+    updatedAt
+    allLinks
+    body
+    slug
+  }
+`)
+
+registerFragment(/* GraphQL */ `
   fragment ContactsEditFragment on Contact {
     _id
     createdAt

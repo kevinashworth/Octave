@@ -270,7 +270,7 @@ class ContactsDataTable extends PureComponent {
 
 const options = {
   collection: Contacts,
-  fragmentName: 'ContactsSingleFragment',
+  fragmentName: 'ContactsDataTableFragment',
   limit: 1000
 }
 
