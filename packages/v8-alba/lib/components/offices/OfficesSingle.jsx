@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom'
 import { Button, Card, CardBody, CardFooter, CardHeader, CardLink, CardText, CardTitle, Collapse } from 'reactstrap'
 import mapProps from 'recompose/mapProps'
 import moment from 'moment'
-import { DATE_FORMAT_LONG } from '../../modules/constants.js'
+import { DATE_FORMAT_LONG, DATE_FORMAT_SHORT } from '../../modules/constants.js'
 import { dangerouslyCreateAddress } from '../../modules/helpers.js'
 import Offices from '../../modules/offices/collection.js'
 
@@ -40,9 +40,9 @@ class OfficesSingle extends PureComponent {
     }
 
     const office = this.props.document
-    const displayDate = office.updatedAt
-      ? 'Last modified ' + moment(office.updatedAt).format(DATE_FORMAT_LONG)
-      : 'Created ' + moment(office.createdAt).format(DATE_FORMAT_LONG)
+    const displayDate =
+      'Office added to database ' + moment(office.createdAt).format(DATE_FORMAT_SHORT) + ' / ' +
+      'Last modified ' + moment(office.updatedAt).format(DATE_FORMAT_LONG)
 
     return (
       <div className='animated fadeIn'>
@@ -89,7 +89,9 @@ class OfficesSingle extends PureComponent {
             </CardText>
           </CardBody>
           }
-          <CardFooter>{displayDate}</CardFooter>
+          <CardFooter>
+            <small className='text-muted'>{displayDate}</small>
+          </CardFooter>
         </Card>
         {office.pastProjects &&
         <div>

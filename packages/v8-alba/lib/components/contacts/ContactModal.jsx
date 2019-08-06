@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom'
 import PropTypes from 'prop-types'
 import { Card, CardBody, CardFooter, CardText, CardTitle } from 'reactstrap'
 import moment from 'moment'
-import { DATE_FORMAT_SHORT } from '../../modules/constants.js'
+import { DATE_FORMAT_LONG, DATE_FORMAT_SHORT } from '../../modules/constants.js'
 
 const ContactModal = (props) => {
   if (props.loading) {
@@ -19,7 +19,7 @@ const ContactModal = (props) => {
   const contact = props.document
   const displayDate =
       'Contact added ' + moment(contact.createdAt).format(DATE_FORMAT_SHORT) + ' / ' +
-      'Last modified ' + moment(contact.updatedAt).format(DATE_FORMAT_SHORT)
+      'Last modified ' + moment(contact.updatedAt).format(DATE_FORMAT_LONG)
   const createAddress = (address) => {
     let streetAddress = ''
     if (address.street1) {

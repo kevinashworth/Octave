@@ -58,6 +58,7 @@ registerFragment(/* GraphQL */ `
     projectType
     casting
     status
+    createdAt
     updatedAt
     summary
     notes

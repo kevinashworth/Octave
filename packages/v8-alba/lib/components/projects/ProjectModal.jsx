@@ -4,7 +4,7 @@ import React, { PureComponent } from 'react'
 import PropTypes from 'prop-types'
 import { Card, CardBody, CardFooter, CardLink, CardText, CardTitle } from 'reactstrap'
 import moment from 'moment'
-import { DATE_FORMAT_SHORT } from '../../modules/constants.js'
+import { DATE_FORMAT_LONG, DATE_FORMAT_SHORT } from '../../modules/constants.js'
 
 class ProjectModal extends PureComponent {
   render () {
@@ -19,7 +19,7 @@ class ProjectModal extends PureComponent {
     const project = this.props.document
     const displayDate =
       'Project added ' + moment(project.createdAt).format(DATE_FORMAT_SHORT) + ' / ' +
-      'Last modified ' + moment(project.updatedAt).format(DATE_FORMAT_SHORT)
+      'Last modified ' + moment(project.updatedAt).format(DATE_FORMAT_LONG)
 
     return (
       <div>
