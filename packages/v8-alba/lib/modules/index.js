@@ -8,4 +8,4 @@ import './projects'
 import './past-projects/collection'
 import './statistics/collection'
 
-// import './filters';
+import './fragments';

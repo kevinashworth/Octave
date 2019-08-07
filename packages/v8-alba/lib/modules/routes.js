@@ -23,3 +23,9 @@ addRoute({ path: '/past-projects/:_id/edit', name: 'pastprojects.edit', componen
 addRoute({ path: '/past-projects/:_id/:slug?', name: 'pastprojects.single', componentName: 'PastProjectSingle' });
 addRoute({ path: '/statistics/list', name: 'StatisticsList', componentName: 'StatisticsList' });
 addRoute({ path: '/statistics/:_id/edit', name: 'StatisticsEditForm', componentName: 'StatisticsEditForm' });
+
+addRoute([
+  {name:'users.profile',    path:'/users/:slug',           componentName: 'UsersProfile'},
+  {name:'users.account',    path:'/account',               componentName: 'UsersAccount'},
+  {name:'users.edit',       path:'/users/:slug/edit',      componentName: 'UsersAccount'}
+]);
