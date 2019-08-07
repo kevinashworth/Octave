@@ -4,7 +4,7 @@ addRoute({ path: '/', name: 'Home', componentName: 'Dashboard' });
 addRoute({ path: '/dashboard', name: 'Dashboard', componentName: 'Dashboard' });
 addRoute({ path: '/latest', name: 'Latest Updates', componentName: 'LatestUpdates' });
 addRoute({ path: '/login', name: 'Login', componentName: 'Login' });
-addRoute({ name: 'fragments', path: '/fragments', componentName: 'Fragments', layoutName: 'AdminLayout' });
+addRoute({ path: '/fragments', name: 'fragments', componentName: 'Fragments', layoutName: 'AdminLayout' });
 addRoute({ path: '/contacts', name: 'Contacts', componentName: 'Contacts' });
 addRoute({ path: '/contacts/datatable', name: 'Contacts', componentName: 'ContactsDataTable' });
 addRoute({ path: '/contacts/:_id/edit', name: 'Edit Contact', componentName: 'ContactsEditForm' });
