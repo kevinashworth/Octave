@@ -5,6 +5,11 @@ export default {
       name: 'Home'
     },
     {
+      name: 'Account',
+      url: '/account',
+      icon: 'fa fa-id-badge'
+    },
+    {
       name: 'Login/Logout',
       url: '/login',
       icon: 'icon-login'

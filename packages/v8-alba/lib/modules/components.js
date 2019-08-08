@@ -82,3 +82,13 @@ import '../components/offices/OfficesListGroup'
 import '../components/offices/OfficesNewForm'
 import '../components/offices/OfficesPersonDetail'
 import '../components/offices/OfficesSingle'
+
+// from example-forum
+
+import '../components/users/UsersAccount.jsx'
+import '../components/users/UsersEditForm.jsx'
+import '../components/users/UsersProfile.jsx'
+import '../components/users/UsersProfileCheck.jsx'
+import '../components/users/UsersAvatar.jsx'
+import '../components/users/UsersName.jsx'
+import '../components/users/UsersMenu.jsx'
