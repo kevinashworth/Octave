@@ -1,5 +1,6 @@
 import { Components, registerComponent, withMulti } from 'meteor/vulcan:core'
 import React, { PureComponent } from 'react'
+import { Link } from 'react-router-dom'
 import { Card, CardBody, CardFooter, CardHeader } from 'reactstrap'
 import BootstrapTable  from 'react-bootstrap-table-next'
 import Offices from '../../modules/offices/collection.js'
@@ -17,10 +18,18 @@ let keptState = {
 class OfficesDataTable extends PureComponent {
   render () {
     const { results } = this.props
+    const displayNameFormatter = (cell, row) => {
+      return (
+        <Link to={`/offices/${row._id}/${row.slug}`}>
+          {cell}
+        </Link>
+      )
+    }
     const columns = [
       {
         dataField: 'displayName',
-        text: 'Office'
+        text: 'Office',
+        formatter: displayNameFormatter
       }, {
         dataField: 'fullAddress',
         text: 'Address'
@@ -33,7 +42,7 @@ class OfficesDataTable extends PureComponent {
             <i className='icon-people' />Offices
           </CardHeader>
           <CardBody>
-            <BootstrapTable keyField='_id' data={results} columns={columns} condensed striped hover />
+            <BootstrapTable keyField='_id' data={results} columns={columns} bootstrap4 condensed striped hover />
           </CardBody>
           <CardFooter>
             <i className='icon-people' />Offices
