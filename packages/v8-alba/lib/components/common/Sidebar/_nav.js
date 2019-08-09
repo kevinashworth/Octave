@@ -28,36 +28,16 @@ export default {
       title: true,
       name: 'The Info'
     },
-    // {
-    //   name: 'Contacts',
-    //   url: '/contacts/table',
-    //   icon: 'icon-people'
-    // },
     {
       name: 'Contacts',
       url: '/contacts/datatable',
       icon: 'icon-people'
     },
-    // {
-    //   name: 'CDT',
-    //   url: '/cdt',
-    //   icon: 'icon-people'
-    // },
-    // {
-    //   name: 'Contacts & Projects',
-    //   url: '/contactsandprojects',
-    //   icon: 'icon-book-open'
-    // },
     {
       name: 'Offices',
-      url: '/offices',
+      url: '/offices/datatable',
       icon: 'icon-briefcase'
     },
-    // {
-    //   name: 'Projects (T)',
-    //   url: '/projects',
-    //   icon: 'fa fa-picture-o'
-    // },
     {
       name: 'Projects',
       url: '/projects/datatable',

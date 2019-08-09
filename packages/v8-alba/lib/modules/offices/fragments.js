@@ -37,6 +37,17 @@ registerFragment(/* GraphQL */ `
 `)
 
 registerFragment(/* GraphQL */ `
+  fragment OfficesDataTableFragment on Office {
+    _id
+    createdAt
+    updatedAt
+    displayName
+    fullAddress
+    slug
+  }
+`)
+
+registerFragment(/* GraphQL */ `
   fragment OfficesEditFragment on Office {
     _id
     createdAt

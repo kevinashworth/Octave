@@ -9,10 +9,14 @@ addRoute({ path: '/contacts', name: 'Contacts', componentName: 'Contacts' });
 addRoute({ path: '/contacts/datatable', name: 'Contacts', componentName: 'ContactsDataTable' });
 addRoute({ path: '/contacts/:_id/edit', name: 'Edit Contact', componentName: 'ContactsEditForm' });
 addRoute({ path: '/contacts/:_id/:slug?', name: 'contacts.single', componentName: 'ContactsSingle' });
-addRoute({ path: '/offices', name: 'Offices', componentName: 'Offices' });
-addRoute({ path: '/offices/list', name: 'Offices List', componentName: 'OfficesListGroup' });
-addRoute({ path: '/offices/:_id/edit', name: 'offices.edit', componentName: 'OfficesEditForm' });
-addRoute({ path: '/offices/:_id/:slug?', name: 'offices.single', componentName: 'OfficesSingle' });
+
+addRoute([
+  { name: 'Offices',        path: '/offices',             componentName: 'Offices' },
+  { name: 'offices.table',  path: '/offices/datatable',   componentName: 'OfficesDataTable' },
+  { name: 'offices.edit',   path: '/offices/:_id/edit',   componentName: 'OfficesEditForm' },
+  { name: 'offices.single', path: '/offices/:_id/:slug?', componentName: 'OfficesSingle' }
+])
+
 addRoute({ path: '/projects', name: 'Projects', componentName: 'Projects' });
 addRoute({ path: '/projects/datatable', name: 'Projects Table', componentName: 'ProjectsDataTable' });
 addRoute({ path: '/projects/:_id/edit', name: 'projects.edit', componentName: 'ProjectsEditForm' });

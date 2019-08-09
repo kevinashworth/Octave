@@ -219,6 +219,9 @@ const schema = {
     type: Date,
     optional: true,
     viewableBy: ['guests'],
+    onInsert: () => {
+      return new Date()
+    },
     onEdit: () => {
       return new Date()
     }
@@ -317,7 +320,12 @@ const schema = {
     canRead: 'guests',
     resolveAs: {
       type: 'String',
-      resolver: (o) => getFullAddress(o)
+      resolver: (o) => {
+        if (o.addresses && o.addresses[0]) {
+          return getFullAddress(o.addresses[0])
+        }
+        return null
+      }
     }
   },
   street: {
