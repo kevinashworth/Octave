@@ -158,7 +158,7 @@ function ProjectEditUpdateOfficeBefore (data, { document, oldDocument }) {
         return p._id === document._id
       })
       if (replacing) {
-        projects.push({ projectId: newPastProject._id })
+        projects.push({ projectId: document._id })
       }
       Connectors.update(Offices, office._id, { $set: { projects: projects } })
     }

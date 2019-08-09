@@ -106,7 +106,7 @@ So for each of the pastProject.offices we update office.pastProjects of the Offi
   projectId: pastProject._id
 }
 */
-function PastProjectEditUpdateOffice (data, { document }) {
+function PastProjectEditUpdateOfficeAfter (data, { document }) {
   const pastProject = document
   if (!pastProject.castingOfficeId) {
     return
@@ -138,25 +138,28 @@ function PastProjectEditUpdateOffice (data, { document }) {
 function PastProjectEditUpdateOfficeBefore (data, { currentUser, document, oldDocument }) {
   const oldOffice = oldDocument.castingOfficeId
   const newOffice = document.castingOfficeId
-  // this is an office getting removed from the project,
-  // so we also need to remove the project from that office
-  var doIt = false
+  let removing = false
   if (oldOffice && !newOffice) {
-    doIt = true
+    // this is an office getting removed from the project, so we also need to remove the project from that office
+    removing = true
   }
-  if (newOffice && oldOffice && oldOffice.length === newOffice.length && oldOffice !== newOffice) {
-    doIt = true
+  let replacing = false
+  if (newOffice && oldOffice && oldOffice !== newOffice) {
+    removing = false
+    // this is one office replacing another on the project
+    replacing = true
   }
-  // only do this when removing or replacing, so
-  // newOffice is undefined and oldOffice is an _id or they're both _id's
-  if (doIt) {
+  if (removing || replacing) {
     const office = Offices.findOne(oldOffice) // TODO: error handling
-    var pastProjects = office.pastProjects
+    let pastProjects = office.pastProjects
     if (!isEmptyValue(pastProjects)) {
       _.remove(pastProjects, function(p) {
         return p._id === document._id
       })
-      Connectors.update(Offices, office._id, { $set: { pastProjects: pastProjects } })
+      if (replacing) {
+        pastProjects.push({ projectId: document._id })
+      }
+      Connectors.update(Offices, office._id, { $set: { projects: projects } })
     }
   }
 }
@@ -288,10 +291,9 @@ async function PastProjectUpdateStatusAsync ({ currentUser, document, oldDocumen
 }
 
 addCallback('pastproject.create.after', PastProjectEditUpdateContacts)
-addCallback('pastproject.create.after', PastProjectEditUpdateOffice)
+addCallback('pastproject.create.after', PastProjectEditUpdateOfficeAfter)
 addCallback('pastproject.create.async', PastProjectCreateUpdateStatisticsAsync)
 
 addCallback('pastproject.update.before', PastProjectEditUpdateOfficeBefore)
 addCallback('pastproject.update.after', PastProjectEditUpdateContacts)
-addCallback('pastproject.update.after', PastProjectEditUpdateOffice)
 addCallback('pastproject.update.async', PastProjectUpdateStatusAsync)
