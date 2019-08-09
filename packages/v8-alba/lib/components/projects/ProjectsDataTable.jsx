@@ -5,7 +5,7 @@ import { Button, Card, CardBody, CardFooter, CardHeader, Modal, ModalBody, Modal
 import { BootstrapTable, ClearSearchButton, SearchField, TableHeaderColumn } from 'react-bootstrap-table'
 import _ from 'lodash'
 import moment from 'moment'
-import { DATE_FORMAT_SHORT } from '../../modules/constants.js'
+import { DATE_FORMAT_SHORT, SIZE_PER_PAGE_LIST_SEED } from '../../modules/constants.js'
 import Projects from '../../modules/projects/collection.js'
 import withFilters from '../../modules/hocs/withFilters.js'
 
@@ -196,7 +196,13 @@ class ProjectsDataTable extends PureComponent {
           <CardBody>
             <BootstrapTable condensed hover pagination search striped
               data={filteredResults}
-              bordered={false} keyField='_id' options={this.state.options} version='4'>
+              bordered={false} keyField='_id'
+              options={{
+                ...this.state.options,
+                sizePerPageList: SIZE_PER_PAGE_LIST_SEED.concat([{
+                  text: 'All', value: this.props.totalCount
+                }])}} 
+              version='4'>
               <TableHeaderColumn dataField='projectTitle' dataSort dataFormat={
                 (cell, row) => {
                   return (

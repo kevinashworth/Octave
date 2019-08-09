@@ -5,7 +5,7 @@ import { Button, Card, CardBody, CardFooter, CardHeader, Modal, ModalBody, Modal
 import { BootstrapTable, ClearSearchButton, SearchField, TableHeaderColumn } from 'react-bootstrap-table'
 import _ from 'lodash'
 import moment from 'moment'
-import { DATE_FORMAT_SHORT } from '../../modules/constants.js'
+import { DATE_FORMAT_SHORT, SIZE_PER_PAGE_LIST_SEED } from '../../modules/constants.js'
 import Contacts from '../../modules/contacts/collection.js'
 import withFilters from '../../modules/hocs/withFilters.js'
 
@@ -100,15 +100,6 @@ class ContactsDataTable extends PureComponent {
         nextPage: 'Next',
         firstPage: 'First',
         lastPage: 'Last',
-        sizePerPageList: [ {
-          text: '20', value: 20
-        }, {
-          text: '50', value: 50
-        }, {
-          text: '100', value: 100
-        }, {
-          text: 'All', value: this.props.totalCount
-        } ],
         paginationShowsTotal: renderShowsTotal,
         paginationPosition: 'both',
         onPageChange: pageChangeHandler,
@@ -229,7 +220,12 @@ class ContactsDataTable extends PureComponent {
           </CardHeader>
           <CardBody>
             <BootstrapTable data={filteredResults} version='4' condensed striped hover pagination search
-              options={this.state.options} selectRow={selectRow} keyField='_id' bordered={false}>
+              options={{
+                ...this.state.options,
+                sizePerPageList: SIZE_PER_PAGE_LIST_SEED.concat([{
+                  text: 'All', value: this.props.totalCount
+                }])}}
+              selectRow={selectRow} keyField='_id' bordered={false}>
               <TableHeaderColumn dataField='fullName' dataSort dataFormat={
                 (cell, row) => {
                   return (

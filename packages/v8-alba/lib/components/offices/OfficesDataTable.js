@@ -1,10 +1,10 @@
 import { Components, registerComponent, withMulti } from 'meteor/vulcan:core'
 import React, { PureComponent } from 'react'
 import { Link } from 'react-router-dom'
-import { Button, Card, CardBody, CardFooter, CardHeader, Modal, ModalBody, ModalHeader } from 'reactstrap'
+import { Button, Card, CardBody, CardFooter, CardHeader } from 'reactstrap'
 import { BootstrapTable, ClearSearchButton, SearchField, TableHeaderColumn } from 'react-bootstrap-table'
 import moment from 'moment'
-import { DATE_FORMAT_SHORT } from '../../modules/constants.js'
+import { DATE_FORMAT_SHORT, SIZE_PER_PAGE_LIST_SEED } from '../../modules/constants.js'
 import Offices from '../../modules/offices/collection.js'
 
 
@@ -129,8 +129,7 @@ class OfficesDataTable extends PureComponent {
 
   render () {
     const { count, totalCount, results, loadingMore, loadMore } = this.props
-    const hasMore = results && (totalCount > results.length)
-
+    
     return (
       <div className='animated fadeIn'>
         <Card>
@@ -139,7 +138,12 @@ class OfficesDataTable extends PureComponent {
           </CardHeader>
           <CardBody>
             <BootstrapTable data={results} version='4' condensed striped hover pagination search
-              options={this.state.options} keyField='_id' bordered={false}>
+              options={{
+                ...this.state.options,
+                sizePerPageList: SIZE_PER_PAGE_LIST_SEED.concat([{
+                  text: 'All', value: this.props.totalCount
+                }])}}
+                keyField='_id' bordered={false}>
               <TableHeaderColumn dataField='displayName' dataSort dataFormat={
                 (cell, row) => {
                   return (
