@@ -106,7 +106,6 @@ class OfficesDataTable extends PureComponent {
         onSizePerPageList: sizePerPageListHandler,
         onSortChange: sortChangeHandler,
         onSearchChange: searchChangeHandler,
-        onRowClick: rowClickHandler,
         clearSearch: true,
         clearSearchBtn: createCustomClearButton,
         searchField: createCustomSearchField,
@@ -114,7 +113,6 @@ class OfficesDataTable extends PureComponent {
         ...keptState
       }
     }
-    this.toggle = this.toggle.bind(this)
   }
 
   componentWillUnmount () {
@@ -132,64 +130,6 @@ class OfficesDataTable extends PureComponent {
   render () {
     const { count, totalCount, results, loadingMore, loadMore } = this.props
     const hasMore = results && (totalCount > results.length)
-    const displayNameFormatter = (cell, row) => {
-      return (
-        <Link to={`/offices/${row._id}/${row.slug}`}>
-          {cell}
-        </Link>
-      )
-    }
-    const loadingIndicator = () => {
-      if (this.props.loading) {
-        return <Components.Loading />
-      } else {
-        return 'There is no data to display'
-      }
-    }
-    const dateFormatter = (cell, row) => {
-      return moment(cell).format(DATE_FORMAT_SHORT)
-    }
-    function renderShowsTotal (from, to, size) {
-      return (
-        <span>
-          Showing contacts { from } to { to } out of { size } &nbsp;&nbsp;
-        </span>
-      )
-    }
-    const columns = [{
-      dataField: 'displayName',
-      text: 'Office',
-      formatter: displayNameFormatter,
-    }, {
-      dataField: 'fullAddress',
-      text: 'Address',
-      style: { whiteSpace: 'nowrap' },
-    }, {
-      dataField: 'updatedAt',
-      text: 'Updated',
-      formatter: dateFormatter,
-      align: 'right',
-      headerAlign: 'right',
-    }]
-    const options = {
-      paginationSize: 5,
-      hidePageListOnlyOnePage: true,
-      prePageText: 'Prev',
-      nextPageText: 'Next',
-      firstPageText: 'First',
-      lastPageText: 'Last',
-      sizePerPageList: [ {
-        text: '20', value: 20
-      }, {
-        text: '50', value: 50
-      }, {
-        text: '100', value: 100
-      }, {
-        text: 'All', value: totalCount
-      } ],
-      paginationTotalRenderer: renderShowsTotal,
-    }
-
 
     return (
       <div className='animated fadeIn'>
