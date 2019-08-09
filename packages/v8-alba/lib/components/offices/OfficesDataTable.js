@@ -1,4 +1,4 @@
-import { Components, registerComponent, withMulti } from 'meteor/vulcan:core'
+import { Components, registerComponent, withCurrentUser, withMulti } from 'meteor/vulcan:core'
 import React, { PureComponent } from 'react'
 import { Link } from 'react-router-dom'
 import { Button, Card, CardBody, CardFooter, CardHeader } from 'reactstrap'
@@ -128,8 +128,9 @@ class OfficesDataTable extends PureComponent {
   }
 
   render () {
-    const { count, totalCount, results, loadingMore, loadMore } = this.props
-    
+    const { count, totalCount, results, loadingMore, loadMore, currentUser } = this.props
+    const hasMore = results && (totalCount > results.length)
+
     return (
       <div className='animated fadeIn'>
         <Card>
@@ -155,14 +156,25 @@ class OfficesDataTable extends PureComponent {
               }>Name</TableHeaderColumn>
               <TableHeaderColumn dataField='fullAddress' dataSort>Address</TableHeaderColumn>
               <TableHeaderColumn dataField='updatedAt' dataFormat={dateFormatter} dataSort width='9%'>Updated</TableHeaderColumn>
+              <TableHeaderColumn dataField='body' hidden>Hidden</TableHeaderColumn>
             </BootstrapTable>
           </CardBody>
-          <CardFooter>
-            {loadingMore
-              ? <Components.Loading />
-              : <Button onClick={e => { e.preventDefault(); loadMore() }}>Load More ({count}/{totalCount})</Button>
-            }
-          </CardFooter>
+          {hasMore &&
+            <CardFooter>
+              {loadingMore
+                ? <Components.Loading />
+                : <Button onClick={e => { e.preventDefault(); loadMore() }}>Load More ({count}/{totalCount})</Button>
+              }
+            </CardFooter>
+          }
+          {Offices.options.mutations.new.check(currentUser) ?
+            <CardFooter>
+              <Components.ModalTrigger title='New Office' component={<Button>Add an Office</Button>}>
+                <Components.OfficesNewForm currentUser={currentUser} />
+              </Components.ModalTrigger>
+            </CardFooter>
+            : null
+          }
         </Card>
       </div>
     )
@@ -175,4 +187,4 @@ const options = {
   limit: 1000
 }
 
-registerComponent('OfficesDataTable', OfficesDataTable, [withMulti, options])
+registerComponent('OfficesDataTable', OfficesDataTable, withCurrentUser, [withMulti, options])

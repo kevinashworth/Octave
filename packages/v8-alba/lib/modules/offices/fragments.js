@@ -43,6 +43,7 @@ registerFragment(/* GraphQL */ `
     updatedAt
     displayName
     fullAddress
+    body
     slug
   }
 `)
