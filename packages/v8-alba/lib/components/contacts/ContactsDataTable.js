@@ -100,15 +100,6 @@ class ContactsDataTable extends PureComponent {
         nextPage: 'Next',
         firstPage: 'First',
         lastPage: 'Last',
-        sizePerPageList: [ {
-          text: '20', value: 20
-        }, {
-          text: '50', value: 50
-        }, {
-          text: '100', value: 100
-        }, {
-          text: 'All', value: this.props.totalCount
-        } ],
         paginationShowsTotal: renderShowsTotal,
         paginationPosition: 'both',
         onPageChange: pageChangeHandler,
@@ -229,7 +220,17 @@ class ContactsDataTable extends PureComponent {
           </CardHeader>
           <CardBody>
             <BootstrapTable data={filteredResults} version='4' condensed striped hover pagination search
-              options={this.state.options} selectRow={selectRow} keyField='_id' bordered={false}>
+              options={{
+                ...this.state.options, sizePerPageList: [{
+                    text: '20', value: 20
+                  }, {
+                    text: '50', value: 50
+                  }, {
+                    text: '100', value: 100
+                  }, {
+                    text: 'All', value: this.props.totalCount
+                  }]}}
+              selectRow={selectRow} keyField='_id' bordered={false}>
               <TableHeaderColumn dataField='fullName' dataSort dataFormat={
                 (cell, row) => {
                   return (
