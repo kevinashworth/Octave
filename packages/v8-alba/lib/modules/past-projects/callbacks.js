@@ -106,7 +106,9 @@ So for each of the pastProject.offices we update office.pastProjects of the Offi
   projectId: pastProject._id
 }
 */
-function PastProjectEditUpdateOfficeAfter (data, { document }) {
+/* This is for Past Projects created from scratch, not Projects turned into Past Projects
+ so disabling this until becomes useful */
+function PastProjectCreateUpdateOfficeAfter (data, { document }) {
   const pastProject = document
   if (!pastProject.castingOfficeId) {
     return
@@ -116,23 +118,23 @@ function PastProjectEditUpdateOfficeAfter (data, { document }) {
   const newPastProject = {
     projectId: pastProject._id
   }
-  let newPastProjects = []
+  let updatedPastProjects = []
 
   // case 1: there are no pastProjects on the office and office.pastProjects is undefined
   if (!office.pastProjects) {
-    newPastProjects = [newPastProject]
+    updatedPastProjects = [newPastProject]
   } else {
     const i = _.findIndex(office.pastProjects, { projectId: pastProject._id })
-    newPastProjects = office.pastProjects
     if (i < 0) {
       // case 2: this pastProject is not on this office but other pastProjects are and we're adding this pastProject
-      newPastProjects.push(newPastProject)
+      updatedPastProjects = office.pastProjects
+      updatedPastProjects.push(newPastProject)
     } else {
       // case 3: this pastProject is on this office and we're updating the info
-      newPastProjects[i] = newPastProject
+      updatedPastProjects[i] = newPastProject
     }
   }
-  Connectors.update(Offices, office._id, { $set: { pastProjects: newPastProjects } })
+  Connectors.update(Offices, office._id, { $set: { pastProjects: updatedPastProjects } })
 }
 
 function PastProjectEditUpdateOfficeBefore (data, { currentUser, document, oldDocument }) {
@@ -159,7 +161,7 @@ function PastProjectEditUpdateOfficeBefore (data, { currentUser, document, oldDo
       if (replacing) {
         pastProjects.push({ projectId: document._id })
       }
-      Connectors.update(Offices, office._id, { $set: { projects: projects } })
+      Connectors.update(Offices, office._id, { $set: { pastProjects: pastProjects } })
     }
   }
 }
@@ -291,7 +293,7 @@ async function PastProjectUpdateStatusAsync ({ currentUser, document, oldDocumen
 }
 
 addCallback('pastproject.create.after', PastProjectEditUpdateContacts)
-addCallback('pastproject.create.after', PastProjectEditUpdateOfficeAfter)
+// addCallback('pastproject.create.after', PastProjectCreateUpdateOfficeAfter)
 addCallback('pastproject.create.async', PastProjectCreateUpdateStatisticsAsync)
 
 addCallback('pastproject.update.before', PastProjectEditUpdateOfficeBefore)
