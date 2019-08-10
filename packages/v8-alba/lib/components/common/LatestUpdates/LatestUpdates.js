@@ -96,6 +96,7 @@ class LatestOfficeUpdates extends Component {
 const officeOptions = {
   collection: Offices,
   fragmentName: 'OfficesSingleFragment',
+  terms: {view: 'officesByUpdated'},
   limit: 6
 }
 

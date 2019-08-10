@@ -12,11 +12,16 @@ const Offices = createCollection({
   mutations: getDefaultMutations('Offices')
 })
 
-// default sort
-Offices.addDefaultView(terms => {
-  return {
-    options: { sort: { displayName: 1 } }
+Offices.addDefaultView(terms => ({
+  options: {
+    sort: { displayName: 1 }
   }
-})
+}))
+
+Offices.addView('officesByUpdated', terms => ({
+  options: {
+    sort: { updatedAt: -1 }
+  }
+}))
 
 export default Offices
