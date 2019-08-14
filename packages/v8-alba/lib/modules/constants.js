@@ -30,6 +30,7 @@ const PROJECT_TYPES_ENUM = [
   { value: 'TV Telefilm', label: 'TV Telefilm' },
   { value: 'TV Talk/Variety', label: 'TV Talk/Variety' },
   { value: 'TV Sketch/Improv', label: 'TV Sketch/Improv' },
+  { value: 'TV Animation', label: 'TV Animation' },
   { value: 'New Media', label: 'New Media' }
 ]
 

@@ -179,8 +179,9 @@ function PastProjectCreateUpdateStatisticsAsync ({ currentUser, document }) {
   switch (project.projectType) {
     case 'TV One Hour':
     case 'TV 1/2 Hour':
+    case 'TV Animation':
       const episodicsCasting = Projects.find({
-        projectType: { $in: [ 'TV One Hour', 'TV 1/2 Hour' ] },
+        projectType: { $in: [ 'TV One Hour', 'TV 1/2 Hour', 'TV Animation' ] },
         status: 'Casting'
       }).count()
       newStats.episodics.push({ date: moment().format('YYYY-MM-DD HH:mm:ss'), quantity: episodicsCasting })
