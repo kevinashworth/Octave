@@ -64,6 +64,8 @@ registerFragment(/* GraphQL */ `
     updatedAt
     summary
     notes
+    htmlSummary
+    htmlNotes
     allContactNames
     allAddresses
     network
