@@ -71,6 +71,16 @@ initialState = {
     { projectUpdated: 'One Year', value: false, moment1: '1', moment2: 'year' },
     { projectUpdated: 'All', value: true, moment1: '100', moment2: 'year' }
   ],
+  projectPlatformFilters: [
+    { projectPlatform: 'Broadcast', value: true },
+    { projectPlatform: 'Cable', value: true },
+    { projectPlatform: 'Pay TV', value: true },
+    { projectPlatform: 'SVOD', value: true },
+    { projectPlatform: 'AVOD', value: true },
+    { projectPlatform: 'Theatrical', value: true },
+    { projectPlatform: 'Network Code', value: true },
+    { projectPlatform: 'Other', value: true }
+  ],
   ...initialState
 }
 
@@ -156,6 +166,24 @@ addAction({
   toggleProjectUpdatedFilter (i) {
     return {
       type: 'TOGGLE_PROJECT_UPDATED_FILTER',
+      i
+    }
+  },
+  toggleProjectPlatformFilter (i) {
+    return {
+      type: 'TOGGLE_PROJECT_PLATFORM_FILTER',
+      i
+    }
+  },
+  setProjectPlatformFilter (i) {
+    return {
+      type: 'SET_PROJECT_PLATFORM_FILTER',
+      i
+    }
+  },
+  clearProjectPlatformFilter (i) {
+    return {
+      type: 'CLEAR_PROJECT_PLATFORM_FILTER',
       i
     }
   },
@@ -315,7 +343,34 @@ addReducer({
       default:
         return state
     }
-  }
+  },
+  projectPlatformFilters: (state = initialState.projectPlatformFilters, action) => {
+    switch (action.type) {
+      case 'TOGGLE_PROJECT_PLATFORM_FILTER':
+        return state.map((filter, index) => {
+          if (index === Number(action.i)) {
+            return { ...filter, value: !filter.value }
+          }
+          return filter
+        })
+      case 'SET_PROJECT_PLATFORM_FILTER':
+        return state.map((filter, index) => {
+          if (index === Number(action.i)) {
+            return { ...filter, value: true }
+          }
+          return filter
+        })
+      case 'CLEAR_PROJECT_PLATFORM_FILTER':
+        return state.map((filter, index) => {
+          if (index === Number(action.i)) {
+            return { ...filter, value: false }
+          }
+          return filter
+        })
+      default:
+        return state
+    }
+  },
 })
 
 setupRedux(initialState)

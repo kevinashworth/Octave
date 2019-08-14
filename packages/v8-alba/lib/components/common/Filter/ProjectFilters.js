@@ -22,7 +22,8 @@ const DropdownItemStatic = styled.div`
 let keptState = {
   typeColor: 'secondary',
   updatedColor: 'secondary',
-  statusColor: 'secondary'
+  statusColor: 'secondary',
+  platformColor: 'secondary'
 }
 
 class ProjectFilters extends PureComponent {
@@ -32,9 +33,10 @@ class ProjectFilters extends PureComponent {
     this.toggle = this.toggle.bind(this)
     this.handleClickProjectType = this.handleClickProjectType.bind(this)
     this.handleClickProjectStatus = this.handleClickProjectStatus.bind(this)
+    this.handleClickProjectPlatform = this.handleClickProjectPlatform.bind(this)
     this.handleChange = this.handleChange.bind(this)
     this.state = {
-      dropdownOpen: new Array(3).fill(false),
+      dropdownOpen: new Array(4).fill(false),
 
       // Retrieve the last state
       ...keptState
@@ -46,7 +48,8 @@ class ProjectFilters extends PureComponent {
     keptState = {
       typeColor: this.state.typeColor,
       updatedColor: this.state.updatedColor,
-      statusColor: this.state.statusColor
+      statusColor: this.state.statusColor,
+      platformColor: this.state.platformColor
     }
   }
 
@@ -76,7 +79,13 @@ class ProjectFilters extends PureComponent {
       this.props.actions.toggleProjectStatusFilter(i)
       this.setState({ statusColor: 'danger' })
     }
+    if (event.target.name === 'project-platform') {
+      this.props.actions.toggleProjectPlatformFilter(i)
+      this.setState({ platformColor: 'danger' })
+    }
   }
+
+  // TODO: DRY these handlers below this line
 
   handleClickProjectType (event) {
     const all = event.target.innerHTML.indexOf('All') !== -1
@@ -103,7 +112,30 @@ class ProjectFilters extends PureComponent {
     }
   }
 
-  // TODO: DRY these two handlers above and below this line
+  handleClickProjectPlatform (event) {
+    const all = event.target.innerHTML.indexOf('All') !== -1
+    const none = event.target.innerHTML.indexOf('None') !== -1
+    const toggle = event.target.innerHTML.indexOf('Toggle') !== -1
+    const length = this.props.projectPlatformFilters.length
+    var i
+    if (toggle) {
+      for (i = 0; i < length; i++) {
+        this.props.actions.toggleProjectPlatformFilter(i)
+      }
+    } else { // for All and for None
+      for (i = 0; i < length; i++) {
+        if ((this.props.projectPlatformFilters[i].value && none) || (!this.props.projectPlatformFilters[i].value && !none)) {
+          this.props.actions.toggleProjectPlatformFilter(i)
+        }
+      }
+    }
+    if (all) {
+      this.setState({ platformColor: 'secondary' })
+    }
+    if (none) {
+      this.setState({ platformColor: 'danger' })
+    }
+  }
 
   handleClickProjectStatus (event) {
     const all = event.target.innerHTML.indexOf('All') !== -1
@@ -192,6 +224,24 @@ class ProjectFilters extends PureComponent {
             <DropdownItem onClick={this.handleClickProjectStatus} toggle={false}>Active</DropdownItem>
             <DropdownItem onClick={this.handleClickProjectStatus} toggle={false}>None</DropdownItem>
             <DropdownItem onClick={this.handleClickProjectStatus} toggle={false}>Toggle</DropdownItem>
+          </DropdownMenu>
+        </ButtonDropdown>
+        <ButtonDropdown className='ml-2' isOpen={this.state.dropdownOpen[3]} toggle={() => { this.toggle(3) }}>
+          <DropdownToggle caret color={this.state.platformColor}>
+            Platform
+          </DropdownToggle>
+          <DropdownMenu>
+            <DropdownItem header>Filter projects by platform</DropdownItem>
+            <DropdownItemStatic>
+              {this.props.projectPlatformFilters.map((o, index) =>
+                <CustomInput type='checkbox' name='project-platform'
+                  id={`${index}-platform`} key={`${o.projectPlatform}`} label={`${o.projectPlatform}`}
+                  checked={o.value} onChange={this.handleChange} />
+              )}
+            </DropdownItemStatic>
+            <DropdownItem onClick={this.handleClickProjectPlatform} toggle={false}>All</DropdownItem>
+            <DropdownItem onClick={this.handleClickProjectPlatform} toggle={false}>None</DropdownItem>
+            <DropdownItem onClick={this.handleClickProjectPlatform} toggle={false}>Toggle</DropdownItem>
           </DropdownMenu>
         </ButtonDropdown>
       </div>

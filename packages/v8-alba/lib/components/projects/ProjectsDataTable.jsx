@@ -146,7 +146,7 @@ class ProjectsDataTable extends PureComponent {
 
   render () {
     const { count, totalCount, results, loadingMore, loadMore, currentUser,
-            projectTypeFilters, projectStatusFilters, projectUpdatedFilters } = this.props
+            projectTypeFilters, projectStatusFilters, projectUpdatedFilters, projectPlatformFilters } = this.props
     const hasMore = results && (totalCount > results.length)
     let typeFilters = []
     projectTypeFilters.forEach(filter => {
@@ -164,6 +164,10 @@ class ProjectsDataTable extends PureComponent {
         moment2 = filter.moment2
       }
     })
+    let platformFilters = []
+    projectPlatformFilters.forEach(filter => {
+      if (filter.value) { platformFilters.push(filter.projectPlatform) }
+    })
 
     const filteredResults = _.filter(results, function (o) {
       // compare current time to filter, but generous, so start of day then, not the time it is now - filter plus up to 23:59
@@ -172,6 +176,7 @@ class ProjectsDataTable extends PureComponent {
       const displayThis = moment(dateToCompare).isAfter(now.subtract(moment1, moment2).startOf('day'))
       return _.includes(statusFilters, o.status) &&
           _.includes(typeFilters, o.projectType) &&
+          _.includes(platformFilters, o.platformType) &&
           displayThis
     })
 
@@ -201,7 +206,7 @@ class ProjectsDataTable extends PureComponent {
                 ...this.state.options,
                 sizePerPageList: SIZE_PER_PAGE_LIST_SEED.concat([{
                   text: 'All', value: this.props.totalCount
-                }])}} 
+                }])}}
               version='4'>
               <TableHeaderColumn dataField='projectTitle' dataSort dataFormat={
                 (cell, row) => {

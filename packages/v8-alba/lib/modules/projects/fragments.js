@@ -25,6 +25,7 @@ registerFragment(/* GraphQL */ `
     userId
     projectTitle
     projectType
+    platformType
     casting
     castingCompany
     castingOfficeId
@@ -56,6 +57,7 @@ registerFragment(/* GraphQL */ `
     _id
     projectTitle
     projectType
+    platformType
     casting
     status
     createdAt

@@ -9,7 +9,7 @@ import { PAST_PROJECT_STATUSES_ARRAY } from '../modules/constants.js'
 import moment from 'moment'
 import marked from 'marked'
 import reducedStats from '../modules/statistics/_stats-reduced.js'
-import { getAddress, getFullAddress, getFullNameFromContact } from '../modules/helpers.js'
+import { getAddress, getFullAddress, getFullNameFromContact, getPlatformType } from '../modules/helpers.js'
 
 Migrations.add({
   version: 1,
@@ -458,6 +458,28 @@ Migrations.add({
   down: function () { /* There is no undoing this one. */ }
 })
 
+Migrations.add({
+  version: 12,
+  name: 'Add platformType to all projects and past-projects.',
+  up: function () {
+    Projects.find({ platformType: { $exists: false } }).forEach((o) => {
+      const platformType = getPlatformType(o)
+      Projects.update(o._id,
+        {
+          $set: { platformType: platformType }
+        })
+    })
+    PastProjects.find({ platformType: { $exists: false } }).forEach((o) => {
+      const platformType = getPlatformType(o)
+      PastProjects.update(o._id,
+        {
+          $set: { platformType: platformType }
+        })
+    })
+  },
+  down: function () { /* There is no undoing this one. */ }
+})
+
 Meteor.startup(() => {
-  Migrations.migrateTo('11')
+  Migrations.migrateTo('12')
 })

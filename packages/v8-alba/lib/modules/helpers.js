@@ -2,6 +2,13 @@ import _ from 'lodash'
 import Contacts from './contacts/collection.js'
 import Offices from './offices/collection.js'
 import Projects from './projects/collection.js'
+import {
+  BROADCAST_ENUM,
+  CABLE_ENUM,
+  PAYTV_ENUM,
+  SVOD_ENUM,
+  AVOD_ENUM
+} from './constants.js'
 
 export function getFullNameFromContact ({ firstName, middleName, lastName }) {
   let tempName = ''
@@ -272,4 +279,36 @@ export const getLatestAddress = ({ contact, office, project }) => {
   // which is most recently updated? THe contact, office or project? Use it's address.
   const sorted = _.sortBy([contact.updatedAt, office.updatedAt, project.updatedAt])
   return getAddress({ contact: sorted[0] })
+}
+
+export const getPlatformType = (project) => {
+  if (project.projectType) {
+    if (project.projectType.indexOf('Feature') === 0) {
+      return 'Theatrical'
+    }
+    if (project.projectType.indexOf('TV Daytime') === 0) {
+      return 'Network Code'
+    }
+    if (project.projectType.indexOf('TV Talk') === 0) {
+      return 'Network Code'
+    }
+  }
+  if (project.network) {
+    if (_.indexOf(BROADCAST_ENUM, project.network) > -1) {
+      return 'Broadcast'
+    }
+    if (_.indexOf(CABLE_ENUM, project.network) > -1) {
+      return 'Cable'
+    }
+    if (_.indexOf(PAYTV_ENUM, project.network) > -1) {
+      return 'Pay TV'
+    }
+    if (_.indexOf(SVOD_ENUM, project.network) > -1) {
+      return 'SVOD'
+    }
+    if (_.indexOf(AVOD_ENUM, project.network) > -1) {
+      return 'AVOD'
+    }
+  }
+  return 'Other'
 }

@@ -34,6 +34,61 @@ const PROJECT_TYPES_ENUM = [
   { value: 'New Media', label: 'New Media' }
 ]
 
+const BROADCAST_ENUM = [
+  'ABC',
+  'CBS',
+  'FOX',
+  'NBC'
+]
+
+const CABLE_ENUM = [
+  'Adult Swim',
+  'AMC',
+  'BET',
+  'Cartoon Network',
+  'CMT',
+  'Comedy Central',
+  'Freeform',
+  'FX',
+  'FXX',
+  'Hallmark',
+  'IFC',
+  'Lifetime',
+  'Logo',
+  'MTV',
+  'Nick',
+  'Paramount Network',
+  'Sundance',
+  'SyFy',
+  'TBS',
+  'TNT',
+  'TV Land',
+  'USA',
+  'VH1',
+]
+
+const PAYTV_ENUM = [
+  'Cinemax',
+  'EPIX',
+  'HBO',
+  'Showtime',
+  'Starz',
+]
+
+const SVOD_ENUM = [
+  'Amazon',
+  'Apple TV+',
+  'CBS All Access',
+  'Netflix',
+  'Quibi',
+]
+
+const AVOD_ENUM = [
+  'HBO Max',
+  'Hulu',
+  'Sony Crackle',
+]
+
 const ACTIVE_PROJECT_STATUSES_ENUM = [
   { value: 'Casting', label: 'Casting' },
   { value: 'Shooting', label: 'Shooting' },
@@ -71,6 +126,11 @@ module.exports = {
   DATE_FORMAT_SHORT_FRIENDLY,
   CASTING_TITLES_ENUM,
   PROJECT_TYPES_ENUM,
+  BROADCAST_ENUM,
+  CABLE_ENUM,
+  PAYTV_ENUM,
+  SVOD_ENUM,
+  AVOD_ENUM,
   ACTIVE_PROJECT_STATUSES_ENUM,
   PAST_PROJECT_STATUSES_ENUM,
   PROJECT_STATUSES_ENUM,

@@ -3,7 +3,7 @@ import SimpleSchema from 'simpl-schema'
 import marked from 'marked'
 import { addressSubSchema, linkSubSchema } from '../shared_schemas.js'
 import { PROJECT_TYPES_ENUM, PROJECT_STATUSES_ENUM } from '../constants.js'
-import { getFullAddress } from '../helpers.js'
+import { getFullAddress, getPlatformType } from '../helpers.js'
 
 const addressGroup = {
   name: 'addresses',
@@ -110,6 +110,19 @@ const schema = {
     canRead: 'guests',
     insertableBy: ['admins'],
     editableBy: ['admins']
+  },
+  platformType: {
+    label: 'Platform Type',
+    type: String,
+    optional: true,
+    hidden: true,
+    canRead: 'guests',
+    onCreate: ({ newDocument, currentUser }) => {
+      return getPlatformType(newDocument)
+    },
+    onUpdate: ({ data, document, currentUser }) => {
+      return getPlatformType(document)
+    }
   },
   union: {
     label: 'Union',
