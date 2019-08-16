@@ -37,56 +37,86 @@ const PROJECT_TYPES_ENUM = [
 const BROADCAST_ENUM = [
   'ABC',
   'CBS',
+  'CW', // In SAG-AFTRA terms, "Made For: Broadcast Non-Network (WB/UPN/CW)" or "CW Supplement"
   'FOX',
-  'NBC'
+  'Fox',
+  'NBC',
+  'The CW'
 ]
 
 const CABLE_ENUM = [
   'Adult Swim',
   'AMC',
+  'Audience',
   'BET',
+  'Bravo',
   'Cartoon Network',
   'CMT',
   'Comedy Central',
+  'Disney',
+  'Disney Channel',
+  'Disney XD',
+  'E!',
   'Freeform',
   'FX',
   'FXX',
   'Hallmark',
+  'History',
+  'History Channel',
   'IFC',
   'Lifetime',
   'Logo',
   'MTV',
+  'Nat Geo',
   'Nick',
+  'Nick Jr.',
+  'OWN',
+  'Paramount',
   'Paramount Network',
+  'Pop TV',
+  'Spike', // became Paramount Network in 2018
   'Sundance',
   'SyFy',
   'TBS',
+  'TLC',
   'TNT',
+  'TruTV',
+  'truTV',
   'TV Land',
   'USA',
   'VH1',
+  'Viceland',
+  'WGN'
 ]
 
 const PAYTV_ENUM = [
   'Cinemax',
-  'EPIX',
+  'Epix',
   'HBO',
   'Showtime',
-  'Starz',
+  'Starz'
 ]
 
 const SVOD_ENUM = [
   'Amazon',
+  'Amazon Prime',
   'Apple TV+',
   'CBS All Access',
+  'Disney+',
   'Netflix',
   'Quibi',
+  'Spectrum Originals',
+  'Seeso', // closed Nov 2017
+  'Viaplay',
+  'YouTube Premium', // formerly YouTube Red
+  'YouTube Red'
 ]
 
 const AVOD_ENUM = [
+  'Crackle',
   'HBO Max',
   'Hulu',
-  'Sony Crackle',
+  'Sony Crackle'
 ]
 
 const ACTIVE_PROJECT_STATUSES_ENUM = [

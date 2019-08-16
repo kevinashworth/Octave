@@ -53,13 +53,14 @@ export function getFullAddress ({ street1, street2, city, state, zip }) {
 }
 
 export const createAddress = (office) => {
-  if (!office)
+  if (!office) {
     return {
       street1: '',
       city: '',
       state: '',
       zip: ''
     }
+  }
   let streetAddress = ''
   if (office.street1) {
     streetAddress = office.street1 + ' '
@@ -294,19 +295,19 @@ export const getPlatformType = (project) => {
     }
   }
   if (project.network) {
-    if (_.indexOf(BROADCAST_ENUM, project.network) > -1) {
+    if (BROADCAST_ENUM.indexOf(project.network) > -1) {
       return 'Broadcast'
     }
-    if (_.indexOf(CABLE_ENUM, project.network) > -1) {
+    if (CABLE_ENUM.indexOf(project.network) > -1) {
       return 'Cable'
     }
-    if (_.indexOf(PAYTV_ENUM, project.network) > -1) {
+    if (PAYTV_ENUM.indexOf(project.network) > -1) {
       return 'Pay TV'
     }
-    if (_.indexOf(SVOD_ENUM, project.network) > -1) {
+    if (SVOD_ENUM.indexOf(project.network) > -1) {
       return 'SVOD'
     }
-    if (_.indexOf(AVOD_ENUM, project.network) > -1) {
+    if (AVOD_ENUM.indexOf(project.network) > -1) {
       return 'AVOD'
     }
   }
