@@ -4,9 +4,14 @@ import React, { PureComponent } from 'react'
 import { Link } from 'react-router-dom'
 import mapProps from 'recompose/mapProps'
 import { Button, Card, CardBody, CardFooter, CardHeader, CardLink, CardText, CardTitle } from 'reactstrap'
+import styled from 'styled-components'
 import moment from 'moment'
 import { DATE_FORMAT_LONG, DATE_FORMAT_SHORT } from '../../modules/constants.js'
 import Projects from '../../modules/projects/collection.js'
+
+const SpanVerticalBarBefore = styled.span`
+  ::before { content: " | "; };
+`
 
 class ProjectSingle extends PureComponent {
   seasonorder (project) {
@@ -53,13 +58,28 @@ class ProjectSingle extends PureComponent {
               <Button tag={Link} to={`/projects/${project._id}/edit`}>Edit</Button>
             </div> : null}
           </CardHeader>
-
           <CardBody>
-            <CardTitle className='mb-1'>{ project.projectType } {project.network &&
-              <span>
-              | { project.network }
-              </span>
-            } | { project.union }
+            <CardTitle className='mb-1'>
+              { project.projectType &&
+                <span>
+                  { project.projectType }
+                </span>
+              }
+              { project.network &&
+                <SpanVerticalBarBefore>
+                  { project.network }
+                </SpanVerticalBarBefore>
+              }
+              { project.platformType &&
+                <SpanVerticalBarBefore>
+                  { project.platformType }
+                </SpanVerticalBarBefore>
+              }
+              { project.union &&
+                <SpanVerticalBarBefore>
+                  { project.union }
+                </SpanVerticalBarBefore>
+              }
             </CardTitle>
             <CardText className='mb-1'>{ project.status }</CardText>
             { seasonorder &&
