@@ -25,6 +25,7 @@ registerFragment( /* GraphQL */ `
     userId
     projectTitle
     projectType
+    platformType
     casting
     castingCompany
     castingOfficeId
