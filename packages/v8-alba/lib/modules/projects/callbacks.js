@@ -150,11 +150,21 @@ function ProjectEditUpdateOfficeBefore (data, { document, oldDocument }) {
     // this is one office replacing another on the project
     replacing = true
   }
-  if (removing || replacing) {
+  let itmightnotbethereforsomereason = false
+  if (newOffice === oldOffice) {
+    console.info('itmightnotbethereforsomereason')
+    itmightnotbethereforsomereason = true
+  }
+  if (removing || replacing || itmightnotbethereforsomereason) {
     const office = Offices.findOne(oldOffice) // TODO: error handling
     let projects = office.projects
     if (!isEmptyValue(projects)) {
-      _.remove(projects, function(p) {
+      if (itmightnotbethereforsomereason) {
+        if (_.indexOf(projects, { projectId: document._id }) < 0) {
+          replacing = true
+        }
+      }
+      _.remove(projects, function (p) {
         return p._id === document._id
       })
       if (replacing) {
@@ -276,7 +286,7 @@ async function ProjectUpdateStatusAsync ({ currentUser, document, oldDocument })
       const office = Offices.findOne(document.castingOfficeId)
       if (office.projects && office.projects.length) {
         projects = office.projects
-        _.remove(projects, function(p) {
+        _.remove(projects, function (p) {
           return p._id === document._id
         })
       }
