@@ -1,23 +1,17 @@
-import { Components, registerComponent, withCurrentUser } from 'meteor/vulcan:core'
+import { Components, registerComponent } from 'meteor/vulcan:core'
 import React from 'react'
 import Projects from '../../modules/projects/collection.js'
 
-const ProjectsNewForm = ({ currentUser, toggle }) =>
+const ProjectsNewForm = ({ toggle }) =>
   <div className='animated fadeIn'>
-    {Projects.options.mutations.new.check(currentUser)
-      ? <div style={{ marginBottom: '20px', paddingBottom: '20px', borderBottom: '1px solid #ccc' }}>
-        <h4>Insert New Document</h4>
-        <Components.SmartForm
-          collection={Projects}
-          successCallback={document => {
-            if (toggle) {
-              toggle()
-            }
-          }}
-        />
-      </div>
-      : null
-    }
+    <Components.SmartForm
+      collection={Projects}
+      successCallback={document => {
+        if (toggle) {
+          toggle()
+        }
+      }}
+    />
   </div>
 
-registerComponent('ProjectsNewForm', ProjectsNewForm, withCurrentUser)
+registerComponent('ProjectsNewForm', ProjectsNewForm)
