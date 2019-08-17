@@ -151,11 +151,21 @@ function PastProjectEditUpdateOfficeBefore (data, { currentUser, document, oldDo
     // this is one office replacing another on the project
     replacing = true
   }
-  if (removing || replacing) {
+  let itmightnotbethereforsomereason = false
+  if (newOffice === oldOffice) {
+    console.info('itmightnotbethereforsomereason')
+    itmightnotbethereforsomereason = true
+  }
+  if (removing || replacing || itmightnotbethereforsomereason) {
     const office = Offices.findOne(oldOffice) // TODO: error handling
     let pastProjects = office.pastProjects
     if (!isEmptyValue(pastProjects)) {
-      _.remove(pastProjects, function(p) {
+      if (itmightnotbethereforsomereason) {
+        if (_.indexOf(pastProjects, { projectId: document._id }) < 0) {
+          replacing = true
+        }
+      }
+      _.remove(pastProjects, function (p) {
         return p._id === document._id
       })
       if (replacing) {
@@ -277,7 +287,7 @@ async function PastProjectUpdateStatusAsync ({ currentUser, document, oldDocumen
       const office = Offices.findOne(document.castingOfficeId)
       if (office.pastProjects && office.pastProjects.length) {
         pastProjects = office.pastProjects
-        _.remove(pastProjects, function(p) {
+        _.remove(pastProjects, function (p) {
           return p._id === document._id
         })
       }
