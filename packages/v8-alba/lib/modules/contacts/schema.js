@@ -5,6 +5,7 @@ import marked from 'marked'
 import { addressSubSchema, linkSubSchema } from '../shared_schemas.js'
 import { CASTING_TITLES_ENUM } from '../constants.js'
 import { getAddress, getFullAddress, getFullNameFromContact } from '../helpers.js'
+import { logger } from '../logger.js'
 
 const projectGroup = {
   name: 'projects',
@@ -294,10 +295,9 @@ const schema = {
       try {
         return getFullAddress(getAddress({ contact: newDocument }))
       } catch (e) {
-        // eslint-disable-next-line no-console
-        console.error('Error in addressString for', newDocument._id, ':')
-        // eslint-disable-next-line no-console
-        console.error(e)
+        logger.groupCollapsed('Error in addressString for ', newDocument._id, ':')
+        logger.error(e)
+        logger.groupEnd
         return ''
       }
     },
@@ -305,10 +305,9 @@ const schema = {
       try {
         return getFullAddress(getAddress({ contact: document }))
       } catch (e) {
-        // eslint-disable-next-line no-console
-        console.error('Error in addressString for', document._id, ':')
-        // eslint-disable-next-line no-console
-        console.error(e)
+        logger.groupCollapsed('Error in addressString for ', document._id, ':')
+        logger.error(e)
+        logger.groupEnd
         return ''
       }
     }
@@ -447,10 +446,9 @@ const schema = {
         try {
           address = getAddress({ contact: o })
         } catch (e) {
-          // eslint-disable-next-line no-console
-          console.info('Problem in theAddress for', o._id)
-          // eslint-disable-next-line no-console
-          console.error(e)
+          logger.groupCollapsed('Error in theAddress for ', o._id, ':')
+          logger.error(e)
+          logger.groupEnd
           return 'Blvd of Broken Dreams'
         }
         return address

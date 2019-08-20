@@ -3,6 +3,8 @@ import SimpleSchema from 'simpl-schema'
 import marked from 'marked'
 import { addressSubSchema, linkSubSchema } from '../shared_schemas.js'
 import { getFullAddress, isEmptyValue } from '../helpers.js'
+import { logger } from '../logger.js'
+
 // import _ from 'lodash'
 
 // function getContactsAsOptions (contacts) {
@@ -399,10 +401,9 @@ const schema = {
             return o.addresses[0].street1
           }
         } catch (e) {
-          // eslint-disable-next-line no-console
-          console.info('Problem in theStreet1 for', o._id)
-          // eslint-disable-next-line no-console
-          console.error(e)
+          logger.groupCollapsed('Error in theStreet1 for ', o._id, ':')
+          logger.error(e)
+          logger.groupEnd
           return 'Blvd of Broken Dreams'
         }
         return null
@@ -422,10 +423,9 @@ const schema = {
             return o.addresses[0].street2
           }
         } catch (e) {
-          // eslint-disable-next-line no-console
-          console.info('Problem in theStreet2 for', o._id)
-          // eslint-disable-next-line no-console
-          console.error(e)
+          logger.groupCollapsed('Error in theStreet2 for ', o._id, ':')
+          logger.error(e)
+          logger.groupEnd
           return 'Suite Nothing'
         }
         return null
@@ -445,10 +445,9 @@ const schema = {
             return o.addresses[0].city
           }
         } catch (e) {
-          // eslint-disable-next-line no-console
-          console.info('Problem in theCity for', o._id)
-          // eslint-disable-next-line no-console
-          console.error(e)
+          logger.groupCollapsed('Error in theCity for ', o._id, ':')
+          logger.error(e)
+          logger.groupEnd
           return 'Leicester City'
         }
         return null
@@ -468,10 +467,9 @@ const schema = {
             return o.addresses[0].state
           }
         } catch (e) {
-          // eslint-disable-next-line no-console
-          console.info('Problem in theState for', o._id)
-          // eslint-disable-next-line no-console
-          console.error(e)
+          logger.groupCollapsed('Error in theState for ', o._id, ':')
+          logger.error(e)
+          logger.groupEnd
           return 'State of Denial'
         }
         return null
@@ -492,10 +490,9 @@ const schema = {
             state = o.addresses[0].state.toLowerCase()
           }
         } catch (e) {
-          // eslint-disable-next-line no-console
-          console.info('Problem in theLocation for', o._id)
-          // eslint-disable-next-line no-console
-          console.error(e)
+          logger.groupCollapsed('Error in theLocation for ', o._id, ':')
+          logger.error(e)
+          logger.groupEnd
           return 'Locomotion'
         }
         if (state === 'ca' || state.indexOf('calif') > -1) {

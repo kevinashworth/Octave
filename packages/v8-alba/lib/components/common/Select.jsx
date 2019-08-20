@@ -2,6 +2,7 @@ import { registerComponent } from 'meteor/vulcan:lib'
 import React, { PureComponent } from 'react'
 import Select from 'react-select'
 import PropTypes from 'prop-types'
+import { logger } from '../../modules/logger.js'
 
 class MySelect extends PureComponent {
   constructor (props) {
@@ -15,8 +16,10 @@ class MySelect extends PureComponent {
 
   handleChange (value) {
     this.setState({ value })
-    // eslint-disable-next-line no-console
-    console.log(`Selected label: ${value.label}\nSelected value: ${value.value}`)
+    logger.groupCollapsed(`MySelect:`)
+    logger.log(`MySelect label: ${value.label}`)
+    logger.log(`MySelect value: ${value.value}`)
+    logger.groupEnd()
     this.context.updateCurrentValues({ [this.state.path]: value.value })
   }
 

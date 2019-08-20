@@ -5,6 +5,7 @@ import Projects from '../projects/collection.js'
 import PastProjects from './collection.js'
 import Statistics from '../statistics/collection.js'
 import { isEmptyValue } from '../helpers.js'
+import { logger } from '../logger.js'
 import { ACTIVE_PROJECT_STATUSES_ARRAY } from '../constants.js'
 import _ from 'lodash'
 import moment from 'moment'
@@ -253,9 +254,10 @@ async function PastProjectUpdateStatusAsync ({ currentUser, document, oldDocumen
         currentUser,
         validate: false
       })
-    } catch (err) {
-      // eslint-disable-next-line no-console
-      console.error('error in createNewProject:', err)
+    } catch (e) {
+      logger.groupCollapsed('Error in createNewProject:')
+      logger.error(e)
+      logger.groupEnd
     }
   }
 
