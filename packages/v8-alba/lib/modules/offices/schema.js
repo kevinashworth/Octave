@@ -245,7 +245,26 @@ const schema = {
         totalCount
       }
     `,
-    group: projectGroup
+    group: projectGroup,
+    resolveAs: {
+      fieldName: 'theProjects',
+      type: '[Project]',
+      resolver: (office, args, { Projects }) => {
+        const projectsIds = office.projects.map(function (p) {
+          return p.projectId
+        })
+        const projects = Projects.find(
+          {
+            _id: {$in: projectsIds}
+          }, {
+            limit: 50,
+            sort: { projectTitle: 1 }
+          }
+        ).fetch()
+        return projects
+      },
+      addOriginalField: true
+    }
   },
   'projects.$': {
     type: projectSubSchema
