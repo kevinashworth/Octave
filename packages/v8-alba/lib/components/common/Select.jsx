@@ -8,19 +8,33 @@ class MySelect extends PureComponent {
   constructor (props) {
     super(props)
     this.handleChange = this.handleChange.bind(this)
+
     this.state = {
-      value: this.props.value,
-      path: this.props.path
+      value: this.props.value
     }
   }
 
   handleChange (value) {
     this.setState({ value })
+
+    let siblingPath = null
+    if (this.props.parentFieldName === 'projects' || this.props.parentFieldName === 'pastProjects') {
+      siblingPath = this.props.parentFieldName + '.' + this.props.itemIndex + '.' + 'projectTitle'
+      logger.debug('We have a siblingPath!', siblingPath)
+    }
+    if (siblingPath) {
+      this.context.updateCurrentValues({
+        [this.props.path]: value.value,
+        [siblingPath]: value.label
+      })
+    } else {
+      this.context.updateCurrentValues({ [this.props.path]: value.value })
+    }
+
     logger.groupCollapsed(`MySelect:`)
     logger.log(`MySelect label: ${value.label}`)
     logger.log(`MySelect value: ${value.value}`)
     logger.groupEnd()
-    this.context.updateCurrentValues({ [this.state.path]: value.value })
   }
 
   render () {
