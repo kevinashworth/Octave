@@ -19,7 +19,7 @@ ContactDetail.propTypes = {
   contact: PropTypes.shape({
     contactId: PropTypes.string.isRequired,
     contactName: PropTypes.string.isRequired,
-    contactTitle: PropTypes.string.isRequired
+    contactTitle: PropTypes.string
   })
 }
 

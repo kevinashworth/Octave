@@ -22,6 +22,10 @@ registerFragment(/* GraphQL */ `
     htmlBody
     links
     projects
+    theProjects {
+      _id
+      projectTitle
+    }
     pastProjects
     contacts
     addresses

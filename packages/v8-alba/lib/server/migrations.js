@@ -10,6 +10,7 @@ import moment from 'moment'
 import marked from 'marked'
 import reducedStats from '../modules/statistics/_stats-reduced.js'
 import { getAddress, getFullAddress, getFullNameFromContact, getPlatformType } from '../modules/helpers.js'
+import { logger } from '../modules/logger.js'
 
 Migrations.add({
   version: 1,
@@ -444,10 +445,9 @@ Migrations.add({
       try {
         addressString = getFullAddress(getAddress({ contact }))
       } catch (e) {
-        // eslint-disable-next-line no-console
-        console.error('Error in addressString for', contact._id, ':')
-        // eslint-disable-next-line no-console
-        console.error(e)
+        logger.groupCollapsed('Error in addressString for ', contact._id, ':')
+        logger.error(e)
+        logger.groupEnd
       }
       Contacts.update(contact._id,
         {

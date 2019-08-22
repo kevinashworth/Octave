@@ -71,11 +71,11 @@ class OfficesSingle extends PureComponent {
           </CardBody>
           <Components.ErrorBoundary>
             <CardBody>
-              {office.projects &&
+              {office.theProjects &&
                 <CardTitle><b>Projects</b></CardTitle>
               }
-              {office.projects &&
-                office.projects.map((o, index) => <Components.ProjectMini key={`ProjectMini${index}`} documentId={o.projectId} />)
+              {office.theProjects &&
+                office.theProjects.map((o, index) => <Components.ProjectMini key={`ProjectMini${index}`} documentId={o._id} />)
               }
             </CardBody>
           </Components.ErrorBoundary>
