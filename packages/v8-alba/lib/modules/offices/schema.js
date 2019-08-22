@@ -41,7 +41,8 @@ const linkGroup = {
 const pastProjectGroup = {
   name: 'pastProjects',
   label: 'Past Projects',
-  order: 50
+  order: 50,
+  startCollapsed: true
 }
 
 const contactSchema = new SimpleSchema({
@@ -87,6 +88,12 @@ const projectSubSchema = new SimpleSchema({
       value: project._id,
       label: project.projectTitle
     }))
+  },
+  projectTitle: {
+    type: String,
+    optional: true,
+    hidden: true,
+    canRead: ['members']
   }
 })
 
@@ -102,6 +109,12 @@ const pastProjectSubSchema = new SimpleSchema({
       value: project._id,
       label: project.projectTitle
     }))
+  },
+  projectTitle: {
+    type: String,
+    optional: true,
+    hidden: true,
+    canRead: ['members']
   }
 })
 
@@ -250,6 +263,7 @@ const schema = {
       fieldName: 'theProjects',
       type: '[Project]',
       resolver: (office, args, { Projects }) => {
+        if (isEmptyValue(office.projects)) return []
         const projectsIds = office.projects.map(function (p) {
           return p.projectId
         })
@@ -257,8 +271,8 @@ const schema = {
           {
             _id: {$in: projectsIds}
           }, {
-            limit: 50,
-            sort: { projectTitle: 1 }
+            limit: 50, // TODO: Does any limit really make sense?
+            sort: { status: 1, projectTitle: 1 } // Case-sensitive, alas
           }
         ).fetch()
         return projects
