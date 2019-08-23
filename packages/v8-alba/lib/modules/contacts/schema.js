@@ -363,7 +363,6 @@ const schema = {
           _id
           displayName
         }
-        totalCount
       }
     `,
     group: officeGroup
@@ -386,7 +385,6 @@ const schema = {
           _id
           projectTitle
         }
-        totalCount
       }
     `,
     group: projectGroup
@@ -409,7 +407,6 @@ const schema = {
           _id
           projectTitle
         }
-        totalCount
       }
     `,
     group: pastProjectGroup
