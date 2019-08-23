@@ -20,12 +20,12 @@ class OfficesSingle extends PureComponent {
     this.setState({ collapse: !this.state.collapse })
   }
 
-  async componentDidMount() {
+  async componentDidMount () {
     try {
       const {
-        documentId,
-      } = this.props;
-    } catch(error) {
+        documentId
+      } = this.props
+    } catch (error) {
       console.log(error); ``
     }
   }

@@ -109,34 +109,34 @@ So for each of the pastProject.offices we update office.pastProjects of the Offi
 */
 /* This is for Past Projects created from scratch, not Projects turned into Past Projects
  so disabling this until becomes useful */
-function PastProjectCreateUpdateOfficeAfter (data, { document }) {
-  const pastProject = document
-  if (!pastProject.castingOfficeId) {
-    return
-  }
-
-  const office = Offices.findOne(pastProject.castingOfficeId) // TODO: error handling
-  const newPastProject = {
-    projectId: pastProject._id
-  }
-  let updatedPastProjects = []
-
-  // case 1: there are no pastProjects on the office and office.pastProjects is undefined
-  if (!office.pastProjects) {
-    updatedPastProjects = [newPastProject]
-  } else {
-    const i = _.findIndex(office.pastProjects, { projectId: pastProject._id })
-    if (i < 0) {
-      // case 2: this pastProject is not on this office but other pastProjects are and we're adding this pastProject
-      updatedPastProjects = office.pastProjects
-      updatedPastProjects.push(newPastProject)
-    } else {
-      // case 3: this pastProject is on this office and we're updating the info
-      updatedPastProjects[i] = newPastProject
-    }
-  }
-  Connectors.update(Offices, office._id, { $set: { pastProjects: updatedPastProjects } })
-}
+// function PastProjectCreateUpdateOfficeAfter (data, { document }) {
+//   const pastProject = document
+//   if (!pastProject.castingOfficeId) {
+//     return
+//   }
+//
+//   const office = Offices.findOne(pastProject.castingOfficeId) // TODO: error handling
+//   const newPastProject = {
+//     projectId: pastProject._id
+//   }
+//   let updatedPastProjects = []
+//
+//   // case 1: there are no pastProjects on the office and office.pastProjects is undefined
+//   if (!office.pastProjects) {
+//     updatedPastProjects = [newPastProject]
+//   } else {
+//     const i = _.findIndex(office.pastProjects, { projectId: pastProject._id })
+//     if (i < 0) {
+//       // case 2: this pastProject is not on this office but other pastProjects are and we're adding this pastProject
+//       updatedPastProjects = office.pastProjects
+//       updatedPastProjects.push(newPastProject)
+//     } else {
+//       // case 3: this pastProject is on this office and we're updating the info
+//       updatedPastProjects[i] = newPastProject
+//     }
+//   }
+//   Connectors.update(Offices, office._id, { $set: { pastProjects: updatedPastProjects } })
+// }
 
 function PastProjectEditUpdateOfficeBefore (data, { currentUser, document, oldDocument }) {
   const oldOffice = oldDocument.castingOfficeId
