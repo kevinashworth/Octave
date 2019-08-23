@@ -31,7 +31,10 @@ function OfficeEditUpdateProjects (data, { document }) {
   office.projects.forEach(officeProject => {
     const project = Projects.findOne(officeProject.projectId) // TODO: error handling
     const newOffice = office._id
-    Connectors.update(Projects, project._id, { $set: { castingOfficeId: newOffice } })
+    Connectors.update(Projects, project._id, { $set: {
+      castingOfficeId: newOffice,
+      updatedAt: new Date()
+    } })
   })
 }
 
@@ -44,7 +47,10 @@ function OfficeEditUpdatePastProjects (data, { document }) {
   office.pastProjects.forEach(officeProject => {
     const project = PastProjects.findOne(officeProject.projectId) // TODO: error handling
     const newOffice = office._id
-    Connectors.update(PastProjects, project._id, { $set: { castingOfficeId: newOffice } })
+    Connectors.update(PastProjects, project._id, { $set: {
+      castingOfficeId: newOffice,
+      updatedAt: new Date()
+    } })
   })
 }
 
@@ -100,7 +106,10 @@ function OfficeEditUpdateContacts (data, { document, oldDocument }) {
           return
         }
         // case 3: update the contact with its new offices
-        Connectors.update(Contacts, contact._id, { $set: { offices: updatedOffices } })
+        Connectors.update(Contacts, contact._id, { $set: {
+          offices: updatedOffices,
+          updatedAt: new Date()
+        } })
       }
     })
   }
@@ -126,7 +135,10 @@ function OfficeEditUpdateContacts (data, { document, oldDocument }) {
           return
         }
       }
-      Connectors.update(Contacts, contact._id, { $set: { offices: updatedOffices } })
+      Connectors.update(Contacts, contact._id, { $set: {
+        offices: updatedOffices,
+        updatedAt: new Date()
+      } })
     })
   }
 }

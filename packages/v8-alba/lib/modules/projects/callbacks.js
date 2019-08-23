@@ -59,7 +59,10 @@ function ProjectEditUpdateContacts (data, { document }) {
         }
       }
       const sortedPastProjects = _.sortBy(newPastProjects, ['projectTitle'])
-      Connectors.update(Contacts, contact._id, { $set: { pastProjects: sortedPastProjects } })
+      Connectors.update(Contacts, contact._id, { $set: {
+        pastProjects: sortedPastProjects,
+        updatedAt: new Date()
+      } })
 
       // also remove the project from contact.projects
       if (!isEmptyValue(contact.projects)) {
@@ -67,7 +70,10 @@ function ProjectEditUpdateContacts (data, { document }) {
         const i = _.findIndex(contact.projects, { projectId: project._id })
         if (i > -1) {
           newProjects.splice(i, 1)
-          Connectors.update(Contacts, contact._id, { $set: { projects: newProjects } })
+          Connectors.update(Contacts, contact._id, { $set: {
+            projects: newProjects,
+            updatedAt: new Date()
+          } })
         }
       }
     } else {
@@ -87,7 +93,10 @@ function ProjectEditUpdateContacts (data, { document }) {
           newProjects[i] = newProject
         }
       }
-      Connectors.update(Contacts, contact._id, { $set: { projects: newProjects } })
+      Connectors.update(Contacts, contact._id, { $set: {
+        projects: newProjects,
+        updatedAt: new Date()
+      } })
     }
   })
 }
@@ -133,7 +142,10 @@ function ProjectEditUpdateOfficeAfter (data, { document }) {
       newProjects[i] = newProject
     }
   }
-  Connectors.update(Offices, office._id, { $set: { projects: newProjects } })
+  Connectors.update(Offices, office._id, { $set: {
+    projects: newProjects,
+    updatedAt: new Date()
+  } })
 }
 
 function ProjectEditUpdateOfficeBefore (data, { document, oldDocument }) {
@@ -171,7 +183,10 @@ function ProjectEditUpdateOfficeBefore (data, { document, oldDocument }) {
       if (replacing) {
         projects.push({ projectId: document._id })
       }
-      Connectors.update(Offices, office._id, { $set: { projects: projects } })
+      Connectors.update(Offices, office._id, { $set: {
+        projects: projects,
+        updatedAt: new Date()
+      } })
     }
   }
 }
@@ -297,7 +312,8 @@ async function ProjectUpdateStatusAsync ({ currentUser, document, oldDocument })
       pastProjects.push({ projectId: newPastProject._id })
       Connectors.update(Offices, document.castingOfficeId, { $set: {
         pastProjects,
-        projects
+        projects,
+        updatedAt: new Date()
       } })
     }
   }

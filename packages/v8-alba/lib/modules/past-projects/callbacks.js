@@ -60,7 +60,10 @@ function PastProjectEditUpdateContacts (data, { document }) {
         }
       }
       const sortedProjects = _.sortBy(newProjects, ['projectTitle'])
-      Connectors.update(Contacts, contact._id, { $set: { projects: sortedProjects } })
+      Connectors.update(Contacts, contact._id, { $set: {
+        projects: sortedProjects,
+        updatedAt: new Date()
+      } })
 
       // also remove the past-project from contact.pastProjects
       if (!isEmptyValue(contact.pastProjects)) {
@@ -68,7 +71,10 @@ function PastProjectEditUpdateContacts (data, { document }) {
         const i = _.findIndex(contact.pastProjects, { projectId: project._id })
         if (i > -1) {
           newProjects.splice(i, 1)
-          Connectors.update(Contacts, contact._id, { $set: { pastProjects: newPastProjects } })
+          Connectors.update(Contacts, contact._id, { $set: {
+            pastProjects: newPastProjects,
+            updatedAt: new Date()
+          } })
         }
       }
     } else {
@@ -88,7 +94,10 @@ function PastProjectEditUpdateContacts (data, { document }) {
           newPastProjects[i] = newProject
         }
       }
-      Connectors.update(Contacts, contact._id, { $set: { pastProjects: newPastProjects } })
+      Connectors.update(Contacts, contact._id, { $set: {
+        pastProjects: newPastProjects,
+        updatedAt: new Date()
+      } })
     }
   })
 }
@@ -172,7 +181,10 @@ function PastProjectEditUpdateOfficeBefore (data, { currentUser, document, oldDo
       if (replacing) {
         pastProjects.push({ projectId: document._id })
       }
-      Connectors.update(Offices, office._id, { $set: { pastProjects: pastProjects } })
+      Connectors.update(Offices, office._id, { $set: {
+        pastProjects: pastProjects,
+        updatedAt: new Date()
+      } })
     }
   }
 }
@@ -299,7 +311,8 @@ async function PastProjectUpdateStatusAsync ({ currentUser, document, oldDocumen
       projects.push({ projectId: newProject._id })
       Connectors.update(Offices, document.castingOfficeId, { $set: {
         pastProjects,
-        projects
+        projects,
+        updatedAt: new Date()
       } })
     }
   }
