@@ -313,3 +313,19 @@ export const getPlatformType = (project) => {
   }
   return 'Other'
 }
+
+export function sortObjectByKeyNameList (object, sortWith) { // copied from sort-object-keys package`
+  var keys
+  var sortFn
+
+  if (typeof sortWith === 'function') {
+    sortFn = sortWith
+  } else {
+    keys = sortWith
+  }
+  return (keys || []).concat(Object.keys(object).sort(sortFn)).reduce(function (total, key) {
+    total[key] = object[key]
+    return total
+  }, Object.create({}))
+}
+
