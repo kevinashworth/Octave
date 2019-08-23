@@ -162,10 +162,11 @@ function ProjectEditUpdateOfficeBefore (data, { document, oldDocument }) {
       if (itmightnotbethereforsomereason) {
         if (_.indexOf(projects, { projectId: document._id }) < 0) {
           replacing = true
+          console.info('itisnotthereforsomereason')
         }
       }
       _.remove(projects, function (p) {
-        return p._id === document._id
+        return p.projectId === document._id
       })
       if (replacing) {
         projects.push({ projectId: document._id })
