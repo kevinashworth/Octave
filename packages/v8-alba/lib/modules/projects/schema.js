@@ -289,7 +289,6 @@ const schema = {
           _id
           displayName
         }
-        totalCount
       }
     `,
     resolveAs: {
@@ -343,7 +342,6 @@ const schema = {
           _id
           fullName
         }
-        totalCount
       }
     `,
     group: contactGroup
