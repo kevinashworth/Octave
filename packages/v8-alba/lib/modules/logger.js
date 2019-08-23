@@ -2,6 +2,7 @@ const logger = (process.env.NODE_ENV === 'production' ? null : (() => {
   let inGroup = false
   const methodToColorMap = {
     debug: `#7f8c8d`, // grey
+    info: `#5f6c6d`, // darker grey
     log: `#2ecc71`, // green
     warn: `#f39c12`, // yellow
     error: `#c0392b`, // red

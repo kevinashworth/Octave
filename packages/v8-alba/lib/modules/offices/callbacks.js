@@ -4,7 +4,7 @@ import Contacts from '../contacts/collection.js'
 import Projects from '../projects/collection.js'
 import PastProjects from '../past-projects/collection.js'
 import { isEmptyValue } from '../helpers.js'
-
+import { logger } from '../logger.js'
 
 /*
 When updating a project on an office, also update that project with the office.
@@ -85,9 +85,11 @@ function OfficeEditUpdateContacts (data, { document, oldDocument }) {
     contactsToRemoveThisOfficeFrom = _.difference(oldOffice.contacts, newOffice.contacts)
     // [c]
     contactsToAddThisOfficeTo = _.difference(newOffice.contacts, oldOffice.contacts)
-    console.info('OfficeEditUpdateContacts:', oldOfficeContactsLength, newOfficeContactsLength);
-    console.info('contactsToRemoveThisOfficeFrom:', contactsToRemoveThisOfficeFrom)
-    console.info('contactsToAddThisOfficeTo:', contactsToAddThisOfficeTo)
+    logger.groupCollapsed('OfficeEditUpdateContacts:')
+    logger.info('OfficeEditUpdateContacts:', oldOfficeContactsLength, newOfficeContactsLength);
+    logger.info('contactsToRemoveThisOfficeFrom:', contactsToRemoveThisOfficeFrom)
+    logger.info('contactsToAddThisOfficeTo:', contactsToAddThisOfficeTo)
+    logger.groupEnd
   }
   // [b]
   if (contactsToRemoveThisOfficeFrom) {

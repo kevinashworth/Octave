@@ -163,7 +163,7 @@ function PastProjectEditUpdateOfficeBefore (data, { currentUser, document, oldDo
   }
   let itmightnotbethereforsomereason = false
   if (newOffice === oldOffice) {
-    console.info('itmightnotbethereforsomereason')
+    logger.info('itmightnotbethereforsomereason')
     itmightnotbethereforsomereason = true
   }
   if (removing || replacing || itmightnotbethereforsomereason) {
@@ -282,8 +282,7 @@ async function PastProjectUpdateStatusAsync ({ currentUser, document, oldDocumen
         validate: false
       })
     } catch (err) {
-      // eslint-disable-next-line no-console
-      console.error('error in deletePastProject:', err)
+      logger.error('error in deletePastProject:', err)
     }
   }
 
