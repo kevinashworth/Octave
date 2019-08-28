@@ -4,6 +4,7 @@
 import '../components/common/Breadcrumbs/'
 import '../components/common/Footer/'
 import '../components/common/Header/'
+import '../components/common/Header/HeaderDropdown'
 import '../components/common/Sidebar/'
 import '../components/common/SidebarFooter/'
 import '../components/common/SidebarForm/'

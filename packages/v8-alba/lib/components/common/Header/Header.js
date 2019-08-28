@@ -1,6 +1,7 @@
-import { registerComponent } from 'meteor/vulcan:core'
+import { Components, registerComponent } from 'meteor/vulcan:core'
 import React, { PureComponent } from 'react'
-import { NavbarBrand, NavbarToggler } from 'reactstrap'
+import { Nav, NavbarBrand, NavbarToggler, NavItem, NavLink } from 'reactstrap'
+import HeaderDropdown from './HeaderDropdown'
 
 class Header extends PureComponent {
   sidebarToggle (e) {
@@ -20,6 +21,26 @@ class Header extends PureComponent {
           <span className='navbar-toggler-icon' />
         </NavbarToggler>
         <NavbarBrand href='/'><img src='/img/favicon.png' height='40' /></NavbarBrand>
+        <NavbarToggler className='d-md-down-none' onClick={this.sidebarToggle}>
+          <span className='navbar-toggler-icon' />
+        </NavbarToggler>
+        <Nav className='d-md-down-none' navbar>
+          <NavItem className='px-3'>
+            <NavLink href='/dashboard'>Dashboard</NavLink>
+          </NavItem>
+          <NavItem className='px-3'>
+            <NavLink href='/admin'>Users</NavLink>
+          </NavItem>
+          <NavItem className='px-3'>
+            <NavLink href='/debug'>Debug</NavLink>
+          </NavItem>
+        </Nav>
+        <Nav className='ml-auto' navbar>
+          <HeaderDropdown accnt />
+        </Nav>
+        <Nav>
+          <Components.UsersMenu />
+        </Nav>
         <NavbarToggler className='d-md-down-none' onClick={this.sidebarToggle}>
           <span className='navbar-toggler-icon' />
         </NavbarToggler>
