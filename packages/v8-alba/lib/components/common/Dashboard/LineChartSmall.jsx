@@ -13,7 +13,7 @@ class LineChartSmall extends PureComponent {
     }
 
     const cardChartData = {
-      labels: theSmallStats.map(stat => moment(stat.date).format('MMM D')),
+      labels: theSmallStats.map(stat => moment(stat.date).format('D MMM YY')),
       datasets: [
         {
           label: title,

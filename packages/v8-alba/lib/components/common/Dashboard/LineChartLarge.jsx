@@ -34,32 +34,32 @@ class LineChartLarge extends PureComponent {
 
     var data1 = theStats.episodics.map(stat => {
       return {
-        x: moment(stat.date).format('MMM D'),
+        x: moment(stat.date).format('D MMM YY'),
         y: stat.quantity
       }
     })
     var data2 = theStats.features.map(stat => {
       return {
-        x: moment(stat.date).format('MMM D'),
+        x: moment(stat.date).format('D MMM YY'),
         y: stat.quantity
       }
     })
     var data3 = theStats.pilots.map(stat => {
       return {
-        x: moment(stat.date).format('MMM D'),
+        x: moment(stat.date).format('D MMM YY'),
         y: stat.quantity
       }
     })
     var data4 = theStats.others.map(stat => {
       return {
-        x: moment(stat.date).format('MMM D'),
+        x: moment(stat.date).format('D MMM YY'),
         y: stat.quantity
       }
     })
 
     const allData = theStats.episodics.concat(theStats.features, theStats.pilots, theStats.others)
     const sortedData = _.sortBy(allData, 'date')
-    const allDates = sortedData.map(stat => moment(stat.date).format('MMM D'))
+    const allDates = sortedData.map(stat => moment(stat.date).format('D MMM YY'))
     const dateLabels = _.uniqBy(allDates) // TODO: Is there a sipmler way to get this?
 
     const mainChart = {
