@@ -192,6 +192,12 @@ function ProjectEditUpdateOfficeBefore (data, { document, oldDocument }) {
   }
 }
 
+function latestStatIsFromToday (theStatsArray) {
+  const latestDate = theStatsArray[theStatsArray.length - 1].date
+  const today = new Date()
+  return moment(latestDate).isSame(today, 'day')
+}
+
 /* When adding a project, update statistics */
 function ProjectCreateUpdateStatisticsAsync ({ currentUser, document }) {
   const project = document
@@ -210,6 +216,11 @@ function ProjectCreateUpdateStatisticsAsync ({ currentUser, document }) {
         projectType: { $in: [ 'TV One Hour', 'TV 1/2 Hour', 'TV Animation' ] },
         status: 'Casting'
       }).count()
+      logger.debug('There are ' + newStats.episodics.length + 'episodics')
+      logger.debug('The most recent one is from ' + newStats.episodics[newStats.episodics.length-1])
+      if (latestStatIsFromToday(newStats.episodics)) { // this is the same day, replace the last stat with the new stat
+        logger.log('This is today, so replacing this popped stat with a new stat', newStats.episodics.pop())
+      }
       newStats.episodics.push({ date: moment().format('YYYY-MM-DD HH:mm:ss'), quantity: episodicsCasting })
       break
     case 'Feature Film':
@@ -220,6 +231,11 @@ function ProjectCreateUpdateStatisticsAsync ({ currentUser, document }) {
         projectType: { $in: [ 'Feature Film', 'Feature Film (LB)', 'Feature Film (MLB)', 'Feature Film (ULB)' ] },
         status: 'Casting'
       }).count()
+      logger.debug('There are ' + newStats.features.length + 'features')
+      logger.debug('The most recent one is from ' + newStats.features[newStats.features.length-1])
+      if (latestStatIsFromToday(newStats.features)) { // this is the same day, replace the last stat with the new stat
+        logger.log('This is today, so replacing this popped stat with a new stat', newStats.features.pop())
+      }
       newStats.features.push({ date: moment().format('YYYY-MM-DD HH:mm:ss'), quantity: featuresCasting })
       break
     case 'Pilot One Hour':
