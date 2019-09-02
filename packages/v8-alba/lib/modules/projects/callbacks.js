@@ -199,9 +199,9 @@ function latestStatIsFromToday (theStatsArray) {
 }
 
 /* When adding a project, update statistics */
-function ProjectCreateUpdateStatisticsAsync ({ currentUser, document }) {
+async function ProjectCreateUpdateStatisticsAsync ({ currentUser, document }) {
   const project = document
-  const theStats = Statistics.findOne()
+  const theStats = await Statistics.findOne()
   let newStats = {}
   newStats.episodics = theStats.episodics
   newStats.features = theStats.features
@@ -216,10 +216,10 @@ function ProjectCreateUpdateStatisticsAsync ({ currentUser, document }) {
         projectType: { $in: [ 'TV One Hour', 'TV 1/2 Hour', 'TV Animation' ] },
         status: 'Casting'
       }).count()
-      logger.debug('There are ' + newStats.episodics.length + 'episodics')
-      logger.debug('The most recent one is from ' + newStats.episodics[newStats.episodics.length-1])
+      console.debug('There are ' + newStats.episodics.length + ' episodics, ' + episodicsCasting + ' casting.')
+      console.debug('The most recent one is from ' + newStats.episodics[newStats.episodics.length-1].date)
       if (latestStatIsFromToday(newStats.episodics)) { // this is the same day, replace the last stat with the new stat
-        logger.log('This is today, so replacing this popped stat with a new stat', newStats.episodics.pop())
+        console.debug('This is today, so replacing the following popped stat:', newStats.episodics.pop())
       }
       newStats.episodics.push({ date: moment().format('YYYY-MM-DD HH:mm:ss'), quantity: episodicsCasting })
       break
@@ -231,10 +231,10 @@ function ProjectCreateUpdateStatisticsAsync ({ currentUser, document }) {
         projectType: { $in: [ 'Feature Film', 'Feature Film (LB)', 'Feature Film (MLB)', 'Feature Film (ULB)' ] },
         status: 'Casting'
       }).count()
-      logger.debug('There are ' + newStats.features.length + 'features')
-      logger.debug('The most recent one is from ' + newStats.features[newStats.features.length-1])
+      console.debug('There are ' + newStats.features.length + ' features, ' + featuresCasting + ' casting.')
+      console.debug('The most recent one is from ' + newStats.features[newStats.features.length-1].date)
       if (latestStatIsFromToday(newStats.features)) { // this is the same day, replace the last stat with the new stat
-        logger.log('This is today, so replacing this popped stat with a new stat', newStats.features.pop())
+        console.debug('This is today, so replacing the following popped stat:', newStats.features.pop())
       }
       newStats.features.push({ date: moment().format('YYYY-MM-DD HH:mm:ss'), quantity: featuresCasting })
       break
@@ -245,6 +245,11 @@ function ProjectCreateUpdateStatisticsAsync ({ currentUser, document }) {
         projectType: { $in: [ 'Pilot One Hour', 'Pilot 1/2 Hour', 'Pilot Presentation' ] },
         status: 'Casting'
       }).count()
+      console.debug('There are ' + newStats.pilots.length + ' pilots, ' + pilotsCasting + ' casting.')
+      console.debug('The most recent one is from ' + newStats.pilots[newStats.pilots.length-1].date)
+      if (latestStatIsFromToday(newStats.pilots)) { // this is the same day, replace the last stat with the new stat
+        console.debug('This is today, so replacing the following popped stat:', newStats.pilots.pop())
+      }
       newStats.pilots.push({ date: moment().format('YYYY-MM-DD HH:mm:ss'), quantity: pilotsCasting })
       break
     case 'Short Film':
@@ -259,6 +264,11 @@ function ProjectCreateUpdateStatisticsAsync ({ currentUser, document }) {
         projectType: { $in: [ 'Short Film', 'TV Daytime', 'TV Mini-Series', 'TV Movie', 'TV Telefilm', 'TV Talk/Variety', 'TV Sketch/Improv', 'New Media' ] },
         status: 'Casting'
       }).count()
+      console.debug('There are ' + newStats.others.length + ' others, ' + othersCasting + ' casting.')
+      console.debug('The most recent one is from ' + newStats.others[newStats.others.length-1].date)
+      if (latestStatIsFromToday(newStats.others)) { // this is the same day, replace the last stat with the new stat
+        console.debug('This is today, so replacing the following popped stat:', newStats.others.pop())
+      }
       newStats.others.push({ date: moment().format('YYYY-MM-DD HH:mm:ss'), quantity: othersCasting })
       break
     // default:
