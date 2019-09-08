@@ -55,16 +55,20 @@ registerFragment( /* GraphQL */ `
 registerFragment( /* GraphQL */ `
   fragment PastProjectsDataTableFragment on PastProject {
     _id
+    createdAt
+    updatedAt
     projectTitle
     projectType
     casting
     status
-    updatedAt
+    network
+    union
     summary
     notes
+    htmlSummary
+    htmlNotes
     allContactNames
     allAddresses
-    network
     slug
   }
 `)

@@ -57,7 +57,6 @@ class PastProjectSingle extends PureComponent {
               <Button tag={Link} to={`/past-projects/${project._id}/edit`}>Edit</Button>
             </div> : null}
           </CardHeader>
-
           <CardBody>
             <CardTitle className='mb-1'>
               { project.projectType &&
@@ -139,7 +138,6 @@ class PastProjectSingle extends PureComponent {
 
 const options = {
   collection: PastProjects,
-  queryName: 'pastProjectsSingleQuery',
   fragmentName: 'PastProjectsSingleFragment'
 }
 

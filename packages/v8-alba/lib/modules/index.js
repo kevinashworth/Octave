@@ -5,7 +5,7 @@ import './routes.js'
 
 import './contacts/collection'
 import './projects'
-import './past-projects/collection'
+import './past-projects'
 import './statistics/collection'
 
 import './fragments';
