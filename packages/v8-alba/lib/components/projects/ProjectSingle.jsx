@@ -12,7 +12,6 @@ import Projects from '../../modules/projects/collection.js'
 const SpanVerticalBarBefore = styled.span`
   ::before { content: " | "; };
 `
-
 class ProjectSingle extends PureComponent {
   seasonorder (project) {
     if (!project.season) {
@@ -139,7 +138,6 @@ class ProjectSingle extends PureComponent {
 
 const options = {
   collection: Projects,
-  queryName: 'projectsSingleQuery',
   fragmentName: 'ProjectsSingleFragment'
 }
 
