@@ -29,7 +29,7 @@ class Header extends PureComponent {
             <NavLink href='/dashboard'>Dashboard</NavLink>
           </NavItem>
           <NavItem className='px-3'>
-            <NavLink href='/admin'>Users</NavLink>
+            <NavLink href='/contacts/list'>ContactsList</NavLink>
           </NavItem>
           <NavItem className='px-3'>
             <NavLink href='/debug'>Debug</NavLink>

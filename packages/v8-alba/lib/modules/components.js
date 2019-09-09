@@ -1,4 +1,3 @@
-
 // Alba components largely unchanged
 
 import '../components/common/Breadcrumbs/'
@@ -51,10 +50,10 @@ import '../components/contacts/ContactModal'
 import '../components/contacts/Contacts'
 import '../components/contacts/ContactsDataTable'
 import '../components/contacts/ContactsEditForm'
+import '../components/contacts/ContactsList'
 import '../components/contacts/ContactsNewForm'
 import '../components/contacts/ContactsRow'
 import '../components/contacts/ContactsSingle'
-// import '../components/contacts/ContactsTable';
 
 import '../components/past-projects/PastProjectMini'
 import '../components/past-projects/PastProjects'
