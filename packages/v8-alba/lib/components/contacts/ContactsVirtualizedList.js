@@ -1,9 +1,18 @@
 import { Components, registerComponent, withMulti } from 'meteor/vulcan:core'
 import { FormattedMessage } from 'meteor/vulcan:i18n'
 import React from 'react'
-// import { Link } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import { InfiniteLoader, List } from 'react-virtualized'
+import styled from 'styled-components'
+import _ from 'lodash'
 import Contacts from '../../modules/contacts/collection.js'
+
+const ContactItem = styled.div`
+  color: #333;
+  padding-top: 2px;
+  padding-bottom: 2px;
+  white-space: nowrap;
+`
 
 const ContactsVirtualizedList = ({ loading, results = [], totalCount, count, refetch, loadMore }) => {
   if (results && results.length) {
@@ -15,20 +24,23 @@ const ContactsVirtualizedList = ({ loading, results = [], totalCount, count, ref
       ? () => {}
       : loadMore
     const isRowLoaded = ({ index }) => !hasMore || index < results.length
-    const rowRenderer = ({ index, key, style }) => {
+    const rowRenderer = ({ index, key }) => {
       let content
       if (!isRowLoaded({ index })) {
         content = 'Loading...'
       } else {
-        content = results[index].displayName
+        const contact = results[index]
+        const parsedName = _.split(contact.displayName, contact.lastName)
+        content = <Link to={`/contacts/${contact._id}/${contact.slug}`}>
+          {parsedName[0]}  <strong>{contact.lastName}</strong>
+        </Link>
       }
       return (
-        <div
+        <ContactItem
           key={key}
-          style={style}
         >
           {content}
-        </div>
+        </ContactItem>
       )
     }
 
@@ -44,9 +56,9 @@ const ContactsVirtualizedList = ({ loading, results = [], totalCount, count, ref
             onRowsRendered={onRowsRendered}
             rowRenderer={rowRenderer}
             rowCount={rowCount}
-            height={500}
-            rowHeight={50}
-            width={200}
+            height={800}
+            rowHeight={40}
+            width={300}
           />
         )}
       </InfiniteLoader>
@@ -61,7 +73,8 @@ const ContactsVirtualizedList = ({ loading, results = [], totalCount, count, ref
 
 const options = {
   collection: Contacts,
-  fragmentName: 'ContactsSingleFragment'
+  fragmentName: 'ContactsSingleFragment',
+  terms: { view: 'contactsByLastName' }
 }
 
 registerComponent({
