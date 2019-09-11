@@ -54,6 +54,7 @@ import '../components/contacts/ContactsList'
 import '../components/contacts/ContactsNewForm'
 import '../components/contacts/ContactsRow'
 import '../components/contacts/ContactsSingle'
+import '../components/contacts/ContactsVirtualizedList'
 
 import '../components/past-projects/PastProjectMini'
 import '../components/past-projects/PastProjects'

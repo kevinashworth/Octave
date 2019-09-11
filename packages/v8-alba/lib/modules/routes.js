@@ -10,6 +10,7 @@ addRoute([
   { name: 'Contacts', path: '/contacts', componentName: 'Contacts' },
   { name: 'contacts.table', path: '/contacts/datatable', componentName: 'ContactsDataTable' },
   { name: 'contacts.list', path: '/contacts/list', componentName: 'ContactsList' },
+  { name: 'contacts.vlist', path: '/contacts/vlist', componentName: 'ContactsVirtualizedList' },
   { name: 'contacts.edit', path: '/contacts/:_id/edit', componentName: 'ContactsEditForm' },
   { name: 'contacts.single', path: '/contacts/:_id/:slug?', componentName: 'ContactsSingle' }
 ])
