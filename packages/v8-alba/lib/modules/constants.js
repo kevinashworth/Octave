@@ -116,6 +116,7 @@ const AVOD_ENUM = [
   'Crackle',
   'HBO Max',
   'Hulu',
+  'NBCUniversal streaming',
   'Sony Crackle'
 ]
 
