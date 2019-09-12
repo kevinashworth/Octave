@@ -3,16 +3,8 @@ import { FormattedMessage } from 'meteor/vulcan:i18n'
 import React from 'react'
 import { Link } from 'react-router-dom'
 import { InfiniteLoader, List } from 'react-virtualized'
-import styled from 'styled-components'
 import _ from 'lodash'
 import Contacts from '../../modules/contacts/collection.js'
-
-const ContactItem = styled.div`
-  color: #333;
-  padding-top: 2px;
-  padding-bottom: 2px;
-  white-space: nowrap;
-`
 
 const ContactsVirtualizedList = ({ loading, results = [], totalCount, count, refetch, loadMore }) => {
   if (results && results.length) {
@@ -24,7 +16,7 @@ const ContactsVirtualizedList = ({ loading, results = [], totalCount, count, ref
       ? () => {}
       : loadMore
     const isRowLoaded = ({ index }) => !hasMore || index < results.length
-    const rowRenderer = ({ index, key }) => {
+    const rowRenderer = ({ index, key, style }) => {
       let content
       if (!isRowLoaded({ index })) {
         content = 'Loading...'
@@ -32,15 +24,17 @@ const ContactsVirtualizedList = ({ loading, results = [], totalCount, count, ref
         const contact = results[index]
         const parsedName = _.split(contact.displayName, contact.lastName)
         content = <Link to={`/contacts/${contact._id}/${contact.slug}`}>
-          {parsedName[0]}  <strong>{contact.lastName}</strong>
+          {parsedName[0]} <strong>{contact.lastName}</strong>
         </Link>
       }
       return (
-        <ContactItem
+        <div
+          className={'Vrow'}
           key={key}
+          style={style}
         >
           {content}
-        </ContactItem>
+        </div>
       )
     }
 
@@ -53,6 +47,7 @@ const ContactsVirtualizedList = ({ loading, results = [], totalCount, count, ref
         {({ onRowsRendered, registerChild }) => (
           <List
             ref={registerChild}
+            className={'VList'}
             onRowsRendered={onRowsRendered}
             rowRenderer={rowRenderer}
             rowCount={rowCount}
@@ -64,16 +59,16 @@ const ContactsVirtualizedList = ({ loading, results = [], totalCount, count, ref
       </InfiniteLoader>
     )
   } else if (loading) {
-    return (<Components.Loading/>)
-
+    return (<Components.Loading />)
   } else {
-    return (<FormattedMessage id='app.404'/>)
+    return (<FormattedMessage id='app.404' />)
   }
 }
 
 const options = {
   collection: Contacts,
   fragmentName: 'ContactsSingleFragment',
+  limit: 50,
   terms: { view: 'contactsByLastName' }
 }
 
