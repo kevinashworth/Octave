@@ -54,6 +54,14 @@ registerFragment(/* GraphQL */ `
 `)
 
 registerFragment(/* GraphQL */ `
+  fragment ContactsNameOnlyFragment on Contact {
+    _id
+    displayName
+    slug
+  }
+`)
+
+registerFragment(/* GraphQL */ `
   fragment ContactsEditFragment on Contact {
     _id
     createdAt

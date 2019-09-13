@@ -9,6 +9,7 @@ addRoute({ path: '/fragments', name: 'fragments', componentName: 'Fragments', la
 addRoute([
   { name: 'Contacts', path: '/contacts', componentName: 'Contacts' },
   { name: 'contacts.table', path: '/contacts/datatable', componentName: 'ContactsDataTable' },
+  { name: 'contacts.nameonly', path: '/contacts/nameonly', componentName: 'ContactsNameOnly' },
   { name: 'contacts.list', path: '/contacts/list', componentName: 'ContactsList' },
   { name: 'contacts.vlist', path: '/contacts/vlist', componentName: 'ContactsVirtualizedList' },
   { name: 'contacts.edit', path: '/contacts/:_id/edit', componentName: 'ContactsEditForm' },

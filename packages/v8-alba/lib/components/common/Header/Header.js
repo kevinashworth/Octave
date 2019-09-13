@@ -32,7 +32,7 @@ class Header extends PureComponent {
             <NavLink href='/contacts/vlist'>V-List</NavLink>
           </NavItem>
           <NavItem className='px-3'>
-            <NavLink href='/debug'>Debug</NavLink>
+            <NavLink href='/contacts/datatablenameonly'>NameOnly</NavLink>
           </NavItem>
         </Nav>
         <Nav className='ml-auto' navbar>
