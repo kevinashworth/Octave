@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom'
 import { FixedSizeList } from 'react-window'
 // import AutoSizer from 'react-virtualized-auto-sizer'
 import InfiniteLoader from 'react-window-infinite-loader'
-import _ from 'lodash'
+// import _ from 'lodash'
 import Contacts from '../../modules/contacts/collection.js'
 
 // const Row = ({ index, style, items }) => {
@@ -157,11 +157,11 @@ const ListComponent = ({ items, moreItemsLoading, loadMore, hasNextPage }) => {
         return (<div className={'Vrow'} style={style}>Loading...</div>)
       }
       const contact = items[index]
-      const parsedName = _.split(contact.displayName, contact.lastName)
+      // const parsedName = _.split(contact.displayName, contact.lastName)
       return (
         <div className={'Vrow'} style={style}>
           <Link to={`/contacts/${contact._id}/${contact.slug}`}>
-            {parsedName[0]} <strong>{contact.lastName}</strong>
+            {contact.firstName} {contact.middleName ? contact.middleName: null} <strong>{contact.lastName}</strong>
           </Link>
         </div>
       )
@@ -181,7 +181,7 @@ const ListComponent = ({ items, moreItemsLoading, loadMore, hasNextPage }) => {
       {({ onItemsRendered, ref }) => (
         <FixedSizeList
           height={750}
-          width={220}
+          width={300}
           itemCount={itemCount}
           itemSize={35}
           onItemsRendered={onItemsRendered}
@@ -200,6 +200,7 @@ export default ListComponent;
 const options = {
   collection: Contacts,
   fragmentName: 'ContactsSingleFragment',
+  limit: 500,
   terms: { view: 'contactsByLastName' }
 }
 

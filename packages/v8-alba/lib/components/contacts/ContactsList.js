@@ -135,7 +135,8 @@ class ContactsList extends PureComponent {
 const options = {
   collection: Contacts,
   fragmentName: 'ContactsSingleFragment',
-  limit: 20
+  limit: 500,
+  terms: { view: 'contactsByLastName' }
 }
 
 registerComponent({
