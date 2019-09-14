@@ -34,7 +34,8 @@ const linkGroup = {
 const pastProjectGroup = {
   name: 'pastProjects',
   label: 'Past Projects',
-  order: 50
+  order: 50,
+  startCollapsed: true
 }
 
 const projectSubSchema = new SimpleSchema({

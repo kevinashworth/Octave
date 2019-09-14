@@ -137,7 +137,7 @@ export const getAddress = ({ contact, office, project }) => {
     city: '',
     state: '',
     zip: '',
-    location: 'Other'
+    location: 'Unknown'
   }
   var theAddress = theDummyAddress
 
