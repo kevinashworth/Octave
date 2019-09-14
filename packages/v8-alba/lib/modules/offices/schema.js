@@ -263,12 +263,12 @@ const schema = {
       type: '[Project]',
       resolver: (office, args, { Projects }) => {
         if (isEmptyValue(office.projects)) return []
-        const projectsIds = office.projects.map(function (p) {
+        const projectIds = office.projects.map(function (p) {
           return p.projectId
         })
         const projects = Projects.find(
           {
-            _id: {$in: projectsIds}
+            _id: {$in: projectIds}
           }, {
             limit: 50, // TODO: Does any limit really make sense?
             sort: { status: 1, projectTitle: 1 } // Case-sensitive, alas
@@ -321,7 +321,26 @@ const schema = {
         }
       }
     `,
-    group: contactGroup
+    group: contactGroup,
+    resolveAs: {
+      fieldName: 'theContacts',
+      type: '[Contact]',
+      resolver: (office, args, { Contacts }) => {
+        if (isEmptyValue(office.contacts)) return []
+        const contactIds = office.contacts.map(function (o) {
+          return o.contactId
+        })
+        const contacts = Contacts.find(
+          {
+            _id: {$in: contactIds}
+          }, {
+            sort: { title: -1, lastName: 1 }
+          }
+        ).fetch()
+        return contacts
+      },
+      addOriginalField: true
+    }
   },
   'contacts.$': {
     type: contactSchema

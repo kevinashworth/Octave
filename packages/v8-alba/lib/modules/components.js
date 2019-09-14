@@ -46,6 +46,7 @@ import '../components/common/SelectContactIdNameTitle'
 import '../components/common/SelectProjectIdNameTitle'
 import '../components/common/SelectPastProjectIdNameTitle'
 
+import '../components/contacts/ContactMini'
 import '../components/contacts/ContactModal'
 import '../components/contacts/Contacts'
 import '../components/contacts/ContactsDataTable'
