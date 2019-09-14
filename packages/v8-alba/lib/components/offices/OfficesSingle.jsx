@@ -65,8 +65,8 @@ class OfficesSingle extends PureComponent {
             <CardText className='mb-1'>{ office.body }</CardText>
           </CardBody>
           <CardBody>
-            {office.contacts &&
-            office.contacts.map(o => <Components.ContactDetail key={o.contactId} contact={o} />)
+            {office.theContacts &&
+            office.theContacts.map((o, index) => <Components.ContactMini key={`ContactMini${index}`} documentId={o._id} />)
             }
           </CardBody>
           <Components.ErrorBoundary>

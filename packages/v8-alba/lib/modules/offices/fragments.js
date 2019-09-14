@@ -28,6 +28,10 @@ registerFragment(/* GraphQL */ `
     }
     pastProjects
     contacts
+    theContacts {
+      _id
+      displayName
+    }
     addresses
     street
     location
