@@ -4,12 +4,12 @@ const DATE_FORMAT_SHORT_FRIENDLY = 'MMM D'
 
 const CASTING_TITLES_ENUM = [
   { value: 'Casting Director', label: 'Casting Director' },
-  { value: 'Associate', label: 'Associate' },
-  { value: 'Assistant', label: 'Assistant' },
-  { value: 'Intern', label: 'Intern' },
   { value: 'Casting Director / Associate', label: 'Casting Director / Associate' },
+  { value: 'Associate', label: 'Associate' },
   { value: 'Associate / Assistant', label: 'Associate / Assistant' },
+  { value: 'Assistant', label: 'Assistant' },
   { value: 'Assistant / Intern', label: 'Assistant / Intern' },
+  { value: 'Intern', label: 'Intern' },
   { value: 'Unknown', label: 'Unknown' }
 ]
 
