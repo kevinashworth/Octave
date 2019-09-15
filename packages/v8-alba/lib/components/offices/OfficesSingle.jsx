@@ -9,15 +9,32 @@ import { DATE_FORMAT_LONG, DATE_FORMAT_SHORT } from '../../modules/constants.js'
 import { dangerouslyCreateAddress } from '../../modules/helpers.js'
 import Offices from '../../modules/offices/collection.js'
 
+// Don't fetch and render PastProjects unless user clicks to see them
+// See https://reactjs.org/docs/conditional-rendering.html
+function PastProjects (props) {
+  if (!props.collapseIsOpen) {
+    return null
+  }
+
+  return (
+    <Card>
+      <CardBody>
+        <CardTitle>Past Projects</CardTitle>
+        {props.pastProjects.map((o, index) => <Components.PastProjectMini key={`PastProjectMini${index}`} documentId={o.projectId} />)}
+      </CardBody>
+    </Card>
+  )
+}
+
 class OfficesSingle extends PureComponent {
   constructor (props) {
     super(props)
     this.toggle = this.toggle.bind(this)
-    this.state = { collapse: false }
+    this.state = { collapseIsOpen: false }
   }
 
   toggle () {
-    this.setState({ collapse: !this.state.collapse })
+    this.setState({ collapseIsOpen: !this.state.collapseIsOpen })
   }
 
   async componentDidMount () {
@@ -96,14 +113,9 @@ class OfficesSingle extends PureComponent {
         {office.pastProjects &&
         <div>
           <Button color='link' onClick={this.toggle}
-            style={{ marginBottom: '1rem' }}>{`${this.state.collapse ? 'Hide' : 'Show'} Past Projects`}</Button>
-          <Collapse isOpen={this.state.collapse}>
-            <Card>
-              <CardBody>
-                <CardTitle>Past Projects</CardTitle>
-                {office.pastProjects.map((o, index) => <Components.PastProjectMini key={`PastProjectMini${index}`} documentId={o.projectId} />)}
-              </CardBody>
-            </Card>
+            style={{ marginBottom: '1rem' }}>{`${this.state.collapseIsOpen ? 'Hide' : 'Show'} Past Projects`}</Button>
+          <Collapse isOpen={this.state.collapseIsOpen}>
+            <PastProjects collapseIsOpen={this.state.collapseIsOpen} pastProjects={office.pastProjects} />
           </Collapse>
         </div>
         }
