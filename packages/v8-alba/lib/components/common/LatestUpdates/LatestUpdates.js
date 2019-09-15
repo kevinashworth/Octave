@@ -1,6 +1,7 @@
 import { Components, registerComponent, withAccess, withMulti } from 'meteor/vulcan:core'
 import React, { Component } from 'react'
 import { Link } from 'react-router-dom'
+import PropTypes from 'prop-types'
 import { Card, CardBody, CardFooter, CardHeader, Col, Row } from 'reactstrap'
 import Contacts from '../../../modules/contacts/collection.js'
 import Offices from '../../../modules/offices/collection.js'
@@ -112,9 +113,11 @@ class LatestProjectUpdates extends Component {
       return (<div><Components.Loading /></div>)
     }
 
+    const projects = this.props.results || []
+
     return (
       <Row>
-        {this.props.results.map(project => {
+        {projects.map(project => {
           const isItNew = moment(project.updatedAt).isBefore(moment(project.createdAt).add(1, 'day'))
           let displayHtml = isItNew
             ? '<b>New!</b> Project added '
@@ -142,6 +145,10 @@ class LatestProjectUpdates extends Component {
       </Row>
     )
   }
+}
+
+LatestProjectUpdates.propTypes = {
+  results: PropTypes.array
 }
 
 const projectOptions = {
