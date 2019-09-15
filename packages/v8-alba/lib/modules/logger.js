@@ -10,6 +10,15 @@ const logger = (process.env.NODE_ENV === 'production' ? null : (() => {
     groupEnd: null
   }
   const print = function (method, args) {
+    if (Meteor.isServer) {
+      const supportedMethodsOnServer = ['log', 'groupCollapsed', 'groupEnd']
+      if (supportedMethodsOnServer.indexOf(method) > -1) {
+        console[method](...args)
+      } else {
+        console.info(...args)
+      }
+      return
+    }
     if (method === 'groupCollapsed') {
       // Safari doesn't print all console.groupCollapsed() arguments: https://bugs.webkit.org/show_bug.cgi?id=182754
       if (/^((?!chrome|android).)*safari/i.test(navigator.userAgent)) {

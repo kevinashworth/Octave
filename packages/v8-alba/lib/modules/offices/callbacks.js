@@ -86,7 +86,7 @@ function OfficeEditUpdateContacts (data, { document, oldDocument }) {
     // [c]
     contactsToAddThisOfficeTo = _.difference(newOffice.contacts, oldOffice.contacts)
     logger.groupCollapsed('OfficeEditUpdateContacts:')
-    logger.info('OfficeEditUpdateContacts:', oldOfficeContactsLength, newOfficeContactsLength);
+    logger.info('OfficeEditUpdateContacts lengths:', oldOfficeContactsLength, newOfficeContactsLength)
     logger.info('contactsToRemoveThisOfficeFrom:', contactsToRemoveThisOfficeFrom)
     logger.info('contactsToAddThisOfficeTo:', contactsToAddThisOfficeTo)
     logger.groupEnd
@@ -100,10 +100,10 @@ function OfficeEditUpdateContacts (data, { document, oldDocument }) {
         return
       } else {
         const outdatedOffices = contact.offices
-        const updatedOffices = _.remove(outdatedOffices, function(o) {
+        const updatedOffices = _.remove(outdatedOffices, function (o) {
           return o._id === office._id
         })
-        //case 2: the office didn't have the contact on it (shouldn't happen, theoretically, but it does currently anyway)
+        // case 2: the office didn't have the contact on it (shouldn't happen, theoretically, but it does currently anyway)
         if (_.isEqual(updatedOffices, outdatedOffices)) {
           return
         }
