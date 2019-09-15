@@ -16,9 +16,11 @@ class LatestContactUpdates extends Component {
       return (<div><Components.Loading /></div>)
     }
 
+    const contacts = this.props.results || []
+
     return (
       <Row>
-        {this.props.results.map(contact => {
+        {contacts.map(contact => {
           const isItNew = moment(contact.updatedAt).isBefore(moment(contact.createdAt).add(1, 'day'))
           let displayHtml = isItNew
             ? '<b>New!</b> Contact added '
@@ -46,6 +48,10 @@ class LatestContactUpdates extends Component {
   }
 }
 
+LatestContactUpdates.propTypes = {
+  results: PropTypes.array
+}
+
 const contactOptions = {
   collection: Contacts,
   fragmentName: 'ContactsSingleFragment',
@@ -64,9 +70,11 @@ class LatestOfficeUpdates extends Component {
       return (<div><Components.Loading /></div>)
     }
 
+    const offices = this.props.results || []
+
     return (
       <Row>
-        {this.props.results.map(office => {
+        {offices.map(office => {
           const isItNew = moment(office.updatedAt).isBefore(moment(office.createdAt).add(1, 'day'))
           let displayHtml = isItNew
             ? '<b>New!</b> Office added '
@@ -92,6 +100,10 @@ class LatestOfficeUpdates extends Component {
       </Row>
     )
   }
+}
+
+LatestOfficeUpdates.propTypes = {
+  results: PropTypes.array
 }
 
 const officeOptions = {
@@ -169,9 +181,11 @@ class LatestPastProjectUpdates extends Component {
       return (<div><Components.Loading /></div>)
     }
 
+    const pastProjects = this.props.results || []
+
     return (
       <Row>
-        {this.props.results.map(project =>
+        {pastProjects.map(project =>
           <Col xs='12' sm='6' md='4' key={project._id}>
             <Card className='card-accent-secondary'>
               <CardHeader>
@@ -192,6 +206,10 @@ class LatestPastProjectUpdates extends Component {
       </Row>
     )
   }
+}
+
+LatestPastProjectUpdates.propTypes = {
+  results: PropTypes.array
 }
 
 const projectOptionsPast = {
