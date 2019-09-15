@@ -20,7 +20,7 @@ const ContactsRow = ({ loading, document, currentUser }) => {
         <td>{contact.state}</td>
         <td>{contact.zip}</td>
         <td>{Contacts.options.mutations.edit.check(currentUser, contact)
-          ? <Components.ModalTrigger title='Edit Contact' component={<Button style={{ 'padding': '0' }} color='link'>Edit</Button>}>
+          ? <Components.ModalTrigger title='Edit Contact' component={<Button style={{ padding: '0' }} color='link'>Edit</Button>}>
             <Components.ContactsEditForm currentUser={currentUser} documentId={contact._id} />
           </Components.ModalTrigger>
           : null

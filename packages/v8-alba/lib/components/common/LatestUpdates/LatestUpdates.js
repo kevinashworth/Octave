@@ -109,7 +109,7 @@ LatestOfficeUpdates.propTypes = {
 const officeOptions = {
   collection: Offices,
   fragmentName: 'OfficesSingleFragment',
-  terms: {view: 'officesByUpdated'},
+  terms: { view: 'officesByUpdated' },
   limit: 6
 }
 

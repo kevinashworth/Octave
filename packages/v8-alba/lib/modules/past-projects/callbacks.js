@@ -210,7 +210,7 @@ async function PastProjectCreateUpdateStatisticsAsync ({ currentUser, document }
     case 'TV 1/2 Hour':
     case 'TV Animation':
       const episodicsCasting = Projects.find({
-        projectType: { $in: [ 'TV One Hour', 'TV 1/2 Hour', 'TV Animation' ] },
+        projectType: { $in: ['TV One Hour', 'TV 1/2 Hour', 'TV Animation'] },
         status: 'Casting'
       }).count()
       console.debug('There are ' + newStats.episodics.length + ' episodics, ' + episodicsCasting + ' casting.')
@@ -225,7 +225,7 @@ async function PastProjectCreateUpdateStatisticsAsync ({ currentUser, document }
     case 'Feature Film (MLB)':
     case 'Feature Film (ULB)':
       const featuresCasting = Projects.find({
-        projectType: { $in: [ 'Feature Film', 'Feature Film (LB)', 'Feature Film (MLB)', 'Feature Film (ULB)' ] },
+        projectType: { $in: ['Feature Film', 'Feature Film (LB)', 'Feature Film (MLB)', 'Feature Film (ULB)'] },
         status: 'Casting'
       }).count()
       console.debug('There are ' + newStats.features.length + ' features, ' + featuresCasting + ' casting.')
@@ -239,7 +239,7 @@ async function PastProjectCreateUpdateStatisticsAsync ({ currentUser, document }
     case 'Pilot 1/2 Hour':
     case 'Pilot Presentation':
       const pilotsCasting = Projects.find({
-        projectType: { $in: [ 'Pilot One Hour', 'Pilot 1/2 Hour', 'Pilot Presentation' ] },
+        projectType: { $in: ['Pilot One Hour', 'Pilot 1/2 Hour', 'Pilot Presentation'] },
         status: 'Casting'
       }).count()
       console.debug('There are ' + newStats.pilots.length + ' pilots, ' + pilotsCasting + ' casting.')
@@ -258,7 +258,7 @@ async function PastProjectCreateUpdateStatisticsAsync ({ currentUser, document }
     case 'TV Sketch/Improv':
     case 'New Media':
       const othersCasting = Projects.find({
-        projectType: { $in: [ 'Short Film', 'TV Daytime', 'TV Mini-Series', 'TV Movie', 'TV Telefilm', 'TV Talk/Variety', 'TV Sketch/Improv', 'New Media' ] },
+        projectType: { $in: ['Short Film', 'TV Daytime', 'TV Mini-Series', 'TV Movie', 'TV Telefilm', 'TV Talk/Variety', 'TV Sketch/Improv', 'New Media'] },
         status: 'Casting'
       }).count()
       console.debug('There are ' + newStats.others.length + ' others, ' + othersCasting + ' casting.')

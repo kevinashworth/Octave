@@ -268,7 +268,7 @@ const schema = {
         })
         const projects = Projects.find(
           {
-            _id: {$in: projectIds}
+            _id: { $in: projectIds }
           }, {
             limit: 50, // TODO: Does any limit really make sense?
             sort: { status: 1, projectTitle: 1 } // Case-sensitive, alas
@@ -332,7 +332,7 @@ const schema = {
         })
         const contacts = Contacts.find(
           {
-            _id: {$in: contactIds}
+            _id: { $in: contactIds }
           }, {
             sort: { title: -1, lastName: 1 }
           }

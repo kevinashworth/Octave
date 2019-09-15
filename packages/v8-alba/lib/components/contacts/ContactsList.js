@@ -1,13 +1,12 @@
-import { Components, registerComponent, withCurrentUser, withMulti } from 'meteor/vulcan:core'
+import { Components, registerComponent, withMulti } from 'meteor/vulcan:core'
 import { FormattedMessage } from 'meteor/vulcan:i18n'
 import React, { PureComponent } from 'react'
 import { Link } from 'react-router-dom'
-import { Card, CardBody, CardFooter, CardHeader, CardLink, CardText, CardTitle, Collapse } from 'reactstrap'
+import { Card, CardBody, CardFooter, CardHeader, CardText, CardTitle, Collapse } from 'reactstrap'
 import Contacts from '../../modules/contacts/collection.js'
 import moment from 'moment'
 import { DATE_FORMAT_SHORT } from '../../modules/constants.js'
 import { isEmptyValue } from '../../modules/helpers.js'
-
 
 const ContactForMobile = (props) => {
   if (props.loading) {
@@ -52,7 +51,7 @@ const ContactForMobile = (props) => {
             { contact.title && <div>{contact.title}</div> }
             { contact.gender && <div>{contact.gender}</div> }
             {(contact.htmlBody || contact.body)
-              ? < hr / >
+              ? <hr />
               : null
             }
             {contact.htmlBody
@@ -89,21 +88,21 @@ const ContactForMobile = (props) => {
 }
 
 class ContactsList extends PureComponent {
-  constructor(props) {
+  constructor (props) {
     super(props)
     this.toggle = this.toggle.bind(this)
     this.state = {
       isOpen: -1
-     }
+    }
   }
 
-  toggle(e) {
-    let event = e.target.dataset.event;
-    this.setState({ isOpen: this.state.isOpen === Number(event) ? -1 : Number(event) });
+  toggle (e) {
+    const event = e.target.dataset.event
+    this.setState({ isOpen: this.state.isOpen === Number(event) ? -1 : Number(event) })
   }
 
   render () {
-    const { loading, loadingMore, loadMore, results = [], currentUser, count, totalCount } = this.props
+    const { loading, results = [] } = this.props
     if (loading) {
       return <Components.Loading />
     } else {

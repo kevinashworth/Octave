@@ -116,8 +116,8 @@ import Contacts from '../../modules/contacts/collection.js'
 // }
 
 class ContactsVirtualizedList extends PureComponent {
-  constructor(props) {
-    super(props);
+  constructor (props) {
+    super(props)
     // this.state = {
     //   items: [], // instantiate initial list here
     //   moreItemsLoading: false,
@@ -131,7 +131,7 @@ class ContactsVirtualizedList extends PureComponent {
   //  // method to fetch newer entries for the list
   // }
 
-  render() {
+  render () {
     const { loading, results, totalCount, count, loadMore } = this.props
     const hasMore = totalCount > count
     // const { items, moreItemsLoading, hasNextPage } = this.state;
@@ -143,7 +143,7 @@ class ContactsVirtualizedList extends PureComponent {
         loadMore={loadMore}
         hasNextPage={hasMore}
       />
-    );
+    )
   }
 }
 
@@ -161,7 +161,7 @@ const ListComponent = ({ items, moreItemsLoading, loadMore, hasNextPage }) => {
       return (
         <div className={'Vrow'} style={style}>
           <Link to={`/contacts/${contact._id}/${contact.slug}`}>
-            {contact.firstName} {contact.middleName ? contact.middleName: null} <strong>{contact.lastName}</strong>
+            {contact.firstName} {contact.middleName ? contact.middleName : null} <strong>{contact.lastName}</strong>
           </Link>
         </div>
       )
@@ -170,7 +170,7 @@ const ListComponent = ({ items, moreItemsLoading, loadMore, hasNextPage }) => {
     }
   }
 
-  const itemCount = hasNextPage ? items.length + 1 : items.length;
+  const itemCount = hasNextPage ? items.length + 1 : items.length
 
   return (
     <InfiniteLoader
@@ -186,16 +186,16 @@ const ListComponent = ({ items, moreItemsLoading, loadMore, hasNextPage }) => {
           itemSize={35}
           onItemsRendered={onItemsRendered}
           ref={ref}
-          className="VList"
+          className='VList'
         >
           {Row}
         </FixedSizeList>
       )}
-  </InfiniteLoader>
+    </InfiniteLoader>
   )
-};
+}
 
-export default ListComponent;
+export default ListComponent
 
 const options = {
   collection: Contacts,

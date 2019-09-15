@@ -20,7 +20,7 @@ class Header extends PureComponent {
         <NavbarToggler className='d-lg-none' onClick={this.mobileSidebarToggle}>
           <span className='navbar-toggler-icon' />
         </NavbarToggler>
-        <NavbarBrand href='#'></NavbarBrand>
+        <NavbarBrand href='#' />
         <NavbarToggler className='d-md-down-none' onClick={this.sidebarToggle}>
           <span className='navbar-toggler-icon' />
         </NavbarToggler>
