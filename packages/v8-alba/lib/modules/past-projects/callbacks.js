@@ -168,23 +168,25 @@ function PastProjectEditUpdateOfficeBefore (data, { currentUser, document, oldDo
   }
   if (removing || replacing || itmightnotbethereforsomereason) {
     const office = Offices.findOne(oldOffice) // TODO: error handling
-    let pastProjects = office.pastProjects
-    if (!isEmptyValue(pastProjects)) {
-      if (itmightnotbethereforsomereason) {
-        if (_.indexOf(pastProjects, { projectId: document._id }) < 0) {
-          replacing = true
+    if (office) {
+      let pastProjects = office.pastProjects
+      if (!isEmptyValue(pastProjects)) {
+        if (itmightnotbethereforsomereason) {
+          if (_.indexOf(pastProjects, { projectId: document._id }) < 0) {
+            replacing = true
+          }
         }
+        _.remove(pastProjects, function (p) {
+          return p._id === document._id
+        })
+        if (replacing) {
+          pastProjects.push({ projectId: document._id })
+        }
+        Connectors.update(Offices, office._id, { $set: {
+          pastProjects: pastProjects,
+          updatedAt: new Date()
+        } })
       }
-      _.remove(pastProjects, function (p) {
-        return p._id === document._id
-      })
-      if (replacing) {
-        pastProjects.push({ projectId: document._id })
-      }
-      Connectors.update(Offices, office._id, { $set: {
-        pastProjects: pastProjects,
-        updatedAt: new Date()
-      } })
     }
   }
 }
