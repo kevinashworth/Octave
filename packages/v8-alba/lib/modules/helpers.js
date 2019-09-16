@@ -328,4 +328,3 @@ export function sortObjectByKeyNameList (object, sortWith) { // copied from sort
     return total
   }, Object.create({}))
 }
-

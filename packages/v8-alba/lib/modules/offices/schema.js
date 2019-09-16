@@ -452,7 +452,7 @@ const schema = {
         } catch (e) {
           logger.groupCollapsed('Error in theStreet1 for ', o._id, ':')
           logger.error(e)
-          logger.groupEnd
+          logger.groupEnd()
           return 'Blvd of Broken Dreams'
         }
         return null
@@ -474,7 +474,7 @@ const schema = {
         } catch (e) {
           logger.groupCollapsed('Error in theStreet2 for ', o._id, ':')
           logger.error(e)
-          logger.groupEnd
+          logger.groupEnd()
           return 'Suite Nothing'
         }
         return null
@@ -496,7 +496,7 @@ const schema = {
         } catch (e) {
           logger.groupCollapsed('Error in theCity for ', o._id, ':')
           logger.error(e)
-          logger.groupEnd
+          logger.groupEnd()
           return 'Leicester City'
         }
         return null
@@ -518,7 +518,7 @@ const schema = {
         } catch (e) {
           logger.groupCollapsed('Error in theState for ', o._id, ':')
           logger.error(e)
-          logger.groupEnd
+          logger.groupEnd()
           return 'State of Denial'
         }
         return null
@@ -541,7 +541,7 @@ const schema = {
         } catch (e) {
           logger.groupCollapsed('Error in theLocation for ', o._id, ':')
           logger.error(e)
-          logger.groupEnd
+          logger.groupEnd()
           return 'Locomotion'
         }
         if (state === 'ca' || state.indexOf('calif') > -1) {

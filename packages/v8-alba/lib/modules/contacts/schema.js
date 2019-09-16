@@ -298,7 +298,7 @@ const schema = {
       } catch (e) {
         logger.groupCollapsed('Error in addressString for ', newDocument._id, ':')
         logger.error(e)
-        logger.groupEnd
+        logger.groupEnd()
         return ''
       }
     },
@@ -308,7 +308,7 @@ const schema = {
       } catch (e) {
         logger.groupCollapsed('Error in addressString for ', document._id, ':')
         logger.error(e)
-        logger.groupEnd
+        logger.groupEnd()
         return ''
       }
     }
@@ -446,7 +446,7 @@ const schema = {
         } catch (e) {
           logger.groupCollapsed('Error in theAddress for ', o._id, ':')
           logger.error(e)
-          logger.groupEnd
+          logger.groupEnd()
           return 'Blvd of Broken Dreams'
         }
         return address

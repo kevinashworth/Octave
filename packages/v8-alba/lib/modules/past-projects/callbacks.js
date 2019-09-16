@@ -295,7 +295,7 @@ async function PastProjectUpdateStatusAsync ({ currentUser, document, oldDocumen
     } catch (e) {
       logger.groupCollapsed('Error in createNewProject:')
       logger.error(e)
-      logger.groupEnd
+      logger.groupEnd()
     }
   }
 

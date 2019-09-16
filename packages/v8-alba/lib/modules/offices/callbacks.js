@@ -89,7 +89,7 @@ function OfficeEditUpdateContacts (data, { document, oldDocument }) {
     logger.info('OfficeEditUpdateContacts lengths:', oldOfficeContactsLength, newOfficeContactsLength)
     logger.info('contactsToRemoveThisOfficeFrom:', contactsToRemoveThisOfficeFrom)
     logger.info('contactsToAddThisOfficeTo:', contactsToAddThisOfficeTo)
-    logger.groupEnd
+    logger.groupEnd()
   }
   // [b]
   if (contactsToRemoveThisOfficeFrom) {

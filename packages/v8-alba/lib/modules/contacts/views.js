@@ -8,5 +8,5 @@ Contacts.addDefaultView(terms => {
 })
 
 Contacts.addView('contactsByLastName', terms => ({
-    options: { sort: { lastName: 1 } }
+  options: { sort: { lastName: 1 } }
 }))
