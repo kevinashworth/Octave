@@ -12,7 +12,7 @@ const LayoutFull = ({ children }) => (
           <Container fluid>
             {children}
           </Container>
-      </Components.ErrorBoundary>
+        </Components.ErrorBoundary>
       </main>
     </div>
     <Components.Footer />

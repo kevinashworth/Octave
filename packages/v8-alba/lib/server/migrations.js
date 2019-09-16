@@ -447,7 +447,7 @@ Migrations.add({
       } catch (e) {
         logger.groupCollapsed('Error in addressString for ', contact._id, ':')
         logger.error(e)
-        logger.groupEnd
+        logger.groupEnd()
       }
       Contacts.update(contact._id,
         {

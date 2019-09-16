@@ -45,10 +45,19 @@ registerFragment(/* GraphQL */ `
     fullName
     title
     addressString
+    theAddress
     createdAt
     updatedAt
     allLinks
     body
+    slug
+  }
+`)
+
+registerFragment(/* GraphQL */ `
+  fragment ContactsNameOnlyFragment on Contact {
+    _id
+    displayName
     slug
   }
 `)

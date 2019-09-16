@@ -1,4 +1,3 @@
-
 // Alba components largely unchanged
 
 import '../components/common/Breadcrumbs/'
@@ -47,14 +46,17 @@ import '../components/common/SelectContactIdNameTitle'
 import '../components/common/SelectProjectIdNameTitle'
 import '../components/common/SelectPastProjectIdNameTitle'
 
+import '../components/contacts/ContactMini'
 import '../components/contacts/ContactModal'
 import '../components/contacts/Contacts'
 import '../components/contacts/ContactsDataTable'
+import '../components/contacts/ContactsNameOnly'
 import '../components/contacts/ContactsEditForm'
+import '../components/contacts/ContactsList'
 import '../components/contacts/ContactsNewForm'
 import '../components/contacts/ContactsRow'
 import '../components/contacts/ContactsSingle'
-// import '../components/contacts/ContactsTable';
+import '../components/contacts/ContactsVirtualizedList'
 
 import '../components/past-projects/PastProjectMini'
 import '../components/past-projects/PastProjects'

@@ -1,9 +1,9 @@
 
-import { bindActionCreators } from 'redux';
-import { connect } from 'react-redux';
-import { getActions, getStore } from 'meteor/vulcan:redux';
+import { bindActionCreators } from 'redux'
+import { connect } from 'react-redux'
+import { getActions, getStore } from 'meteor/vulcan:redux'
 
-const mapStateToProps = state => (getStore().getState());
+const mapStateToProps = state => (getStore().getState())
 
 const actions = getActions()
 const mapDispatchToProps = dispatch => {
@@ -12,6 +12,6 @@ const mapDispatchToProps = dispatch => {
   }
 }
 
-const withFilters = (component) => connect(mapStateToProps, mapDispatchToProps)(component);
+const withFilters = (component) => connect(mapStateToProps, mapDispatchToProps)(component)
 
-export default withFilters;
+export default withFilters

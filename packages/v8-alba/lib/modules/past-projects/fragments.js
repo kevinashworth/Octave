@@ -17,7 +17,7 @@ registerFragment(/* GraphQL */ `
   }
 `)
 
-registerFragment( /* GraphQL */ `
+registerFragment(/* GraphQL */ `
   fragment PastProjectsSingleFragment on PastProject {
     _id
     createdAt
@@ -52,7 +52,7 @@ registerFragment( /* GraphQL */ `
   }
 `)
 
-registerFragment( /* GraphQL */ `
+registerFragment(/* GraphQL */ `
   fragment PastProjectsDataTableFragment on PastProject {
     _id
     createdAt
@@ -73,7 +73,7 @@ registerFragment( /* GraphQL */ `
   }
 `)
 
-registerFragment( /* GraphQL */ `
+registerFragment(/* GraphQL */ `
   fragment PastProjectsEditFragment on PastProject {
     _id
     createdAt

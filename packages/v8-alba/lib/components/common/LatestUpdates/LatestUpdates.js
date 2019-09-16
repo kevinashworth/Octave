@@ -1,6 +1,7 @@
 import { Components, registerComponent, withAccess, withMulti } from 'meteor/vulcan:core'
 import React, { Component } from 'react'
 import { Link } from 'react-router-dom'
+import PropTypes from 'prop-types'
 import { Card, CardBody, CardFooter, CardHeader, Col, Row } from 'reactstrap'
 import Contacts from '../../../modules/contacts/collection.js'
 import Offices from '../../../modules/offices/collection.js'
@@ -15,9 +16,11 @@ class LatestContactUpdates extends Component {
       return (<div><Components.Loading /></div>)
     }
 
+    const contacts = this.props.results || []
+
     return (
       <Row>
-        {this.props.results.map(contact => {
+        {contacts.map(contact => {
           const isItNew = moment(contact.updatedAt).isBefore(moment(contact.createdAt).add(1, 'day'))
           let displayHtml = isItNew
             ? '<b>New!</b> Contact added '
@@ -45,6 +48,10 @@ class LatestContactUpdates extends Component {
   }
 }
 
+LatestContactUpdates.propTypes = {
+  results: PropTypes.array
+}
+
 const contactOptions = {
   collection: Contacts,
   fragmentName: 'ContactsSingleFragment',
@@ -63,9 +70,11 @@ class LatestOfficeUpdates extends Component {
       return (<div><Components.Loading /></div>)
     }
 
+    const offices = this.props.results || []
+
     return (
       <Row>
-        {this.props.results.map(office => {
+        {offices.map(office => {
           const isItNew = moment(office.updatedAt).isBefore(moment(office.createdAt).add(1, 'day'))
           let displayHtml = isItNew
             ? '<b>New!</b> Office added '
@@ -93,10 +102,14 @@ class LatestOfficeUpdates extends Component {
   }
 }
 
+LatestOfficeUpdates.propTypes = {
+  results: PropTypes.array
+}
+
 const officeOptions = {
   collection: Offices,
   fragmentName: 'OfficesSingleFragment',
-  terms: {view: 'officesByUpdated'},
+  terms: { view: 'officesByUpdated' },
   limit: 6
 }
 
@@ -112,9 +125,11 @@ class LatestProjectUpdates extends Component {
       return (<div><Components.Loading /></div>)
     }
 
+    const projects = this.props.results || []
+
     return (
       <Row>
-        {this.props.results.map(project => {
+        {projects.map(project => {
           const isItNew = moment(project.updatedAt).isBefore(moment(project.createdAt).add(1, 'day'))
           let displayHtml = isItNew
             ? '<b>New!</b> Project added '
@@ -144,6 +159,10 @@ class LatestProjectUpdates extends Component {
   }
 }
 
+LatestProjectUpdates.propTypes = {
+  results: PropTypes.array
+}
+
 const projectOptions = {
   collection: Projects,
   fragmentName: 'ProjectsSingleFragment',
@@ -162,9 +181,11 @@ class LatestPastProjectUpdates extends Component {
       return (<div><Components.Loading /></div>)
     }
 
+    const pastProjects = this.props.results || []
+
     return (
       <Row>
-        {this.props.results.map(project =>
+        {pastProjects.map(project =>
           <Col xs='12' sm='6' md='4' key={project._id}>
             <Card className='card-accent-secondary'>
               <CardHeader>
@@ -185,6 +206,10 @@ class LatestPastProjectUpdates extends Component {
       </Row>
     )
   }
+}
+
+LatestPastProjectUpdates.propTypes = {
+  results: PropTypes.array
 }
 
 const projectOptionsPast = {

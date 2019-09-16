@@ -7,7 +7,6 @@ import moment from 'moment'
 import { DATE_FORMAT_SHORT, SIZE_PER_PAGE_LIST_SEED } from '../../modules/constants.js'
 import Offices from '../../modules/offices/collection.js'
 
-
 // Set initial state. Just options I want to keep.
 // See https://github.com/amannn/react-keep-state
 let keptState = {
@@ -91,7 +90,7 @@ class OfficesDataTable extends PureComponent {
         nextPage: 'Next',
         firstPage: 'First',
         lastPage: 'Last',
-        sizePerPageList: [ {
+        sizePerPageList: [{
           text: '20', value: 20
         }, {
           text: '50', value: 50
@@ -99,7 +98,7 @@ class OfficesDataTable extends PureComponent {
           text: '100', value: 100
         }, {
           text: 'All', value: this.props.totalCount
-        } ],
+        }],
         paginationShowsTotal: renderShowsTotal,
         paginationPosition: 'both',
         onPageChange: pageChangeHandler,
@@ -143,8 +142,8 @@ class OfficesDataTable extends PureComponent {
                 ...this.state.options,
                 sizePerPageList: SIZE_PER_PAGE_LIST_SEED.concat([{
                   text: 'All', value: this.props.totalCount
-                }])}}
-                keyField='_id' bordered={false}>
+                }]) }}
+              keyField='_id' bordered={false}>
               <TableHeaderColumn dataField='displayName' dataSort dataFormat={
                 (cell, row) => {
                   return (
@@ -167,8 +166,8 @@ class OfficesDataTable extends PureComponent {
               }
             </CardFooter>
           }
-          {Offices.options.mutations.new.check(currentUser) ?
-            <CardFooter>
+          {Offices.options.mutations.new.check(currentUser)
+            ? <CardFooter>
               <Components.ModalTrigger title='New Office' component={<Button>Add an Office</Button>}>
                 <Components.OfficesNewForm currentUser={currentUser} />
               </Components.ModalTrigger>

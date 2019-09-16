@@ -1,12 +1,12 @@
 import { Components, registerComponent, withCurrentUser } from 'meteor/vulcan:core'
-import Users from 'meteor/vulcan:users';
+import Users from 'meteor/vulcan:users'
 import React, { PureComponent } from 'react'
-import { withRouter } from 'react-router-dom'
-import { NavLink } from 'react-router-dom'
+import { withRouter, NavLink } from 'react-router-dom'
+
 import { Badge, Nav, NavItem, NavLink as RsNavLink } from 'reactstrap'
 import classNames from 'classnames'
 import nav from './_nav'
-import nav_admin from './_nav_admin'
+import navAdmin from './_nav_admin'
 
 class Sidebar extends PureComponent {
   constructor (props) {
@@ -146,9 +146,9 @@ class Sidebar extends PureComponent {
         <nav className='sidebar-nav'>
           <Nav>
             {navList(nav.items)}
-            {Users.isAdmin(this.props.currentUser) ?
-              navList(nav_admin.items)
-            : null}
+            {Users.isAdmin(this.props.currentUser)
+              ? navList(navAdmin.items)
+              : null}
           </Nav>
         </nav>
         <Components.SidebarFooter />

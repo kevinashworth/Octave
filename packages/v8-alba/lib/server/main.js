@@ -5,3 +5,7 @@ process.env.MONGO_URL = 'mongodb://' + mongoUsername + ':' + mongoPassword + '@d
 import '../modules/index.js'
 import './seed.js'
 import './migrations.js'
+
+import Contacts from '../modules/contacts/collection.js'
+
+Contacts.rawCollection().createIndex({ lastName: 1 })

@@ -1,4 +1,4 @@
-import { addAction, addReducer, setupRedux } from 'meteor/vulcan:redux';
+import { addAction, addReducer, setupRedux } from 'meteor/vulcan:redux'
 
 import { CASTING_TITLES_ENUM, PAST_PROJECT_STATUSES_ENUM, PROJECT_TYPES_ENUM, PROJECT_STATUSES_ENUM } from '../modules/constants.js'
 
@@ -102,7 +102,7 @@ addAction({
       type: 'TOGGLE_CONTACT_UPDATED_FILTER',
       i
     }
-  },
+  }
 })
 
 addAction({
@@ -135,7 +135,7 @@ addAction({
       type: 'TOGGLE_PAST_PROJECT_UPDATED_FILTER',
       i
     }
-  },
+  }
 })
 
 addAction({
@@ -186,7 +186,7 @@ addAction({
       type: 'CLEAR_PROJECT_PLATFORM_FILTER',
       i
     }
-  },
+  }
 })
 
 addReducer({
@@ -370,7 +370,7 @@ addReducer({
       default:
         return state
     }
-  },
+  }
 })
 
 setupRedux(initialState)

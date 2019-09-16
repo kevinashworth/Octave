@@ -1,70 +1,62 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import Users from 'meteor/vulcan:users';
-import { withSingle, Components, registerComponent, withMessages } from 'meteor/vulcan:core';
-import { FormattedMessage } from 'meteor/vulcan:i18n';
-import gql from 'graphql-tag';
+import React from 'react'
+import PropTypes from 'prop-types'
+import Users from 'meteor/vulcan:users'
+import { withSingle, Components, registerComponent, withMessages } from 'meteor/vulcan:core'
+import { FormattedMessage } from 'meteor/vulcan:i18n'
+import gql from 'graphql-tag'
 
 const UsersProfileCheck = ({currentUser, document, loading, flash}, context) => {
-
   // we're loading all fields marked as "mustComplete" using withDocument
-  const userMustCompleteFields = document;
+  const userMustCompleteFields = document
 
   // if user is not logged in, or userMustCompleteFields is still loading, don't return anything
   if (!currentUser || loading) {
-
-    return null;
-
+    return null
   } else {
-
     // return fields that are required by the schema but haven't been filled out yet
     const fieldsToComplete = Users.getRequiredFields().filter(fieldName => {
-      return !userMustCompleteFields[fieldName];
-    });
+      return !userMustCompleteFields[fieldName]
+    })
 
     if (fieldsToComplete.length > 0) {
       const footer = (
-        <a className="complete-profile-logout" onClick={ () => Meteor.logout(() => window.location.reload() /* something is broken here when giving the apollo client as a prop*/) }>
-          <FormattedMessage id="app.or"/> <FormattedMessage id="users.log_out"/>
+        <a className='complete-profile-logout' onClick={() => Meteor.logout(() => window.location.reload() /* something is broken here when giving the apollo client as a prop */)}> // eslint-disable-line no-undef
+          <FormattedMessage id='app.or' /> <FormattedMessage id='users.log_out' />
         </a>
-      );
+      )
       return (
         <Components.Modal
           size='small'
-          show={ true }
-          showCloseButton={ false }
-          title={<FormattedMessage id="users.complete_profile"/>}
-          footer={ footer }
+          show
+          showCloseButton={false}
+          title={<FormattedMessage id='users.complete_profile' />}
+          footer={footer}
         >
           <Components.SmartForm
-            collection={ Users }
-            documentId={ currentUser._id }
-            fields={ fieldsToComplete }
-            showRemove={ false }
+            collection={Users}
+            documentId={currentUser._id}
+            fields={fieldsToComplete}
+            showRemove={false}
             successCallback={user => {
-              const newUser = {...currentUser, ...user};
+              const newUser = {...currentUser, ...user}
               if (Users.hasCompletedProfile(newUser)) {
-                flash({id: "users.profile_completed", type: 'success'});
+                flash({id: 'users.profile_completed', type: 'success'})
               }
             }}
           />
         </Components.Modal>
-      );
+      )
     } else {
-
-      return null;
-
+      return null
     }
   }
-
-};
-
+}
 
 UsersProfileCheck.propTypes = {
   currentUser: PropTypes.object
-};
+}
 
-UsersProfileCheck.displayName = 'UsersProfileCheck';
+UsersProfileCheck.displayName = 'UsersProfileCheck'
 
 const mustCompleteFragment = gql`
   fragment UsersMustCompleteFragment on User {
@@ -76,7 +68,7 @@ const mustCompleteFragment = gql`
 const options = {
   collection: Users,
   queryName: 'usersMustCompleteQuery',
-  fragment: mustCompleteFragment,
-};
+  fragment: mustCompleteFragment
+}
 
-registerComponent({ name: 'UsersProfileCheck', component: UsersProfileCheck, hocs: [withMessages, [withSingle, options]] });
+registerComponent({ name: 'UsersProfileCheck', component: UsersProfileCheck, hocs: [withMessages, [withSingle, options]] })

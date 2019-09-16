@@ -2,28 +2,28 @@ import { registerComponent } from 'meteor/vulcan:core'
 import React, { PureComponent } from 'react'
 
 class ErrorBoundary extends PureComponent {
-  constructor(props) {
-    super(props);
-    this.state = { hasError: false };
+  constructor (props) {
+    super(props)
+    this.state = { hasError: false }
   }
 
-  static getDerivedStateFromError(error) {
+  static getDerivedStateFromError (error) {
     // Update state so the next render will show the fallback UI.
-    return { hasError: true };
+    return { hasError: true }
   }
 
-  componentDidCatch(error, info) {
+  componentDidCatch (error, info) {
     // You can also log the error to an error reporting service
-    console.info('ErrorBoundary:', error, info);
+    console.info('ErrorBoundary:', error, info)
   }
 
-  render() {
+  render () {
     if (this.state.hasError) {
       // You can render any custom fallback UI
-      return <h4>Something went wrong.</h4>;
+      return <h4>Something went wrong.</h4>
     }
 
-    return this.props.children;
+    return this.props.children
   }
 }
 

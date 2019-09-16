@@ -74,7 +74,7 @@ registerFragment(/* GraphQL */ `
   }
 `)
 
-registerFragment( /* GraphQL */ `
+registerFragment(/* GraphQL */ `
   fragment ProjectsEditFragment on Project {
     _id
     createdAt

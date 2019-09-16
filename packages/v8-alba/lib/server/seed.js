@@ -12,11 +12,11 @@ import Projects from '../modules/projects/collection.js'
 import PastProjects from '../modules/past-projects/collection.js'
 import Offices from '../modules/offices/collection.js'
 import Statistics from '../modules/statistics/collection.js'
-import seedContacts from '../components/contacts/_contacts3.js'
-import seedProjects from '../components/projects/_projects.js'
-import seedPastProjects from '../components/past-projects/_3past-projects.js'
-import seedOffices from '../components/offices/_offices2.js'
-import seedStatistics from '../modules/statistics/_statistics.js'
+import seedContacts from './seeds/_contacts3.js'
+import seedProjects from './seeds/_projects.js'
+import seedPastProjects from './seeds/_3past-projects.js'
+import seedOffices from './seeds/_offices2.js'
+import seedStatistics from './seeds/_statistics.js'
 
 const createUser = async (username, email) => {
   const user = {

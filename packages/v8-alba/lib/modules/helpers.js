@@ -137,7 +137,7 @@ export const getAddress = ({ contact, office, project }) => {
     city: '',
     state: '',
     zip: '',
-    location: 'Other'
+    location: 'Unknown'
   }
   var theAddress = theDummyAddress
 
@@ -328,4 +328,3 @@ export function sortObjectByKeyNameList (object, sortWith) { // copied from sort
     return total
   }, Object.create({}))
 }
-
