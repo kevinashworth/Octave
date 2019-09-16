@@ -116,8 +116,9 @@ const AVOD_ENUM = [
   'Crackle',
   'HBO Max',
   'Hulu',
-  'NBCUniversal streaming',
-  'Sony Crackle'
+  'NBCUniversal streaming', // still unnamed
+  'Sony Crackle',
+  'Vudu'
 ]
 
 const ACTIVE_PROJECT_STATUSES_ENUM = [
