@@ -136,11 +136,24 @@ class ContactsDataTable extends PureComponent {
   }
 
   render () {
-    const { count, totalCount, results, loadingMore, loadMore, currentUser,
+    const { count, totalCount, results, loadingMore, loadMore, networkStatus, currentUser,
             contactTitleFilters, contactLocationFilters, contactUpdatedFilters } = this.props
-    const selectRow = {
-      mode: 'checkbox'
+
+    if (networkStatus !== 8 && networkStatus !== 7) {
+      return (
+        <div className='animated fadeIn'>
+          <Card>
+            <CardHeader>
+              <i className='icon-people' />Contacts
+            </CardHeader>
+            <CardBody>
+              <Components.Loading />
+            </CardBody>
+          </Card>
+        </div>
+      )
     }
+
     const hasMore = results && (totalCount > results.length)
     let titleFilters = []
     contactTitleFilters.forEach(filter => {
@@ -168,6 +181,9 @@ class ContactsDataTable extends PureComponent {
       const now = moment()
       const dateToCompare = o.updatedAt ? o.updatedAt : o.createdAt
       const displayThis = moment(dateToCompare).isAfter(now.subtract(moment1, moment2).startOf('day'))
+      if (!displayThis) {
+        return false
+      }
       let theLocation = 'Unknown'
       if (o.theAddress) {
         if (o.theAddress.location) {
@@ -180,8 +196,6 @@ class ContactsDataTable extends PureComponent {
           }
         }
       }
-
-      // return true
 
       // if "Other" is not checked, filter per normal via titleFilters:
       if (!(_.includes(titleFilters, 'Other'))) {
@@ -224,8 +238,9 @@ class ContactsDataTable extends PureComponent {
                 ...this.state.options,
                 sizePerPageList: SIZE_PER_PAGE_LIST_SEED.concat([{
                   text: 'All', value: this.props.totalCount
-                }])}}
-              selectRow={selectRow} keyField='_id' bordered={false}>
+                }])
+              }}
+              keyField='_id' bordered={false}>
               <TableHeaderColumn dataField='fullName' dataSort dataFormat={
                 (cell, row) => {
                   return (
