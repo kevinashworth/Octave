@@ -8,7 +8,7 @@ import Statistics from '../modules/statistics/collection.js'
 import { PAST_PROJECT_STATUSES_ARRAY } from '../modules/constants.js'
 import moment from 'moment'
 import marked from 'marked'
-import reducedStats from '../modules/statistics/_stats-reduced.js'
+import reducedStats from './seeds/_stats-reduced.js'
 import { getAddress, getFullAddress, getFullNameFromContact, getPlatformType } from '../modules/helpers.js'
 import { logger } from '../modules/logger.js'
 
