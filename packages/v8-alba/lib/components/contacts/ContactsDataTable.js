@@ -219,7 +219,7 @@ class ContactsDataTable extends PureComponent {
         <Modal isOpen={this.state.modal} toggle={this.toggle} modalTransition={{ timeout: 100 }}>
           {this.state.contact
             ? <ModalHeader toggle={this.toggle}>
-              <Link to={`/contacts/${this.state.contact._id}/${this.state.contact.slug}`}>{this.state.contact.fullName}</Link>
+              <Link to={`/contacts/${this.state.contact._id}/${this.state.contact.slug}`}>{this.state.contact.displayName}</Link>
             </ModalHeader>
             : null
           }
@@ -241,7 +241,7 @@ class ContactsDataTable extends PureComponent {
                 }])
               }}
               keyField='_id' bordered={false}>
-              <TableHeaderColumn dataField='fullName' dataSort dataFormat={
+              <TableHeaderColumn dataField='displayName' dataSort dataFormat={
                 (cell, row) => {
                   return (
                     <Link to={`/contacts/${row._id}/${row.slug}`}>
