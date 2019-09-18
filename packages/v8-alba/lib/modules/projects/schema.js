@@ -117,8 +117,8 @@ const schema = {
     optional: true,
     hidden: true,
     canRead: 'guests',
-    onCreate: ({ newDocument, currentUser }) => {
-      return getPlatformType(newDocument)
+    onCreate: ({ document, currentUser }) => {
+      return getPlatformType(document)
     },
     onUpdate: ({ data, document, currentUser }) => {
       return getPlatformType(document)

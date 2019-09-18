@@ -143,7 +143,7 @@ const schema = {
     label: 'First',
     type: String,
     optional: true,
-    canRead: 'guests',
+    canRead: ['members'],
     canCreate: ['members'],
     canUpdate: ['members']
   },
@@ -151,7 +151,7 @@ const schema = {
     label: 'Middle',
     type: String,
     optional: true,
-    canRead: 'guests',
+    canRead: ['members'],
     canCreate: ['members'],
     canUpdate: ['members']
   },
@@ -159,25 +159,25 @@ const schema = {
     label: 'Last',
     type: String,
     optional: true,
-    canRead: 'guests',
+    canRead: ['members'],
     canCreate: ['members'],
     canUpdate: ['members']
   },
   displayName: {
     type: String,
     optional: true,
-    canRead: 'guests',
+    canRead: ['members'],
     canCreate: ['members'],
     canUpdate: ['members'],
-    onInsert: (contact) => getFullNameFromContact(contact),
-    onEdit: (modifier, contact) => {
-      if (modifier.$set.displayName) {
-        return modifier.$set.displayName
+    onCreate: ({ document: contact }) => getFullNameFromContact(contact),
+    onUpdate: ({ data, document: contact }) => {
+      if (data.displayName) {
+        return data.displayName
       }
       return getFullNameFromContact({
-        firstName: modifier.$set.firstName ? modifier.$set.firstName : null,
-        middleName: modifier.$set.middleName ? modifier.$set.middleName : null,
-        lastName: modifier.$set.lastName ? modifier.$set.lastName : null
+        firstName: data.firstName ? data.firstName : null,
+        middleName: data.middleName ? data.middleName : null,
+        lastName: data.lastName ? data.lastName : null
       })
     }
   },
@@ -189,7 +189,7 @@ const schema = {
     options: () => {
       return CASTING_TITLES_ENUM
     },
-    canRead: 'guests',
+    canRead: ['members'],
     canCreate: ['members'],
     canUpdate: ['members']
   },
@@ -197,7 +197,7 @@ const schema = {
     label: 'Gender',
     type: String,
     optional: true,
-    canRead: 'guests',
+    canRead: ['members'],
     canCreate: ['members'],
     canUpdate: ['members']
   },
@@ -207,7 +207,7 @@ const schema = {
     type: String,
     optional: true,
     control: 'textarea',
-    canRead: ['members', 'admins'],
+    canRead: ['members'],
     canCreate: ['members'],
     canUpdate: ['members']
   },
@@ -219,14 +219,14 @@ const schema = {
     canRead: ['members'],
     canCreate: ['members'],
     canUpdate: ['members'],
-    onInsert: (o) => {
-      if (o.body) {
-        return Utils.sanitize(marked(o.body))
+    onCreate: ({ document: contact }) => {
+      if (contact.body) {
+        return Utils.sanitize(marked(contact.body))
       }
     },
-    onEdit: (modifier, o) => {
-      if (modifier.$set.body) {
-        return Utils.sanitize(marked(modifier.$set.body))
+    onUpdate: ({ data }) => {
+      if (data.body) {
+        return Utils.sanitize(marked(data.body))
       }
     }
   },
