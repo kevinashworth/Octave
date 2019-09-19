@@ -134,7 +134,7 @@ class OfficesDataTable extends PureComponent {
       <div className='animated fadeIn'>
         <Card>
           <CardHeader>
-            <i className='icon-people' />Offices
+            <i className='icon-briefcase' />Offices
           </CardHeader>
           <CardBody>
             <BootstrapTable data={results} version='4' condensed striped hover pagination search
