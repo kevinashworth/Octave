@@ -102,6 +102,7 @@ const SVOD_ENUM = [
   'Amazon Prime',
   'Apple TV+',
   'CBS All Access',
+  'DC Universe',
   'Disney+',
   'Netflix',
   'Quibi',
@@ -116,7 +117,8 @@ const AVOD_ENUM = [
   'Crackle',
   'HBO Max',
   'Hulu',
-  'NBCUniversal streaming', // still unnamed
+  'NBCUniversal streaming', // before it was named Peacock
+  'Peacock',
   'Sony Crackle',
   'Vudu'
 ]
