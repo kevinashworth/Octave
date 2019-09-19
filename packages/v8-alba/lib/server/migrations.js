@@ -480,6 +480,21 @@ Migrations.add({
   down: function () { /* There is no undoing this one. */ }
 })
 
+Migrations.add({
+  version: 13,
+  name: 'Add theAddress to contacts; going forward will be an onCreate/onUpdate calculation.',
+  up: function () {
+    Contacts.find({ theAddress: { $exists: false } }).forEach((contact) => {
+      const theAddress = getAddress({ contact })
+      Contacts.update(contact._id,
+        {
+          $set: { theAddress }
+        })
+    })
+  },
+  down: function () { /* There is no undoing this one. */ }
+})
+
 Meteor.startup(() => {
-  Migrations.migrateTo('12')
+  Migrations.migrateTo('13')
 })

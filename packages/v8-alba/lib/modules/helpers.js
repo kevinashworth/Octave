@@ -127,11 +127,11 @@ export const getLocation = (address) => { // have to repeat theState code, not a
   return 'Other'
 }
 
-export const getAddress = ({ contact, office, project }) => {
+export const getAddress = ({ project, office, contact }) => {
   // get the first address we find, always looking in this order:
-  // first on the project, office, contact,
-  // then on the first listing address listed in its projects, offices, contacts
-  var theDummyAddress = {
+  // office, project, contact.
+  // stop when we find an address with a `state`.
+  var blankAddress = {
     street1: '',
     street2: '',
     city: '',
@@ -139,141 +139,174 @@ export const getAddress = ({ contact, office, project }) => {
     zip: '',
     location: 'Unknown'
   }
-  var theAddress = theDummyAddress
-
-  if (project) {
-    if (!isEmptyValue(project.addresses)) {
-      if (!isEmptyValue(project.addresses[0])) {
-        theAddress = project.addresses[0]
-        if (!_.isEqual(theAddress, theDummyAddress)) {
-          theAddress.location = getLocation(theAddress)
-          return theAddress
-        }
-      }
-    }
-    if (!isEmptyValue(project.offices)) {
-      if (!isEmptyValue(project.offices[0])) {
-        const office = Offices.findOne(project.offices[0].officeId)
-        if (office) {
-          if (!isEmptyValue(office.addresses)) {
-            if (!isEmptyValue(office.addresses[0])) {
-              theAddress = office.addresses[0]
-              if (!_.isEqual(theAddress, theDummyAddress)) {
-                theAddress.location = getLocation(theAddress)
-                return theAddress
-              }
-            }
-          }
-        }
-      }
-    }
-    if (!isEmptyValue(project.contacts)) {
-      if (!isEmptyValue(project.contacts[0])) {
-        const contact = Contacts.findOne(project.contacts[0].contactId)
-        if (contact) {
-          if (!isEmptyValue(contact.addresses)) {
-            if (!isEmptyValue(contact.addresses[0])) {
-              theAddress = contact.addresses[0]
-              if (!_.isEqual(theAddress, theDummyAddress)) {
-                theAddress.location = getLocation(theAddress)
-                return theAddress
-              }
-            }
-          }
-        }
-      }
-    }
-  }
+  let address = blankAddress
 
   if (office) {
     if (!isEmptyValue(office.addresses)) {
-      if (!isEmptyValue(office.addresses[0])) {
-        theAddress = office.addresses[0]
-        if (!_.isEqual(theAddress, theDummyAddress)) {
-          theAddress.location = getLocation(theAddress)
-          return theAddress
+      for (var i = 0; i < office.addresses.length; i++) {
+        address = findAddress(office.addresses[i])
+        if (address.state.length) {
+          break
         }
       }
     }
-    if (!isEmptyValue(office.projects)) {
-      if (!isEmptyValue(office.projects[0])) {
-        const project = Projects.findOne(office.projects[0].projectId)
-        if (project) {
-          if (!isEmptyValue(project.addresses)) {
-            if (!isEmptyValue(project.addresses[0])) {
-              theAddress = project.addresses[0]
-              if (!_.isEqual(theAddress, theDummyAddress)) {
-                theAddress.location = getLocation(theAddress)
-                return theAddress
-              }
-            }
-          }
+    if (_.isEqual(address, blankAddress) && !isEmptyValue(office.projects)) {
+      for (var i = 0; i < office.projects.length; i++) {
+        address = findProjectAddress(office.projects[i])
+        if (address.state.length) {
+          break
         }
       }
     }
-    if (!isEmptyValue(office.contacts)) {
-      if (!isEmptyValue(office.contacts[0])) {
-        const contact = Contacts.findOne(office.contacts[0].officeId)
-        if (contact) {
-          if (!isEmptyValue(contact.addresses)) {
-            if (!isEmptyValue(contact.addresses[0])) {
-              theAddress = contact.addresses[0]
-              if (!_.isEqual(theAddress, theDummyAddress)) {
-                theAddress.location = getLocation(theAddress)
-                return theAddress
-              }
-            }
-          }
+    if (_.isEqual(address, blankAddress) && !isEmptyValue(office.contacts)) {
+      for (var i = 0; i < office.contacts.length; i++) {
+        address = findContactAddress(office.contacts[i])
+        if (address.state.length) {
+          break
         }
       }
+    }
+    if (!_.isEqual(address, blankAddress)) {
+      if (!address.location) {
+        address.location = getLocation(address)
+      }
+      return address
+    }
+  }
+
+  if (project) {
+    if (!isEmptyValue(project.addresses)) {
+      for (var i = 0; i < project.addresses.length; i++) {
+        address = findAddress(project.addresses[i])
+        if (address.state.length) {
+          break
+        }
+      }
+    }
+    if (_.isEqual(address, blankAddress) && !isEmptyValue(project.offices)) {
+      for (var i = 0; i < project.offices.length; i++) {
+        address = findOfficeAddress(project.offices[i])
+        if (address.state.length) {
+          break
+        }
+      }
+    }
+    if (_.isEqual(address, blankAddress) && !isEmptyValue(project.contacts)) {
+      for (var i = 0; i < project.contacts.length; i++) {
+        address = findContactAddress(project.contacts[i])
+        if (address.state.length) {
+          break
+        }
+      }
+    }
+    if (!_.isEqual(address, blankAddress)) {
+      if (!address.location) {
+        address.location = getLocation(address)
+      }
+      return address
     }
   }
 
   if (contact) {
     if (!isEmptyValue(contact.addresses)) {
-      if (!isEmptyValue(contact.addresses[0])) {
-        theAddress = contact.addresses[0]
-        if (!_.isEqual(theAddress, theDummyAddress)) {
-          theAddress.location = getLocation(theAddress)
-          return theAddress
+      for (var i = 0; i < contact.addresses.length; i++) {
+        address = findAddress(contact.addresses[i])
+        if (address.state.length) {
+          break
         }
       }
     }
-    if (!isEmptyValue(contact.projects)) {
-      if (!isEmptyValue(contact.projects[0])) {
-        const project = Projects.findOne(contact.projects[0].projectId)
-        if (project) {
-          if (!isEmptyValue(project.addresses)) {
-            if (!isEmptyValue(project.addresses[0])) {
-              theAddress = project.addresses[0]
-              if (!_.isEqual(theAddress, theDummyAddress)) {
-                theAddress.location = getLocation(theAddress)
-                return theAddress
-              }
-            }
-          }
+    if (_.isEqual(address, blankAddress) && !isEmptyValue(contact.offices)) {
+      for (var i = 0; i < contact.offices.length; i++) {
+        address = findOfficeAddress(contact.offices[i])
+        if (address.state.length) {
+          break
         }
       }
     }
-    if (!isEmptyValue(contact.offices)) {
-      if (!isEmptyValue(contact.offices[0])) {
-        const office = Offices.findOne(contact.offices[0].officeId)
-        if (office) {
-          if (!isEmptyValue(office.addresses)) {
-            if (!isEmptyValue(office.addresses[0])) {
-              theAddress = office.addresses[0]
-              if (!_.isEqual(theAddress, theDummyAddress)) {
-                theAddress.location = getLocation(theAddress)
-                return theAddress
-              }
-            }
+    if (_.isEqual(address, blankAddress) && !isEmptyValue(contact.projects)) {
+      for (var i = 0; i < contact.projects.length; i++) {
+        address = findProjectAddress(contact.projects[i])
+        if (address.state.length) {
+          break
+        }
+      }
+    }
+    if (!_.isEqual(address, blankAddress)) {
+      if (!address.location) {
+        address.location = getLocation(address)
+      }
+      return address
+    }
+  }
+
+  return blankAddress
+}
+
+const findProjectAddress = (project) => {
+  if (!isEmptyValue(project)) {
+    const theProject = project.projectId && Projects.findOne(project.projectId)
+    if (theProject) {
+      if (!isEmptyValue(theProject.addresses)) {
+        for (var i = 0; i < theProject.addresses.length; i++) {
+          const theAddress = findAddress(theProject.addresses[i])
+          if (theAddress.state.length) {
+            return theAddress
           }
         }
       }
     }
   }
+  return {
+    state: ''
+  }
+}
 
-  return theDummyAddress
+const findOfficeAddress = (office) => {
+  if (!isEmptyValue(office)) {
+    const theOffice = office.officeId && Offices.findOne(office.officeId)
+    if (theOffice) {
+      if (!isEmptyValue(theOffice.addresses)) {
+        for (var i = 0; i < theOffice.addresses.length; i++) {
+          const theAddress = findAddress(theOffice.addresses[i])
+          if (theAddress.state.length) {
+            return theAddress
+          }
+        }
+      }
+    }
+  }
+  return {
+    state: ''
+  }
+}
+
+const findContactAddress = (contact) => {
+  if (!isEmptyValue(contact)) {
+    const theContact = contact.contactId && Contacts.findOne(contact.contactId)
+    if (theContact) {
+      if (!isEmptyValue(theContact.addresses)) {
+        for (var i = 0; i < theContact.addresses.length; i++) {
+          const theAddress = findAddress(theContact.addresses[i])
+          if (theAddress.state.length) {
+            return theAddress
+          }
+        }
+      }
+    }
+  }
+  return {
+    state: ''
+  }
+}
+
+const findAddress = (address) => {
+  if (address.state) {
+    return address
+  }
+  return {
+    state: ''
+  }
 }
 
 export const getLatestAddress = ({ contact, office, project }) => {

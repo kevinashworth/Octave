@@ -314,8 +314,7 @@ const schema = {
     }
   },
   // field to ease transition from address to addresses,
-  // and also to provide a 'main' address
-  // and this is used for caculating `location`
+  // to provide a 'main' address, and used for caculating `location`
   theAddress: {
     label: 'Address Object',
     type: addressSubSchema,
@@ -326,24 +325,11 @@ const schema = {
     defaultValue: {
       street1: 'theAddress',
       street2: 'isNotReadyYet',
-      city: 'Someday',
-      state: 'UT',
-      zip: '88888',
+      city: '',
+      state: '',
+      zip: '',
       location: 'Unknown'
     }
-    // resolveAs: {
-    //   resolver: (o) => {
-    //     var address = null
-    //     try {
-    //       address = getAddress({ contact: o })
-    //     } catch (e) {
-    //       logger.groupCollapsed('Error in theAddress for ', o._id, ':')
-    //       logger.error(e)
-    //       logger.groupEnd()
-    //       return 'Blvd of Broken Dreams'
-    //     }
-    //     return address
-    //   }
   },
   slug: {
     type: String,
