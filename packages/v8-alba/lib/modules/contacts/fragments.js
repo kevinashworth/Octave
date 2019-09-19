@@ -42,7 +42,7 @@ registerFragment(/* GraphQL */ `
 registerFragment(/* GraphQL */ `
   fragment ContactsDataTableFragment on Contact {
     _id
-    fullName
+    displayName
     title
     addressString
     theAddress

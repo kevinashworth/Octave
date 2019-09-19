@@ -25,6 +25,7 @@ addRoute([
 
 addRoute({ path: '/projects', name: 'Projects', componentName: 'Projects' })
 addRoute({ path: '/projects/datatable', name: 'Projects Table', componentName: 'ProjectsDataTable' })
+addRoute({ path: '/projects/new', name: 'projects.new', componentName: 'ProjectsNewForm' })
 addRoute({ path: '/projects/:_id/edit', name: 'projects.edit', componentName: 'ProjectsEditForm' })
 addRoute({ path: '/projects/:_id/:slug?', name: 'projects.single', componentName: 'ProjectSingle' })
 addRoute({ path: '/past-projects', name: 'Past Projects', componentName: 'PastProjects' })

@@ -202,11 +202,7 @@ function latestStatIsFromToday (theStatsArray) {
 async function ProjectCreateUpdateStatisticsAsync ({ currentUser, document }) {
   const project = document
   const theStats = await Statistics.findOne()
-  let newStats = {}
-  newStats.episodics = theStats.episodics
-  newStats.features = theStats.features
-  newStats.pilots = theStats.pilots
-  newStats.others = theStats.others
+  let newStats = { ...theStats } // TODO: do we need to work with a copy?
 
   switch (project.projectType) {
     case 'TV One Hour':

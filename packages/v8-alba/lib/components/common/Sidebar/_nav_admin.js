@@ -5,6 +5,11 @@ export default {
       name: 'Admin'
     },
     {
+      name: 'New Project',
+      url: '/projects/new',
+      icon: 'fa fa-camera'
+    },
+    {
       name: 'User Admin',
       url: '/admin',
       icon: 'fa fa-user-o'

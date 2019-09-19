@@ -143,7 +143,7 @@ const schema = {
     label: 'First',
     type: String,
     optional: true,
-    canRead: 'guests',
+    canRead: ['members'],
     canCreate: ['members'],
     canUpdate: ['members']
   },
@@ -151,7 +151,7 @@ const schema = {
     label: 'Middle',
     type: String,
     optional: true,
-    canRead: 'guests',
+    canRead: ['members'],
     canCreate: ['members'],
     canUpdate: ['members']
   },
@@ -159,25 +159,25 @@ const schema = {
     label: 'Last',
     type: String,
     optional: true,
-    canRead: 'guests',
+    canRead: ['members'],
     canCreate: ['members'],
     canUpdate: ['members']
   },
   displayName: {
     type: String,
     optional: true,
-    canRead: 'guests',
+    canRead: ['members'],
     canCreate: ['members'],
     canUpdate: ['members'],
-    onInsert: (contact) => getFullNameFromContact(contact),
-    onEdit: (modifier, contact) => {
-      if (modifier.$set.displayName) {
-        return modifier.$set.displayName
+    onCreate: ({ document: contact }) => getFullNameFromContact(contact),
+    onUpdate: ({ data, document: contact }) => {
+      if (data.displayName) {
+        return data.displayName
       }
       return getFullNameFromContact({
-        firstName: modifier.$set.firstName ? modifier.$set.firstName : null,
-        middleName: modifier.$set.middleName ? modifier.$set.middleName : null,
-        lastName: modifier.$set.lastName ? modifier.$set.lastName : null
+        firstName: data.firstName ? data.firstName : null,
+        middleName: data.middleName ? data.middleName : null,
+        lastName: data.lastName ? data.lastName : null
       })
     }
   },
@@ -189,7 +189,7 @@ const schema = {
     options: () => {
       return CASTING_TITLES_ENUM
     },
-    canRead: 'guests',
+    canRead: ['members'],
     canCreate: ['members'],
     canUpdate: ['members']
   },
@@ -197,7 +197,7 @@ const schema = {
     label: 'Gender',
     type: String,
     optional: true,
-    canRead: 'guests',
+    canRead: ['members'],
     canCreate: ['members'],
     canUpdate: ['members']
   },
@@ -207,7 +207,7 @@ const schema = {
     type: String,
     optional: true,
     control: 'textarea',
-    canRead: ['members', 'admins'],
+    canRead: ['members'],
     canCreate: ['members'],
     canUpdate: ['members']
   },
@@ -219,14 +219,14 @@ const schema = {
     canRead: ['members'],
     canCreate: ['members'],
     canUpdate: ['members'],
-    onInsert: (o) => {
-      if (o.body) {
-        return Utils.sanitize(marked(o.body))
+    onCreate: ({ document: contact }) => {
+      if (contact.body) {
+        return Utils.sanitize(marked(contact.body))
       }
     },
-    onEdit: (modifier, o) => {
-      if (modifier.$set.body) {
-        return Utils.sanitize(marked(modifier.$set.body))
+    onUpdate: ({ data }) => {
+      if (data.body) {
+        return Utils.sanitize(marked(data.body))
       }
     }
   },
@@ -250,7 +250,7 @@ const schema = {
       resolver: (o) => {
         if (o.links) {
           const reduced = o.links.reduce(function (acc, cur) {
-            return { theGoods: acc.theGoods + cur.platformName + cur.profileName + cur.profileLink }
+            return { theGoods: acc.theGoods + cur.platformName + ' ' + cur.profileName + ' ' + cur.profileLink + ' ' }
           }, { theGoods: '' })
           return reduced.theGoods
         }
@@ -292,25 +292,43 @@ const schema = {
     canRead: ['members'],
     canCreate: ['members'],
     canUpdate: ['members'],
-    onCreate: ({ newDocument, currentUser }) => {
+    onCreate: ({ document: contact }) => {
       try {
-        return getFullAddress(getAddress({ contact: newDocument }))
+        return getFullAddress(getAddress({ contact }))
       } catch (e) {
-        logger.groupCollapsed('Error in addressString for ', newDocument._id, ':')
+        logger.groupCollapsed('Error in addressString for ', contact._id, ':')
         logger.error(e)
         logger.groupEnd()
-        return ''
+        return 'Error in onCreate'
       }
     },
-    onUpdate: ({ data, document, currentUser }) => {
+    onUpdate: ({ data }) => {
       try {
-        return getFullAddress(getAddress({ contact: document }))
+        return getFullAddress(getAddress({ contact: data }))
       } catch (e) {
-        logger.groupCollapsed('Error in addressString for ', document._id, ':')
+        logger.groupCollapsed('Error in addressString for ', contact._id, ':')
         logger.error(e)
         logger.groupEnd()
-        return ''
+        return 'Error in onUpdate'
       }
+    }
+  },
+  // field to ease transition from address to addresses,
+  // to provide a 'main' address, and used for caculating `location`
+  theAddress: {
+    label: 'Address Object',
+    type: addressSubSchema,
+    optional: true,
+    canRead: ['members'],
+    onCreate: ({ document }) => getAddress({ contact: document }),
+    onUpdate: ({ document }) => getAddress({ contact: document }),
+    defaultValue: {
+      street1: 'theAddress',
+      street2: 'isNotReadyYet',
+      city: '',
+      state: '',
+      zip: '',
+      location: 'Unknown'
     }
   },
   slug: {
@@ -319,24 +337,19 @@ const schema = {
     canRead: 'guests',
     canCreate: ['members'],
     canUpdate: ['members'],
-    onInsert: (o) => {
-      return Utils.slugify(getFullNameFromContact(o))
+    onCreate: ({ document: contact }) => {
+      return Utils.slugify(getFullNameFromContact(contact))
     },
-    onEdit: (modifier, o) => {
-      if (modifier.$set.slug) {
-        return Utils.slugify(modifier.$set.slug)
+    onUpdate: ({ data, document: contact }) => {
+      if (data.slug) {
+        return Utils.slugify(data.slug)
       }
       return Utils.slugify(getFullNameFromContact({
-        firstName: modifier.$set.firstName ? modifier.$set.firstName : null,
-        middleName: modifier.$set.middleName ? modifier.$set.middleName : null,
-        lastName: modifier.$set.lastName ? modifier.$set.lastName : null
+        firstName: data.firstName ? data.firstName : null,
+        middleName: data.middleName ? data.middleName : null,
+        lastName: data.lastName ? data.lastName : null
       }))
     }
-    // onEdit: (modifier, contact) => {
-    //   if (modifier.$set.firstName || modifier.$set.middleName || modifier.$set.lastName) {
-    //     return Utils.slugify(contact.displayName);
-    //   }
-    // }
   },
   updatedAt: {
     type: Date,
@@ -426,31 +439,6 @@ const schema = {
     resolveAs: {
       type: 'String',
       resolver: (o) => getFullNameFromContact(o)
-    }
-  },
-
-  // GraphQL only field to ease transition from address to addresses,
-  // and also to provide a 'main' address
-  // and this is used for caculating `location`
-
-  theAddress: {
-    label: 'Address Object',
-    type: addressSubSchema,
-    optional: true,
-    canRead: ['members'],
-    resolveAs: {
-      resolver: (o) => {
-        var address = null
-        try {
-          address = getAddress({ contact: o })
-        } catch (e) {
-          logger.groupCollapsed('Error in theAddress for ', o._id, ':')
-          logger.error(e)
-          logger.groupEnd()
-          return 'Blvd of Broken Dreams'
-        }
-        return address
-      }
     }
   }
 }
