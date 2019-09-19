@@ -250,7 +250,7 @@ const schema = {
       resolver: (o) => {
         if (o.links) {
           const reduced = o.links.reduce(function (acc, cur) {
-            return { theGoods: acc.theGoods + cur.platformName + cur.profileName + cur.profileLink }
+            return { theGoods: acc.theGoods + cur.platformName + ' ' + cur.profileName + ' ' + cur.profileLink + ' ' }
           }, { theGoods: '' })
           return reduced.theGoods
         }
