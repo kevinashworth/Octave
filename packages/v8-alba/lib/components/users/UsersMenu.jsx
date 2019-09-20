@@ -1,7 +1,7 @@
 import { Components, registerComponent, withCurrentUser } from 'meteor/vulcan:core'
 import React, { PureComponent } from 'react'
 import PropTypes from 'prop-types'
-import { Button, Dropdown, DropdownItem, DropdownMenu, DropdownToggle, NavLink } from 'reactstrap'
+import { Dropdown, DropdownItem, DropdownMenu, DropdownToggle, NavLink } from 'reactstrap'
 import { Meteor } from 'meteor/meteor'
 import Users from 'meteor/vulcan:users'
 import { withApollo } from 'react-apollo'
@@ -23,11 +23,14 @@ class UsersMenu extends PureComponent {
   }
 
   logOut () {
-    Meteor.logout(() => client.resetStore())
+    Meteor.logout(() => {
+      this.props.client.resetStore()
+      window.location.reload()
+    })
   }
 
   render () {
-    const { currentUser, currentUserLoading, client, state } = this.props
+    const { currentUser, currentUserLoading, state } = this.props
     return (
       <div className='users-menu'>
         {currentUserLoading ? (
@@ -44,7 +47,7 @@ class UsersMenu extends PureComponent {
               {Users.isAdmin(currentUser) ? (
                 <DropdownItem><NavLink href='/admin'>Users</NavLink></DropdownItem>
               ) : null}
-              <DropdownItem onClick={this.logOut}><FormattedMessage id='users.log_out' /></DropdownItem>
+              <DropdownItem onClick={this.logOut} tag='button'><FormattedMessage id='users.log_out' className='nav-link'/></DropdownItem>
             </DropdownMenu>
           </Dropdown>
         ) : (
@@ -58,7 +61,7 @@ class UsersMenu extends PureComponent {
                 <FormattedMessage id='users.sign_up_log_in' />
               </div>
             }
-            menuContents={<Components.AccountsLoginForm formState={state ? STATES[state] : STATES.SIGN_UP} />}
+            menuContents={<Components.AccountsLoginForm formState={state ? STATES[state] : STATES.SIGN_IN} />}
           />
         )}
       </div>
