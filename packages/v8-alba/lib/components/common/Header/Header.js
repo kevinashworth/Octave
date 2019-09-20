@@ -1,7 +1,6 @@
 import { Components, registerComponent } from 'meteor/vulcan:core'
 import React, { PureComponent } from 'react'
 import { Nav, NavbarBrand, NavbarToggler, NavItem, NavLink } from 'reactstrap'
-import HeaderDropdown from './HeaderDropdown'
 
 class Header extends PureComponent {
   sidebarToggle (e) {
@@ -30,9 +29,6 @@ class Header extends PureComponent {
           </NavItem>
           <NavItem className='px-3'>
             <NavLink href='/contacts/vlist'>V-List</NavLink>
-          </NavItem>
-          <NavItem className='px-3'>
-            <NavLink href='/contacts/nameonly'>NameOnly</NavLink>
           </NavItem>
         </Nav>
         <Nav className='ml-auto'>

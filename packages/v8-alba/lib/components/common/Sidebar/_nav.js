@@ -34,6 +34,11 @@ export default {
       icon: 'icon-people'
     },
     {
+      name: 'Contacts Mobile',
+      url: '/contacts/nameonly',
+      icon: 'icon-people'
+    },
+    {
       name: 'Offices',
       url: '/offices/datatable',
       icon: 'icon-briefcase'

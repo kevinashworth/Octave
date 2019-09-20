@@ -226,7 +226,7 @@ class ContactsNameOnly extends PureComponent {
 
 const options = {
   collection: Contacts,
-  fragmentName: 'ContactsNameOnlyFragment',
+  fragmentName: 'ContactsDataTableFragment',
   limit: 1000,
   terms: { view: 'contactsByLastName' }
 }
