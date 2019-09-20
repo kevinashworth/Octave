@@ -1,7 +1,9 @@
 import { registerComponent } from 'meteor/vulcan:core'
 import React, { PureComponent } from 'react'
+import PropTypes from 'prop-types'
 import {
   ButtonDropdown,
+  ButtonGroup,
   CustomInput,
   DropdownItem,
   DropdownMenu,
@@ -130,9 +132,11 @@ class ContactFilters extends PureComponent {
   }
 
   render () {
+    const { vertical } = this.props
     return (
-      <div className='float-right'>
-        <ButtonDropdown className='ml-2' isOpen={this.state.dropdownOpen[0]} toggle={() => { this.toggle(0) }}>
+      <div className={vertical ? '' : 'float-right'}>
+        <ButtonGroup vertical={vertical}>
+        <ButtonDropdown className={vertical ? 'mb-2' : 'ml-2'} isOpen={this.state.dropdownOpen[0]} toggle={() => { this.toggle(0) }}>
           <DropdownToggle caret color={this.state.titleColor}>
             Title
           </DropdownToggle>
@@ -150,7 +154,7 @@ class ContactFilters extends PureComponent {
             <DropdownItem onClick={this.handleClickContactTitle} toggle={false}>Toggle</DropdownItem>
           </DropdownMenu>
         </ButtonDropdown>
-        <ButtonDropdown className='ml-2' isOpen={this.state.dropdownOpen[1]} toggle={() => { this.toggle(1) }}>
+        <ButtonDropdown className={vertical ? 'mb-2' : 'ml-2'} isOpen={this.state.dropdownOpen[1]} toggle={() => { this.toggle(1) }}>
           <DropdownToggle caret color={this.state.updatedColor}>
             Last updated
           </DropdownToggle>
@@ -165,7 +169,7 @@ class ContactFilters extends PureComponent {
             </DropdownItemStatic>
           </DropdownMenu>
         </ButtonDropdown>
-        <ButtonDropdown className='ml-2' isOpen={this.state.dropdownOpen[2]} toggle={() => { this.toggle(2) }}>
+        <ButtonDropdown className={vertical ? 'mb-2' : 'ml-2'} isOpen={this.state.dropdownOpen[2]} toggle={() => { this.toggle(2) }}>
           <DropdownToggle caret color={this.state.locationColor}>
             Location
           </DropdownToggle>
@@ -183,9 +187,14 @@ class ContactFilters extends PureComponent {
             <DropdownItem onClick={this.handleClickContactLocation} toggle={false}>Toggle</DropdownItem>
           </DropdownMenu>
         </ButtonDropdown>
+        </ButtonGroup>
       </div>
     )
   }
+}
+
+ContactFilters.propTypes = {
+  vertical: PropTypes.bool
 }
 
 registerComponent('ContactFilters', ContactFilters, withFilters)
