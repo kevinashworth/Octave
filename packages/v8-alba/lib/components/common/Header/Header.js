@@ -21,10 +21,10 @@ class Header extends PureComponent {
           <span className='navbar-toggler-icon' />
         </NavbarToggler>
         <NavbarBrand href='#' />
-        <NavbarToggler className='d-md-down-none' onClick={this.sidebarToggle}>
+        <NavbarToggler className='d-none d-lg-inline-flex' onClick={this.sidebarToggle}>
           <span className='navbar-toggler-icon' />
         </NavbarToggler>
-        <Nav className='d-md-down-none' navbar>
+        <Nav className='d-none d-lg-inline-flex' navbar>
           <NavItem className='px-3'>
             <NavLink href='/contacts/list'>List</NavLink>
           </NavItem>
@@ -35,15 +35,9 @@ class Header extends PureComponent {
             <NavLink href='/contacts/nameonly'>NameOnly</NavLink>
           </NavItem>
         </Nav>
-        <Nav className='ml-auto' navbar>
-          <HeaderDropdown accnt />
-        </Nav>
-        <Nav>
+        <Nav className='ml-auto'>
           <Components.UsersMenu />
         </Nav>
-        <NavbarToggler className='d-md-down-none' onClick={this.sidebarToggle}>
-          <span className='navbar-toggler-icon' />
-        </NavbarToggler>
       </header>
     )
   }
