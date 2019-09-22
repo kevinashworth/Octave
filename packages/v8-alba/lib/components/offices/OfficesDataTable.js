@@ -75,7 +75,7 @@ class OfficesDataTable extends PureComponent {
 
     const createCustomClearButton = (onClick) => {
       return (
-        <ClearSearchButton
+        <ClearSearchButton className='btn-sm'
           btnContextual={this.state.searchColor}
           onClick={e => handleClearButtonClick(onClick)} />
       )
