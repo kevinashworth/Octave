@@ -26,3 +26,7 @@ Error! Free Docker deployment capacity exceeded in this region. Please consider 
 METEOR_PACKAGE_DIRS="/Users/kevinashworth/Developer/github_clones/Vulcan/packages" meteor-now -d -e NODE_ENV=development -e MONGO_URL=***REMOVED***
 
 4. See meteor-now-errors.txt
+
+5. Trying `meteor-hero` instead:
+
+METEOR_PACKAGE_DIRS="/Users/kevinashworth/Developer/github_clones/Vulcan/packages" meteor-hero -e NODE_ENV=development -e MONGO_URL=***REMOVED***
