@@ -30,3 +30,20 @@ METEOR_PACKAGE_DIRS="/Users/kevinashworth/Developer/github_clones/Vulcan/package
 5. Trying `meteor-hero` instead:
 
 METEOR_PACKAGE_DIRS="/Users/kevinashworth/Developer/github_clones/Vulcan/packages" meteor-hero -e NODE_ENV=development -e MONGO_URL=***REMOVED***
+
+6. Success! See https://sleepy-earth-65615.herokuapp.com
+
+`meteor-hero` didn't work, but it helped me figure out what to do:
+
+Deploy
+- `meteor-hero` did a bunch of stuff then crashed, so I
+- Unzipped V8-Alba.tar.gz, had to move it adjacent to Dockerfile
+- Ran `heroku container:push web -a sleepy-earth-65615` (in bundle dir)
+- Ran `heroku container:release -a sleepy-earth-65615` (in bundle dir)
+
+Settings
+- Changed MONGODB_URI, MONGO_URL, NODE_ENV manually in heroku dashboard
+- Also ran `heroku config:add METEOR_SETTINGS="$(cat /Users/kevinashworth/Developer/bitbucket_projects/V8-Alba/development.settings.json)" -a sleepy-earth-65615`
+- These two things are redundant for MONGO_URL, probably
+
+It was `heroku logs --tail -a sleepy-earth-65615` that led me to error "TypeError: Cannot read property 'mlabpass' of undefined"
