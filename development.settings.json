@@ -1,0 +1,13 @@
+{
+  "public": {
+    "title": "V8 Alba",
+    "tagline": "Alba 1.8.14",
+    "faviconUrl": "/img/favicon.png",
+    "locale": "en"
+  },
+  "debug": true,
+  "private": {
+    "mlabuser": "v8-developer",
+    "mlabpass": "vee8eight"
+  }
+}
