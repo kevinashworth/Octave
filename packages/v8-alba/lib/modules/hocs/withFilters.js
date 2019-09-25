@@ -12,6 +12,6 @@ const mapDispatchToProps = dispatch => {
   }
 }
 
-const withFilters = (component) => connect(mapStateToProps, mapDispatchToProps)(component)
+const withFilters = (component) => connect(mapStateToProps, mapDispatchToProps, null, { forwardRef: true })(component)
 
 export default withFilters
