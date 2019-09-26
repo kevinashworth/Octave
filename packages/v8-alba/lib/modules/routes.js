@@ -7,9 +7,9 @@ addRoute({ path: '/login', name: 'Login', componentName: 'Login' })
 addRoute({ path: '/fragments', name: 'fragments', componentName: 'Fragments', layoutName: 'AdminLayout' })
 
 addRoute([
-  { name: 'Contacts', path: '/contacts', componentName: 'Contacts' },
-  { name: 'contacts.table', path: '/contacts/datatable', componentName: 'ContactsDataTable' },
-  { name: 'contacts.nameonly', path: '/contacts/nameonly', componentName: 'ContactsNameOnly' },
+  // { name: 'Contacts', path: '/contacts', componentName: 'Contacts' },
+  { name: 'contacts.table', path: '/contacts', componentName: 'ContactsDataTable' },
+  { name: 'contacts.mobile', path: '/m/contacts', componentName: 'ContactsNameOnly' },
   { name: 'contacts.list', path: '/contacts/list', componentName: 'ContactsList' },
   { name: 'contacts.vlist', path: '/contacts/vlist', componentName: 'ContactsVirtualizedList' },
   { name: 'contacts.edit', path: '/contacts/:_id/edit', componentName: 'ContactsEditForm' },

@@ -30,7 +30,7 @@ export default {
     },
     {
       name: 'Contacts',
-      url: '/contacts/datatable',
+      url: '/contacts',
       icon: 'icon-people'
     },
     {
@@ -54,7 +54,7 @@ export default {
     //   icon: 'fa fa-external-link'
     // }
   ],
-  mobileIitems: [
+  mobileItems: [
     {
       title: true,
       name: 'Home'
@@ -85,7 +85,7 @@ export default {
     },
     {
       name: 'Contacts Mobile',
-      url: '/contacts/nameonly',
+      url: '/m/contacts',
       icon: 'icon-people'
     },
     {

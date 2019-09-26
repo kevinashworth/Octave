@@ -4,7 +4,7 @@ import { withRouter } from 'react-router-dom'
 
 const Contacts = ({ children, history }) => (
   <div>
-    { children || history.push('/contacts/datatable') }
+    { children || history.push('/contacts/') }
   </div>
 )
 

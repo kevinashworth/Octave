@@ -148,7 +148,7 @@ class Sidebar extends PureComponent {
             query={{ maxWidth: 500 }}
             render={() => (
               <Nav>
-                {navList(nav.items)}
+                {navList(nav.mobileItems)}
                 {Users.isAdmin(this.props.currentUser)
                   ? navList(navAdmin.items)
                   : null}
@@ -159,7 +159,7 @@ class Sidebar extends PureComponent {
             query={{ minWidth: 501 }}
             render={() => (
               <Nav>
-                {navList(nav.mobileItems)}
+                {navList(nav.items)}
                 {Users.isAdmin(this.props.currentUser)
                   ? navList(navAdmin.items)
                   : null}
