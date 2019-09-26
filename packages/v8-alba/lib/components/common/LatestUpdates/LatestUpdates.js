@@ -31,10 +31,11 @@ class LatestContactUpdates extends Component {
               <Card className='card-accent-warning'>
                 <CardHeader>
                   <b><Link to={`/contacts/${contact._id}/${contact.slug}`}>{contact.displayName}</Link></b>
+                  <small className='float-right'>{contact.theAddress.location}</small>
                 </CardHeader>
                 <CardBody>
                   {contact.title}<br />
-                  {contact.theCity} {contact.theState}<br />
+                  {contact.projects ? contact.projects.length + ' Projects' : null}
                 </CardBody>
                 <CardFooter>
                   <small className='text-muted' dangerouslySetInnerHTML={{ __html: displayHtml }} />
