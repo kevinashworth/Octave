@@ -117,15 +117,15 @@ class ContactsNameOnly extends PureComponent {
     this.contactFiltersRef = node
   }
 
-  componentDidMount() {
+  componentDidMount () {
     const { loading, totalCount } = this.props
     if (!loading) {
-      this.setState({ 
+      this.setState({
         options: {
           ...this.state.options,
           sizePerPage: keptState.options.sizePerPage ? keptState.options.sizePerPage : totalCount
         }
-      })      
+      })
     }
   }
 

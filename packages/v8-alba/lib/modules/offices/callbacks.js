@@ -59,7 +59,7 @@ function OfficeEditUpdateContacts (data, { document, oldDocument }) {
   // [b] else for deleted contacts in oldOffice but not newOffice, remove office from those contacts
   // [c] and for added contacts in newOffice but not oldOffice, add office to those contacts
 
-  let office = document
+  const office = document
   let contactsToRemoveThisOfficeFrom = null
   let contactsToAddThisOfficeTo = null
 
