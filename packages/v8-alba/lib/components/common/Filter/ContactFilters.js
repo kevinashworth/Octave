@@ -86,13 +86,12 @@ class ContactFilters extends PureComponent {
     const none = event.target.innerHTML.indexOf('None') !== -1
     const toggle = event.target.innerHTML.indexOf('Toggle') !== -1
     const length = this.props.contactTitleFilters.length
-    var i
     if (toggle) {
-      for (i = 0; i < length; i++) {
+      for (var i = 0; i < length; i++) {
         this.props.actions.toggleContactTitleFilter(i)
       }
-    } else { // for All and for None
-      for (i = 0; i < length; i++) {
+    } else if (all || none) {
+      for (var i = 0; i < length; i++) {
         if ((this.props.contactTitleFilters[i].value && none) || (!this.props.contactTitleFilters[i].value && !none)) {
           this.props.actions.toggleContactTitleFilter(i)
         }
@@ -173,13 +172,13 @@ class ContactFilters extends PureComponent {
             <DropdownToggle caret color={this.state.locationColor}>
             Location
           </DropdownToggle>
-          <DropdownMenu>
-            <DropdownItem header>Filter contacts by location</DropdownItem>
-            <DropdownItemStatic>
-              {this.props.contactLocationFilters.map((contact, index) =>
-                <CustomInput type='checkbox' name='contactLocation'
-                  id={`${index}-status`} key={`${contact.contactLocation}`} label={`${contact.contactLocation}`}
-                  checked={contact.value} onChange={this.handleChange} />
+            <DropdownMenu>
+              <DropdownItem header>Filter contacts by location</DropdownItem>
+              <DropdownItemStatic>
+                {this.props.contactLocationFilters.map((contact, index) =>
+                  <CustomInput type='checkbox' name='contactLocation'
+                    id={`${index}-location`} key={`${contact.contactLocation}`} label={`${contact.contactLocation}`}
+                    checked={contact.value} onChange={this.handleChange} />
               )}
               </DropdownItemStatic>
               <DropdownItem onClick={this.handleClickContactLocation} toggle={false}>All</DropdownItem>
