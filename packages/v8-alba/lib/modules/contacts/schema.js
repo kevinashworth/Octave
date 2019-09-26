@@ -7,6 +7,25 @@ import { CASTING_TITLES_ENUM } from '../constants.js'
 import { getAddress, getFullAddress, getFullNameFromContact } from '../helpers.js'
 import { logger } from '../logger.js'
 
+const getHtmlBody = (contact) => {
+  if (contact.body) {
+    return Utils.sanitize(marked(contact.body))
+  } else {
+    return null
+  }
+}
+
+const getAddressString = (contact) => {
+  try {
+    return getFullAddress(getAddress({ contact }))
+  } catch (e) {
+    logger.groupCollapsed('Error in addressString for ', contact._id, ':')
+    logger.error(e)
+    logger.groupEnd()
+    return 'Error in getAddressString'
+  }
+}
+
 const projectGroup = {
   name: 'projects',
   label: 'Projects',
@@ -219,16 +238,8 @@ const schema = {
     canRead: ['members'],
     canCreate: ['members'],
     canUpdate: ['members'],
-    onCreate: ({ document: contact }) => {
-      if (contact.body) {
-        return Utils.sanitize(marked(contact.body))
-      }
-    },
-    onUpdate: ({ data }) => {
-      if (data.body) {
-        return Utils.sanitize(marked(data.body))
-      }
-    }
+    onCreate: ({ document: contact }) => getHtmlBody(contact),
+    onUpdate: ({ data: contact }) => getHtmlBody(contact)
   },
   links: {
     label: 'Links',
@@ -292,26 +303,8 @@ const schema = {
     canRead: ['members'],
     canCreate: ['members'],
     canUpdate: ['members'],
-    onCreate: ({ document: contact }) => {
-      try {
-        return getFullAddress(getAddress({ contact }))
-      } catch (e) {
-        logger.groupCollapsed('Error in addressString for ', contact._id, ':')
-        logger.error(e)
-        logger.groupEnd()
-        return 'Error in onCreate'
-      }
-    },
-    onUpdate: ({ data }) => {
-      try {
-        return getFullAddress(getAddress({ contact: data }))
-      } catch (e) {
-        logger.groupCollapsed('Error in addressString for ', contact._id, ':')
-        logger.error(e)
-        logger.groupEnd()
-        return 'Error in onUpdate'
-      }
-    }
+    onCreate: ({ document: contact }) => getAddressString(contact),
+    onUpdate: ({ data: contact }) => getAddressString(contact)
   },
   // field to ease transition from address to addresses,
   // to provide a 'main' address, and used for caculating `location`
