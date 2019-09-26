@@ -238,8 +238,8 @@ class ContactsNameOnly extends PureComponent {
                   text: 'All', value: this.props.totalCount
                 }])
               }}
-              keyField='_id' bordered={false}>
-              <TableHeaderColumn dataField='displayName' headerTitle={false} dataFormat={
+              keyField='_id' bordered={false} tableHeaderClass='d-none'>
+              <TableHeaderColumn dataField='displayName' dataFormat={
                 (cell, row) => {
                   return (
                     <Link to={`/contacts/${row._id}/${row.slug}`}>
@@ -247,7 +247,7 @@ class ContactsNameOnly extends PureComponent {
                     </Link>
                   )
                 }
-              } />
+              }>Name</TableHeaderColumn>
             </BootstrapTable>
           </CardBody>
           {hasMore &&
