@@ -2,7 +2,7 @@ import { Components, registerComponent, withCurrentUser } from 'meteor/vulcan:co
 import Users from 'meteor/vulcan:users'
 import React, { PureComponent } from 'react'
 import { withRouter, NavLink } from 'react-router-dom'
-
+import Media from 'react-media'
 import { Badge, Nav, NavItem, NavLink as RsNavLink } from 'reactstrap'
 import classNames from 'classnames'
 import nav from './_nav'
@@ -144,12 +144,28 @@ class Sidebar extends PureComponent {
         <Components.SidebarHeader />
         <Components.SidebarForm />
         <nav className='sidebar-nav'>
-          <Nav>
-            {navList(nav.items)}
-            {Users.isAdmin(this.props.currentUser)
-              ? navList(navAdmin.items)
-              : null}
-          </Nav>
+          <Media
+            query={{ maxWidth: 500 }}
+            render={() => (
+              <Nav>
+                {navList(nav.items)}
+                {Users.isAdmin(this.props.currentUser)
+                  ? navList(navAdmin.items)
+                  : null}
+              </Nav>
+            )}
+          />
+          <Media
+            query={{ minWidth: 501 }}
+            render={() => (
+              <Nav>
+                {navList(nav.mobileItems)}
+                {Users.isAdmin(this.props.currentUser)
+                  ? navList(navAdmin.items)
+                  : null}
+              </Nav>
+            )}
+          />
         </nav>
         <Components.SidebarFooter />
         <Components.SidebarMinimizer />
