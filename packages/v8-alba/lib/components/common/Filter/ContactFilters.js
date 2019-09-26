@@ -58,6 +58,8 @@ class ContactFilters extends PureComponent {
     })
   }
 
+ // TODO: these 3 handlers are too simple, doesn't set colors back to 'secondary' except when 'All' is clicked
+ // TODO: DRY these various handlers
   handleChange (event) {
     const i = parseInt(event.target.id, 10)
     if (event.target.name === 'contactTitle') {
@@ -104,8 +106,6 @@ class ContactFilters extends PureComponent {
     }
   }
 
-  // TODO: DRY these two handlers above and below this line
-
   handleClickContactLocation (event) {
     const all = event.target.innerHTML.indexOf('All') !== -1
     const none = event.target.innerHTML.indexOf('None') !== -1
@@ -136,41 +136,41 @@ class ContactFilters extends PureComponent {
     return (
       <div className={vertical ? '' : 'float-right'}>
         <ButtonGroup vertical={vertical}>
-        <ButtonDropdown className={vertical ? 'mb-2' : 'ml-2'} isOpen={this.state.dropdownOpen[0]} toggle={() => { this.toggle(0) }}>
-          <DropdownToggle caret color={this.state.titleColor}>
+          <ButtonDropdown className={vertical ? 'mb-2' : 'ml-2'} isOpen={this.state.dropdownOpen[0]} toggle={() => { this.toggle(0) }}>
+            <DropdownToggle caret color={this.state.titleColor}>
             Title
           </DropdownToggle>
-          <DropdownMenu>
-            <DropdownItem header>Filter contacts by title</DropdownItem>
-            <DropdownItemStatic>
-              {this.props.contactTitleFilters.map((contact, index) =>
-                <CustomInput type='checkbox' name='contactTitle'
-                  id={`${index}-type`} key={`${contact.contactTitle}`} label={`${contact.contactTitle}`}
-                  checked={contact.value} onChange={this.handleChange} />
+            <DropdownMenu>
+              <DropdownItem header>Filter contacts by title</DropdownItem>
+              <DropdownItemStatic>
+                {this.props.contactTitleFilters.map((contact, index) =>
+                  <CustomInput type='checkbox' name='contactTitle'
+                    id={`${index}-title`} key={`${contact.contactTitle}`} label={`${contact.contactTitle}`}
+                    checked={contact.value} onChange={this.handleChange} />
               )}
-            </DropdownItemStatic>
-            <DropdownItem onClick={this.handleClickContactTitle} toggle={false}>All</DropdownItem>
-            <DropdownItem onClick={this.handleClickContactTitle} toggle={false}>None</DropdownItem>
-            <DropdownItem onClick={this.handleClickContactTitle} toggle={false}>Toggle</DropdownItem>
-          </DropdownMenu>
-        </ButtonDropdown>
-        <ButtonDropdown className={vertical ? 'mb-2' : 'ml-2'} isOpen={this.state.dropdownOpen[1]} toggle={() => { this.toggle(1) }}>
-          <DropdownToggle caret color={this.state.updatedColor}>
+              </DropdownItemStatic>
+              <DropdownItem onClick={this.handleClickContactTitle} toggle={false}>All</DropdownItem>
+              <DropdownItem onClick={this.handleClickContactTitle} toggle={false}>None</DropdownItem>
+              <DropdownItem onClick={this.handleClickContactTitle} toggle={false}>Toggle</DropdownItem>
+            </DropdownMenu>
+          </ButtonDropdown>
+          <ButtonDropdown className={vertical ? 'mb-2' : 'ml-2'} isOpen={this.state.dropdownOpen[1]} toggle={() => { this.toggle(1) }}>
+            <DropdownToggle caret color={this.state.updatedColor}>
             Last updated
           </DropdownToggle>
-          <DropdownMenu>
-            <DropdownItem header>Filter contacts by last updated</DropdownItem>
-            <DropdownItemStatic>
-              {this.props.contactUpdatedFilters.map((filter, index) =>
-                <CustomInput type='radio' name='contactUpdated'
-                  id={`${index}-updated`} key={`${filter.contactUpdated}`} label={`${filter.contactUpdated}`}
-                  checked={filter.value} onChange={this.handleChange} />
+            <DropdownMenu>
+              <DropdownItem header>Filter contacts by last updated</DropdownItem>
+              <DropdownItemStatic>
+                {this.props.contactUpdatedFilters.map((filter, index) =>
+                  <CustomInput type='radio' name='contactUpdated'
+                    id={`${index}-updated`} key={`${filter.contactUpdated}`} label={`${filter.contactUpdated}`}
+                    checked={filter.value} onChange={this.handleChange} />
               )}
-            </DropdownItemStatic>
-          </DropdownMenu>
-        </ButtonDropdown>
-        <ButtonDropdown className={vertical ? 'mb-2' : 'ml-2'} isOpen={this.state.dropdownOpen[2]} toggle={() => { this.toggle(2) }}>
-          <DropdownToggle caret color={this.state.locationColor}>
+              </DropdownItemStatic>
+            </DropdownMenu>
+          </ButtonDropdown>
+          <ButtonDropdown className={vertical ? 'mb-2' : 'ml-2'} isOpen={this.state.dropdownOpen[2]} toggle={() => { this.toggle(2) }}>
+            <DropdownToggle caret color={this.state.locationColor}>
             Location
           </DropdownToggle>
           <DropdownMenu>
@@ -181,12 +181,12 @@ class ContactFilters extends PureComponent {
                   id={`${index}-status`} key={`${contact.contactLocation}`} label={`${contact.contactLocation}`}
                   checked={contact.value} onChange={this.handleChange} />
               )}
-            </DropdownItemStatic>
-            <DropdownItem onClick={this.handleClickContactLocation} toggle={false}>All</DropdownItem>
-            <DropdownItem onClick={this.handleClickContactLocation} toggle={false}>None</DropdownItem>
-            <DropdownItem onClick={this.handleClickContactLocation} toggle={false}>Toggle</DropdownItem>
-          </DropdownMenu>
-        </ButtonDropdown>
+              </DropdownItemStatic>
+              <DropdownItem onClick={this.handleClickContactLocation} toggle={false}>All</DropdownItem>
+              <DropdownItem onClick={this.handleClickContactLocation} toggle={false}>None</DropdownItem>
+              <DropdownItem onClick={this.handleClickContactLocation} toggle={false}>Toggle</DropdownItem>
+            </DropdownMenu>
+          </ButtonDropdown>
         </ButtonGroup>
       </div>
     )

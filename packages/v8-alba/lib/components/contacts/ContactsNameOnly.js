@@ -176,8 +176,6 @@ class ContactsNameOnly extends PureComponent {
         }
       }
 
-      // return true
-
       // if "Other" is not checked, filter per normal via titleFilters:
       if (!(_.includes(titleFilters, 'Other'))) {
         return _.includes(locationFilters, theLocation) &&
