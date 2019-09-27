@@ -96,10 +96,10 @@ class PastProjectsDataTable extends PureComponent {
         sortIndicator: true,
         paginationSize: 5,
         hidePageListOnlyOnePage: true,
-        prePage: 'Prev',
-        nextPage: 'Next',
-        firstPage: 'First',
-        lastPage: 'Last',
+        prePage: '‹',
+        nextPage: '›',
+        firstPage: '«',
+        lastPage: '»',
         sizePerPageList: [ {
           text: '20', value: 20
         }, {

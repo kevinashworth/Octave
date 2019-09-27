@@ -111,7 +111,7 @@ class ProjectsNameOnly extends PureComponent {
     this.setProjectFiltersRef = this.setProjectFiltersRef.bind(this)
   }
 
-  setProjectFiltersRef = (node) => {
+  setProjectFiltersRef (node) {
     this.projectFiltersRef = node
   }
 
@@ -143,7 +143,7 @@ class ProjectsNameOnly extends PureComponent {
   }
 
   render () {
-    const { count, totalCount, results, loadingMore, loadMore, currentUser, networkStatus,
+    const { count, totalCount, results, loadingMore, loadMore, networkStatus,
             projectTypeFilters, projectStatusFilters, projectUpdatedFilters, projectPlatformFilters } = this.props
     if (networkStatus !== 8 && networkStatus !== 7) {
       return (

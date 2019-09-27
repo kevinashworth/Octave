@@ -31,7 +31,7 @@ class MySelect extends PureComponent {
       this.context.updateCurrentValues({ [this.props.path]: value.value })
     }
 
-    logger.groupCollapsed(`MySelect:`)
+    logger.groupCollapsed('MySelect:')
     logger.log(`MySelect label: ${value.label}`)
     logger.log(`MySelect value: ${value.value}`)
     logger.groupEnd()

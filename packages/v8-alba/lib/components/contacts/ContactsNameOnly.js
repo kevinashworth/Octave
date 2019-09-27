@@ -111,7 +111,7 @@ class ContactsNameOnly extends PureComponent {
     this.setContactFiltersRef = this.setContactFiltersRef.bind(this)
   }
 
-  setContactFiltersRef = (node) => {
+  setContactFiltersRef (node) {
     this.contactFiltersRef = node
   }
 
