@@ -170,7 +170,7 @@ function ProjectEditUpdateOfficeBefore (data, { document, oldDocument }) {
   }
   if (removing || replacing || itmightnotbethereforsomereason) {
     const office = Offices.findOne(oldOffice) // TODO: error handling
-    let projects = office.projects
+    let projects = office && office.projects
     if (!isEmptyValue(projects)) {
       if (itmightnotbethereforsomereason) {
         if (_.indexOf(projects, { projectId: document._id }) < 0) {
