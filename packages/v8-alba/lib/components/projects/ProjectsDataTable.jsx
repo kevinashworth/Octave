@@ -100,7 +100,7 @@ class ProjectsDataTable extends PureComponent {
         nextPage: 'Next',
         firstPage: 'First',
         lastPage: 'Last',
-        sizePerPageList: [ {
+        sizePerPageList: [{
           text: '20', value: 20
         }, {
           text: '50', value: 50
@@ -108,7 +108,7 @@ class ProjectsDataTable extends PureComponent {
           text: '100', value: 100
         }, {
           text: 'All', value: this.props.totalCount
-        } ],
+        }],
         paginationShowsTotal: renderShowsTotal,
         paginationPosition: 'both',
         onPageChange: pageChangeHandler,
@@ -197,7 +197,7 @@ class ProjectsDataTable extends PureComponent {
         <Card>
           <CardHeader>
             <i className='fa fa-camera' />Projects
-              <Components.ProjectFilters />
+            <Components.ProjectFilters />
           </CardHeader>
           <CardBody>
             <BootstrapTable condensed hover pagination search striped
@@ -207,7 +207,8 @@ class ProjectsDataTable extends PureComponent {
                 ...this.state.options,
                 sizePerPageList: SIZE_PER_PAGE_LIST_SEED.concat([{
                   text: 'All', value: this.props.totalCount
-                }])}}
+                }])
+              }}
               version='4'>
               <TableHeaderColumn dataField='projectTitle' dataSort dataFormat={
                 (cell, row) => {
