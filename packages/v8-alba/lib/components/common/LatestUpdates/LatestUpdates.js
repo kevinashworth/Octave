@@ -229,6 +229,7 @@ class LatestUpdates extends Component {
   render () {
     return (
       <div className='animated fadeIn'>
+        <Components.HeadTags title='V8 Alba: Latest Updates' />
         <Components.LatestContactUpdates />
         <Components.LatestOfficeUpdates />
         <Components.LatestProjectUpdates />

@@ -132,6 +132,7 @@ class OfficesDataTable extends PureComponent {
 
     return (
       <div className='animated fadeIn'>
+        <Components.HeadTags title='V8 Alba: Offices' />
         <Card>
           <CardHeader>
             <i className='icon-briefcase' />Offices

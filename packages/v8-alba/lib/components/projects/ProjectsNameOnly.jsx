@@ -193,6 +193,7 @@ class ProjectsNameOnly extends PureComponent {
 
     return (
       <div className='animated fadeIn'>
+        <Components.HeadTags title='V8 Alba: Projects' />
         <Card>
           <CardHeader>
             <i className='fa fa-camera' />Projects

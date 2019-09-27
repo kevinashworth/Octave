@@ -11,6 +11,7 @@ class Dashboard extends PureComponent {
     const theStats = this.props.results[0]
     return (
       <div className='animated fadeIn'>
+        <Components.HeadTags title='V8 Alba: Dashboard' />
         <Row>
           <Col xs='12' sm='6' lg='3'>
             <Components.LineChartSmall

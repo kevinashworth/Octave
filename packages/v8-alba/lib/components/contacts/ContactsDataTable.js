@@ -216,6 +216,7 @@ class ContactsDataTable extends PureComponent {
 
     return (
       <div className='animated fadeIn'>
+        <Components.HeadTags title='V8 Alba: Contacts' />
         <Modal isOpen={this.state.modal} toggle={this.toggle} modalTransition={{ timeout: 100 }}>
           {this.state.contact
             ? <ModalHeader toggle={this.toggle}>

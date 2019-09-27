@@ -217,6 +217,7 @@ class ContactsNameOnly extends PureComponent {
 
     return (
       <div className='animated fadeIn'>
+        <Components.HeadTags title='V8 Alba: Contacts' />
         <Card>
           <CardHeader>
             <i className='icon-people' />Contacts
