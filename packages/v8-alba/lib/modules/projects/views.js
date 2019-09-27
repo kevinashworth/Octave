@@ -12,3 +12,7 @@ Projects.addView('collectionWithStatus', terms => ({
     status: terms.status
   }
 }))
+
+Projects.addView('projectsByTitle', terms => ({
+  options: { sort: { projectTitle: 1 } }
+}))

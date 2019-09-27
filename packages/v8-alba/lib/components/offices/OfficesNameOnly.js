@@ -1,27 +1,23 @@
-import { Components, registerComponent, withCurrentUser, withMulti } from 'meteor/vulcan:core'
+import { Components, registerComponent, withMulti } from 'meteor/vulcan:core'
 import React, { PureComponent } from 'react'
 import { Link } from 'react-router-dom'
 import { Button, Card, CardBody, CardFooter, CardHeader } from 'reactstrap'
-import { BootstrapTable, ClearSearchButton, SearchField, TableHeaderColumn } from 'react-bootstrap-table'
-import moment from 'moment'
-import { DATE_FORMAT_SHORT, SIZE_PER_PAGE_LIST_SEED } from '../../modules/constants.js'
+import { BootstrapTable, ClearSearchButton, SearchField, SizePerPageDropDown, TableHeaderColumn } from 'react-bootstrap-table'
+import { SIZE_PER_PAGE_LIST_SEED } from '../../modules/constants.js'
 import Offices from '../../modules/offices/collection.js'
 
 // Set initial state. Just options I want to keep.
 // See https://github.com/amannn/react-keep-state
 let keptState = {
-  defaultSearch: '',
-  page: 1,
-  sizePerPage: 20,
-  sortName: 'updatedAt',
-  sortOrder: 'desc'
+  options: {
+    defaultSearch: '',
+    page: 1,
+    sizePerPage: null,
+    sortOrder: 'desc'
+  }
 }
 
-function dateFormatter (cell, row) {
-  return moment(cell).format(DATE_FORMAT_SHORT)
-}
-
-class OfficesDataTable extends PureComponent {
+class OfficesNameOnly extends PureComponent {
   constructor (props) {
     super(props)
 
@@ -33,16 +29,10 @@ class OfficesDataTable extends PureComponent {
 
     function renderShowsTotal (start, to, total) {
       return (
-        <span>
-          Showing contacts { start } to { to } out of { total } &nbsp;&nbsp;
+        <span className='mr-2'>
+          Showing { start } to { to } out of { total }
         </span>
       )
-    }
-
-    const sortChangeHandler = (sortName, sortOrder) => {
-      this.setState((prevState) => ({
-        options: { ...prevState.options, sortName, sortOrder }
-      }))
     }
 
     const searchChangeHandler = (searchText) => {
@@ -55,6 +45,13 @@ class OfficesDataTable extends PureComponent {
       this.setState((prevState) => ({
         options: { ...prevState.options, sizePerPage }
       }))
+      keptState.options.sizePerPage = sizePerPage
+    }
+
+    const renderSizePerPageDropDown = (props) => {
+      return (
+        <SizePerPageDropDown btnContextual='btn-secondary btn-sm' {...props} />
+      )
     }
 
     const createCustomSearchField = (props) => {
@@ -82,54 +79,60 @@ class OfficesDataTable extends PureComponent {
     }
 
     this.state = {
+      searchColor: 'btn-secondary',
       options: {
         sortIndicator: true,
-        paginationSize: 5,
+        paginationSize: 4,
         hidePageListOnlyOnePage: true,
-        prePage: 'Prev',
-        nextPage: 'Next',
-        firstPage: 'First',
-        lastPage: 'Last',
-        sizePerPageList: [{
-          text: '20', value: 20
-        }, {
-          text: '50', value: 50
-        }, {
-          text: '100', value: 100
-        }, {
-          text: 'All', value: this.props.totalCount
-        }],
+        prePage: '‹',
+        nextPage: '›',
+        firstPage: '«',
+        lastPage: '»',
         paginationShowsTotal: renderShowsTotal,
-        paginationPosition: 'both',
+        paginationPosition: 'bottom',
         onPageChange: pageChangeHandler,
         onSizePerPageList: sizePerPageListHandler,
-        onSortChange: sortChangeHandler,
+        sizePerPageDropDown: renderSizePerPageDropDown,
         onSearchChange: searchChangeHandler,
         clearSearch: true,
         clearSearchBtn: createCustomClearButton,
         searchField: createCustomSearchField,
-        // Retrieve the last state
-        ...keptState
+        btnGroup: () => { return null }, // hides area above search field
+        ...keptState.options
       }
     }
   }
 
   componentWillUnmount () {
-    // Remember state for the next mount
     const { options } = this.state
     keptState = {
-      defaultSearch: options.defaultSearch,
-      page: options.page,
-      sizePerPage: options.sizePerPage,
-      sortName: options.sortName,
-      sortOrder: options.sortOrder
+      options: {
+        defaultSearch: options.defaultSearch,
+        page: options.page,
+        sizePerPage: options.sizePerPage ? options.sizePerPage : null,
+        sortOrder: options.sortOrder
+      }
     }
   }
 
   render () {
-    const { count, totalCount, results, loadingMore, loadMore, currentUser } = this.props
+    const { count, totalCount, results, loadingMore, loadMore, networkStatus } = this.props
+    if (networkStatus !== 8 && networkStatus !== 7) {
+      return (
+        <div className='animated fadeIn'>
+          <Components.HeadTags title='V8 Alba: Offices' />
+          <Card>
+            <CardHeader>
+              <i className='icon-briefcase' />Offices
+            </CardHeader>
+            <CardBody>
+              <Components.Loading />
+            </CardBody>
+          </Card>
+        </div>
+      )
+    }
     const hasMore = results && (totalCount > results.length)
-
     return (
       <div className='animated fadeIn'>
         <Components.HeadTags title='V8 Alba: Offices' />
@@ -142,9 +145,11 @@ class OfficesDataTable extends PureComponent {
               options={{
                 ...this.state.options,
                 sizePerPageList: SIZE_PER_PAGE_LIST_SEED.concat([{
-                  text: 'All', value: this.props.totalCount
-                }]) }}
-              keyField='_id' bordered={false}>
+                  text: 'All', value: totalCount
+                }]),
+                sizePerPage: this.state.options.sizePerPage ? this.state.options.sizePerPage : totalCount
+              }}
+              keyField='_id' bordered={false} tableHeaderClass='d-none'>
               <TableHeaderColumn dataField='displayName' dataSort dataFormat={
                 (cell, row) => {
                   return (
@@ -154,9 +159,6 @@ class OfficesDataTable extends PureComponent {
                   )
                 }
               }>Name</TableHeaderColumn>
-              <TableHeaderColumn dataField='fullAddress' dataSort>Address</TableHeaderColumn>
-              <TableHeaderColumn dataField='updatedAt' dataFormat={dateFormatter} dataSort width='9%'>Updated</TableHeaderColumn>
-              <TableHeaderColumn dataField='body' hidden>Hidden</TableHeaderColumn>
             </BootstrapTable>
           </CardBody>
           {hasMore &&
@@ -166,14 +168,6 @@ class OfficesDataTable extends PureComponent {
                 : <Button onClick={e => { e.preventDefault(); loadMore() }}>Load More ({count}/{totalCount})</Button>
               }
             </CardFooter>
-          }
-          {Offices.options.mutations.new.check(currentUser)
-            ? <CardFooter>
-              <Components.ModalTrigger title='New Office' component={<Button>Add an Office</Button>}>
-                <Components.OfficesNewForm currentUser={currentUser} />
-              </Components.ModalTrigger>
-            </CardFooter>
-            : null
           }
         </Card>
       </div>
@@ -187,4 +181,8 @@ const options = {
   limit: 1000
 }
 
-registerComponent('OfficesDataTable', OfficesDataTable, withCurrentUser, [withMulti, options])
+registerComponent({
+  name: 'OfficesNameOnly',
+  component: OfficesNameOnly,
+  hocs: [[withMulti, options]]
+})

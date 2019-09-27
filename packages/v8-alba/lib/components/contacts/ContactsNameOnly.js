@@ -52,7 +52,6 @@ class ContactsNameOnly extends PureComponent {
       keptState.options.sizePerPage = sizePerPage
     }
 
-    // the 20/50/100/All dropdown is now the right size, small
     const renderSizePerPageDropDown = (props) => {
       return (
         <SizePerPageDropDown btnContextual='btn-secondary btn-sm' {...props} />
@@ -75,7 +74,6 @@ class ContactsNameOnly extends PureComponent {
       onClick()
     }
 
-    // make smaller button to match height of serach field
     const createCustomClearButton = (onClick) => {
       return (
         <ClearSearchButton className='btn-sm'
@@ -117,20 +115,7 @@ class ContactsNameOnly extends PureComponent {
     this.contactFiltersRef = node
   }
 
-  componentDidMount () {
-    const { loading, totalCount } = this.props
-    if (!loading) {
-      this.setState({
-        options: {
-          ...this.state.options,
-          sizePerPage: keptState.options.sizePerPage ? keptState.options.sizePerPage : totalCount
-        }
-      })
-    }
-  }
-
   componentWillUnmount () {
-    // Remember state for the next mount
     const { filtersColor, options } = this.state
     keptState = {
       filtersColor,
@@ -158,9 +143,23 @@ class ContactsNameOnly extends PureComponent {
   }
 
   render () {
-    const { count, totalCount, results, loadingMore, loadMore,
+    const { count, totalCount, results, loadingMore, loadMore, networkStatus,
             contactTitleFilters, contactLocationFilters, contactUpdatedFilters } = this.props
-    const hasMore = results && (totalCount > results.length)
+    if (networkStatus !== 8 && networkStatus !== 7) {
+      return (
+        <div className='animated fadeIn'>
+          <Components.HeadTags title='V8 Alba: Contacts' />
+          <Card>
+            <CardHeader>
+              <i className='icon-people' />Contacts
+            </CardHeader>
+            <CardBody>
+              <Components.Loading />
+            </CardBody>
+          </Card>
+        </div>
+      )
+    }
     let titleFilters = []
     contactTitleFilters.forEach(filter => {
       if (filter.value) { titleFilters.push(filter.contactTitle) }
@@ -181,7 +180,6 @@ class ContactsNameOnly extends PureComponent {
         moment2 = filter.moment2
       }
     })
-
     const filteredResults = _.filter(results, function (o) {
       // compare current time to filter, but generous, so start of day then, not the time it is now - filter plus up to 23:59
       const now = moment()
@@ -199,7 +197,6 @@ class ContactsNameOnly extends PureComponent {
           }
         }
       }
-
       // if "Other" is not checked, filter per normal via titleFilters:
       if (!(_.includes(titleFilters, 'Other'))) {
         return _.includes(locationFilters, theLocation) &&
@@ -217,8 +214,10 @@ class ContactsNameOnly extends PureComponent {
       }
     })
 
+    const hasMore = results && (totalCount > results.length)
     return (
       <div className='animated fadeIn'>
+        <Components.HeadTags title='V8 Alba: Contacts' />
         <Card>
           <CardHeader>
             <i className='icon-people' />Contacts
@@ -236,7 +235,8 @@ class ContactsNameOnly extends PureComponent {
                 ...this.state.options,
                 sizePerPageList: SIZE_PER_PAGE_LIST_SEED.concat([{
                   text: 'All', value: this.props.totalCount
-                }])
+                }]),
+                sizePerPage: this.state.options.sizePerPage ? this.state.options.sizePerPage : totalCount
               }}
               keyField='_id' bordered={false} tableHeaderClass='d-none'>
               <TableHeaderColumn dataField='displayName' dataFormat={
@@ -271,4 +271,8 @@ const options = {
   terms: { view: 'contactsByLastName' }
 }
 
-registerComponent('ContactsNameOnly', ContactsNameOnly, withFilters, [withMulti, options])
+registerComponent({
+  name: 'ContactsNameOnly',
+  component: ContactsNameOnly,
+  hocs: [withFilters, [withMulti, options]]
+} )

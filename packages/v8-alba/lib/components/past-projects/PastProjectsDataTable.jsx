@@ -177,6 +177,7 @@ class PastProjectsDataTable extends PureComponent {
 
     return (
       <div className='animated fadeIn'>
+        <Components.HeadTags title='V8 Alba: Past Projects' />
         <Modal isOpen={this.state.modal} toggle={this.toggle} modalTransition={{ timeout: 100 }}>
           {this.state.project
             ? <ModalHeader toggle={this.toggle}>

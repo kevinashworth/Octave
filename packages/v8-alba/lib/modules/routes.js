@@ -7,9 +7,9 @@ addRoute({ path: '/login', name: 'Login', componentName: 'Login' })
 addRoute({ path: '/fragments', name: 'fragments', componentName: 'Fragments', layoutName: 'AdminLayout' })
 
 addRoute([
-  { name: 'Contacts', path: '/contacts', componentName: 'Contacts' },
-  { name: 'contacts.table', path: '/contacts/datatable', componentName: 'ContactsDataTable' },
-  { name: 'contacts.nameonly', path: '/contacts/nameonly', componentName: 'ContactsNameOnly' },
+  // { name: 'Contacts', path: '/contacts', componentName: 'Contacts' },
+  { name: 'contacts.table', path: '/contacts', componentName: 'ContactsDataTable' },
+  { name: 'contacts.mobile', path: '/m/contacts', componentName: 'ContactsNameOnly' },
   { name: 'contacts.list', path: '/contacts/list', componentName: 'ContactsList' },
   { name: 'contacts.vlist', path: '/contacts/vlist', componentName: 'ContactsVirtualizedList' },
   { name: 'contacts.edit', path: '/contacts/:_id/edit', componentName: 'ContactsEditForm' },
@@ -17,14 +17,19 @@ addRoute([
 ])
 
 addRoute([
-  { name: 'Offices', path: '/offices', componentName: 'Offices' },
-  { name: 'offices.table', path: '/offices/datatable', componentName: 'OfficesDataTable' },
+  // { name: 'Offices', path: '/offices', componentName: 'Offices' },
+  { name: 'offices.table', path: '/offices', componentName: 'OfficesDataTable' },
+  { name: 'offices.mobile', path: '/m/offices', componentName: 'OfficesNameOnly' },
   { name: 'offices.edit', path: '/offices/:_id/edit', componentName: 'OfficesEditForm' },
   { name: 'offices.single', path: '/offices/:_id/:slug?', componentName: 'OfficesSingle' }
 ])
 
-addRoute({ path: '/projects', name: 'Projects', componentName: 'Projects' })
-addRoute({ path: '/projects/datatable', name: 'Projects Table', componentName: 'ProjectsDataTable' })
+addRoute([
+  { name: 'project.table', path: '/projects', componentName: 'ProjectsDataTable' },
+  { name: 'project.mobile', path: '/m/projects', componentName: 'ProjectsNameOnly' }
+])
+
+// addRoute({ path: '/projects', name: 'Projects', componentName: 'Projects' })
 addRoute({ path: '/projects/new', name: 'projects.new', componentName: 'ProjectsNewForm' })
 addRoute({ path: '/projects/:_id/edit', name: 'projects.edit', componentName: 'ProjectsEditForm' })
 addRoute({ path: '/projects/:_id/:slug?', name: 'projects.single', componentName: 'ProjectSingle' })
