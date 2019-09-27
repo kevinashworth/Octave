@@ -17,8 +17,9 @@ addRoute([
 ])
 
 addRoute([
-  { name: 'Offices', path: '/offices', componentName: 'Offices' },
-  { name: 'offices.table', path: '/offices/datatable', componentName: 'OfficesDataTable' },
+  // { name: 'Offices', path: '/offices', componentName: 'Offices' },
+  { name: 'offices.table', path: '/offices', componentName: 'OfficesDataTable' },
+  { name: 'offices.mobile', path: '/m/offices', componentName: 'OfficesNameOnly' },
   { name: 'offices.edit', path: '/offices/:_id/edit', componentName: 'OfficesEditForm' },
   { name: 'offices.single', path: '/offices/:_id/:slug?', componentName: 'OfficesSingle' }
 ])

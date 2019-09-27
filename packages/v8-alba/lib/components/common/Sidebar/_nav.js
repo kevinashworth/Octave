@@ -35,7 +35,7 @@ export default {
     },
     {
       name: 'Offices',
-      url: '/offices/datatable',
+      url: '/offices',
       icon: 'icon-briefcase'
     },
     {
@@ -89,8 +89,8 @@ export default {
       icon: 'icon-people'
     },
     {
-      name: 'Offices',
-      url: '/offices/datatable',
+      name: 'Offices Mobile',
+      url: '/m/offices',
       icon: 'icon-briefcase'
     },
     {
