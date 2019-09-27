@@ -52,7 +52,6 @@ class ProjectsNameOnly extends PureComponent {
       keptState.options.sizePerPage = sizePerPage
     }
 
-    // the 20/50/100/All dropdown is now the right size, small
     const renderSizePerPageDropDown = (props) => {
       return (
         <SizePerPageDropDown btnContextual='btn-secondary btn-sm' {...props} />
@@ -116,18 +115,6 @@ class ProjectsNameOnly extends PureComponent {
     this.projectFiltersRef = node
   }
 
-  componentDidMount () {
-    const { loading, totalCount } = this.props
-    if (!loading) {
-      this.setState({
-        options: {
-          ...this.state.options,
-          sizePerPage: keptState.options.sizePerPage ? keptState.options.sizePerPage : totalCount
-        }
-      })
-    }
-  }
-
   componentWillUnmount () {
     const { filtersColor, options } = this.state
     keptState = {
@@ -156,9 +143,23 @@ class ProjectsNameOnly extends PureComponent {
   }
 
   render () {
-    const { count, totalCount, results, loadingMore, loadMore, currentUser,
+    const { count, totalCount, results, loadingMore, loadMore, currentUser, networkStatus,
             projectTypeFilters, projectStatusFilters, projectUpdatedFilters, projectPlatformFilters } = this.props
-    const hasMore = results && (totalCount > results.length)
+    if (networkStatus !== 8 && networkStatus !== 7) {
+      return (
+        <div className='animated fadeIn'>
+          <Components.HeadTags title='V8 Alba: Contacts' />
+          <Card>
+            <CardHeader>
+              <i className='icon-people' />Contacts
+            </CardHeader>
+            <CardBody>
+              <Components.Loading />
+            </CardBody>
+          </Card>
+        </div>
+      )
+    }
     let typeFilters = []
     projectTypeFilters.forEach(filter => {
       if (filter.value) { typeFilters.push(filter.projectType) }
@@ -179,7 +180,6 @@ class ProjectsNameOnly extends PureComponent {
     projectPlatformFilters.forEach(filter => {
       if (filter.value) { platformFilters.push(filter.projectPlatform) }
     })
-
     const filteredResults = _.filter(results, function (o) {
       // compare current time to filter, but generous, so start of day then, not the time it is now - filter plus up to 23:59
       const now = moment()
@@ -191,6 +191,7 @@ class ProjectsNameOnly extends PureComponent {
           displayThis
     })
 
+    const hasMore = results && (totalCount > results.length)
     return (
       <div className='animated fadeIn'>
         <Components.HeadTags title='V8 Alba: Projects' />
@@ -211,7 +212,8 @@ class ProjectsNameOnly extends PureComponent {
                 ...this.state.options,
                 sizePerPageList: SIZE_PER_PAGE_LIST_SEED.concat([{
                   text: 'All', value: this.props.totalCount
-                }])
+                }]),
+                sizePerPage: this.state.options.sizePerPage ? this.state.options.sizePerPage : totalCount
               }}
               keyField='_id' bordered={false} tableHeaderClass='d-none'>
               <TableHeaderColumn dataField='projectTitle' dataFormat={
