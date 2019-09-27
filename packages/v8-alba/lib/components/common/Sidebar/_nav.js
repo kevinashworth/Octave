@@ -40,7 +40,7 @@ export default {
     },
     {
       name: 'Projects',
-      url: '/projects/datatable',
+      url: '/projects',
       icon: 'fa fa-camera'
     },
     {
@@ -94,8 +94,8 @@ export default {
       icon: 'icon-briefcase'
     },
     {
-      name: 'Projects',
-      url: '/projects/datatable',
+      name: 'Projects Mobile',
+      url: '/m/projects',
       icon: 'fa fa-camera'
     },
     {

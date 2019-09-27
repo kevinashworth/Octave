@@ -23,8 +23,12 @@ addRoute([
   { name: 'offices.single', path: '/offices/:_id/:slug?', componentName: 'OfficesSingle' }
 ])
 
-addRoute({ path: '/projects', name: 'Projects', componentName: 'Projects' })
-addRoute({ path: '/projects/datatable', name: 'Projects Table', componentName: 'ProjectsDataTable' })
+addRoute([
+  { name: 'project.table', path: '/projects', componentName: 'ProjectsDataTable' },
+  { name: 'project.mobile', path: '/m/projects', componentName: 'ProjectsNameOnly' }
+])
+
+// addRoute({ path: '/projects', name: 'Projects', componentName: 'Projects' })
 addRoute({ path: '/projects/new', name: 'projects.new', componentName: 'ProjectsNewForm' })
 addRoute({ path: '/projects/:_id/edit', name: 'projects.edit', componentName: 'ProjectsEditForm' })
 addRoute({ path: '/projects/:_id/:slug?', name: 'projects.single', componentName: 'ProjectSingle' })

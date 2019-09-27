@@ -75,7 +75,6 @@ class ContactsNameOnly extends PureComponent {
       onClick()
     }
 
-    // make smaller button to match height of serach field
     const createCustomClearButton = (onClick) => {
       return (
         <ClearSearchButton className='btn-sm'
@@ -130,7 +129,6 @@ class ContactsNameOnly extends PureComponent {
   }
 
   componentWillUnmount () {
-    // Remember state for the next mount
     const { filtersColor, options } = this.state
     keptState = {
       filtersColor,
@@ -271,4 +269,8 @@ const options = {
   terms: { view: 'contactsByLastName' }
 }
 
-registerComponent('ContactsNameOnly', ContactsNameOnly, withFilters, [withMulti, options])
+registerComponent({
+  name: 'ContactsNameOnly',
+  component: ContactsNameOnly,
+  hocs: [withFilters, [withMulti, options]]
+} )

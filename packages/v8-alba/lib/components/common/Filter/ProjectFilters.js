@@ -1,7 +1,9 @@
 import { registerComponent } from 'meteor/vulcan:core'
 import React, { PureComponent } from 'react'
+import PropTypes from 'prop-types'
 import {
   ButtonDropdown,
+  ButtonGroup,
   CustomInput,
   DropdownItem,
   DropdownMenu,
@@ -37,8 +39,6 @@ class ProjectFilters extends PureComponent {
     this.handleChange = this.handleChange.bind(this)
     this.state = {
       dropdownOpen: new Array(4).fill(false),
-
-      // Retrieve the last state
       ...keptState
     }
   }
@@ -97,7 +97,7 @@ class ProjectFilters extends PureComponent {
       for (i = 0; i < length; i++) {
         this.props.actions.toggleProjectTypeFilter(i)
       }
-    } else { // for All and for None
+    } else if (all || none) {
       for (i = 0; i < length; i++) {
         if ((this.props.projectTypeFilters[i].value && none) || (!this.props.projectTypeFilters[i].value && !none)) {
           this.props.actions.toggleProjectTypeFilter(i)
@@ -122,7 +122,7 @@ class ProjectFilters extends PureComponent {
       for (i = 0; i < length; i++) {
         this.props.actions.toggleProjectPlatformFilter(i)
       }
-    } else { // for All and for None
+    } else if (all || none) {
       for (i = 0; i < length; i++) {
         if ((this.props.projectPlatformFilters[i].value && none) || (!this.props.projectPlatformFilters[i].value && !none)) {
           this.props.actions.toggleProjectPlatformFilter(i)
@@ -156,7 +156,7 @@ class ProjectFilters extends PureComponent {
         this.props.actions.clearProjectStatusFilter(i)
       }
       this.setState({ statusColor: 'primary' })
-    } else { // for All and for None
+    } else if (all || none) {
       for (i = 0; i < length; i++) {
         if ((this.props.projectStatusFilters[i].value && none) || (!this.props.projectStatusFilters[i].value && !none)) {
           this.props.actions.toggleProjectStatusFilter(i)
@@ -172,81 +172,88 @@ class ProjectFilters extends PureComponent {
   }
 
   render () {
+    const { vertical } = this.props
     return (
-      <div className='float-right'>
-        <ButtonDropdown className='ml-2' isOpen={this.state.dropdownOpen[0]} toggle={() => { this.toggle(0) }}>
-          <DropdownToggle caret color={this.state.typeColor}>
+      <div className={vertical ? '' : 'float-right'}>
+        <ButtonGroup vertical={vertical}>
+          <ButtonDropdown className={vertical ? 'mb-2' : 'ml-2'} isOpen={this.state.dropdownOpen[0]} toggle={() => { this.toggle(0) }}>
+            <DropdownToggle caret color={this.state.typeColor}>
             Type
           </DropdownToggle>
-          <DropdownMenu>
-            <DropdownItem header>Filter projects by type</DropdownItem>
-            <DropdownItemStatic>
-              {this.props.projectTypeFilters.map((project, index) =>
-                <CustomInput type='checkbox' name='project-type'
-                  id={`${index}-type`} key={`${project.projectType}`} label={`${project.projectType}`}
-                  checked={project.value} onChange={this.handleChange} />
+            <DropdownMenu>
+              <DropdownItem header>Filter projects by type</DropdownItem>
+              <DropdownItemStatic>
+                {this.props.projectTypeFilters.map((project, index) =>
+                  <CustomInput type='checkbox' name='project-type'
+                    id={`${index}-type`} key={`${project.projectType}`} label={`${project.projectType}`}
+                    checked={project.value} onChange={this.handleChange} />
               )}
-            </DropdownItemStatic>
-            <DropdownItem onClick={this.handleClickProjectType} toggle={false}>All</DropdownItem>
-            <DropdownItem onClick={this.handleClickProjectType} toggle={false}>None</DropdownItem>
-            <DropdownItem onClick={this.handleClickProjectType} toggle={false}>Toggle</DropdownItem>
-          </DropdownMenu>
-        </ButtonDropdown>
-        <ButtonDropdown className='ml-2' isOpen={this.state.dropdownOpen[1]} toggle={() => { this.toggle(1) }}>
-          <DropdownToggle caret color={this.state.updatedColor}>
+              </DropdownItemStatic>
+              <DropdownItem onClick={this.handleClickProjectType} toggle={false}>All</DropdownItem>
+              <DropdownItem onClick={this.handleClickProjectType} toggle={false}>None</DropdownItem>
+              <DropdownItem onClick={this.handleClickProjectType} toggle={false}>Toggle</DropdownItem>
+            </DropdownMenu>
+          </ButtonDropdown>
+          <ButtonDropdown className={vertical ? 'mb-2' : 'ml-2'} isOpen={this.state.dropdownOpen[1]} toggle={() => { this.toggle(1) }}>
+            <DropdownToggle caret color={this.state.updatedColor}>
             Last updated
           </DropdownToggle>
-          <DropdownMenu>
-            <DropdownItem header>Filter projects by last updated</DropdownItem>
-            <DropdownItemStatic>
-              {this.props.projectUpdatedFilters.map((filter, index) =>
-                <CustomInput type='radio' name='project-updated'
-                  id={`${index}-updated`} key={`${filter.projectUpdated}`} label={`${filter.projectUpdated}`}
-                  checked={filter.value} onChange={this.handleChange} />
+            <DropdownMenu>
+              <DropdownItem header>Filter projects by last updated</DropdownItem>
+              <DropdownItemStatic>
+                {this.props.projectUpdatedFilters.map((filter, index) =>
+                  <CustomInput type='radio' name='project-updated'
+                    id={`${index}-updated`} key={`${filter.projectUpdated}`} label={`${filter.projectUpdated}`}
+                    checked={filter.value} onChange={this.handleChange} />
               )}
-            </DropdownItemStatic>
-          </DropdownMenu>
-        </ButtonDropdown>
-        <ButtonDropdown className='ml-2' isOpen={this.state.dropdownOpen[2]} toggle={() => { this.toggle(2) }}>
-          <DropdownToggle caret color={this.state.statusColor}>
+              </DropdownItemStatic>
+            </DropdownMenu>
+          </ButtonDropdown>
+          <ButtonDropdown className={vertical ? 'mb-2' : 'ml-2'} isOpen={this.state.dropdownOpen[2]} toggle={() => { this.toggle(2) }}>
+            <DropdownToggle caret color={this.state.statusColor}>
             Status
           </DropdownToggle>
-          <DropdownMenu>
-            <DropdownItem header>Filter projects by status</DropdownItem>
-            <DropdownItemStatic>
-              {this.props.projectStatusFilters.map((project, index) =>
-                <CustomInput type='checkbox' name='project-status'
-                  id={`${index}-status`} key={`${project.projectStatus}`} label={`${project.projectStatus}`}
-                  checked={project.value} onChange={this.handleChange} />
+            <DropdownMenu>
+              <DropdownItem header>Filter projects by status</DropdownItem>
+              <DropdownItemStatic>
+                {this.props.projectStatusFilters.map((project, index) =>
+                  <CustomInput type='checkbox' name='project-status'
+                    id={`${index}-status`} key={`${project.projectStatus}`} label={`${project.projectStatus}`}
+                    checked={project.value} onChange={this.handleChange} />
               )}
-            </DropdownItemStatic>
-            <DropdownItem onClick={this.handleClickProjectStatus} toggle={false}>All</DropdownItem>
-            <DropdownItem onClick={this.handleClickProjectStatus} toggle={false}>Active</DropdownItem>
-            <DropdownItem onClick={this.handleClickProjectStatus} toggle={false}>None</DropdownItem>
-            <DropdownItem onClick={this.handleClickProjectStatus} toggle={false}>Toggle</DropdownItem>
-          </DropdownMenu>
-        </ButtonDropdown>
-        <ButtonDropdown className='ml-2' isOpen={this.state.dropdownOpen[3]} toggle={() => { this.toggle(3) }}>
-          <DropdownToggle caret color={this.state.platformColor}>
+              </DropdownItemStatic>
+              <DropdownItem onClick={this.handleClickProjectStatus} toggle={false}>All</DropdownItem>
+              <DropdownItem onClick={this.handleClickProjectStatus} toggle={false}>Active</DropdownItem>
+              <DropdownItem onClick={this.handleClickProjectStatus} toggle={false}>None</DropdownItem>
+              <DropdownItem onClick={this.handleClickProjectStatus} toggle={false}>Toggle</DropdownItem>
+            </DropdownMenu>
+          </ButtonDropdown>
+          <ButtonDropdown className={vertical ? 'mb-2' : 'ml-2'} isOpen={this.state.dropdownOpen[3]} toggle={() => { this.toggle(3) }}>
+            <DropdownToggle caret color={this.state.platformColor}>
             Platform
           </DropdownToggle>
-          <DropdownMenu>
-            <DropdownItem header>Filter projects by platform</DropdownItem>
-            <DropdownItemStatic>
-              {this.props.projectPlatformFilters.map((o, index) =>
-                <CustomInput type='checkbox' name='project-platform'
-                  id={`${index}-platform`} key={`${o.projectPlatform}`} label={`${o.projectPlatform}`}
-                  checked={o.value} onChange={this.handleChange} />
+            <DropdownMenu>
+              <DropdownItem header>Filter projects by platform</DropdownItem>
+              <DropdownItemStatic>
+                {this.props.projectPlatformFilters.map((o, index) =>
+                  <CustomInput type='checkbox' name='project-platform'
+                    id={`${index}-platform`} key={`${o.projectPlatform}`} label={`${o.projectPlatform}`}
+                    checked={o.value} onChange={this.handleChange} />
               )}
-            </DropdownItemStatic>
-            <DropdownItem onClick={this.handleClickProjectPlatform} toggle={false}>All</DropdownItem>
-            <DropdownItem onClick={this.handleClickProjectPlatform} toggle={false}>None</DropdownItem>
-            <DropdownItem onClick={this.handleClickProjectPlatform} toggle={false}>Toggle</DropdownItem>
-          </DropdownMenu>
-        </ButtonDropdown>
+              </DropdownItemStatic>
+              <DropdownItem onClick={this.handleClickProjectPlatform} toggle={false}>All</DropdownItem>
+              <DropdownItem onClick={this.handleClickProjectPlatform} toggle={false}>None</DropdownItem>
+              <DropdownItem onClick={this.handleClickProjectPlatform} toggle={false}>Toggle</DropdownItem>
+            </DropdownMenu>
+          </ButtonDropdown>
+        </ButtonGroup>
       </div>
     )
   }
+}
+
+ProjectFilters.propTypes = {
+  vertical: PropTypes.bool
 }
 
 registerComponent('ProjectFilters', ProjectFilters, withFilters)

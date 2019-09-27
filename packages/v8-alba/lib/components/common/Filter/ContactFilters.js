@@ -37,7 +37,6 @@ class ContactFilters extends PureComponent {
     this.handleChange = this.handleChange.bind(this)
     this.state = {
       dropdownOpen: new Array(3).fill(false),
-      // Retrieve the last state
       ...keptState
     }
   }
