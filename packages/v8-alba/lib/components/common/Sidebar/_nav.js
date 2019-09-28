@@ -1,7 +1,5 @@
-import shortid from 'shortid'
-
 const nav = {
-  items: [
+  topItems: [
     {
       title: true,
       name: 'Home'
@@ -15,13 +13,13 @@ const nav = {
       name: 'Latest Updates',
       url: '/latest',
       icon: 'icon-clock'
-    }
-  ],
-  smItems: [
+    },
     {
       title: true,
       name: 'The Info'
     },
+  ],
+  smItems: [
     {
       name: 'Contacts',
       url: '/contacts',
@@ -44,10 +42,6 @@ const nav = {
     }
   ],
   xsItems: [
-    {
-      title: true,
-      name: 'The Info'
-    },
     {
       name: 'Contacts (M)',
       url: '/m/contacts',
@@ -97,9 +91,10 @@ const nav = {
   ]
 }
 
+let keyCounter = 0
 export default {
-  items: nav.items.map(item => ({ ...item, id: shortid.generate() })),
-  smItems: nav.smItems.map(item => ({ ...item, id: shortid.generate() })),
-  xsItems: nav.xsItems.map(item => ({ ...item, id: shortid.generate() })),
-  adminItems: nav.adminItems.map(item => ({ ...item, id: shortid.generate() }))
+  topItems: nav.topItems.map(item => ({ ...item, id: keyCounter++ })),
+  smItems: nav.smItems.map(item => ({ ...item, id: keyCounter++ })),
+  xsItems: nav.xsItems.map(item => ({ ...item, id: keyCounter++ })),
+  adminItems: nav.adminItems.map(item => ({ ...item, id: keyCounter++ }))
 }
