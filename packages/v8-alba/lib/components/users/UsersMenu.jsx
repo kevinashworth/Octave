@@ -1,7 +1,8 @@
 import { Components, registerComponent, withCurrentUser } from 'meteor/vulcan:core'
 import React, { PureComponent } from 'react'
+import { NavLink } from 'react-router-dom'
 import PropTypes from 'prop-types'
-import { Dropdown, DropdownItem, DropdownMenu, DropdownToggle, NavLink } from 'reactstrap'
+import { Dropdown, DropdownItem, DropdownMenu, DropdownToggle } from 'reactstrap'
 import { Meteor } from 'meteor/meteor'
 import Users from 'meteor/vulcan:users'
 import { withApollo } from 'react-apollo'
@@ -42,10 +43,10 @@ class UsersMenu extends PureComponent {
             </DropdownToggle>
             <DropdownMenu right>
               <DropdownItem header tag='div' className='text-center'><strong>UserLoggedInMenu</strong></DropdownItem>
-              <DropdownItem><NavLink href={`/users/${currentUser.slug}`}><FormattedMessage id='users.profile' /></NavLink></DropdownItem>
-              <DropdownItem><NavLink href='/account'><FormattedMessage id='users.edit_account' /></NavLink></DropdownItem>
+              <DropdownItem><NavLink to={`/users/${currentUser.slug}`}><FormattedMessage id='users.profile' /></NavLink></DropdownItem>
+              <DropdownItem><NavLink to='/account'><FormattedMessage id='users.edit_account' /></NavLink></DropdownItem>
               {Users.isAdmin(currentUser) ? (
-                <DropdownItem><NavLink href='/admin'>Users</NavLink></DropdownItem>
+                <DropdownItem><NavLink to='/admin'>Users</NavLink></DropdownItem>
               ) : null}
               <DropdownItem onClick={this.logOut} tag='button'><FormattedMessage id='users.log_out' className='nav-link'/></DropdownItem>
             </DropdownMenu>

@@ -1,14 +1,13 @@
 import { Components, registerComponent, withCurrentUser } from 'meteor/vulcan:core'
 import Users from 'meteor/vulcan:users'
-import React, { Fragment, PureComponent } from 'react'
+import React, { Component, Fragment } from 'react'
 import { withRouter, NavLink } from 'react-router-dom'
 import Media from 'react-media'
 import { Badge, Nav, NavItem, NavLink as RsNavLink } from 'reactstrap'
 import classNames from 'classnames'
 import nav from './_nav'
-import navAdmin from './_nav_admin'
 
-class Sidebar extends PureComponent {
+class Sidebar extends Component {
   constructor (props) {
     super(props)
 
@@ -23,7 +22,6 @@ class Sidebar extends PureComponent {
   }
 
   activeRoute (routeName, props) {
-    // return this.props.location.pathname.indexOf(routeName) > -1 ? 'nav-item nav-dropdown open' : 'nav-item nav-dropdown';
     return props.location.pathname.indexOf(routeName) > -1 ? 'nav-item nav-dropdown open' : 'nav-item nav-dropdown'
   }
 
@@ -32,11 +30,6 @@ class Sidebar extends PureComponent {
       document.body.classList.toggle('sidebar-mobile-show')
     }
   }
-
-  // todo Sidebar nav secondLevel
-  // secondLevelActive(routeName) {
-  //   return this.props.location.pathname.indexOf(routeName) > -1 ? "nav nav-second-level collapse in" : "nav nav-second-level collapse";
-  // }
 
   render () {
     const props = this.props
@@ -52,20 +45,21 @@ class Sidebar extends PureComponent {
     // simple wrapper for nav-title item
     const wrapper = item => { return (item.wrapper && item.wrapper.element ? (React.createElement(item.wrapper.element, item.wrapper.attributes, item.name)) : item.name) }
 
+
     // nav list section title
-    const title = (title, key) => {
+    const title = (title) => {
       const classes = classNames('nav-title', title.class)
-      return (<li key={key} className={classes}>{wrapper(title)} </li>)
+      return (<li key={title.id} className={classes}>{wrapper(title)}</li>)
     }
 
     // nav list divider
-    const divider = (divider, key) => {
+    const divider = (divider) => {
       const classes = classNames('divider', divider.class)
-      return (<li key={key} className={classes} />)
+      return (<li key={divider.id} className={classes} />)
     }
 
     // nav label with nav link
-    const navLabel = (item, key) => {
+    const navLabel = (item) => {
       const classes = {
         item: classNames('hidden-cn', item.class),
         link: classNames('nav-label', item.class ? item.class : ''),
@@ -76,61 +70,62 @@ class Sidebar extends PureComponent {
         )
       }
       return (
-        navLink(item, key, classes)
+        navLink(item, classes)
       )
     }
 
     // nav item with nav link
-    const navItem = (item, key) => {
+    const navItem = (item) => {
       const classes = {
         item: classNames(item.class),
         link: classNames('nav-link', item.variant ? `nav-link-${item.variant}` : ''),
         icon: classNames(item.icon)
       }
       return (
-        navLink(item, key, classes)
+        navLink(item, classes)
       )
     }
 
     // nav link
-    const navLink = (item, key, classes) => {
+    const navLink = (item, classes) => {
       const url = item.url ? item.url : ''
       return (
-        <NavItem key={key} className={classes.item}>
-          { isExternal(url)
-            ? <RsNavLink href={url} className={classes.link} active>
+        <NavItem key={item.id} className={classes.item}>
+         { isExternal(url)
+           ? <RsNavLink href={url} className={classes.link} active>
               <i className={classes.icon} />{item.name}{badge(item.badge)}
-            </RsNavLink>
-            : <NavLink to={url} className={classes.link} activeClassName='active' onClick={this.hideMobile}>
+           </RsNavLink>
+           : <NavLink to={url} className={classes.link} activeClassName='active' onClick={this.hideMobile}>
               <i className={classes.icon} />{item.name}{badge(item.badge)}
-            </NavLink>
+           </NavLink>
           }
         </NavItem>
       )
     }
 
     // nav dropdown
-    const navDropdown = (item, key) => {
+    const navDropdown = (item) => {
       return (
-        <li key={key} className={this.activeRoute(item.url, props)}>
+        <li key={item.id} className={this.activeRoute(item.url, props)}>
           <a className='nav-link nav-dropdown-toggle' href='#' onClick={this.handleClick}><i className={item.icon} />{item.name}</a>
           <ul className='nav-dropdown-items'>
             {navList(item.children)}
           </ul>
-        </li>)
+        </li>
+      )
     }
 
     // nav type
-    const navType = (item, idx) =>
-      item.title ? title(item, idx)
-        : item.divider ? divider(item, idx)
-          : item.label ? navLabel(item, idx)
-            : item.children ? navDropdown(item, idx)
-              : navItem(item, idx)
+    const navType = (item) =>
+      item.title ? title(item)
+        : item.divider ? divider(item)
+          : item.label ? navLabel(item)
+            : item.children ? navDropdown(item)
+              : navItem(item)
 
     // nav list
     const navList = (items) => {
-      return items.map((item, index) => navType(item, index))
+      return items.map((item) => navType(item))
     }
 
     const isExternal = (url) => {
@@ -138,32 +133,24 @@ class Sidebar extends PureComponent {
       return link === 'http'
     }
 
+    const topNav = navList(nav.topItems)
+    const xsNav = navList(nav.xsItems)
+    const smNav = navList(nav.smItems)
+    const bottomNav = Users.isAdmin(props.currentUser) ? navList(nav.adminItems) : null
+
     // sidebar-nav root
+    // KSA - see https://getbootstrap.com/docs/4.1/layout/overview/ for xs & sm
     return (
       <div className='sidebar'>
         <Components.SidebarHeader />
         <Components.SidebarForm />
         <nav className='sidebar-nav'>
-          <Media
-            queries={{
-              mobile: '(max-width: 500px)',
-              others: '(min-width: 501px)'
-            }}>
-            {matches => (
-              <Fragment>
-                {matches.mobile &&
-                  <Nav>
-                    {navList(nav.mobileItems)}
-                    {Users.isAdmin(this.props.currentUser) ? navList(navAdmin.items) : null}
-                  </Nav>}
-                {matches.others &&
-                  <Nav>
-                    {navList(nav.items)}
-                    {Users.isAdmin(this.props.currentUser) ? navList(navAdmin.items) : null}
-                  </Nav>}
-              </Fragment>
-            )}
-          </Media>
+          <Nav>
+            {topNav}
+            <Media query="(max-width: 575.98px)" render={() => (<Fragment>{xsNav}</Fragment>)} defaultMatches={false} />
+            <Media query="(min-width: 576px)" render={() => (<Fragment>{smNav}</Fragment>)} defaultMatches={true} />
+            {bottomNav}
+          </Nav>
         </nav>
         <Components.SidebarFooter />
         <Components.SidebarMinimizer />
@@ -172,4 +159,11 @@ class Sidebar extends PureComponent {
   }
 }
 
-registerComponent('Sidebar', Sidebar, withCurrentUser, withRouter)
+registerComponent({
+  name: 'Sidebar',
+  component: Sidebar,
+  hocs: [
+    withCurrentUser,
+    withRouter
+  ]
+})

@@ -1,6 +1,7 @@
 import { Components, registerComponent } from 'meteor/vulcan:core'
 import React, { PureComponent } from 'react'
-import { Nav, NavbarBrand, NavbarToggler, NavItem, NavLink } from 'reactstrap'
+import { NavLink } from 'react-router-dom'
+import { Nav, NavbarBrand, NavbarToggler, NavItem } from 'reactstrap'
 
 class Header extends PureComponent {
   sidebarToggle (e) {
@@ -25,10 +26,10 @@ class Header extends PureComponent {
         </NavbarToggler>
         <Nav className='d-none d-lg-inline-flex' navbar>
           <NavItem className='px-3'>
-            <NavLink href='/contacts/list'>List</NavLink>
+            <NavLink to='/contacts/list'>List</NavLink>
           </NavItem>
           <NavItem className='px-3'>
-            <NavLink href='/contacts/vlist'>V-List</NavLink>
+            <NavLink to='/contacts/vlist'>V-List</NavLink>
           </NavItem>
         </Nav>
         <Nav className='ml-auto'>

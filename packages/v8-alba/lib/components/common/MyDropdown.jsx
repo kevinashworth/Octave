@@ -1,23 +1,22 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import { replaceComponent } from 'meteor/vulcan:lib';
-import { Dropdown, DropdownButton, DropdownItem, NavLink } from 'reactstrap'
-import { FormattedMessage } from 'meteor/vulcan:i18n';
+import { replaceComponent } from 'meteor/vulcan:lib'
+import { FormattedMessage } from 'meteor/vulcan:i18n'
+import React, { Fragment } from 'react'
+import { NavLink } from 'react-router-dom'
+import PropTypes from 'prop-types'
+import { Dropdown, DropdownButton, DropdownItem } from 'reactstrap'
 
 /*
-
 A node contains a menu item, and optionally a list of child items
-
 */
 const Node = ({ childrenItems, ...rest }) => {
   return (
-    <>
+    <Fragment>
       <Item {...rest} />
       {childrenItems &&
         !!childrenItems.length && (
           <div className="menu-node-children">{childrenItems.map((item, index) => <Item key={index} {...item} />)}</div>
         )}
-    </>
+    </Fragment>
   );
 };
 
@@ -26,10 +25,8 @@ Node.propTypes = {
 };
 
 /*
-
 Note: `rest` is used to ensure auto-generated props from parent dropdown
 components are properly passed down to MenuItem
-
 */
 const Item = ({ index, to, labelId, label, component, componentProps = {}, itemProps, linkProps, ...rest }) => {
   let menuComponent;
@@ -71,7 +68,7 @@ const MyDropdown = ({ label, labelId, trigger, menuItems, menuContents, variant 
   });
 
   if (variant === 'flat') {
-    
+
     return menuBody;
 
   } else {

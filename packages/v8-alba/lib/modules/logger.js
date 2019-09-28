@@ -1,12 +1,12 @@
 const logger = (process.env.NODE_ENV === 'production' ? null : (() => {
   let inGroup = false
   const methodToColorMap = {
-    debug: `#7f8c8d`, // grey
-    info: `#5f6c6d`, // darker grey
-    log: `#2ecc71`, // green
-    warn: `#f39c12`, // yellow
-    error: `#c0392b`, // red
-    groupCollapsed: `#3498db`, // blue
+    debug: '#7f8c8d', // grey
+    info: '#5f6c6d', // darker grey
+    log: '#2ecc71', // green
+    warn: '#f39c12', // yellow
+    error: '#c0392b', // red
+    groupCollapsed: '#3498db', // blue
     groupEnd: null
   }
   const print = function (method, args) {
@@ -28,10 +28,10 @@ const logger = (process.env.NODE_ENV === 'production' ? null : (() => {
     }
     const styles = [
       `background: ${methodToColorMap[method]}`,
-      `border-radius: 0.5em`,
-      `color: white`,
-      `font-weight: bold`,
-      `padding: 2px 0.5em`
+      'border-radius: 0.5em',
+      'color: white',
+      'font-weight: bold',
+      'padding: 2px 0.5em'
     ]
     // When in a group, the prefix is not displayed.
     const logPrefix = inGroup ? [] : ['%cV8', styles.join(';')]

@@ -1,18 +1,8 @@
-export default {
-  items: [
+const nav = {
+  topItems: [
     {
       title: true,
       name: 'Home'
-    },
-    {
-      name: 'Account',
-      url: '/account',
-      icon: 'fa fa-id-badge'
-    },
-    {
-      name: 'Login/Logout',
-      url: '/login',
-      icon: 'icon-login'
     },
     {
       name: 'Dashboard',
@@ -28,6 +18,8 @@ export default {
       title: true,
       name: 'The Info'
     },
+  ],
+  smItems: [
     {
       name: 'Contacts',
       url: '/contacts',
@@ -48,60 +40,61 @@ export default {
       url: '/past-projects/datatable',
       icon: 'fa fa-camera'
     }
-    // {
-    //   name: 'Modals',
-    //   url: '/modals',
-    //   icon: 'fa fa-external-link'
-    // }
   ],
-  mobileItems: [
+  xsItems: [
     {
-      title: true,
-      name: 'Home'
-    },
-    {
-      name: 'Account',
-      url: '/account',
-      icon: 'fa fa-id-badge'
-    },
-    {
-      name: 'Login/Logout',
-      url: '/login',
-      icon: 'icon-login'
-    },
-    {
-      name: 'Dashboard',
-      url: '/dashboard',
-      icon: 'icon-speedometer'
-    },
-    {
-      name: 'Latest Updates',
-      url: '/latest',
-      icon: 'icon-clock'
-    },
-    {
-      title: true,
-      name: 'The Info'
-    },
-    {
-      name: 'Contacts Mobile',
+      name: 'Contacts (M)',
       url: '/m/contacts',
       icon: 'icon-people'
     },
     {
-      name: 'Offices Mobile',
+      name: 'Offices (M)',
       url: '/m/offices',
       icon: 'icon-briefcase'
     },
     {
-      name: 'Projects Mobile',
+      name: 'Projects (M)',
       url: '/m/projects',
+      icon: 'fa fa-camera'
+    }
+  ],
+  adminItems: [
+    {
+      title: true,
+      name: 'Admin'
+    },
+    {
+      name: 'New Project',
+      url: '/projects/new',
       icon: 'fa fa-camera'
     },
     {
-      name: 'Past Projects',
-      url: '/past-projects/datatable',
-      icon: 'fa fa-camera'
+      name: 'Fragments',
+      url: '/fragments',
+      icon: 'fa fa-file-code-o'
+    },
+    {
+      name: 'Modals',
+      url: '/modals',
+      icon: 'fa fa-external-link'
+    },
+    {
+      name: 'Statistics',
+      url: '/statistics/list',
+      icon: 'fa fa-bar-chart'
+    },
+    {
+      name: 'User Admin',
+      url: '/admin',
+      icon: 'fa fa-user-o'
     }
   ]
+}
+
+let keyCounter = 0
+export default {
+  topItems: nav.topItems.map(item => ({ ...item, id: keyCounter++ })),
+  smItems: nav.smItems.map(item => ({ ...item, id: keyCounter++ })),
+  xsItems: nav.xsItems.map(item => ({ ...item, id: keyCounter++ })),
+  adminItems: nav.adminItems.map(item => ({ ...item, id: keyCounter++ }))
 }
