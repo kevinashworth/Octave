@@ -241,7 +241,7 @@ class PastProjectsDataTable extends PureComponent {
 const options = {
   collection: PastProjects,
   fragmentName: 'PastProjectsDataTableFragment',
-  limit: 500
+  limit: 600
 }
 
 registerComponent({

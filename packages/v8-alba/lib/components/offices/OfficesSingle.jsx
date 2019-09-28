@@ -6,7 +6,6 @@ import { Button, Card, CardBody, CardFooter, CardHeader, CardLink, CardText, Car
 import mapProps from 'recompose/mapProps'
 import moment from 'moment'
 import { DATE_FORMAT_LONG, DATE_FORMAT_SHORT } from '../../modules/constants.js'
-import { dangerouslyCreateAddress } from '../../modules/helpers.js'
 import Offices from '../../modules/offices/collection.js'
 
 // Don't fetch and render PastProjects unless user clicks to see them
@@ -37,15 +36,15 @@ class OfficesSingle extends PureComponent {
     this.setState({ collapseIsOpen: !this.state.collapseIsOpen })
   }
 
-  async componentDidMount () {
-    try {
-      const {
-        documentId
-      } = this.props
-    } catch (error) {
-      console.log(error); ``
-    }
-  }
+  // async componentDidMount () {
+  //   try {
+  //     const {
+  //       documentId
+  //     } = this.props
+  //   } catch (error) {
+  //     console.log(error); ``
+  //   }
+  // }
 
   render () {
     if (this.props.loading) {
@@ -70,31 +69,29 @@ class OfficesSingle extends PureComponent {
               <Button tag={Link} to={`/offices/${office._id}/edit`}>Edit</Button>
             </div> : null}
           </CardHeader>
-          <CardBody>
-            <CardText dangerouslySetInnerHTML={dangerouslyCreateAddress(office)} />
-          </CardBody>
-          <CardBody>
-            {office.addresses &&
-              office.addresses.map((o, index) => <Components.AddressDetail key={index} address={o} />)
-            }
-          </CardBody>
-          <CardBody>
-            <CardText className='mb-1'>{ office.body }</CardText>
-          </CardBody>
-          <CardBody>
-            {office.theContacts &&
-            office.theContacts.map((o, index) => <Components.ContactMini key={`ContactMini${index}`} documentId={o._id} />)
-            }
-          </CardBody>
-          <Components.ErrorBoundary>
+          {office.addresses &&
             <CardBody>
-              {office.theProjects &&
-                <CardTitle><b>Projects</b></CardTitle>
-              }
-              {office.theProjects &&
-                office.theProjects.map((o, index) => <Components.ProjectMini key={`ProjectMini${index}`} documentId={o._id} />)
-              }
+              {office.addresses.map((o, index) => <Components.AddressDetail key={index} address={o} />)}
             </CardBody>
+          }
+          {office.htmlBody &&
+            <CardBody>
+              <CardText className='mb-1' dangerouslySetInnerHTML={{ __html: office.htmlBody }} />
+            </CardBody>
+          }
+          {office.theContacts &&
+           office.theContacts.length > 0 &&
+            <CardBody>
+            {office.theContacts.map((o, index) => <Components.ContactMini key={`ContactMini${index}`} documentId={o._id} />)}
+            </CardBody>
+          }
+          <Components.ErrorBoundary>
+            {office.theProjects &&
+              <CardBody>
+                <CardTitle><b>Projects</b></CardTitle>
+                {office.theProjects.map((o, index) => <Components.ProjectMini key={`ProjectMini-${index}`} documentId={o._id} />)}
+              </CardBody>
+            }
           </Components.ErrorBoundary>
           {office.links &&
           <CardBody>
@@ -132,4 +129,12 @@ const options = {
 
 const mapPropsFunction = props => ({ ...props, documentId: props.match && props.match.params._id })
 
-registerComponent('OfficesSingle', OfficesSingle, withCurrentUser, mapProps(mapPropsFunction), [withSingle, options])
+registerComponent({
+  name: 'OfficesSingle',
+  component: OfficesSingle,
+  hocs: [
+    withCurrentUser,
+    mapProps(mapPropsFunction),
+    [withSingle, options]
+  ]
+})
