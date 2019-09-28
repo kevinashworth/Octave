@@ -39,7 +39,7 @@ Deploy
 - `meteor-hero` did a bunch of stuff then crashed, so I
 - Unzipped V8-Alba.tar.gz, had to move it adjacent to Dockerfile
 - Ran `heroku container:push web -a sleepy-earth-65615` (in bundle dir)
-- Ran `heroku container:release -a sleepy-earth-65615` (in bundle dir)
+- Ran `heroku container:release web -a sleepy-earth-65615` (in bundle dir)
 
 Settings
 - Changed MONGODB_URI, MONGO_URL, NODE_ENV manually in heroku dashboard
@@ -47,3 +47,16 @@ Settings
 - These two things are redundant for MONGO_URL, probably
 
 It was `heroku logs --tail -a sleepy-earth-65615` that led me to error "TypeError: Cannot read property 'mlabpass' of undefined"
+
+7. Later:
+Ran `meteor build ~/.meteor-hero/builds/build-20190927 --server-only --architecture=os.linux.x86_64` from V8-Alba home dir
+Took a little under 10 minutes
+`cd ~/.meteor-hero/builds`
+copy Dockerfile to, then cd into
+`cd build-20190927`
+unzip new tarfile
+mv Dockerfile into new `bundle` dir, cd into, then
+run `heroku container:push web -a sleepy-earth-65615`
+oops! run Docker app, run that command again
+after several minutes, success, then run
+`heroku container:release web -a sleepy-earth-65615`
