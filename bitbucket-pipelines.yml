@@ -5,6 +5,8 @@ pipelines:
     - step:
         name: "Deploy to heroku sleepy earth"
         script:
+          # Install bootstrap (b/c style.scss errors)
+          - npm install bootstrap
           # Install Meteor
           - curl https://install.meteor.com/ | sh
           # Build V8-Alba
