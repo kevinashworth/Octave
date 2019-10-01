@@ -11,12 +11,12 @@ pipelines:
           # Install Meteor
           - curl https://install.meteor.com/ | sh
           # Build V8-Alba
-          - meteor build ./build --allow-superuser
+          - meteor build --allow-superuser
           # Deploy to Heroku
           - pipe: atlassian/heroku-deploy:1.0.4
             variables:
               HEROKU_API_KEY: '***REMOVED***'
               HEROKU_APP_NAME: 'sleepy-earth-65615'
-              ZIP_FILE: './build/V8-Alba.tar.gz'
+              ZIP_FILE: 'V8-Alba.tar.gz'
               WAIT: 'true'
               DEBUG: 'true'
