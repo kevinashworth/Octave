@@ -7,9 +7,6 @@ pipelines:
         script:
           # Install Meteor
           - curl https://install.meteor.com/ | sh
-          - export METEOR_ALLOW_SUPERUSER=true
-          - npm install
-          - npm run setup-meteor-client-bundle
           # Build V8-Alba
           - meteor build ./build
           # Deploy to Heroku
