@@ -3,8 +3,7 @@ image: node:8.15.1
 pipelines:
   default:
     - step:
-        name: "Deploy to Heroku"
-        size: 2x
+        name: "Build"
         script:
           # Install bootstrap (b/c style.scss errors)
           - npm install bootstrap
@@ -12,6 +11,12 @@ pipelines:
           - curl https://install.meteor.com/ | sh
           # Build V8-Alba
           - meteor build . --allow-superuser
+        artifacts:
+          - V8-Alba.tar.gz
+    - step:
+        name: "Deploy"
+        size: 2x
+        script:
           # Deploy to Heroku
           - pipe: atlassian/heroku-deploy:1.0.4
             variables:
