@@ -3,9 +3,16 @@ image: node:8.15.1
 pipelines:
   default:
     - step:
-        name: Deploy to heroku sleepy earth
+        name: "Deploy to heroku sleepy earth"
         script:
+          # Install Meteor
+          - curl https://install.meteor.com/ | sh
+          - export METEOR_ALLOW_SUPERUSER=true
+          - npm install
+          - npm run setup-meteor-client-bundle
+          # Build V8-Alba
           - meteor build ./build
+          # Deploy to Heroku
           - pipe: atlassian/heroku-deploy:1.0.4
             variables:
               HEROKU_API_KEY: '***REMOVED***'
