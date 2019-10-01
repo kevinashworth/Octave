@@ -8,7 +8,7 @@ pipelines:
           # Install Meteor
           - curl https://install.meteor.com/ | sh
           # Build V8-Alba
-          - meteor build ./build
+          - meteor build ./build --allow-superuser
           # Deploy to Heroku
           - pipe: atlassian/heroku-deploy:1.0.4
             variables:
