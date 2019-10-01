@@ -60,3 +60,6 @@ run `heroku container:push web -a sleepy-earth-65615`
 oops! run Docker app, run that command again
 after several minutes, success, then run
 `heroku container:release web -a sleepy-earth-65615`
+
+8. Later on my other computer:
+Needed to install Docker macOS app, and Heroku CLI. And at some point run `heroku container:login` before `push`

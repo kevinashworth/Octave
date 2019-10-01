@@ -52,4 +52,4 @@ npm-debug.log
 
 .meteor/.id
 
-build/*
+.build/*
