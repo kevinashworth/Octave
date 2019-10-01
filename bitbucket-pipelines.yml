@@ -3,7 +3,8 @@ image: node:8.15.1
 pipelines:
   default:
     - step:
-        name: "Deploy to heroku sleepy earth"
+        name: "Deploy to Heroku"
+        size: 2x
         script:
           # Install bootstrap (b/c style.scss errors)
           - npm install bootstrap
