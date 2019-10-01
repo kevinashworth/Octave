@@ -1,9 +1,10 @@
 image: node:8.15.1
 
 pipelines:
-  default:
+  custom:
     - step:
         name: "Build"
+        trigger: manual
         script:
           # Install bootstrap (b/c style.scss errors)
           - npm install bootstrap
@@ -17,6 +18,7 @@ pipelines:
           - v8-alba.tar.gz
     - step:
         name: "Deploy"
+        trigger: manual
         size: 2x
         script:
           # Deploy to Heroku
