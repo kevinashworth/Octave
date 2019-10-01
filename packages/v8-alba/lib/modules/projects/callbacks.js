@@ -152,6 +152,10 @@ function ProjectEditUpdateOfficeAfter (data, { document }) {
 function ProjectEditUpdateOfficeBefore (data, { document, oldDocument }) {
   const oldOffice = oldDocument.castingOfficeId
   const newOffice = document.castingOfficeId
+  let adding = false
+  if (newOffice && !oldOffice) {
+    adding = true
+  }
   let removing = false
   if (oldOffice && !newOffice) {
     // this is an office getting removed from the project, so we also need to remove the project from that office
@@ -159,8 +163,8 @@ function ProjectEditUpdateOfficeBefore (data, { document, oldDocument }) {
   }
   let replacing = false
   if (newOffice && oldOffice && oldOffice !== newOffice) {
-    removing = false
     // this is one office replacing another on the project
+    removing = false
     replacing = true
   }
   let itmightnotbethereforsomereason = false
@@ -168,27 +172,40 @@ function ProjectEditUpdateOfficeBefore (data, { document, oldDocument }) {
     logger.info('itmightnotbethereforsomereason')
     itmightnotbethereforsomereason = true
   }
+
+  let office = null
+  let projects = null
+  if (adding) {
+    office = Offices.findOne(newOffice) // TODO: error handling
+    projects = office && office.projects
+  }
   if (removing || replacing || itmightnotbethereforsomereason) {
     const office = Offices.findOne(oldOffice) // TODO: error handling
     let projects = office && office.projects
-    if (!isEmptyValue(projects)) {
-      if (itmightnotbethereforsomereason) {
-        if (_.indexOf(projects, { projectId: document._id }) < 0) {
-          replacing = true
-          logger.info('itisnotthereforsomereason')
-        }
+  }
+  if (!isEmptyValue(projects)) {
+    if (itmightnotbethereforsomereason) {
+      if (_.indexOf(projects, { projectId: document._id }) < 0) {
+        replacing = true
+        logger.info('itisnotthereforsomereason')
       }
-      _.remove(projects, function (p) {
-        return p.projectId === document._id
-      })
-      if (replacing) {
-        projects.push({ projectId: document._id })
-      }
-      Connectors.update(Offices, office._id, { $set: {
-        projects: projects,
-        updatedAt: new Date()
-      } })
     }
+    _.remove(projects, function (p) {
+      return p.projectId === document._id
+    })
+    if (replacing) {
+      projects.push({ projectId: document._id })
+    }
+    Connectors.update(Offices, office._id, { $set: {
+      projects: projects,
+      updatedAt: new Date()
+    } })
+  } else if (adding || itmightnotbethereforsomereason) { // means we are adding to empty (or null) projects
+    projects = [{ projectId: document._id }]
+    Connectors.update(Offices, office._id, { $set: {
+      projects: projects,
+      updatedAt: new Date()
+    } })
   }
 }
 
