@@ -11,8 +11,10 @@ pipelines:
           - curl https://install.meteor.com/ | sh
           # Build V8-Alba
           - meteor build . --allow-superuser
+          # Debug
+          - ls -al
         artifacts:
-          - V8-Alba.tar.gz
+          - v8-alba.tar.gz
     - step:
         name: "Deploy"
         size: 2x
@@ -22,6 +24,6 @@ pipelines:
             variables:
               HEROKU_API_KEY: '***REMOVED***'
               HEROKU_APP_NAME: 'sleepy-earth-65615'
-              ZIP_FILE: 'V8-Alba.tar.gz'
+              ZIP_FILE: 'v8-alba.tar.gz'
               WAIT: 'true'
               DEBUG: 'true'
