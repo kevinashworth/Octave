@@ -159,6 +159,8 @@ class OfficesNameOnly extends PureComponent {
                   )
                 }
               }>Name</TableHeaderColumn>
+              <TableHeaderColumn dataField='fullAddress' hidden>Address</TableHeaderColumn>
+              <TableHeaderColumn dataField='body' hidden>Hidden</TableHeaderColumn>
             </BootstrapTable>
           </CardBody>
           {hasMore &&

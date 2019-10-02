@@ -248,6 +248,10 @@ class ContactsNameOnly extends PureComponent {
                   )
                 }
               }>Name</TableHeaderColumn>
+              <TableHeaderColumn dataField='title' hidden>Title</TableHeaderColumn>
+              <TableHeaderColumn dataField='addressString' hidden>Address</TableHeaderColumn>
+              <TableHeaderColumn dataField='allLinks' hidden>Hidden</TableHeaderColumn>
+              <TableHeaderColumn dataField='body' hidden>Hidden</TableHeaderColumn>
             </BootstrapTable>
           </CardBody>
           {hasMore &&
