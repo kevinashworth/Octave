@@ -5,8 +5,8 @@
     "npm": "^3.0"
   },
   "scripts": {
-    "build-for-heroku": "meteor build ./.build --server-only --architecture=os.linux.x86_64",
-    "deploy-to-heroku": "tar -xvzf ./.build/*.tar.gz && cp Dockerfile ./.build/bundle && heroku container:push web -a sleepy-earth-65615 --context-path ./.build/bundle && heroku container:release web -a sleepy-earth-65615",
+    "build-for-heroku": "meteor build ./.build --directory --server-only --architecture=os.linux.x86_64",
+    "deploy-to-heroku": "open --hide --background -a Docker && cp Dockerfile ./.build/bundle && heroku container:push web -a sleepy-earth-65615 --context-path ./.build/bundle && heroku container:release web -a sleepy-earth-65615",
     "prestart": "node .vulcan/prestart_vulcan.js",
     "start": "meteor --port 4004 --settings settings.json",
     "start-debug": "meteor debug --port 4004 --settings settings.json",
