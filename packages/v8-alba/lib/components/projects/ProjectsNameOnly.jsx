@@ -225,6 +225,14 @@ class ProjectsNameOnly extends PureComponent {
                   )
                 }
               }>Name</TableHeaderColumn>
+              <TableHeaderColumn dataField='network' hidden>Network</TableHeaderColumn>
+              <TableHeaderColumn dataField='projectType' hidden>Type</TableHeaderColumn>
+              <TableHeaderColumn dataField='casting' hidden>Casting</TableHeaderColumn>
+              <TableHeaderColumn dataField='status' hidden>Status</TableHeaderColumn>
+              <TableHeaderColumn dataField='summary' hidden>Hidden</TableHeaderColumn>
+              <TableHeaderColumn dataField='notes' hidden>Hidden</TableHeaderColumn>
+              <TableHeaderColumn dataField='allContactNames' hidden>Hidden</TableHeaderColumn>
+              <TableHeaderColumn dataField='allAddresses' hidden>Hidden</TableHeaderColumn>
             </BootstrapTable>
           </CardBody>
           {hasMore &&
