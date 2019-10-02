@@ -5,7 +5,6 @@ import Projects from './collection.js'
 import PastProjects from '../past-projects/collection.js'
 import Statistics from '../statistics/collection.js'
 import { isEmptyValue } from '../helpers.js'
-import { logger } from '../logger.js'
 import { PAST_PROJECT_STATUSES_ARRAY } from '../constants.js'
 import _ from 'lodash'
 import moment from 'moment'
@@ -169,7 +168,7 @@ function ProjectEditUpdateOfficeBefore (data, { document, oldDocument }) {
   }
   let itmightnotbethereforsomereason = false
   if (newOffice === oldOffice) {
-    logger.info('itmightnotbethereforsomereason')
+    console.info('itmightnotbethereforsomereason')
     itmightnotbethereforsomereason = true
   }
 
@@ -187,7 +186,7 @@ function ProjectEditUpdateOfficeBefore (data, { document, oldDocument }) {
     if (itmightnotbethereforsomereason) {
       if (_.indexOf(projects, { projectId: document._id }) < 0) {
         replacing = true
-        logger.info('itisnotthereforsomereason')
+        console.info('itisnotthereforsomereason')
       }
     }
     _.remove(projects, function (p) {
@@ -309,7 +308,7 @@ async function ProjectUpdateStatusAsync ({ currentUser, document, oldDocument })
         validate: false
       })
     } catch (err) {
-      logger.error('error in createNewPastProject:', err)
+      console.error('error in createNewPastProject:', err)
     }
   }
 
@@ -322,7 +321,7 @@ async function ProjectUpdateStatusAsync ({ currentUser, document, oldDocument })
         validate: false
       })
     } catch (err) {
-      logger.error('error in deleteProject:', err)
+      console.error('error in deleteProject:', err)
     }
   }
 

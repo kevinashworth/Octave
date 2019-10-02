@@ -5,7 +5,6 @@ import marked from 'marked'
 import { addressSubSchema, linkSubSchema } from '../shared_schemas.js'
 import { CASTING_TITLES_ENUM } from '../constants.js'
 import { getAddress, getFullAddress, getFullNameFromContact } from '../helpers.js'
-import { logger } from '../logger.js'
 
 const getHtmlBody = (contact) => {
   if (contact.body) {
@@ -19,9 +18,9 @@ const getAddressString = (contact) => {
   try {
     return getFullAddress(getAddress({ contact }))
   } catch (e) {
-    logger.groupCollapsed('Error in addressString for ', contact._id, ':')
-    logger.error(e)
-    logger.groupEnd()
+    console.group('Error in addressString for ', contact._id, ':')
+    console.error(e)
+    console.groupEnd()
     return 'Error in getAddressString'
   }
 }
