@@ -3,7 +3,6 @@ import SimpleSchema from 'simpl-schema'
 import marked from 'marked'
 import { addressSubSchema, linkSubSchema } from '../shared_schemas.js'
 import { getFullAddress, isEmptyValue } from '../helpers.js'
-import { logger } from '../logger.js'
 
 // import _ from 'lodash'
 
@@ -450,9 +449,9 @@ const schema = {
             return o.addresses[0].street1
           }
         } catch (e) {
-          logger.groupCollapsed('Error in theStreet1 for ', o._id, ':')
-          logger.error(e)
-          logger.groupEnd()
+          console.group('Error in theStreet1 for ', o._id, ':')
+          console.error(e)
+          console.groupEnd()
           return 'Blvd of Broken Dreams'
         }
         return null
@@ -472,9 +471,9 @@ const schema = {
             return o.addresses[0].street2
           }
         } catch (e) {
-          logger.groupCollapsed('Error in theStreet2 for ', o._id, ':')
-          logger.error(e)
-          logger.groupEnd()
+          console.group('Error in theStreet2 for ', o._id, ':')
+          console.error(e)
+          console.groupEnd()
           return 'Suite Nothing'
         }
         return null
@@ -494,9 +493,9 @@ const schema = {
             return o.addresses[0].city
           }
         } catch (e) {
-          logger.groupCollapsed('Error in theCity for ', o._id, ':')
-          logger.error(e)
-          logger.groupEnd()
+          console.group('Error in theCity for ', o._id, ':')
+          console.error(e)
+          console.groupEnd()
           return 'Leicester City'
         }
         return null
@@ -516,9 +515,9 @@ const schema = {
             return o.addresses[0].state
           }
         } catch (e) {
-          logger.groupCollapsed('Error in theState for ', o._id, ':')
-          logger.error(e)
-          logger.groupEnd()
+          console.group('Error in theState for ', o._id, ':')
+          console.error(e)
+          console.groupEnd()
           return 'State of Denial'
         }
         return null
@@ -539,9 +538,9 @@ const schema = {
             state = o.addresses[0].state.toLowerCase()
           }
         } catch (e) {
-          logger.groupCollapsed('Error in theLocation for ', o._id, ':')
-          logger.error(e)
-          logger.groupEnd()
+          console.group('Error in theLocation for ', o._id, ':')
+          console.error(e)
+          console.groupEnd()
           return 'Locomotion'
         }
         if (state === 'ca' || state.indexOf('calif') > -1) {

@@ -10,7 +10,6 @@ import moment from 'moment'
 import marked from 'marked'
 import reducedStats from './seeds/_stats-reduced.js'
 import { getAddress, getFullAddress, getFullNameFromContact, getPlatformType } from '../modules/helpers.js'
-import { logger } from '../modules/logger.js'
 
 Migrations.add({
   version: 1,
@@ -445,9 +444,9 @@ Migrations.add({
       try {
         addressString = getFullAddress(getAddress({ contact }))
       } catch (e) {
-        logger.groupCollapsed('Error in addressString for ', contact._id, ':')
-        logger.error(e)
-        logger.groupEnd()
+        console.group('Error in addressString for ', contact._id, ':')
+        console.error(e)
+        console.groupEnd()
       }
       Contacts.update(contact._id,
         {

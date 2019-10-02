@@ -14,6 +14,10 @@ class Header extends PureComponent {
     document.body.classList.toggle('sidebar-mobile-show')
   }
 
+  // <NavItem className='px-3'>
+  //             <NavLink to='/contacts/list'>List</NavLink>
+  // </NavItem>
+
   render () {
     return (
       <header className='app-header navbar'>
@@ -25,9 +29,6 @@ class Header extends PureComponent {
           <span className='navbar-toggler-icon' />
         </NavbarToggler>
         <Nav className='d-none d-lg-inline-flex' navbar>
-          <NavItem className='px-3'>
-            <NavLink to='/contacts/list'>List</NavLink>
-          </NavItem>
           <NavItem className='px-3'>
             <NavLink to='/contacts/vlist'>V-List</NavLink>
           </NavItem>
