@@ -121,6 +121,7 @@ const pastProjectSubSchema = new SimpleSchema({
 const officeSubSchema = new SimpleSchema({
   officeId: {
     type: String,
+    label: 'Office',
     control: 'MySelect',
     optional: true,
     canRead: ['members'],

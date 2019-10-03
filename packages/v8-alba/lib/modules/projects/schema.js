@@ -272,9 +272,9 @@ const schema = {
     canUpdate: ['admins']
   },
   castingOfficeId: {
-    label: 'Casting Office',
     type: String,
     control: 'MySelect',
+    label: 'Office',
     optional: true,
     canRead: ['members'],
     canCreate: ['admins'],

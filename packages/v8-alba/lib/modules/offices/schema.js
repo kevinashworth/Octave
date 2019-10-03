@@ -78,6 +78,7 @@ const contactSchema = new SimpleSchema({
 const projectSubSchema = new SimpleSchema({
   projectId: {
     type: String,
+    label: 'Project',
     control: 'MySelect',
     optional: true,
     canRead: ['members'],
@@ -99,6 +100,7 @@ const projectSubSchema = new SimpleSchema({
 const pastProjectSubSchema = new SimpleSchema({
   projectId: {
     type: String,
+    label: 'Past Project',
     control: 'MySelect',
     optional: true,
     canRead: ['members'],
