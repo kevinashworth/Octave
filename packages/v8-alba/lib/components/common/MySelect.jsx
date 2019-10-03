@@ -1,8 +1,8 @@
 import { registerComponent } from 'meteor/vulcan:lib'
 import { intlShape } from 'meteor/vulcan:i18n'
 import React, { PureComponent } from 'react'
-import Select from 'react-select'
 import PropTypes from 'prop-types'
+import Select from 'react-select'
 import find from 'lodash/find'
 
 class MySelect extends PureComponent {
@@ -11,8 +11,6 @@ class MySelect extends PureComponent {
     this.handleChange = this.handleChange.bind(this)
 
     const initialValue = find(this.props.options, { value: this.props.value }) || null
-    console.info('initialValue:', initialValue)
-
     this.state = {
       selectedOption: initialValue
     }
@@ -24,7 +22,7 @@ class MySelect extends PureComponent {
     let siblingPath = null
     if (this.props.parentFieldName === 'projects' || this.props.parentFieldName === 'pastProjects') {
       siblingPath = this.props.parentFieldName + '.' + this.props.itemIndex + '.' + 'projectTitle'
-      console.debug('We have a siblingPath!', siblingPath)
+      // console.debug('We have a siblingPath!', siblingPath)
     }
     if (siblingPath) {
       this.context.updateCurrentValues({
@@ -34,11 +32,11 @@ class MySelect extends PureComponent {
     } else {
       this.context.updateCurrentValues({ [this.props.path]: selectedOption.value })
     }
-
-    console.group('MySelect:')
-    console.log(`MySelect label: ${selectedOption.label}`)
-    console.log(`MySelect value: ${selectedOption.value}`)
-    console.groupEnd()
+    //
+    // console.group('MySelect:')
+    // console.log(`MySelect label: ${selectedOption.label}`)
+    // console.log(`MySelect value: ${selectedOption.value}`)
+    // console.groupEnd()
   }
 
   render () {
