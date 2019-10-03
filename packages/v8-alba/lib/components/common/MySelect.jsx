@@ -1,5 +1,5 @@
 import { registerComponent } from 'meteor/vulcan:lib'
-import { intlShape } from 'meteor/vulcan:i18n'
+// import { intlShape } from 'meteor/vulcan:i18n'
 import React, { PureComponent } from 'react'
 import Select from 'react-select'
 import PropTypes from 'prop-types'
@@ -38,11 +38,11 @@ class MySelect extends PureComponent {
   }
 
   render () {
-    const noneOption = {
-      label: this.context.intl.formatMessage({ id: 'forms.select_option' }),
-      value: null,
-      disabled: true
-    }
+    // const noneOption = {
+    //   label: this.context.intl.formatMessage({ id: 'forms.select_option' }),
+    //   value: null,
+    //   disabled: true
+    // }
     return (
       <div className='form-group row'>
         <label className='control-label col-sm-3'>{this.props.label}</label>
@@ -51,8 +51,8 @@ class MySelect extends PureComponent {
             name='form-field-name'
             value={this.state.value}
             onChange={this.handleChange}
-            options={[noneOption, ...this.props.options]}
-            resetValue={noneOption}
+            options={{this.props.options}}
+            resetValue={{ value: null, label: '' }}
           />
         </div>
       </div>
@@ -61,8 +61,8 @@ class MySelect extends PureComponent {
 }
 
 MySelect.contextTypes = {
-  updateCurrentValues: PropTypes.func,
-  intl: intlShape
+  updateCurrentValues: PropTypes.func
+  // intl: intlShape
 }
 
 registerComponent('MySelect', MySelect)
