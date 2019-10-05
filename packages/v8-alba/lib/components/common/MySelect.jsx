@@ -1,6 +1,6 @@
 import { registerComponent } from 'meteor/vulcan:lib'
 import { intlShape } from 'meteor/vulcan:i18n'
-import React, { PureComponent } from 'react'
+import React, { Fragment, PureComponent } from 'react'
 import PropTypes from 'prop-types'
 import Select from 'react-select'
 import find from 'lodash/find'
@@ -40,24 +40,38 @@ class MySelect extends PureComponent {
   }
 
   render () {
+    const { selectOne } = this.props.inputProperties
+    const { selectedOption } = this.state
     const noneOption = {
       label: this.context.intl.formatMessage({ id: 'forms.select_option' }),
       value: null,
       isDisabled: true
     }
-    const { selectedOption } = this.state
-    return (
-      <div className='form-group row'>
-        <label className='control-label col-sm-3'>{this.props.label}</label>
-        <div className='col-sm-9'>
+
+    if (selectOne) {
+      return (
+        <div className='form-group row'>
+          <label className='form-label col-form-label col-sm-3'>{this.props.label}</label>
+          <div className='col-sm-9'>
+            <Select
+              value={selectedOption}
+              onChange={this.handleChange}
+              options={[noneOption, ...this.props.options]}
+              />
+          </div>
+        </div>
+      )
+    } else {
+      return (
+        <Fragment key={this.props.path}>
           <Select
             value={selectedOption}
             onChange={this.handleChange}
             options={[noneOption, ...this.props.options]}
-          />
-        </div>
-      </div>
-    )
+            />
+        </Fragment>
+      )
+    }
   }
 }
 
