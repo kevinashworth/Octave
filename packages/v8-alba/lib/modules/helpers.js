@@ -143,7 +143,7 @@ export const getAddress = ({ project, office, contact }) => {
 
   if (office) {
     if (!isEmptyValue(office.addresses)) {
-      for (var i = 0; i < office.addresses.length; i++) {
+      for (let i = 0; i < office.addresses.length; i++) {
         address = findAddress(office.addresses[i])
         if (address.state.length) {
           break
@@ -151,7 +151,7 @@ export const getAddress = ({ project, office, contact }) => {
       }
     }
     if (_.isEqual(address, blankAddress) && !isEmptyValue(office.projects)) {
-      for (var i = 0; i < office.projects.length; i++) {
+      for (let i = 0; i < office.projects.length; i++) {
         address = findProjectAddress(office.projects[i])
         if (address.state.length) {
           break
@@ -159,7 +159,7 @@ export const getAddress = ({ project, office, contact }) => {
       }
     }
     if (_.isEqual(address, blankAddress) && !isEmptyValue(office.contacts)) {
-      for (var i = 0; i < office.contacts.length; i++) {
+      for (let i = 0; i < office.contacts.length; i++) {
         address = findContactAddress(office.contacts[i])
         if (address.state.length) {
           break
@@ -176,7 +176,7 @@ export const getAddress = ({ project, office, contact }) => {
 
   if (project) {
     if (!isEmptyValue(project.addresses)) {
-      for (var i = 0; i < project.addresses.length; i++) {
+      for (let i = 0; i < project.addresses.length; i++) {
         address = findAddress(project.addresses[i])
         if (address.state.length) {
           break
@@ -184,7 +184,7 @@ export const getAddress = ({ project, office, contact }) => {
       }
     }
     if (_.isEqual(address, blankAddress) && !isEmptyValue(project.offices)) {
-      for (var i = 0; i < project.offices.length; i++) {
+      for (let i = 0; i < project.offices.length; i++) {
         address = findOfficeAddress(project.offices[i])
         if (address.state.length) {
           break
@@ -192,7 +192,7 @@ export const getAddress = ({ project, office, contact }) => {
       }
     }
     if (_.isEqual(address, blankAddress) && !isEmptyValue(project.contacts)) {
-      for (var i = 0; i < project.contacts.length; i++) {
+      for (let i = 0; i < project.contacts.length; i++) {
         address = findContactAddress(project.contacts[i])
         if (address.state.length) {
           break
@@ -209,7 +209,7 @@ export const getAddress = ({ project, office, contact }) => {
 
   if (contact) {
     if (!isEmptyValue(contact.addresses)) {
-      for (var i = 0; i < contact.addresses.length; i++) {
+      for (let i = 0; i < contact.addresses.length; i++) {
         address = findAddress(contact.addresses[i])
         if (address.state.length) {
           break
@@ -217,7 +217,7 @@ export const getAddress = ({ project, office, contact }) => {
       }
     }
     if (_.isEqual(address, blankAddress) && !isEmptyValue(contact.offices)) {
-      for (var i = 0; i < contact.offices.length; i++) {
+      for (let i = 0; i < contact.offices.length; i++) {
         address = findOfficeAddress(contact.offices[i])
         if (address.state.length) {
           break
@@ -225,7 +225,7 @@ export const getAddress = ({ project, office, contact }) => {
       }
     }
     if (_.isEqual(address, blankAddress) && !isEmptyValue(contact.projects)) {
-      for (var i = 0; i < contact.projects.length; i++) {
+      for (let i = 0; i < contact.projects.length; i++) {
         address = findProjectAddress(contact.projects[i])
         if (address.state.length) {
           break
@@ -248,7 +248,7 @@ const findProjectAddress = (project) => {
     const theProject = project.projectId && Projects.findOne(project.projectId)
     if (theProject) {
       if (!isEmptyValue(theProject.addresses)) {
-        for (var i = 0; i < theProject.addresses.length; i++) {
+        for (let i = 0; i < theProject.addresses.length; i++) {
           const theAddress = findAddress(theProject.addresses[i])
           if (theAddress.state.length) {
             return theAddress
@@ -267,7 +267,7 @@ const findOfficeAddress = (office) => {
     const theOffice = office.officeId && Offices.findOne(office.officeId)
     if (theOffice) {
       if (!isEmptyValue(theOffice.addresses)) {
-        for (var i = 0; i < theOffice.addresses.length; i++) {
+        for (let i = 0; i < theOffice.addresses.length; i++) {
           const theAddress = findAddress(theOffice.addresses[i])
           if (theAddress.state.length) {
             return theAddress
@@ -286,7 +286,7 @@ const findContactAddress = (contact) => {
     const theContact = contact.contactId && Contacts.findOne(contact.contactId)
     if (theContact) {
       if (!isEmptyValue(theContact.addresses)) {
-        for (var i = 0; i < theContact.addresses.length; i++) {
+        for (let i = 0; i < theContact.addresses.length; i++) {
           const theAddress = findAddress(theContact.addresses[i])
           if (theAddress.state.length) {
             return theAddress

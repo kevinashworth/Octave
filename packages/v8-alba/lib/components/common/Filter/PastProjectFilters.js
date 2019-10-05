@@ -83,13 +83,12 @@ class PastProjectFilters extends PureComponent {
     const none = event.target.innerHTML.indexOf('None') !== -1
     const toggle = event.target.innerHTML.indexOf('Toggle') !== -1
     const length = this.props.pastProjectTypeFilters.length
-    var i
     if (toggle) {
-      for (i = 0; i < length; i++) {
+      for (let i = 0; i < length; i++) {
         this.props.actions.togglePastProjectTypeFilter(i)
       }
     } else { // for All and for None
-      for (i = 0; i < length; i++) {
+      for (let i = 0; i < length; i++) {
         if ((this.props.pastProjectTypeFilters[i].value && none) || (!this.props.pastProjectTypeFilters[i].value && !none)) {
           this.props.actions.togglePastProjectTypeFilter(i)
         }
@@ -111,12 +110,12 @@ class PastProjectFilters extends PureComponent {
     const active = event.target.innerHTML.indexOf('Active') !== -1
     const toggle = event.target.innerHTML.indexOf('Toggle') !== -1
     const length = this.props.pastProjectStatusFilters.length
-    var i
     if (toggle) {
-      for (i = 0; i < length; i++) {
+      for (let i = 0; i < length; i++) {
         this.props.actions.togglePastProjectStatusFilter(i)
       }
     } else if (active) {
+      let i
       for (i = 0; i < length - 4; i++) { // Canceled, Wrapped, Unknown, Relocated are not considered Active
         this.props.actions.setPastProjectStatusFilter(i)
       }
@@ -125,7 +124,7 @@ class PastProjectFilters extends PureComponent {
       }
       this.setState({ statusColor: 'primary' })
     } else { // for All and for None
-      for (i = 0; i < length; i++) {
+      for (let i = 0; i < length; i++) {
         if ((this.props.pastProjectStatusFilters[i].value && none) || (!this.props.pastProjectStatusFilters[i].value && !none)) {
           this.props.actions.togglePastProjectStatusFilter(i)
         }

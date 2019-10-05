@@ -86,11 +86,11 @@ class ContactFilters extends PureComponent {
     const toggle = event.target.innerHTML.indexOf('Toggle') !== -1
     const length = this.props.contactTitleFilters.length
     if (toggle) {
-      for (var i = 0; i < length; i++) {
+      for (let i = 0; i < length; i++) {
         this.props.actions.toggleContactTitleFilter(i)
       }
     } else if (all || none) {
-      for (var i = 0; i < length; i++) {
+      for (let i = 0; i < length; i++) {
         if ((this.props.contactTitleFilters[i].value && none) || (!this.props.contactTitleFilters[i].value && !none)) {
           this.props.actions.toggleContactTitleFilter(i)
         }
@@ -109,13 +109,12 @@ class ContactFilters extends PureComponent {
     const none = event.target.innerHTML.indexOf('None') !== -1
     const toggle = event.target.innerHTML.indexOf('Toggle') !== -1
     const length = this.props.contactLocationFilters.length
-    var i
     if (toggle) {
-      for (i = 0; i < length; i++) {
+      for (let i = 0; i < length; i++) {
         this.props.actions.toggleContactLocationFilter(i)
       }
     } else { // for All and for None
-      for (i = 0; i < length; i++) {
+      for (let i = 0; i < length; i++) {
         if ((this.props.contactLocationFilters[i].value && none) || (!this.props.contactLocationFilters[i].value && !none)) {
           this.props.actions.toggleContactLocationFilter(i)
         }

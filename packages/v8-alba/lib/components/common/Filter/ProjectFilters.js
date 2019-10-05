@@ -92,13 +92,12 @@ class ProjectFilters extends PureComponent {
     const none = event.target.innerHTML.indexOf('None') !== -1
     const toggle = event.target.innerHTML.indexOf('Toggle') !== -1
     const length = this.props.projectTypeFilters.length
-    var i
     if (toggle) {
-      for (i = 0; i < length; i++) {
+      for (let i = 0; i < length; i++) {
         this.props.actions.toggleProjectTypeFilter(i)
       }
     } else if (all || none) {
-      for (i = 0; i < length; i++) {
+      for (let i = 0; i < length; i++) {
         if ((this.props.projectTypeFilters[i].value && none) || (!this.props.projectTypeFilters[i].value && !none)) {
           this.props.actions.toggleProjectTypeFilter(i)
         }
@@ -117,13 +116,12 @@ class ProjectFilters extends PureComponent {
     const none = event.target.innerHTML.indexOf('None') !== -1
     const toggle = event.target.innerHTML.indexOf('Toggle') !== -1
     const length = this.props.projectPlatformFilters.length
-    var i
     if (toggle) {
-      for (i = 0; i < length; i++) {
+      for (let i = 0; i < length; i++) {
         this.props.actions.toggleProjectPlatformFilter(i)
       }
     } else if (all || none) {
-      for (i = 0; i < length; i++) {
+      for (let i = 0; i < length; i++) {
         if ((this.props.projectPlatformFilters[i].value && none) || (!this.props.projectPlatformFilters[i].value && !none)) {
           this.props.actions.toggleProjectPlatformFilter(i)
         }
@@ -143,12 +141,12 @@ class ProjectFilters extends PureComponent {
     const active = event.target.innerHTML.indexOf('Active') !== -1
     const toggle = event.target.innerHTML.indexOf('Toggle') !== -1
     const length = this.props.projectStatusFilters.length
-    var i
     if (toggle) {
-      for (i = 0; i < length; i++) {
+      for (let i = 0; i < length; i++) {
         this.props.actions.toggleProjectStatusFilter(i)
       }
     } else if (active) {
+      let i
       for (i = 0; i < length - 4; i++) { // Pre-Prod., Ordered, On Hiatus, On Hold are not considered Active
         this.props.actions.setProjectStatusFilter(i)
       }
@@ -157,7 +155,7 @@ class ProjectFilters extends PureComponent {
       }
       this.setState({ statusColor: 'primary' })
     } else if (all || none) {
-      for (i = 0; i < length; i++) {
+      for (let i = 0; i < length; i++) {
         if ((this.props.projectStatusFilters[i].value && none) || (!this.props.projectStatusFilters[i].value && !none)) {
           this.props.actions.toggleProjectStatusFilter(i)
         }
