@@ -1,6 +1,7 @@
 import { instantiateComponent, replaceComponent } from 'meteor/vulcan:lib'
 import PropTypes from 'prop-types'
-import React from 'react'
+import React, { useState } from 'react'
+import { DragDropContext, Droppable } from 'react-beautiful-dnd'
 
 const MyFormNestedArrayLayout = props => {
   const {
@@ -14,6 +15,18 @@ const MyFormNestedArrayLayout = props => {
     children
   } = props
   const FormComponents = formComponents
+  const initialCount = React.Children.count(children)
+  const [count, setCount] = useState(initialCount)
+
+  function onDragEnd (result) {
+    if (!result.destination) {
+      return
+    }
+    if (result.destination.index === result.source.index) {
+      return
+    }
+    console.log('result:', result)
+  }
 
   return (
     <div className={`form-group row form-nested ${hasErrors ? 'input-error' : ''}`}>
@@ -22,7 +35,17 @@ const MyFormNestedArrayLayout = props => {
       <label className='control-label col-sm-3'>{label}</label>
 
       <div className='col-sm-9'>
-        {children}
+        <DragDropContext onDragEnd={onDragEnd}>
+          <Droppable droppableId='nestedArray'>
+            {(provided) => {
+              return (
+                <div ref={provided.innerRef} {...provided.droppableProps}>
+                  {children}
+                </div>
+              )
+            }}
+          </Droppable>
+        </DragDropContext>
         {addItem && (
           <FormComponents.Button
             className='form-nested-button form-nested-add'

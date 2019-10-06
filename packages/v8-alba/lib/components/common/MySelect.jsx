@@ -63,7 +63,7 @@ class MySelect extends PureComponent {
       )
     } else {
       return (
-        <Fragment key={this.props.path}>
+        <Fragment>
           <Select
             value={selectedOption}
             onChange={this.handleChange}

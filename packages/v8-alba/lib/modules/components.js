@@ -23,6 +23,7 @@ import '../components/common/LatestUpdates/'
 import '../components/common/MyModalTrigger.jsx' // replaceComponent ModalTrigger
 import '../components/common/forms/MyFormSubmit' // replaceComponent FormSubmit
 import '../components/common/forms/MyFormNestedArrayLayout' // replaceComponent FormNestedArrayLayout
+import '../components/common/forms/MyFormNestedArrayInnerLayout' // replaceComponent FormNestedArrayInnerLayout
 
 // Debug
 
