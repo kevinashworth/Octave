@@ -3,7 +3,15 @@ import PropTypes from 'prop-types'
 import React, { useState } from 'react'
 import { DragDropContext, Droppable } from 'react-beautiful-dnd'
 
-const MyFormNestedArrayLayout = props => {
+const reorder = (list, startIndex, endIndex) => {
+  const result = Array.from(list)
+  const [removed] = result.splice(startIndex, 1)
+  result.splice(endIndex, 0, removed)
+
+  return result
+}
+
+const MyFormNestedArrayLayout = (props, context) => {
   const {
     hasErrors,
     nestedArrayErrors,
@@ -12,11 +20,12 @@ const MyFormNestedArrayLayout = props => {
     beforeComponent,
     afterComponent,
     formComponents,
-    children
+    children,
+    document
   } = props
   const FormComponents = formComponents
-  const initialCount = React.Children.count(children)
-  const [count, setCount] = useState(initialCount)
+  // const initialCount = React.Children.count(children)
+  const [state, setState] = useState({ children: children, offices: document.offices })
 
   function onDragEnd (result) {
     if (!result.destination) {
@@ -25,7 +34,19 @@ const MyFormNestedArrayLayout = props => {
     if (result.destination.index === result.source.index) {
       return
     }
-    console.log('result:', result)
+    const newlyOrderedOffices = reorder(
+      state.offices,
+      result.source.index,
+      result.destination.index
+    )
+    setState({ offices: newlyOrderedOffices })
+    const newlyOrderedChildren = reorder(
+      state.children,
+      result.source.index,
+      result.destination.index
+    )
+    setState({ children: newlyOrderedChildren })
+    context.updateCurrentValues({ offices: newlyOrderedOffices })
   }
 
   return (
@@ -40,7 +61,11 @@ const MyFormNestedArrayLayout = props => {
             {(provided) => {
               return (
                 <div ref={provided.innerRef} {...provided.droppableProps}>
-                  {children}
+                  {React.Children.map(state.children, (child, i) => {
+                    console.log('child', i, ':', child)
+                    return child
+                  })}
+                  {provided.placeholder}
                 </div>
               )
             }}
@@ -75,6 +100,10 @@ MyFormNestedArrayLayout.propTypes = {
   afterComponent: PropTypes.node,
   formComponents: PropTypes.object,
   children: PropTypes.node
+}
+
+MyFormNestedArrayLayout.contextTypes = {
+  updateCurrentValues: PropTypes.func
 }
 
 replaceComponent({
