@@ -7,7 +7,6 @@ const reorder = (list, startIndex, endIndex) => {
   const result = Array.from(list)
   const [removed] = result.splice(startIndex, 1)
   result.splice(endIndex, 0, removed)
-
   return result
 }
 
@@ -21,11 +20,18 @@ const MyFormNestedArrayLayout = (props, context) => {
     afterComponent,
     formComponents,
     children,
-    document
+    document,
+    arrayField
   } = props
   const FormComponents = formComponents
-  // const initialCount = React.Children.count(children)
-  const [state, setState] = useState({ children: children, offices: document.offices })
+
+  const collection = arrayField.name.slice(0, -2) || 'MyFormNestedArrayLayoutIsNotWorking' // `offices`, `projects`, `links`, etc.
+
+  // Everything twice, once for the page (children), once for the db (collection)
+  const [state, setState] = useState({
+    children,
+    [collection]: document[collection]
+  })
 
   function onDragEnd (result) {
     if (!result.destination) {
@@ -34,19 +40,21 @@ const MyFormNestedArrayLayout = (props, context) => {
     if (result.destination.index === result.source.index) {
       return
     }
-    const newlyOrderedOffices = reorder(
-      state.offices,
+    const reorderedCollection = reorder(
+      state[collection],
       result.source.index,
       result.destination.index
     )
-    setState({ offices: newlyOrderedOffices })
-    const newlyOrderedChildren = reorder(
+    const reorderedChildren = reorder(
       state.children,
       result.source.index,
       result.destination.index
     )
-    setState({ children: newlyOrderedChildren })
-    context.updateCurrentValues({ offices: newlyOrderedOffices })
+    setState({
+      children: reorderedChildren,
+      [collection]: reorderedCollection
+    })
+    context.updateCurrentValues({ [collection]: reorderedCollection })
   }
 
   return (
@@ -61,10 +69,7 @@ const MyFormNestedArrayLayout = (props, context) => {
             {(provided) => {
               return (
                 <div ref={provided.innerRef} {...provided.droppableProps}>
-                  {React.Children.map(state.children, (child, i) => {
-                    console.log('child', i, ':', child)
-                    return child
-                  })}
+                  {children}
                   {provided.placeholder}
                 </div>
               )
