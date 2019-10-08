@@ -33,7 +33,7 @@ const MyFormNestedArrayLayout = (props, context) => {
     [collection]: document[collection]
   })
 
-  function onDragEnd (result) {
+  const onDragEnd = (result) => {
     if (!result.destination) {
       return
     }
@@ -57,26 +57,14 @@ const MyFormNestedArrayLayout = (props, context) => {
     context.updateCurrentValues({ [collection]: reorderedCollection })
   }
 
-  return (
-    <div className={`form-group row form-nested ${hasErrors ? 'input-error' : ''}`}>
-      {instantiateComponent(beforeComponent, props)}
-
-      <label className='control-label col-sm-3'>{label}</label>
-
-      <div className='col-sm-9'>
-        <DragDropContext onDragEnd={onDragEnd}>
-          <Droppable droppableId='nestedArray'>
-            {(provided) => {
-              return (
-                <div ref={provided.innerRef} {...provided.droppableProps}>
-                  {children}
-                  {provided.placeholder}
-                </div>
-              )
-            }}
-          </Droppable>
-        </DragDropContext>
-        {addItem && (
+  if (collection === 'links') { // See corresponding `if` statement in MyFormNestedArrayInnerLayout
+    return (
+      <div className={`form-group row form-nested ${hasErrors ? 'input-error' : ''}`}>
+        {instantiateComponent(beforeComponent, props)}
+        <label className='control-label col-sm-3'>{label}</label>
+        <div className='col-sm-9'>
+          {children}
+          {addItem && (
           <FormComponents.Button
             className='form-nested-button form-nested-add'
             size='sm'
@@ -85,14 +73,50 @@ const MyFormNestedArrayLayout = (props, context) => {
             <FormComponents.IconAdd height={12} width={12} />
           </FormComponents.Button>
         )}
-        {props.hasErrors ? (
-          <FormComponents.FieldErrors key='form-nested-errors' errors={nestedArrayErrors} />
+          {props.hasErrors ? (
+            <FormComponents.FieldErrors key='form-nested-errors' errors={nestedArrayErrors} />
         ) : null}
+        </div>
+        {instantiateComponent(afterComponent, props)}
       </div>
-
-      {instantiateComponent(afterComponent, props)}
-    </div>
-  )
+    )
+  } else {
+    return (
+      <div className={`form-group row form-nested ${hasErrors ? 'input-error' : ''}`}>
+        {instantiateComponent(beforeComponent, props)}
+        <label className='control-label col-sm-3'>{label}</label>
+        <div className='col-sm-9'>
+          <DragDropContext onDragEnd={onDragEnd}>
+            <Droppable droppableId='nestedArray'>
+              {(provided) => {
+                return (
+                  <div ref={provided.innerRef} {...provided.droppableProps}>
+                    {React.Children.map(state.children, (child, i) => {
+                      return child
+                    })}
+                    {provided.placeholder}
+                  </div>
+                )
+              }}
+            </Droppable>
+          </DragDropContext>
+          {addItem && (
+            <FormComponents.Button
+              className='form-nested-button form-nested-add'
+              size='sm'
+              variant='success'
+              onClick={addItem}>
+              <FormComponents.IconAdd height={12} width={12} />
+            </FormComponents.Button>
+          )}
+          {props.hasErrors ? (
+            <FormComponents.FieldErrors key='form-nested-errors' errors={nestedArrayErrors} />
+          ) : null}
+        </div>
+        {instantiateComponent(afterComponent, props)}
+      </div>
+    )
+  }
 }
 
 MyFormNestedArrayLayout.propTypes = {
