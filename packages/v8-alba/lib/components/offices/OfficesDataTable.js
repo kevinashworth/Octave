@@ -34,7 +34,7 @@ class OfficesDataTable extends PureComponent {
     function renderShowsTotal (start, to, total) {
       return (
         <span>
-          Showing contacts { start } to { to } out of { total } &nbsp;&nbsp;
+          Showing { start } to { to } out of { total } &nbsp;&nbsp;
         </span>
       )
     }
@@ -153,9 +153,10 @@ class OfficesDataTable extends PureComponent {
                     </Link>
                   )
                 }
-              }>Name</TableHeaderColumn>
+              } width='30%'>Name</TableHeaderColumn>
               <TableHeaderColumn dataField='fullAddress' dataSort>Address</TableHeaderColumn>
-              <TableHeaderColumn dataField='updatedAt' dataFormat={dateFormatter} dataSort width='9%'>Updated</TableHeaderColumn>
+              <TableHeaderColumn dataField='updatedAt' dataSort dataFormat={dateFormatter}
+                dataAlign='right' width='94px'>Updated</TableHeaderColumn>
               <TableHeaderColumn dataField='body' hidden>Hidden</TableHeaderColumn>
             </BootstrapTable>
           </CardBody>

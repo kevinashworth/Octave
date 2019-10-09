@@ -36,7 +36,7 @@ class ProjectsDataTable extends PureComponent {
     function renderShowsTotal (start, to, total) {
       return (
         <span>
-          Showing projects { start } to { to } out of { total } &nbsp;&nbsp;
+          Showing { start } to { to } out of { total } &nbsp;&nbsp;
         </span>
       )
     }
@@ -218,12 +218,13 @@ class ProjectsDataTable extends PureComponent {
                     </Link>
                   )
                 }
-              } width='23%'>Name</TableHeaderColumn>
+              } width='25%'>Name</TableHeaderColumn>
+              <TableHeaderColumn dataField='casting' dataSort>Casting</TableHeaderColumn>
               <TableHeaderColumn dataField='network' dataSort>Network</TableHeaderColumn>
               <TableHeaderColumn dataField='projectType' dataSort>Type</TableHeaderColumn>
-              <TableHeaderColumn dataField='casting' dataSort>Casting</TableHeaderColumn>
-              <TableHeaderColumn dataField='status' dataSort>Status</TableHeaderColumn>
-              <TableHeaderColumn dataField='updatedAt' dataFormat={dateFormatter} dataSort>Updated</TableHeaderColumn>
+              <TableHeaderColumn dataField='status' dataSort width='94px'>Status</TableHeaderColumn>
+                <TableHeaderColumn dataField='updatedAt' dataSort dataFormat={dateFormatter}
+                  dataAlign='right' width='94px'>Updated</TableHeaderColumn>
               <TableHeaderColumn dataField='summary' hidden>Hidden</TableHeaderColumn>
               <TableHeaderColumn dataField='notes' hidden>Hidden</TableHeaderColumn>
               <TableHeaderColumn dataField='allContactNames' hidden>Hidden</TableHeaderColumn>
