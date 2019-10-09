@@ -3,8 +3,7 @@ import { instantiateComponent, replaceComponent } from 'meteor/vulcan:core'
 import { Draggable } from 'react-beautiful-dnd'
 
 const MyFormNestedArrayInnerLayout = props => {
-  const { FormComponents, label, children, addItem, beforeComponent, afterComponent, itemIndex, name } = props
-  const tempId = label + itemIndex
+  const { FormComponents, label, children, addItem, beforeComponent, afterComponent, itemIndex, name, path } = props
   const collection = name.slice(0, -2) || 'MyFormNestedArrayInnerLayoutIsNotWorking'
 
   if (collection === 'links') {  // See corresponding `if` statement in MyFormNestedArrayInnerLayout
@@ -18,7 +17,7 @@ const MyFormNestedArrayInnerLayout = props => {
     )
   } else {
     return (
-      <Draggable draggableId={tempId} index={itemIndex}>
+      <Draggable draggableId={path} index={itemIndex}>
         {(provided) => (
           <div
             ref={provided.innerRef}

@@ -26,6 +26,7 @@ const MyFormNestedArrayLayout = (props, context) => {
   const FormComponents = formComponents
 
   const collection = arrayField.name.slice(0, -2) || 'MyFormNestedArrayLayoutIsNotWorking' // `offices`, `projects`, `links`, etc.
+  const droppableId = document._id + '-' + collection
 
   // Everything twice, once for the page (children), once for the db (collection)
   const [state, setState] = useState({
@@ -87,7 +88,7 @@ const MyFormNestedArrayLayout = (props, context) => {
         <label className='control-label col-sm-3'>{label}</label>
         <div className='col-sm-9'>
           <DragDropContext onDragEnd={onDragEnd}>
-            <Droppable droppableId='nestedArray'>
+            <Droppable droppableId={droppableId}>
               {(provided) => {
                 return (
                   <div ref={provided.innerRef} {...provided.droppableProps}>
