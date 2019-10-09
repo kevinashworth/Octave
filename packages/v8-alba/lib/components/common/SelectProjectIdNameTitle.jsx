@@ -1,6 +1,6 @@
 import { registerComponent } from 'meteor/vulcan:lib'
 import React, { PureComponent } from 'react'
-import { FormGroup, Input, Label } from 'reactstrap'
+import { Col, FormGroup, Input, Label } from 'reactstrap'
 import Select from 'react-virtualized-select'
 import PropTypes from 'prop-types'
 import { CASTING_TITLES_ENUM } from '../../modules/constants.js'
@@ -73,36 +73,42 @@ class SelectProjectIdNameTitle extends PureComponent {
   render () {
     return (
       <div>
-        <FormGroup>
-          <Label for='projectId'>Project Name from Database</Label>
-          <OptimizedSelect
-            id='projectId'
-            value={this.state.value}
-            onChange={this.handleIdChange}
-            options={this.props.options}
-            resetValue={{ value: null, label: '' }}
-          />
+        <FormGroup row>
+          <Label for='projectId' sm={3}>Project Name</Label>
+          <Col sm={9}>
+            <OptimizedSelect
+              id='projectId'
+              value={this.state.value}
+              onChange={this.handleIdChange}
+              options={this.props.options}
+              resetValue={{ value: null, label: '' }}
+            />
+          </Col>
         </FormGroup>
-        <FormGroup>
-          <Label for='projectTitle'>Editable Project Name</Label>
-          <OptimizedInput
-            type='text'
-            id='projectTitle'
-            value={this.state.projectTitle}
-            onChange={this.handleNameChange}
-            required
-          />
+        <FormGroup row>
+          <Label for='projectTitle' sm={3}>Editable Name</Label>
+          <Col sm={9}>
+            <OptimizedInput
+              type='text'
+              id='projectTitle'
+              value={this.state.projectTitle}
+              onChange={this.handleNameChange}
+              required
+            />
+          </Col>
         </FormGroup>
-        <FormGroup>
-          <Label for='titleForProject'>Contact's Title for This Project</Label>
-          <OptimizedSelect
-            id='titleForProject'
-            value={this.state.titleForProject}
-            onChange={this.handleTitleChange}
-            options={CASTING_TITLES_ENUM}
-            resetValue={{ value: null, label: '' }}
-            required
-          />
+        <FormGroup row>
+          <Label for='titleForProject' sm={3}>Title for Project</Label>
+          <Col sm={9}>
+            <OptimizedSelect
+              id='titleForProject'
+              value={this.state.titleForProject}
+              onChange={this.handleTitleChange}
+              options={CASTING_TITLES_ENUM}
+              resetValue={{ value: null, label: '' }}
+              required
+            />
+          </Col>
         </FormGroup>
       </div>
     )
