@@ -1,4 +1,4 @@
-import { Components, registerComponent, withCurrentUser, withMulti } from 'meteor/vulcan:core'
+import { Components, registerComponent, withAccess, withCurrentUser, withMulti } from 'meteor/vulcan:core'
 import React, { PureComponent } from 'react'
 import { Link } from 'react-router-dom'
 import { Button, Card, CardBody, CardFooter, CardHeader, Modal, ModalBody, ModalHeader } from 'reactstrap'
@@ -281,10 +281,24 @@ class ContactsDataTable extends PureComponent {
   }
 }
 
-const options = {
+const accessOptions = {
+  groups: ['members', 'admins'],
+  redirect: '/login'
+}
+
+const multiOptions = {
   collection: Contacts,
   fragmentName: 'ContactsDataTableFragment',
   limit: 1000
 }
 
-registerComponent('ContactsDataTable', ContactsDataTable, withFilters, withCurrentUser, [withMulti, options])
+registerComponent({
+  name: 'ContactsDataTable',
+  component: ContactsDataTable,
+  hocs: [
+    [withAccess, accessOptions],
+    withCurrentUser,
+    withFilters,
+    [withMulti, multiOptions]
+  ]
+})

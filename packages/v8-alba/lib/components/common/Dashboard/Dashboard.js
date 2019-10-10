@@ -66,4 +66,11 @@ const multiOptions = {
   limit: 1
 }
 
-registerComponent('Dashboard', Dashboard, [withAccess, accessOptions], [withMulti, multiOptions])
+registerComponent( {
+  name: 'Dashboard',
+  component: Dashboard,
+  hocs: [
+    [withAccess, accessOptions],
+    [withMulti, multiOptions]
+  ]
+})
