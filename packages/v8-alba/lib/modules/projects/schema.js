@@ -273,7 +273,10 @@ const schema = {
   },
   castingOfficeId: {
     type: String,
-    control: 'MySelect',
+    input: 'MySelect',
+    inputProperties: {
+      selectOne: true
+    },
     label: 'Office',
     optional: true,
     canRead: ['members'],

@@ -79,7 +79,10 @@ const projectSubSchema = new SimpleSchema({
   projectId: {
     type: String,
     label: 'Project',
-    control: 'MySelect',
+    input: 'MySelect',
+    inputProperties: {
+      selectMulti: true
+    },
     optional: true,
     canRead: ['members'],
     canCreate: ['members'],
@@ -101,7 +104,10 @@ const pastProjectSubSchema = new SimpleSchema({
   projectId: {
     type: String,
     label: 'Past Project',
-    control: 'MySelect',
+    input: 'MySelect',
+    inputProperties: {
+      selectMulti: true
+    },
     optional: true,
     canRead: ['members'],
     canCreate: ['members'],
