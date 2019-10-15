@@ -57,6 +57,7 @@ class MySelect extends PureComponent {
               value={selectedOption}
               onChange={this.handleChange}
               options={[noneOption, ...this.props.options]}
+              isClearable
               />
           </div>
         </div>
@@ -68,6 +69,7 @@ class MySelect extends PureComponent {
             value={selectedOption}
             onChange={this.handleChange}
             options={[noneOption, ...this.props.options]}
+            isClearable
             />
         </Fragment>
       )
