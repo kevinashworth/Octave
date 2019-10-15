@@ -1,7 +1,6 @@
 import { instantiateComponent, replaceComponent } from 'meteor/vulcan:lib'
-import React, { useState } from 'react'
+import React, { PureComponent, useState } from 'react'
 import PropTypes from 'prop-types'
-
 import {
   sortableContainer,
   sortableElement,
@@ -15,11 +14,14 @@ const reorder = (list, startIndex, endIndex) => {
   return result
 }
 
-const DragHandle = sortableHandle(() => <i class='fa fa-bars'></i>)
+const DragHandle = sortableHandle(() => <i className='fa fa-bars'></i>)
 
-const SortableItem = sortableElement(({ child }) => (
+const SortableItem = sortableElement(({ child, isDisabled }) => (
   <li>
-    <DragHandle />
+    {isDisabled
+     ? null
+     : <DragHandle />
+    }
     {child}
   </li>
 ))
@@ -28,72 +30,79 @@ const SortableContainer = sortableContainer(({ children }) => {
   return <ul>{children}</ul>
 })
 
-const MyFormNestedArrayLayout = (props, context) => {
-  const {
-    hasErrors,
-    nestedArrayErrors,
-    label,
-    addItem,
-    beforeComponent,
-    afterComponent,
-    formComponents,
-    children,
-    document,
-    arrayField
-  } = props
-  const FormComponents = formComponents
+class MyFormNestedArrayLayout extends PureComponent {
+  constructor(props) {
+    super(props)
 
-  const collection = arrayField.name.slice(0, -2) || 'MyFormNestedArrayLayoutIsNotWorking' // `offices`, `projects`, `links`, etc.
-
-  // Everything twice, once for the page (children), once for the db (collection)
-  const [state, setState] = useState({
-    children,
-    [collection]: document[collection]
-  })
-
-  const onSortEnd = ({oldIndex, newIndex}) => {
-    console.log('state[collection]:', state[collection])
-    const reorderedCollection = reorder(state[collection], oldIndex, newIndex)
-    console.log('reorderedCollection:', reorderedCollection)
-    console.log('state[collection]:', children)
-    const reorderedChildren = reorder(children, oldIndex, newIndex)
-    console.log('reorderedChildren:', reorderedCollection)
-    setState({
-      children: reorderedChildren,
-      [collection]: reorderedCollection,
-    })
-    context.updateCurrentValues({ [collection]: reorderedCollection })
+    const collection = props.arrayField.name.slice(0, -2) || 'MyFormNestedArrayLayoutIsNotWorking' // `offices`, `projects`, `links`, etc.
+    this.state = {
+      [collection]: props.document[collection],
+      collectionName: [collection],
+      originalCollectionLength: props.document[collection] ? props.document[collection].length : 0
+    }
   }
 
-  return (
-    <div className={`form-group row form-nested ${hasErrors ? 'input-error' : ''}`}>
-      {instantiateComponent(beforeComponent, props)}
-      <label className='control-label col-sm-3'>{label}</label>
-      <div className='col-sm-9'>
-        <SortableContainer onSortEnd={onSortEnd} useDragHandle>
-          {React.Children.map(state.children, (child, i) => {
-            console.log('child:', `${collection}-${i}`)
-            return (
-              <SortableItem key={`${collection}-${i}`} index={i} child={child} />
-            )
-          })}
-        </SortableContainer>
-        {addItem && (
-          <FormComponents.Button
-            className='form-nested-button form-nested-add'
-            size='sm'
-            variant='success'
-            onClick={addItem}>
-            <FormComponents.IconAdd height={12} width={12} />
-          </FormComponents.Button>
-        )}
-        {props.hasErrors ? (
-          <FormComponents.FieldErrors key='form-nested-errors' errors={nestedArrayErrors} />
-        ) : null}
+  onSortEnd = ({oldIndex, newIndex}) => {
+    const reorderedCollection = reorder(this.state[this.state.collectionName], oldIndex, newIndex)
+
+    console.group('onSortEnd:')
+    console.log('state[collectionName]:', this.state[this.state.collectionName])
+    console.log('reorderedCollection:', reorderedCollection)
+    console.groupEnd()
+
+    this.setState({
+      [this.state.collectionName]: reorderedCollection,
+    })
+    this.context.updateCurrentValues({ [this.state.collectionName]: reorderedCollection })
+  }
+
+  render() {
+    const {
+      hasErrors,
+      nestedArrayErrors,
+      label,
+      addItem,
+      beforeComponent,
+      afterComponent,
+      formComponents,
+      children,
+      document,
+      arrayField
+    } = this.props
+    const FormComponents = formComponents
+
+    return (
+      <div className={`form-group row form-nested ${hasErrors ? 'input-error' : ''}`}>
+        {instantiateComponent(beforeComponent, this.props)}
+        <label className='control-label col-sm-3'>{label}</label>
+        <div className='col-sm-9'>
+          <SortableContainer distance={2} onSortEnd={this.onSortEnd} useDragHandle>
+            {React.Children.map(this.props.children, (child, i) => {
+              console.log('child key:', `${this.state.collectionName}-${i}`)
+              const disabled = i > this.state.originalCollectionLength - 1 // don't sort new children
+              console.log('child disabled:', disabled)
+              return (
+                <SortableItem key={`${this.state.collectionName}-${i}`} index={i} child={child} disabled={disabled} isDisabled={disabled} />
+              )
+            })}
+          </SortableContainer>
+          {addItem && (
+            <FormComponents.Button
+              className='form-nested-button form-nested-add'
+              size='sm'
+              variant='success'
+              onClick={addItem}>
+              <FormComponents.IconAdd height={12} width={12} />
+            </FormComponents.Button>
+          )}
+          {this.props.hasErrors ? (
+            <FormComponents.FieldErrors key='form-nested-errors' errors={nestedArrayErrors} />
+          ) : null}
+        </div>
+        {instantiateComponent(afterComponent, this.props)}
       </div>
-      {instantiateComponent(afterComponent, props)}
-    </div>
-  )
+    )
+  }
 }
 
 MyFormNestedArrayLayout.propTypes = {
