@@ -17,17 +17,17 @@ const reorder = (list, startIndex, endIndex) => {
 const DragHandle = sortableHandle(() => <i className='fa fa-bars'></i>)
 
 const SortableItem = sortableElement(({ child, isDisabled }) => (
-  <li>
+  <div>
     {isDisabled
      ? null
      : <DragHandle />
     }
     {child}
-  </li>
+  </div>
 ))
 
 const SortableContainer = sortableContainer(({ children }) => {
-  return <ul>{children}</ul>
+  return <div className='col-sm-9'>{children}</div>
 })
 
 class MyFormNestedArrayLayout extends PureComponent {
@@ -75,17 +75,15 @@ class MyFormNestedArrayLayout extends PureComponent {
       <div className={`form-group row form-nested ${hasErrors ? 'input-error' : ''}`}>
         {instantiateComponent(beforeComponent, this.props)}
         <label className='control-label col-sm-3'>{label}</label>
-        <div className='col-sm-9'>
-          <SortableContainer distance={2} onSortEnd={this.onSortEnd} useDragHandle>
-            {React.Children.map(this.props.children, (child, i) => {
-              console.log('child key:', `${this.state.collectionName}-${i}`)
-              const disabled = i > this.state.originalCollectionLength - 1 // don't sort new children
-              console.log('child disabled:', disabled)
-              return (
-                <SortableItem key={`${this.state.collectionName}-${i}`} index={i} child={child} disabled={disabled} isDisabled={disabled} />
-              )
-            })}
-          </SortableContainer>
+        <SortableContainer distance={2} onSortEnd={this.onSortEnd} useDragHandle>
+          {React.Children.map(this.props.children, (child, i) => {
+            console.log('child key:', `${this.state.collectionName}-${i}`)
+            const disabled = i > this.state.originalCollectionLength - 1 // don't sort new children
+            console.log('child disabled:', disabled)
+            return (
+              <SortableItem key={`${this.state.collectionName}-${i}`} index={i} child={child} disabled={disabled} isDisabled={disabled} />
+            )
+          })}
           {addItem && (
             <FormComponents.Button
               className='form-nested-button form-nested-add'
@@ -98,7 +96,7 @@ class MyFormNestedArrayLayout extends PureComponent {
           {this.props.hasErrors ? (
             <FormComponents.FieldErrors key='form-nested-errors' errors={nestedArrayErrors} />
           ) : null}
-        </div>
+        </SortableContainer>
         {instantiateComponent(afterComponent, this.props)}
       </div>
     )
