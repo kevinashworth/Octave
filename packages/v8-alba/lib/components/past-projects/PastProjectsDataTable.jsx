@@ -255,6 +255,7 @@ registerComponent( {
   component: PastProjectsDataTable,
   hocs: [
     [withAccess, accessOptions],
+    withFilters,
     [withMulti, multiOptions]
   ]
 })
