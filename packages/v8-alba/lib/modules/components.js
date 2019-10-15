@@ -22,6 +22,7 @@ import '../components/common/Dashboard/LineChartSmall'
 import '../components/common/LatestUpdates/'
 import '../components/common/MyModalTrigger.jsx' // replaceComponent ModalTrigger
 import '../components/common/Forms/MyFormSubmit' // replaceComponent FormSubmit
+import '../components/common/Forms/MyFormNestedArrayLayout' // replaceComponent FormNestedArrayLayout
 
 // Debug
 
