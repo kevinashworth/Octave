@@ -53,7 +53,7 @@ LatestContactUpdates.propTypes = {
   results: PropTypes.array
 }
 
-const contactOptions = {
+const contactsOptions = {
   collection: Contacts,
   fragmentName: 'ContactsSingleFragment',
   limit: 6
@@ -62,7 +62,7 @@ const contactOptions = {
 registerComponent({
   name: 'LatestContactUpdates',
   component: LatestContactUpdates,
-  hocs: [[withMulti, contactOptions]]
+  hocs: [[withMulti, contactsOptions]]
 })
 
 class LatestOfficeUpdates extends Component {
@@ -107,7 +107,7 @@ LatestOfficeUpdates.propTypes = {
   results: PropTypes.array
 }
 
-const officeOptions = {
+const officesOptions = {
   collection: Offices,
   fragmentName: 'OfficesSingleFragment',
   terms: { view: 'officesByUpdated' },
@@ -117,7 +117,7 @@ const officeOptions = {
 registerComponent({
   name: 'LatestOfficeUpdates',
   component: LatestOfficeUpdates,
-  hocs: [[withMulti, officeOptions]]
+  hocs: [[withMulti, officesOptions]]
 })
 
 class LatestProjectUpdates extends Component {
@@ -164,7 +164,7 @@ LatestProjectUpdates.propTypes = {
   results: PropTypes.array
 }
 
-const projectOptions = {
+const projectsOptions = {
   collection: Projects,
   fragmentName: 'ProjectsSingleFragment',
   limit: 6
@@ -173,7 +173,7 @@ const projectOptions = {
 registerComponent({
   name: 'LatestProjectUpdates',
   component: LatestProjectUpdates,
-  hocs: [[withMulti, projectOptions]]
+  hocs: [[withMulti, projectsOptions]]
 })
 
 class LatestPastProjectUpdates extends Component {
@@ -213,7 +213,7 @@ LatestPastProjectUpdates.propTypes = {
   results: PropTypes.array
 }
 
-const projectOptionsPast = {
+const pastProjectsOptions = {
   collection: PastProjects,
   fragmentName: 'PastProjectsSingleFragment',
   limit: 6
@@ -222,7 +222,7 @@ const projectOptionsPast = {
 registerComponent({
   name: 'LatestPastProjectUpdates',
   component: LatestPastProjectUpdates,
-  hocs: [[withMulti, projectOptionsPast]]
+  hocs: [[withMulti, pastProjectsOptions]]
 })
 
 class LatestUpdates extends Component {

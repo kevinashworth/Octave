@@ -289,7 +289,8 @@ const accessOptions = {
 const multiOptions = {
   collection: Contacts,
   fragmentName: 'ContactsDataTableFragment',
-  limit: 1000
+  limit: 1000,
+  queryOptions: { pollInterval: 10000 }
 }
 
 registerComponent({
