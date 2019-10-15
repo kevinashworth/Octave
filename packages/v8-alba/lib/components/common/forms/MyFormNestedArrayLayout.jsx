@@ -2,6 +2,9 @@ import { instantiateComponent, replaceComponent } from 'meteor/vulcan:lib'
 import PropTypes from 'prop-types'
 import React, { useState } from 'react'
 import { DragDropContext, Droppable } from 'react-beautiful-dnd'
+const RBD = require('react-beautiful-dnd')
+
+console.log('RBD:', RBD)
 
 const reorder = (list, startIndex, endIndex) => {
   const result = Array.from(list)
@@ -58,6 +61,15 @@ const MyFormNestedArrayLayout = (props, context) => {
     context.updateCurrentValues({ [collection]: reorderedCollection })
   }
 
+  const onDragStart = (start) => {
+    console.group('onDragStart:')
+    console.info('draggableId:', start.draggableId)
+    console.info('type:', start.type)
+    console.info('source:', start.source)
+    console.info('mode:', start.mode)
+    console.groupEnd()
+  }
+
   if (collection === 'links') { // See corresponding `if` statement in MyFormNestedArrayInnerLayout
     return (
       <div className={`form-group row form-nested ${hasErrors ? 'input-error' : ''}`}>
@@ -87,7 +99,7 @@ const MyFormNestedArrayLayout = (props, context) => {
         {instantiateComponent(beforeComponent, props)}
         <label className='control-label col-sm-3'>{label}</label>
         <div className='col-sm-9'>
-          <DragDropContext onDragEnd={onDragEnd}>
+          <DragDropContext onDragEnd={onDragEnd} onDragStart={onDragStart}>
             <Droppable droppableId={droppableId}>
               {(provided) => {
                 return (
@@ -100,19 +112,19 @@ const MyFormNestedArrayLayout = (props, context) => {
                 )
               }}
             </Droppable>
+            {addItem && (
+              <FormComponents.Button
+                className='form-nested-button form-nested-add'
+                size='sm'
+                variant='success'
+                onClick={addItem}>
+                <FormComponents.IconAdd height={12} width={12} />
+              </FormComponents.Button>
+            )}
+            {props.hasErrors ? (
+              <FormComponents.FieldErrors key='form-nested-errors' errors={nestedArrayErrors} />
+            ) : null}
           </DragDropContext>
-          {addItem && (
-            <FormComponents.Button
-              className='form-nested-button form-nested-add'
-              size='sm'
-              variant='success'
-              onClick={addItem}>
-              <FormComponents.IconAdd height={12} width={12} />
-            </FormComponents.Button>
-          )}
-          {props.hasErrors ? (
-            <FormComponents.FieldErrors key='form-nested-errors' errors={nestedArrayErrors} />
-          ) : null}
         </div>
         {instantiateComponent(afterComponent, props)}
       </div>

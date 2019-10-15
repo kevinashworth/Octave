@@ -22,10 +22,10 @@ const MyFormNestedArrayInnerLayout = props => {
           <div
             ref={provided.innerRef}
             {...provided.draggableProps}
-            {...provided.dragHandleProps}
             >
             <div className='form-nested-array-inner-layout'>
               {instantiateComponent(beforeComponent, props)}
+              <i class='fa fa-bars' {...provided.dragHandleProps}></i>
               {children}
               <FormComponents.FormNestedDivider label={label} addItem={addItem} />
               {instantiateComponent(afterComponent, props)}
