@@ -52,12 +52,12 @@ const MyFormNestedArrayLayout = (props, context) => {
   })
 
   const onSortEnd = ({oldIndex, newIndex}) => {
-    console.log('state[collection]:', state[collection])
+    // console.log('state[collection]:', state[collection])
     const reorderedCollection = reorder(state[collection], oldIndex, newIndex)
-    console.log('reorderedCollection:', reorderedCollection)
-    console.log('state[collection]:', children)
+    // console.log('reorderedCollection:', reorderedCollection)
+    // console.log('state[collection]:', children)
     const reorderedChildren = reorder(children, oldIndex, newIndex)
-    console.log('reorderedChildren:', reorderedCollection)
+    // console.log('reorderedChildren:', reorderedCollection)
     setState({
       children: reorderedChildren,
       [collection]: reorderedCollection,
