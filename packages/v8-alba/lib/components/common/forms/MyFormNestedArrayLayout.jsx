@@ -44,12 +44,6 @@ class MyFormNestedArrayLayout extends PureComponent {
 
   onSortEnd = ({oldIndex, newIndex}) => {
     const reorderedCollection = reorder(this.state[this.state.collectionName], oldIndex, newIndex)
-
-    console.group('onSortEnd:')
-    console.log('state[collectionName]:', this.state[this.state.collectionName])
-    console.log('reorderedCollection:', reorderedCollection)
-    console.groupEnd()
-
     this.setState({
       [this.state.collectionName]: reorderedCollection,
     })
@@ -77,9 +71,8 @@ class MyFormNestedArrayLayout extends PureComponent {
         <label className='control-label col-sm-3'>{label}</label>
         <SortableContainer distance={2} onSortEnd={this.onSortEnd} useDragHandle>
           {React.Children.map(this.props.children, (child, i) => {
-            console.log('child key:', `${this.state.collectionName}-${i}`)
-            const disabled = i > this.state.originalCollectionLength - 1 // don't sort new children
-            console.log('child disabled:', disabled)
+            // don't sort new children or when there's just one child
+            const disabled = (i > this.state.originalCollectionLength - 1) || (this.state.originalCollectionLength <= 1)
             return (
               <SortableItem key={`${this.state.collectionName}-${i}`} index={i} child={child} disabled={disabled} isDisabled={disabled} />
             )
