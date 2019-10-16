@@ -3,7 +3,7 @@ import React, { PureComponent } from 'react'
 import { FormGroup, Input, Label } from 'reactstrap'
 import Select from 'react-virtualized-select'
 import PropTypes from 'prop-types'
-import { CASTING_TITLES_ENUM } from '../../modules/constants.js'
+import { CASTING_TITLES_ENUM } from '../../../modules/constants.js'
 
 import pure from 'recompose/pure'
 import onlyUpdateForKeys from 'recompose/onlyUpdateForKeys'
@@ -23,20 +23,9 @@ class SelectPastProjectIdNameTitle extends PureComponent {
     this.handleNameChange = this.handleNameChange.bind(this)
     this.handleTitleChange = this.handleTitleChange.bind(this)
 
-    // const nestedFields = Object.keys(this.props.nestedSchema)
-    // const pastProjects = this.props.document.pastProjects
-    // const itemIndex = this.props.itemIndex
-    // const projectTitle = pastProjects[itemIndex] ? pastProjects[itemIndex].projectTitle : ''
-    // const titleForProject = pastProjects[itemIndex] ? pastProjects[itemIndex].titleForProject : ''
-
     this.state = {
-      // selectField: nestedFields.shift(), // get first field, shift remaining
-      // indexFields: nestedFields,
-      // value: this.props.value,
       path: this.props.path,
-      pathPrefix: this.props.parentFieldName + '.' + this.props.itemIndex + '.',
-      // projectTitle: projectTitle,
-      // titleForProject: titleForProject
+      pathPrefix: this.props.parentFieldName + '.' + this.props.itemIndex + '.'
     }
   }
 
@@ -71,21 +60,11 @@ class SelectPastProjectIdNameTitle extends PureComponent {
   }
 
   render () {
-    const nestedFields = Object.keys(this.props.nestedSchema)
     const pastProjects = this.props.document.pastProjects
     const itemIndex = this.props.itemIndex
     const projectTitle = pastProjects[itemIndex] ? pastProjects[itemIndex].projectTitle : ''
     const titleForProject = pastProjects[itemIndex] ? pastProjects[itemIndex].titleForProject : ''
-
-    const pseudoState = {
-      selectField: nestedFields.shift(), // get first field, shift remaining
-      indexFields: nestedFields,
-      value: this.props.value,
-      // path: this.props.path,
-      // pathPrefix: this.props.parentFieldName + '.' + this.props.itemIndex + '.',
-      projectTitle: projectTitle,
-      titleForProject: titleForProject
-    }
+    const value = this.props.value
 
     return (
       <div>
@@ -93,7 +72,7 @@ class SelectPastProjectIdNameTitle extends PureComponent {
           <Label for='projectId'>Project Name from Database</Label>
           <OptimizedSelect
             id='projectId'
-            value={pseudoState.value}
+            value={value}
             onChange={this.handleIdChange}
             options={this.props.options}
             resetValue={{ value: null, label: '' }}
@@ -104,7 +83,7 @@ class SelectPastProjectIdNameTitle extends PureComponent {
           <OptimizedInput
             type='text'
             id='projectTitle'
-            value={pseudoState.projectTitle}
+            value={projectTitle}
             onChange={this.handleNameChange}
             required
           />
@@ -113,7 +92,7 @@ class SelectPastProjectIdNameTitle extends PureComponent {
           <Label for='titleForProject'>Contact's Title for This Project</Label>
           <OptimizedSelect
             id='titleForProject'
-            value={pseudoState.titleForProject}
+            value={titleForProject}
             onChange={this.handleTitleChange}
             options={CASTING_TITLES_ENUM}
             resetValue={{ value: null, label: '' }}

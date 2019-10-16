@@ -9,20 +9,12 @@ class MySelect extends Component {
   constructor (props) {
     super(props)
     this.handleChange = this.handleChange.bind(this)
-    //
-    // const initialValue = find(this.props.options, { value: this.props.value }) || null
-    // this.state = {
-    //   selectedOption: initialValue
-    // }
   }
 
   handleChange (selectedOption) {
-    // this.setState({ selectedOption })
-
     let siblingPath = null
     if (this.props.parentFieldName === 'projects' || this.props.parentFieldName === 'pastProjects') {
       siblingPath = this.props.parentFieldName + '.' + this.props.itemIndex + '.' + 'projectTitle'
-      // console.debug('We have a siblingPath!', siblingPath)
     }
     if (siblingPath) {
       this.context.updateCurrentValues({
@@ -32,27 +24,7 @@ class MySelect extends Component {
     } else {
       this.context.updateCurrentValues({ [this.props.path]: selectedOption.value })
     }
-
-    // console.group('MySelect handleChange:')
-    // console.log(`MySelect label: ${selectedOption.label}`)
-    // console.log(`MySelect value: ${selectedOption.value}`)
-    // console.groupEnd()
   }
-
-  // shouldComponentUpdate(nextProps, nextState) {
-  //   if (this.props.value !== nextProps.value) {
-  //     console.group('MySelect value changed!')
-  //     console.log('this.props.value:', this.props.value)
-  //     console.log('nextProps.value:', nextProps.value)
-  //     console.groupEnd()
-  //     return true
-  //   }
-  //   // console.group('MySelect shouldComponentUpdate:')
-  //   // console.log('nextProps:', nextProps)
-  //   // console.log('nextState:', nextState)
-  //   // console.groupEnd()
-  //   return false
-  // }
 
   render () {
     const { selectOne } = this.props.inputProperties

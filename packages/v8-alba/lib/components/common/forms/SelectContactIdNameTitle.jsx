@@ -3,7 +3,7 @@ import React, { PureComponent } from 'react'
 import { FormGroup, Input, Label } from 'reactstrap'
 import Select from 'react-virtualized-select'
 import PropTypes from 'prop-types'
-import { CASTING_TITLES_ENUM } from '../../modules/constants.js'
+import { CASTING_TITLES_ENUM } from '../../../modules/constants.js'
 
 import pure from 'recompose/pure'
 import onlyUpdateForKeys from 'recompose/onlyUpdateForKeys'
@@ -23,20 +23,9 @@ class SelectContactIdNameTitle extends PureComponent {
     this.handleNameChange = this.handleNameChange.bind(this)
     this.handleTitleChange = this.handleTitleChange.bind(this)
 
-    // const nestedFields = Object.keys(this.props.nestedSchema)
-    // const contacts = this.props.document.contacts
-    // const itemIndex = this.props.itemIndex
-    // const contactName = contacts[itemIndex] ? contacts[itemIndex].contactName : ''
-    // const contactTitle = contacts[itemIndex] ? contacts[itemIndex].contactTitle : ''
-
     this.state = {
-      // selectField: nestedFields.shift(), // get first field, shift remaining
-      // indexFields: nestedFields,
-      // value: this.props.value,
       path: this.props.path,
       pathPrefix: this.props.parentFieldName + '.' + this.props.itemIndex + '.',
-      // contactName: contactName,
-      // contactTitle: contactTitle
     }
   }
 
@@ -71,49 +60,39 @@ class SelectContactIdNameTitle extends PureComponent {
   }
 
   render () {
-    const nestedFields = Object.keys(this.props.nestedSchema)
     const contacts = this.props.document.contacts
     const itemIndex = this.props.itemIndex
     const contactName = contacts[itemIndex] ? contacts[itemIndex].contactName : ''
     const contactTitle = contacts[itemIndex] ? contacts[itemIndex].contactTitle : ''
-
-    const pseudoState = {
-      selectField: nestedFields.shift(), // get first field, shift remaining
-      indexFields: nestedFields,
-      value: this.props.value,
-      // path: this.props.path,
-      // pathPrefix: this.props.parentFieldName + '.' + this.props.itemIndex + '.',
-      contactName: contactName,
-      contactTitle: contactTitle
-    }
+    const value = this.props.value
 
     return (
       <div>
         <FormGroup>
-          <Label for='contactId'>Contact Name from Database</Label>
+          <Label for='contactId'>Name from Database</Label>
           <OptimizedSelect
             id='contactId'
-            value={pseudoState.value}
+            value={value}
             onChange={this.handleIdChange}
             options={this.props.options}
             resetValue={{ value: null, label: '' }}
           />
         </FormGroup>
         <FormGroup>
-          <Label for='contactName'>Editable Contact Name</Label>
+          <Label for='contactName'>Editable Name</Label>
           <OptimizedInput
             type='text'
             id='contactName'
-            value={pseudoState.contactName}
+            value={contactName}
             onChange={this.handleNameChange}
             required
           />
         </FormGroup>
         <FormGroup>
-          <Label for='contactTitle'>Contact's Title for This Project</Label>
+          <Label for='contactTitle'>Title for This</Label>
           <OptimizedSelect
             id='contactTitle'
-            value={pseudoState.contactTitle}
+            value={contactTitle}
             onChange={this.handleTitleChange}
             options={CASTING_TITLES_ENUM}
             resetValue={{ value: null, label: '' }}

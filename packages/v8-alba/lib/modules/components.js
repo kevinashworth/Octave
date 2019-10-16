@@ -27,6 +27,9 @@ import '../components/common/MyModalTrigger.jsx' // replaceComponent ModalTrigge
 import '../components/common/Forms/MyFormNestedArrayLayout' // replaceComponent FormNestedArrayLayout
 import '../components/common/Forms/MyFormSubmit' // replaceComponent FormSubmit
 import '../components/common/Forms/MySelect'
+import '../components/common/Forms/SelectContactIdNameTitle'
+import '../components/common/Forms/SelectProjectIdNameTitle'
+import '../components/common/Forms/SelectPastProjectIdNameTitle'
 
 // Debug
 
@@ -44,9 +47,6 @@ import '../components/common/ContactDetail'
 import '../components/common/Filter/ContactFilters'
 import '../components/common/Filter/ProjectFilters'
 import '../components/common/Filter/PastProjectFilters'
-import '../components/common/SelectContactIdNameTitle'
-import '../components/common/SelectProjectIdNameTitle'
-import '../components/common/SelectPastProjectIdNameTitle'
 
 import '../components/contacts/ContactMini'
 import '../components/contacts/ContactModal'
