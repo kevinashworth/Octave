@@ -23,20 +23,20 @@ class SelectContactIdNameTitle extends PureComponent {
     this.handleNameChange = this.handleNameChange.bind(this)
     this.handleTitleChange = this.handleTitleChange.bind(this)
 
-    const nestedFields = Object.keys(this.props.nestedSchema)
-    const contacts = this.props.document.contacts
-    const itemIndex = this.props.itemIndex
-    const contactName = contacts[itemIndex] ? contacts[itemIndex].contactName : ''
-    const contactTitle = contacts[itemIndex] ? contacts[itemIndex].contactTitle : ''
+    // const nestedFields = Object.keys(this.props.nestedSchema)
+    // const contacts = this.props.document.contacts
+    // const itemIndex = this.props.itemIndex
+    // const contactName = contacts[itemIndex] ? contacts[itemIndex].contactName : ''
+    // const contactTitle = contacts[itemIndex] ? contacts[itemIndex].contactTitle : ''
 
     this.state = {
-      selectField: nestedFields.shift(), // get first field, shift remaining
-      indexFields: nestedFields,
-      value: this.props.value,
+      // selectField: nestedFields.shift(), // get first field, shift remaining
+      // indexFields: nestedFields,
+      // value: this.props.value,
       path: this.props.path,
       pathPrefix: this.props.parentFieldName + '.' + this.props.itemIndex + '.',
-      contactName: contactName,
-      contactTitle: contactTitle
+      // contactName: contactName,
+      // contactTitle: contactTitle
     }
   }
 
@@ -71,13 +71,29 @@ class SelectContactIdNameTitle extends PureComponent {
   }
 
   render () {
+    const nestedFields = Object.keys(this.props.nestedSchema)
+    const contacts = this.props.document.contacts
+    const itemIndex = this.props.itemIndex
+    const contactName = contacts[itemIndex] ? contacts[itemIndex].contactName : ''
+    const contactTitle = contacts[itemIndex] ? contacts[itemIndex].contactTitle : ''
+
+    const pseudoState = {
+      selectField: nestedFields.shift(), // get first field, shift remaining
+      indexFields: nestedFields,
+      value: this.props.value,
+      // path: this.props.path,
+      // pathPrefix: this.props.parentFieldName + '.' + this.props.itemIndex + '.',
+      contactName: contactName,
+      contactTitle: contactTitle
+    }
+
     return (
       <div>
         <FormGroup>
           <Label for='contactId'>Contact Name from Database</Label>
           <OptimizedSelect
             id='contactId'
-            value={this.state.value}
+            value={pseudoState.value}
             onChange={this.handleIdChange}
             options={this.props.options}
             resetValue={{ value: null, label: '' }}
@@ -88,7 +104,7 @@ class SelectContactIdNameTitle extends PureComponent {
           <OptimizedInput
             type='text'
             id='contactName'
-            value={this.state.contactName}
+            value={pseudoState.contactName}
             onChange={this.handleNameChange}
             required
           />
@@ -97,7 +113,7 @@ class SelectContactIdNameTitle extends PureComponent {
           <Label for='contactTitle'>Contact's Title for This Project</Label>
           <OptimizedSelect
             id='contactTitle'
-            value={this.state.contactTitle}
+            value={pseudoState.contactTitle}
             onChange={this.handleTitleChange}
             options={CASTING_TITLES_ENUM}
             resetValue={{ value: null, label: '' }}
