@@ -1,5 +1,5 @@
 import { instantiateComponent, replaceComponent } from 'meteor/vulcan:lib'
-import React, { PureComponent, useState } from 'react'
+import React, { PureComponent } from 'react'
 import PropTypes from 'prop-types'
 import {
   sortableContainer,
@@ -33,16 +33,16 @@ const SortableContainer = sortableContainer(({ children }) => {
 class MyFormNestedArrayLayout extends PureComponent {
   constructor(props) {
     super(props)
-
-    const collection = props.arrayField.name.slice(0, -2) || 'MyFormNestedArrayLayoutIsNotWorking' // `offices`, `projects`, `links`, etc.
+    const collection = props.arrayField.name.slice(0, -2) || 'MFNALError' // `offices`, `projects`, `links`, etc.
     this.state = {
       [collection]: props.document[collection],
       collectionName: [collection],
       originalCollectionLength: props.document[collection] ? props.document[collection].length : 0
     }
+    this.onSortEnd = this.onSortEnd.bind(this)
   }
 
-  onSortEnd = ({oldIndex, newIndex}) => {
+  onSortEnd({oldIndex, newIndex}) {
     const reorderedCollection = reorder(this.state[this.state.collectionName], oldIndex, newIndex)
     this.setState({
       [this.state.collectionName]: reorderedCollection,
@@ -59,9 +59,7 @@ class MyFormNestedArrayLayout extends PureComponent {
       beforeComponent,
       afterComponent,
       formComponents,
-      children,
-      document,
-      arrayField
+      children
     } = this.props
     const FormComponents = formComponents
 
@@ -70,7 +68,7 @@ class MyFormNestedArrayLayout extends PureComponent {
         {instantiateComponent(beforeComponent, this.props)}
         <label className='control-label col-sm-3'>{label}</label>
         <SortableContainer distance={2} onSortEnd={this.onSortEnd} useDragHandle>
-          {React.Children.map(this.props.children, (child, i) => {
+          {React.Children.map(children, (child, i) => {
             // don't sort new children or when there's just one child
             const disabled = (i > this.state.originalCollectionLength - 1) || (this.state.originalCollectionLength <= 1)
             return (

@@ -3,7 +3,7 @@ import React, { PureComponent } from 'react'
 import { FormGroup, Input, Label } from 'reactstrap'
 import Select from 'react-virtualized-select'
 import PropTypes from 'prop-types'
-import { CASTING_TITLES_ENUM } from '../../modules/constants.js'
+import { CASTING_TITLES_ENUM } from '../../../modules/constants.js'
 
 import pure from 'recompose/pure'
 import onlyUpdateForKeys from 'recompose/onlyUpdateForKeys'
@@ -11,11 +11,11 @@ const OptimizedInput = pure(Input)
 const OptimizedSelect = onlyUpdateForKeys(['value'])(Select)
 
 /**
-* This version explicity for projectId, projectTitle, titleForProject
-* TODO: a DRY component of this to not repeat all this code in SelectContactIdNameTitle.jsx
+* This version explicity for contactId, contactName, contactTitle
+* TODO: a DRY component of this to not repeat all this code in SelectProjectIdNameTitle.jsx
 */
 
-class SelectPastProjectIdNameTitle extends PureComponent {
+class SelectContactIdNameTitle extends PureComponent {
   constructor (props) {
     super(props)
 
@@ -23,31 +23,20 @@ class SelectPastProjectIdNameTitle extends PureComponent {
     this.handleNameChange = this.handleNameChange.bind(this)
     this.handleTitleChange = this.handleTitleChange.bind(this)
 
-    const nestedFields = Object.keys(this.props.nestedSchema)
-    const pastProjects = this.props.document.pastProjects
-    const itemIndex = this.props.itemIndex
-    const projectTitle = pastProjects[itemIndex] ? pastProjects[itemIndex].projectTitle : ''
-    const titleForProject = pastProjects[itemIndex] ? pastProjects[itemIndex].titleForProject : ''
-
     this.state = {
-      selectField: nestedFields.shift(), // get first field, shift remaining
-      indexFields: nestedFields,
-      value: this.props.value,
       path: this.props.path,
       pathPrefix: this.props.parentFieldName + '.' + this.props.itemIndex + '.',
-      projectTitle: projectTitle,
-      titleForProject: titleForProject
     }
   }
 
   handleIdChange (value) {
     this.setState({
       value,
-      projectTitle: value.label
+      contactName: value.label
     })
     this.context.updateCurrentValues({
       [this.state.path]: value.value,
-      [this.state.pathPrefix + 'projectTitle']: value.label
+      [this.state.pathPrefix + 'contactName']: value.label
     })
   }
 
@@ -63,41 +52,47 @@ class SelectPastProjectIdNameTitle extends PureComponent {
 
   handleTitleChange (value) {
     this.setState({
-      titleForProject: value.label
+      contactTitle: value.label
     })
     this.context.updateCurrentValues({
-      [this.state.pathPrefix + 'titleForProject']: value.label
+      [this.state.pathPrefix + 'contactTitle']: value.label
     })
   }
 
   render () {
+    const contacts = this.props.document.contacts
+    const itemIndex = this.props.itemIndex
+    const contactName = contacts[itemIndex] ? contacts[itemIndex].contactName : ''
+    const contactTitle = contacts[itemIndex] ? contacts[itemIndex].contactTitle : ''
+    const value = this.props.value
+
     return (
       <div>
         <FormGroup>
-          <Label for='projectId'>Project Name from Database</Label>
+          <Label for='contactId'>Name from Database</Label>
           <OptimizedSelect
-            id='projectId'
-            value={this.state.value}
+            id='contactId'
+            value={value}
             onChange={this.handleIdChange}
             options={this.props.options}
             resetValue={{ value: null, label: '' }}
           />
         </FormGroup>
         <FormGroup>
-          <Label for='projectTitle'>Editable Project Name</Label>
+          <Label for='contactName'>Editable Name</Label>
           <OptimizedInput
             type='text'
-            id='projectTitle'
-            value={this.state.projectTitle}
+            id='contactName'
+            value={contactName}
             onChange={this.handleNameChange}
             required
           />
         </FormGroup>
         <FormGroup>
-          <Label for='titleForProject'>Contact's Title for This Project</Label>
+          <Label for='contactTitle'>Title for This</Label>
           <OptimizedSelect
-            id='titleForProject'
-            value={this.state.titleForProject}
+            id='contactTitle'
+            value={contactTitle}
             onChange={this.handleTitleChange}
             options={CASTING_TITLES_ENUM}
             resetValue={{ value: null, label: '' }}
@@ -109,8 +104,8 @@ class SelectPastProjectIdNameTitle extends PureComponent {
   }
 }
 
-SelectPastProjectIdNameTitle.contextTypes = {
+SelectContactIdNameTitle.contextTypes = {
   updateCurrentValues: PropTypes.func
 }
 
-registerComponent('SelectPastProjectIdNameTitle', SelectPastProjectIdNameTitle)
+registerComponent('SelectContactIdNameTitle', SelectContactIdNameTitle)
