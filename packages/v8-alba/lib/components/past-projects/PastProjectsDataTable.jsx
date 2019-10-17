@@ -247,7 +247,7 @@ const accessOptions = {
 const multiOptions = {
   collection: PastProjects,
   fragmentName: 'PastProjectsDataTableFragment',
-  limit: 600
+  limit: 500
 }
 
 registerComponent( {
