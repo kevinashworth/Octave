@@ -96,7 +96,7 @@ class PastProjectSingle extends PureComponent {
             <hr />
             {project.website &&
             <CardText>
-              <CardLink href={project.website}>Open official website <i className='fa fa-external-link' /></CardLink>
+              <CardLink href={project.website} target='_websites'>Open official website <i className='fa fa-external-link' /></CardLink>
             </CardText>
             }
           </CardBody>
