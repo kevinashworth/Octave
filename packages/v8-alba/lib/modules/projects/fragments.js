@@ -58,6 +58,7 @@ registerFragment(/* GraphQL */ `
     createdAt
     updatedAt
     projectTitle
+    sortTitle
     projectType
     platformType
     casting

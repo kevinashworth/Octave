@@ -3,7 +3,7 @@ import SimpleSchema from 'simpl-schema'
 import marked from 'marked'
 import { addressSubSchema, linkSubSchema } from '../shared_schemas.js'
 import { PROJECT_TYPES_ENUM, PROJECT_STATUSES_ENUM } from '../constants.js'
-import { getFullAddress, getPlatformType } from '../helpers.js'
+import { getFullAddress, getPlatformType, getSortTitle } from '../helpers.js'
 
 const addressGroup = {
   name: 'addresses',
@@ -28,9 +28,9 @@ const contactSchema = new SimpleSchema({
     type: String,
     control: 'SelectContactIdNameTitle',
     optional: true,
-    viewableBy: ['members'],
-    insertableBy: ['admins'],
-    editableBy: ['admins'],
+    canRead: ['members'],
+    canCreate: ['admins'],
+    canUpdate: ['admins'],
     options: props => props.data.contacts.results.map(contact => ({
       value: contact._id,
       label: contact.fullName
@@ -40,17 +40,17 @@ const contactSchema = new SimpleSchema({
     type: String,
     optional: true,
     hidden: true,
-    viewableBy: ['members'],
-    insertableBy: ['admins'],
-    editableBy: ['admins']
+    canRead: ['members'],
+    canCreate: ['admins'],
+    canUpdate: ['admins']
   },
   contactTitle: {
     type: String,
     optional: true,
     hidden: true,
-    viewableBy: ['members'],
-    insertableBy: ['admins'],
-    editableBy: ['admins']
+    canRead: ['members'],
+    canCreate: ['admins'],
+    canUpdate: ['admins']
   }
 })
 
@@ -66,7 +66,7 @@ const schema = {
     type: Date,
     optional: true,
     canRead: 'guests',
-    onInsert: (o) => {
+    onCreate: (o) => {
       if (!o.createdAt) { // keep createdAt from a past-project being made a project
         return new Date()
       }
@@ -75,7 +75,7 @@ const schema = {
   userId: {
     type: String,
     optional: true,
-    viewableBy: ['members']
+    canRead: ['members']
   },
 
   // custom properties
@@ -84,10 +84,10 @@ const schema = {
     type: Date,
     optional: true,
     canRead: 'guests',
-    onInsert: () => {
+    onCreate: () => {
       return new Date()
     },
-    onEdit: () => {
+    onUpdate: () => {
       return new Date()
     }
   },
@@ -96,8 +96,28 @@ const schema = {
     type: String,
     optional: true,
     canRead: 'guests',
-    insertableBy: ['admins'],
-    editableBy: ['admins']
+    canCreate: ['admins'],
+    canUpdate: ['admins'],
+    onCreate: ({ document }) => {
+      return document.projectTitle.trim()
+    },
+    onUpdate: ({ document }) => {
+      return document.projectTitle.trim()
+    }
+  },
+  sortTitle: {
+    type: String,
+    optional: true,
+    hidden: true,
+    canRead: 'guests',
+    canCreate: ['admins'],
+    canUpdate: ['admins'],
+    onCreate: ({ document }) => {
+      return getSortTitle(document.projectTitle)
+    },
+    onUpdate: ({ document }) => {
+      return getSortTitle(document.projectTitle)
+    }
   },
   projectType: {
     label: 'Type',
@@ -108,8 +128,8 @@ const schema = {
       return PROJECT_TYPES_ENUM
     },
     canRead: 'guests',
-    insertableBy: ['admins'],
-    editableBy: ['admins']
+    canCreate: ['admins'],
+    canUpdate: ['admins']
   },
   platformType: {
     label: 'Platform Type',
@@ -130,16 +150,16 @@ const schema = {
     optional: true,
     defaultValue: 'SAG-AFTRA',
     canRead: 'guests',
-    insertableBy: ['admins'],
-    editableBy: ['admins']
+    canCreate: ['admins'],
+    canUpdate: ['admins']
   },
   network: {
     label: 'Network',
     type: String,
     optional: true,
     canRead: 'guests',
-    insertableBy: ['admins'],
-    editableBy: ['admins']
+    canCreate: ['admins'],
+    canUpdate: ['admins']
   },
   status: {
     label: 'Status',
@@ -150,16 +170,16 @@ const schema = {
       return PROJECT_STATUSES_ENUM
     },
     canRead: 'guests',
-    insertableBy: ['admins'],
-    editableBy: ['admins']
+    canCreate: ['admins'],
+    canUpdate: ['admins']
   },
   renewed: {
     label: 'On Hiatus but Renewed',
     type: Boolean,
     optional: true,
     canRead: 'guests',
-    insertableBy: ['admins'],
-    editableBy: ['admins']
+    canCreate: ['admins'],
+    canUpdate: ['admins']
   },
   // Summary (Markdown)
   summary: {
@@ -168,23 +188,23 @@ const schema = {
     optional: true,
     control: 'textarea', // use a textarea form component
     canRead: 'guests',
-    insertableBy: ['admins'],
-    editableBy: ['admins']
+    canCreate: ['admins'],
+    canUpdate: ['admins']
   },
   // HTML version of Summary
   htmlSummary: {
     type: String,
     optional: true,
     hidden: true,
-    viewableBy: ['members'],
-    insertableBy: ['admins'],
-    editableBy: ['admins'],
-    onInsert: (project) => {
+    canRead: ['members'],
+    canCreate: ['admins'],
+    canUpdate: ['admins'],
+    onCreate: (project) => {
       if (project.summary) {
         return Utils.sanitize(marked('**SUMMARY:** ' + project.summary))
       }
     },
-    onEdit: (modifier, project) => {
+    onUpdate: (modifier, project) => {
       if (modifier.$set.summary) {
         return Utils.sanitize(marked('**SUMMARY:** ' + modifier.$set.summary))
       }
@@ -195,8 +215,8 @@ const schema = {
     type: String,
     optional: true,
     canRead: 'guests',
-    insertableBy: ['admins'],
-    editableBy: ['admins']
+    canCreate: ['admins'],
+    canUpdate: ['admins']
   },
   // Notes (Markdown)
   notes: {
@@ -204,24 +224,24 @@ const schema = {
     type: String,
     optional: true,
     control: 'textarea', // use a textarea form component
-    viewableBy: ['members'],
-    insertableBy: ['admins'],
-    editableBy: ['admins']
+    canRead: ['members'],
+    canCreate: ['admins'],
+    canUpdate: ['admins']
   },
   // HTML version of Notes
   htmlNotes: {
     type: String,
     optional: true,
     hidden: true,
-    viewableBy: ['members'],
-    insertableBy: ['admins'],
-    editableBy: ['admins'],
-    onInsert: (project) => {
+    canRead: ['members'],
+    canCreate: ['admins'],
+    canUpdate: ['admins'],
+    onCreate: (project) => {
       if (project.notes) {
         return Utils.sanitize(marked('**NOTES:** ' + project.notes))
       }
     },
-    onEdit: (modifier, project) => {
+    onUpdate: (modifier, project) => {
       if (modifier.$set.notes) {
         return Utils.sanitize(marked('**NOTES:** ' + modifier.$set.notes))
       }
@@ -232,17 +252,17 @@ const schema = {
     label: 'Season',
     type: String,
     optional: true,
-    viewableBy: ['members'],
-    insertableBy: ['admins'],
-    editableBy: ['admins']
+    canRead: ['members'],
+    canCreate: ['admins'],
+    canUpdate: ['admins']
   },
   order: {
     label: 'Order',
     type: String,
     optional: true,
-    viewableBy: ['members'],
-    insertableBy: ['admins'],
-    editableBy: ['admins']
+    canRead: ['members'],
+    canCreate: ['admins'],
+    canUpdate: ['admins']
   },
   casting: {
     label: 'Casting Calculated',
@@ -308,10 +328,10 @@ const schema = {
     canRead: 'guests',
     canCreate: ['members'],
     canUpdate: ['members'],
-    onInsert: (project) => {
+    onCreate: (project) => {
       return Utils.slugify(project.projectTitle)
     },
-    onEdit: (modifier, project) => {
+    onUpdate: (modifier, project) => {
       if (modifier.$set.slug) {
         return Utils.slugify(modifier.$set.slug)
       }
@@ -324,9 +344,9 @@ const schema = {
     label: 'Links',
     type: Array,
     optional: true,
-    viewableBy: ['members'],
-    insertableBy: ['members'],
-    editableBy: ['members'],
+    canRead: ['members'],
+    canCreate: ['members'],
+    canUpdate: ['members'],
     group: linkGroup
   },
   'links.$': {
@@ -336,9 +356,9 @@ const schema = {
     label: 'Contacts',
     type: Array,
     optional: true,
-    viewableBy: ['members'],
-    insertableBy: ['admins'],
-    editableBy: ['admins'],
+    canRead: ['members'],
+    canCreate: ['admins'],
+    canUpdate: ['admins'],
     query: `
       contacts{
         results{
@@ -371,9 +391,9 @@ const schema = {
   addresses: {
     type: Array,
     optional: true,
-    viewableBy: ['members'],
-    insertableBy: ['admins'],
-    editableBy: ['admins'],
+    canRead: ['members'],
+    canCreate: ['admins'],
+    canUpdate: ['admins'],
     group: addressGroup
   },
   'addresses.$': {

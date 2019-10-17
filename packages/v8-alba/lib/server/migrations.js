@@ -9,7 +9,7 @@ import { PAST_PROJECT_STATUSES_ARRAY } from '../modules/constants.js'
 import moment from 'moment'
 import marked from 'marked'
 import reducedStats from './seeds/_stats-reduced.js'
-import { getAddress, getFullAddress, getFullNameFromContact, getPlatformType } from '../modules/helpers.js'
+import { getAddress, getFullAddress, getFullNameFromContact, getPlatformType, getSortTitle } from '../modules/helpers.js'
 
 Migrations.add({
   version: 1,
@@ -494,6 +494,28 @@ Migrations.add({
   down: function () { /* There is no undoing this one. */ }
 })
 
+Migrations.add({
+  version: 14,
+  name: 'Add sortTitle to projects.',
+  up: function () {
+    Projects.find({ sortTitle: { $exists: false } }).forEach((o) => {
+      const sortTitle = getSortTitle(o.projectTitle)
+      Projects.update(o._id,
+        {
+          $set: { sortTitle }
+        })
+    })
+  },
+  down: function () {
+    Projects.find({ sortTitle: { $exists: true } }).forEach((o) => {
+      Projects.update(o._id,
+        {
+          $unset: { sortTitle: 1 }
+        })
+    })
+  }
+})
+
 Meteor.startup(() => {
-  Migrations.migrateTo('13')
+  Migrations.migrateTo('14')
 })
