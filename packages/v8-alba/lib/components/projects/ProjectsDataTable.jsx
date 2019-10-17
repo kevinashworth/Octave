@@ -144,6 +144,14 @@ class ProjectsDataTable extends PureComponent {
     })
   }
 
+  titleSortFunc (a, b, order) {
+    if (order === 'desc') {
+      return a.sortTitle.localeCompare(b.sortTitle)
+    } else {
+      return b.sortTitle.localeCompare(a.sortTitle)
+    }
+  }
+
   render () {
     const { count, totalCount, results, loadingMore, loadMore, currentUser,
             projectTypeFilters, projectStatusFilters, projectUpdatedFilters, projectPlatformFilters } = this.props
@@ -210,7 +218,7 @@ class ProjectsDataTable extends PureComponent {
                 }])
               }}
               version='4'>
-              <TableHeaderColumn dataField='projectTitle' dataSort dataFormat={
+              <TableHeaderColumn dataField='projectTitle' dataSort sortFunc={ this.titleSortFunc } dataFormat={
                 (cell, row) => {
                   return (
                     <Link to={`/projects/${row._id}/${row.slug}`}>

@@ -361,3 +361,20 @@ export function sortObjectByKeyNameList (object, sortWith) { // copied from sort
     return total
   }, Object.create({}))
 }
+
+export function getSortTitle (title) {
+  let theTitle = title.trim()
+  let firstSpace = theTitle.indexOf(' ')
+  let firstWord = theTitle.slice(0, firstSpace).toLowerCase()
+  let newTitle = ''
+  switch(firstWord) {
+    case 'a':
+    case 'an':
+    case 'the':
+      newTitle = theTitle.slice(firstSpace + 1)
+      break
+    default:
+      newTitle = theTitle
+  }
+  return newTitle
+}
