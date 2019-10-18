@@ -25,7 +25,7 @@ const CommentsNewForm = (props, context) => {
         <Components.SmartForm
           collection={Comments}
           mutationFragment={getFragment('CommentsList')}
-          successCallback={props.successCallback} 
+          successCallback={props.successCallback}
           cancelCallback={props.type === "reply" ? props.cancelCallback : null}
           prefilledProps={prefilledProps}
           layout="elementOnly"
@@ -48,4 +48,8 @@ CommentsNewForm.propTypes = {
   flash: PropTypes.func,
 };
 
-registerComponent({ name: 'CommentsNewForm', component: CommentsNewForm, hocs: [withMessages] });
+registerComponent({
+  name: 'CommentsNewForm',
+  component: CommentsNewForm,
+  hocs: [withMessages]
+})

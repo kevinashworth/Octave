@@ -16,10 +16,10 @@ import Users from 'meteor/vulcan:users';
  * @summary Get URL of a comment page.
  * @param {Object} comment
  */
-Comments.getPageUrl = function(comment, isAbsolute = false){
-  const post = Posts.findOne(comment.postId);
-  return `${Posts.getPageUrl(post, isAbsolute)}/#${comment._id}`;
-};
+// Comments.getPageUrl = function(comment, isAbsolute = false){
+//   const post = Posts.findOne(comment.postId);
+//   return `${Posts.getPageUrl(post, isAbsolute)}/#${comment._id}`;
+// };
 
 ///////////////////
 // Other Helpers //

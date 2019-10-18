@@ -1,14 +1,11 @@
-/*
-
-Comments views
-
-*/
-
 import { Comments } from './index.js';
 
-Comments.addView('postComments', function (terms) {
+Comments.addView('Comments', function (terms) {
   return {
-    selector: {postId: terms.postId},
+    selector: {
+      collectionName: terms.collectionName,
+      objectId: terms.document._id
+    },
     options: {sort: {postedAt: -1}}
   };
 });

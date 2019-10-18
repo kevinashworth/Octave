@@ -96,7 +96,9 @@ class ContactsSingle extends PureComponent {
                 <CardBody>
                   <CardTitle>Notes</CardTitle>
                     <CardText>
-                      My words go here
+                      <Components.CommentsThread
+                        terms={{ document, collectionName: 'Contacts', view: 'Comments' }}
+                      />
                     </CardText>
                 </CardBody>
               </Col>
