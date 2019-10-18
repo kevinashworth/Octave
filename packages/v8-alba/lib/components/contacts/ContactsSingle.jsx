@@ -3,7 +3,7 @@ import { FormattedMessage } from 'meteor/vulcan:i18n'
 import React, { PureComponent } from 'react'
 import { Link } from 'react-router-dom'
 import mapProps from 'recompose/mapProps'
-import { Button, Card, CardBody, CardFooter, CardHeader, CardLink, CardText, CardTitle, Collapse } from 'reactstrap'
+import { Button, Card, CardBody, CardFooter, CardHeader, CardLink, CardText, CardTitle, Col, Collapse, Row } from 'reactstrap'
 import moment from 'moment'
 import { DATE_FORMAT_LONG, DATE_FORMAT_SHORT } from '../../modules/constants.js'
 import { dangerouslyCreateAddress, isEmptyValue } from '../../modules/helpers.js'
@@ -53,43 +53,54 @@ class ContactsSingle extends PureComponent {
                 }
               </CardText>
             </CardBody>
-            {!isEmptyValue(contact.offices) &&
-            <CardBody>
-              <CardTitle>Offices</CardTitle>
-              {contact.offices.map((o, index) =>
-                <Components.OfficeMini key={index} documentId={o.officeId} />
-              )}
-            </CardBody>
-            }
-            {contact.addresses &&
-            <CardBody>
-              {contact.addresses[0] && <CardTitle>Addresses</CardTitle>}
-              {contact.addresses.map((address, index) =>
-                <CardText key={`address${index}`} dangerouslySetInnerHTML={dangerouslyCreateAddress(address)} />
-              )}
-            </CardBody>
-            }
-            {contact.projects &&
-            <CardBody>
-              <CardTitle>Projects</CardTitle>
-              {contact.projects.map(project =>
-                <CardText key={project.projectId}>
-                  <b><Link to={`/projects/${project.projectId}`}>{project.projectTitle}</Link></b>
-                  {project.titleForProject && ` (${project.titleForProject})`}
-                </CardText>
-              )}
-            </CardBody>
-            }
-            {contact.links &&
-            <CardBody>
-              <CardText>
-                {contact.links.map(link =>
-                  <Button className={`btn-${link.platformName.toLowerCase()} text-white`} key={link.profileLink}>
-                    <span><CardLink href={link.profileLink} target='_links'>{link.profileName}</CardLink></span>
-                  </Button>)}
-              </CardText>
-            </CardBody>
-            }
+            <Row>
+              <Col xs='12' lg='6'>
+                {!isEmptyValue(contact.offices) &&
+                <CardBody>
+                  <CardTitle>Offices</CardTitle>
+                  {contact.offices.map((o, index) =>
+                    <Components.OfficeMini key={index} documentId={o.officeId} />
+                  )}
+                </CardBody>
+                }
+                {contact.addresses &&
+                <CardBody>
+                  {contact.addresses[0] && <CardTitle>Addresses</CardTitle>}
+                  {contact.addresses.map((address, index) =>
+                    <CardText key={`address${index}`} dangerouslySetInnerHTML={dangerouslyCreateAddress(address)} />
+                  )}
+                </CardBody>
+                }
+                {contact.projects &&
+                <CardBody>
+                  <CardTitle>Projects</CardTitle>
+                  {contact.projects.map(project =>
+                    <CardText key={project.projectId}>
+                      <b><Link to={`/projects/${project.projectId}`}>{project.projectTitle}</Link></b>
+                      {project.titleForProject && ` (${project.titleForProject})`}
+                    </CardText>
+                  )}
+                </CardBody>
+                }
+                {contact.links &&
+                <CardBody>
+                  <CardText>
+                    {contact.links.map(link =>
+                      <Button className={`btn-${link.platformName.toLowerCase()} text-white`} key={link.profileLink}>
+                        <span><CardLink href={link.profileLink} target='_links'>{link.profileName}</CardLink></span>
+                      </Button>)}
+                  </CardText>
+                </CardBody>
+                }</Col>
+              <Col xs='12' lg='6'>
+                <CardBody>
+                  <CardTitle>Notes</CardTitle>
+                    <CardText>
+                      My words go here
+                    </CardText>
+                </CardBody>
+              </Col>
+            </Row>
             <CardFooter>
               <small className='text-muted'>{displayDate}</small>
             </CardFooter>
