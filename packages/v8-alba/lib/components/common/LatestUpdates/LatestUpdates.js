@@ -146,7 +146,11 @@ class LatestProjectUpdates extends Component {
                   {project.projectType.indexOf('TV') === 0 || project.projectType.indexOf('Pilot') === 0
                     ? `${project.projectType} • ${project.network}` : `${project.projectType}`}<br />
                   {project.status}<br />
-                  {project.castingCompany}<br />
+                  {project.castingCompany
+                    ? project.castingCompany
+                    : project.castingOffice.displayName
+                      ? project.castingOffice.displayName
+                      : null }
                 </CardBody>
                 <CardFooter>
                   <small className='text-muted' dangerouslySetInnerHTML={{ __html: displayHtml }} />
@@ -196,7 +200,11 @@ class LatestPastProjectUpdates extends Component {
                 {project.projectType.indexOf('TV') === 0 || project.projectType.indexOf('Pilot') === 0
                   ? `${project.projectType} • ${project.network}` : `${project.projectType}`}<br />
                 {project.status}<br />
-                {project.castingCompany}<br />
+                {project.castingCompany
+                  ? project.castingCompany
+                  : project.castingOffice.displayName
+                    ? project.castingOffice.displayName
+                    : null }
               </CardBody>
               <CardFooter>
                 <small className='text-muted'>Past Project as of {moment(project.updatedAt).format(DATE_FORMAT_SHORT_FRIENDLY)}</small>
