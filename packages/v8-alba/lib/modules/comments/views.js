@@ -1,10 +1,10 @@
-import { Comments } from './index.js';
+import { Comments } from './collection.js';
 
 Comments.addView('Comments', function (terms) {
   return {
     selector: {
       collectionName: terms.collectionName,
-      objectId: terms.document._id
+      objectId: terms.objectId
     },
     options: {sort: {postedAt: -1}}
   };

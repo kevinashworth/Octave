@@ -1,19 +1,18 @@
-import Users from 'meteor/vulcan:users';
-import marked from 'marked';
-import { Utils } from 'meteor/vulcan:core';
-import Contacts from '../contacts/collection.js'
-import Offices from '../offices/collection.js'
-import Projects from '../projects/collection.js'
+import { Utils } from 'meteor/vulcan:core'
+import Users from 'meteor/vulcan:users'
+import marked from 'marked'
 
 const schema = {
   // default properties
 
   _id: {
     type: String,
+    optional: true,
     canRead: ['guests'],
   },
   createdAt: {
     type: Date,
+    optional: true,
     canRead: ['guests'],
     onCreate: () => {
       return new Date();
@@ -21,9 +20,10 @@ const schema = {
   },
   userId: {
     type: String,
+    optional: true,
+    hidden: true,
     canRead: ['members'],
     canCreate: ['members'],
-    hidden: true,
     resolveAs: {
       fieldName: 'user',
       type: 'User',
@@ -41,10 +41,10 @@ const schema = {
   //  _id of the parent comment, if there is one
   parentCommentId: {
     type: String,
-    // regEx: SimpleSchema.RegEx.Id,
+    optional: true,
+    hidden: true,
     canRead: ['guests'],
     canCreate: ['members'],
-    optional: true,
     resolveAs: {
       fieldName: 'parentComment',
       type: 'Comment',
@@ -54,16 +54,15 @@ const schema = {
         return Users.restrictViewableFields(currentUser, Comments, parentComment);
       },
       addOriginalField: true
-    },
-    hidden: true
+    }
   },
   // _id of the top-level parent comment, if there is one
   topLevelCommentId: {
     type: String,
-    // regEx: SimpleSchema.RegEx.Id,
+    optional: true,
+    hidden: true,
     canRead: ['guests'],
     canCreate: ['members'],
-    optional: true,
     resolveAs: {
       fieldName: 'topLevelComment',
       type: 'Comment',
@@ -73,8 +72,7 @@ const schema = {
         return Users.restrictViewableFields(currentUser, Comments, topLevelComment);
       },
       addOriginalField: true
-    },
-    hidden: true
+    }
   },
   // For now, comments are always created and posted at the same time
   postedAt: {
@@ -88,19 +86,23 @@ const schema = {
   // Body (Markdown)
   body: {
     type: String,
+    optional: true,
     canRead: ['members'],
     canCreate: ['members'],
     canUpdate: ['members'],
-    input: "textarea"
+    input: 'textarea',
+    inputProperties: {
+      rows: 4
+    }
   },
   // HTML version of Body
   htmlBody: {
     type: String,
     optional: true,
     canRead: ['guests'],
-    onCreate: ({ document: comment }) => {
-      if (comment.body) {
-        return Utils.sanitize(marked(comment.body))
+    onCreate: ({ document }) => {
+      if (document.body) {
+        return Utils.sanitize(marked(document.body))
       }
     },
     onUpdate: ({ data }) => {
@@ -113,7 +115,7 @@ const schema = {
   author: {
     type: String,
     optional: true,
-    canRead: ['guests'],
+    canRead: ['members'],
     onUpdate: ({ data }) => {
       // if userId is changing, change the author name too
       if (data.userId) {
@@ -124,17 +126,31 @@ const schema = {
   // Comment belongs to a contact, office, or project
   collectionName: {
     type: String,
+    optional: true,
+    hidden: true,
     canCreate: ['members'],
+    canRead: ['members'],
     onCreate: ({ document }) => {
-      console.log('where is collectionName in document?', document)
+      if (document.collectionName){
+        return document.collectionName
+      } else {
+        console.log('collectionName! Here is the document:', document)
+      }
     }
   },
   // That contact's, office's, or project's _id
   objectId: {
     type: String,
+    optional: true,
+    hidden: true,
     canCreate: ['members'],
+    canRead: ['members'],
     onCreate: ({ document }) => {
-      console.log('where is objectId in document?', document)
+      if (document.objectId){
+        return document.objectId
+      } else {
+        console.log('objectId! Here is the document:', document)
+      }
     }
   },
   // Deleted comments don't appear.

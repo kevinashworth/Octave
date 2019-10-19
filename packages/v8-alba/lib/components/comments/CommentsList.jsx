@@ -8,7 +8,6 @@ const CommentsList = ({comments, commentCount, currentUser}) => {
     return (
       <div className="comments-list">
         {comments.map(comment => <Components.CommentsNode currentUser={currentUser} comment={comment} key={comment._id} />)}
-        {/*hasMore ? (ready ? <Components.CommentsLoadMore loadMore={loadMore} count={count} totalCount={totalCount} /> : <Components.Loading/>) : null*/}
       </div>
     )
   } else {
@@ -23,6 +22,7 @@ const CommentsList = ({comments, commentCount, currentUser}) => {
 
 };
 
-CommentsList.displayName = "CommentsList";
-
-registerComponent({ name: 'CommentsList', component: CommentsList });
+registerComponent({
+  name: 'CommentsList',
+  component: CommentsList
+})

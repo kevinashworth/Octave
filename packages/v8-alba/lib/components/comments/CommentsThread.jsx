@@ -1,11 +1,14 @@
-import { Components, registerComponent, Utils, withCurrentUser, withList } from 'meteor/vulcan:core'
+import { Components, registerComponent, Utils, withCurrentUser, withMulti } from 'meteor/vulcan:core'
 import { FormattedMessage } from 'meteor/vulcan:i18n'
 import React from 'react'
 import PropTypes from 'prop-types'
+import _ from 'lodash'
+import Comments from '../../modules/comments/collection.js'
 
-const CommentsThread = (props, /* context*/) => {
 
-  const {loading, terms: { postId }, results, totalCount, currentUser} = props;
+const CommentsThread = (props) => {
+
+  const {loading, terms: { collectionName, objectId }, results, totalCount, currentUser} = props;
 
   if (loading) {
 
@@ -24,7 +27,8 @@ const CommentsThread = (props, /* context*/) => {
           <div className="posts-comments-thread-new">
             <h4><FormattedMessage id="comments.new"/></h4>
             <Components.CommentsNewForm
-              postId={postId}
+              collectionName={collectionName}
+              objectId={objectId}
               type="comment"
             />
         </div> : null }
@@ -40,10 +44,9 @@ CommentsThread.propTypes = {
 };
 
 const options = {
-  collectionName: 'Comments',
-  queryName: 'commentsListQuery',
+  collection: Comments,
   fragmentName: 'CommentsList',
-  limit: 0,
+  limit: 10,
 };
 
 registerComponent({
@@ -51,6 +54,6 @@ registerComponent({
   component: CommentsThread,
   hocs: [
     withCurrentUser,
-    [withList, options],
+    [withMulti, options],
   ]
 })

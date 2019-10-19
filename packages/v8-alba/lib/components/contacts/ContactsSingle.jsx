@@ -97,7 +97,7 @@ class ContactsSingle extends PureComponent {
                   <CardTitle>Notes</CardTitle>
                     <CardText>
                       <Components.CommentsThread
-                        terms={{ document, collectionName: 'Contacts', view: 'Comments' }}
+                        terms={{ objectId: document._id, collectionName: 'Contacts', view: 'Comments' }}
                       />
                     </CardText>
                 </CardBody>
@@ -132,10 +132,6 @@ class ContactsSingle extends PureComponent {
   }
 }
 
-ContactsSingle.propTypes = {
-  // document: PropTypes.object.isRequired,
-}
-
 const options = {
   collection: Contacts,
   queryName: 'contactsSingleQuery',
@@ -147,5 +143,9 @@ const mapPropsFunction = props => ({ ...props, documentId: props.match && props.
 registerComponent({
   name: 'ContactsSingle',
   component: ContactsSingle,
-  hocs: [withCurrentUser, mapProps(mapPropsFunction), [withDocument, options]]
+  hocs: [
+    withCurrentUser,
+    [withDocument, options],
+    mapProps(mapPropsFunction)
+  ]
 })

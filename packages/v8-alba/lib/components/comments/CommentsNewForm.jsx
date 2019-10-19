@@ -6,14 +6,17 @@ import { FormattedMessage } from 'meteor/vulcan:i18n';
 
 const CommentsNewForm = (props, context) => {
 
-  let prefilledProps = {postId: props.postId};
+  let prefilledProps = {
+    collectionName: props.collectionName,
+    objectId: props.objectId
+  }
 
   if (props.parentComment) {
     prefilledProps = Object.assign(prefilledProps, {
       parentCommentId: props.parentComment._id,
       // if parent comment has a topLevelCommentId use it; if it doesn't then it *is* the top level comment
       topLevelCommentId: props.parentComment.topLevelCommentId || props.parentComment._id
-    });
+    })
   }
 
   return (
@@ -37,7 +40,7 @@ const CommentsNewForm = (props, context) => {
 };
 
 CommentsNewForm.propTypes = {
-  postId: PropTypes.string.isRequired,
+  objectId: PropTypes.string.isRequired,
   type: PropTypes.string, // "comment" or "reply"
   parentComment: PropTypes.object, // if reply, the comment being replied to
   parentCommentId: PropTypes.string, // if reply
@@ -45,8 +48,8 @@ CommentsNewForm.propTypes = {
   successCallback: PropTypes.func, // a callback to execute when the submission has been successful
   cancelCallback: PropTypes.func,
   router: PropTypes.object,
-  flash: PropTypes.func,
-};
+  flash: PropTypes.func
+}
 
 registerComponent({
   name: 'CommentsNewForm',
