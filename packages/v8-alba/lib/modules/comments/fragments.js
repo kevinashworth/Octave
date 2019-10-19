@@ -4,33 +4,17 @@ import { registerFragment } from 'meteor/vulcan:core';
 
 registerFragment(/* GraphQL */`
   fragment CommentsList on Comment {
-    # vulcan:comments
     _id
-    postId
+    collectionName
+    objectId
     parentCommentId
     topLevelCommentId
     body
     htmlBody
     postedAt
-    # vulcan:users
     userId
     user {
       ...UsersMinimumInfo
     }
-    # vulcan:posts
-    post {
-      _id
-      commentCount
-      commenters {
-        ...UsersMinimumInfo
-      }
-    }
-    # voting
-    currentUserVotes{
-      ...VoteFragment
-    }
-    baseScore
-    score
   }
 `);
-

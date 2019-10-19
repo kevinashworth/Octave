@@ -48,6 +48,13 @@ import '../components/common/Filter/ContactFilters'
 import '../components/common/Filter/ProjectFilters'
 import '../components/common/Filter/PastProjectFilters'
 
+import '../components/comments/CommentsEditForm'
+import '../components/comments/CommentsItem'
+import '../components/comments/CommentsList'
+import '../components/comments/CommentsNewForm'
+import '../components/comments/CommentsNode'
+import '../components/comments/CommentsThread'
+
 import '../components/contacts/ContactMini'
 import '../components/contacts/ContactModal'
 import '../components/contacts/ContactsDataTable'
