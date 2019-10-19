@@ -1,6 +1,7 @@
-import { Components, registerComponent, withCurrentUser, withDocument } from 'meteor/vulcan:core'
+import { Components, registerComponent, withCurrentUser, withSingle } from 'meteor/vulcan:core'
 import { FormattedMessage } from 'meteor/vulcan:i18n'
 import React, { PureComponent } from 'react'
+import PropTypes from 'prop-types'
 import { Link } from 'react-router-dom'
 import mapProps from 'recompose/mapProps'
 import { Button, Card, CardBody, CardFooter, CardHeader, CardLink, CardText, CardTitle, Col, Collapse, Row } from 'reactstrap'
@@ -18,6 +19,16 @@ class ContactsSingle extends PureComponent {
 
   toggle () {
     this.setState({ collapse: !this.state.collapse })
+  }
+
+  async componentDidMount() {
+    try {
+      const {
+        documentId,
+      } = this.props
+    } catch(error) {
+      console.log('componentDidMount error!', error) // eslint-disable-line
+    }
   }
 
   render () {
@@ -132,9 +143,13 @@ class ContactsSingle extends PureComponent {
   }
 }
 
+ContactsSingle.propTypes = {
+  documentId: PropTypes.string,
+  document: PropTypes.object
+}
+
 const options = {
   collection: Contacts,
-  queryName: 'contactsSingleQuery',
   fragmentName: 'ContactsSingleFragment'
 }
 
@@ -145,7 +160,7 @@ registerComponent({
   component: ContactsSingle,
   hocs: [
     withCurrentUser,
-    [withDocument, options],
+    [withSingle, options],
     mapProps(mapPropsFunction)
   ]
 })
