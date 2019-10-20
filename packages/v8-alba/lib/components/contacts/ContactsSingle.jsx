@@ -143,14 +143,13 @@ const options = {
   fragmentName: 'ContactsSingleFragment'
 }
 
-const mapPropsFunction = props => ({ ...props, documentId: props.match && props.match.params._id, slug: props.match && props.match.params.slug })
+const mapPropsFunction = props => ({ ...props, documentId: props.match && props.match.params._id })
 
 registerComponent({
   name: 'ContactsSingle',
   component: ContactsSingle,
   hocs: [
     withCurrentUser,
-    [withSingle, options],
-    mapProps(mapPropsFunction)
+    mapProps(mapPropsFunction), [withSingle, options] // mapProps must precede withSingle
   ]
 })
