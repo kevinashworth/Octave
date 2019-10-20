@@ -2,6 +2,7 @@ import { Components, registerComponent, Utils, withCurrentUser, withMulti } from
 import { FormattedMessage } from 'meteor/vulcan:i18n'
 import React from 'react'
 import PropTypes from 'prop-types'
+import { Card, CardBody, CardFooter, CardHeader, CardLink, CardText, CardTitle } from 'reactstrap'
 import _ from 'lodash'
 import Comments from '../../modules/comments/collection.js'
 
@@ -15,19 +16,24 @@ const CommentsThread = (props) => {
     const nestedComments = Utils.unflatten(resultsClone, { idProperty: '_id', parentIdProperty: 'parentCommentId' })
 
     return (
-      <div className='posts-comments-thread'>
-        <h4 className='posts-comments-thread-title'><FormattedMessage id='comments.comments' /></h4>
-        <Components.CommentsList currentUser={currentUser} comments={nestedComments} commentCount={totalCount} />
-        {currentUser
-          ? <div className='posts-comments-thread-new'>
-            <h4><FormattedMessage id='comments.new' /></h4>
-            <Components.CommentsNewForm
-              collectionName={collectionName}
-              objectId={objectId}
-              type='comment'
-            />
-          </div> : null }
-      </div>
+      <CardBody>
+        <CardTitle><FormattedMessage id='comments.comments' /></CardTitle>
+          <CardText>
+            <Components.CommentsList currentUser={currentUser} comments={nestedComments} commentCount={totalCount} />
+            {currentUser
+              ? <CardBody>
+                  <CardTitle><FormattedMessage id='comments.new' /></CardTitle>
+                  <CardText>
+                    <Components.CommentsNewForm
+                      collectionName={collectionName}
+                      objectId={objectId}
+                      type='comment'
+                    />
+                  </CardText>
+                </CardBody>
+              : null }
+        </CardText>
+      </CardBody>
     )
   }
 }

@@ -92,16 +92,12 @@ class ContactsSingle extends PureComponent {
                       </Button>)}
                   </CardText>
                 </CardBody>
-                }</Col>
+                }
+              </Col>
               <Col xs='12' lg='6'>
-                <CardBody>
-                  <CardTitle>Notes</CardTitle>
-                    <CardText>
-                      <Components.CommentsThread
-                        terms={{ objectId: document._id, collectionName: 'Contacts', view: 'Comments' }}
-                      />
-                    </CardText>
-                </CardBody>
+                <Components.CommentsThread
+                  terms={{ objectId: document._id, collectionName: 'Contacts', view: 'Comments' }}
+                />
               </Col>
             </Row>
             <CardFooter>
