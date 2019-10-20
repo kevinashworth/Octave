@@ -1,11 +1,10 @@
-import { Components, registerComponent, getFragment, withMessages } from 'meteor/vulcan:core';
-import React from 'react';
-import PropTypes from 'prop-types';
-import { Comments } from '../../modules/comments/index.js';
-import { FormattedMessage } from 'meteor/vulcan:i18n';
+import { Components, registerComponent, getFragment, withMessages } from 'meteor/vulcan:core'
+import React from 'react'
+import PropTypes from 'prop-types'
+import { Comments } from '../../modules/comments/index.js'
+import { FormattedMessage } from 'meteor/vulcan:i18n'
 
 const CommentsNewForm = (props, context) => {
-
   let prefilledProps = {
     collectionName: props.collectionName,
     objectId: props.objectId
@@ -22,22 +21,21 @@ const CommentsNewForm = (props, context) => {
   return (
     <Components.ShowIf
       check={Comments.options.mutations.new.check}
-      failureComponent={<FormattedMessage id="users.cannot_comment"/>}
+      failureComponent={<FormattedMessage id='users.cannot_comment' />}
     >
-      <div className="comments-new-form">
+      <div className='comments-new-form'>
         <Components.SmartForm
           collection={Comments}
           mutationFragment={getFragment('CommentsList')}
           successCallback={props.successCallback}
-          cancelCallback={props.type === "reply" ? props.cancelCallback : null}
+          cancelCallback={props.type === 'reply' ? props.cancelCallback : null}
           prefilledProps={prefilledProps}
-          layout="elementOnly"
+          layout='elementOnly'
         />
       </div>
     </Components.ShowIf>
   )
-
-};
+}
 
 CommentsNewForm.propTypes = {
   objectId: PropTypes.string.isRequired,

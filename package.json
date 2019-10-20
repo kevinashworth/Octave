@@ -12,6 +12,7 @@
     "start-debug": "meteor debug --port 4004 --settings settings.json",
     "start-mlab": "MONGO_URL='***REMOVED***' meteor --port 4004 --settings settings.json",
     "lint": "standard 'packages/v8-alba/**/*.js' 'packages/v8-alba/**/*.jsx' --fix",
+    "lintf": "standard 'packages/v8-alba/lib/modules/helpers.js' --fix",
     "lintnofix": "standard 'packages/v8-alba/**/*.js' 'packages/v8-alba/**/*.jsx'",
     "lintnofixv": "standard --verbose 'packages/v8-alba/**/*.js' 'packages/v8-alba/**/*.jsx'",
     "update-package-json": "node ./.vulcan/update_package.js"

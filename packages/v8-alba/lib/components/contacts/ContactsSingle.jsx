@@ -21,16 +21,6 @@ class ContactsSingle extends PureComponent {
     this.setState({ collapse: !this.state.collapse })
   }
 
-  async componentDidMount() {
-    try {
-      const {
-        documentId,
-      } = this.props
-    } catch(error) {
-      console.log('componentDidMount error!', error) // eslint-disable-line
-    }
-  }
-
   render () {
     const { currentUser, document, loading } = this.props
     if (loading) {
@@ -153,7 +143,7 @@ const options = {
   fragmentName: 'ContactsSingleFragment'
 }
 
-const mapPropsFunction = props => ({ ...props, documentId: props.match && props.match.params._id })
+const mapPropsFunction = props => ({ ...props, documentId: props.match && props.match.params._id, slug: props.match && props.match.params.slug })
 
 registerComponent({
   name: 'ContactsSingle',

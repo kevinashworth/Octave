@@ -8,14 +8,14 @@ const schema = {
   _id: {
     type: String,
     optional: true,
-    canRead: ['guests'],
+    canRead: ['guests']
   },
   createdAt: {
     type: Date,
     optional: true,
     canRead: ['guests'],
     onCreate: () => {
-      return new Date();
+      return new Date()
     }
   },
   userId: {
@@ -27,13 +27,13 @@ const schema = {
     resolveAs: {
       fieldName: 'user',
       type: 'User',
-      resolver: async (comment, args, {currentUser, Users}) => {
-        if (!comment.userId) return null;
-        const user = await Users.loader.load(comment.userId);
-        return Users.restrictViewableFields(currentUser, Users, user);
+      resolver: async (comment, args, { currentUser, Users }) => {
+        if (!comment.userId) return null
+        const user = await Users.loader.load(comment.userId)
+        return Users.restrictViewableFields(currentUser, Users, user)
       },
       addOriginalField: true
-    },
+    }
   },
 
   // custom properties
@@ -48,10 +48,10 @@ const schema = {
     resolveAs: {
       fieldName: 'parentComment',
       type: 'Comment',
-      resolver: async (comment, args, {currentUser, Users, Comments}) => {
-        if (!comment.parentCommentId) return null;
-        const parentComment = await Comments.loader.load(comment.parentCommentId);
-        return Users.restrictViewableFields(currentUser, Comments, parentComment);
+      resolver: async (comment, args, { currentUser, Users, Comments }) => {
+        if (!comment.parentCommentId) return null
+        const parentComment = await Comments.loader.load(comment.parentCommentId)
+        return Users.restrictViewableFields(currentUser, Comments, parentComment)
       },
       addOriginalField: true
     }
@@ -66,10 +66,10 @@ const schema = {
     resolveAs: {
       fieldName: 'topLevelComment',
       type: 'Comment',
-      resolver: async (comment, args, {currentUser, Users, Comments}) => {
-        if (!comment.topLevelCommentId) return null;
-        const topLevelComment = await Comments.loader.load(comment.topLevelCommentId);
-        return Users.restrictViewableFields(currentUser, Comments, topLevelComment);
+      resolver: async (comment, args, { currentUser, Users, Comments }) => {
+        if (!comment.topLevelCommentId) return null
+        const topLevelComment = await Comments.loader.load(comment.topLevelCommentId)
+        return Users.restrictViewableFields(currentUser, Comments, topLevelComment)
       },
       addOriginalField: true
     }
@@ -131,7 +131,7 @@ const schema = {
     canCreate: ['members'],
     canRead: ['members'],
     onCreate: ({ document }) => {
-      if (document.collectionName){
+      if (document.collectionName) {
         return document.collectionName
       } else {
         console.log('collectionName! Here is the document:', document)
@@ -146,7 +146,7 @@ const schema = {
     canCreate: ['members'],
     canRead: ['members'],
     onCreate: ({ document }) => {
-      if (document.objectId){
+      if (document.objectId) {
         return document.objectId
       } else {
         console.log('objectId! Here is the document:', document)
@@ -157,23 +157,23 @@ const schema = {
   isDeleted: {
     type: Boolean,
     optional: true,
-    canRead: ['guests'],
+    canRead: ['guests']
   },
   userIP: {
     type: String,
     optional: true,
-    canRead: ['admins'],
+    canRead: ['admins']
   },
   userAgent: {
     type: String,
     optional: true,
-    canRead: ['admins'],
+    canRead: ['admins']
   },
   referrer: {
     type: String,
     optional: true,
-    canRead: ['admins'],
-  },
+    canRead: ['admins']
+  }
 
   // GraphQL only fields
 
@@ -189,6 +189,6 @@ const schema = {
   //     },
   //   }
   // }
-};
+}
 
-export default schema;
+export default schema

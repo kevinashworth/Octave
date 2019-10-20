@@ -1,5 +1,5 @@
-import { Posts } from '../posts/index.js';
-import Users from 'meteor/vulcan:users';
+import { Posts } from '../posts/index.js'
+import Users from 'meteor/vulcan:users'
 
 Users.addField([
   /**
@@ -11,10 +11,10 @@ Users.addField([
       type: Number,
       optional: true,
       defaultValue: 0,
-      canRead: ['guests'],
+      canRead: ['guests']
     }
   }
-]);
+])
 
 Posts.addField([
   /**
@@ -26,7 +26,7 @@ Posts.addField([
       type: Number,
       optional: true,
       defaultValue: 0,
-      canRead: ['guests'],
+      canRead: ['guests']
     }
   },
   /**
@@ -40,13 +40,13 @@ Posts.addField([
       resolveAs: {
         fieldName: 'commenters',
         type: '[User]',
-        resolver: async (post, args, {currentUser, Users}) => {
-          if (!post.commenters) return [];
-          const commenters = await Users.loader.loadMany(post.commenters);
-          return Users.restrictViewableFields(currentUser, Users, commenters);
-        },
+        resolver: async (post, args, { currentUser, Users }) => {
+          if (!post.commenters) return []
+          const commenters = await Users.loader.loadMany(post.commenters)
+          return Users.restrictViewableFields(currentUser, Users, commenters)
+        }
       },
-      canRead: ['guests'],
+      canRead: ['guests']
     }
   },
   {
@@ -56,4 +56,4 @@ Posts.addField([
       optional: true
     }
   }
-]);
+])

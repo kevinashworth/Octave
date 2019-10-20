@@ -1,4 +1,4 @@
-import { addStrings } from 'meteor/vulcan:core';
+import { addStrings } from 'meteor/vulcan:core'
 
 addStrings('en', {
 
@@ -18,6 +18,6 @@ addStrings('en', {
   'comments.parentCommentId': 'Parent Comment ID',
   'comments.topLevelCommentId': 'Top Level Comment ID',
   'comments.body': 'Body',
-  'comments.rate_limit_error': 'Please wait {value} seconds before commenting again.',
+  'comments.rate_limit_error': 'Please wait {value} seconds before commenting again.'
 
-});
+})

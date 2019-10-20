@@ -363,11 +363,11 @@ export function sortObjectByKeyNameList (object, sortWith) { // copied from sort
 }
 
 export function getSortTitle (title) {
-  let theTitle = title.trim()
-  let firstSpace = theTitle.indexOf(' ')
-  let firstWord = theTitle.slice(0, firstSpace).toLowerCase()
+  const theTitle = title.trim()
+  const firstSpace = theTitle.indexOf(' ')
+  const firstWord = theTitle.slice(0, firstSpace).toLowerCase()
   let newTitle = ''
-  switch(firstWord) {
+  switch (firstWord) {
     case 'a':
     case 'an':
     case 'the':

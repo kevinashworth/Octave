@@ -1,4 +1,4 @@
-import { Comments } from './collection.js';
+import Comments from './collection.js'
 
 Comments.addView('Comments', function (terms) {
   return {
@@ -6,13 +6,13 @@ Comments.addView('Comments', function (terms) {
       collectionName: terms.collectionName,
       objectId: terms.objectId
     },
-    options: {sort: {postedAt: -1}}
-  };
-});
+    options: { sort: { postedAt: -1 } }
+  }
+})
 
 Comments.addView('userComments', function (terms) {
   return {
-    selector: {userId: terms.userId},
-    options: {sort: {postedAt: -1}}
-  };
-});
+    selector: { userId: terms.userId },
+    options: { sort: { postedAt: -1 } }
+  }
+})

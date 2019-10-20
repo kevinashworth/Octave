@@ -7,7 +7,6 @@ const Contacts = createCollection({
   schema,
   resolvers: getDefaultResolvers('Contacts'),
   mutations: getDefaultMutations('Contacts')
-
 })
 
 export default Contacts
