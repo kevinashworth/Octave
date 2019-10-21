@@ -43,9 +43,13 @@
     margin-right: $hmargin;
   }
   .comments-item-date{
+    margin-left: $hmargin;
     margin-right: $hmargin;
     color: $medium-text;
     font-size: $small-font;
+  }
+  .flexbox-float-right {
+    margin-left: auto;
   }
   .comment-edit, .comment-delete {
     font-size: $small-font;

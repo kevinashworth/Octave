@@ -1,9 +1,3 @@
-/*
-
-Comments permissions
-
-*/
-
 import Users from 'meteor/vulcan:users'
 
 const guestsActions = [
@@ -12,14 +6,9 @@ const guestsActions = [
 Users.groups.guests.can(guestsActions)
 
 const membersActions = [
-  'comments.view',
   'comments.new',
   'comments.edit.own',
-  'comments.remove.own',
-  'comments.upvote',
-  'comments.cancelUpvote',
-  'comments.downvote',
-  'comments.cancelDownvote'
+  'comments.remove.own'
 ]
 Users.groups.members.can(membersActions)
 

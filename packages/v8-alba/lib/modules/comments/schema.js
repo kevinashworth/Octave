@@ -92,6 +92,7 @@ const schema = {
     canUpdate: ['members'],
     input: 'textarea',
     inputProperties: {
+      placeholder: 'Write here. Select text for formatting options.',
       rows: 4
     }
   },
@@ -159,21 +160,21 @@ const schema = {
     optional: true,
     canRead: ['guests']
   },
-  userIP: {
-    type: String,
-    optional: true,
-    canRead: ['admins']
-  },
-  userAgent: {
-    type: String,
-    optional: true,
-    canRead: ['admins']
-  },
-  referrer: {
-    type: String,
-    optional: true,
-    canRead: ['admins']
-  }
+  // userIP: {
+  //   type: String,
+  //   optional: true,
+  //   canRead: ['admins']
+  // },
+  // userAgent: {
+  //   type: String,
+  //   optional: true,
+  //   canRead: ['admins']
+  // },
+  // referrer: {
+  //   type: String,
+  //   optional: true,
+  //   canRead: ['admins']
+  // }
 
   // GraphQL only fields
 

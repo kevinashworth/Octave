@@ -99,9 +99,11 @@ class CommentsItem extends PureComponent {
       <div className='comments-item' id={comment._id}>
         <div className='comments-item-body'>
           <div className='comments-item-meta'>
+            <Components.UsersAvatar size="small" user={comment.user}/>
+            <Components.UsersName user={comment.user}/>
             <div className='comments-item-date'>{moment(new Date(comment.postedAt)).fromNow()}</div>
             {Comments.options.mutations.edit.check(this.props.currentUser, this.props.comment) &&
-              <div>
+              <div className='flexbox-float-right'>
                 <a className='comment-edit' onClick={this.showEdit}><FormattedMessage id='comments.edit' /></a>
               </div>
             }

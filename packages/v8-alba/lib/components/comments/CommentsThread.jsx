@@ -16,24 +16,26 @@ const CommentsThread = (props) => {
     const nestedComments = Utils.unflatten(resultsClone, { idProperty: '_id', parentIdProperty: 'parentCommentId' })
 
     return (
-      <CardBody>
-        <CardTitle><FormattedMessage id='comments.comments' /></CardTitle>
-          <CardText>
-            <Components.CommentsList currentUser={currentUser} comments={nestedComments} commentCount={totalCount} />
-            {currentUser
-              ? <CardBody>
-                  <CardTitle><FormattedMessage id='comments.new' /></CardTitle>
-                  <CardText>
-                    <Components.CommentsNewForm
-                      collectionName={collectionName}
-                      objectId={objectId}
-                      type='comment'
-                    />
-                  </CardText>
-                </CardBody>
-              : null }
-        </CardText>
-      </CardBody>
+      <Card>
+        <CardHeader className='class-accent-list'><FormattedMessage id='comments.comments' /></CardHeader>
+        <CardBody>
+            <CardText>
+              <Components.CommentsList currentUser={currentUser} comments={nestedComments} commentCount={totalCount} />
+              {currentUser
+                ? <CardBody>
+                    <CardTitle><FormattedMessage id='comments.new' /></CardTitle>
+                    <CardText>
+                      <Components.CommentsNewForm
+                        collectionName={collectionName}
+                        objectId={objectId}
+                        type='comment'
+                      />
+                    </CardText>
+                  </CardBody>
+                : null }
+          </CardText>
+        </CardBody>
+      </Card>
     )
   }
 }
