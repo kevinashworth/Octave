@@ -1,0 +1,22 @@
+$light-grey: #ddd;
+$light-border: $light-grey;
+$lightest-grey: #f3f3f3;
+$lightest-border: $lightest-grey;
+$dark-grey: #888;
+$border: 1px solid $light-border;
+$hmargin: 10px;
+$vmargin: 15px;
+$small-font: 0.9rem;
+$medium-text: $dark-grey;
+
+@mixin flex-center{
+  display: flex;
+  align-items: center;
+}
+
+@mixin border-radius{
+  border-radius: .25rem;
+}
+@mixin border{
+  border: $border;
+}

@@ -2,7 +2,7 @@ import { Components, registerComponent, withCurrentUser, withSingle } from 'mete
 import { FormattedMessage } from 'meteor/vulcan:i18n'
 import React, { PureComponent } from 'react'
 import { Link } from 'react-router-dom'
-import { Button, Card, CardBody, CardFooter, CardHeader, CardLink, CardText, CardTitle, Collapse } from 'reactstrap'
+import { Button, Card, CardBody, CardFooter, CardHeader, CardLink, CardText, CardTitle, Collapse, Col, Row } from 'reactstrap'
 import mapProps from 'recompose/mapProps'
 import moment from 'moment'
 import { DATE_FORMAT_LONG, DATE_FORMAT_SHORT } from '../../modules/constants.js'
@@ -36,26 +36,15 @@ class OfficesSingle extends PureComponent {
     this.setState({ collapseIsOpen: !this.state.collapseIsOpen })
   }
 
-  // async componentDidMount () {
-  //   try {
-  //     const {
-  //       documentId
-  //     } = this.props
-  //   } catch (error) {
-  //     console.log(error); ``
-  //   }
-  // }
-
   render () {
-    if (this.props.loading) {
+    const { currentUser, document, loading } = this.props
+    if (loading) {
       return (<div><Components.Loading /></div>)
     }
-
-    if (!this.props.document) {
+    if (!document) {
       return (<div><FormattedMessage id='app.404' /></div>)
     }
-
-    const office = this.props.document
+    const office = document
     const displayDate =
       'Office added to database ' + moment(office.createdAt).format(DATE_FORMAT_SHORT) + ' / ' +
       'Last modified ' + moment(office.updatedAt).format(DATE_FORMAT_LONG)
@@ -64,7 +53,7 @@ class OfficesSingle extends PureComponent {
       <div className='animated fadeIn'>
         <Components.HeadTags title={`V8 Alba: ${office.displayName}`} />
         <Card className='card-accent-primary'>
-          <CardHeader tag='h2'>{ office.displayName }{ Offices.options.mutations.edit.check(this.props.currentUser, office)
+          <CardHeader tag='h2'>{ office.displayName }{ Offices.options.mutations.edit.check(currentUser, office)
             ? <div className='float-right'>
               <Button tag={Link} to={`/offices/${office._id}/edit`}>Edit</Button>
             </div> : null}
@@ -79,30 +68,41 @@ class OfficesSingle extends PureComponent {
               <CardText className='mb-1' dangerouslySetInnerHTML={{ __html: office.htmlBody }} />
             </CardBody>
           }
-          {office.theContacts &&
-           office.theContacts.length > 0 &&
-            <CardBody>
-            {office.theContacts.map((o, index) => <Components.ContactMini key={`ContactMini${index}`} documentId={o._id} />)}
-            </CardBody>
-          }
-          <Components.ErrorBoundary>
-            {office.theProjects &&
+          <Row>
+            <Col xs='12' lg='6'>
+              {office.theContacts &&
+               office.theContacts.length > 0 &&
+                <CardBody>
+                {office.theContacts.map((o, index) => <Components.ContactMini key={`ContactMini${index}`} documentId={o._id} />)}
+                </CardBody>
+              }
+              <Components.ErrorBoundary>
+                {office.theProjects &&
+                  <CardBody>
+                    <CardTitle><b>Projects</b></CardTitle>
+                    {office.theProjects.map((o, index) => <Components.ProjectMini key={`ProjectMini-${index}`} documentId={o._id} />)}
+                  </CardBody>
+                }
+              </Components.ErrorBoundary>
+              {office.links &&
               <CardBody>
-                <CardTitle><b>Projects</b></CardTitle>
-                {office.theProjects.map((o, index) => <Components.ProjectMini key={`ProjectMini-${index}`} documentId={o._id} />)}
+                <CardText>
+                  {office.links.map(link =>
+                    <Button className={`btn-${link.platformName.toLowerCase()} text-white`} key={link.profileLink}>
+                      <span><CardLink href={link.profileLink} target='_links'>{link.profileName}</CardLink></span>
+                    </Button>)}
+                </CardText>
               </CardBody>
-            }
-          </Components.ErrorBoundary>
-          {office.links &&
-          <CardBody>
-            <CardText>
-              {office.links.map(link =>
-                <Button className={`btn-${link.platformName.toLowerCase()} text-white`} key={link.profileLink}>
-                  <span><CardLink href={link.profileLink} target='_links'>{link.profileName}</CardLink></span>
-                </Button>)}
-            </CardText>
-          </CardBody>
-          }
+              }
+            </Col>
+            <Col xs='12' lg='6'>
+              <CardBody>
+                <Components.CommentsThread
+                  terms={{ objectId: document._id, collectionName: 'Offices', view: 'Comments' }}
+                />
+            </CardBody>
+            </Col>
+          </Row>
           <CardFooter>
             <small className='text-muted'>{displayDate}</small>
           </CardFooter>
@@ -134,7 +134,6 @@ registerComponent({
   component: OfficesSingle,
   hocs: [
     withCurrentUser,
-    mapProps(mapPropsFunction),
-    [withSingle, options]
+    mapProps(mapPropsFunction), [withSingle, options] // mapProps must precede withSingle
   ]
 })
