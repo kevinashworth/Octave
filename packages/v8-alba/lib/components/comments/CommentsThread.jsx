@@ -17,13 +17,14 @@ const CommentsThread = (props) => {
 
     return (
       <Card>
-        <CardHeader className='class-accent-list'><FormattedMessage id='comments.comments' /></CardHeader>
+        <CardHeader className='class-accent-list'>{totalCount > 0 ? totalCount : null} <FormattedMessage id='comments.comments' /></CardHeader>
         <CardBody>
             <CardText>
               <Components.CommentsList currentUser={currentUser} comments={nestedComments} commentCount={totalCount} />
+            </CardText>
               {currentUser
                 ? <CardBody>
-                    <CardTitle><FormattedMessage id='comments.new' /></CardTitle>
+                    <CardTitle tag='p'><FormattedMessage id='comments.new' /></CardTitle>
                     <CardText>
                       <Components.CommentsNewForm
                         collectionName={collectionName}
@@ -33,7 +34,6 @@ const CommentsThread = (props) => {
                     </CardText>
                   </CardBody>
                 : null }
-          </CardText>
         </CardBody>
       </Card>
     )

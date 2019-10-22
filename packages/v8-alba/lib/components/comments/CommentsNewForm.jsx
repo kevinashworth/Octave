@@ -30,7 +30,7 @@ const CommentsNewForm = (props, context) => {
           successCallback={props.successCallback}
           cancelCallback={props.type === 'reply' ? props.cancelCallback : null}
           prefilledProps={prefilledProps}
-          layout='elementOnly'
+          layout='inputOnly'
         />
       </div>
     </Components.ShowIf>

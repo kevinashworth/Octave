@@ -86,13 +86,14 @@ const schema = {
   // Body (Markdown)
   body: {
     type: String,
-    optional: true,
     canRead: ['members'],
     canCreate: ['members'],
     canUpdate: ['members'],
     input: 'textarea',
     inputProperties: {
-      placeholder: 'Write here. Select text for formatting options.',
+      itemProperties: {
+        layout: 'inputOnly' // Seems to be the way, but leads to "React does not recognize the `itemProperties` prop on a DOM element..."
+      },
       rows: 4
     }
   },
