@@ -2,7 +2,7 @@ import { Components, registerComponent, Utils, withCurrentUser, withMulti } from
 import { FormattedMessage } from 'meteor/vulcan:i18n'
 import React from 'react'
 import PropTypes from 'prop-types'
-import { Card, CardBody, CardFooter, CardHeader, CardLink, CardText, CardTitle } from 'reactstrap'
+import { Card, CardBody, CardHeader, CardText, CardTitle } from 'reactstrap'
 import _ from 'lodash'
 import Comments from '../../modules/comments/collection.js'
 
@@ -19,21 +19,21 @@ const CommentsThread = (props) => {
       <Card>
         <CardHeader className='class-accent-list'>{totalCount > 0 ? totalCount : null} <FormattedMessage id='comments.comments' /></CardHeader>
         <CardBody>
-            <CardText>
-              <Components.CommentsList currentUser={currentUser} comments={nestedComments} commentCount={totalCount} />
-            </CardText>
-              {currentUser
-                ? <CardBody>
-                    <CardTitle tag='p'><FormattedMessage id='comments.new' /></CardTitle>
-                    <CardText>
-                      <Components.CommentsNewForm
-                        collectionName={collectionName}
-                        objectId={objectId}
-                        type='comment'
-                      />
-                    </CardText>
-                  </CardBody>
-                : null }
+          <CardText>
+            <Components.CommentsList currentUser={currentUser} comments={nestedComments} commentCount={totalCount} />
+          </CardText>
+          {currentUser
+            ? <CardBody>
+                <CardTitle tag='p'><FormattedMessage id='comments.new' /></CardTitle>
+                <CardText>
+                  <Components.CommentsNewForm
+                    collectionName={collectionName}
+                    objectId={objectId}
+                    type='comment'
+                  />
+                </CardText>
+              </CardBody>
+            : null }
         </CardBody>
       </Card>
     )

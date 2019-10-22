@@ -59,10 +59,10 @@ class CommentsItem extends PureComponent {
     return (
       <div className='comments-item-text'>
         <div dangerouslySetInnerHTML={htmlBody} />
-        { showReplyButton
+        {showReplyButton
           ? <small className='text-muted'>
               <a onClick={this.showReply}><FormattedMessage id='comments.reply' /></a>
-            </small> : null}
+            </small> : null }
       </div>
     )
   }
@@ -99,8 +99,8 @@ class CommentsItem extends PureComponent {
       <div className='comments-item' id={comment._id}>
         <div className='comments-item-body'>
           <div className='comments-item-meta'>
-            <Components.Avatar size="xsmall" user={comment.user}/>
-            <Components.UsersName user={comment.user}/>
+            <Components.Avatar size='xsmall' user={comment.user} />
+            <Components.UsersName user={comment.user} />
             <div className='comments-item-date'>{moment(new Date(comment.postedAt)).fromNow()}</div>
             {Comments.options.mutations.edit.check(this.props.currentUser, this.props.comment) &&
               <div className='flexbox-float-right'>

@@ -1,9 +1,9 @@
-import { Components, registerComponent, withCurrentUser, withDocument } from 'meteor/vulcan:core'
+import { Components, registerComponent, withCurrentUser, withSingle } from 'meteor/vulcan:core'
 import { FormattedMessage } from 'meteor/vulcan:i18n'
 import React, { PureComponent } from 'react'
 import { Link } from 'react-router-dom'
 import mapProps from 'recompose/mapProps'
-import { Button, Card, CardBody, CardFooter, CardHeader, CardLink, CardText, CardTitle } from 'reactstrap'
+import { Button, Card, CardBody, CardFooter, CardHeader, CardLink, CardText, CardTitle, Col, Row } from 'reactstrap'
 import styled from 'styled-components'
 import moment from 'moment'
 import { DATE_FORMAT_LONG, DATE_FORMAT_SHORT } from '../../modules/constants.js'
@@ -34,15 +34,14 @@ class ProjectSingle extends PureComponent {
   }
 
   render () {
-    if (this.props.loading) {
+    const { currentUser, document, loading } = this.props
+    if (loading) {
       return (<div><Components.Loading /></div>)
     }
-
-    if (!this.props.document) {
+    if (!document) {
       return (<div><FormattedMessage id='app.404' /></div>)
     }
-
-    const project = this.props.document
+    const project = document
     const seasonorder = this.seasonorder(project)
     const displayDate =
       'Project added to database ' + moment(project.createdAt).format(DATE_FORMAT_SHORT) + ' / ' +
@@ -52,7 +51,7 @@ class ProjectSingle extends PureComponent {
       <div className='animated fadeIn'>
         <Components.HeadTags title={`V8 Alba: ${project.projectTitle}`} />
         <Card className='card-accent-danger'>
-          <CardHeader tag='h2'>{ project.projectTitle }{ Projects.options.mutations.edit.check(this.props.currentUser, project)
+          <CardHeader tag='h2'>{ project.projectTitle }{ Projects.options.mutations.edit.check(currentUser, project)
             ? <div className='float-right'>
               <Button tag={Link} to={`/projects/${project._id}/edit`}>Edit</Button>
             </div> : null}
@@ -100,31 +99,42 @@ class ProjectSingle extends PureComponent {
             </CardText>
             }
           </CardBody>
-          <CardBody>
-            <CardText className='mb-0'>
-              <b>{ project.castingCompany }</b>
-            </CardText>
-            {project.castingOfficeId &&
-              <Components.OfficeMini documentId={project.castingOfficeId} />
-            }
-            {project.contacts
-              ? project.contacts.map(contact => <Components.ProjectsContactDetail key={contact.contactId} contact={contact} />)
-              : null }
-            {project.addresses
-              ? project.addresses.map(address => <Components.ProjectsAddressDetail key={address} address={address} />)
-              : null }
-            {project.contactId}
-          </CardBody>
-          {project.links &&
-          <CardBody>
-            <CardText>
-              {project.links.map(link =>
-                <Button className={`btn-${link.platformName.toLowerCase()} text-white`} key={link.profileLink}>
-                  <span><CardLink href={link.profileLink} target='_links'>{link.profileName}</CardLink></span>
-                </Button>)}
-            </CardText>
-          </CardBody>
-          }
+          <Row>
+            <Col xs='12' lg='6'>
+              <CardBody>
+                <CardText className='mb-0'>
+                  <b>{ project.castingCompany }</b>
+                </CardText>
+                {project.castingOfficeId &&
+                  <Components.OfficeMini documentId={project.castingOfficeId} />
+                }
+                {project.contacts
+                  ? project.contacts.map(contact => <Components.ProjectsContactDetail key={contact.contactId} contact={contact} />)
+                  : null }
+                {project.addresses
+                  ? project.addresses.map(address => <Components.ProjectsAddressDetail key={address} address={address} />)
+                  : null }
+                {project.contactId}
+              </CardBody>
+              {project.links &&
+              <CardBody>
+                <CardText>
+                  {project.links.map(link =>
+                    <Button className={`btn-${link.platformName.toLowerCase()} text-white`} key={link.profileLink}>
+                      <span><CardLink href={link.profileLink} target='_links'>{link.profileName}</CardLink></span>
+                    </Button>)}
+                </CardText>
+              </CardBody>
+              }
+            </Col>
+            <Col xs='12' lg='6'>
+              <CardBody>
+                <Components.CommentsThread
+                  terms={{ objectId: document._id, collectionName: 'Projects', view: 'Comments' }}
+                />
+            </CardBody>
+            </Col>
+          </Row>
           <CardFooter>
             <small className='text-muted'>{displayDate}</small>
           </CardFooter>
@@ -139,6 +149,13 @@ const options = {
   fragmentName: 'ProjectsSingleFragment'
 }
 
-const mapPropsFunction = props => ({ ...props, documentId: props.match && props.match.params._id, slug: props.match && props.match.params.slug })
+const mapPropsFunction = props => ({ ...props, documentId: props.match && props.match.params._id })
 
-registerComponent('ProjectSingle', ProjectSingle, withCurrentUser, mapProps(mapPropsFunction), [withDocument, options])
+registerComponent({
+  name: 'ProjectSingle',
+  component: ProjectSingle,
+  hocs: [
+    withCurrentUser,
+    mapProps(mapPropsFunction), [withSingle, options] // mapProps must precede withSingle
+  ]
+})
