@@ -12,6 +12,10 @@ class MySelect extends Component {
   }
 
   handleChange (selectedOption) {
+    if (!selectedOption) {
+      this.context.updateCurrentValues({ [this.props.path]: null })
+      return
+    }
     let siblingPath = null
     if (this.props.parentFieldName === 'projects' || this.props.parentFieldName === 'pastProjects') {
       siblingPath = this.props.parentFieldName + '.' + this.props.itemIndex + '.' + 'projectTitle'

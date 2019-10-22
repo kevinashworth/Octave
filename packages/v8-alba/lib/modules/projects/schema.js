@@ -101,8 +101,8 @@ const schema = {
     onCreate: ({ document }) => {
       return document.projectTitle.trim()
     },
-    onUpdate: ({ document }) => {
-      return document.projectTitle.trim()
+    onUpdate: ({ data }) => {
+      return data.projectTitle.trim()
     }
   },
   sortTitle: {
@@ -115,8 +115,8 @@ const schema = {
     onCreate: ({ document }) => {
       return getSortTitle(document.projectTitle)
     },
-    onUpdate: ({ document }) => {
-      return getSortTitle(document.projectTitle)
+    onUpdate: ({ data }) => {
+      return getSortTitle(data.projectTitle)
     }
   },
   projectType: {

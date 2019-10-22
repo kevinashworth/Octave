@@ -179,8 +179,11 @@ function ProjectEditUpdateOfficeBefore (data, { document, oldDocument }) {
     projects = office && office.projects
   }
   if (removing || replacing || itmightnotbethereforsomereason) {
-    const office = Offices.findOne(oldOffice) // TODO: error handling
-    let projects = office && office.projects
+    office = Offices.findOne(oldOffice) // TODO: error handling
+    projects = office && office.projects
+  }
+  if (!office) {
+    console.log('findOne didn\'t find one office!')
   }
   if (!isEmptyValue(projects)) {
     if (itmightnotbethereforsomereason) {
@@ -192,7 +195,7 @@ function ProjectEditUpdateOfficeBefore (data, { document, oldDocument }) {
     _.remove(projects, function (p) {
       return p.projectId === document._id
     })
-    if (replacing) {
+    if (adding || replacing) {
       projects.push({ projectId: document._id })
     }
     Connectors.update(Offices, office._id, { $set: {

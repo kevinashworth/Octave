@@ -1,15 +1,15 @@
 import { registerFragment } from 'meteor/vulcan:core'
-
-registerFragment(/* GraphQL */ `
-  fragment OfficesItemFragment on Office {
-    _id
-    createdAt
-    updatedAt
-    userId
-    displayName
-    slug
-  }
-`)
+//
+// registerFragment(/* GraphQL */ `
+//   fragment OfficesItemFragment on Office {
+//     _id
+//     createdAt
+//     updatedAt
+//     userId
+//     displayName
+//     slug
+//   }
+// `)
 
 registerFragment(/* GraphQL */ `
   fragment OfficesSingleFragment on Office {
@@ -25,6 +25,7 @@ registerFragment(/* GraphQL */ `
     theProjects {
       _id
       projectTitle
+      sortTitle
     }
     pastProjects
     contacts

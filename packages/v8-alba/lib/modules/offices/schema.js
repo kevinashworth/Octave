@@ -278,7 +278,7 @@ const schema = {
             _id: { $in: projectIds }
           }, {
             limit: 50, // TODO: Does any limit really make sense?
-            sort: { status: 1, projectTitle: 1 } // Case-sensitive, alas
+            sort: { status: 1, sortTitle: 1 } // Case-sensitive, alas
           }
         ).fetch()
         return projects

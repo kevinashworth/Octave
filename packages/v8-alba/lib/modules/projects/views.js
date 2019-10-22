@@ -14,5 +14,5 @@ Projects.addView('collectionWithStatus', terms => ({
 }))
 
 Projects.addView('projectsByTitle', terms => ({
-  options: { sort: { projectTitle: 1 } }
+  options: { sort: { sortTitle: 1 } }
 }))

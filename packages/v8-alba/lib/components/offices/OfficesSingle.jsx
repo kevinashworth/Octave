@@ -123,7 +123,6 @@ class OfficesSingle extends PureComponent {
 
 const options = {
   collection: Offices,
-  queryName: 'officesSingleQuery',
   fragmentName: 'OfficesSingleFragment'
 }
 
