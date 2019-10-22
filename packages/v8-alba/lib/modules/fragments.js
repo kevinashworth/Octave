@@ -19,12 +19,8 @@ registerFragment(/* GraphQL */`
     isAdmin
     bio
     htmlBio
-    twitterUsername
     website
-    groups
-    # vulcan:posts
-    postCount
-    # vulcan:comments
+    twitterUsername
     commentCount
   }
 `)

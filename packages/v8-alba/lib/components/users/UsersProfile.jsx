@@ -1,40 +1,32 @@
-import {
-  Components,
-  registerComponent,
-  withDocument,
-  withCurrentUser
-} from 'meteor/vulcan:core'
-import React from 'react'
+import { Components, registerComponent, withCurrentUser, withSingle } from 'meteor/vulcan:core'
 import { FormattedMessage } from 'meteor/vulcan:i18n'
+import React from 'react'
+import { Button } from 'reactstrap'
 import Users from 'meteor/vulcan:users'
 import { Link } from 'react-router-dom'
 import mapProps from 'recompose/mapProps'
-import get from 'lodash/get'
 
 const UsersProfile = props => {
   if (props.loading) {
     return (
-      <div className='page users-profile'>
+      <div className='page'>
         <Components.Loading />
       </div>
     )
   } else if (!props.document) {
-    // console.log(`// missing user (_id/slug: ${props.documentId || props.slug})`);
+    console.log(`// missing user (_id/slug: ${props.documentId || props.slug})`);
     return (
-      <div className='page users-profile'>
+      <div className='page'>
         <FormattedMessage id='app.404' />
       </div>
     )
   } else {
     const user = props.document
-
-    const terms = { view: 'userPosts', userId: user._id }
-
     return (
-      <div className='page users-profile'>
+      <div className='page'>
         <Components.HeadTags
           url={Users.getProfileUrl(user, true)}
-          title={Users.getDisplayName(user)}
+          title={`V8 Alba: ${Users.getDisplayName(user)}`}
         />
         <h2 className='page-title'>{Users.getDisplayName(user)}</h2>
         {user.htmlBio ? (
@@ -43,9 +35,9 @@ const UsersProfile = props => {
         <ul>
           {user.twitterUsername ? (
             <li>
-              <a href={'http://twitter.com/' + user.twitterUsername}>
-                @{user.twitterUsername}
-              </a>
+              <Button className='btn-twitter'>
+                <Link to={'https://twitter.com/' + user.twitterUsername}> {user.twitterUsername} </Link>
+              </Button>
             </li>
           ) : null}
           {user.website ? (
@@ -64,10 +56,7 @@ const UsersProfile = props => {
             </li>
           </Components.ShowIf>
         </ul>
-        <h3>
-          <FormattedMessage id='users.posts' />
-        </h3>
-        <Components.PostsList terms={terms} showHeader={false} />
+        {props.blahblahblah ? <Components.UsersCommentsList /> : null}
       </div>
     )
   }
@@ -77,15 +66,20 @@ UsersProfile.displayName = 'UsersProfile'
 
 const options = {
   collection: Users,
-  queryName: 'usersSingleQuery',
   fragmentName: 'UsersProfile'
 }
 
-// make router slug param available as `slug` prop
-const mapPropsFunction = props => ({ ...props, slug: get(props, 'match.params.slug') })
+const mapPropsFunction = props => ({
+  ...props,
+  documentId: props.match && props.match.params._id,
+  slug: props.match && props.match.params.slug
+})
 
 registerComponent({
   name: 'UsersProfile',
   component: UsersProfile,
-  hocs: [mapProps(mapPropsFunction), withCurrentUser, [withDocument, options]]
+  hocs: [
+    withCurrentUser,
+    mapProps(mapPropsFunction), [withSingle, options]
+  ]
 })
