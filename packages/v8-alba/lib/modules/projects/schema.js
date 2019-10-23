@@ -189,7 +189,10 @@ const schema = {
     control: 'textarea', // use a textarea form component
     canRead: 'guests',
     canCreate: ['admins'],
-    canUpdate: ['admins']
+    canUpdate: ['admins'],
+    inputProperties: {
+      rows: 3
+    },
   },
   // HTML version of Summary
   htmlSummary: {
@@ -228,7 +231,11 @@ const schema = {
     control: 'textarea', // use a textarea form component
     canRead: ['members'],
     canCreate: ['admins'],
-    canUpdate: ['admins']
+    canUpdate: ['admins'],
+    inputProperties: {
+      rows: 3
+    },
+
   },
   // HTML version of Notes
   htmlNotes: {
