@@ -1,65 +1,71 @@
 import { Components, registerComponent, withCurrentUser, withSingle } from 'meteor/vulcan:core'
 import { FormattedMessage } from 'meteor/vulcan:i18n'
-import React from 'react'
-import { Button } from 'reactstrap'
+import React, { PureComponent } from 'react'
+import { Button, Card, CardBody, CardFooter, CardHeader, CardLink, CardText } from 'reactstrap'
 import Users from 'meteor/vulcan:users'
 import { Link } from 'react-router-dom'
 import mapProps from 'recompose/mapProps'
 
-const UsersProfile = props => {
-  if (props.loading) {
-    return (
-      <div className='page'>
-        <Components.Loading />
-      </div>
-    )
-  } else if (!props.document) {
-    console.log(`// missing user (_id/slug: ${props.documentId || props.slug})`);
-    return (
-      <div className='page'>
-        <FormattedMessage id='app.404' />
-      </div>
-    )
-  } else {
-    const user = props.document
-    return (
-      <div className='page'>
-        <Components.HeadTags
-          url={Users.getProfileUrl(user, true)}
-          title={`V8 Alba: ${Users.getDisplayName(user)}`}
-        />
-        <h2 className='page-title'>{Users.getDisplayName(user)}</h2>
-        {user.htmlBio ? (
-          <div dangerouslySetInnerHTML={{ __html: user.htmlBio }} />
-        ) : null}
-        <ul>
-          {user.twitterUsername ? (
-            <li>
-              <Button className='btn-twitter'>
-                <Link to={'https://twitter.com/' + user.twitterUsername}> {user.twitterUsername} </Link>
-              </Button>
-            </li>
-          ) : null}
-          {user.website ? (
-            <li>
-              <a href={user.website}>{user.website}</a>
-            </li>
-          ) : null}
-          <Components.ShowIf
-            check={Users.options.mutations.edit.check}
-            document={user}
-          >
-            <li>
-              <Link to={Users.getEditUrl(user)}>
-                <FormattedMessage id='users.edit_account' />
-              </Link>
-            </li>
-          </Components.ShowIf>
-        </ul>
-        {props.blahblahblah ? <Components.UsersCommentsList /> : null}
-      </div>
-    )
+class UsersProfile extends PureComponent {
+  render() {
+    const { currentUser, document, loading } = this.props
+    if (loading) {
+      return (
+        <div className='page'>
+          <Components.Loading />
+        </div>
+      )
+    } else if (!document) {
+      console.log(`// missing user (_id/slug: ${props.documentId || props.slug})`);
+      return (
+        <div className='page'>
+          <FormattedMessage id='app.404' />
+        </div>
+      )
+    } else {
+      const user = document
+      return (
+        <div className='animated fadeIn'>
+          <Components.HeadTags
+            url={Users.getProfileUrl(user, true)}
+            title={`V8 Alba: ${Users.getDisplayName(user)}`}
+          />
+          <Card className='card-accent-muted'>
+            <CardHeader tag='h2'>{Users.getDisplayName(user)}{ Users.options.mutations.edit.check(currentUser, user)
+              ? <div className='float-right'>
+                <Button tag={Link} to={`/users/${user.slug}/edit`}>Edit</Button>
+              </div> : null}
+            </CardHeader>
+            <CardBody>
+              {user.htmlBio
+               ? <CardText dangerouslySetInnerHTML={{ __html: user.htmlBio }} />
+               : <CardText>{ user.bio }</CardText>
+              }
+              {user.website ? (
+                <CardText>
+                <a href={user.website} target='_links'>{user.website} </a>
+                </CardText>
+              ) : null}
+            </CardBody>
+            {user.twitterUsername ? (
+              <CardBody>
+                <CardText>
+                  <Button className='btn-twitter'>
+                    <span><CardLink href={'https://twitter.com/' + user.twitterUsername}> {user.twitterUsername} </CardLink></span>
+                  </Button>
+                </CardText>
+              </CardBody>
+            ) : null}
+            <CardFooter>
+              {this.props.blahblahblah ? <Components.UsersCommentsList /> : null}
+            </CardFooter>
+          </Card>
+        </div>
+      )
+    }
+
   }
+
 }
 
 UsersProfile.displayName = 'UsersProfile'

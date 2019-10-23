@@ -33,13 +33,14 @@ Users.addField([
     fieldSchema: {
       type: String,
       optional: true,
-      canRead: ['guests'],
-      onCreate: ({ document }) => {
-        return Utils.sanitize(marked(document.bio))
-      },
-      onUpdate: ({ data }) => {
-        return Utils.sanitize(marked(data.bio))
-      }
+      canRead: ['guests']
+      // usersEditGenerateHtmlBio in vulcan:users currently does the following
+      // onCreate: ({ document }) => {
+      //   return Utils.sanitize(marked(document.bio))
+      // },
+      // onUpdate: ({ data }) => {
+      //   return Utils.sanitize(marked(data.bio))
+      // }
     }
   },
   {

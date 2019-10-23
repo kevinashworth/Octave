@@ -9,6 +9,7 @@ const LayoutFull = ({ children }) => (
       <Components.Sidebar {...this.props} />
       <main className='main'>
         <Components.ErrorBoundary>
+          <Components.FlashMessages />
           <Container fluid>
             {children}
           </Container>
