@@ -5,6 +5,8 @@ import { Button, Card, CardBody, CardFooter, CardHeader, CardLink, CardText } fr
 import Users from 'meteor/vulcan:users'
 import { Link } from 'react-router-dom'
 import mapProps from 'recompose/mapProps'
+import moment from 'moment'
+import { DATE_FORMAT_LONG, DATE_FORMAT_SHORT } from '../../modules/constants.js'
 
 class UsersProfile extends PureComponent {
   render() {
@@ -24,6 +26,11 @@ class UsersProfile extends PureComponent {
       )
     } else {
       const user = document
+      let displayDate =
+        'User added ' + moment(user.createdAt).format(DATE_FORMAT_SHORT)
+      if (user.updatedAt) {
+        displayDate += ' / ' +   'Last modified ' + moment(user.updatedAt).format(DATE_FORMAT_LONG)
+      }
       return (
         <div className='animated fadeIn'>
           <Components.HeadTags
@@ -56,8 +63,13 @@ class UsersProfile extends PureComponent {
                 </CardText>
               </CardBody>
             ) : null}
+            <CardBody>
+              <CardText>
+                {this.props.blahblahblah ? <Components.UsersCommentsList /> : null}
+              </CardText>
+            </CardBody>
             <CardFooter>
-              {this.props.blahblahblah ? <Components.UsersCommentsList /> : null}
+              <small className='text-muted'>{displayDate}</small>
             </CardFooter>
           </Card>
         </div>

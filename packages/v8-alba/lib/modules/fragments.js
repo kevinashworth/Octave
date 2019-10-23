@@ -16,6 +16,7 @@ registerFragment(/* GraphQL */`
   fragment UsersProfile on User {
     ...UsersMinimumInfo
     createdAt
+    updatedAt
     isAdmin
     bio
     htmlBio

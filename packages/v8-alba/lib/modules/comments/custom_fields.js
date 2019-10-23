@@ -54,6 +54,22 @@ Users.addField([
       canUpdate: ['members'],
       canRead: ['guests'],
     }
+  },
+  {
+    fieldName: 'updatedAt',
+    fieldSchema: {
+      type: Date,
+      optional: true,
+      canCreate: ['members'],
+      canUpdate: ['members'],
+      canRead: ['guests'],
+      onCreate: () => {
+        return new Date();
+      },
+      onUpdate: () => {
+        return new Date();
+      }
+    }
   }
 ])
 
