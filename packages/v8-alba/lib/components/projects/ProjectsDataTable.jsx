@@ -202,7 +202,7 @@ class ProjectsDataTable extends PureComponent {
             <Components.ProjectModal document={this.state.project} />
           </ModalBody>
         </Modal>
-        <Card>
+        <Card className='card-accent-danger'>
           <CardHeader>
             <i className='fa fa-camera' />Projects
             <Components.ProjectFilters />

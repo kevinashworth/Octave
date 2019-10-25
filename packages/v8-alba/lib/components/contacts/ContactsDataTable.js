@@ -142,7 +142,7 @@ class ContactsDataTable extends PureComponent {
     if (networkStatus !== 8 && networkStatus !== 7) {
       return (
         <div className='animated fadeIn'>
-          <Card>
+          <Card className='card-accent-warning'>
             <CardHeader>
               <i className='icon-people' />Contacts
             </CardHeader>
@@ -228,7 +228,7 @@ class ContactsDataTable extends PureComponent {
             <Components.ContactModal document={this.state.contact} />
           </ModalBody>
         </Modal>
-        <Card>
+        <Card className='card-accent-warning'>
           <CardHeader>
             <i className='icon-people' />Contacts
             <Components.ContactFilters />
