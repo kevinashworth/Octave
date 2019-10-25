@@ -145,7 +145,7 @@ class ProjectsDataTable extends PureComponent {
   }
 
   titleSortFunc (a, b, order) {
-    if (order === 'desc') {
+    if (order === 'asc') {
       return a.sortTitle.localeCompare(b.sortTitle)
     } else {
       return b.sortTitle.localeCompare(a.sortTitle)
