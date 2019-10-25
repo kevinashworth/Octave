@@ -51,7 +51,7 @@ class PastProjectSingle extends PureComponent {
     return (
       <div className='animated fadeIn'>
         <Components.HeadTags title={`V8 Alba: ${project.projectTitle}`} />
-        <Card className='card-accent-danger'>
+        <Card className='card-accent-secondary'>
           <CardHeader tag='h2'>{ project.projectTitle }{ PastProjects.options.mutations.edit.check(this.props.currentUser, project)
             ? <div className='float-right'>
               <Button tag={Link} to={`/past-projects/${project._id}/edit`}>Edit</Button>

@@ -27,13 +27,13 @@ class LatestContactUpdates extends Component {
             : 'Contact updated '
           displayHtml += moment(contact.updatedAt).format(DATE_FORMAT_SHORT_FRIENDLY)
           return (
-            <Col xs='12' sm='6' md='4' key={contact._id}>
-              <Card className='card-accent-warning'>
-                <CardHeader>
+            <Col xs='12' sm='6' md='4' xx='2' widths={['xs', 'sm', 'md', 'xx']} key={contact._id}>
+              <Card className='card-accent-warning text-truncate d-block'>
+                  <CardHeader className='text-truncate d-block'>
                   <b><Link to={`/contacts/${contact._id}/${contact.slug}`}>{contact.displayName}</Link></b>
-                  <small className='float-right'>{contact.theAddress.location}</small>
+                  <small className='float-right d-xx-none'>{contact.theAddress.location}</small>
                 </CardHeader>
-                <CardBody>
+                <CardBody className='text-truncate d-block'>
                   {contact.title}<br />
                   {contact.projects ? contact.projects.length + ' Projects' : null}
                 </CardBody>
@@ -82,12 +82,12 @@ class LatestOfficeUpdates extends Component {
             : 'Office updated '
           displayHtml += moment(office.updatedAt).format(DATE_FORMAT_SHORT_FRIENDLY)
           return (
-            <Col xs='12' sm='6' md='4' key={office._id}>
-              <Card className='card-accent-primary'>
-                <CardHeader>
+            <Col xs='12' sm='6' md='4' xx='2' widths={['xs', 'sm', 'md', 'xx']} key={office._id}>
+              <Card className='card-accent-primary text-truncate d-block'>
+                <CardHeader className='text-truncate d-block'>
                   <b><Link to={`/offices/${office._id}/${office.slug}`}>{office.displayName}</Link></b>
                 </CardHeader>
-                <CardBody>
+                <CardBody className='text-truncate d-block'>
                   {office.theCity} {office.theState}<br />
                   {office.projects ? office.projects.length + ' Projects' : null}
                 </CardBody>
@@ -137,12 +137,12 @@ class LatestProjectUpdates extends Component {
             : 'Project updated '
           displayHtml += moment(project.updatedAt).format(DATE_FORMAT_SHORT_FRIENDLY)
           return (
-            <Col xs='12' sm='6' md='4' key={project._id}>
-              <Card className='card-accent-danger'>
-                <CardHeader>
+            <Col xs='12' sm='6' md='4' xx='2' widths={['xs', 'sm', 'md', 'xx']} key={project._id}>
+              <Card className='card-accent-danger text-truncate d-block'>
+                <CardHeader className='text-truncate d-block'>
                   <b><Link to={`/projects/${project._id}/${project.slug}`}>{project.projectTitle}</Link></b>
                 </CardHeader>
-                <CardBody>
+                <CardBody className='text-truncate d-block'>
                   {project.projectType.indexOf('TV') === 0 || project.projectType.indexOf('Pilot') === 0
                     ? `${project.projectType} • ${project.network}` : `${project.projectType}`}<br />
                   {project.status}<br />
@@ -171,7 +171,7 @@ LatestProjectUpdates.propTypes = {
 const projectsOptions = {
   collection: Projects,
   fragmentName: 'ProjectsSingleFragment',
-  limit: 6
+  limit: 12
 }
 
 registerComponent({
@@ -191,12 +191,12 @@ class LatestPastProjectUpdates extends Component {
     return (
       <Row>
         {pastProjects.map(project =>
-          <Col xs='12' sm='6' md='4' key={project._id}>
-            <Card className='card-accent-secondary'>
-              <CardHeader>
+          <Col xs='12' sm='6' md='4' xx='2' widths={['xs', 'sm', 'md', 'xx']} key={project._id}>
+            <Card className='card-accent-secondary text-truncate d-block'>
+              <CardHeader className='text-truncate d-block'>
                 <b><Link to={`/past-projects/${project._id}/${project.slug}`}>{project.projectTitle}</Link></b>
               </CardHeader>
-              <CardBody>
+              <CardBody className='text-truncate d-block'>
                 {project.projectType.indexOf('TV') === 0 || project.projectType.indexOf('Pilot') === 0
                   ? `${project.projectType} • ${project.network}` : `${project.projectType}`}<br />
                 {project.status}<br />
