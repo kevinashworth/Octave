@@ -145,7 +145,7 @@ class ProjectsDataTable extends PureComponent {
   }
 
   titleSortFunc (a, b, order) {
-    if (order === 'desc') {
+    if (order === 'asc') {
       return a.sortTitle.localeCompare(b.sortTitle)
     } else {
       return b.sortTitle.localeCompare(a.sortTitle)
@@ -202,7 +202,7 @@ class ProjectsDataTable extends PureComponent {
             <Components.ProjectModal document={this.state.project} />
           </ModalBody>
         </Modal>
-        <Card>
+        <Card className='card-accent-danger'>
           <CardHeader>
             <i className='fa fa-camera' />Projects
             <Components.ProjectFilters />

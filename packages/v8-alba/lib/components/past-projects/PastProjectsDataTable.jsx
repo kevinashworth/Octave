@@ -189,7 +189,7 @@ class PastProjectsDataTable extends PureComponent {
             <Components.ProjectModal document={this.state.project} />
           </ModalBody>
         </Modal>
-        <Card>
+        <Card className='card-accent-secondary'>
           <CardHeader>
             <i className='fa fa-camera' />Past Projects
             <Components.PastProjectFilters />
