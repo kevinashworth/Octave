@@ -60,6 +60,7 @@ Users.addField([
     fieldSchema: {
       type: Date,
       optional: true,
+      hidden: true,
       canCreate: ['members'],
       canUpdate: ['members'],
       canRead: ['guests'],

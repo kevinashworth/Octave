@@ -18,6 +18,8 @@ addStrings('en', {
   'comments.parentCommentId': 'Parent Comment ID',
   'comments.topLevelCommentId': 'Top Level Comment ID',
   'comments.body': 'Body',
-  'comments.rate_limit_error': 'Please wait {value} seconds before commenting again.'
+  'comments.rate_limit_error': 'Please wait {value} seconds before commenting again.',
+
+  'users.delete_success': 'User deleted',
 
 })
