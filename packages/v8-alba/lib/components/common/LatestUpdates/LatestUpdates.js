@@ -148,7 +148,7 @@ class LatestProjectUpdates extends Component {
                   {project.status}<br />
                   {project.castingCompany
                     ? project.castingCompany
-                    : project.castingOffice.displayName
+                    : project.castingOffice
                       ? project.castingOffice.displayName
                       : null }
                 </CardBody>
@@ -202,7 +202,7 @@ class LatestPastProjectUpdates extends Component {
                 {project.status}<br />
                 {project.castingCompany
                   ? project.castingCompany
-                  : project.castingOffice.displayName
+                  : project.castingOffice
                     ? project.castingOffice.displayName
                     : null }
               </CardBody>

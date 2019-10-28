@@ -69,6 +69,11 @@ const nav = {
       icon: 'fa fa-camera'
     },
     {
+      name: 'Contacts (V)',
+      url: '/contacts/vlist',
+      icon: 'icon-people'
+    },
+    {
       name: 'Fragments',
       url: '/fragments',
       icon: 'fa fa-file-code-o'
