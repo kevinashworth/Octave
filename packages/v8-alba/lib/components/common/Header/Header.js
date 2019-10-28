@@ -1,6 +1,6 @@
 import { Components, registerComponent } from 'meteor/vulcan:core'
 import React, { PureComponent } from 'react'
-import { NavLink } from 'react-router-dom'
+// import { NavLink } from 'react-router-dom'
 import { Nav, NavbarBrand, NavbarToggler, NavItem } from 'reactstrap'
 
 class Header extends PureComponent {
@@ -29,9 +29,7 @@ class Header extends PureComponent {
           <span className='navbar-toggler-icon' />
         </NavbarToggler>
         <Nav className='d-none d-lg-inline-flex' navbar>
-          <NavItem className='px-3'>
-            <NavLink to='/contacts/vlist'>V-List</NavLink>
-          </NavItem>
+          <Components.Search />
         </Nav>
         <Nav className='ml-auto'>
           <Components.UsersMenu />
