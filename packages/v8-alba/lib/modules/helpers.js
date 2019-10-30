@@ -104,7 +104,7 @@ export const dangerouslyCreateAddress = (office) => {
 }
 
 // copied from Vulcan/packages/vulcan-forms/lib/modules/utils.js
-export const isEmptyValue = value => (typeof value === 'undefined' || value === null || value === '' || Array.isArray(value) && value.length === 0); // eslint-disable-line
+export const isEmptyValue = value => (typeof value === 'undefined' || value === null || value === '' || Array.isArray(value) && value.length === 0 || Array.isArray(value) && value.length === 1 && Object.keys(value[0]).length === 0 && value[0].constructor === Object) // eslint-disable-line
 
 export const getLocation = (address) => { // have to repeat theState code, not available on its own
   var state = null
