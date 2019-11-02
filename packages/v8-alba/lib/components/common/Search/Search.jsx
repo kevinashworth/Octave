@@ -1,5 +1,5 @@
 import { registerComponent, Components } from 'meteor/vulcan:core'
-import React, { Fragment } from 'react'
+import React, { Fragment, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { Dropdown, DropdownItem, DropdownMenu, DropdownToggle, Input, Form, FormGroup } from 'reactstrap'
 import algoliasearch from 'algoliasearch/lite'
@@ -21,9 +21,7 @@ const SearchBox = ({ currentRefinement, refine }) => (
 
 const CustomSearchBox = connectSearchBox(SearchBox);
 
-const Hits = (stuff) => {
-  const { hits } = stuff
-  console.log('stuff:', stuff)
+const Hits = ({ hits }) => {
   return (
     <Fragment>
       <DropdownToggle nav></DropdownToggle>
@@ -46,13 +44,25 @@ const Content = connectStateResults(
     : null
 )
 
-const Algolia = () => (
-  <InstantSearch searchClient={searchClient} indexName='dev_v8-alba-mlab'>
-    <Dropdown nav isOpen={true}>
-      <CustomSearchBox />
-      <Content />
-    </Dropdown>
-  </InstantSearch>
-)
+const Algolia = () => {
+  const [isDropdownOpen, setDropdownOpen] = useState(false)
+  const onSearchStateChange = searchState => {
+    if (searchState.query.length) {
+      setDropdownOpen(true)
+    }
+  }
+  const toggle = () => setDropdownOpen(!isDropdownOpen)
+
+  return (
+    <InstantSearch
+      searchClient={searchClient} indexName='dev_v8-alba-mlab'
+      onSearchStateChange={onSearchStateChange}>
+      <Dropdown nav isOpen={isDropdownOpen} direction='right' toggle={toggle}>
+        <CustomSearchBox />
+        <Content />
+      </Dropdown>
+    </InstantSearch>
+  )
+}
 
 registerComponent('Search', Algolia)
