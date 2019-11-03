@@ -127,7 +127,23 @@ class OfficesDataTable extends PureComponent {
   }
 
   render () {
-    const { count, totalCount, results, loadingMore, loadMore, currentUser } = this.props
+    const { count, totalCount, results, loadingMore, loadMore, networkStatus, currentUser } = this.props
+
+    if (networkStatus !== 8 && networkStatus !== 7) {
+      return (
+        <div className='animated fadeIn'>
+          <Card className='card-accent-primary'>
+            <CardHeader>
+              <i className='icon-briefcase' />Offices
+            </CardHeader>
+            <CardBody>
+              <Components.Loading />
+            </CardBody>
+          </Card>
+        </div>
+      )
+    }
+
     const hasMore = results && (totalCount > results.length)
 
     return (

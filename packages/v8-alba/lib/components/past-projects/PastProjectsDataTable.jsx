@@ -145,8 +145,24 @@ class PastProjectsDataTable extends PureComponent {
   }
 
   render () {
-    const { count, totalCount, results, loadingMore, loadMore,
+    const { count, totalCount, results, loadingMore, loadMore, networkStatus,
             pastProjectTypeFilters, pastProjectStatusFilters, pastProjectUpdatedFilters } = this.props
+
+    if (networkStatus !== 8 && networkStatus !== 7) {
+      return (
+        <div className='animated fadeIn'>
+          <Card className='card-accent-secondary'>
+            <CardHeader>
+              <i className='fa fa-camera' />Past Projects
+            </CardHeader>
+            <CardBody>
+              <Components.Loading />
+            </CardBody>
+          </Card>
+        </div>
+      )
+    }
+
     const hasMore = results && (totalCount > results.length)
     let typeFilters = []
     pastProjectTypeFilters.forEach(filter => {

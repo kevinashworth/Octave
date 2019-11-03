@@ -153,8 +153,24 @@ class ProjectsDataTable extends PureComponent {
   }
 
   render () {
-    const { count, totalCount, results, loadingMore, loadMore, currentUser,
+    const { count, totalCount, results, loadingMore, loadMore, networkStatus, currentUser,
             projectTypeFilters, projectStatusFilters, projectUpdatedFilters, projectPlatformFilters } = this.props
+
+    if (networkStatus !== 8 && networkStatus !== 7) {
+      return (
+        <div className='animated fadeIn'>
+          <Card className='card-accent-danger'>
+            <CardHeader>
+              <i className='fa fa-camera' />Projects
+            </CardHeader>
+            <CardBody>
+              <Components.Loading />
+            </CardBody>
+          </Card>
+        </div>
+      )
+    }
+
     const hasMore = results && (totalCount > results.length)
     let typeFilters = []
     projectTypeFilters.forEach(filter => {
