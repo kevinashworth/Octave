@@ -91,11 +91,12 @@ const schema = {
     canUpdate: ['members'],
     input: 'textarea',
     inputProperties: {
-      itemProperties: {
-        layout: 'inputOnly' // Seems to be the way, but leads to "React does not recognize the `itemProperties` prop on a DOM element..."
-      },
+      placeholder: 'Add a comment…',
       rows: 4
-    }
+    },
+    itemProperties: { // this requires edits to 2 Vulcan files
+      layout: 'inputOnly'
+    },
   },
   // HTML version of Body
   htmlBody: {

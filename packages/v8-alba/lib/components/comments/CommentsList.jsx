@@ -12,9 +12,7 @@ const CommentsList = ({ comments, commentCount, currentUser }) => {
   } else {
     return (
       <div className='comments-list'>
-        <p>
-          <FormattedMessage id='comments.no_comments' />
-        </p>
+        <FormattedMessage id='comments.no_comments' />
       </div>
     )
   }

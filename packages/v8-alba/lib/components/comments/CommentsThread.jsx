@@ -19,20 +19,13 @@ const CommentsThread = (props) => {
       <Card>
         <CardHeader className='class-accent-list'>{totalCount > 0 ? totalCount : null} <FormattedMessage id='comments.comments' /></CardHeader>
         <CardBody>
-          <CardText>
-            <Components.CommentsList currentUser={currentUser} comments={nestedComments} commentCount={totalCount} />
-          </CardText>
+          <Components.CommentsList currentUser={currentUser} comments={nestedComments} commentCount={totalCount} />
           {currentUser
-            ? <CardBody>
-                <CardTitle tag='p'><FormattedMessage id='comments.new' /></CardTitle>
-                <CardText>
-                  <Components.CommentsNewForm
-                    collectionName={collectionName}
-                    objectId={objectId}
-                    type='comment'
-                  />
-                </CardText>
-              </CardBody>
+            ? <Components.CommentsNewForm
+                collectionName={collectionName}
+                objectId={objectId}
+                type='comment'
+              />
             : null }
         </CardBody>
       </Card>
