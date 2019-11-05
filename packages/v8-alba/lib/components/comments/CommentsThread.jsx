@@ -2,7 +2,7 @@ import { Components, registerComponent, Utils, withCurrentUser, withMulti } from
 import { FormattedMessage } from 'meteor/vulcan:i18n'
 import React from 'react'
 import PropTypes from 'prop-types'
-import { Card, CardBody, CardHeader, CardText, CardTitle } from 'reactstrap'
+import { Card, CardBody, CardHeader } from 'reactstrap'
 import _ from 'lodash'
 import Comments from '../../modules/comments/collection.js'
 
