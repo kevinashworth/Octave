@@ -3,7 +3,7 @@ import SimpleSchema from 'simpl-schema'
 import marked from 'marked'
 import { addressSubSchema, linkSubSchema } from '../shared_schemas.js'
 import { PROJECT_TYPES_ENUM, PROJECT_STATUSES_ENUM } from '../constants.js'
-import { getFullAddress, getPlatformType } from '../helpers.js'
+import { externalizeNoteLinks, getFullAddress, getPlatformType } from '../helpers.js'
 
 const addressGroup = {
   name: 'addresses',
@@ -204,9 +204,12 @@ const schema = {
     type: String,
     optional: true,
     control: 'textarea', // use a textarea form component
-    viewableBy: ['members'],
-    insertableBy: ['admins'],
-    editableBy: ['admins']
+    canRead: ['members'],
+    canCreate: ['admins'],
+    canUpdate: ['admins'],
+    inputProperties: {
+      rows: 4
+    }
   },
   // HTML version of Notes
   htmlNotes: {
@@ -216,17 +219,18 @@ const schema = {
     viewableBy: ['members'],
     insertableBy: ['admins'],
     editableBy: ['admins'],
-    onInsert: (project) => {
-      if (project.notes) {
-        return Utils.sanitize(marked('**NOTES:** ' + project.notes))
+    onCreate: ({ document }) => {
+      if (document.notes) {
+        return externalizeNoteLinks('**NOTES:** ' + document.notes)
       }
     },
-    onEdit: (modifier, project) => {
-      if (modifier.$set.notes) {
-        return Utils.sanitize(marked('**NOTES:** ' + modifier.$set.notes))
+    onUpdate: ({ data }) => {
+      if (data.notes && data.notes.length) {
+        return externalizeNoteLinks('**NOTES:** ' + data.notes)
+      } else {
+        return null
       }
     }
-
   },
   season: {
     label: 'Season',

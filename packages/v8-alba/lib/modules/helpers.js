@@ -1,3 +1,5 @@
+import { Utils } from 'meteor/vulcan:core'
+import marked from 'marked'
 import _ from 'lodash'
 import Contacts from './contacts/collection.js'
 import Offices from './offices/collection.js'
@@ -377,4 +379,11 @@ export function getSortTitle (title) {
       newTitle = theTitle
   }
   return newTitle
+}
+
+export const externalizeNoteLinks = (s) => {
+  const sanitizeMarked = Utils.sanitize(marked(s))
+  const pattern = /a href=/g
+  const externalizeLinks = sanitizeMarked.replace(pattern, 'a target="_notes" href=')
+  return externalizeLinks
 }

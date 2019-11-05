@@ -3,7 +3,7 @@ import SimpleSchema from 'simpl-schema'
 import marked from 'marked'
 import { addressSubSchema, linkSubSchema } from '../shared_schemas.js'
 import { PROJECT_TYPES_ENUM, PROJECT_STATUSES_ENUM } from '../constants.js'
-import { getFullAddress, getPlatformType, getSortTitle } from '../helpers.js'
+import { externalizeNoteLinks, getFullAddress, getPlatformType, getSortTitle } from '../helpers.js'
 
 const addressGroup = {
   name: 'addresses',
@@ -233,9 +233,8 @@ const schema = {
     canCreate: ['admins'],
     canUpdate: ['admins'],
     inputProperties: {
-      rows: 3
+      rows: 4
     },
-
   },
   // HTML version of Notes
   htmlNotes: {
@@ -245,14 +244,14 @@ const schema = {
     canRead: ['members'],
     canCreate: ['admins'],
     canUpdate: ['admins'],
-    onCreate: ({ document: project}) => {
-      if (project.notes) {
-        return Utils.sanitize(marked('**NOTES:** ' + project.notes))
+    onCreate: ({ document }) => {
+      if (document.notes) {
+        return externalizeNoteLinks('**NOTES:** ' + document.notes)
       }
     },
     onUpdate: ({ data }) => {
       if (data.notes && data.notes.length) {
-        return Utils.sanitize(marked('**NOTES:** ' + data.notes))
+        return externalizeNoteLinks('**NOTES:** ' + data.notes)
       } else {
         return null
       }
