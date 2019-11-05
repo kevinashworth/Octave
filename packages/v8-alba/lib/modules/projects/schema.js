@@ -175,6 +175,7 @@ const schema = {
   },
   renewed: {
     label: 'On Hiatus but Renewed',
+    hidden: ({ document }) => { return document.status !== 'On Hiatus' },
     type: Boolean,
     optional: true,
     canRead: 'guests',
