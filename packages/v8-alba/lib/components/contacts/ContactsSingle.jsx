@@ -72,7 +72,7 @@ class ContactsSingle extends PureComponent {
                   )}
                 </CardBody>
                 }
-                {contact.projects &&
+                {!isEmptyValue(contact.projects) &&
                 <CardBody>
                   <CardTitle>Projects</CardTitle>
                   {contact.projects.map(project =>
