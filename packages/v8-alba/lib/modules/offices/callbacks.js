@@ -45,11 +45,13 @@ function OfficeEditUpdatePastProjects (data, { document }) {
 
   office.pastProjects.forEach(officeProject => {
     const project = PastProjects.findOne(officeProject.projectId) // TODO: error handling
-    const newOffice = office._id
-    Connectors.update(PastProjects, project._id, { $set: {
-      castingOfficeId: newOffice,
-      updatedAt: new Date()
-    } })
+    const newOfficeId = office._id
+    if (project.castingOfficeId !== newOfficeId) {
+      Connectors.update(PastProjects, project._id, { $set: {
+        castingOfficeId: newOfficeId,
+        updatedAt: new Date() // 2019-11-06: should we update ancient projects? which would happen...
+      } })
+    }
   })
 }
 
