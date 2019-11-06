@@ -14,12 +14,16 @@ class MySelect extends Component {
   handleChange (selectedOption) {
     if (!selectedOption) {
       this.context.updateCurrentValues({ [this.props.path]: null })
+      console.log(`Just set ${this.props.path} to null [0]`)
       return
     }
     let siblingPath = null
     if (this.props.parentFieldName === 'projects' || this.props.parentFieldName === 'pastProjects') {
       siblingPath = this.props.parentFieldName + '.' + this.props.itemIndex + '.' + 'projectTitle'
     }
+    // if (this.props.parentFieldName === 'offices') {
+    //   siblingPath = this.props.parentFieldName + '.' + this.props.itemIndex + '.' + 'displayName'
+    // }
     if (siblingPath) {
       this.context.updateCurrentValues({
         [this.props.path]: selectedOption.value,
@@ -27,6 +31,7 @@ class MySelect extends Component {
       })
     } else {
       this.context.updateCurrentValues({ [this.props.path]: selectedOption.value })
+      console.log(`Just set ${this.props.path} to ${selectedOption.value} [1]`)
     }
   }
 
@@ -46,6 +51,7 @@ class MySelect extends Component {
           value={selectedOption}
           onChange={this.handleChange}
           options={[noneOption, ...this.props.options]}
+          defaultValue={{ value: null, label: '' }}
           isClearable
           />
       )
