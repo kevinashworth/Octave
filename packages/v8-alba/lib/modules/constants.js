@@ -12,6 +12,7 @@ const CASTING_TITLES_ENUM = [
   { value: 'Intern', label: 'Intern' },
   { value: 'Casting Executive', label: 'Casting Executive' },
   { value: 'Casting Director / Casting Executive', label: 'Casting Director / Casting Executive' },
+  { value: 'Not Currently In Casting', label: 'Not Currently In Casting' },
   { value: 'Unknown', label: 'Unknown' }
 ]
 
