@@ -146,9 +146,13 @@ So for each of the pastProject.offices we update office.pastProjects of the Offi
 //   Connectors.update(Offices, office._id, { $set: { pastProjects: updatedPastProjects } })
 // }
 
-function PastProjectEditUpdateOfficeBefore (data, { currentUser, document, oldDocument }) {
+function PastProjectEditUpdateOfficeBefore (data, { document, oldDocument }) {
   const oldOffice = oldDocument.castingOfficeId
   const newOffice = document.castingOfficeId
+  let adding = false
+  if (newOffice && !oldOffice) {
+    adding = true
+  }
   let removing = false
   if (oldOffice && !newOffice) {
     // this is an office getting removed from the project, so we also need to remove the project from that office
@@ -156,8 +160,8 @@ function PastProjectEditUpdateOfficeBefore (data, { currentUser, document, oldDo
   }
   let replacing = false
   if (newOffice && oldOffice && oldOffice !== newOffice) {
-    removing = false
     // this is one office replacing another on the project
+    removing = false
     replacing = true
   }
   let itmightnotbethereforsomereason = false
@@ -165,28 +169,44 @@ function PastProjectEditUpdateOfficeBefore (data, { currentUser, document, oldDo
     console.info('itmightnotbethereforsomereason')
     itmightnotbethereforsomereason = true
   }
+
+  let office = null
+  let pastProjects = null
+  if (adding) {
+    office = Offices.findOne(newOffice) // TODO: error handling
+    pastProjects = office && office.pastProjects
+  }
   if (removing || replacing || itmightnotbethereforsomereason) {
-    const office = Offices.findOne(oldOffice) // TODO: error handling
-    if (office) {
-      let pastProjects = office.pastProjects
-      if (!isEmptyValue(pastProjects)) {
-        if (itmightnotbethereforsomereason) {
-          if (_.indexOf(pastProjects, { projectId: document._id }) < 0) {
-            replacing = true
-          }
-        }
-        _.remove(pastProjects, function (p) {
-          return p._id === document._id
-        })
-        if (replacing) {
-          pastProjects.push({ projectId: document._id })
-        }
-        Connectors.update(Offices, office._id, { $set: {
-          pastProjects: pastProjects,
-          updatedAt: new Date()
-        } })
+    office = Offices.findOne(oldOffice) // TODO: error handling
+    pastProjects = office && office.pastProjects
+  }
+  if (!office) {
+    console.log('findOne didn\'t find one office!')
+    return
+  }
+  if (!isEmptyValue(pastProjects)) {
+    if (itmightnotbethereforsomereason) {
+      if (_.indexOf(pastProjects, { projectId: document._id }) < 0) {
+        replacing = true
+        console.info('itisnotthereforsomereason')
       }
     }
+    _.remove(pastProjects, function (p) {
+      return p.projectId === document._id
+    })
+    if (adding || replacing) {
+      pastProjects.push({ projectId: document._id })
+    }
+    Connectors.update(Offices, office._id, { $set: {
+      pastProjects: pastProjects,
+      updatedAt: new Date()
+    } })
+  } else if (adding || itmightnotbethereforsomereason) { // means we are adding to empty (or null) projects
+    pastProjects = [{ projectId: document._id }]
+    Connectors.update(Offices, office._id, { $set: {
+      pastProjects: pastProjects,
+      updatedAt: new Date()
+    } })
   }
 }
 

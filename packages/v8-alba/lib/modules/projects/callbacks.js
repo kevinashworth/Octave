@@ -184,6 +184,7 @@ function ProjectEditUpdateOfficeBefore (data, { document, oldDocument }) {
   }
   if (!office) {
     console.log('findOne didn\'t find one office!')
+    return
   }
   if (!isEmptyValue(projects)) {
     if (itmightnotbethereforsomereason) {
