@@ -27,10 +27,13 @@ const Hits = ({ hits }) => {
       <DropdownToggle nav></DropdownToggle>
       <DropdownMenu>
         <DropdownItem header>Search Results</DropdownItem>
-        {hits.map(hit => (
-          <DropdownItem key={hit.objectID}><Link to={hit.url}>{hit.name}</Link></DropdownItem>
-        ))}
-      </DropdownMenu>
+        {hits.length === 0
+          ? <DropdownItem>No search results</DropdownItem>
+          : hits.map(hit => (
+            <DropdownItem key={hit.objectID}><Link to={hit.url}>{hit.name}</Link></DropdownItem>
+            ))
+          }
+        </DropdownMenu>
     </Fragment>
   )
 }
