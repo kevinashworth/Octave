@@ -5,10 +5,10 @@ import PropTypes from 'prop-types'
 import { Link } from 'react-router-dom'
 import mapProps from 'recompose/mapProps'
 import { Button, Card, CardBody, CardFooter, CardHeader, CardLink, CardText, CardTitle, Col, Collapse, Row } from 'reactstrap'
-import Markup from 'interweave'
+import Interweave from 'interweave'
 import moment from 'moment'
 import { DATE_FORMAT_LONG, DATE_FORMAT_SHORT } from '../../modules/constants.js'
-import { dangerouslyCreateAddress, isEmptyValue } from '../../modules/helpers.js'
+import { dangerouslyCreateAddress, isEmptyValue, transform } from '../../modules/helpers.js'
 import Contacts from '../../modules/contacts/collection.js'
 
 class ContactsSingle extends PureComponent {
@@ -50,7 +50,7 @@ class ContactsSingle extends PureComponent {
                 { contact.gender && <div>{contact.gender}</div> }
                 <hr />
                 {contact.htmlBody
-                  ? <Markup content={contact.htmlBody} />
+                  ? <Interweave content={contact.htmlBody} transform={transform} />
                   : <div>{ contact.body }</div>
                 }
               </CardText>
@@ -69,7 +69,7 @@ class ContactsSingle extends PureComponent {
                 <CardBody>
                   {contact.addresses[0] && <CardTitle>Addresses</CardTitle>}
                   {contact.addresses.map((address, index) =>
-                    <Markup key={`address${index}`} content={dangerouslyCreateAddress(address).__html} />
+                    <Interweave key={`address${index}`} content={dangerouslyCreateAddress(address).__html} />
                   )}
                 </CardBody>
                 }

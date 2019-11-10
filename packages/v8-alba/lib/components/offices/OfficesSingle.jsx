@@ -3,10 +3,11 @@ import { FormattedMessage } from 'meteor/vulcan:i18n'
 import React, { PureComponent } from 'react'
 import { Link } from 'react-router-dom'
 import { Button, Card, CardBody, CardFooter, CardHeader, CardLink, CardText, CardTitle, Collapse, Col, Row } from 'reactstrap'
-import Markup from 'interweave'
+import Interweave from 'interweave'
 import mapProps from 'recompose/mapProps'
 import moment from 'moment'
 import { DATE_FORMAT_LONG, DATE_FORMAT_SHORT } from '../../modules/constants.js'
+import { transform } from '../../modules/helpers.js'
 import Offices from '../../modules/offices/collection.js'
 
 // Don't fetch and render PastProjects unless user clicks to see them
@@ -66,7 +67,7 @@ class OfficesSingle extends PureComponent {
           }
           {office.htmlBody &&
             <CardBody className='mb-1'>
-              <Markup content={office.htmlBody} />
+              <Interweave content={office.htmlBody} transform={transform} />
             </CardBody>
           }
           <Row>

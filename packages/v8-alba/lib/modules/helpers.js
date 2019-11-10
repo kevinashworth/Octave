@@ -1,4 +1,6 @@
 import { Utils } from 'meteor/vulcan:core'
+import React from 'react'
+import { Link } from 'react-router-dom'
 import marked from 'marked'
 import _ from 'lodash'
 import Contacts from './contacts/collection.js'
@@ -386,4 +388,13 @@ export const externalizeNoteLinks = (s) => {
   const pattern = /a href=/g
   const externalizeLinks = sanitizeMarked.replace(pattern, 'a target="_notes" href=')
   return externalizeLinks
+}
+
+export const transform = (node, children) => {
+  if (node.nodeName === 'A') {
+    const href = node.getAttribute('href')
+    if (href.indexOf('/') === 0) {
+      return (<Link to={href}>{children}</Link>)
+    }
+  }
 }
