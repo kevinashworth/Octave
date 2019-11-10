@@ -67,6 +67,7 @@
     "html-to-text": "^2.1.0",
     "immutability-helper": "^2.7.0",
     "import": "0.0.6",
+    "interweave": "^12.1.0",
     "intl": "^1.2.4",
     "intl-locales-supported": "1.4.6",
     "juice": "^5.1.0",
