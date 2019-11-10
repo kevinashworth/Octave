@@ -3,6 +3,7 @@ import { FormattedMessage } from 'meteor/vulcan:i18n'
 import React, { PureComponent } from 'react'
 import { Link } from 'react-router-dom'
 import { Button, Card, CardBody, CardFooter, CardHeader, CardLink, CardText, CardTitle, Collapse, Col, Row } from 'reactstrap'
+import Interweave from 'interweave'
 import mapProps from 'recompose/mapProps'
 import moment from 'moment'
 import { DATE_FORMAT_LONG, DATE_FORMAT_SHORT } from '../../modules/constants.js'
@@ -65,7 +66,7 @@ class OfficesSingle extends PureComponent {
           }
           {office.htmlBody &&
             <CardBody>
-              <CardText className='mb-1' dangerouslySetInnerHTML={{ __html: office.htmlBody }} />
+              <CardText className='mb-1'><Interweave content={office.htmlBody} /></CardText>
             </CardBody>
           }
           <Row>

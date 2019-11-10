@@ -2,6 +2,7 @@ import { Components, registerComponent, withCurrentUser, withSingle } from 'mete
 import { FormattedMessage } from 'meteor/vulcan:i18n'
 import React, { PureComponent } from 'react'
 import { Button, Card, CardBody, CardFooter, CardHeader, CardLink, CardText } from 'reactstrap'
+import Interweave from 'interweave'
 import Users from 'meteor/vulcan:users'
 import { Link } from 'react-router-dom'
 import mapProps from 'recompose/mapProps'
@@ -18,7 +19,7 @@ class UsersProfile extends PureComponent {
         </div>
       )
     } else if (!document) {
-      console.log(`// missing user (_id/slug: ${props.documentId || props.slug})`);
+      console.log(`// missing user (_id/slug: ${this.props.documentId || this.props.slug})`);
       return (
         <div className='page'>
           <FormattedMessage id='app.404' />
@@ -45,7 +46,7 @@ class UsersProfile extends PureComponent {
             </CardHeader>
             <CardBody>
               {user.htmlBio
-               ? <CardText dangerouslySetInnerHTML={{ __html: user.htmlBio }} />
+               ? <CardText><Interweave content={user.htmlBio} /></CardText>
                : <CardText>{ user.bio }</CardText>
               }
               {user.website ? (
