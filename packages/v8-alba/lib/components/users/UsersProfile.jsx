@@ -2,7 +2,7 @@ import { Components, registerComponent, withCurrentUser, withSingle } from 'mete
 import { FormattedMessage } from 'meteor/vulcan:i18n'
 import React, { PureComponent } from 'react'
 import { Button, Card, CardBody, CardFooter, CardHeader, CardLink, CardText } from 'reactstrap'
-import Interweave from 'interweave'
+import Markup from 'interweave'
 import Users from 'meteor/vulcan:users'
 import { Link } from 'react-router-dom'
 import mapProps from 'recompose/mapProps'
@@ -46,7 +46,7 @@ class UsersProfile extends PureComponent {
             </CardHeader>
             <CardBody>
               {user.htmlBio
-               ? <CardText><Interweave content={user.htmlBio} /></CardText>
+               ? <CardText><Markup content={user.htmlBio} /></CardText>
                : <CardText>{ user.bio }</CardText>
               }
               {user.website ? (
