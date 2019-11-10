@@ -65,8 +65,8 @@ class OfficesSingle extends PureComponent {
             </CardBody>
           }
           {office.htmlBody &&
-            <CardBody>
-              <CardText className='mb-1'><Markup content={office.htmlBody} /></CardText>
+            <CardBody className='mb-1'>
+              <Markup content={office.htmlBody} />
             </CardBody>
           }
           <Row>

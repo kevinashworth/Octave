@@ -85,13 +85,13 @@ class ProjectSingle extends PureComponent {
               <CardText>{ seasonorder }</CardText>
             }
             {project.htmlSummary
-              ? <CardText className='mb-1'><Markup content={project.htmlSummary} /></CardText>
-              : <CardText className='mb-1'>{ project.summary }</CardText>
+              ? <Markup content={project.htmlSummary} />
+              : <CardText>{ project.summary }</CardText>
             }
             <hr />
             {project.htmlNotes
-              ? <CardText className='mb-1'><Markup content={project.htmlNotes} /></CardText>
-              : <CardText className='mb-1'>{ project.notes }</CardText>
+              ? <Markup content={project.htmlNotes} />
+              : <CardText>{ project.notes }</CardText>
             }
             <hr />
             {project.website &&

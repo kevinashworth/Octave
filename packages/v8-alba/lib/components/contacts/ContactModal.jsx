@@ -4,6 +4,7 @@ import React from 'react'
 import { Link } from 'react-router-dom'
 import PropTypes from 'prop-types'
 import { Card, CardBody, CardFooter, CardText, CardTitle } from 'reactstrap'
+import Markup from 'interweave'
 import moment from 'moment'
 import { DATE_FORMAT_LONG, DATE_FORMAT_SHORT } from '../../modules/constants.js'
 
@@ -40,7 +41,7 @@ const ContactModal = (props) => {
     if (address.street1 && address.city && address.state) {
       streetAddress += `<br/><small><a href="https://maps.google.com/?q=${address.street1},${address.city},${address.state}" target="_maps">Open in Google Maps</a></small>`
     }
-    return { __html: streetAddress }
+    return streetAddress
   }
 
   return (
@@ -52,7 +53,7 @@ const ContactModal = (props) => {
             { contact.gender && <div>{contact.gender}</div> }
             <hr />
             {contact.htmlBody
-              ? <div dangerouslySetInnerHTML={{ __html: contact.htmlBody }} />
+              ? <Markup content={contact.htmlBody} />
               : <div>{ contact.body }</div>
             }
           </CardText>
@@ -61,7 +62,7 @@ const ContactModal = (props) => {
         <CardBody>
           { contact.addresses[1] && <CardTitle>Addresses</CardTitle>}
           {contact.addresses.map((address, index) =>
-            <CardText key={`address${index}`} dangerouslySetInnerHTML={createAddress(address)} />
+            <Markup key={`address${index}`} content={createAddress(address)} />
           )}
         </CardBody>
         }

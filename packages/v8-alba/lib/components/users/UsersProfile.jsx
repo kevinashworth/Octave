@@ -46,7 +46,7 @@ class UsersProfile extends PureComponent {
             </CardHeader>
             <CardBody>
               {user.htmlBio
-               ? <CardText><Markup content={user.htmlBio} /></CardText>
+               ? <Markup content={user.htmlBio} />
                : <CardText>{ user.bio }</CardText>
               }
               {user.website ? (

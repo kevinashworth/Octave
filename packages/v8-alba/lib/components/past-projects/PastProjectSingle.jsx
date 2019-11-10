@@ -4,6 +4,7 @@ import React, { PureComponent } from 'react'
 import { Link } from 'react-router-dom'
 import mapProps from 'recompose/mapProps'
 import { Button, Card, CardBody, CardFooter, CardHeader, CardLink, CardText, CardTitle } from 'reactstrap'
+import Markup from 'interweave'
 import styled from 'styled-components'
 import moment from 'moment'
 import { DATE_FORMAT_LONG, DATE_FORMAT_SHORT } from '../../modules/constants.js'
@@ -85,12 +86,12 @@ class PastProjectSingle extends PureComponent {
               <CardText>{ seasonorder }</CardText>
             }
             {project.htmlSummary
-              ? <CardText className='mb-1' dangerouslySetInnerHTML={{ __html: project.htmlSummary }} />
+              ? <Markup content={project.htmlSummary} />
               : <CardText className='mb-1'>{ project.summary }</CardText>
             }
             <hr />
             {project.htmlNotes
-              ? <CardText className='mb-1' dangerouslySetInnerHTML={{ __html: project.htmlNotes }} />
+              ? <Markup content={project.htmlNotes} />
               : <CardText className='mb-1'>{ project.notes }</CardText>
             }
             <hr />

@@ -3,7 +3,8 @@ import { FormattedMessage } from 'meteor/vulcan:i18n'
 import React from 'react'
 import { Link } from 'react-router-dom'
 import PropTypes from 'prop-types'
-import { Card, CardBody, CardHeader, CardText } from 'reactstrap'
+import { Card, CardBody, CardHeader } from 'reactstrap'
+import Markup from 'interweave'
 import { dangerouslyCreateAddress } from '../../modules/helpers.js'
 import Offices from '../../modules/offices/collection.js'
 
@@ -25,7 +26,7 @@ const OfficeMini = (props) => {
         {office.addresses &&
           office.addresses.map(address => {
             return (
-              <CardText key={address.street1 + address.street2} dangerouslySetInnerHTML={dangerouslyCreateAddress(address)} />
+              <Markup key={address.street1 + address.street2} content={dangerouslyCreateAddress(address).__html}/>
             )
           })
         }

@@ -3,6 +3,7 @@ import { FormattedMessage } from 'meteor/vulcan:i18n'
 import React, { PureComponent } from 'react'
 import { Link } from 'react-router-dom'
 import { Card, CardBody, CardFooter, CardHeader, CardText, CardTitle, Collapse } from 'reactstrap'
+import Markup from 'interweave'
 import Contacts from '../../modules/contacts/collection.js'
 import moment from 'moment'
 import { DATE_FORMAT_SHORT } from '../../modules/constants.js'
@@ -55,7 +56,7 @@ const ContactForMobile = (props) => {
               : null
             }
             {contact.htmlBody
-              ? <div dangerouslySetInnerHTML={{ __html: contact.htmlBody }} />
+              ? <Markup content={contact.htmlBody } />
               : <div>{ contact.body }</div>
             }
           </CardText>
@@ -64,7 +65,7 @@ const ContactForMobile = (props) => {
         <CardBody>
           {contact.addresses[1] && <CardTitle>Addresses</CardTitle>}
           {contact.addresses.map((address, index) =>
-            <CardText key={`address${index}`} dangerouslySetInnerHTML={createAddress(address)} />
+            <Markup key={`address${index}`} content={createAddress(address)} />
           )}
         </CardBody>
         }
