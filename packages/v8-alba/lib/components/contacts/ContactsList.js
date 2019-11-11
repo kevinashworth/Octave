@@ -102,8 +102,8 @@ class ContactsList extends PureComponent {
   }
 
   render () {
-    const { loading, results = [] } = this.props
-    if (loading) {
+    const { networkStatus, results = [] } = this.props
+    if (networkStatus !== 8 && networkStatus !== 7) {
       return <Components.Loading />
     } else {
       return (

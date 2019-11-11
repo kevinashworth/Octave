@@ -22,11 +22,11 @@ class ContactsSingle extends PureComponent {
   }
 
   render () {
-    const { currentUser, document, loading } = this.props
-    if (loading) {
-      return <div className='page contacts-profile'><Components.Loading /></div>
+    const { currentUser, document, networkStatus } = this.props
+    if (networkStatus !== 8 && networkStatus !== 7) {
+      return <Components.Loading />
     } else if (!document) {
-      return <div className='page contacts-profile'><FormattedMessage id='app.404' /></div>
+      return <FormattedMessage id='app.404' />
     } else {
       const contact = document
       const displayDate =

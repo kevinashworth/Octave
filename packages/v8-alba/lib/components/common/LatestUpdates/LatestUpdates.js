@@ -12,7 +12,7 @@ import { DATE_FORMAT_SHORT_FRIENDLY } from '../../../modules/constants.js'
 
 class LatestContactUpdates extends Component {
   render () {
-    if (this.props.loading) {
+    if (this.props.networkStatus !== 8 && this.props.networkStatus !== 7) {
       return (<div><Components.Loading /></div>)
     }
 
@@ -67,7 +67,7 @@ registerComponent({
 
 class LatestOfficeUpdates extends Component {
   render () {
-    if (this.props.loading) {
+    if (this.props.networkStatus !== 8 && this.props.networkStatus !== 7) {
       return (<div><Components.Loading /></div>)
     }
 
@@ -122,7 +122,7 @@ registerComponent({
 
 class LatestProjectUpdates extends Component {
   render () {
-    if (this.props.loading) {
+    if (this.props.networkStatus !== 8 && this.props.networkStatus !== 7) {
       return (<div><Components.Loading /></div>)
     }
 
@@ -182,7 +182,7 @@ registerComponent({
 
 class LatestPastProjectUpdates extends Component {
   render () {
-    if (this.props.loading) {
+    if (this.props.networkStatus !== 8 && this.props.networkStatus !== 7) {
       return (<div><Components.Loading /></div>)
     }
 

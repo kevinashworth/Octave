@@ -34,8 +34,8 @@ class ProjectSingle extends PureComponent {
   }
 
   render () {
-    const { currentUser, document, loading } = this.props
-    if (loading) {
+    const { currentUser, document, networkStatus } = this.props
+    if (networkStatus !== 8 && networkStatus !== 7) {
       return (<div><Components.Loading /></div>)
     }
     if (!document) {
