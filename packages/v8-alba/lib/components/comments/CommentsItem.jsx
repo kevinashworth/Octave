@@ -1,7 +1,8 @@
 import { Components, registerComponent, withMessages } from 'meteor/vulcan:core'
+import { FormattedMessage } from 'meteor/vulcan:i18n'
 import React, { PureComponent } from 'react'
 import PropTypes from 'prop-types'
-import { FormattedMessage } from 'meteor/vulcan:i18n'
+import Markup from 'interweave'
 import { Comments } from '../../modules/comments/index.js'
 import moment from 'moment'
 
@@ -54,11 +55,10 @@ class CommentsItem extends PureComponent {
   }
 
   renderComment () {
-    const htmlBody = { __html: this.props.comment.htmlBody }
     const showReplyButton = !this.props.comment.isDeleted && !!this.props.currentUser
     return (
       <div className='comments-item-text'>
-        <div dangerouslySetInnerHTML={htmlBody} />
+        <Markup content={this.props.comment.htmlBody} />
         {showReplyButton
           ? <small className='text-muted'>
               <a onClick={this.showReply}><FormattedMessage id='comments.reply' /></a>

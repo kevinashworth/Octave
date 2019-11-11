@@ -1,4 +1,6 @@
 import { Utils } from 'meteor/vulcan:core'
+import React from 'react'
+import { Link } from 'react-router-dom'
 import marked from 'marked'
 import _ from 'lodash'
 import Contacts from './contacts/collection.js'
@@ -54,7 +56,8 @@ export function getFullAddress ({ street1, street2, city, state, zip }) {
   }
 }
 
-export const createAddress = (office) => {
+// creates a string with no formatting
+export const createPlainAddress = (office) => {
   if (!office) {
     return {
       street1: '',
@@ -82,7 +85,8 @@ export const createAddress = (office) => {
   return streetAddress
 }
 
-export const dangerouslyCreateAddress = (office) => {
+// creates address with line breaks and map link
+export const createdFormattedAddress = (office) => {
   let streetAddress = ''
   if (office.street1) {
     streetAddress = office.street1 + '<br/>'
@@ -100,9 +104,9 @@ export const dangerouslyCreateAddress = (office) => {
     streetAddress += '  ' + office.zip
   }
   if (office.street1 && office.city && office.state) {
-    streetAddress += `<br/><small><a href="https://maps.google.com/?q=${office.street1},${office.city},${office.state}" target="_maps">Open in Google Maps</a></small>`
+    streetAddress += `<br/><small><a href="https://maps.google.com/?q=${office.street1},${office.city},${office.state}" target="googlemaps">Open in Google Maps</a></small>`
   }
-  return { __html: streetAddress }
+  return streetAddress
 }
 
 // copied from Vulcan/packages/vulcan-forms/lib/modules/utils.js
@@ -381,9 +385,13 @@ export function getSortTitle (title) {
   return newTitle
 }
 
-export const externalizeNoteLinks = (s) => {
-  const sanitizeMarked = Utils.sanitize(marked(s))
-  const pattern = /a href=/g
-  const externalizeLinks = sanitizeMarked.replace(pattern, 'a target="_notes" href=')
-  return externalizeLinks
+export const transform = (node, children) => {
+  if (node.nodeName === 'A') {
+    const href = node.getAttribute('href')
+    if (href.indexOf('/') === 0) {
+      return (<Link to={href}>{children}</Link>)
+    } else if (href.indexOf('http') === 0) {
+      return (<a href={href} target="notelinks">{children}</a>)
+    }
+  }
 }

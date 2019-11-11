@@ -4,14 +4,17 @@ import React, { PureComponent } from 'react'
 import { Link } from 'react-router-dom'
 import mapProps from 'recompose/mapProps'
 import { Button, Card, CardBody, CardFooter, CardHeader, CardLink, CardText, CardTitle, Col, Row } from 'reactstrap'
+import Interweave from 'interweave'
 import styled from 'styled-components'
 import moment from 'moment'
 import { DATE_FORMAT_LONG, DATE_FORMAT_SHORT } from '../../modules/constants.js'
+import { transform } from '../../modules/helpers.js'
 import Projects from '../../modules/projects/collection.js'
 
 const SpanVerticalBarBefore = styled.span`
   ::before { content: " | "; };
 `
+
 class ProjectSingle extends PureComponent {
   seasonorder (project) {
     if (!project.season) {
@@ -84,13 +87,13 @@ class ProjectSingle extends PureComponent {
               <CardText>{ seasonorder }</CardText>
             }
             {project.htmlSummary
-              ? <CardText className='mb-1' dangerouslySetInnerHTML={{ __html: project.htmlSummary }} />
-              : <CardText className='mb-1'>{ project.summary }</CardText>
+              ? <Interweave content={project.htmlSummary} transform={transform} />
+              : <CardText>{ project.summary }</CardText>
             }
             <hr />
             {project.htmlNotes
-              ? <CardText className='mb-1' dangerouslySetInnerHTML={{ __html: project.htmlNotes }} />
-              : <CardText className='mb-1'>{ project.notes }</CardText>
+              ? <Interweave content={project.htmlNotes} transform={transform} />
+              : <CardText>{ project.notes }</CardText>
             }
             <hr />
             {project.website &&
