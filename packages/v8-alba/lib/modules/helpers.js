@@ -56,7 +56,8 @@ export function getFullAddress ({ street1, street2, city, state, zip }) {
   }
 }
 
-export const createAddress = (office) => {
+// creates a string with no formatting
+export const createPlainAddress = (office) => {
   if (!office) {
     return {
       street1: '',
@@ -84,7 +85,8 @@ export const createAddress = (office) => {
   return streetAddress
 }
 
-export const dangerouslyCreateAddress = (office) => {
+// creates address with line breaks and map link
+export const createdFormattedAddress = (office) => {
   let streetAddress = ''
   if (office.street1) {
     streetAddress = office.street1 + '<br/>'
@@ -102,9 +104,9 @@ export const dangerouslyCreateAddress = (office) => {
     streetAddress += '  ' + office.zip
   }
   if (office.street1 && office.city && office.state) {
-    streetAddress += `<br/><small><a href="https://maps.google.com/?q=${office.street1},${office.city},${office.state}" target="_maps">Open in Google Maps</a></small>`
+    streetAddress += `<br/><small><a href="https://maps.google.com/?q=${office.street1},${office.city},${office.state}" target="googlemaps">Open in Google Maps</a></small>`
   }
-  return { __html: streetAddress }
+  return streetAddress
 }
 
 // copied from Vulcan/packages/vulcan-forms/lib/modules/utils.js

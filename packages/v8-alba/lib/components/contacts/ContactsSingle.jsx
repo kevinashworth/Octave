@@ -8,7 +8,7 @@ import { Button, Card, CardBody, CardFooter, CardHeader, CardLink, CardText, Car
 import Interweave from 'interweave'
 import moment from 'moment'
 import { DATE_FORMAT_LONG, DATE_FORMAT_SHORT } from '../../modules/constants.js'
-import { dangerouslyCreateAddress, isEmptyValue, transform } from '../../modules/helpers.js'
+import { createdFormattedAddress, isEmptyValue, transform } from '../../modules/helpers.js'
 import Contacts from '../../modules/contacts/collection.js'
 
 class ContactsSingle extends PureComponent {
@@ -69,7 +69,7 @@ class ContactsSingle extends PureComponent {
                 <CardBody>
                   {contact.addresses[0] && <CardTitle>Addresses</CardTitle>}
                   {contact.addresses.map((address, index) =>
-                    <Interweave key={`address${index}`} content={dangerouslyCreateAddress(address).__html} />
+                    <Interweave key={`address${index}`} content={createdFormattedAddress(address)} />
                   )}
                 </CardBody>
                 }

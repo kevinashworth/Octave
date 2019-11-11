@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom'
 import PropTypes from 'prop-types'
 import { Card, CardBody, CardHeader } from 'reactstrap'
 import Markup from 'interweave'
-import { dangerouslyCreateAddress } from '../../modules/helpers.js'
+import { createdFormattedAddress } from '../../modules/helpers.js'
 import Offices from '../../modules/offices/collection.js'
 
 const OfficeMini = (props) => {
@@ -26,7 +26,7 @@ const OfficeMini = (props) => {
         {office.addresses &&
           office.addresses.map(address => {
             return (
-              <Markup key={address.street1 + address.street2} content={dangerouslyCreateAddress(address).__html}/>
+              <Markup key={address.street1 + address.street2} content={createdFormattedAddress(address)}/>
             )
           })
         }

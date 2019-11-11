@@ -46,6 +46,7 @@ registerFragment(/* GraphQL */ `
     title
     addressString
     theAddress
+    addresses
     createdAt
     updatedAt
     allLinks

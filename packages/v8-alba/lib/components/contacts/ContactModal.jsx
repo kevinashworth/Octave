@@ -7,6 +7,7 @@ import { Card, CardBody, CardFooter, CardText, CardTitle } from 'reactstrap'
 import Markup from 'interweave'
 import moment from 'moment'
 import { DATE_FORMAT_LONG, DATE_FORMAT_SHORT } from '../../modules/constants.js'
+import { createdFormattedAddress } from '../../modules/helpers.js'
 
 const ContactModal = (props) => {
   if (props.loading) {
@@ -21,28 +22,6 @@ const ContactModal = (props) => {
   const displayDate =
       'Contact added ' + moment(contact.createdAt).format(DATE_FORMAT_SHORT) + ' / ' +
       'Last modified ' + moment(contact.updatedAt).format(DATE_FORMAT_LONG)
-  const createAddress = (address) => {
-    let streetAddress = ''
-    if (address.street1) {
-      streetAddress = address.street1 + '<br/>'
-    }
-    if (address.street2 && address.street2.trim().length > 0) {
-      streetAddress += address.street2 + '<br/>'
-    }
-    if (address.city) {
-      streetAddress += address.city + ', '
-    }
-    if (address.state) {
-      streetAddress += address.state
-    }
-    if (address.zip) {
-      streetAddress += '  ' + address.zip
-    }
-    if (address.street1 && address.city && address.state) {
-      streetAddress += `<br/><small><a href="https://maps.google.com/?q=${address.street1},${address.city},${address.state}" target="_maps">Open in Google Maps</a></small>`
-    }
-    return streetAddress
-  }
 
   return (
     <div>
@@ -60,9 +39,9 @@ const ContactModal = (props) => {
         </CardBody>
         {contact.addresses &&
         <CardBody>
-          { contact.addresses[1] && <CardTitle>Addresses</CardTitle>}
+          { contact.addresses[0] && <CardTitle>Addresses</CardTitle>}
           {contact.addresses.map((address, index) =>
-            <Markup key={`address${index}`} content={createAddress(address)} />
+            <Markup key={`address${index}`} content={createdFormattedAddress(address)} />
           )}
         </CardBody>
         }
