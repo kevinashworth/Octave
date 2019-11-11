@@ -383,18 +383,13 @@ export function getSortTitle (title) {
   return newTitle
 }
 
-export const externalizeNoteLinks = (s) => {
-  const sanitizeMarked = Utils.sanitize(marked(s))
-  const pattern = /a href=/g
-  const externalizeLinks = sanitizeMarked.replace(pattern, 'a target="_notes" href=')
-  return externalizeLinks
-}
-
 export const transform = (node, children) => {
   if (node.nodeName === 'A') {
     const href = node.getAttribute('href')
     if (href.indexOf('/') === 0) {
       return (<Link to={href}>{children}</Link>)
+    } else if (href.indexOf('http') === 0) {
+      return (<a href={href} target="notelinks">{children}</a>)
     }
   }
 }
