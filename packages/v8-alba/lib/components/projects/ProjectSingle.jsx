@@ -19,7 +19,7 @@ class ProjectSingle extends PureComponent {
     }
 
     var so = 'Season Info Missing'
-    if (project.renewed && project.status === 'On Hiatus') {
+    if (project.renewed && project.status === 'On Hiatus' || project.status === 'Ordered') {
       so = `Renewed for Season ${project.season}`
     } else if (project.status === 'On Hiatus' || project.status === 'Wrapped' || project.status === 'Canceled') {
       so = `Completed Season ${project.season}`
