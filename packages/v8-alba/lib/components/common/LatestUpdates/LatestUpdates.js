@@ -3,6 +3,7 @@ import React, { Component } from 'react'
 import { Link } from 'react-router-dom'
 import PropTypes from 'prop-types'
 import { Card, CardBody, CardFooter, CardHeader, Col, Row } from 'reactstrap'
+import Markup from 'interweave'
 import Contacts from '../../../modules/contacts/collection.js'
 import Offices from '../../../modules/offices/collection.js'
 import Projects from '../../../modules/projects/collection.js'
@@ -38,7 +39,7 @@ class LatestContactUpdates extends Component {
                   {contact.projects ? contact.projects.length + ' Projects' : null}
                 </CardBody>
                 <CardFooter>
-                  <small className='text-muted' dangerouslySetInnerHTML={{ __html: displayHtml }} />
+                  <small className='text-muted'><Markup content={displayHtml} /></small>
                 </CardFooter>
               </Card>
             </Col>
@@ -92,7 +93,7 @@ class LatestOfficeUpdates extends Component {
                   {office.projects ? office.projects.length + ' Projects' : null}
                 </CardBody>
                 <CardFooter>
-                  <small className='text-muted' dangerouslySetInnerHTML={{ __html: displayHtml }} />
+                  <small className='text-muted'><Markup content={displayHtml} /></small>
                 </CardFooter>
               </Card>
             </Col>
@@ -153,7 +154,7 @@ class LatestProjectUpdates extends Component {
                       : null }
                 </CardBody>
                 <CardFooter>
-                  <small className='text-muted' dangerouslySetInnerHTML={{ __html: displayHtml }} />
+                  <small className='text-muted'><Markup content={displayHtml} /></small>
                 </CardFooter>
               </Card>
             </Col>
