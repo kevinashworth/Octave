@@ -3,9 +3,13 @@ import React, { Fragment, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { Dropdown, DropdownItem, DropdownMenu, DropdownToggle, Input, Form, FormGroup } from 'reactstrap'
 import algoliasearch from 'algoliasearch/lite'
-import { connectHits, connectSearchBox, connectStateResults, InstantSearch } from 'react-instantsearch-dom'
+import { connectHits, connectPoweredBy, connectSearchBox, connectStateResults, InstantSearch } from 'react-instantsearch-dom'
 
 const searchClient = algoliasearch('14RUP1OK0B', '2cd70a6b9a01c10aeaee6f6f11105f46')
+
+const PoweredBy = ({ url }) => <a href={url} target='_blank' rel='noopener noreferrer'>Algolia</a>
+
+const CustomPoweredBy = connectPoweredBy(PoweredBy)
 
 const SearchBox = ({ currentRefinement, refine }) => (
   <Form noValidate action='' role='search' inline={true}>
@@ -15,7 +19,7 @@ const SearchBox = ({ currentRefinement, refine }) => (
         value={currentRefinement}
         onChange={event => refine(event.currentTarget.value)}
       />
-      </FormGroup>
+    </FormGroup>
   </Form>
 );
 
@@ -26,7 +30,7 @@ const Hits = ({ hits }) => {
     <Fragment>
       <DropdownToggle nav></DropdownToggle>
       <DropdownMenu>
-        <DropdownItem header>Search Results</DropdownItem>
+        <DropdownItem header>Search powered by <CustomPoweredBy /></DropdownItem>
         {hits.length === 0
           ? <DropdownItem>No search results</DropdownItem>
           : hits.map(hit => (
