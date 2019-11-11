@@ -1,7 +1,5 @@
-import { Utils } from 'meteor/vulcan:core'
 import React from 'react'
 import { Link } from 'react-router-dom'
-import marked from 'marked'
 import _ from 'lodash'
 import Contacts from './contacts/collection.js'
 import Offices from './offices/collection.js'
@@ -383,4 +381,15 @@ export function getSortTitle (title) {
       newTitle = theTitle
   }
   return newTitle
+}
+
+export const transform = (node, children) => {
+  if (node.nodeName === 'A') {
+    const href = node.getAttribute('href')
+    if (href.indexOf('/') === 0) {
+      return (<Link to={href}>{children}</Link>)
+    } else if (href.indexOf('http') === 0) {
+      return (<a href={href} target="notelinks">{children}</a>)
+    }
+  }
 }
