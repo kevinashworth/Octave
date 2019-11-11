@@ -87,8 +87,8 @@ const schema = {
   body: {
     type: String,
     canRead: ['members'],
-    canCreate: ['members'],
-    canUpdate: ['members'],
+    canCreate: ['admins'],
+    canUpdate: ['admins'],
     input: 'textarea',
     inputProperties: {
       placeholder: 'Add a comment…',
@@ -102,15 +102,20 @@ const schema = {
   htmlBody: {
     type: String,
     optional: true,
-    canRead: ['guests'],
+    hidden: true,
+    canRead: ['members'],
+    canCreate: ['admins'],
+    canUpdate: ['admins'],
     onCreate: ({ document }) => {
       if (document.body) {
         return Utils.sanitize(marked(document.body))
       }
     },
     onUpdate: ({ data }) => {
-      if (data.body) {
+      if (data.body && data.body.length) {
         return Utils.sanitize(marked(data.body))
+      } else {
+        return null
       }
     }
   },
