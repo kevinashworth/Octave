@@ -5,9 +5,10 @@ import PropTypes from 'prop-types'
 import { Link } from 'react-router-dom'
 import mapProps from 'recompose/mapProps'
 import { Button, Card, CardBody, CardFooter, CardHeader, CardLink, CardText, CardTitle, Col, Collapse, Row } from 'reactstrap'
+import Interweave from 'interweave'
 import moment from 'moment'
 import { DATE_FORMAT_LONG, DATE_FORMAT_SHORT } from '../../modules/constants.js'
-import { dangerouslyCreateAddress, isEmptyValue } from '../../modules/helpers.js'
+import { createdFormattedAddress, isEmptyValue, transform } from '../../modules/helpers.js'
 import Contacts from '../../modules/contacts/collection.js'
 
 class ContactsSingle extends PureComponent {
@@ -22,11 +23,11 @@ class ContactsSingle extends PureComponent {
   }
 
   render () {
-    const { currentUser, document, loading } = this.props
-    if (loading) {
-      return <div className='page contacts-profile'><Components.Loading /></div>
+    const { currentUser, document, networkStatus } = this.props
+    if (networkStatus !== 8 && networkStatus !== 7) {
+      return <Components.Loading />
     } else if (!document) {
-      return <div className='page contacts-profile'><FormattedMessage id='app.404' /></div>
+      return <FormattedMessage id='app.404' />
     } else {
       const contact = document
       const displayDate =
@@ -49,7 +50,7 @@ class ContactsSingle extends PureComponent {
                 { contact.gender && <div>{contact.gender}</div> }
                 <hr />
                 {contact.htmlBody
-                  ? <div dangerouslySetInnerHTML={{ __html: contact.htmlBody }} />
+                  ? <Interweave content={contact.htmlBody} transform={transform} />
                   : <div>{ contact.body }</div>
                 }
               </CardText>
@@ -68,7 +69,7 @@ class ContactsSingle extends PureComponent {
                 <CardBody>
                   {contact.addresses[0] && <CardTitle>Addresses</CardTitle>}
                   {contact.addresses.map((address, index) =>
-                    <CardText key={`address${index}`} dangerouslySetInnerHTML={dangerouslyCreateAddress(address)} />
+                    <Interweave key={`address${index}`} content={createdFormattedAddress(address)} />
                   )}
                 </CardBody>
                 }

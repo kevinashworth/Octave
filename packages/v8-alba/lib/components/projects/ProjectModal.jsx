@@ -3,6 +3,7 @@ import { FormattedMessage } from 'meteor/vulcan:i18n'
 import React, { PureComponent } from 'react'
 import PropTypes from 'prop-types'
 import { Card, CardBody, CardFooter, CardLink, CardText, CardTitle } from 'reactstrap'
+import Markup from 'interweave'
 import moment from 'moment'
 import { DATE_FORMAT_LONG, DATE_FORMAT_SHORT } from '../../modules/constants.js'
 
@@ -32,11 +33,11 @@ class ProjectModal extends PureComponent {
             } &bull; { project.union }</CardTitle>
             <CardText>{ project.status }</CardText>
             {project.htmlSummary
-              ? <CardText className='mb-1' dangerouslySetInnerHTML={{ __html: project.htmlSummary }} />
+              ? <Markup content={project.htmlSummary} />
               : <CardText className='mb-1'>{ project.summary }</CardText>
             }<hr />
             {project.htmlNotes
-              ? <CardText className='mb-1' dangerouslySetInnerHTML={{ __html: project.htmlNotes }} />
+              ? <Markup content={project.htmlNotes} />
               : <CardText className='mb-1'>{ project.notes }</CardText>
             }
             <hr />

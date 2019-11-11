@@ -3,7 +3,7 @@ import SimpleSchema from 'simpl-schema'
 import marked from 'marked'
 import { addressSubSchema, linkSubSchema } from '../shared_schemas.js'
 import { PROJECT_TYPES_ENUM, PROJECT_STATUSES_ENUM } from '../constants.js'
-import { externalizeNoteLinks, getFullAddress, getPlatformType } from '../helpers.js'
+import { getFullAddress, getPlatformType } from '../helpers.js'
 
 const addressGroup = {
   name: 'addresses',
@@ -221,12 +221,12 @@ const schema = {
     editableBy: ['admins'],
     onCreate: ({ document }) => {
       if (document.notes) {
-        return externalizeNoteLinks('**NOTES:** ' + document.notes)
+        return Utils.sanitize(marked('**NOTES:** ' + document.notes))
       }
     },
     onUpdate: ({ data }) => {
       if (data.notes && data.notes.length) {
-        return externalizeNoteLinks('**NOTES:** ' + data.notes)
+        return Utils.sanitize(marked('**NOTES:** ' + data.notes))
       } else {
         return null
       }

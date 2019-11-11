@@ -3,45 +3,20 @@ import { FormattedMessage } from 'meteor/vulcan:i18n'
 import React, { PureComponent } from 'react'
 import { Link } from 'react-router-dom'
 import { Card, CardBody, CardFooter, CardHeader, CardText, CardTitle, Collapse } from 'reactstrap'
+import Markup from 'interweave'
 import Contacts from '../../modules/contacts/collection.js'
 import moment from 'moment'
 import { DATE_FORMAT_SHORT } from '../../modules/constants.js'
-import { isEmptyValue } from '../../modules/helpers.js'
+import { createdFormattedAddress, isEmptyValue } from '../../modules/helpers.js'
 
 const ContactForMobile = (props) => {
-  if (props.loading) {
-    return (<div><Components.Loading /></div>)
-  }
-
   if (!props.document) {
-    return (<div><FormattedMessage id='app.404' /></div>)
+    return <FormattedMessage id='app.missing_document' />
   }
 
   const contact = props.document
   const displayDate =
       'Last modified ' + moment(contact.updatedAt).format(DATE_FORMAT_SHORT)
-  const createAddress = (address) => {
-    let streetAddress = ''
-    if (address.street1) {
-      streetAddress = address.street1 + '<br/>'
-    }
-    if (address.street2 && address.street2.trim().length > 0) {
-      streetAddress += address.street2 + '<br/>'
-    }
-    if (address.city) {
-      streetAddress += address.city + ', '
-    }
-    if (address.state) {
-      streetAddress += address.state
-    }
-    if (address.zip) {
-      streetAddress += '  ' + address.zip
-    }
-    if (address.street1 && address.city && address.state) {
-      streetAddress += `<br/><small><a href="https://maps.google.com/?q=${address.street1},${address.city},${address.state}" target="_maps">Open in Google Maps</a></small>`
-    }
-    return { __html: streetAddress }
-  }
 
   return (
     <div>
@@ -55,7 +30,7 @@ const ContactForMobile = (props) => {
               : null
             }
             {contact.htmlBody
-              ? <div dangerouslySetInnerHTML={{ __html: contact.htmlBody }} />
+              ? <Markup content={contact.htmlBody } />
               : <div>{ contact.body }</div>
             }
           </CardText>
@@ -64,15 +39,15 @@ const ContactForMobile = (props) => {
         <CardBody>
           {contact.addresses[1] && <CardTitle>Addresses</CardTitle>}
           {contact.addresses.map((address, index) =>
-            <CardText key={`address${index}`} dangerouslySetInnerHTML={createAddress(address)} />
+            <Markup key={`address${index}`} content={createdFormattedAddress(address)} />
           )}
         </CardBody>
         }
         {contact.projects &&
         <CardBody>
           <CardTitle>Projects</CardTitle>
-          {contact.projects.map(project =>
-            <CardText key={project.projectId}>
+          {contact.projects.map((project, index) =>
+            <CardText key={`${project.projectId}-${index}`}>
               <b><Link to={`/projects/${project.projectId}`}>{project.projectTitle}</Link></b>
               {project.titleForProject && ` (${project.titleForProject})`}
             </CardText>
@@ -102,32 +77,32 @@ class ContactsList extends PureComponent {
   }
 
   render () {
-    const { loading, results = [] } = this.props
-    if (loading) {
+    const { networkStatus, results = [] } = this.props
+    if (networkStatus !== 8 && networkStatus !== 7) {
       return <Components.Loading />
-    } else {
-      return (
-        <div className='animated fadeIn'>
-          <Card>
-            <CardHeader>
-              <i className='icon-people' />Contacts for Mobile
-            </CardHeader>
-            <CardBody>
-              {results.map((contact, index) =>
-                <Card key={index}>
-                  <CardHeader onClick={this.toggle} data-event={index}>{contact.displayName}</CardHeader>
-                  <Collapse isOpen={this.state.isOpen === index}>
-                    <CardBody>
-                      <ContactForMobile document={contact} />
-                    </CardBody>
-                  </Collapse>
-                </Card>
-              )}
-            </CardBody>
-          </Card>
-        </div>
-      )
     }
+
+    return (
+      <div className='animated fadeIn'>
+        <Card>
+          <CardHeader>
+            <i className='icon-people' />Contacts for Mobile
+          </CardHeader>
+          <CardBody>
+            {results.map((contact, index) =>
+              <Card key={index}>
+                <CardHeader onClick={this.toggle} data-event={index}>{contact.displayName}</CardHeader>
+                <Collapse isOpen={this.state.isOpen === index}>
+                  <CardBody>
+                    <ContactForMobile document={contact} />
+                  </CardBody>
+                </Collapse>
+              </Card>
+            )}
+          </CardBody>
+        </Card>
+      </div>
+    )
   }
 }
 
