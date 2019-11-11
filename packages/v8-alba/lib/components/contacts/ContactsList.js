@@ -9,12 +9,8 @@ import { DATE_FORMAT_SHORT } from '../../modules/constants.js'
 import { isEmptyValue } from '../../modules/helpers.js'
 
 const ContactForMobile = (props) => {
-  if (props.loading) {
-    return (<div><Components.Loading /></div>)
-  }
-
   if (!props.document) {
-    return (<div><FormattedMessage id='app.404' /></div>)
+    return <FormattedMessage id='app.missing_document' />
   }
 
   const contact = props.document
@@ -105,29 +101,29 @@ class ContactsList extends PureComponent {
     const { networkStatus, results = [] } = this.props
     if (networkStatus !== 8 && networkStatus !== 7) {
       return <Components.Loading />
-    } else {
-      return (
-        <div className='animated fadeIn'>
-          <Card>
-            <CardHeader>
-              <i className='icon-people' />Contacts for Mobile
-            </CardHeader>
-            <CardBody>
-              {results.map((contact, index) =>
-                <Card key={index}>
-                  <CardHeader onClick={this.toggle} data-event={index}>{contact.displayName}</CardHeader>
-                  <Collapse isOpen={this.state.isOpen === index}>
-                    <CardBody>
-                      <ContactForMobile document={contact} />
-                    </CardBody>
-                  </Collapse>
-                </Card>
-              )}
-            </CardBody>
-          </Card>
-        </div>
-      )
     }
+
+    return (
+      <div className='animated fadeIn'>
+        <Card>
+          <CardHeader>
+            <i className='icon-people' />Contacts for Mobile
+          </CardHeader>
+          <CardBody>
+            {results.map((contact, index) =>
+              <Card key={index}>
+                <CardHeader onClick={this.toggle} data-event={index}>{contact.displayName}</CardHeader>
+                <Collapse isOpen={this.state.isOpen === index}>
+                  <CardBody>
+                    <ContactForMobile document={contact} />
+                  </CardBody>
+                </Collapse>
+              </Card>
+            )}
+          </CardBody>
+        </Card>
+      </div>
+    )
   }
 }
 
