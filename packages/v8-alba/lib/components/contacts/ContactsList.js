@@ -71,8 +71,8 @@ const ContactForMobile = (props) => {
         {contact.projects &&
         <CardBody>
           <CardTitle>Projects</CardTitle>
-          {contact.projects.map(project =>
-            <CardText key={project.projectId}>
+          {contact.projects.map((project, index) =>
+            <CardText key={`${project.projectId}-${index}`}>
               <b><Link to={`/projects/${project.projectId}`}>{project.projectTitle}</Link></b>
               {project.titleForProject && ` (${project.titleForProject})`}
             </CardText>
