@@ -380,10 +380,3 @@ export function getSortTitle (title) {
   }
   return newTitle
 }
-
-export const externalizeNoteLinks = (s) => {
-  const sanitizeMarked = Utils.sanitize(marked(s))
-  const pattern = /a href=/g
-  const externalizeLinks = sanitizeMarked.replace(pattern, 'a target="_notes" href=')
-  return externalizeLinks
-}
