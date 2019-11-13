@@ -1,6 +1,6 @@
 Package.describe({
   name: 'v8-alba',
-  version: '1.4.0'
+  version: '1.14.0'
 });
 
 Package.onUse(function (api) {
