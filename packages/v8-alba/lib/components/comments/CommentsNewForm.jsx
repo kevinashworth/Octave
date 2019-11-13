@@ -1,4 +1,5 @@
-import { Components, registerComponent, getFragment, withMessages } from 'meteor/vulcan:core'
+import { Components, registerComponent, getFragment, withCurrentUser, withMessages } from 'meteor/vulcan:core'
+import Users from 'meteor/vulcan:users'
 import React from 'react'
 import PropTypes from 'prop-types'
 import { Comments } from '../../modules/comments/index.js'
@@ -20,7 +21,7 @@ const CommentsNewForm = (props, context) => {
 
   return (
     <Components.ShowIf
-      check={Comments.options.mutations.new.check}
+      check={() => Users.canDo(props.currentUser, 'comments.new')}
       failureComponent={<FormattedMessage id='users.cannot_comment' />}
     >
       <div className='comments-new-form'>
@@ -52,5 +53,5 @@ CommentsNewForm.propTypes = {
 registerComponent({
   name: 'CommentsNewForm',
   component: CommentsNewForm,
-  hocs: [withMessages]
+  hocs: [withCurrentUser, withMessages]
 })

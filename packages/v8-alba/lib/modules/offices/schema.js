@@ -49,9 +49,7 @@ const contactSchema = new SimpleSchema({
     type: String,
     control: 'SelectContactIdNameTitle',
     optional: true,
-    viewableBy: ['members'],
-    insertableBy: ['admins'],
-    editableBy: ['admins'],
+    canRead: ['members'],
     options: props => props.data.contacts.results.map(contact => ({
       value: contact._id,
       label: contact.fullName
@@ -61,17 +59,13 @@ const contactSchema = new SimpleSchema({
     type: String,
     optional: true,
     hidden: true,
-    viewableBy: ['members'],
-    insertableBy: ['admins'],
-    editableBy: ['admins']
+    canRead: ['members']
   },
   contactTitle: {
     type: String,
     optional: true,
     hidden: true,
-    viewableBy: ['members'],
-    insertableBy: ['admins'],
-    editableBy: ['admins']
+    canRead: ['members']
   }
 })
 
@@ -85,8 +79,6 @@ const projectSubSchema = new SimpleSchema({
     },
     optional: true,
     canRead: ['members'],
-    canCreate: ['members'],
-    canUpdate: ['members'],
     options: props => props.data.projects.results.map(project => ({
       value: project._id,
       label: project.projectTitle
@@ -110,8 +102,6 @@ const pastProjectSubSchema = new SimpleSchema({
     },
     optional: true,
     canRead: ['members'],
-    canCreate: ['members'],
-    canUpdate: ['members'],
     options: props => props.data.pastProjects.results.map(project => ({
       value: project._id,
       label: project.projectTitle
@@ -131,12 +121,12 @@ const schema = {
   _id: {
     type: String,
     optional: true,
-    viewableBy: ['guests']
+    canRead: ['guests']
   },
   createdAt: {
     type: Date,
     optional: true,
-    viewableBy: ['members'],
+    canRead: ['guests'],
     onInsert: () => {
       return new Date()
     }
@@ -144,7 +134,7 @@ const schema = {
   userId: {
     type: String,
     optional: true,
-    viewableBy: ['members']
+    canRead: ['members']
   },
 
   // custom properties
@@ -153,9 +143,7 @@ const schema = {
     label: 'Display Name',
     type: String,
     optional: true,
-    viewableBy: ['guests'],
-    insertableBy: ['admins'],
-    editableBy: ['admins']
+    canRead: ['guests']
   },
   // Body (Markdown)
   body: {
@@ -163,18 +151,14 @@ const schema = {
     type: String,
     optional: true,
     control: 'textarea', // use a textarea form component
-    viewableBy: ['members', 'admins'],
-    insertableBy: ['members'],
-    editableBy: ['members']
+    canRead: ['members']
   },
   // HTML version of Body
   htmlBody: {
     type: String,
     optional: true,
     hidden: true,
-    viewableBy: ['members'],
-    insertableBy: ['members'],
-    editableBy: ['members'],
+    canRead: ['members'],
     onInsert: (o) => {
       if (o.body) {
         return Utils.sanitize(marked(o.body))
@@ -190,10 +174,9 @@ const schema = {
     label: 'Links',
     type: Array,
     optional: true,
-    viewableBy: ['members'],
-    insertableBy: ['admins'],
-    editableBy: ['admins'],
-    group: linkGroup
+    canRead: ['members'],
+    group: linkGroup,
+    blackbox: true
   },
   'links.$': {
     type: linkSubSchema
@@ -201,10 +184,9 @@ const schema = {
   addresses: {
     type: Array,
     optional: true,
-    viewableBy: ['members'],
-    insertableBy: ['members'],
-    editableBy: ['members'],
-    group: addressGroup
+    canRead: ['members'],
+    group: addressGroup,
+    blackbox: true
   },
   'addresses.$': {
     type: addressSubSchema
@@ -227,7 +209,7 @@ const schema = {
   slug: {
     type: String,
     optional: true,
-    viewableBy: ['members'],
+    canRead: ['members'],
     onInsert: (o) => {
       return Utils.slugify(o.displayName)
     },
@@ -240,7 +222,7 @@ const schema = {
   updatedAt: {
     type: Date,
     optional: true,
-    viewableBy: ['guests'],
+    canRead: ['guests'],
     onInsert: () => {
       return new Date()
     },
@@ -254,8 +236,6 @@ const schema = {
     type: Array,
     optional: true,
     canRead: ['members'],
-    canCreate: ['members'],
-    canUpdate: ['members'],
     query: `
       projects{
         results{
@@ -295,9 +275,7 @@ const schema = {
     label: 'Past Projects',
     type: Array,
     optional: true,
-    viewableBy: ['members'],
-    insertableBy: ['members'],
-    editableBy: ['members'],
+    canRead: ['members'],
     query: `
       pastProjects{
         results{
@@ -317,9 +295,7 @@ const schema = {
     label: 'Contacts',
     type: Array,
     optional: true,
-    viewableBy: ['members'],
-    insertableBy: ['admins'],
-    editableBy: ['admins'],
+    canRead: ['members'],
     query: `
       contacts{
         results{
@@ -433,7 +409,7 @@ const schema = {
     label: 'Address',
     type: String,
     optional: true,
-    viewableBy: ['members'],
+    canRead: ['members'],
     resolveAs: {
       type: 'String',
       resolver: (o) => {
@@ -448,7 +424,7 @@ const schema = {
     label: 'Address',
     type: String,
     optional: true,
-    viewableBy: ['members'],
+    canRead: ['members'],
     resolveAs: {
       type: 'String',
       resolver: (o) => {
@@ -470,7 +446,7 @@ const schema = {
     label: '(cont)',
     type: String,
     optional: true,
-    viewableBy: ['members'],
+    canRead: ['members'],
     resolveAs: {
       type: 'String',
       resolver: (o) => {
@@ -492,7 +468,7 @@ const schema = {
     label: 'City',
     type: String,
     optional: true,
-    viewableBy: ['members'],
+    canRead: ['members'],
     resolveAs: {
       type: 'String',
       resolver: (o) => {
@@ -514,7 +490,7 @@ const schema = {
     label: 'State',
     type: String,
     optional: true,
-    viewableBy: ['members'],
+    canRead: ['members'],
     resolveAs: {
       type: 'String',
       resolver: (o) => {
@@ -536,7 +512,7 @@ const schema = {
     label: 'Location',
     type: String,
     optional: true,
-    viewableBy: 'guests',
+    canRead: 'guests',
     resolveAs: {
       type: 'String',
       resolver: (o) => { // have to repeat theState code, not available on its own
@@ -565,7 +541,7 @@ const schema = {
     label: 'Zip',
     type: String,
     optional: true,
-    viewableBy: ['members'],
+    canRead: ['members'],
     resolveAs: {
       type: 'String',
       resolver: (o) => {
