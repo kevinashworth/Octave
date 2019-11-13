@@ -16,3 +16,10 @@ Projects.addView('collectionWithStatus', terms => ({
 Projects.addView('projectsByTitle', terms => ({
   options: { sort: { sortTitle: 1 } }
 }))
+
+Projects.addView('newestProjectsCasting', terms => ({
+  selector: {
+    status: 'Casting'
+  },
+  options: { sort: { createdAt: -1 }}
+}))

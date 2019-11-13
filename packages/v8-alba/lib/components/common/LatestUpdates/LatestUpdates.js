@@ -169,16 +169,29 @@ LatestProjectUpdates.propTypes = {
   results: PropTypes.array
 }
 
-const projectsOptions = {
+const projectsOptions1 = {
+  collection: Projects,
+  fragmentName: 'ProjectsSingleFragment',
+  limit: 6,
+  terms: { view: 'newestProjectsCasting' }
+}
+
+const projectsOptions2 = {
   collection: Projects,
   fragmentName: 'ProjectsSingleFragment',
   limit: 12
 }
 
 registerComponent({
-  name: 'LatestProjectUpdates',
+  name: 'LatestProjectUpdates1',
   component: LatestProjectUpdates,
-  hocs: [[withMulti, projectsOptions]]
+  hocs: [[withMulti, projectsOptions1]]
+})
+
+registerComponent({
+  name: 'LatestProjectUpdates2',
+  component: LatestProjectUpdates,
+  hocs: [[withMulti, projectsOptions2]]
 })
 
 class LatestPastProjectUpdates extends Component {
@@ -239,9 +252,10 @@ class LatestUpdates extends Component {
     return (
       <div className='animated fadeIn'>
         <Components.HeadTags title='V8 Alba: Latest Updates' />
+        <Components.LatestProjectUpdates1 />
         <Components.LatestContactUpdates />
         <Components.LatestOfficeUpdates />
-        <Components.LatestProjectUpdates />
+        <Components.LatestProjectUpdates2 />
         <Components.LatestPastProjectUpdates />
       </div>
     )
