@@ -2,11 +2,17 @@ import { createCollection, getDefaultResolvers, getDefaultMutations } from 'mete
 import schema from './schema.js'
 
 const Contacts = createCollection({
-  collectionName: 'Contacts',
   typeName: 'Contact',
+  collectionName: 'Contacts',
   schema,
   resolvers: getDefaultResolvers('Contacts'),
-  mutations: getDefaultMutations('Contacts')
+  mutations: getDefaultMutations('Contacts'),
+  permissions: {
+    canCreate: ['members'],
+    canRead: ['guests'],
+    canUpdate: ['owners', 'admins'],
+    canDelete: ['owners', 'admins'],
+  }
 })
 
 export default Contacts

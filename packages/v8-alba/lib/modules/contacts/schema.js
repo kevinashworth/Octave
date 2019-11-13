@@ -62,8 +62,6 @@ const projectSubSchema = new SimpleSchema({
     control: 'SelectProjectIdNameTitle',
     optional: true,
     canRead: ['members'],
-    canCreate: ['members'],
-    canUpdate: ['members'],
     options: props => props.data.projects.results.map(project => ({
       value: project._id,
       label: project.projectTitle
@@ -73,17 +71,13 @@ const projectSubSchema = new SimpleSchema({
     type: String,
     optional: true,
     hidden: true,
-    canRead: ['members'],
-    canCreate: ['members'],
-    canUpdate: ['members']
+    canRead: ['members']
   },
   titleForProject: {
     type: String,
     optional: true,
     hidden: true,
-    canRead: ['members'],
-    canCreate: ['members'],
-    canUpdate: ['members']
+    canRead: ['members']
   }
 })
 
@@ -93,8 +87,6 @@ const pastProjectSubSchema = new SimpleSchema({
     control: 'SelectPastProjectIdNameTitle',
     optional: true,
     canRead: ['members'],
-    canCreate: ['members'],
-    canUpdate: ['members'],
     options: props => props.data.pastProjects.results.map(project => ({
       value: project._id,
       label: project.projectTitle
@@ -104,17 +96,13 @@ const pastProjectSubSchema = new SimpleSchema({
     type: String,
     optional: true,
     hidden: true,
-    canRead: ['members'],
-    canCreate: ['members'],
-    canUpdate: ['members']
+    canRead: ['members']
   },
   titleForProject: {
     type: String,
     optional: true,
     hidden: true,
-    canRead: ['members'],
-    canCreate: ['members'],
-    canUpdate: ['members']
+    canRead: ['members']
   }
 })
 
@@ -128,8 +116,6 @@ const officeSubSchema = new SimpleSchema({
     },
     optional: true,
     canRead: ['members'],
-    canCreate: ['members'],
-    canUpdate: ['members'],
     options: props => props.data.offices.results.map(o => ({
       value: o._id,
       label: o.displayName
@@ -143,13 +129,13 @@ const schema = {
   _id: {
     type: String,
     optional: true,
-    canRead: 'guests'
+    canRead: ['guests']
   },
   createdAt: {
     type: Date,
     optional: true,
-    canRead: 'guests',
-    onInsert: () => {
+    canRead: ['guests'],
+    onCreate: () => {
       return new Date()
     }
   },
@@ -165,32 +151,24 @@ const schema = {
     label: 'First',
     type: String,
     optional: true,
-    canRead: ['members'],
-    canCreate: ['members'],
-    canUpdate: ['members']
+    canRead: ['guests']
   },
   middleName: {
     label: 'Middle',
     type: String,
     optional: true,
-    canRead: ['members'],
-    canCreate: ['members'],
-    canUpdate: ['members']
+    canRead: ['guests']
   },
   lastName: {
     label: 'Last',
     type: String,
     optional: true,
-    canRead: ['members'],
-    canCreate: ['members'],
-    canUpdate: ['members']
+    canRead: ['guests']
   },
   displayName: {
     type: String,
     optional: true,
-    canRead: ['members'],
-    canCreate: ['members'],
-    canUpdate: ['members'],
+    canRead: ['guests'],
     onCreate: ({ document: contact }) => getFullNameFromContact(contact),
     onUpdate: ({ data, document: contact }) => {
       if (data.displayName) {
@@ -204,24 +182,18 @@ const schema = {
     }
   },
   title: {
-    label: 'Title',
     type: String,
     optional: true,
     input: 'select',
     options: () => {
       return CASTING_TITLES_ENUM
     },
-    canRead: ['members'],
-    canCreate: ['members'],
-    canUpdate: ['members']
+    canRead: ['members']
   },
   gender: {
-    label: 'Gender',
     type: String,
     optional: true,
-    canRead: ['members'],
-    canCreate: ['members'],
-    canUpdate: ['members']
+    canRead: ['members']
   },
   // Body (Markdown)
   body: {
@@ -229,9 +201,7 @@ const schema = {
     type: String,
     optional: true,
     control: 'textarea',
-    canRead: ['members'],
-    canCreate: ['members'],
-    canUpdate: ['members']
+    canRead: ['members']
   },
   // HTML version of Body
   htmlBody: {
@@ -239,8 +209,6 @@ const schema = {
     optional: true,
     hidden: true,
     canRead: ['members'],
-    canCreate: ['members'],
-    canUpdate: ['members'],
     onCreate: ({ document: contact }) => getHtmlBody(contact),
     onUpdate: ({ data: contact }) => getHtmlBody(contact)
   },
@@ -249,8 +217,6 @@ const schema = {
     type: Array,
     optional: true,
     canRead: ['members'],
-    canCreate: ['members'],
-    canUpdate: ['members'],
     group: linkGroup
   },
   'links.$': {
@@ -276,8 +242,6 @@ const schema = {
     type: Array,
     optional: true,
     canRead: ['members'],
-    canCreate: ['members'],
-    canUpdate: ['members'],
     group: addressGroup
   },
   'addresses.$': {
@@ -304,8 +268,6 @@ const schema = {
     optional: true,
     hidden: true,
     canRead: ['members'],
-    canCreate: ['members'],
-    canUpdate: ['members'],
     onCreate: ({ document: contact }) => getAddressString(contact),
     onUpdate: ({ data: contact }) => getAddressString(contact)
   },
@@ -330,9 +292,7 @@ const schema = {
   slug: {
     type: String,
     optional: true,
-    canRead: 'guests',
-    canCreate: ['members'],
-    canUpdate: ['members'],
+    canRead: ['members'],
     onCreate: ({ document: contact }) => {
       return Utils.slugify(getFullNameFromContact(contact))
     },
@@ -350,11 +310,11 @@ const schema = {
   updatedAt: {
     type: Date,
     optional: true,
-    canRead: 'guests',
-    onInsert: () => {
+    canRead: ['guests'],
+    onCreate: () => {
       return new Date()
     },
-    onEdit: () => {
+    onUpdate: () => {
       return new Date()
     }
   },
@@ -365,8 +325,6 @@ const schema = {
     type: Array,
     optional: true,
     canRead: ['members'],
-    canCreate: ['members'],
-    canUpdate: ['members'],
     query: `
       offices{
         results{
@@ -387,8 +345,6 @@ const schema = {
     type: Array,
     optional: true,
     canRead: ['members'],
-    canCreate: ['members'],
-    canUpdate: ['members'],
     query: `
       projects{
         results{
@@ -409,8 +365,6 @@ const schema = {
     type: Array,
     optional: true,
     canRead: ['members'],
-    canCreate: ['members'],
-    canUpdate: ['members'],
     query: `
       pastProjects{
         results{
@@ -431,7 +385,7 @@ const schema = {
     label: 'Full Name',
     type: String,
     optional: true,
-    canRead: 'guests',
+    canRead: ['members'],
     resolveAs: {
       type: 'String',
       resolver: (o) => getFullNameFromContact(o)
