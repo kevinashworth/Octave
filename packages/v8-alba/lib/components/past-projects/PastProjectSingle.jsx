@@ -1,4 +1,5 @@
-import { Components, registerComponent, withCurrentUser, withDocument } from 'meteor/vulcan:core'
+import { Components, registerComponent, withCurrentUser, withSingle } from 'meteor/vulcan:core'
+import Users from 'meteor/vulcan:users'
 import { FormattedMessage } from 'meteor/vulcan:i18n'
 import React, { PureComponent } from 'react'
 import { Link } from 'react-router-dom'
@@ -37,15 +38,14 @@ class PastProjectSingle extends PureComponent {
   }
 
   render () {
-    if (this.props.loading) {
-      return (<div><Components.Loading /></div>)
+    const { currentUser, document, networkStatus } = this.props
+    if (networkStatus !== 8 && networkStatus !== 7) {
+      return <Components.Loading />
     }
-
-    if (!this.props.document) {
-      return (<div><FormattedMessage id='app.404' /></div>)
+    if (!document) {
+      return <FormattedMessage id='app.404' />
     }
-
-    const project = this.props.document
+    const project = document
     const seasonorder = this.seasonorder(project)
     const displayDate =
       'Project first added to database ' + moment(project.createdAt).format(DATE_FORMAT_SHORT) + ' / ' +
@@ -55,7 +55,7 @@ class PastProjectSingle extends PureComponent {
       <div className='animated fadeIn'>
         <Components.HeadTags title={`V8 Alba: ${project.projectTitle}`} />
         <Card className='card-accent-secondary'>
-          <CardHeader tag='h2'>{ project.projectTitle }{ PastProjects.options.mutations.edit.check(this.props.currentUser, project)
+          <CardHeader tag='h2'>{ project.projectTitle }{ Users.canUpdate({ collection: PastProjects, user: currentUser, document })
             ? <div className='float-right'>
               <Button tag={Link} to={`/past-projects/${project._id}/edit`}>Edit</Button>
             </div> : null}
@@ -146,4 +146,11 @@ const options = {
 
 const mapPropsFunction = props => ({ ...props, documentId: props.match && props.match.params._id, slug: props.match && props.match.params.slug })
 
-registerComponent('PastProjectSingle', PastProjectSingle, withCurrentUser, mapProps(mapPropsFunction), [withDocument, options])
+registerComponent({
+  name: 'PastProjectSingle',
+  component: PastProjectSingle,
+  hocs: [
+    withCurrentUser,
+    mapProps(mapPropsFunction), [withSingle, options] // mapProps must precede withSingle
+  ]
+})

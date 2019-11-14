@@ -28,9 +28,7 @@ const contactSchema = new SimpleSchema({
     type: String,
     control: 'SelectContactIdNameTitle',
     optional: true,
-    viewableBy: ['members'],
-    insertableBy: ['admins'],
-    editableBy: ['admins'],
+    canRead: ['members'],
     options: props => props.data.contacts.results.map(contact => ({
       value: contact._id,
       label: contact.fullName
@@ -40,17 +38,13 @@ const contactSchema = new SimpleSchema({
     type: String,
     optional: true,
     hidden: true,
-    viewableBy: ['members'],
-    insertableBy: ['admins'],
-    editableBy: ['admins']
+    canRead: ['members']
   },
   contactTitle: {
     type: String,
     optional: true,
     hidden: true,
-    viewableBy: ['members'],
-    insertableBy: ['admins'],
-    editableBy: ['admins']
+    canRead: ['members']
   }
 })
 
@@ -60,12 +54,12 @@ const schema = {
   _id: {
     type: String,
     optional: true,
-    canRead: 'guests'
+    canRead: ['guests']
   },
   createdAt: {
     type: Date,
     optional: true,
-    canRead: 'guests',
+    canRead: ['guests'],
     onInsert: (o) => {
       if (!o.createdAt) { // keep createdAt from a project being made a past-project
         return new Date()
@@ -75,7 +69,7 @@ const schema = {
   userId: {
     type: String,
     optional: true,
-    viewableBy: ['members']
+    canRead: ['members']
   },
 
   // custom properties
@@ -83,11 +77,11 @@ const schema = {
   updatedAt: {
     type: Date,
     optional: true,
-    canRead: 'guests',
-    onInsert: () => {
+    canRead: ['guests'],
+    onCreate: () => {
       return new Date()
     },
-    onEdit: () => {
+    onUpdate: () => {
       return new Date()
     }
   },
@@ -95,9 +89,7 @@ const schema = {
     label: 'Title',
     type: String,
     optional: true,
-    canRead: 'guests',
-    insertableBy: ['admins'],
-    editableBy: ['admins']
+    canRead: ['guests']
   },
   projectType: {
     label: 'Type',
@@ -107,16 +99,13 @@ const schema = {
     options: () => {
       return PROJECT_TYPES_ENUM
     },
-    canRead: 'guests',
-    insertableBy: ['admins'],
-    editableBy: ['admins']
+    canRead: ['guests']
   },
   platformType: {
-    label: 'Platform Type',
     type: String,
     optional: true,
     hidden: true,
-    canRead: 'guests',
+    canRead: ['guests'],
     onCreate: ({ document, currentUser }) => {
       return getPlatformType(document)
     },
@@ -125,21 +114,16 @@ const schema = {
     }
   },
   union: {
-    label: 'Union',
     type: String,
     optional: true,
     defaultValue: 'SAG-AFTRA',
-    canRead: 'guests',
-    insertableBy: ['admins'],
-    editableBy: ['admins']
+    canRead: ['guests']
   },
   network: {
     label: 'Network',
     type: String,
     optional: true,
-    canRead: 'guests',
-    insertableBy: ['admins'],
-    editableBy: ['admins']
+    canRead: ['guests']
   },
   status: {
     label: 'Status',
@@ -149,36 +133,27 @@ const schema = {
     options: () => {
       return PROJECT_STATUSES_ENUM
     },
-    canRead: 'guests',
-    insertableBy: ['admins'],
-    editableBy: ['admins']
+    canRead: ['members']
   },
   renewed: {
     label: 'On Hiatus but Renewed',
     type: Boolean,
     optional: true,
-    canRead: 'guests',
-    insertableBy: ['admins'],
-    editableBy: ['admins']
+    canRead: ['members']
   },
   // Summary (Markdown)
   summary: {
-    label: 'Summary',
     type: String,
     optional: true,
     control: 'textarea', // use a textarea form component
-    canRead: 'guests',
-    insertableBy: ['admins'],
-    editableBy: ['admins']
+    canRead: ['members']
   },
   // HTML version of Summary
   htmlSummary: {
     type: String,
     optional: true,
     hidden: true,
-    viewableBy: ['members'],
-    insertableBy: ['admins'],
-    editableBy: ['admins'],
+    canRead: ['members'],
     onInsert: (project) => {
       if (project.summary) {
         return Utils.sanitize(marked('**SUMMARY:** ' + project.summary))
@@ -194,19 +169,14 @@ const schema = {
     label: 'Official Site',
     type: String,
     optional: true,
-    canRead: 'guests',
-    insertableBy: ['admins'],
-    editableBy: ['admins']
+    canRead: ['members']
   },
   // Notes (Markdown)
   notes: {
-    label: 'Notes',
     type: String,
     optional: true,
-    control: 'textarea', // use a textarea form component
+    control: 'textarea',
     canRead: ['members'],
-    canCreate: ['admins'],
-    canUpdate: ['admins'],
     inputProperties: {
       rows: 4
     }
@@ -216,9 +186,7 @@ const schema = {
     type: String,
     optional: true,
     hidden: true,
-    viewableBy: ['members'],
-    insertableBy: ['admins'],
-    editableBy: ['admins'],
+    canRead: ['members'],
     onCreate: ({ document }) => {
       if (document.notes) {
         return Utils.sanitize(marked('**NOTES:** ' + document.notes))
@@ -233,20 +201,14 @@ const schema = {
     }
   },
   season: {
-    label: 'Season',
     type: String,
     optional: true,
-    viewableBy: ['members'],
-    insertableBy: ['admins'],
-    editableBy: ['admins']
+    canRead: ['members']
   },
   order: {
-    label: 'Order',
     type: String,
     optional: true,
-    viewableBy: ['members'],
-    insertableBy: ['admins'],
-    editableBy: ['admins']
+    canRead: ['members']
   },
   casting: {
     label: 'Casting Calculated',
@@ -268,12 +230,9 @@ const schema = {
     }
   },
   castingCompany: {
-    label: 'Casting Company',
     type: String,
     optional: true,
-    canRead: ['members'],
-    canCreate: ['admins'],
-    canUpdate: ['admins']
+    canRead: ['members']
   },
   castingOfficeId: {
     type: String,
@@ -284,8 +243,6 @@ const schema = {
     },
     optional: true,
     canRead: ['members'],
-    canCreate: ['admins'],
-    canUpdate: ['admins'],
     options: props => props.data.offices.results.map(office => ({
       value: office._id,
       label: office.displayName
@@ -309,9 +266,7 @@ const schema = {
   slug: {
     type: String,
     optional: true,
-    canRead: 'guests',
-    canCreate: ['members'],
-    canUpdate: ['members'],
+    canRead: ['members'],
     onInsert: (project) => {
       return Utils.slugify(project.projectTitle)
     },
@@ -328,9 +283,7 @@ const schema = {
     label: 'Links',
     type: Array,
     optional: true,
-    viewableBy: ['members'],
-    insertableBy: ['members'],
-    editableBy: ['members'],
+    canRead: ['members'],
     group: linkGroup
   },
   'links.$': {
@@ -340,9 +293,7 @@ const schema = {
     label: 'Contacts',
     type: Array,
     optional: true,
-    viewableBy: ['members'],
-    insertableBy: ['admins'],
-    editableBy: ['admins'],
+    canRead: ['members'],
     query: `
       contacts{
         results{
@@ -375,9 +326,7 @@ const schema = {
   addresses: {
     type: Array,
     optional: true,
-    viewableBy: ['members'],
-    insertableBy: ['admins'],
-    editableBy: ['admins'],
+    canRead: ['members'],
     group: addressGroup
   },
   'addresses.$': {

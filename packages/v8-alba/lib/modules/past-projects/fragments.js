@@ -32,9 +32,20 @@ registerFragment(/* GraphQL */ `
     castingOffice{
       displayName
     }
-    addresses
+    addresses {
+      street1
+      street2
+      city
+      state
+      zip
+      location
+    }
     allAddresses
-    contacts
+    contacts {
+      contactId
+      contactName
+      contactTitle
+    }
     allContactNames
     network
     status
@@ -47,7 +58,11 @@ registerFragment(/* GraphQL */ `
     website
     season
     order
-    links
+    links {
+      platformName
+      profileLink
+      profileName
+    }
     slug
   }
 `)
@@ -83,8 +98,19 @@ registerFragment(/* GraphQL */ `
     projectType
     castingCompany
     castingOfficeId
-    contacts
-    addresses
+    contacts {
+      contactId
+      contactName
+      contactTitle
+    }
+    addresses {
+      street1
+      street2
+      city
+      state
+      zip
+      location
+    }
     network
     status
     union
