@@ -6,7 +6,13 @@ const Projects = createCollection({
   typeName: 'Project',
   schema,
   resolvers: getDefaultResolvers('Projects'),
-  mutations: getDefaultMutations('Projects')
+  mutations: getDefaultMutations('Projects'),
+  permissions: {
+    canCreate: ['members'],
+    canRead: ['guests'],
+    canUpdate: ['owners', 'admins'],
+    canDelete: ['owners', 'admins'],
+  }
 })
 
 export default Projects
