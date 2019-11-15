@@ -55,7 +55,8 @@ const contactSchema = new SimpleSchema({
 })
 
 const schema = {
-  // default properties
+
+  /* default properties */
 
   _id: {
     type: String,
@@ -78,7 +79,7 @@ const schema = {
     canRead: ['members']
   },
 
-  // custom properties
+  /* custom properties */
 
   updatedAt: {
     type: Date,
@@ -143,7 +144,6 @@ const schema = {
     }
   },
   union: {
-    label: 'Union',
     type: String,
     optional: true,
     defaultValue: 'SAG-AFTRA',
@@ -152,7 +152,6 @@ const schema = {
     canUpdate: ['members', 'admins']
   },
   network: {
-    label: 'Network',
     type: String,
     optional: true,
     canRead: ['guests'],
@@ -160,7 +159,6 @@ const schema = {
     canUpdate: ['members', 'admins']
   },
   status: {
-    label: 'Status',
     type: String,
     optional: false,
     input: 'select',
@@ -182,7 +180,6 @@ const schema = {
   },
   // Summary (Markdown)
   summary: {
-    label: 'Summary',
     type: String,
     optional: true,
     control: 'textarea', // use a textarea form component
@@ -191,7 +188,7 @@ const schema = {
     canUpdate: ['members', 'admins'],
     inputProperties: {
       rows: 3
-    },
+    }
   },
   // HTML version of Summary
   htmlSummary: {
@@ -222,7 +219,6 @@ const schema = {
   },
   // Notes (Markdown)
   notes: {
-    label: 'Notes',
     type: String,
     optional: true,
     control: 'textarea', // use a textarea form component
@@ -231,7 +227,7 @@ const schema = {
     canUpdate: ['members', 'admins'],
     inputProperties: {
       rows: 4
-    },
+    }
   },
   // HTML version of Notes
   htmlNotes: {
@@ -260,7 +256,6 @@ const schema = {
     canUpdate: ['members', 'admins']
   },
   order: {
-    label: 'Order',
     type: String,
     optional: true,
     canRead: ['members'],

@@ -4,15 +4,6 @@ import marked from 'marked'
 import { addressSubSchema, linkSubSchema } from '../shared_schemas.js'
 import { getFullAddress, isEmptyValue } from '../helpers.js'
 
-// import _ from 'lodash'
-
-// function getContactsAsOptions (contacts) {
-//   return contacts.map(contact => ({
-//     value: contact._id,
-//     label: contact.fullName
-//   }))
-// }
-
 const contactGroup = {
   name: 'contacts',
   label: 'Contacts',
@@ -126,7 +117,8 @@ const pastProjectSubSchema = new SimpleSchema({
 })
 
 const schema = {
-  // default properties
+
+  /* default properties */
 
   _id: {
     type: String,
@@ -147,8 +139,19 @@ const schema = {
     canRead: ['members']
   },
 
-  // custom properties
+  /* custom properties */
 
+  updatedAt: {
+    type: Date,
+    optional: true,
+    canRead: ['guests'],
+    onInsert: () => {
+      return new Date()
+    },
+    onEdit: () => {
+      return new Date()
+    }
+  },
   displayName: {
     label: 'Display Name',
     type: String,
@@ -173,14 +176,16 @@ const schema = {
     optional: true,
     hidden: true,
     canRead: ['members'],
-    onInsert: (o) => {
-      if (o.body) {
-        return Utils.sanitize(marked(o.body))
+    onCreate: ({ document }) => {
+      if (document.body) {
+        return Utils.sanitize(marked(document.body))
       }
     },
-    onEdit: (modifier, o) => {
-      if (modifier.$set.body) {
-        return Utils.sanitize(marked(modifier.$set.body))
+    onUpdate: ({ data }) => {
+      if (data.body && data.body.length) {
+        return Utils.sanitize(marked(data.body))
+      } else {
+        return null
       }
     }
   },
@@ -226,24 +231,16 @@ const schema = {
     type: String,
     optional: true,
     canRead: ['members'],
-    onInsert: (o) => {
-      return Utils.slugify(o.displayName)
+    onCreate: ({ document }) => {
+      return Utils.slugify(document.displayName)
     },
-    onEdit: (modifier, o) => {
-      if (modifier.$set.displayName) {
-        return Utils.slugify(modifier.$set.displayName)
+    onUpdate: ({ data }) => {
+      if (data.slug) {
+        return Utils.slugify(data.slug)
       }
-    }
-  },
-  updatedAt: {
-    type: Date,
-    optional: true,
-    canRead: ['guests'],
-    onInsert: () => {
-      return new Date()
-    },
-    onEdit: () => {
-      return new Date()
+      if (data.displayName) {
+        return Utils.slugify(data.displayName)
+      }
     }
   },
 
