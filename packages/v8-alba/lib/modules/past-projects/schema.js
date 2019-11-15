@@ -29,6 +29,8 @@ const contactSchema = new SimpleSchema({
     control: 'SelectContactIdNameTitle',
     optional: true,
     canRead: ['members'],
+    canCreate: ['members', 'admins'],
+    canUpdate: ['members', 'admins'],
     options: props => props.data.contacts.results.map(contact => ({
       value: contact._id,
       label: contact.fullName
@@ -38,18 +40,23 @@ const contactSchema = new SimpleSchema({
     type: String,
     optional: true,
     hidden: true,
-    canRead: ['members']
+    canRead: ['members'],
+    canCreate: ['members', 'admins'],
+    canUpdate: ['members', 'admins'],
   },
   contactTitle: {
     type: String,
     optional: true,
     hidden: true,
-    canRead: ['members']
+    canRead: ['members'],
+    canCreate: ['members', 'admins'],
+    canUpdate: ['members', 'admins'],
   }
 })
 
 const schema = {
-  // default properties
+
+    /* default properties */
 
   _id: {
     type: String,
@@ -60,7 +67,7 @@ const schema = {
     type: Date,
     optional: true,
     canRead: ['guests'],
-    onInsert: (o) => {
+    onCreate: (o) => {
       if (!o.createdAt) { // keep createdAt from a project being made a past-project
         return new Date()
       }
@@ -72,7 +79,7 @@ const schema = {
     canRead: ['members']
   },
 
-  // custom properties
+  /* custom properties */
 
   updatedAt: {
     type: Date,
@@ -89,7 +96,9 @@ const schema = {
     label: 'Title',
     type: String,
     optional: true,
-    canRead: ['guests']
+    canRead: ['guests'],
+    canCreate: ['members', 'admins'],
+    canUpdate: ['members', 'admins'],
   },
   projectType: {
     label: 'Type',
@@ -99,7 +108,9 @@ const schema = {
     options: () => {
       return PROJECT_TYPES_ENUM
     },
-    canRead: ['guests']
+    canRead: ['guests'],
+    canCreate: ['members', 'admins'],
+    canUpdate: ['members', 'admins'],
   },
   platformType: {
     type: String,
@@ -123,7 +134,9 @@ const schema = {
     label: 'Network',
     type: String,
     optional: true,
-    canRead: ['guests']
+    canRead: ['guests'],
+    canCreate: ['members', 'admins'],
+    canUpdate: ['members', 'admins'],
   },
   status: {
     label: 'Status',
@@ -133,20 +146,26 @@ const schema = {
     options: () => {
       return PROJECT_STATUSES_ENUM
     },
-    canRead: ['members']
+    canRead: ['members'],
+    canCreate: ['members', 'admins'],
+    canUpdate: ['members', 'admins']
   },
   renewed: {
     label: 'On Hiatus but Renewed',
     type: Boolean,
     optional: true,
-    canRead: ['members']
+    canRead: ['members'],
+    canCreate: ['members', 'admins'],
+    canUpdate: ['members', 'admins']
   },
   // Summary (Markdown)
   summary: {
     type: String,
     optional: true,
-    control: 'textarea', // use a textarea form component
-    canRead: ['members']
+    control: 'textarea',
+    canRead: ['guests'],
+    canCreate: ['members', 'admins'],
+    canUpdate: ['members', 'admins']
   },
   // HTML version of Summary
   htmlSummary: {
@@ -154,14 +173,16 @@ const schema = {
     optional: true,
     hidden: true,
     canRead: ['members'],
-    onInsert: (project) => {
+    onCreate: ({ document: project}) => {
       if (project.summary) {
         return Utils.sanitize(marked('**SUMMARY:** ' + project.summary))
       }
     },
-    onEdit: (modifier, project) => {
-      if (modifier.$set.summary) {
-        return Utils.sanitize(marked('**SUMMARY:** ' + modifier.$set.summary))
+    onUpdate: ({ data }) => {
+      if (data.summary && data.summary.length) {
+        return Utils.sanitize(marked('**SUMMARY:** ' + data.summary))
+      } else {
+        return null
       }
     }
   },
@@ -169,7 +190,9 @@ const schema = {
     label: 'Official Site',
     type: String,
     optional: true,
-    canRead: ['members']
+    canRead: ['members'],
+    canCreate: ['members', 'admins'],
+    canUpdate: ['members', 'admins']
   },
   // Notes (Markdown)
   notes: {
@@ -177,6 +200,8 @@ const schema = {
     optional: true,
     control: 'textarea',
     canRead: ['members'],
+    canCreate: ['members', 'admins'],
+    canUpdate: ['members', 'admins'],
     inputProperties: {
       rows: 4
     }
@@ -203,12 +228,16 @@ const schema = {
   season: {
     type: String,
     optional: true,
-    canRead: ['members']
+    canRead: ['members'],
+    canCreate: ['members', 'admins'],
+    canUpdate: ['members', 'admins']
   },
   order: {
     type: String,
     optional: true,
-    canRead: ['members']
+    canRead: ['members'],
+    canCreate: ['members', 'admins'],
+    canUpdate: ['members', 'admins']
   },
   casting: {
     label: 'Casting Calculated',
@@ -232,7 +261,9 @@ const schema = {
   castingCompany: {
     type: String,
     optional: true,
-    canRead: ['members']
+    canRead: ['members'],
+    canCreate: ['members', 'admins'],
+    canUpdate: ['members', 'admins']
   },
   castingOfficeId: {
     type: String,
@@ -243,6 +274,8 @@ const schema = {
     },
     optional: true,
     canRead: ['members'],
+    canCreate: ['members', 'admins'],
+    canUpdate: ['members', 'admins'],
     options: props => props.data.offices.results.map(office => ({
       value: office._id,
       label: office.displayName
@@ -267,6 +300,8 @@ const schema = {
     type: String,
     optional: true,
     canRead: ['members'],
+    canCreate: ['members', 'admins'],
+    canUpdate: ['members', 'admins'],
     onInsert: (project) => {
       return Utils.slugify(project.projectTitle)
     },
@@ -284,6 +319,8 @@ const schema = {
     type: Array,
     optional: true,
     canRead: ['members'],
+    canCreate: ['members', 'admins'],
+    canUpdate: ['members', 'admins'],
     group: linkGroup
   },
   'links.$': {
@@ -294,6 +331,8 @@ const schema = {
     type: Array,
     optional: true,
     canRead: ['members'],
+    canCreate: ['members', 'admins'],
+    canUpdate: ['members', 'admins'],
     query: `
       contacts{
         results{
@@ -327,6 +366,8 @@ const schema = {
     type: Array,
     optional: true,
     canRead: ['members'],
+    canCreate: ['members', 'admins'],
+    canUpdate: ['members', 'admins'],
     group: addressGroup
   },
   'addresses.$': {
