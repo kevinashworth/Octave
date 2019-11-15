@@ -1,4 +1,5 @@
 import { Components, registerComponent, withMessages } from 'meteor/vulcan:core'
+import Users from 'meteor/vulcan:users'
 import { FormattedMessage } from 'meteor/vulcan:i18n'
 import React, { PureComponent } from 'react'
 import PropTypes from 'prop-types'
@@ -94,7 +95,7 @@ class CommentsItem extends PureComponent {
   }
 
   render () {
-    const comment = this.props.comment
+    const { comment, currentUser } = this.props
     return (
       <div className='comments-item' id={comment._id}>
         <div className='comments-item-body'>
@@ -102,7 +103,7 @@ class CommentsItem extends PureComponent {
             <Components.Avatar size='xsmall' user={comment.user} />
             <Components.UsersName user={comment.user} />
             <div className='comments-item-date'>{moment(new Date(comment.postedAt)).fromNow()}</div>
-            {Comments.options.mutations.edit.check(this.props.currentUser, this.props.comment) &&
+            {Users.canUpdate({ collection: Comments, user: currentUser, document: comment }) &&
               <div className='flexbox-float-right'>
                 <small className='text-muted'>
                   <a onClick={this.showEdit}><FormattedMessage id='comments.edit' /></a>
