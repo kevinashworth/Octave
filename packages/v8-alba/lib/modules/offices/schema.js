@@ -50,6 +50,8 @@ const contactSchema = new SimpleSchema({
     control: 'SelectContactIdNameTitle',
     optional: true,
     canRead: ['members'],
+    canCreate: ['members', 'admins'],
+    canUpdate: ['members', 'admins'],
     options: props => props.data.contacts.results.map(contact => ({
       value: contact._id,
       label: contact.fullName
@@ -59,13 +61,17 @@ const contactSchema = new SimpleSchema({
     type: String,
     optional: true,
     hidden: true,
-    canRead: ['members']
+    canRead: ['members'],
+    canCreate: ['members', 'admins'],
+    canUpdate: ['members', 'admins'],
   },
   contactTitle: {
     type: String,
     optional: true,
     hidden: true,
-    canRead: ['members']
+    canRead: ['members'],
+    canCreate: ['members', 'admins'],
+    canUpdate: ['members', 'admins'],
   }
 })
 
@@ -79,6 +85,8 @@ const projectSubSchema = new SimpleSchema({
     },
     optional: true,
     canRead: ['members'],
+    canCreate: ['members', 'admins'],
+    canUpdate: ['members', 'admins'],
     options: props => props.data.projects.results.map(project => ({
       value: project._id,
       label: project.projectTitle
@@ -102,6 +110,8 @@ const pastProjectSubSchema = new SimpleSchema({
     },
     optional: true,
     canRead: ['members'],
+    canCreate: ['members', 'admins'],
+    canUpdate: ['members', 'admins'],
     options: props => props.data.pastProjects.results.map(project => ({
       value: project._id,
       label: project.projectTitle
@@ -143,7 +153,9 @@ const schema = {
     label: 'Display Name',
     type: String,
     optional: true,
-    canRead: ['guests']
+    canRead: ['guests'],
+    canCreate: ['members', 'admins'],
+    canUpdate: ['members', 'admins'],
   },
   // Body (Markdown)
   body: {
@@ -151,7 +163,9 @@ const schema = {
     type: String,
     optional: true,
     control: 'textarea', // use a textarea form component
-    canRead: ['members']
+    canRead: ['members'],
+    canCreate: ['members', 'admins'],
+    canUpdate: ['members', 'admins'],
   },
   // HTML version of Body
   htmlBody: {
@@ -175,8 +189,9 @@ const schema = {
     type: Array,
     optional: true,
     canRead: ['members'],
-    group: linkGroup,
-    blackbox: true
+    canCreate: ['members', 'admins'],
+    canUpdate: ['members', 'admins'],
+    group: linkGroup
   },
   'links.$': {
     type: linkSubSchema
@@ -185,8 +200,9 @@ const schema = {
     type: Array,
     optional: true,
     canRead: ['members'],
-    group: addressGroup,
-    blackbox: true
+    canCreate: ['members', 'admins'],
+    canUpdate: ['members', 'admins'],
+    group: addressGroup
   },
   'addresses.$': {
     type: addressSubSchema
@@ -236,6 +252,8 @@ const schema = {
     type: Array,
     optional: true,
     canRead: ['members'],
+    canCreate: ['members', 'admins'],
+    canUpdate: ['members', 'admins'],
     query: `
       projects{
         results{
@@ -276,6 +294,8 @@ const schema = {
     type: Array,
     optional: true,
     canRead: ['members'],
+    canCreate: ['members', 'admins'],
+    canUpdate: ['members', 'admins'],
     query: `
       pastProjects{
         results{
@@ -296,6 +316,8 @@ const schema = {
     type: Array,
     optional: true,
     canRead: ['members'],
+    canCreate: ['members', 'admins'],
+    canUpdate: ['members', 'admins'],
     query: `
       contacts{
         results{
@@ -351,7 +373,7 @@ const schema = {
     label: 'Full Address',
     type: String,
     optional: true,
-    canRead: 'guests',
+    canRead: ['members'],
     resolveAs: {
       type: 'String',
       resolver: (o) => {
@@ -384,7 +406,7 @@ const schema = {
     label: 'Location',
     type: String,
     optional: true,
-    canRead: 'guests',
+    canRead: ['guests'],
     resolveAs: {
       type: 'String',
       resolver: (o) => {

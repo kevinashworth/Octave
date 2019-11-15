@@ -29,6 +29,8 @@ const contactSchema = new SimpleSchema({
     control: 'SelectContactIdNameTitle',
     optional: true,
     canRead: ['members'],
+    canCreate: ['members', 'admins'],
+    canUpdate: ['members', 'admins'],
     options: props => props.data.contacts.results.map(contact => ({
       value: contact._id,
       label: contact.fullName
@@ -38,13 +40,17 @@ const contactSchema = new SimpleSchema({
     type: String,
     optional: true,
     hidden: true,
-    canRead: ['members']
+    canRead: ['members'],
+    canCreate: ['members', 'admins'],
+    canUpdate: ['members', 'admins']
   },
   contactTitle: {
     type: String,
     optional: true,
     hidden: true,
-    canRead: ['members']
+    canRead: ['members'],
+    canCreate: ['members', 'admins'],
+    canUpdate: ['members', 'admins']
   }
 })
 
@@ -90,6 +96,8 @@ const schema = {
     type: String,
     optional: true,
     canRead: ['guests'],
+    canCreate: ['members', 'admins'],
+    canUpdate: ['members', 'admins'],
     onCreate: ({ document }) => {
       return document.projectTitle.trim()
     },
@@ -118,6 +126,8 @@ const schema = {
       return PROJECT_TYPES_ENUM
     },
     canRead: ['guests'],
+    canCreate: ['members', 'admins'],
+    canUpdate: ['members', 'admins']
   },
   platformType: {
     label: 'Platform Type',
@@ -138,12 +148,16 @@ const schema = {
     optional: true,
     defaultValue: 'SAG-AFTRA',
     canRead: ['guests'],
+    canCreate: ['members', 'admins'],
+    canUpdate: ['members', 'admins']
   },
   network: {
     label: 'Network',
     type: String,
     optional: true,
     canRead: ['guests'],
+    canCreate: ['members', 'admins'],
+    canUpdate: ['members', 'admins']
   },
   status: {
     label: 'Status',
@@ -153,14 +167,18 @@ const schema = {
     options: () => {
       return PROJECT_STATUSES_ENUM
     },
-    canRead: ['guests']
+    canRead: ['guests'],
+    canCreate: ['members', 'admins'],
+    canUpdate: ['members', 'admins']
   },
   renewed: {
     label: 'On Hiatus but Renewed',
     hidden: ({ document }) => { return document.status !== 'On Hiatus' },
     type: Boolean,
     optional: true,
-    canRead: ['guests']
+    canRead: ['guests'],
+    canCreate: ['members', 'admins'],
+    canUpdate: ['members', 'admins']
   },
   // Summary (Markdown)
   summary: {
@@ -169,6 +187,8 @@ const schema = {
     optional: true,
     control: 'textarea', // use a textarea form component
     canRead: ['guests'],
+    canCreate: ['members', 'admins'],
+    canUpdate: ['members', 'admins'],
     inputProperties: {
       rows: 3
     },
@@ -197,6 +217,8 @@ const schema = {
     type: String,
     optional: true,
     canRead: ['guests'],
+    canCreate: ['members', 'admins'],
+    canUpdate: ['members', 'admins']
   },
   // Notes (Markdown)
   notes: {
@@ -205,6 +227,8 @@ const schema = {
     optional: true,
     control: 'textarea', // use a textarea form component
     canRead: ['members'],
+    canCreate: ['members', 'admins'],
+    canUpdate: ['members', 'admins'],
     inputProperties: {
       rows: 4
     },
@@ -229,16 +253,19 @@ const schema = {
     }
   },
   season: {
-    label: 'Season',
     type: String,
     optional: true,
     canRead: ['members'],
+    canCreate: ['members', 'admins'],
+    canUpdate: ['members', 'admins']
   },
   order: {
     label: 'Order',
     type: String,
     optional: true,
     canRead: ['members'],
+    canCreate: ['members', 'admins'],
+    canUpdate: ['members', 'admins']
   },
   casting: {
     label: 'Casting Calculated',
@@ -264,6 +291,8 @@ const schema = {
     type: String,
     optional: true,
     canRead: ['members'],
+    canCreate: ['members', 'admins'],
+    canUpdate: ['members', 'admins']
   },
   castingOfficeId: {
     type: String,
@@ -274,6 +303,8 @@ const schema = {
     label: 'Office',
     optional: true,
     canRead: ['members'],
+    canCreate: ['members', 'admins'],
+    canUpdate: ['members', 'admins'],
     options: props => props.data.offices.results.map(office => ({
       value: office._id,
       label: office.displayName
@@ -298,6 +329,8 @@ const schema = {
     type: String,
     optional: true,
     canRead: ['guests'],
+    canCreate: ['members', 'admins'],
+    canUpdate: ['members', 'admins'],
     onCreate: ({ document: project }) => {
       return Utils.slugify(project.projectTitle)
     },
@@ -315,6 +348,8 @@ const schema = {
     type: Array,
     optional: true,
     canRead: ['members'],
+    canCreate: ['members', 'admins'],
+    canUpdate: ['members', 'admins'],
     group: linkGroup
   },
   'links.$': {
@@ -325,6 +360,8 @@ const schema = {
     type: Array,
     optional: true,
     canRead: ['members'],
+    canCreate: ['members', 'admins'],
+    canUpdate: ['members', 'admins'],
     query: `
       contacts{
         results{
@@ -358,6 +395,8 @@ const schema = {
     type: Array,
     optional: true,
     canRead: ['members'],
+    canCreate: ['members', 'admins'],
+    canUpdate: ['members', 'admins'],
     group: addressGroup
   },
   'addresses.$': {
