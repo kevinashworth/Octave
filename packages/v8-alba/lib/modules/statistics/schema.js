@@ -4,16 +4,16 @@ const dataSchema = new SimpleSchema({
   date: {
     type: String, // YYYY-MM-DD HH:mm:ss
     optional: true,
-    viewableBy: ['members'],
-    insertableBy: ['members'],
-    editableBy: ['members']
+    canRead: ['members'],
+    canCreate: ['members'],
+    canUpdate: ['members']
   },
   quantity: {
     type: Number,
     optional: true,
-    viewableBy: ['members'],
-    insertableBy: ['members'],
-    editableBy: ['members']
+    canRead: ['members'],
+    canCreate: ['members'],
+    canUpdate: ['members']
   }
 })
 
@@ -23,12 +23,12 @@ const schema = {
   _id: {
     type: String,
     optional: true,
-    viewableBy: ['members']
+    canRead: ['members']
   },
   createdAt: {
     type: Date,
     optional: true,
-    viewableBy: ['members'],
+    canRead: ['members'],
     onInsert: () => {
       return new Date()
     }
@@ -36,7 +36,7 @@ const schema = {
   userId: {
     type: String,
     optional: true,
-    viewableBy: ['members']
+    canRead: ['members']
   },
 
   // custom properties
@@ -44,7 +44,7 @@ const schema = {
   updatedAt: {
     type: Date,
     optional: true,
-    viewableBy: ['members'],
+    canRead: ['members'],
     onInsert: () => {
       return new Date()
     },
@@ -56,9 +56,9 @@ const schema = {
     label: 'Episodics',
     type: Array,
     optional: true,
-    viewableBy: ['members'],
-    insertableBy: ['members'],
-    editableBy: ['members']
+    canRead: ['members'],
+    canCreate: ['members'],
+    canUpdate: ['members']
   },
   'episodics.$': {
     type: dataSchema
@@ -67,9 +67,9 @@ const schema = {
     label: 'Pilots',
     type: Array,
     optional: true,
-    viewableBy: ['members'],
-    insertableBy: ['members'],
-    editableBy: ['members']
+    canRead: ['members'],
+    canCreate: ['members'],
+    canUpdate: ['members']
   },
   'pilots.$': {
     type: dataSchema
@@ -78,9 +78,9 @@ const schema = {
     label: 'Features',
     type: Array,
     optional: true,
-    viewableBy: ['members'],
-    insertableBy: ['members'],
-    editableBy: ['members']
+    canRead: ['members'],
+    canCreate: ['members'],
+    canUpdate: ['members']
   },
   'features.$': {
     type: dataSchema
@@ -89,9 +89,9 @@ const schema = {
     label: 'Others',
     type: Array,
     optional: true,
-    viewableBy: ['members'],
-    insertableBy: ['members'],
-    editableBy: ['members']
+    canRead: ['members'],
+    canCreate: ['members'],
+    canUpdate: ['members']
   },
   'others.$': {
     type: dataSchema

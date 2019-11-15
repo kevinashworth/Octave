@@ -4,45 +4,45 @@ export const addressSchema = {
   street1: {
     type: String,
     optional: true,
-    viewableBy: ['members'],
-    insertableBy: ['admins'],
-    editableBy: ['admins']
+    canRead: ['members'],
+    canCreate: ['admins'],
+    canUpdate: ['admins']
   },
   street2: {
     type: String,
     optional: true,
-    viewableBy: ['members'],
-    insertableBy: ['admins'],
-    editableBy: ['admins']
+    canRead: ['members'],
+    canCreate: ['admins'],
+    canUpdate: ['admins']
   },
   city: {
     type: String,
     optional: true,
-    viewableBy: ['members'],
-    insertableBy: ['admins'],
-    editableBy: ['admins']
+    canRead: ['members'],
+    canCreate: ['admins'],
+    canUpdate: ['admins']
   },
   state: {
     type: String,
     optional: true,
-    viewableBy: ['members'],
-    insertableBy: ['admins'],
-    editableBy: ['admins']
+    canRead: ['members'],
+    canCreate: ['admins'],
+    canUpdate: ['admins']
   },
   zip: {
     type: String,
     optional: true,
-    viewableBy: ['members'],
-    insertableBy: ['admins'],
-    editableBy: ['admins']
+    canRead: ['members'],
+    canCreate: ['admins'],
+    canUpdate: ['admins']
   },
   location: {
     type: String,
     optional: true,
     hidden: true,
-    viewableBy: ['members'],
-    insertableBy: ['admins'],
-    editableBy: ['admins']
+    canRead: ['members'],
+    canCreate: ['admins'],
+    canUpdate: ['admins']
   }
 }
 
