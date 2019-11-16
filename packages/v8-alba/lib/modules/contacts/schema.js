@@ -62,6 +62,8 @@ const projectSubSchema = new SimpleSchema({
     control: 'SelectProjectIdNameTitle',
     optional: true,
     canRead: ['members'],
+    canCreate: ['members', 'admins'],
+    canUpdate: ['members', 'admins'],
     options: props => props.data.projects.results.map(project => ({
       value: project._id,
       label: project.projectTitle
@@ -87,6 +89,8 @@ const pastProjectSubSchema = new SimpleSchema({
     control: 'SelectPastProjectIdNameTitle',
     optional: true,
     canRead: ['members'],
+    canCreate: ['members', 'admins'],
+    canUpdate: ['members', 'admins'],
     options: props => props.data.pastProjects.results.map(project => ({
       value: project._id,
       label: project.projectTitle
@@ -116,6 +120,8 @@ const officeSubSchema = new SimpleSchema({
     },
     optional: true,
     canRead: ['members'],
+    canCreate: ['members', 'admins'],
+    canUpdate: ['members', 'admins'],
     options: props => props.data.offices.results.map(o => ({
       value: o._id,
       label: o.displayName
@@ -151,24 +157,32 @@ const schema = {
     label: 'First',
     type: String,
     optional: true,
-    canRead: ['guests']
+    canRead: ['guests'],
+    canCreate: ['members', 'admins'],
+    canUpdate: ['members', 'admins']
   },
   middleName: {
     label: 'Middle',
     type: String,
     optional: true,
-    canRead: ['guests']
+    canRead: ['guests'],
+    canCreate: ['members', 'admins'],
+    canUpdate: ['members', 'admins']
   },
   lastName: {
     label: 'Last',
     type: String,
     optional: true,
-    canRead: ['guests']
+    canRead: ['guests'],
+    canCreate: ['members', 'admins'],
+    canUpdate: ['members', 'admins']
   },
   displayName: {
     type: String,
     optional: true,
     canRead: ['guests'],
+    canCreate: ['members', 'admins'],
+    canUpdate: ['members', 'admins'],
     onCreate: ({ document: contact }) => getFullNameFromContact(contact),
     onUpdate: ({ data, document: contact }) => {
       if (data.displayName) {
@@ -188,12 +202,16 @@ const schema = {
     options: () => {
       return CASTING_TITLES_ENUM
     },
-    canRead: ['members']
+    canRead: ['members'],
+    canCreate: ['members', 'admins'],
+    canUpdate: ['members', 'admins']
   },
   gender: {
     type: String,
     optional: true,
-    canRead: ['members']
+    canRead: ['members'],
+    canCreate: ['members', 'admins'],
+    canUpdate: ['members', 'admins']
   },
   // Body (Markdown)
   body: {
@@ -201,7 +219,9 @@ const schema = {
     type: String,
     optional: true,
     control: 'textarea',
-    canRead: ['members']
+    canRead: ['members'],
+    canCreate: ['members', 'admins'],
+    canUpdate: ['members', 'admins']
   },
   // HTML version of Body
   htmlBody: {
@@ -217,6 +237,8 @@ const schema = {
     type: Array,
     optional: true,
     canRead: ['members'],
+    canCreate: ['members', 'admins'],
+    canUpdate: ['members', 'admins'],
     group: linkGroup
   },
   'links.$': {
@@ -242,6 +264,8 @@ const schema = {
     type: Array,
     optional: true,
     canRead: ['members'],
+    canCreate: ['members', 'admins'],
+    canUpdate: ['members', 'admins'],
     group: addressGroup
   },
   'addresses.$': {
@@ -293,6 +317,8 @@ const schema = {
     type: String,
     optional: true,
     canRead: ['members'],
+    canCreate: ['members', 'admins'],
+    canUpdate: ['members', 'admins'],
     onCreate: ({ document: contact }) => {
       return Utils.slugify(getFullNameFromContact(contact))
     },
@@ -325,6 +351,8 @@ const schema = {
     type: Array,
     optional: true,
     canRead: ['members'],
+    canCreate: ['members', 'admins'],
+    canUpdate: ['members', 'admins'],
     query: `
       offices{
         results{
@@ -345,6 +373,8 @@ const schema = {
     type: Array,
     optional: true,
     canRead: ['members'],
+    canCreate: ['members', 'admins'],
+    canUpdate: ['members', 'admins'],
     query: `
       projects{
         results{
@@ -365,6 +395,8 @@ const schema = {
     type: Array,
     optional: true,
     canRead: ['members'],
+    canCreate: ['members', 'admins'],
+    canUpdate: ['members', 'admins'],
     query: `
       pastProjects{
         results{

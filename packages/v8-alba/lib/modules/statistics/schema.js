@@ -5,15 +5,15 @@ const dataSchema = new SimpleSchema({
     type: String, // YYYY-MM-DD HH:mm:ss
     optional: true,
     canRead: ['members'],
-    canCreate: ['members'],
-    canUpdate: ['members']
+    canCreate: ['members', 'admins'],
+    canUpdate: ['members', 'admins']
   },
   quantity: {
     type: Number,
     optional: true,
     canRead: ['members'],
-    canCreate: ['members'],
-    canUpdate: ['members']
+    canCreate: ['members', 'admins'],
+    canUpdate: ['members', 'admins']
   }
 })
 
@@ -57,8 +57,8 @@ const schema = {
     type: Array,
     optional: true,
     canRead: ['members'],
-    canCreate: ['members'],
-    canUpdate: ['members']
+    canCreate: ['members', 'admins'],
+    canUpdate: ['members', 'admins']
   },
   'episodics.$': {
     type: dataSchema
@@ -68,8 +68,8 @@ const schema = {
     type: Array,
     optional: true,
     canRead: ['members'],
-    canCreate: ['members'],
-    canUpdate: ['members']
+    canCreate: ['members', 'admins'],
+    canUpdate: ['members', 'admins']
   },
   'pilots.$': {
     type: dataSchema
@@ -79,8 +79,8 @@ const schema = {
     type: Array,
     optional: true,
     canRead: ['members'],
-    canCreate: ['members'],
-    canUpdate: ['members']
+    canCreate: ['members', 'admins'],
+    canUpdate: ['members', 'admins']
   },
   'features.$': {
     type: dataSchema
@@ -90,8 +90,8 @@ const schema = {
     type: Array,
     optional: true,
     canRead: ['members'],
-    canCreate: ['members'],
-    canUpdate: ['members']
+    canCreate: ['members', 'admins'],
+    canUpdate: ['members', 'admins']
   },
   'others.$': {
     type: dataSchema
