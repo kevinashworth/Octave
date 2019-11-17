@@ -8,7 +8,6 @@ addRoute({ path: '/fragments', name: 'fragments', componentName: 'Fragments', la
 addRoute({ path: '/modals', name: 'modals', componentName: 'Modals', layoutName: 'AdminLayout' })
 
 addRoute([
-  // { name: 'Contacts', path: '/contacts', componentName: 'Contacts' },
   { name: 'contacts.table', path: '/contacts', componentName: 'ContactsDataTable' },
   { name: 'contacts.mobile', path: '/m/contacts', componentName: 'ContactsNameOnly' },
   { name: 'contacts.list', path: '/contacts/list', componentName: 'ContactsList' },
@@ -18,7 +17,6 @@ addRoute([
 ])
 
 addRoute([
-  // { name: 'Offices', path: '/offices', componentName: 'Offices' },
   { name: 'offices.table', path: '/offices', componentName: 'OfficesDataTable' },
   { name: 'offices.mobile', path: '/m/offices', componentName: 'OfficesNameOnly' },
   { name: 'offices.edit', path: '/offices/:_id/edit', componentName: 'OfficesEditForm' },
@@ -26,18 +24,19 @@ addRoute([
 ])
 
 addRoute([
-  { name: 'project.table', path: '/projects', componentName: 'ProjectsDataTable' },
-  { name: 'project.mobile', path: '/m/projects', componentName: 'ProjectsNameOnly' }
+  { name: 'projects.table', path: '/projects', componentName: 'ProjectsDataTable' },
+  { name: 'projects.mobile', path: '/m/projects', componentName: 'ProjectsNameOnly' },
+  { name: 'projects.new', path: '/projects/new', componentName: 'ProjectsNewForm' },
+  { name: 'projects.edit', path: '/projects/:_id/edit', componentName: 'ProjectsEditForm' },
+  { name: 'projects.single', path: '/projects/:_id/:slug?', componentName: 'ProjectsSingle' }
 ])
 
-// addRoute({ path: '/projects', name: 'Projects', componentName: 'Projects' })
-addRoute({ path: '/projects/new', name: 'projects.new', componentName: 'ProjectsNewForm' })
-addRoute({ path: '/projects/:_id/edit', name: 'projects.edit', componentName: 'ProjectsEditForm' })
-addRoute({ path: '/projects/:_id/:slug?', name: 'projects.single', componentName: 'ProjectSingle' })
-addRoute({ path: '/past-projects', name: 'Past Projects', componentName: 'PastProjects' })
-addRoute({ path: '/past-projects/datatable', name: 'Past Projects Table', componentName: 'PastProjectsDataTable' })
-addRoute({ path: '/past-projects/:_id/edit', name: 'pastprojects.edit', componentName: 'PastProjectsEditForm' })
-addRoute({ path: '/past-projects/:_id/:slug?', name: 'pastprojects.single', componentName: 'PastProjectSingle' })
+addRoute([
+  { name: 'pastprojects.table', path: '/past-projects', componentName: 'PastProjectsDataTable' },
+  { name: 'pastprojects.edit', path: '/past-projects/:_id/edit', componentName: 'PastProjectsEditForm' },
+  { name: 'pastprojects.single', path: '/past-projects/:_id/:slug?', componentName: 'PastProjectsSingle' }
+])
+
 addRoute({ path: '/statistics/list', name: 'StatisticsList', componentName: 'StatisticsList' })
 addRoute({ path: '/statistics/:_id/edit', name: 'StatisticsEditForm', componentName: 'StatisticsEditForm' })
 
