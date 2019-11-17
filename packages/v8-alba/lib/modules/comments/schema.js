@@ -23,7 +23,6 @@ const schema = {
     optional: true,
     hidden: true,
     canRead: ['members'],
-    canCreate: ['members'],
     resolveAs: {
       fieldName: 'user',
       type: 'User',
@@ -44,7 +43,6 @@ const schema = {
     optional: true,
     hidden: true,
     canRead: ['guests'],
-    canCreate: ['members'],
     resolveAs: {
       fieldName: 'parentComment',
       type: 'Comment',
@@ -62,7 +60,6 @@ const schema = {
     optional: true,
     hidden: true,
     canRead: ['guests'],
-    canCreate: ['members'],
     resolveAs: {
       fieldName: 'topLevelComment',
       type: 'Comment',
@@ -87,8 +84,8 @@ const schema = {
   body: {
     type: String,
     canRead: ['members'],
-    canCreate: ['admins'],
-    canUpdate: ['admins'],
+    canCreate: ['members', 'admins'],
+    canUpdate: ['members', 'admins'],
     input: 'textarea',
     inputProperties: {
       placeholder: 'Add a comment…',
@@ -104,8 +101,6 @@ const schema = {
     optional: true,
     hidden: true,
     canRead: ['members'],
-    canCreate: ['admins'],
-    canUpdate: ['admins'],
     onCreate: ({ document }) => {
       if (document.body) {
         return Utils.sanitize(marked(document.body))
@@ -136,7 +131,6 @@ const schema = {
     type: String,
     optional: true,
     hidden: true,
-    canCreate: ['members'],
     canRead: ['members'],
     onCreate: ({ document }) => {
       if (document.collectionName) {
@@ -151,7 +145,6 @@ const schema = {
     type: String,
     optional: true,
     hidden: true,
-    canCreate: ['members'],
     canRead: ['members'],
     onCreate: ({ document }) => {
       if (document.objectId) {
