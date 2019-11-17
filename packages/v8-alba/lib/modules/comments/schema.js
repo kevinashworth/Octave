@@ -43,6 +43,7 @@ const schema = {
     optional: true,
     hidden: true,
     canRead: ['guests'],
+    canCreate: ['members', 'admins'],
     resolveAs: {
       fieldName: 'parentComment',
       type: 'Comment',
@@ -60,6 +61,7 @@ const schema = {
     optional: true,
     hidden: true,
     canRead: ['guests'],
+    canCreate: ['members', 'admins'],
     resolveAs: {
       fieldName: 'topLevelComment',
       type: 'Comment',
@@ -132,6 +134,7 @@ const schema = {
     optional: true,
     hidden: true,
     canRead: ['members'],
+    canCreate: ['members', 'admins'],
     onCreate: ({ document }) => {
       if (document.collectionName) {
         return document.collectionName
@@ -146,6 +149,7 @@ const schema = {
     optional: true,
     hidden: true,
     canRead: ['members'],
+    canCreate: ['members', 'admins'],
     onCreate: ({ document }) => {
       if (document.objectId) {
         return document.objectId
