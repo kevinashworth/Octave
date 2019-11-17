@@ -1,4 +1,5 @@
 import { Components, registerComponent, withCurrentUser, withMulti } from 'meteor/vulcan:core'
+import Users from 'meteor/vulcan:users'
 import React, { PureComponent } from 'react'
 import { Link } from 'react-router-dom'
 import { Button, Card, CardBody, CardFooter, CardHeader, Modal, ModalBody, ModalHeader } from 'reactstrap'
@@ -263,7 +264,7 @@ class ProjectsDataTable extends PureComponent {
             }
           </CardFooter>
           }
-          {Projects.options.mutations.new.check(currentUser)
+          {Users.canCreate({ collection: Projects, user: currentUser })
             ? <CardFooter>
               <Components.ModalTrigger title='New Project' component={<Button>Add a Project</Button>}>
                 <Components.ProjectsNewForm currentUser={currentUser} />

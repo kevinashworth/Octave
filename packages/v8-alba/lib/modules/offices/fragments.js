@@ -20,20 +20,41 @@ registerFragment(/* GraphQL */ `
     displayName
     body
     htmlBody
-    links
-    projects
+    links {
+      platformName
+      profileLink
+      profileName
+    }
+    projects {
+      projectId
+      projectTitle
+    }
     theProjects {
       _id
       projectTitle
       sortTitle
     }
-    pastProjects
-    contacts
+    pastProjects {
+      projectId
+      projectTitle
+    }
+    contacts {
+      contactId
+      contactName
+      contactTitle
+    }
     theContacts {
       _id
       displayName
     }
-    addresses
+    addresses {
+      street1
+      street2
+      city
+      state
+      zip
+      location
+    }
     street
     location
     fullAddress
@@ -65,10 +86,28 @@ registerFragment(/* GraphQL */ `
     userId
     displayName
     body
-    links
-    projects
-    contacts
-    addresses
+    links {
+      platformName
+      profileLink
+      profileName
+    }
+    projects {
+      projectId
+      projectTitle
+    }
+    contacts {
+      contactId
+      contactName
+      contactTitle
+    }
+    addresses {
+      street1
+      street2
+      city
+      state
+      zip
+      location
+    }
     street
     location
     fullAddress

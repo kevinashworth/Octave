@@ -6,7 +6,13 @@ const PastProjects = createCollection({
   typeName: 'PastProject',
   schema,
   resolvers: getDefaultResolvers('PastProjects'),
-  mutations: getDefaultMutations('PastProjects')
+  mutations: getDefaultMutations('PastProjects'),
+  permissions: {
+    canCreate: ['members'],
+    canRead: ['guests'],
+    canUpdate: ['owners', 'admins'],
+    canDelete: ['owners', 'admins'],
+  }
 })
 
 export default PastProjects

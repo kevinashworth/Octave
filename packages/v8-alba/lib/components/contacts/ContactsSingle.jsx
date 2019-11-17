@@ -1,4 +1,5 @@
 import { Components, registerComponent, withCurrentUser, withSingle } from 'meteor/vulcan:core'
+import Users from 'meteor/vulcan:users'
 import { FormattedMessage } from 'meteor/vulcan:i18n'
 import React, { PureComponent } from 'react'
 import PropTypes from 'prop-types'
@@ -38,7 +39,7 @@ class ContactsSingle extends PureComponent {
         <div className='animated fadeIn'>
           <Components.HeadTags title={`V8 Alba: ${contact.fullName}`} />
           <Card className='card-accent-warning'>
-            <CardHeader tag='h2'>{ contact.fullName }{ Contacts.options.mutations.edit.check(currentUser, contact)
+            <CardHeader tag='h2'>{ contact.fullName }{ Users.canUpdate({ collection: Contacts, user: currentUser, document })
               ? <div className='float-right'>
                 <Button tag={Link} to={`/contacts/${contact._id}/edit`}>Edit</Button>
               </div> : null}

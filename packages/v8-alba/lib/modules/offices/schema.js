@@ -4,15 +4,6 @@ import marked from 'marked'
 import { addressSubSchema, linkSubSchema } from '../shared_schemas.js'
 import { getFullAddress, isEmptyValue } from '../helpers.js'
 
-// import _ from 'lodash'
-
-// function getContactsAsOptions (contacts) {
-//   return contacts.map(contact => ({
-//     value: contact._id,
-//     label: contact.fullName
-//   }))
-// }
-
 const contactGroup = {
   name: 'contacts',
   label: 'Contacts',
@@ -49,9 +40,9 @@ const contactSchema = new SimpleSchema({
     type: String,
     control: 'SelectContactIdNameTitle',
     optional: true,
-    viewableBy: ['members'],
-    insertableBy: ['admins'],
-    editableBy: ['admins'],
+    canRead: ['members'],
+    canCreate: ['members', 'admins'],
+    canUpdate: ['members', 'admins'],
     options: props => props.data.contacts.results.map(contact => ({
       value: contact._id,
       label: contact.fullName
@@ -61,17 +52,17 @@ const contactSchema = new SimpleSchema({
     type: String,
     optional: true,
     hidden: true,
-    viewableBy: ['members'],
-    insertableBy: ['admins'],
-    editableBy: ['admins']
+    canRead: ['members'],
+    canCreate: ['members', 'admins'],
+    canUpdate: ['members', 'admins'],
   },
   contactTitle: {
     type: String,
     optional: true,
     hidden: true,
-    viewableBy: ['members'],
-    insertableBy: ['admins'],
-    editableBy: ['admins']
+    canRead: ['members'],
+    canCreate: ['members', 'admins'],
+    canUpdate: ['members', 'admins'],
   }
 })
 
@@ -85,8 +76,8 @@ const projectSubSchema = new SimpleSchema({
     },
     optional: true,
     canRead: ['members'],
-    canCreate: ['members'],
-    canUpdate: ['members'],
+    canCreate: ['members', 'admins'],
+    canUpdate: ['members', 'admins'],
     options: props => props.data.projects.results.map(project => ({
       value: project._id,
       label: project.projectTitle
@@ -110,8 +101,8 @@ const pastProjectSubSchema = new SimpleSchema({
     },
     optional: true,
     canRead: ['members'],
-    canCreate: ['members'],
-    canUpdate: ['members'],
+    canCreate: ['members', 'admins'],
+    canUpdate: ['members', 'admins'],
     options: props => props.data.pastProjects.results.map(project => ({
       value: project._id,
       label: project.projectTitle
@@ -126,17 +117,18 @@ const pastProjectSubSchema = new SimpleSchema({
 })
 
 const schema = {
-  // default properties
+
+  /* default properties */
 
   _id: {
     type: String,
     optional: true,
-    viewableBy: ['guests']
+    canRead: ['guests']
   },
   createdAt: {
     type: Date,
     optional: true,
-    viewableBy: ['members'],
+    canRead: ['guests'],
     onInsert: () => {
       return new Date()
     }
@@ -144,18 +136,29 @@ const schema = {
   userId: {
     type: String,
     optional: true,
-    viewableBy: ['members']
+    canRead: ['members']
   },
 
-  // custom properties
+  /* custom properties */
 
+  updatedAt: {
+    type: Date,
+    optional: true,
+    canRead: ['guests'],
+    onInsert: () => {
+      return new Date()
+    },
+    onEdit: () => {
+      return new Date()
+    }
+  },
   displayName: {
     label: 'Display Name',
     type: String,
     optional: true,
-    viewableBy: ['guests'],
-    insertableBy: ['admins'],
-    editableBy: ['admins']
+    canRead: ['guests'],
+    canCreate: ['members', 'admins'],
+    canUpdate: ['members', 'admins'],
   },
   // Body (Markdown)
   body: {
@@ -163,26 +166,26 @@ const schema = {
     type: String,
     optional: true,
     control: 'textarea', // use a textarea form component
-    viewableBy: ['members', 'admins'],
-    insertableBy: ['members'],
-    editableBy: ['members']
+    canRead: ['members'],
+    canCreate: ['members', 'admins'],
+    canUpdate: ['members', 'admins'],
   },
   // HTML version of Body
   htmlBody: {
     type: String,
     optional: true,
     hidden: true,
-    viewableBy: ['members'],
-    insertableBy: ['members'],
-    editableBy: ['members'],
-    onInsert: (o) => {
-      if (o.body) {
-        return Utils.sanitize(marked(o.body))
+    canRead: ['members'],
+    onCreate: ({ document }) => {
+      if (document.body) {
+        return Utils.sanitize(marked(document.body))
       }
     },
-    onEdit: (modifier, o) => {
-      if (modifier.$set.body) {
-        return Utils.sanitize(marked(modifier.$set.body))
+    onUpdate: ({ data }) => {
+      if (data.body && data.body.length) {
+        return Utils.sanitize(marked(data.body))
+      } else {
+        return null
       }
     }
   },
@@ -190,9 +193,9 @@ const schema = {
     label: 'Links',
     type: Array,
     optional: true,
-    viewableBy: ['members'],
-    insertableBy: ['admins'],
-    editableBy: ['admins'],
+    canRead: ['members'],
+    canCreate: ['members', 'admins'],
+    canUpdate: ['members', 'admins'],
     group: linkGroup
   },
   'links.$': {
@@ -201,9 +204,9 @@ const schema = {
   addresses: {
     type: Array,
     optional: true,
-    viewableBy: ['members'],
-    insertableBy: ['members'],
-    editableBy: ['members'],
+    canRead: ['members'],
+    canCreate: ['members', 'admins'],
+    canUpdate: ['members', 'admins'],
     group: addressGroup
   },
   'addresses.$': {
@@ -227,25 +230,17 @@ const schema = {
   slug: {
     type: String,
     optional: true,
-    viewableBy: ['members'],
-    onInsert: (o) => {
-      return Utils.slugify(o.displayName)
+    canRead: ['members'],
+    onCreate: ({ document }) => {
+      return Utils.slugify(document.displayName)
     },
-    onEdit: (modifier, o) => {
-      if (modifier.$set.displayName) {
-        return Utils.slugify(modifier.$set.displayName)
+    onUpdate: ({ data }) => {
+      if (data.slug) {
+        return Utils.slugify(data.slug)
       }
-    }
-  },
-  updatedAt: {
-    type: Date,
-    optional: true,
-    viewableBy: ['guests'],
-    onInsert: () => {
-      return new Date()
-    },
-    onEdit: () => {
-      return new Date()
+      if (data.displayName) {
+        return Utils.slugify(data.displayName)
+      }
     }
   },
 
@@ -254,8 +249,8 @@ const schema = {
     type: Array,
     optional: true,
     canRead: ['members'],
-    canCreate: ['members'],
-    canUpdate: ['members'],
+    canCreate: ['members', 'admins'],
+    canUpdate: ['members', 'admins'],
     query: `
       projects{
         results{
@@ -295,9 +290,9 @@ const schema = {
     label: 'Past Projects',
     type: Array,
     optional: true,
-    viewableBy: ['members'],
-    insertableBy: ['members'],
-    editableBy: ['members'],
+    canRead: ['members'],
+    canCreate: ['members', 'admins'],
+    canUpdate: ['members', 'admins'],
     query: `
       pastProjects{
         results{
@@ -317,9 +312,9 @@ const schema = {
     label: 'Contacts',
     type: Array,
     optional: true,
-    viewableBy: ['members'],
-    insertableBy: ['admins'],
-    editableBy: ['admins'],
+    canRead: ['members'],
+    canCreate: ['members', 'admins'],
+    canUpdate: ['members', 'admins'],
     query: `
       contacts{
         results{
@@ -375,7 +370,7 @@ const schema = {
     label: 'Full Address',
     type: String,
     optional: true,
-    canRead: 'guests',
+    canRead: ['members'],
     resolveAs: {
       type: 'String',
       resolver: (o) => {
@@ -408,7 +403,7 @@ const schema = {
     label: 'Location',
     type: String,
     optional: true,
-    canRead: 'guests',
+    canRead: ['guests'],
     resolveAs: {
       type: 'String',
       resolver: (o) => {
@@ -433,7 +428,7 @@ const schema = {
     label: 'Address',
     type: String,
     optional: true,
-    viewableBy: ['members'],
+    canRead: ['members'],
     resolveAs: {
       type: 'String',
       resolver: (o) => {
@@ -448,7 +443,7 @@ const schema = {
     label: 'Address',
     type: String,
     optional: true,
-    viewableBy: ['members'],
+    canRead: ['members'],
     resolveAs: {
       type: 'String',
       resolver: (o) => {
@@ -470,7 +465,7 @@ const schema = {
     label: '(cont)',
     type: String,
     optional: true,
-    viewableBy: ['members'],
+    canRead: ['members'],
     resolveAs: {
       type: 'String',
       resolver: (o) => {
@@ -492,7 +487,7 @@ const schema = {
     label: 'City',
     type: String,
     optional: true,
-    viewableBy: ['members'],
+    canRead: ['members'],
     resolveAs: {
       type: 'String',
       resolver: (o) => {
@@ -514,7 +509,7 @@ const schema = {
     label: 'State',
     type: String,
     optional: true,
-    viewableBy: ['members'],
+    canRead: ['members'],
     resolveAs: {
       type: 'String',
       resolver: (o) => {
@@ -536,7 +531,7 @@ const schema = {
     label: 'Location',
     type: String,
     optional: true,
-    viewableBy: 'guests',
+    canRead: 'guests',
     resolveAs: {
       type: 'String',
       resolver: (o) => { // have to repeat theState code, not available on its own
@@ -565,7 +560,7 @@ const schema = {
     label: 'Zip',
     type: String,
     optional: true,
-    viewableBy: ['members'],
+    canRead: ['members'],
     resolveAs: {
       type: 'String',
       resolver: (o) => {

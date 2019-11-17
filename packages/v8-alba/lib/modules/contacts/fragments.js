@@ -26,15 +26,43 @@ registerFragment(/* GraphQL */ `
     title
     body
     htmlBody
-    links
+    links {
+      platformName
+      profileLink
+      profileName
+    }
     allLinks
-    addresses
+    addresses {
+      street1
+      street2
+      city
+      state
+      zip
+      location
+    }
     allAddresses
-    theAddress
+    theAddress {
+      street1
+      street2
+      city
+      state
+      zip
+      location
+    }
     addressString
-    projects
-    pastProjects
-    offices
+    projects {
+      projectId
+      projectTitle
+      titleForProject
+    }
+    pastProjects {
+      projectId
+      projectTitle
+      titleForProject
+    }
+    offices {
+      officeId
+    }
     slug
   }
 `)
@@ -45,8 +73,22 @@ registerFragment(/* GraphQL */ `
     displayName
     title
     addressString
-    theAddress
-    addresses
+    theAddress {
+      street1
+      street2
+      city
+      state
+      zip
+      location
+    }
+    addresses {
+      street1
+      street2
+      city
+      state
+      zip
+      location
+    }
     createdAt
     updatedAt
     allLinks
@@ -78,13 +120,41 @@ registerFragment(/* GraphQL */ `
     title
     body
     htmlBody
-    links
-    addresses
+    links {
+      platformName
+      profileLink
+      profileName
+    }
+    addresses {
+      street1
+      street2
+      city
+      state
+      zip
+      location
+    }
     allAddresses
-    theAddress
-    projects
-    pastProjects
-    offices
+    theAddress {
+      street1
+      street2
+      city
+      state
+      zip
+      location
+    }
+    projects {
+      projectId
+      projectTitle
+      titleForProject
+    }
+    pastProjects {
+      projectId
+      projectTitle
+      titleForProject
+    }
+    offices {
+      officeId
+    }
     slug
   }
 `)

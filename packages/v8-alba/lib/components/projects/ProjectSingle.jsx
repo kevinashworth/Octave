@@ -1,4 +1,5 @@
 import { Components, registerComponent, withCurrentUser, withSingle } from 'meteor/vulcan:core'
+import Users from 'meteor/vulcan:users'
 import { FormattedMessage } from 'meteor/vulcan:i18n'
 import React, { PureComponent } from 'react'
 import { Link } from 'react-router-dom'
@@ -54,7 +55,7 @@ class ProjectSingle extends PureComponent {
       <div className='animated fadeIn'>
         <Components.HeadTags title={`V8 Alba: ${project.projectTitle}`} />
         <Card className='card-accent-danger'>
-          <CardHeader tag='h2'>{ project.projectTitle }{ Projects.options.mutations.edit.check(currentUser, project)
+          <CardHeader tag='h2'>{ project.projectTitle }{ Users.canUpdate({ collection: Projects, user: currentUser, document })
             ? <div className='float-right'>
               <Button tag={Link} to={`/projects/${project._id}/edit`}>Edit</Button>
             </div> : null}

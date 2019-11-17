@@ -39,10 +39,11 @@ class UsersProfile extends PureComponent {
             title={`V8 Alba: ${Users.getDisplayName(user)}`}
           />
           <Card className='card-accent-muted'>
-            <CardHeader tag='h2'>{Users.getDisplayName(user)}{ Users.options.mutations.edit.check(currentUser, user)
+            <CardHeader tag='h2'>{Users.getDisplayName(user)}{ Users.canUpdate({ collection: Users, user: currentUser, document: user })
               ? <div className='float-right'>
-                <Button tag={Link} to={`/users/${user.slug}/edit`}>Edit</Button>
-              </div> : null}
+                  <Button tag={Link} to={`/users/${user.slug}/edit`}>Edit</Button>
+                </div>
+              : null}
             </CardHeader>
             <CardBody>
               {user.htmlBio
