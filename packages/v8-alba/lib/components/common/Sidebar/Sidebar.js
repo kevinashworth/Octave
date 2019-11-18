@@ -147,8 +147,8 @@ class Sidebar extends Component {
         <nav className='sidebar-nav'>
           <Nav>
             {topNav}
-            <Media query="(max-width: 575.98px)" render={() => (<Fragment>{xsNav}</Fragment>)} defaultMatches={false} />
-            <Media query="(min-width: 576px)" render={() => (<Fragment>{smNav}</Fragment>)} defaultMatches={true} />
+            <Media query='(max-width: 575.98px)' render={() => (<Fragment>{xsNav}</Fragment>)} defaultMatches={false} />
+            <Media query='(min-width: 576px)' render={() => (<Fragment>{smNav}</Fragment>)} defaultMatches={true} />
             {bottomNav}
           </Nav>
         </nav>

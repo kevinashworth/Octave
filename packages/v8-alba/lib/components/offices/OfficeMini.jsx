@@ -22,15 +22,13 @@ const OfficeMini = (props) => {
   return (
     <Card className='card-accent-primary'>
       <CardHeader tag='h6'><Link to={`/offices/${office._id}/${office.slug}`}>{officeName}</Link></CardHeader>
-      <CardBody>
-        {office.addresses &&
-          office.addresses.map(address => {
-            return (
-              <Markup key={address.street1 + address.street2} content={createdFormattedAddress(address)}/>
-            )
-          })
-        }
-      </CardBody>
+      {office.addresses && office.addresses.map(address => {
+        return (
+          <CardBody key={address.street1 + address.street2}>
+            <Markup content={createdFormattedAddress(address)}/>
+          </CardBody>
+        )
+      })}
     </Card>
   )
 }
