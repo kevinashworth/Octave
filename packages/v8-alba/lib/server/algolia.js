@@ -10,7 +10,17 @@ let algoliaindex  = Meteor.settings.private.algolia.AlgoliaIndex
 
 const createAlgoliaIndex = () => {
   const client = algoliasearch(applicationid, adminapikey)
+
   const index = client.initIndex(algoliaindex)
+  index.getSettings((err, content) => {
+    if (err) {
+      console.error('Algolia getSettings error:', err)
+    }
+    console.group('Algolia getSettings:')
+    console.log(content)
+    console.groupEnd()
+  })
+
   let objects = []
   Contacts.find().forEach((o) => {
     const indexedObject = {
@@ -59,10 +69,12 @@ const createAlgoliaIndex = () => {
   index
     .saveObjects(objects)
     .then(({ objectIDs }) => {
+      console.group('Algolia saveObjects:')
       console.log(objectIDs)
+      console.groupEnd()
     })
     .catch(err => {
-      console.error(err)
+      console.error('Algolia saveObjects error:', err)
     })
 }
 

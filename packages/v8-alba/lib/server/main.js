@@ -1,11 +1,15 @@
-// let mongoPassword = Meteor.settings.private.mlabpass
-// let mongoUsername = Meteor.settings.private.mlabuser
-// process.env.MONGO_URL = 'mongodb://' + mongoUsername + ':' + mongoPassword + '@ds163769.mlab.com:63769/v8-alba-mlab'
-
 import '../modules/index.js'
-import './seed.js'
+// import './seed.js'
 import './migrations.js'
-// import './algolia.js'
+
+Meteor.call('getProcessEnvMongoUrl', function (err, results) {
+  if (err) {
+    console.error('getProcessEnvMongoUrl[main] error:', err)
+  }
+  if (results.indexOf('v8-alba-mlab') > 0) {
+    import './algolia.js'
+  }
+})
 
 import Contacts from '../modules/contacts/collection.js'
 
