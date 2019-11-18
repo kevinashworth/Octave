@@ -113,7 +113,7 @@ class ProjectsSingle extends PureComponent {
                   <Components.OfficeMini documentId={project.castingOfficeId} />
                 }
                 {project.contacts
-                  ? project.contacts.map(contact => <Components.ProjectsContactDetail key={contact.contactId} contact={contact} />)
+                  ? project.contacts.map(contact => <Components.ContactDetail key={contact.contactId} contact={contact} />)
                   : null }
                 {project.addresses
                   ? project.addresses.map(address => <Components.ProjectsAddressDetail key={address} address={address} />)
