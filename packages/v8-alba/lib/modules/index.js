@@ -9,7 +9,7 @@ import './contacts'
 import './offices'
 import './projects'
 import './past-projects'
-import './statistics/collection'
+import './statistics'
 
 import './fragments'
 

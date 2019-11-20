@@ -1,19 +1,16 @@
-import { createCollection, getDefaultResolvers, getDefaultMutations } from 'meteor/vulcan:core'
+import { createCollection } from 'meteor/vulcan:core'
 import schema from './schema.js'
-// import './fragments.js';
-// import './permissions.js';
 
 const Statistics = createCollection({
+  typeName: 'Statistic',
   collectionName: 'Statistics',
-
-  typeName: 'Statistics',
-
   schema,
-
-  resolvers: getDefaultResolvers('Statistics'),
-
-  mutations: getDefaultMutations('Statistics')
-
+  permissions: {
+    canCreate: ['members'],
+    canRead: ['guests'],
+    canUpdate: ['owners', 'admins'],
+    canDelete: ['owners', 'admins'],
+  }
 })
 
 // default sort by createdAt timestamp in descending order
