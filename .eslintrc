@@ -58,7 +58,7 @@
     "meteor": true,
     "node": true
   },
-  "plugins": ["babel", "meteor", "react"],
+  "plugins": ["babel", "meteor", "react", "graphql"],
   "settings": {
     "import/resolver": "meteor"
   },
