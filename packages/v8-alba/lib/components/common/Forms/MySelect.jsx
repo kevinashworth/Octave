@@ -21,9 +21,9 @@ class MySelect extends Component {
     if (this.props.parentFieldName === 'projects' || this.props.parentFieldName === 'pastProjects') {
       siblingPath = this.props.parentFieldName + '.' + this.props.itemIndex + '.' + 'projectTitle'
     }
-    // if (this.props.parentFieldName === 'offices') {
-    //   siblingPath = this.props.parentFieldName + '.' + this.props.itemIndex + '.' + 'displayName'
-    // }
+    if (this.props.parentFieldName === 'offices') {
+      siblingPath = this.props.parentFieldName + '.' + this.props.itemIndex + '.' + 'displayName'
+    }
     if (siblingPath) {
       this.context.updateCurrentValues({
         [this.props.path]: selectedOption.value,
@@ -37,7 +37,6 @@ class MySelect extends Component {
 
   render () {
     const { selectOne } = this.props.inputProperties
-    // const { selectedOption } = this.state
     const selectedOption = find(this.props.options, { value: this.props.value }) || null
     const noneOption = {
       label: this.context.intl.formatMessage({ id: 'forms.select_option' }),

@@ -115,9 +115,6 @@ const officeSubSchema = new SimpleSchema({
     type: String,
     label: 'Office',
     input: 'MySelect',
-    inputProperties: {
-      selectMulti: true
-    },
     optional: true,
     canRead: ['members'],
     canCreate: ['members', 'admins'],

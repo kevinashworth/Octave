@@ -71,9 +71,6 @@ const projectSubSchema = new SimpleSchema({
     type: String,
     label: 'Project',
     input: 'MySelect',
-    inputProperties: {
-      selectMulti: true
-    },
     optional: true,
     canRead: ['members'],
     canCreate: ['members', 'admins'],
@@ -87,7 +84,9 @@ const projectSubSchema = new SimpleSchema({
     type: String,
     optional: true,
     hidden: true,
-    canRead: ['members']
+    canRead: ['members'],
+    canCreate: ['members', 'admins'],
+    canUpdate: ['members', 'admins']
   }
 })
 
@@ -96,9 +95,6 @@ const pastProjectSubSchema = new SimpleSchema({
     type: String,
     label: 'Past Project',
     input: 'MySelect',
-    inputProperties: {
-      selectMulti: true
-    },
     optional: true,
     canRead: ['members'],
     canCreate: ['members', 'admins'],
@@ -112,7 +108,9 @@ const pastProjectSubSchema = new SimpleSchema({
     type: String,
     optional: true,
     hidden: true,
-    canRead: ['members']
+    canRead: ['members'],
+    canCreate: ['members', 'admins'],
+    canUpdate: ['members', 'admins']
   }
 })
 
