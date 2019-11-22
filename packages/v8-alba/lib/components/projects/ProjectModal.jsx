@@ -52,7 +52,7 @@ class ProjectModal extends PureComponent {
               <b>{ project.castingCompany }</b>
             </CardText>
             {project.contacts
-              ? project.contacts.map(contact => <Components.ProjectsContactDetail key={contact.contactId} contact={contact} />)
+              ? project.contacts.map(contact => <Components.ContactDetail key={contact.contactId} contact={contact} />)
               : null
             }
             {project.addresses

@@ -37,7 +37,7 @@ const nav = {
     },
     {
       name: 'Past Projects',
-      url: '/past-projects/datatable',
+      url: '/past-projects',
       icon: 'fa fa-camera'
     }
   ],
