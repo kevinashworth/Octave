@@ -4,17 +4,12 @@ import { FormattedMessage } from 'meteor/vulcan:i18n'
 import React, { PureComponent } from 'react'
 import { Link } from 'react-router-dom'
 import mapProps from 'recompose/mapProps'
-import { Button, Card, CardBody, CardFooter, CardHeader, CardLink, CardText, CardTitle, Col, Row } from 'reactstrap'
+import { Button, Card, CardBody, CardFooter, CardHeader, CardLink, CardSubtitle, CardText, CardTitle, Col, Row } from 'reactstrap'
 import Interweave from 'interweave'
-import styled from 'styled-components'
 import moment from 'moment'
 import { DATE_FORMAT_LONG, DATE_FORMAT_SHORT } from '../../modules/constants.js'
 import { transform } from '../../modules/helpers.js'
 import Projects from '../../modules/projects/collection.js'
-
-const SpanVerticalBarBefore = styled.span`
-  ::before { content: " | "; };
-`
 
 class ProjectSingle extends PureComponent {
   seasonorder (project) {
@@ -55,43 +50,29 @@ class ProjectSingle extends PureComponent {
       <div className='animated fadeIn'>
         <Components.HeadTags title={`V8 Alba: ${project.projectTitle}`} />
         <Card className='card-accent-danger'>
-          <CardHeader tag='h2'>{ project.projectTitle }{ Users.canUpdate({ collection: Projects, user: currentUser, document })
-            ? <div className='float-right'>
-              <Button tag={Link} to={`/projects/${project._id}/edit`}>Edit</Button>
-            </div> : null}
+          <CardHeader tag='h2'>
+            { project.projectTitle }
+            { Users.canUpdate({ collection: Projects, user: currentUser, document })
+              ? <div className='float-right'>
+                  <Button tag={Link} to={`/projects/${project._id}/edit`}>Edit</Button>
+                </div>
+              : null }
           </CardHeader>
           <CardBody>
-            <CardTitle className='mb-1'>
-              { project.projectType &&
-                <span>
-                  { project.projectType }
-                </span>
-              }
-              { project.network &&
-                <SpanVerticalBarBefore>
-                  { project.network }
-                </SpanVerticalBarBefore>
-              }
-              { project.platformType &&
-                <SpanVerticalBarBefore>
-                  { project.platformType }
-                </SpanVerticalBarBefore>
-              }
-              { project.union &&
-                <SpanVerticalBarBefore>
-                  { project.union }
-                </SpanVerticalBarBefore>
-              }
+            <CardTitle>
+              { project.projectType }
+              { project.network && ` – ${project.network}` }
             </CardTitle>
-            <CardText className='mb-1'>{ project.status }</CardText>
-            { seasonorder &&
-              <CardText>{ seasonorder }</CardText>
-            }
+            <CardSubtitle className='mb-1'>
+              { project.union }{ project.platformType && ` (${project.platformType})` }<br />
+              { project.status }<br />
+              { seasonorder }
+            </CardSubtitle>
+            <hr />
             {project.htmlSummary
               ? <Interweave content={project.htmlSummary} transform={transform} />
               : <CardText>{ project.summary }</CardText>
             }
-            <hr />
             {project.htmlNotes
               ? <Interweave content={project.htmlNotes} transform={transform} />
               : <CardText>{ project.notes }</CardText>
