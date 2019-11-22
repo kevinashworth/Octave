@@ -148,10 +148,10 @@ class ProjectsNameOnly extends PureComponent {
     if (networkStatus !== 8 && networkStatus !== 7) {
       return (
         <div className='animated fadeIn'>
-          <Components.HeadTags title='V8 Alba: Contacts' />
+          <Components.HeadTags title='V8 Alba: Projects' />
           <Card>
             <CardHeader>
-              <i className='icon-people' />Contacts
+              <i className='icon-people' />Projects
             </CardHeader>
             <CardBody>
               <Components.Loading />
