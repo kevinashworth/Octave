@@ -106,6 +106,7 @@ const SVOD_ENUM = [
   'Amazon',
   'Amazon Prime',
   'Apple TV+',
+  'AppleTV+',
   'BET+',
   'CBS All Access',
   'DC Universe',
