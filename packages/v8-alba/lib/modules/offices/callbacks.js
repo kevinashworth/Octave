@@ -48,8 +48,8 @@ function OfficeEditUpdatePastProjects (data, { document }) {
     const newOfficeId = office._id
     if (project.castingOfficeId !== newOfficeId) {
       Connectors.update(PastProjects, project._id, { $set: {
-        castingOfficeId: newOfficeId,
-        updatedAt: new Date() // 2019-11-06: should we update ancient projects? which would happen...
+        castingOfficeId: newOfficeId
+        // updatedAt: new Date() 2019-11-22: let's not update the date of ancient projects
       } })
     }
   })
