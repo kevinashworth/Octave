@@ -29,10 +29,13 @@ const UsersEditForm = ({ currentUser, flash, history, networkStatus, terms, togg
         {...terms}
         mutationFragment={getFragment('UsersEditFragment')}
         successCallback={document => {
+          flash({ id: 'users.edit_success', properties: { name: document.displayName }, type: 'success' })
           if (toggle) {
             toggle()
+          } else if (terms.slug) {
+            history.push(`/users/${terms.slug}`)
           } else {
-            flash({ id: 'users.edit_success', properties: { name: document.displayName }, type: 'success' })
+            history.push('/admin')
           }
         }}
         showRemove={true}
@@ -52,10 +55,8 @@ const UsersEditForm = ({ currentUser, flash, history, networkStatus, terms, togg
         cancelCallback={document => {
           if (toggle) {
             toggle()
-          } else if (terms.slug) {
-            history.push(`/users/${terms.slug}`)
           } else {
-            history.push('/dashboard')
+            history.goBack()
           }
         }}
       />
