@@ -60,7 +60,7 @@ class LineChartLarge extends PureComponent {
     const allData = theStats.episodics.concat(theStats.features, theStats.pilots, theStats.others)
     const sortedData = _.sortBy(allData, 'date')
     const allDates = sortedData.map(stat => moment(stat.date).format('D MMM YY'))
-    const dateLabels = _.uniqBy(allDates) // TODO: Is there a sipmler way to get this?
+    const dateLabels = _.uniqBy(allDates) // TODO: Is there a simpler way to get this?
 
     const mainChart = {
       labels: dateLabels,

@@ -18,8 +18,6 @@ So for each of the office.projects we update project.castingOfficeId of the Proj
 {
   officeId: office._id
 }
-
-TODO: For some reason, the project's `updatedAt` field doesn't get a `new Date()` `onEdit`
 */
 function OfficeEditUpdateProjects (data, { document }) {
   const office = document

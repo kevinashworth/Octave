@@ -24,8 +24,6 @@ So for each of the pastproject.contacts we update contact.pastprojects of the Co
   projectTitle: project.projectTitle,
   titleForProject: projectContact.contactTitle
 }
-
-TODO: For some reason, the contact's `updatedAt` field doesn't get a `moment().format("YYYY-MM-DD HH:mm:ss")` `onEdit`
 */
 function PastProjectEditUpdateContacts (data, { document }) {
   const project = document
