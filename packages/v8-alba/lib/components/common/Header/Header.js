@@ -1,6 +1,6 @@
 import { Components, registerComponent } from 'meteor/vulcan:core'
 import React, { PureComponent } from 'react'
-import { Nav, NavbarBrand, NavbarToggler } from 'reactstrap'
+import { Input, Nav, NavbarBrand, NavbarToggler } from 'reactstrap'
 
 class Header extends PureComponent {
   sidebarToggle (e) {
@@ -24,7 +24,7 @@ class Header extends PureComponent {
           <span className='navbar-toggler-icon' />
         </NavbarToggler>
         <Nav navbar>
-          <Components.Search />
+          <Input placeholder='Algolia' />
         </Nav>
         <Nav className='ml-auto'>
           <Components.UsersMenu />
