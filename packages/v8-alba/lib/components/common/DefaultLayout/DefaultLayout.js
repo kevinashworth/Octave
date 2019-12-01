@@ -1,10 +1,10 @@
+import { replaceComponent, Components } from 'meteor/vulcan:core';
 import React, { Component } from 'react';
-import { Redirect, Route, Switch } from 'react-router-dom';
+// import { Redirect, Route, Switch } from 'react-router-dom';
 import { Container } from 'reactstrap';
 
 import {
   AppAside,
-  AppBreadcrumb,
   AppFooter,
   AppHeader,
   AppSidebar,
@@ -15,9 +15,9 @@ import {
   AppSidebarNav,
 } from '@coreui/react';
 // sidebar nav config
-import navigation from '../../_nav';
+import navigation from './_nav';
 // routes config
-import routes from '../../routes';
+// import routes from '../../routes';
 
 import DefaultAside from './DefaultAside';
 import DefaultFooter from './DefaultFooter';
@@ -39,18 +39,9 @@ class DefaultLayout extends Component {
             <AppSidebarMinimizer />
           </AppSidebar>
           <main className="main">
-            <AppBreadcrumb appRoutes={routes}/>
+            {/*<AppBreadcrumb appRoutes={routes}/>*/}
             <Container fluid>
-              <Switch>
-                {routes.map((route, idx) => {
-                    return route.component ? (<Route key={idx} path={route.path} exact={route.exact} name={route.name} render={props => (
-                        <route.component {...props} />
-                      )} />)
-                      : (null);
-                  },
-                )}
-                <Redirect from="/" to="/dashboard" />
-              </Switch>
+              {this.props.children}
             </Container>
           </main>
           <AppAside fixed hidden>
@@ -65,4 +56,4 @@ class DefaultLayout extends Component {
   }
 }
 
-export default DefaultLayout;
+replaceComponent('Layout', DefaultLayout);

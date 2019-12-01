@@ -23,6 +23,15 @@ Package.onUse(function (api) {
   api.addFiles('lib/stylesheets/react-virtualized-styles.css', 'client');
   api.addFiles('lib/stylesheets/ContactsVirtualizedList.css', 'client');
 
+  api.addFiles([
+    'lib/stylesheets/react-perfect-scrollbar-styles.css'
+  ], ['client']);
+
+  api.addAssets([
+    'lib/static/brand/logo.svg',
+    'lib/static/brand/sygnet.svg'
+  ], ['client']);
+
   api.mainModule('lib/server/main.js', 'server');
   api.mainModule('lib/client/main.js', 'client');
 });
