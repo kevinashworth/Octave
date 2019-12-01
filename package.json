@@ -18,6 +18,9 @@
   "dependencies": {
     "@apollo/react-hooks": "^3.1.1",
     "@babel/runtime": "^7.1.2",
+    "@coreui/coreui-pro": "2.0.6",
+    "@coreui/icons": "0.3.0",
+    "@coreui/react": "2.0.5",
     "algoliasearch": "^3.35.1",
     "analytics-node": "^2.1.1",
     "apollo-boost": "^0.1.16",
