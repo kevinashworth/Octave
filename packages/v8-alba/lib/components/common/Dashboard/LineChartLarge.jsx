@@ -13,9 +13,24 @@ import {
   Progress,
   Row
 } from 'reactstrap'
+import styled from 'styled-components'
 import moment from 'moment'
 import _ from 'lodash'
 import { brandColors } from './brandColors.js'
+
+// styles copied from Alba 1.8.4 to 2.0.9
+const List = styled.ul`
+  display: table;
+  width: 100%;
+  padding: 0;
+  margin: 0;
+  table-layout: fixed;
+`
+const Item = styled.li`
+  display: table-cell;
+  padding: 0 1.25rem;
+  text-align: center;
+`
 
 class LineChartLarge extends PureComponent {
   constructor (props) {
@@ -154,28 +169,28 @@ class LineChartLarge extends PureComponent {
           </div>
         </CardBody>
         <CardFooter>
-          <ul>
-            <li>
+          <List>
+            <Item>
               <strong>Episodics</strong>
               <div className='text-muted'>{theStats.episodics[theStats.episodics.length - 1].quantity} Currently Casting</div>
               <Progress className='progress-xs mt-2' color='success' value='100' />
-            </li>
-            <li>
+            </Item>
+            <Item>
               <strong>Features</strong>
               <div className='text-muted'>{theStats.features[theStats.features.length - 1].quantity} Currently Casting</div>
               <Progress className='progress-xs mt-2' color='info' value='100' />
-            </li>
-            <li>
+            </Item>
+            <Item>
               <strong>Pilots</strong>
               <div className='text-muted'>{theStats.pilots[theStats.pilots.length - 1].quantity} Currently Casting</div>
               <Progress className='progress-xs mt-2' color='warning' value='100' />
-            </li>
-            <li>
+            </Item>
+            <Item>
               <strong>Others</strong>
               <div className='text-muted'>{theStats.others[theStats.others.length - 1].quantity} Currently Casting</div>
               <Progress className='progress-xs mt-2' color='danger' value='100' />
-            </li>
-          </ul>
+            </Item>
+          </List>
         </CardFooter>
       </Card>
     )
