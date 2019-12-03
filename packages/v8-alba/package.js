@@ -14,7 +14,7 @@ Package.onUse(function (api) {
     'percolate:migrations'
   ]);
 
-  api.addFiles('lib/stylesheets/scss/style.scss', 'client');
+  // api.addFiles('lib/stylesheets/scss/style.scss', 'client');
   api.addFiles('lib/stylesheets/simple-line-icons.scss', 'client');
   api.addFiles('lib/stylesheets/react-bootstrap-table-all.min.css', 'client');
   api.addFiles('lib/stylesheets/spinner.scss', 'client');
@@ -24,7 +24,8 @@ Package.onUse(function (api) {
   api.addFiles('lib/stylesheets/ContactsVirtualizedList.css', 'client');
 
   api.addFiles([
-    'lib/stylesheets/react-perfect-scrollbar-styles.css'
+    'lib/stylesheets/alba-2.0.9/react-perfect-scrollbar-styles.css',
+    'lib/stylesheets/alba-2.0.9/style.css'
   ], ['client']);
 
   api.addAssets([
