@@ -30,7 +30,9 @@ Package.onUse(function (api) {
 
   api.addAssets([
     'lib/static/brand/logo.svg',
-    'lib/static/brand/sygnet.svg'
+    'lib/static/brand/sygnet.svg',
+    'lib/static/brand/logo-pro.svg',
+    'lib/static/brand/sygnet-pro.svg'
   ], ['client']);
 
   api.mainModule('lib/server/main.js', 'server');

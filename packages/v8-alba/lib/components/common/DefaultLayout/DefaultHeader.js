@@ -20,8 +20,8 @@ class DefaultHeader extends Component {
       <React.Fragment>
         <AppSidebarToggler className="d-lg-none" display="md" mobile />
         <AppNavbarBrand
-        full={{ src: '/packages/v8-alba/lib/static/brand/logo.svg', width: 89, height: 25, alt: 'CoreUI Logo' }}
-        minimized={{ src: '/packages/v8-alba/lib/static/brand/sygnet.svg', width: 30, height: 30, alt: 'CoreUI Logo' }}
+          full={{ src: '/packages/v8-alba/lib/static/brand/logo-pro.svg', width: 89, height: 25, alt: 'Logo' }}
+          minimized={{ src: '/packages/v8-alba/lib/static/brand/sygnet-pro.svg', width: 30, height: 30, alt: 'Sygnet' }}
         />
         <AppSidebarToggler className="d-md-down-none" display="lg" />
         <Nav className="ml-auto" navbar>
