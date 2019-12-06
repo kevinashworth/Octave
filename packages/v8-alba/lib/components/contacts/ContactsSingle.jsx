@@ -5,7 +5,7 @@ import React, { PureComponent } from 'react'
 import PropTypes from 'prop-types'
 import { Link } from 'react-router-dom'
 import mapProps from 'recompose/mapProps'
-import { Button, Card, CardBody, CardFooter, CardHeader, CardLink, CardText, CardTitle, Col, Collapse, Row } from 'reactstrap'
+import { Button, Card, CardBody, CardFooter, CardHeader, CardText, CardTitle, Col, Collapse, Row } from 'reactstrap'
 import Interweave from 'interweave'
 import moment from 'moment'
 import { DATE_FORMAT_LONG, DATE_FORMAT_SHORT } from '../../modules/constants.js'
@@ -88,10 +88,8 @@ class ContactsSingle extends PureComponent {
                 {contact.links &&
                 <CardBody>
                   <CardText>
-                    {contact.links.map(link =>
-                      <Button className={`btn-${link.platformName.toLowerCase()} text-white`} key={link.profileLink}>
-                        <span><CardLink href={link.profileLink} target='_links'>{link.profileName}</CardLink></span>
-                      </Button>)}
+                    {contact.links.map((link, index) =>
+                      <Components.LinkDetail key={`link-detail-${index}`} link={link} />)}
                   </CardText>
                 </CardBody>
                 }
