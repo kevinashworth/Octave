@@ -123,10 +123,9 @@ class PastProjectsSingle extends PureComponent {
           {project.links &&
           <CardBody>
             <CardText>
-              {project.links.map(link =>
-                <Button className={`btn-${link.platformName.toLowerCase()} text-white`} key={link.profileLink}>
-                  <span><CardLink href={link.profileLink} target='_links'>{link.profileName}</CardLink></span>
-                </Button>)}
+              {project.links.map((link, index) =>
+                <Components.LinkDetail key={`link-detail-${index}`} link={link} />
+              )}
             </CardText>
           </CardBody>
           }

@@ -3,7 +3,7 @@ import Users from 'meteor/vulcan:users'
 import { FormattedMessage } from 'meteor/vulcan:i18n'
 import React, { PureComponent } from 'react'
 import { Link } from 'react-router-dom'
-import { Button, Card, CardBody, CardFooter, CardHeader, CardLink, CardText, CardTitle, Collapse, Col, Row } from 'reactstrap'
+import { Button, Card, CardBody, CardFooter, CardHeader, CardText, CardTitle, Collapse, Col, Row } from 'reactstrap'
 import Interweave from 'interweave'
 import mapProps from 'recompose/mapProps'
 import moment from 'moment'
@@ -90,10 +90,9 @@ class OfficesSingle extends PureComponent {
               {office.links &&
               <CardBody>
                 <CardText>
-                  {office.links.map(link =>
-                    <Button className={`btn-${link.platformName.toLowerCase()} text-white`} key={link.profileLink}>
-                      <span><CardLink href={link.profileLink} target='_links'>{link.profileName}</CardLink></span>
-                    </Button>)}
+                  {office.links.map((link, index) =>
+                    <Components.LinkDetail key={`link-detail-${index}`} link={link} />
+                  )}
                 </CardText>
               </CardBody>
               }

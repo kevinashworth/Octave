@@ -89,7 +89,8 @@ class ContactsSingle extends PureComponent {
                 <CardBody>
                   <CardText>
                     {contact.links.map((link, index) =>
-                      <Components.LinkDetail key={`link-detail-${index}`} link={link} />)}
+                      <Components.LinkDetail key={`link-detail-${index}`} link={link} />
+                    )}
                   </CardText>
                 </CardBody>
                 }

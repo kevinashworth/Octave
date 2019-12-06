@@ -52,7 +52,7 @@ class UsersProfile extends PureComponent {
               }
               {user.website ? (
                 <CardText>
-                <a href={user.website} target='_links'>{user.website} </a>
+                <a href={user.website} target='_websites'>{user.website} </a>
                 </CardText>
               ) : null}
             </CardBody>
