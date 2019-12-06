@@ -72,6 +72,8 @@ const CABLE_ENUM = [
   'Logo',
   'MTV',
   'Nat Geo',
+  'NatGeo',
+  'National Geographic',
   'Nick',
   'Nickelodeon',
   'Nick Jr.',
