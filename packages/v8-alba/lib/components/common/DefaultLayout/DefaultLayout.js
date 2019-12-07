@@ -1,8 +1,8 @@
-import { replaceComponent, Components } from 'meteor/vulcan:core';
+import { Components, replaceComponent, withCurrentUser } from 'meteor/vulcan:core';
+import Users from 'meteor/vulcan:users';
 import React, { Component } from 'react';
-// import { Redirect, Route, Switch } from 'react-router-dom';
+import Media from 'react-media';
 import { Container, Input } from 'reactstrap';
-
 import {
   AppFooter,
   AppHeader,
@@ -13,18 +13,28 @@ import {
   AppSidebarMinimizer,
   AppSidebarNav,
 } from '@coreui/react';
-// sidebar nav config
-import nav from './_nav';
-// routes config
-// import routes from '../../routes';
 
-// import DefaultAside from './DefaultAside';
+import nav from './_nav';
 import DefaultFooter from './DefaultFooter';
 import DefaultHeader from './DefaultHeader';
 
 class DefaultLayout extends Component {
   render() {
-    const { children, ...rest } = this.props;
+    const { children, currentUser, ...rest } = this.props;
+
+    var xsNav = { items: [] };
+    xsNav.items.push(...nav.topItems);
+    xsNav.items.push(...nav.xsItems);
+    if (Users.isAdmin(currentUser)) {
+      xsNav.items.push(...nav.adminItems);
+    }
+    var smNav = { items: [] };
+    smNav.items.push(...nav.topItems);
+    smNav.items.push(...nav.smItems);
+    if (Users.isAdmin(currentUser)) {
+      smNav.items.push(...nav.adminItems);
+    }
+
     return (
       <div className="app">
         <AppHeader fixed>
@@ -36,7 +46,10 @@ class DefaultLayout extends Component {
             <AppSidebarForm>
               <Input placeholder='Search…' />
             </AppSidebarForm>
-            <AppSidebarNav navConfig={nav} {...rest} />
+            <Media query='(max-width: 575.98px)' defaultMatches={false}
+              render={() => (<AppSidebarNav navConfig={xsNav} {...rest} />)} />
+            <Media query='(min-width: 576px)' defaultMatches={true}
+              render={() => (<AppSidebarNav navConfig={smNav} {...rest} />)} />
             <AppSidebarFooter />
             <AppSidebarMinimizer />
           </AppSidebar>
@@ -58,4 +71,8 @@ class DefaultLayout extends Component {
   }
 }
 
-replaceComponent('Layout', DefaultLayout);
+replaceComponent({
+  name: 'Layout',
+  component: DefaultLayout,
+  hocs: [withCurrentUser]
+});
