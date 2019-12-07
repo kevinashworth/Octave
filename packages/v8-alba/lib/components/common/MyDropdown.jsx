@@ -40,7 +40,7 @@ const Item = ({ index, to, labelId, label, component, componentProps = {}, itemP
   }
 
   const item = (
-    <DropdownItem eventKey={index} {...itemProps} {...rest}>
+    <DropdownItem {...itemProps} {...rest}>
       {menuComponent}
     </DropdownItem>
   );
