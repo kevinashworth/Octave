@@ -2,6 +2,9 @@ import { addStrings } from 'meteor/vulcan:core'
 
 addStrings('en', {
 
+  'admin.users': 'User Admin',
+  'users.admin': 'User Admin',
+
   'comments.comments': 'Comments',
   'comments.count': '{count, plural, =0 {No comments} one {# comment} other {# comments}}',
   'comments.count_0': 'No comments',

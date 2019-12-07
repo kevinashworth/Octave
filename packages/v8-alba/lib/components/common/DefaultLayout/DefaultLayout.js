@@ -1,10 +1,9 @@
 import { replaceComponent, Components } from 'meteor/vulcan:core';
 import React, { Component } from 'react';
 // import { Redirect, Route, Switch } from 'react-router-dom';
-import { Container } from 'reactstrap';
+import { Container, Input } from 'reactstrap';
 
 import {
-  AppAside,
   AppFooter,
   AppHeader,
   AppSidebar,
@@ -19,7 +18,7 @@ import nav from './_nav';
 // routes config
 // import routes from '../../routes';
 
-import DefaultAside from './DefaultAside';
+// import DefaultAside from './DefaultAside';
 import DefaultFooter from './DefaultFooter';
 import DefaultHeader from './DefaultHeader';
 
@@ -33,8 +32,10 @@ class DefaultLayout extends Component {
         </AppHeader>
         <div className="app-body">
           <AppSidebar fixed display="lg">
-            <AppSidebarHeader />
-            <AppSidebarForm />
+            <AppSidebarHeader>V8</AppSidebarHeader>
+            <AppSidebarForm>
+              <Input placeholder='Search…' />
+            </AppSidebarForm>
             <AppSidebarNav navConfig={nav} {...rest} />
             <AppSidebarFooter />
             <AppSidebarMinimizer />
@@ -45,9 +46,9 @@ class DefaultLayout extends Component {
               {children}
             </Container>
           </main>
-          <AppAside fixed hidden>
+          {/* <AppAside fixed hidden>
             <DefaultAside />
-          </AppAside>
+          </AppAside> */}
         </div>
         <AppFooter>
           <DefaultFooter />
