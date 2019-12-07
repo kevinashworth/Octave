@@ -8,6 +8,7 @@ import '../components/common/Dashboard/LineChartSmall'
 import '../components/common/DefaultLayout/'
 import '../components/common/Login/'
 import '../components/common/LatestUpdates/'
+import '../components/common/MyDropdown.jsx' // replaceComponent Dropdown
 import '../components/common/MyModalTrigger.jsx' // replaceComponent ModalTrigger
 
 // Forms

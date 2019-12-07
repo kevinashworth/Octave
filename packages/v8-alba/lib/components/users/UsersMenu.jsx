@@ -24,6 +24,10 @@ const UsersMenu = ({ currentUser, currentUserLoading, client, state }) => {
 const UserLoggedInMenu = ({ currentUser, client }) => {
   const menuItems = [
     {
+      itemProps: { header: true },
+      label: Users.getDisplayName(currentUser)
+    },
+    {
       to: `/users/${currentUser.slug}`,
       labelId: 'users.profile',
     },
