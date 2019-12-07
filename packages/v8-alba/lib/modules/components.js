@@ -1,25 +1,14 @@
 // Alba components largely unchanged
 
-// import '../components/common/Footer/'
-// import '../components/common/Header/'
-// import '../components/common/Search/'
-// import '../components/common/Sidebar/'
-// import '../components/common/SidebarFooter/'
-// import '../components/common/SidebarForm/'
-// import '../components/common/SidebarHeader/'
-// import '../components/common/SidebarMinimizer/'
-// import '../components/common/LayoutFull/' // replaceComponent Full
 import '../components/common/LayoutAdmin/'
 import '../components/common/Page404/' // replaceComponent Error404
-
-// Alba components with changes
-
-import '../components/common/DefaultLayout/'
-import '../components/common/Login/'
 import '../components/common/Dashboard/'
 import '../components/common/Dashboard/LineChartLarge'
 import '../components/common/Dashboard/LineChartSmall'
+import '../components/common/DefaultLayout/'
+import '../components/common/Login/'
 import '../components/common/LatestUpdates/'
+import '../components/common/MyDropdown.jsx' // replaceComponent Dropdown
 import '../components/common/MyModalTrigger.jsx' // replaceComponent ModalTrigger
 
 // Forms
