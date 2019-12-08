@@ -1,6 +1,12 @@
 import { createCollection, getDefaultResolvers, getDefaultMutations } from 'meteor/vulcan:core'
 import schema from './schema.js'
 
+import {
+  OfficeEditUpdateContacts,
+  OfficeEditUpdatePastProjects,
+  OfficeEditUpdateProjects
+} from './callbacks/index.js';
+
 const Offices = createCollection({
   typeName: 'Office',
   collectionName: 'Offices',
@@ -12,7 +18,27 @@ const Offices = createCollection({
     canRead: ['guests'],
     canUpdate: ['owners', 'admins'],
     canDelete: ['owners', 'admins'],
-  }
+  },
+  callbacks: {
+    // create: {
+    //   validate: [(validationErrors, properties) => { return validationErrors; }],
+    //   before: [(document, properties) => { return document; }],
+      after: [OfficeEditUpdateContacts, OfficeEditUpdatePastProjects, OfficeEditUpdateProjects],
+    //   async: [(properties) => { /* no return value */ }],
+    // },
+    update: {
+      // validate: [(validationErrors, properties) => { return validationErrors; }],
+      before: [OfficeEditUpdateContacts],
+      after: [OfficeEditUpdatePastProjects, OfficeEditUpdateProjects],
+      // async: [(properties) => { /* no return value */ }],
+    },
+    // delete: {
+    //   validate: [(validationErrors, properties) => { return validationErrors; }],
+    //   before: [(document, properties) => { return document; }],
+    //   after: [(document, properties) => { return document; }],
+    //   async: [(properties) => { /* no return value */ }],
+    // }
+  },
 })
 
 Offices.addDefaultView(terms => ({
