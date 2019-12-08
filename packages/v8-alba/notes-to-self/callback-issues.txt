@@ -1,0 +1,11 @@
+BUG
+Edited Lowry-Johnson/Goldstein Casting: deleted Twenties TBS Pilot from Past Projects
+But Twenties TBS Pilot still has that casting office attached.
+NOTE
+The callback is currently after, needs to be before and compare if a project has been removed from the office, and then process accordingly. THIS IS NOT A NEW BUG
+
+
+ISSUE
+contactsToRemoveThisOfficeFrom / contactsToAddThisOfficeTo should be smarter — and don’t modify updatedAt for contacts that really don’t change
+NOTE
+THIS IS NOT A NEW BUG
