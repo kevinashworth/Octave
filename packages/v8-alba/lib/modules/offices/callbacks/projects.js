@@ -26,10 +26,12 @@ export function OfficeEditUpdateProjects (document, properties) {
     const project = Projects.findOne(officeProject.projectId) // TODO: error handling
     const newOfficeId = office._id
     if (project.castingOfficeId !== newOfficeId) {
-      Connectors.update(Projects, project._id, { $set: {
-        castingOfficeId: newOfficeId,
-        updatedAt: new Date()
-      } })
+      Connectors.update(Projects, project._id, {
+        $set: {
+          castingOfficeId: newOfficeId,
+          updatedAt: new Date()
+        }
+      })
     }
   })
 }

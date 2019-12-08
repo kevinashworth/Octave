@@ -45,22 +45,22 @@ export function OfficeEditUpdateContacts (data, { document, oldDocument }) {
     contactsToRemoveThisOfficeFrom.forEach(deletedContact => {
       const contact = Contacts.findOne(deletedContact.contactId)
       // case 1: there are no offices on the contact and contact.offices is undefined (shouldn't happen, theoretically, but it does currently anyway)
-      if (!contact.offices) {
-        return
-      } else {
+      if (contact.offices) {
         const outdatedOffices = contact.offices
         const updatedOffices = _.remove(outdatedOffices, function (o) {
           return o._id === office._id
         })
-        // case 2: the office didn't have the contact on it (shouldn't happen, theoretically, but it does currently anyway)
+        // case 2: office didn't have the contact on it (shouldn't happen, theoretically, but does currently anyway)
         if (_.isEqual(updatedOffices, outdatedOffices)) {
           return
         }
         // case 3: update the contact with its new offices
-        Connectors.update(Contacts, contact._id, { $set: {
-          offices: updatedOffices,
-          updatedAt: new Date()
-        } })
+        Connectors.update(Contacts, contact._id, {
+          $set: {
+            offices: updatedOffices,
+            updatedAt: new Date()
+          }
+        })
       }
     })
   }
@@ -86,10 +86,12 @@ export function OfficeEditUpdateContacts (data, { document, oldDocument }) {
           return
         }
       }
-      Connectors.update(Contacts, contact._id, { $set: {
-        offices: updatedOffices,
-        updatedAt: new Date()
-      } })
+      Connectors.update(Contacts, contact._id, {
+        $set: {
+          offices: updatedOffices,
+          updatedAt: new Date()
+        }
+      })
     })
   }
 }

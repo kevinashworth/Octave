@@ -26,10 +26,12 @@ export function OfficeEditUpdatePastProjects (document, properties) {
     const project = PastProjects.findOne(officeProject.projectId) // TODO: error handling
     const newOfficeId = office._id
     if (project.castingOfficeId !== newOfficeId) {
-      Connectors.update(PastProjects, project._id, { $set: {
-        castingOfficeId: newOfficeId
-        // updatedAt: new Date() 2019-11-22: let's not update the date of ancient projects
-      } })
+      Connectors.update(PastProjects, project._id, {
+        $set: {
+          castingOfficeId: newOfficeId
+          // updatedAt: new Date() 2019-11-22: let's not update the date of ancient projects
+        }
+      })
     }
   })
 }
