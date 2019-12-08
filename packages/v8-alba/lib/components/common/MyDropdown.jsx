@@ -3,7 +3,7 @@ import { FormattedMessage } from 'meteor/vulcan:i18n'
 import React, { Fragment } from 'react'
 import { NavLink } from 'react-router-dom'
 import PropTypes from 'prop-types'
-import { Dropdown, DropdownButton, DropdownItem } from 'reactstrap'
+import { Dropdown, DropdownButton, DropdownItem, DropdownMenu, DropdownToggle } from 'reactstrap'
 
 /*
 A node contains a menu item, and optionally a list of child items
@@ -40,7 +40,7 @@ const Item = ({ index, to, labelId, label, component, componentProps = {}, itemP
   }
 
   const item = (
-    <DropdownItem eventKey={index} {...itemProps} {...rest}>
+    <DropdownItem {...itemProps} {...rest}>
       {menuComponent}
     </DropdownItem>
   );
@@ -61,7 +61,7 @@ Item.propTypes = {
 const MyDropdown = ({ label, labelId, trigger, menuItems, menuContents, variant = 'dropdown', buttonProps, ...dropdownProps }) => {
   const menuBody = menuContents ? menuContents : menuItems.map((item, index) => {
     if (item === 'divider') {
-      return <Dropdown.Divider key={index} />;
+      return <DropdownItem divider key={index} />;
     } else {
       return <Node {...item} key={index} index={index} />;
     }
@@ -76,8 +76,8 @@ const MyDropdown = ({ label, labelId, trigger, menuItems, menuContents, variant 
       // if a trigger component has been provided, use it
       return (
         <Dropdown {...dropdownProps}>
-          <Dropdown.Toggle>{trigger}</Dropdown.Toggle>
-          <Dropdown.Menu>{menuBody}</Dropdown.Menu>
+          <DropdownToggle>{trigger}</DropdownToggle>
+          <DropdownMenu>{menuBody}</DropdownMenu>
         </Dropdown>
       );
     } else {

@@ -2,6 +2,7 @@ import { Components, registerComponent } from 'meteor/vulcan:core'
 import React, { PureComponent } from 'react'
 import { Line } from 'react-chartjs-2'
 import { Card, CardBody } from 'reactstrap'
+import _ from 'lodash'
 import moment from 'moment'
 import { brandColors } from './brandColors.js'
 
@@ -12,17 +13,22 @@ class LineChartSmall extends PureComponent {
       return (<div><Components.Loading /></div>)
     }
 
+    const displayStats = _.takeRight(theSmallStats, 24);
+
     const cardChartData = {
-      labels: theSmallStats.map(stat => moment(stat.date).format('D MMM YY')),
+      labels: displayStats.map(stat => moment(stat.date).format('D MMM YY')),
       datasets: [
         {
           label: title,
           backgroundColor: brandColors[bgColor],
           borderColor: 'rgba(255,255,255,.55)',
-          data: theSmallStats.map(stat => stat.quantity)
+          data: displayStats.map(stat => stat.quantity)
         }
       ]
     }
+
+    const yMin = Math.min.apply(Math, cardChartData.datasets[0].data)
+    const yMax = Math.max.apply(Math, cardChartData.datasets[0].data)
 
     const cardChartOpts = {
       maintainAspectRatio: false,
@@ -39,14 +45,13 @@ class LineChartSmall extends PureComponent {
             fontSize: 2,
             fontColor: 'transparent'
           }
-
         }],
         yAxes: [{
           display: false,
           ticks: {
             display: false,
-            min: Math.min.apply(Math, cardChartData.datasets[0].data) - 5,
-            max: Math.max.apply(Math, cardChartData.datasets[0].data) + 5
+            min: Math.max(0, yMin - (yMax - yMin)),
+            max: yMax + 4
           }
         }]
       },
@@ -64,12 +69,12 @@ class LineChartSmall extends PureComponent {
 
     return (
       <Card className={`text-white bg-${bgColor}`}>
-        <CardBody className='pb-0'>
-          <h4 className='mb-0'>{title}</h4>
+        <CardBody className='pb-0 pt-1'>
+          <h5 className='mb-0'>{title}</h5>
           <p>{subtitle}</p>
         </CardBody>
-        <div className='chart-wrapper px-3' style={{ height: '70px' }}>
-          <Line data={cardChartData} options={cardChartOpts} height={70} />
+        <div className='chart-wrapper px-3' style={{ height: '120px' }}>
+          <Line data={cardChartData} options={cardChartOpts} height={120} />
         </div>
       </Card>
     )

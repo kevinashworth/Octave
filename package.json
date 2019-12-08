@@ -18,6 +18,9 @@
   "dependencies": {
     "@apollo/react-hooks": "^3.1.1",
     "@babel/runtime": "^7.1.2",
+    "@coreui/coreui-pro": "2.0.6",
+    "@coreui/icons": "0.3.0",
+    "@coreui/react": "git+https://git@github.com/kevinashworth/coreui-react.git#v8-alba-changes",
     "algoliasearch": "^3.35.1",
     "analytics-node": "^2.1.1",
     "apollo-boost": "^0.1.16",
@@ -73,7 +76,7 @@
     "juice": "^5.1.0",
     "lodash": "^4.17.10",
     "mailchimp": "^1.1.6",
-    "marked": "^0.5.2",
+    "marked": "^0.7.0",
     "meteor-node-stubs": "^0.4.1",
     "mingo": "^0.8.1",
     "moment": "^2.13.0",
