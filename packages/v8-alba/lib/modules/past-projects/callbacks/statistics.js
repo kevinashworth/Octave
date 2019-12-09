@@ -10,7 +10,7 @@ function latestStatIsFromToday (theStatsArray) {
 }
 
 /* When adding a past-project, update statistics on projects */
-export async function PastProjectUpdateStatusAsync ({ currentUser, document }) {
+export async function PastProjectUpdateStatisticsAsync ({ currentUser, document }) {
   const project = document
   const theStats = await Statistics.findOne()
   let newStats = { ...theStats } // TODO: do we need to work with a copy?

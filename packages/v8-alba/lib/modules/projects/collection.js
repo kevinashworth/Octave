@@ -28,8 +28,8 @@ const Projects = createCollection({
     },
     update: {
       after: [ProjectEditUpdateContacts],
-      before: [ProjectEditUpdateOfficeBefore],
-      async: [ProjectUpdateStatusAsync]
+      async: [ProjectUpdateStatusAsync],
+      before: [ProjectEditUpdateOfficeBefore]
     }
   }
 })

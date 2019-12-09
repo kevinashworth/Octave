@@ -42,7 +42,7 @@ const contactSchema = new SimpleSchema({
     hidden: true,
     canRead: ['members'],
     canCreate: ['members', 'admins'],
-    canUpdate: ['members', 'admins'],
+    canUpdate: ['members', 'admins']
   },
   contactTitle: {
     type: String,
@@ -50,13 +50,13 @@ const contactSchema = new SimpleSchema({
     hidden: true,
     canRead: ['members'],
     canCreate: ['members', 'admins'],
-    canUpdate: ['members', 'admins'],
+    canUpdate: ['members', 'admins']
   }
 })
 
 const schema = {
 
-    /* default properties */
+  /* default properties */
 
   _id: {
     type: String,
@@ -98,7 +98,7 @@ const schema = {
     optional: true,
     canRead: ['guests'],
     canCreate: ['members', 'admins'],
-    canUpdate: ['members', 'admins'],
+    canUpdate: ['members', 'admins']
   },
   projectType: {
     label: 'Type',
@@ -110,7 +110,7 @@ const schema = {
     },
     canRead: ['guests'],
     canCreate: ['members', 'admins'],
-    canUpdate: ['members', 'admins'],
+    canUpdate: ['members', 'admins']
   },
   platformType: {
     type: String,
@@ -136,7 +136,7 @@ const schema = {
     optional: true,
     canRead: ['guests'],
     canCreate: ['members', 'admins'],
-    canUpdate: ['members', 'admins'],
+    canUpdate: ['members', 'admins']
   },
   status: {
     label: 'Status',
@@ -173,7 +173,7 @@ const schema = {
     optional: true,
     hidden: true,
     canRead: ['members'],
-    onCreate: ({ document: project}) => {
+    onCreate: ({ document: project }) => {
       if (project.summary) {
         return Utils.sanitize(marked('**SUMMARY:** ' + project.summary))
       }

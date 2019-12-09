@@ -9,3 +9,9 @@ ISSUE
 contactsToRemoveThisOfficeFrom / contactsToAddThisOfficeTo should be smarter — and don’t modify updatedAt for contacts that really don’t change
 NOTE
 THIS IS NOT A NEW BUG
+
+
+BUG
+removed a contact (Howard) from Twenties, but Howard still shows Twenties on his single
+NOTE
+somewhat similar to above

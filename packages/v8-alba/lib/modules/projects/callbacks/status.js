@@ -19,8 +19,10 @@ export async function ProjectUpdateStatusAsync ({ currentUser, document }) {
         currentUser,
         validate: false
       })
-    } catch (err) {
-      console.error('error in createNewPastProject:', err)
+    } catch (e) {
+      console.group('Error in createNewPastProject:')
+      console.error(e)
+      console.groupEnd()
     }
   }
 
