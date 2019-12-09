@@ -54,7 +54,7 @@ const contactSchema = new SimpleSchema({
     hidden: true,
     canRead: ['members'],
     canCreate: ['members', 'admins'],
-    canUpdate: ['members', 'admins'],
+    canUpdate: ['members', 'admins']
   },
   contactTitle: {
     type: String,
@@ -62,7 +62,7 @@ const contactSchema = new SimpleSchema({
     hidden: true,
     canRead: ['members'],
     canCreate: ['members', 'admins'],
-    canUpdate: ['members', 'admins'],
+    canUpdate: ['members', 'admins']
   }
 })
 
@@ -156,7 +156,7 @@ const schema = {
     optional: true,
     canRead: ['guests'],
     canCreate: ['members', 'admins'],
-    canUpdate: ['members', 'admins'],
+    canUpdate: ['members', 'admins']
   },
   // Body (Markdown)
   body: {
@@ -166,7 +166,7 @@ const schema = {
     control: 'textarea', // use a textarea form component
     canRead: ['members'],
     canCreate: ['members', 'admins'],
-    canUpdate: ['members', 'admins'],
+    canUpdate: ['members', 'admins']
   },
   // HTML version of Body
   htmlBody: {

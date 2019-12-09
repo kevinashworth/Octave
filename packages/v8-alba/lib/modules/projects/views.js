@@ -21,5 +21,5 @@ Projects.addView('newestProjectsCasting', terms => ({
   selector: {
     status: 'Casting'
   },
-  options: { sort: { createdAt: -1 }}
+  options: { sort: { createdAt: -1 } }
 }))

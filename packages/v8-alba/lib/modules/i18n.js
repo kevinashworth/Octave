@@ -23,6 +23,6 @@ addStrings('en', {
   'comments.body': 'Body',
   'comments.rate_limit_error': 'Please wait {value} seconds before commenting again.',
 
-  'users.delete_success': 'User deleted',
+  'users.delete_success': 'User deleted'
 
 })

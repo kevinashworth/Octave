@@ -1,6 +1,12 @@
 import { createCollection, getDefaultResolvers, getDefaultMutations } from 'meteor/vulcan:core'
 import schema from './schema.js'
 
+import {
+  OfficeEditUpdateContacts,
+  OfficeEditUpdatePastProjects,
+  OfficeEditUpdateProjects
+} from './callbacks/index.js'
+
 const Offices = createCollection({
   typeName: 'Office',
   collectionName: 'Offices',
@@ -11,7 +17,16 @@ const Offices = createCollection({
     canCreate: ['members'],
     canRead: ['guests'],
     canUpdate: ['owners', 'admins'],
-    canDelete: ['owners', 'admins'],
+    canDelete: ['owners', 'admins']
+  },
+  callbacks: {
+    create: {
+      after: [OfficeEditUpdateContacts, OfficeEditUpdatePastProjects, OfficeEditUpdateProjects]
+    },
+    update: {
+      before: [OfficeEditUpdateContacts],
+      after: [OfficeEditUpdatePastProjects, OfficeEditUpdateProjects]
+    }
   }
 })
 

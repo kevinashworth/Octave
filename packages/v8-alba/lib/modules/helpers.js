@@ -389,7 +389,7 @@ export const transform = (node, children) => {
     if (href.indexOf('/') === 0) {
       return (<Link to={href}>{children}</Link>)
     } else if (href.indexOf('http') === 0) {
-      return (<a href={href} target="notelinks">{children}</a>)
+      return (<a href={href} target='notelinks'>{children}</a>)
     }
   }
 }

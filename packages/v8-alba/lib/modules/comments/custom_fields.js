@@ -1,7 +1,7 @@
-import { Utils } from 'meteor/vulcan:core'
+// import { Utils } from 'meteor/vulcan:core'
 import Users from 'meteor/vulcan:users'
 import SimpleSchema from 'simpl-schema'
-import marked from 'marked'
+// import marked from 'marked'
 
 Users.addField([
   // Count of user's comments
@@ -11,7 +11,7 @@ Users.addField([
       type: Number,
       optional: true,
       defaultValue: 0,
-      canRead: ['guests'],
+      canRead: ['guests']
     }
   },
   // User's bio
@@ -24,7 +24,7 @@ Users.addField([
       canCreate: ['members'],
       canUpdate: ['members'],
       canRead: ['guests'],
-      searchable: true,
+      searchable: true
     }
   },
   // User's bio (Markdown version)
@@ -52,7 +52,7 @@ Users.addField([
       input: 'text',
       canCreate: ['members'],
       canUpdate: ['members'],
-      canRead: ['guests'],
+      canRead: ['guests']
     }
   },
   {
@@ -65,16 +65,14 @@ Users.addField([
       canUpdate: ['members'],
       canRead: ['guests'],
       onCreate: () => {
-        return new Date();
+        return new Date()
       },
       onUpdate: () => {
-        return new Date();
+        return new Date()
       }
     }
   }
 ])
-
-
 
 // import { Posts } from '../posts/index.js'
 // import Users from 'meteor/vulcan:users'

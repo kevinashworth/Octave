@@ -196,7 +196,7 @@ const schema = {
     optional: true,
     hidden: true,
     canRead: ['members'],
-    onCreate: ({ document: project}) => {
+    onCreate: ({ document: project }) => {
       if (project.summary) {
         return Utils.sanitize(marked('**SUMMARY:** ' + project.summary))
       }
