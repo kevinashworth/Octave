@@ -9,7 +9,7 @@ const Statistics = createCollection({
     canCreate: ['members'],
     canRead: ['guests'],
     canUpdate: ['owners', 'admins'],
-    canDelete: ['owners', 'admins'],
+    canDelete: ['owners', 'admins']
   }
 })
 

@@ -95,7 +95,7 @@ const schema = {
     },
     itemProperties: { // this requires edits to 2 Vulcan files
       layout: 'inputOnly'
-    },
+    }
   },
   // HTML version of Body
   htmlBody: {
@@ -163,7 +163,7 @@ const schema = {
     type: Boolean,
     optional: true,
     canRead: ['guests']
-  },
+  }
   // userIP: {
   //   type: String,
   //   optional: true,
