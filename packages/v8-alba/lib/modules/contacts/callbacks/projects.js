@@ -1,7 +1,7 @@
 import { Connectors } from 'meteor/vulcan:core'
 import _ from 'lodash'
 import Projects from '../../projects/collection.js'
-import { getFullNameFromContact } from '../../../helpers.js'
+import { getFullNameFromContact } from '../../helpers.js'
 
 /*
 When updating a project on a contact, also update that project with the contact.
@@ -19,7 +19,7 @@ I get confused, so here's a description:
     contactTitle: project.titleForProject
   }
 */
-export function ContactEditUpdateProjects (data, { document }) {
+export function ContactEditUpdateProjects (document, properties) {
   const contact = document
   if (!contact.projects) {
     return

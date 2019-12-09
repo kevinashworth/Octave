@@ -1,7 +1,7 @@
 import { Connectors, } from 'meteor/vulcan:core'
 import _ from 'lodash'
 import PastProjects from '../../past-projects/collection.js'
-import { getFullNameFromContact } from '../../../helpers.js'
+import { getFullNameFromContact } from '../../helpers.js'
 
 /*
 When updating a past-project on a contact, also update that past-project with the contact.
@@ -20,7 +20,7 @@ I get confused, so here's a description:
   }
 */
 
-export function ContactEditUpdatePastProjects (data, { document }) {
+export function ContactEditUpdatePastProjects (document, properties) {
   const contact = document
   if (!contact.pastProjects) {
     return

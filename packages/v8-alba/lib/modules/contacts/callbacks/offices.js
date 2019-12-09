@@ -1,7 +1,7 @@
 import { Connectors } from 'meteor/vulcan:core'
 import _ from 'lodash'
 import Offices from '../../offices/collection.js'
-import { getFullNameFromContact } from '../../../helpers.js'
+import { getFullNameFromContact } from '../../helpers.js'
 
 /*
 When updating an office on a contact, also update that office with the contact.
@@ -21,7 +21,8 @@ I get confused, so here's a description:
 TODO: What about the contact's title for this office?
 */
 
-export function ContactEditUpdateOffices (contact) {
+export function ContactEditUpdateOffices (document, properties) {
+  const contact = document
   if (!contact.offices) {
     return
   }
