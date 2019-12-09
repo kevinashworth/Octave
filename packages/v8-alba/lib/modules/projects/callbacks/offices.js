@@ -19,7 +19,7 @@ So for each of the project.offices we update office.projects of the Office with 
 }
 */
 
-export function ProjectEditUpdateOfficeAfter (data, { document }) {
+export function ProjectEditUpdateOfficeAfter (document, properties) {
   const project = document
   if (!project.castingOfficeId) {
     return
@@ -53,8 +53,8 @@ export function ProjectEditUpdateOfficeAfter (data, { document }) {
   })
 }
 
-export function ProjectEditUpdateOfficeBefore (data, { document, oldDocument }) {
-  const oldOffice = oldDocument.castingOfficeId
+export function ProjectEditUpdateOfficeBefore (data, { document, originalDocument }) {
+  const oldOffice = originalDocument.castingOfficeId
   const newOffice = document.castingOfficeId
   let adding = false
   if (newOffice && !oldOffice) {

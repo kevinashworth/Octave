@@ -3,7 +3,7 @@ import _ from 'lodash'
 import Contacts from '../../contacts/collection.js'
 import { isEmptyValue } from '../../helpers.js'
 
-export function OfficeEditUpdateContacts (data, { document, oldDocument }) {
+export function OfficeEditUpdateContacts (data, { document, originalDocument }) {
   // [a] if the two `contacts` arrays are equal, do nothing
   // [b] else for deleted contacts in oldOffice but not newOffice, remove office from those contacts
   // [c] and for added contacts in newOffice but not oldOffice, add office to those contacts
@@ -12,7 +12,7 @@ export function OfficeEditUpdateContacts (data, { document, oldDocument }) {
   let contactsToRemoveThisOfficeFrom = null
   let contactsToAddThisOfficeTo = null
 
-  if (!oldDocument) { // newly created office --> [c] add office to its contacts, if any
+  if (!originalDocument) { // newly created office --> [c] add office to its contacts, if any
     if (!isEmptyValue(office.contacts)) {
       contactsToAddThisOfficeTo = office.contacts
     } else {
@@ -20,7 +20,7 @@ export function OfficeEditUpdateContacts (data, { document, oldDocument }) {
     }
   } else {
     const newOffice = document
-    const oldOffice = oldDocument
+    const oldOffice = originalDocument
     const oldOfficeContactsLength = oldOffice.contacts ? oldOffice.contacts.length : 0
     const newOfficeContactsLength = newOffice.contacts ? newOffice.contacts.length : 0
     // [a]

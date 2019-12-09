@@ -21,7 +21,7 @@ So for each of the project.contacts we update contact.projects of the Contact wi
 }
 */
 
-export function ProjectEditUpdateContacts (data, { document }) {
+export function ProjectEditUpdateContacts (document, properties) {
   const project = document
   if (!project.contacts) {
     return
