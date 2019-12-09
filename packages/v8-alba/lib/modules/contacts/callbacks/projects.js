@@ -49,9 +49,11 @@ export function ContactEditUpdateProjects (document, properties) {
         newContacts[i] = newContact
       }
     }
-    Connectors.update(Projects, project._id, { $set: {
-      contacts: newContacts
-      // updatedAt: new Date() 2019-11-22: let's not update the date of ancient projects
-    } })
+    Connectors.update(Projects, project._id, {
+      $set: {
+        contacts: newContacts
+        // updatedAt: new Date() 2019-11-22: let's not update the date of ancient projects
+      }
+    })
   })
 }

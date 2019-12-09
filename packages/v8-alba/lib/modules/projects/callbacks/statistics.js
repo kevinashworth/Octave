@@ -18,7 +18,7 @@ export async function ProjectCreateUpdateStatisticsAsync ({ currentUser, documen
   switch (project.projectType) {
     case 'TV One Hour':
     case 'TV 1/2 Hour':
-    case 'TV Animation':
+    case 'TV Animation': {
       const episodicsCasting = Projects.find({
         projectType: { $in: ['TV One Hour', 'TV 1/2 Hour', 'TV Animation'] },
         status: 'Casting'
@@ -30,10 +30,11 @@ export async function ProjectCreateUpdateStatisticsAsync ({ currentUser, documen
       }
       newStats.episodics.push({ date: moment().format('YYYY-MM-DD HH:mm:ss'), quantity: episodicsCasting })
       break
+    }
     case 'Feature Film':
     case 'Feature Film (LB)':
     case 'Feature Film (MLB)':
-    case 'Feature Film (ULB)':
+    case 'Feature Film (ULB)': {
       const featuresCasting = Projects.find({
         projectType: { $in: ['Feature Film', 'Feature Film (LB)', 'Feature Film (MLB)', 'Feature Film (ULB)'] },
         status: 'Casting'
@@ -45,9 +46,10 @@ export async function ProjectCreateUpdateStatisticsAsync ({ currentUser, documen
       }
       newStats.features.push({ date: moment().format('YYYY-MM-DD HH:mm:ss'), quantity: featuresCasting })
       break
+    }
     case 'Pilot One Hour':
     case 'Pilot 1/2 Hour':
-    case 'Pilot Presentation':
+    case 'Pilot Presentation': {
       const pilotsCasting = Projects.find({
         projectType: { $in: ['Pilot One Hour', 'Pilot 1/2 Hour', 'Pilot Presentation'] },
         status: 'Casting'
@@ -59,6 +61,7 @@ export async function ProjectCreateUpdateStatisticsAsync ({ currentUser, documen
       }
       newStats.pilots.push({ date: moment().format('YYYY-MM-DD HH:mm:ss'), quantity: pilotsCasting })
       break
+    }
     case 'Short Film':
     case 'TV Daytime':
     case 'TV Mini-Series':
@@ -66,7 +69,7 @@ export async function ProjectCreateUpdateStatisticsAsync ({ currentUser, documen
     case 'TV Telefilm':
     case 'TV Talk/Variety':
     case 'TV Sketch/Improv':
-    case 'New Media':
+    case 'New Media': {
       const othersCasting = Projects.find({
         projectType: { $in: ['Short Film', 'TV Daytime', 'TV Mini-Series', 'TV Movie', 'TV Telefilm', 'TV Talk/Variety', 'TV Sketch/Improv', 'New Media'] },
         status: 'Casting'
@@ -78,6 +81,7 @@ export async function ProjectCreateUpdateStatisticsAsync ({ currentUser, documen
       }
       newStats.others.push({ date: moment().format('YYYY-MM-DD HH:mm:ss'), quantity: othersCasting })
       break
+    }
     // default:
   }
   Promise.await(updateMutator({

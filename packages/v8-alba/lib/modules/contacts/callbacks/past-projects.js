@@ -1,4 +1,4 @@
-import { Connectors, } from 'meteor/vulcan:core'
+import { Connectors } from 'meteor/vulcan:core'
 import _ from 'lodash'
 import PastProjects from '../../past-projects/collection.js'
 import { getFullNameFromContact } from '../../helpers.js'
@@ -50,9 +50,11 @@ export function ContactEditUpdatePastProjects (document, properties) {
         newContacts[i] = newContact
       }
     }
-    Connectors.update(PastProjects, pastProject._id, { $set: {
-      contacts: newContacts,
-      updatedAt: new Date()
-    } })
+    Connectors.update(PastProjects, pastProject._id, {
+      $set: {
+        contacts: newContacts,
+        updatedAt: new Date()
+      }
+    })
   })
 }

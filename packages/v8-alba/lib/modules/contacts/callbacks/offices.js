@@ -51,9 +51,11 @@ export function ContactEditUpdateOffices (document, properties) {
       }
     }
 
-    Connectors.update(Offices, office._id, { $set: {
-      contacts: newContacts,
-      updatedAt: new Date()
-    } })
+    Connectors.update(Offices, office._id, {
+      $set: {
+        contacts: newContacts,
+        updatedAt: new Date()
+      }
+    })
   })
 }
