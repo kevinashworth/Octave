@@ -4,7 +4,6 @@ import _ from 'lodash'
 import { PAST_PROJECT_STATUSES_ARRAY } from '../../constants.js'
 import { isEmptyValue } from '../../helpers.js'
 
-
 /*
 When updating a contact on a project, also update that contact with the project.
 I get confused, so here's a description:
@@ -54,10 +53,12 @@ export function ProjectEditUpdateContacts (data, { document }) {
         }
       }
       const sortedPastProjects = _.sortBy(newPastProjects, ['projectTitle'])
-      Connectors.update(Contacts, contact._id, { $set: {
-        pastProjects: sortedPastProjects,
-        updatedAt: new Date()
-      } })
+      Connectors.update(Contacts, contact._id, {
+        $set: {
+          pastProjects: sortedPastProjects,
+          updatedAt: new Date()
+        }
+      })
 
       // also remove the project from contact.projects
       if (!isEmptyValue(contact.projects)) {
@@ -65,10 +66,12 @@ export function ProjectEditUpdateContacts (data, { document }) {
         const i = _.findIndex(contact.projects, { projectId: project._id })
         if (i > -1) {
           newProjects.splice(i, 1)
-          Connectors.update(Contacts, contact._id, { $set: {
-            projects: newProjects,
-            updatedAt: new Date()
-          } })
+          Connectors.update(Contacts, contact._id, {
+            $set: {
+              projects: newProjects,
+              updatedAt: new Date()
+            }
+          })
         }
       }
     } else {
@@ -88,10 +91,12 @@ export function ProjectEditUpdateContacts (data, { document }) {
           newProjects[i] = newProject
         }
       }
-      Connectors.update(Contacts, contact._id, { $set: {
-        projects: newProjects,
-        updatedAt: new Date()
-      } })
+      Connectors.update(Contacts, contact._id, {
+        $set: {
+          projects: newProjects,
+          updatedAt: new Date()
+        }
+      })
     }
   })
 }

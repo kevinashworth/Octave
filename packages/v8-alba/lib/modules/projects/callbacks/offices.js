@@ -1,6 +1,6 @@
 import { Connectors } from 'meteor/vulcan:core'
-import Offices from '../../offices/collection.js'
 import _ from 'lodash'
+import Offices from '../../offices/collection.js'
 import { isEmptyValue } from '../../helpers.js'
 
 /*
@@ -45,10 +45,12 @@ export function ProjectEditUpdateOfficeAfter (data, { document }) {
       newProjects[i] = newProject
     }
   }
-  Connectors.update(Offices, office._id, { $set: {
-    projects: newProjects,
-    updatedAt: new Date()
-  } })
+  Connectors.update(Offices, office._id, {
+    $set: {
+      projects: newProjects,
+      updatedAt: new Date()
+    }
+  })
 }
 
 export function ProjectEditUpdateOfficeBefore (data, { document, oldDocument }) {
@@ -102,15 +104,19 @@ export function ProjectEditUpdateOfficeBefore (data, { document, oldDocument }) 
     if (adding || replacing) {
       projects.push({ projectId: document._id })
     }
-    Connectors.update(Offices, office._id, { $set: {
-      projects: projects,
-      updatedAt: new Date()
-    } })
+    Connectors.update(Offices, office._id, {
+      $set: {
+        projects: projects,
+        updatedAt: new Date()
+      }
+    })
   } else if (adding || itmightnotbethereforsomereason) { // means we are adding to empty (or null) projects
     projects = [{ projectId: document._id }]
-    Connectors.update(Offices, office._id, { $set: {
-      projects: projects,
-      updatedAt: new Date()
-    } })
+    Connectors.update(Offices, office._id, {
+      $set: {
+        projects: projects,
+        updatedAt: new Date()
+      }
+    })
   }
 }

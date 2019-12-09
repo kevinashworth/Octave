@@ -1,4 +1,5 @@
 import { Connectors, createMutator, deleteMutator } from 'meteor/vulcan:core'
+import _ from 'lodash'
 import Offices from '../../offices/collection.js'
 import Projects from '../collection.js'
 import PastProjects from '../../past-projects/collection.js'
@@ -57,11 +58,13 @@ export async function ProjectUpdateStatusAsync ({ currentUser, document }) {
         pastProjects = office.pastProjects
       }
       pastProjects.push({ projectId: newPastProject._id })
-      Connectors.update(Offices, document.castingOfficeId, { $set: {
-        pastProjects,
-        projects,
-        updatedAt: new Date()
-      } })
+      Connectors.update(Offices, document.castingOfficeId, {
+        $set: {
+          pastProjects,
+          projects,
+          updatedAt: new Date()
+        }
+      })
     }
   }
 }
