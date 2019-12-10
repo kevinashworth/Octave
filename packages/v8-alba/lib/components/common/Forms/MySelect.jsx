@@ -14,7 +14,7 @@ class MySelect extends Component {
   handleChange (selectedOption) {
     if (!selectedOption) {
       this.context.updateCurrentValues({ [this.props.path]: null })
-      console.log(`Just set ${this.props.path} to null [0]`)
+      console.log(`[KA] handleChange: Just set ${this.props.path} to null [0]`)
       return
     }
     let siblingPath = null
@@ -35,9 +35,27 @@ class MySelect extends Component {
     }
   }
 
+  componentDidMount () {
+    const selectedOption = find(this.props.options, { value: this.props.value }) || null
+    console.log('[KA] componentDidMount selectedOption:', selectedOption)
+    if (selectedOption) {
+      let siblingPath = null
+      if (this.props.parentFieldName === 'projects' || this.props.parentFieldName === 'pastProjects') {
+        siblingPath = this.props.parentFieldName + '.' + this.props.itemIndex + '.' + 'projectTitle'
+      }
+      if (siblingPath) {
+        this.context.updateCurrentValues({
+          [this.props.path]: selectedOption.value,
+          [siblingPath]: selectedOption.label
+        })
+      }
+    }
+  }
+
   render () {
     const { selectOne } = this.props.inputProperties
     const selectedOption = find(this.props.options, { value: this.props.value }) || null
+    console.log('[KA] MySelect selectedOption:', selectedOption)
     const noneOption = {
       label: this.context.intl.formatMessage({ id: 'forms.select_option' }),
       value: null,
