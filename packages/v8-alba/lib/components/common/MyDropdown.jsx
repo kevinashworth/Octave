@@ -1,9 +1,9 @@
 import { replaceComponent } from 'meteor/vulcan:lib'
 import { FormattedMessage } from 'meteor/vulcan:i18n'
-import React, { Fragment } from 'react'
-import { NavLink } from 'react-router-dom'
+import React, { Fragment, useState } from 'react'
+import { NavLink as RRNavLink } from 'react-router-dom'
 import PropTypes from 'prop-types'
-import { Dropdown, DropdownButton, DropdownItem, DropdownMenu, DropdownToggle } from 'reactstrap'
+import { Dropdown, DropdownButton, DropdownItem, DropdownMenu, DropdownToggle, NavLink } from 'reactstrap'
 
 /*
 A node contains a menu item, and optionally a list of child items
@@ -45,7 +45,7 @@ const Item = ({ index, to, labelId, label, component, componentProps = {}, itemP
     </DropdownItem>
   );
 
-  return to ? <NavLink to={to} {...linkProps}>{item}</NavLink> : item;
+  return to ? <NavLink to={to} tag={RRNavLink} activeClassName="active" {...linkProps}>{item}</NavLink> : item;
 };
 
 Item.propTypes = {
@@ -74,9 +74,11 @@ const MyDropdown = ({ label, labelId, trigger, menuItems, menuContents, variant 
   } else {
     if (trigger) {
       // if a trigger component has been provided, use it
+      const [dropdownOpen, setDropdownOpen] = useState(false)
+      const toggle = () => setDropdownOpen(prevState => !prevState)
       return (
-        <Dropdown {...dropdownProps}>
-          <DropdownToggle>{trigger}</DropdownToggle>
+        <Dropdown isOpen={dropdownOpen} toggle={toggle} {...dropdownProps}>
+          <DropdownToggle caret>{trigger}</DropdownToggle>
           <DropdownMenu>{menuBody}</DropdownMenu>
         </Dropdown>
       );

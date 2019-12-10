@@ -1,4 +1,4 @@
-import { Components, registerComponent, withCurrentUser, withMulti } from 'meteor/vulcan:core'
+import { Components, registerComponent, withAccess, withCurrentUser, withMulti } from 'meteor/vulcan:core'
 import Users from 'meteor/vulcan:users'
 import React, { PureComponent } from 'react'
 import { Link } from 'react-router-dom'
@@ -278,7 +278,12 @@ class ProjectsDataTable extends PureComponent {
   }
 }
 
-const options = {
+const accessOptions = {
+  groups: ['members', 'admins'],
+  redirect: '/login'
+}
+
+const multiOptions = {
   collection: Projects,
   fragmentName: 'ProjectsDataTableFragment',
   limit: 1000
@@ -287,5 +292,10 @@ const options = {
 registerComponent({
   name: 'ProjectsDataTable',
   component: ProjectsDataTable,
-  hocs: [withCurrentUser, withFilters, [withMulti, options]]
+  hocs: [
+    [withAccess, accessOptions],
+    withCurrentUser,
+    withFilters,
+    [withMulti, multiOptions]
+  ]
 })
