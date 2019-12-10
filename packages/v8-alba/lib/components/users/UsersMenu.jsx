@@ -1,11 +1,11 @@
+import { Meteor } from 'meteor/meteor';
 import { Components, registerComponent, withCurrentUser } from 'meteor/vulcan:core';
+import { STATES } from 'meteor/vulcan:accounts';
+import Users from 'meteor/vulcan:users';
+import { FormattedMessage } from 'meteor/vulcan:i18n';
+import { withApollo } from 'react-apollo';
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Meteor } from 'meteor/meteor';
-import Users from 'meteor/vulcan:users';
-import { withApollo } from 'react-apollo';
-import { FormattedMessage } from 'meteor/vulcan:i18n';
-import { STATES } from 'meteor/vulcan:accounts';
 
 const UsersMenu = ({ currentUser, currentUserLoading, client, state }) => {
   return (
@@ -59,7 +59,10 @@ const UserLoggedInMenu = ({ currentUser, client }) => {
   menuItems.push({
     labelId: 'users.log_out',
     itemProps: {
-      onClick: () => Meteor.logout(() => client.resetStore()),
+      onClick: () => Meteor.logout(() => {
+        client.resetStore();
+        window.location.assign('/');
+      }),
     },
   });
 
@@ -81,7 +84,7 @@ const UserLoggedInMenu = ({ currentUser, client }) => {
 
 const UserLoggedOutMenu = ({ state }) => (
   <Components.Dropdown
-    buttonProps={{ variant: ' btn-secondary' }}
+    buttonProps={{ variant: 'btn-secondary' }}
     id="accounts-dropdown"
     className="users-account-menu"
     trigger={
@@ -99,4 +102,8 @@ UsersMenu.propsTypes = {
   client: PropTypes.object,
 };
 
-registerComponent({ name: 'UsersMenu', component: UsersMenu, hocs: [withCurrentUser, withApollo] });
+registerComponent({
+  name: 'UsersMenu',
+  component: UsersMenu,
+  hocs: [withCurrentUser, withApollo]
+});

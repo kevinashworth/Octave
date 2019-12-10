@@ -10,8 +10,7 @@ import './offices'
 import './projects'
 import './past-projects'
 import './statistics'
-
-import './fragments'
+import './users'
 
 // See https://stackoverflow.com/questions/14342848/how-do-i-access-process-env-in-meteor
 if (Meteor.isClient) {

@@ -41,7 +41,7 @@ addRoute({ path: '/statistics/list', name: 'StatisticsList', componentName: 'Sta
 addRoute({ path: '/statistics/:_id/edit', name: 'StatisticsEditForm', componentName: 'StatisticsEditForm' })
 
 addRoute([
-  { name: 'users.profile', path: '/users/:slug', componentName: 'UsersProfile' },
-  { name: 'users.account', path: '/account', componentName: 'UsersAccount' },
-  { name: 'users.edit', path: '/users/:slug/edit', componentName: 'UsersAccount' }
+  { name: 'users.profile', path: '/users/:slug',      componentName: 'UsersProfile' },
+  { name: 'users.account', path: '/account',          componentName: 'UsersAccount' },
+  { name: 'users.edit',    path: '/users/:slug/edit', componentName: 'UsersEdit' }
 ])

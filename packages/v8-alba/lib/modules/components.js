@@ -84,6 +84,7 @@ import '../components/statistics/StatisticsList.jsx'
 // from example-forum
 
 import '../components/users/UsersAccount.jsx'
+import '../components/users/UsersEdit.jsx'
 import '../components/users/UsersEditForm.jsx'
 import '../components/users/UsersMenu.jsx'
 import '../components/users/UsersName.jsx'

@@ -1,11 +1,12 @@
-import { Components, registerComponent, withCurrentUser, withSingle } from 'meteor/vulcan:core'
+import { Components, registerComponent, withCurrentUser, withSingle2 } from 'meteor/vulcan:core'
+import Users from 'meteor/vulcan:users'
 import { FormattedMessage } from 'meteor/vulcan:i18n'
 import React, { PureComponent } from 'react'
-import { Button, Card, CardBody, CardFooter, CardHeader, CardLink, CardText } from 'reactstrap'
-import Markup from 'interweave'
-import Users from 'meteor/vulcan:users'
 import { Link } from 'react-router-dom'
 import mapProps from 'recompose/mapProps'
+import { Button, Card, CardBody, CardFooter, CardHeader, CardLink, CardText } from 'reactstrap'
+import Markup from 'interweave'
+import _ from 'lodash'
 import moment from 'moment'
 import { DATE_FORMAT_LONG, DATE_FORMAT_SHORT } from '../../modules/constants.js'
 
@@ -13,20 +14,13 @@ class UsersProfile extends PureComponent {
   render() {
     const { currentUser, document, loading } = this.props
     if (loading) {
-      return (
-        <div className='page'>
-          <Components.Loading />
-        </div>
-      )
+      return <Components.Loading />
     } else if (!document) {
       console.log(`// missing user (_id/slug: ${this.props.documentId || this.props.slug})`);
-      return (
-        <div className='page'>
-          <FormattedMessage id='app.404' />
-        </div>
-      )
+      return <FormattedMessage id='app.404' />
     } else {
       const user = document
+      console.log('user:', user)
       let displayDate =
         'User added ' + moment(user.createdAt).format(DATE_FORMAT_SHORT)
       if (user.updatedAt) {
@@ -52,7 +46,7 @@ class UsersProfile extends PureComponent {
               }
               {user.website ? (
                 <CardText>
-                <a href={user.website} target='_websites'>{user.website} </a>
+                <a href={user.website} target='profilelinks'>{user.website} </a>
                 </CardText>
               ) : null}
             </CardBody>
@@ -60,16 +54,11 @@ class UsersProfile extends PureComponent {
               <CardBody>
                 <CardText>
                   <Button className='btn-twitter'>
-                    <span><CardLink href={'https://twitter.com/' + user.twitterUsername}> {user.twitterUsername} </CardLink></span>
+                    @<CardLink href={'https://twitter.com/' + user.twitterUsername}>{user.twitterUsername}</CardLink>
                   </Button>
                 </CardText>
               </CardBody>
             ) : null}
-            <CardBody>
-              <CardText>
-                {this.props.blahblahblah ? <Components.UsersCommentsList /> : null}
-              </CardText>
-            </CardBody>
             <CardFooter>
               <small className='text-muted'>{displayDate}</small>
             </CardFooter>
@@ -77,29 +66,39 @@ class UsersProfile extends PureComponent {
         </div>
       )
     }
-
   }
-
 }
 
-UsersProfile.displayName = 'UsersProfile'
+UsersProfile.displayName = 'UsersProfile';
 
 const options = {
   collection: Users,
   fragmentName: 'UsersProfile'
-}
+};
 
-const mapPropsFunction = props => ({
-  ...props,
-  documentId: props.match && props.match.params._id,
-  slug: props.match && props.match.params.slug
-})
+// const mapPropsFunction = props => ({
+//   ...props,
+//   documentId: props.match && props.match.params._id,
+//   slug: props.match && props.match.params.slug
+// })
+
+// make router slug param available as `slug` prop
+const mapPropsFunction = props => ({ ...props,
+  input: {
+    filter: {
+      slug: {
+        _eq: _.get(props, 'match.params.slug')
+      }
+    }
+  }
+});
 
 registerComponent({
   name: 'UsersProfile',
   component: UsersProfile,
   hocs: [
+    mapProps(mapPropsFunction),
     withCurrentUser,
-    mapProps(mapPropsFunction), [withSingle, options]
+    [withSingle2, options]
   ]
-})
+});

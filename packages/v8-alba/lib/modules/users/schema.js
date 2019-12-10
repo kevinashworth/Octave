@@ -1,9 +1,14 @@
-// import { Utils } from 'meteor/vulcan:core'
 import Users from 'meteor/vulcan:users'
 import SimpleSchema from 'simpl-schema'
-// import marked from 'marked'
 
 Users.addField([
+  // first, a field we are EDITING not ADDING despite `addField` function name
+  {
+    fieldName: 'createdAt',
+    fieldSchema: {
+      canRead: ['guests']
+    }
+  },
   // Count of user's comments
   {
     fieldName: 'commentCount',
@@ -73,67 +78,3 @@ Users.addField([
     }
   }
 ])
-
-// import { Posts } from '../posts/index.js'
-// import Users from 'meteor/vulcan:users'
-//
-// // We have no Users module, so put code in this file under Comments
-// Users.addField([
-//   {
-//     fieldName: 'commentCount',
-//     fieldSchema: {
-//       type: Number,
-//       optional: true,
-//       defaultValue: 0,
-//       canRead: ['guests']
-//     }
-//   }
-// ])
-//
-// Posts.addField([
-//   /**
-//     Count of the post's comments
-//   */
-//   {
-//     fieldName: 'commentCount',
-//     fieldSchema: {
-//       type: Number,
-//       optional: true,
-//       defaultValue: 0,
-//       canRead: ['guests']
-//     }
-//   },
-//   /**
-//     An array containing the `_id`s of commenters
-//   */
-//   {
-//     fieldName: 'commenters',
-//     fieldSchema: {
-//       type: Array,
-//       optional: true,
-//       resolveAs: {
-//         fieldName: 'commenters',
-//         type: '[User]',
-//         resolver: async (post, args, { currentUser, Users }) => {
-//           if (!post.commenters) return []
-//           const commenters = await Users.loader.loadMany(post.commenters)
-//           return Users.restrictViewableFields(currentUser, Users, commenters)
-//         }
-//       },
-//       canRead: ['guests']
-//     }
-//   },
-//   {
-//     fieldName: 'commenters.$',
-//     fieldSchema: {
-//       type: String,
-//       optional: true
-//     }
-//   }
-// ])
-
-/*
-
-Custom fields on Users collection
-
-*/
