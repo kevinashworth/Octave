@@ -1,6 +1,6 @@
 import { registerComponent } from 'meteor/vulcan:lib'
 import { intlShape } from 'meteor/vulcan:i18n'
-import React, { Component, Fragment } from 'react'
+import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import Select from 'react-select'
 import find from 'lodash/find'
@@ -14,7 +14,6 @@ class MySelect extends Component {
   handleChange (selectedOption) {
     if (!selectedOption) {
       this.context.updateCurrentValues({ [this.props.path]: null })
-      console.log(`[KA] handleChange: Just set ${this.props.path} to null [0]`)
       return
     }
     let siblingPath = null
@@ -37,7 +36,6 @@ class MySelect extends Component {
 
   componentDidMount () {
     const selectedOption = find(this.props.options, { value: this.props.value }) || null
-    console.log('[KA] componentDidMount selectedOption:', selectedOption)
     if (selectedOption) {
       let siblingPath = null
       if (this.props.parentFieldName === 'projects' || this.props.parentFieldName === 'pastProjects') {
@@ -55,7 +53,6 @@ class MySelect extends Component {
   render () {
     const { selectOne } = this.props.inputProperties
     const selectedOption = find(this.props.options, { value: this.props.value }) || null
-    console.log('[KA] MySelect selectedOption:', selectedOption)
     const noneOption = {
       label: this.context.intl.formatMessage({ id: 'forms.select_option' }),
       value: null,
@@ -70,7 +67,7 @@ class MySelect extends Component {
           options={[noneOption, ...this.props.options]}
           defaultValue={{ value: null, label: '' }}
           isClearable
-          />
+        />
       )
     }
 
@@ -85,9 +82,9 @@ class MySelect extends Component {
       )
     } else {
       return (
-        <Fragment>
+        <>
           {theSelect()}
-        </Fragment>
+        </>
       )
     }
   }
