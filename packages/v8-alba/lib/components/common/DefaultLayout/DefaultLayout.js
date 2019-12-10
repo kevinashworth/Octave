@@ -55,6 +55,7 @@ class DefaultLayout extends Component {
           </AppSidebar>
           <main className="main">
             {/*<AppBreadcrumb appRoutes={routes}/>*/}
+            <Components.FlashMessages />
             <Container fluid>
               {children}
             </Container>

@@ -16,11 +16,9 @@ class UsersProfile extends PureComponent {
     if (loading) {
       return <Components.Loading />
     } else if (!document) {
-      console.log(`// missing user (_id/slug: ${this.props.documentId || this.props.slug})`);
       return <FormattedMessage id='app.404' />
     } else {
       const user = document
-      console.log('user:', user)
       let displayDate =
         'User added ' + moment(user.createdAt).format(DATE_FORMAT_SHORT)
       if (user.updatedAt) {

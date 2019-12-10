@@ -4,7 +4,6 @@ import get from 'lodash/get';
 
 const UsersEdit = ({ match }) => {
   const slug = get(match, 'params.slug');
-  console.log('[KA] UsersEdit slug:', slug)
   return <Components.UsersEditForm input={{ filter: { slug: { _eq: slug } } }} />;
 };
 
