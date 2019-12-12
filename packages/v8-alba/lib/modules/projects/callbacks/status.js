@@ -8,8 +8,14 @@ import { PAST_PROJECT_STATUSES_ARRAY } from '../../constants.js'
 // if the new status is now a past-project, create a new past-project then remove this active project
 // if the new project is created and matches (TODO: matches what, exactly?), delete current
 
-export async function ProjectUpdateStatusAsync ({ currentUser, document }) {
+export async function ProjectUpdateStatusAsync (document, { currentUser }) {
+  console.log('[KA] ProjectUpdateStatusAsync document:', document)
+
+debugger;
+
   const newStatusIsPast = _.includes(PAST_PROJECT_STATUSES_ARRAY, document.status)
+
+  console.log('[KA] ProjectUpdateStatusAsync newStatusIsPast:', newStatusIsPast)
 
   const createNewPastProject = async () => {
     try {
@@ -20,7 +26,7 @@ export async function ProjectUpdateStatusAsync ({ currentUser, document }) {
         validate: false
       })
     } catch (e) {
-      console.group('Error in createNewPastProject:')
+      console.group('[KA] Error in ProjectUpdateStatusAsync/createNewPastProject:')
       console.error(e)
       console.groupEnd()
     }
@@ -30,17 +36,19 @@ export async function ProjectUpdateStatusAsync ({ currentUser, document }) {
     try {
       return await deleteMutator({
         collection: Projects,
-        documentId: document._id,
+        document,
         currentUser,
         validate: false
       })
     } catch (err) {
-      console.error('error in deleteProject:', err)
+      console.error('[KA] Error in ProjectUpdateStatusAsync/deleteProject:', err)
     }
   }
 
   if (newStatusIsPast) {
     const newPastProject = (await createNewPastProject()).data
+
+    console.log('[KA] ProjectUpdateStatusAsync newPastProject:', newPastProject)
 
     if (newPastProject.projectTitle === document.projectTitle) {
       await deleteProject()
