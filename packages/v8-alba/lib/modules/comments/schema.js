@@ -93,7 +93,7 @@ const schema = {
       placeholder: 'Add a comment…',
       rows: 4
     },
-    itemProperties: { // this requires edits to 2 Vulcan files
+    itemProperties: {
       layout: 'inputOnly'
     }
   },

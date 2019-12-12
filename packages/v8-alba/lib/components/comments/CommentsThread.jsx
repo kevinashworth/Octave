@@ -20,6 +20,8 @@ const CommentsThread = (props) => {
         <CardHeader className='class-accent-list'>{totalCount > 0 ? totalCount : null} <FormattedMessage id='comments.comments' /></CardHeader>
         <CardBody>
           <Components.CommentsList currentUser={currentUser} comments={nestedComments} commentCount={totalCount} />
+        </CardBody>
+        <CardBody>
           {currentUser
             ? <Components.CommentsNewForm
                 collectionName={collectionName}

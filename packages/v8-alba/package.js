@@ -25,7 +25,8 @@ Package.onUse(function (api) {
   api.addFiles([
     'lib/stylesheets/alba-2.0.9/react-perfect-scrollbar-styles.css',
     'lib/stylesheets/alba-2.0.9/style.css',
-    'lib/stylesheets/alba-2.0.9/custom-btn.css'
+    'lib/stylesheets/alba-2.0.9/custom-btn.css',
+    'lib/stylesheets/alba-2.0.9/custom-comments.scss'
   ], ['client']);
 
   api.addAssets([
