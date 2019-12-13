@@ -172,7 +172,7 @@ const schema = {
   renewed: {
     label: 'On Hiatus but Renewed',
     hidden: ({ document, formType }) => {
-      return formType !== 'new' && document.status !== 'On Hiatus' 
+      return formType !== 'new' && document.status !== 'On Hiatus'
     },
     type: Boolean,
     optional: true,

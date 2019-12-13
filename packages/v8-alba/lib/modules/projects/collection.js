@@ -28,7 +28,7 @@ const Projects = createCollection({
   },
   callbacks: {
     create: {
-      after: [ProjectEditUpdateContacts, ProjectCreateUpdateOfficeAfter, ProjectCreateUpdateStatisticsAfter],
+      after: [ProjectEditUpdateContacts, ProjectCreateUpdateOfficeAfter, ProjectCreateUpdateStatisticsAfter]
     },
     update: {
       after: [ProjectEditUpdateContacts, ProjectEditUpdateStatusAfter],
