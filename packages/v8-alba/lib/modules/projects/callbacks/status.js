@@ -1,5 +1,4 @@
 import { Connectors, createMutator, deleteMutator } from 'meteor/vulcan:core'
-import { Promise } from 'meteor/promise'
 import _ from 'lodash'
 import Offices from '../../offices/collection.js'
 import Projects from '../collection.js'
@@ -10,25 +9,17 @@ import { PAST_PROJECT_STATUSES_ARRAY } from '../../constants.js'
 // if the new project is created and matches (TODO: matches what, exactly?), delete current
 
 export function ProjectEditUpdateStatusAfter (document, { context, currentUser }) {
-  // console.log('[KA] ProjectEditUpdateStatusAfter document:', document)
-
   const newStatusIsPast = _.includes(PAST_PROJECT_STATUSES_ARRAY, document.status)
 
-  // console.log('[KA] ProjectEditUpdateStatusAfter newStatusIsPast:', newStatusIsPast)
-
   if (newStatusIsPast) {
-
     const { data: newPastProject } = Promise.await(createMutator({
-        collection: PastProjects,
-        document,
-        currentUser,
-        validate: false
-      }))
-
-    // console.log('[KA] newPastProject:', newPastProject)
+      collection: PastProjects,
+      document,
+      currentUser,
+      validate: false
+    }))
 
     if (newPastProject.projectTitle === document.projectTitle) {
-      // const { data: deleteResult } = Promise.await(deleteMutator({
       Promise.await(deleteMutator({
         collection: Projects,
         documentId: document._id,
@@ -36,8 +27,6 @@ export function ProjectEditUpdateStatusAfter (document, { context, currentUser }
         validate: false,
         context
       }))
-
-      // console.log('[KA] deleteResult:', deleteResult)
     }
 
     if (document.castingOfficeId) {
@@ -54,12 +43,6 @@ export function ProjectEditUpdateStatusAfter (document, { context, currentUser }
         pastProjects = office.pastProjects
       }
       pastProjects.push({ projectId: newPastProject._id })
-
-      // console.group('[KA] update Offices')
-      // console.log('pastProjects:', pastProjects)
-      // console.log('projects:', projects)
-      // console.groupEnd()
-
       Connectors.update(Offices, document.castingOfficeId, {
         $set: {
           pastProjects,

@@ -12,20 +12,20 @@ export function PastProjectUpdateStatusAfter (document, { context, currentUser }
   const newStatusIsActive = _.includes(ACTIVE_PROJECT_STATUSES_ARRAY, document.status)
 
   if (newStatusIsActive) {
-
     const { data: newProject } = Promise.await(createMutator({
-        collection: Projects,
-        document,
-        currentUser,
-        validate: false
-      }))
+      collection: Projects,
+      document,
+      currentUser,
+      validate: false
+    }))
 
     if (newProject.projectTitle === document.projectTitle) {
       Promise.await(deleteMutator({
         collection: PastProjects,
         documentId: document._id,
         currentUser,
-        validate: false
+        validate: false,
+        context
       }))
     }
 
