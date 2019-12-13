@@ -2,12 +2,3 @@ BUG
 removed a contact (Howard) from Twenties, but Howard still shows Twenties on his single
 NOTE
 somewhat similar to above
-
-BUG
-12 Mighty Orphans --> wrapped BUT didn't become Past Project
-http://localhost:4004/projects/dM5vTcMvA3Bh6es7N/12-mighty-orphans
-NOTE
-surely a callbacks problem for Projects
-
-BUG
-I added 2 Features and Statistics doesn't have a piece of data from Today 2019-12-10

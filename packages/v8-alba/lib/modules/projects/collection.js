@@ -10,7 +10,7 @@ import {
   ProjectEditUpdateContacts,
   ProjectCreateUpdateOfficeAfter,
   ProjectEditUpdateOfficeBefore,
-  ProjectCreateUpdateStatisticsAsync,
+  ProjectCreateUpdateStatisticsAfter,
   ProjectEditUpdateStatusAfter
 } from './callbacks/index.js'
 
@@ -28,8 +28,7 @@ const Projects = createCollection({
   },
   callbacks: {
     create: {
-      after: [ProjectEditUpdateContacts, ProjectCreateUpdateOfficeAfter],
-      async: [ProjectCreateUpdateStatisticsAsync]
+      after: [ProjectEditUpdateContacts, ProjectCreateUpdateOfficeAfter, ProjectCreateUpdateStatisticsAfter],
     },
     update: {
       after: [ProjectEditUpdateContacts, ProjectEditUpdateStatusAfter],
