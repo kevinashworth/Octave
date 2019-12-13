@@ -8,10 +8,10 @@ import schema from './schema.js'
 
 import {
   ProjectEditUpdateContacts,
-  ProjectEditUpdateOfficeAfter,
+  ProjectCreateUpdateOfficeAfter,
   ProjectEditUpdateOfficeBefore,
   ProjectCreateUpdateStatisticsAsync,
-  ProjectUpdateStatusAsync
+  ProjectEditUpdateStatusAfter
 } from './callbacks/index.js'
 
 const Projects = createCollection({
@@ -28,11 +28,11 @@ const Projects = createCollection({
   },
   callbacks: {
     create: {
-      after: [ProjectEditUpdateContacts, ProjectEditUpdateOfficeAfter],
+      after: [ProjectEditUpdateContacts, ProjectCreateUpdateOfficeAfter],
       async: [ProjectCreateUpdateStatisticsAsync]
     },
     update: {
-      after: [ProjectEditUpdateContacts, ProjectUpdateStatusAsync],
+      after: [ProjectEditUpdateContacts, ProjectEditUpdateStatusAfter],
       before: [ProjectEditUpdateOfficeBefore]
     }
   }

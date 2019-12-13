@@ -1,4 +1,5 @@
 import { Connectors, createMutator, deleteMutator } from 'meteor/vulcan:core'
+import { Promise } from 'meteor/promise'
 import _ from 'lodash'
 import Offices from '../../offices/collection.js'
 import Projects from '../collection.js'
@@ -8,50 +9,35 @@ import { PAST_PROJECT_STATUSES_ARRAY } from '../../constants.js'
 // if the new status is now a past-project, create a new past-project then remove this active project
 // if the new project is created and matches (TODO: matches what, exactly?), delete current
 
-export async function ProjectUpdateStatusAsync (document, { currentUser }) {
-  console.log('[KA] ProjectUpdateStatusAsync document:', document)
-
-debugger;
+export function ProjectEditUpdateStatusAfter (document, { context, currentUser }) {
+  // console.log('[KA] ProjectEditUpdateStatusAfter document:', document)
 
   const newStatusIsPast = _.includes(PAST_PROJECT_STATUSES_ARRAY, document.status)
 
-  console.log('[KA] ProjectUpdateStatusAsync newStatusIsPast:', newStatusIsPast)
+  // console.log('[KA] ProjectEditUpdateStatusAfter newStatusIsPast:', newStatusIsPast)
 
-  const createNewPastProject = async () => {
-    try {
-      return await createMutator({
+  if (newStatusIsPast) {
+
+    const { data: newPastProject } = Promise.await(createMutator({
         collection: PastProjects,
         document,
         currentUser,
         validate: false
-      })
-    } catch (e) {
-      console.group('[KA] Error in ProjectUpdateStatusAsync/createNewPastProject:')
-      console.error(e)
-      console.groupEnd()
-    }
-  }
+      }))
 
-  const deleteProject = async () => {
-    try {
-      return await deleteMutator({
-        collection: Projects,
-        document,
-        currentUser,
-        validate: false
-      })
-    } catch (err) {
-      console.error('[KA] Error in ProjectUpdateStatusAsync/deleteProject:', err)
-    }
-  }
-
-  if (newStatusIsPast) {
-    const newPastProject = (await createNewPastProject()).data
-
-    console.log('[KA] ProjectUpdateStatusAsync newPastProject:', newPastProject)
+    // console.log('[KA] newPastProject:', newPastProject)
 
     if (newPastProject.projectTitle === document.projectTitle) {
-      await deleteProject()
+      // const { data: deleteResult } = Promise.await(deleteMutator({
+      Promise.await(deleteMutator({
+        collection: Projects,
+        documentId: document._id,
+        currentUser,
+        validate: false,
+        context
+      }))
+
+      // console.log('[KA] deleteResult:', deleteResult)
     }
 
     if (document.castingOfficeId) {
@@ -68,6 +54,12 @@ debugger;
         pastProjects = office.pastProjects
       }
       pastProjects.push({ projectId: newPastProject._id })
+
+      // console.group('[KA] update Offices')
+      // console.log('pastProjects:', pastProjects)
+      // console.log('projects:', projects)
+      // console.groupEnd()
+
       Connectors.update(Offices, document.castingOfficeId, {
         $set: {
           pastProjects,

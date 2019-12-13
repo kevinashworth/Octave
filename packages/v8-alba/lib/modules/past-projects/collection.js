@@ -5,7 +5,7 @@ import {
   PastProjectEditUpdateContacts,
   PastProjectEditUpdateOfficeBefore,
   PastProjectCreateUpdateStatisticsAsync,
-  PastProjectUpdateStatusAsync
+  PastProjectUpdateStatusAfter
 } from './callbacks/index.js'
 
 const PastProjects = createCollection({
@@ -26,8 +26,7 @@ const PastProjects = createCollection({
       async: [PastProjectCreateUpdateStatisticsAsync]
     },
     update: {
-      after: [PastProjectEditUpdateContacts],
-      async: [PastProjectUpdateStatusAsync],
+      after: [PastProjectEditUpdateContacts, PastProjectUpdateStatusAfter],
       before: [PastProjectEditUpdateOfficeBefore]
     }
   }
