@@ -1,7 +1,7 @@
 import { registerComponent, Components } from 'meteor/vulcan:core'
 import React, { Fragment, useState } from 'react'
 import { Link } from 'react-router-dom'
-import { Dropdown, DropdownItem, DropdownMenu, DropdownToggle, Input, Form, FormGroup } from 'reactstrap'
+import { Button, Dropdown, DropdownItem, DropdownMenu, DropdownToggle, Form, Input, InputGroup, InputGroupAddon } from 'reactstrap'
 import algoliasearch from 'algoliasearch/lite'
 import { connectHits, connectPoweredBy, connectSearchBox, connectStateResults, InstantSearch } from 'react-instantsearch-dom'
 
@@ -11,17 +11,23 @@ const PoweredBy = ({ url }) => <a href={url} target='_blank' rel='noopener noref
 
 const CustomPoweredBy = connectPoweredBy(PoweredBy)
 
-const SearchBox = ({ currentRefinement, refine }) => (
-  <Form noValidate action='' role='search' inline={true}>
-    <FormGroup row>
-      <Input placeholder='Algolia'
-        type='search'
-        value={currentRefinement}
-        onChange={event => refine(event.currentTarget.value)}
-      />
-    </FormGroup>
-  </Form>
-);
+const SearchBox = ({ currentRefinement, refine }) => {
+  const onClick = () => refine('')
+  return (
+    <Form noValidate action='' role='search' inline={true}>
+      <InputGroup>
+        <Input placeholder='Algolia!'
+          type='search'
+          value={currentRefinement}
+          onChange={event => refine(event.currentTarget.value)}
+        />
+        <InputGroupAddon addonType='append'>
+          <Button onClick={onClick} close />
+        </InputGroupAddon>
+      </InputGroup>
+    </Form>
+  )
+}
 
 const CustomSearchBox = connectSearchBox(SearchBox);
 
@@ -64,7 +70,7 @@ const Algolia = () => {
     <InstantSearch
       searchClient={searchClient} indexName='dev_v8-alba-mlab'
       onSearchStateChange={onSearchStateChange}>
-      <Dropdown nav isOpen={isDropdownOpen} direction='right' toggle={toggle}>
+      <Dropdown isOpen={isDropdownOpen} direction='right' toggle={toggle}>
         <CustomSearchBox />
         <Content />
       </Dropdown>
