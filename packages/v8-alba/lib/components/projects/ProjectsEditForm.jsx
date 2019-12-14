@@ -11,13 +11,12 @@ const ProjectsEditForm = ({ documentId, match, history, toggle, currentUser }) =
   const theDocumentId = documentId || match && match.params._id
   return (
     <div className='animated fadeIn'>
-      <Components.HeadTags title={'V8 Alba: Edit Project'} />
+      <Components.HeadTags title='V8 Alba: Edit Project' />
       <Card className='card-accent-danger'>
         <CardBody>
           <Components.SmartForm
             collection={Projects}
             documentId={theDocumentId}
-            queryFragment={getFragment('ProjectsEditFragment')}
             mutationFragment={getFragment('ProjectsEditFragment')}
             showRemove={Users.canDo(currentUser, ['project.delete.own', 'project.delete.all'])}
             successCallback={document => {

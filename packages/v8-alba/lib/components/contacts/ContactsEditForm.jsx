@@ -6,7 +6,7 @@ import { Card, CardBody } from 'reactstrap'
 import Contacts from '../../modules/contacts/collection.js'
 
 const ContactsEditForm = ({ documentId, match, history, toggle, currentUser }) => {
-  const theDocumentId = documentId || match.params._id
+  const theDocumentId = documentId || match && match.params._id
   return (
     <div className='animated fadeIn'>
       <Components.HeadTags title='V8 Alba: Edit Contact' />
