@@ -2,7 +2,7 @@ import { Components, replaceComponent, withCurrentUser } from 'meteor/vulcan:cor
 import Users from 'meteor/vulcan:users';
 import React, { Component } from 'react';
 import Media from 'react-media';
-import { Container, Input } from 'reactstrap';
+import { Container } from 'reactstrap';
 import {
   AppFooter,
   AppHeader,
@@ -44,7 +44,7 @@ class DefaultLayout extends Component {
           <AppSidebar fixed display="lg">
             <AppSidebarHeader>V8</AppSidebarHeader>
             <AppSidebarForm>
-              <Input placeholder='Search…' />
+              <Components.Search />
             </AppSidebarForm>
             <Media query='(max-width: 575.98px)' defaultMatches={false}
               render={() => (<AppSidebarNav navConfig={xsNav} {...rest} />)} />
