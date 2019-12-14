@@ -1,4 +1,0 @@
-BUG
-removed a contact (Howard) from Twenties, but Howard still shows Twenties on his single
-NOTE
-somewhat similar to above
