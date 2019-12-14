@@ -14,7 +14,7 @@ const CustomPoweredBy = connectPoweredBy(PoweredBy)
 const SearchBox = ({ currentRefinement, refine }) => (
   <Form noValidate action='' role='search' inline={true}>
     <FormGroup row>
-      <Input placeholder='Search'
+      <Input placeholder='Algolia'
         type='search'
         value={currentRefinement}
         onChange={event => refine(event.currentTarget.value)}
