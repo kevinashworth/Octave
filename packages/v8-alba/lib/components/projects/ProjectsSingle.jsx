@@ -23,7 +23,7 @@ class ProjectsSingle extends PureComponent {
     } else if (project.status === 'On Hiatus' || project.status === 'Wrapped' || project.status === 'Canceled') {
       so = `Completed Season ${project.season}`
     }
-    if (project.status === 'Casting') {
+    if (project.status === 'Casting' || project.status === 'See Notes') {
       so = `Season ${project.season}`
     }
     if (project.order) {

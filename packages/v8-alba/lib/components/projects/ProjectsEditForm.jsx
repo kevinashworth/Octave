@@ -20,7 +20,6 @@ const ProjectsEditForm = ({ documentId, match, history, toggle, currentUser }) =
             mutationFragment={getFragment('ProjectsEditFragment')}
             showRemove={Users.canDo(currentUser, ['project.delete.own', 'project.delete.all'])}
             successCallback={document => {
-              console.log('[KA] successCallback document:', document)
               if (_.includes(PAST_PROJECT_STATUSES_ARRAY, document.status)) {
                 history.push(`/past-projects/${document._id}/${document.slug}`)
               } else if (toggle) {

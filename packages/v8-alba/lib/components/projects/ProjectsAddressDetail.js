@@ -21,7 +21,7 @@ class ProjectsAddressDetail extends PureComponent {
 
 ProjectsAddressDetail.propTypes = {
   address: PropTypes.shape({
-    street1: PropTypes.string.isRequired,
+    street1: PropTypes.string,
     street2: PropTypes.string,
     city: PropTypes.string.isRequired,
     state: PropTypes.string.isRequired,
