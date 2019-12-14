@@ -8,42 +8,25 @@ import { PAST_PROJECT_STATUSES_ARRAY } from '../../constants.js'
 // if the new status is now a past-project, create a new past-project then remove this active project
 // if the new project is created and matches (TODO: matches what, exactly?), delete current
 
-export async function ProjectUpdateStatusAsync ({ currentUser, document }) {
+export function ProjectEditUpdateStatusAfter (document, { context, currentUser }) {
   const newStatusIsPast = _.includes(PAST_PROJECT_STATUSES_ARRAY, document.status)
 
-  const createNewPastProject = async () => {
-    try {
-      return await createMutator({
-        collection: PastProjects,
-        document,
-        currentUser,
-        validate: false
-      })
-    } catch (e) {
-      console.group('Error in createNewPastProject:')
-      console.error(e)
-      console.groupEnd()
-    }
-  }
+  if (newStatusIsPast) {
+    const { data: newPastProject } = Promise.await(createMutator({
+      collection: PastProjects,
+      document,
+      currentUser,
+      validate: false
+    }))
 
-  const deleteProject = async () => {
-    try {
-      return await deleteMutator({
+    if (newPastProject.projectTitle === document.projectTitle) {
+      Promise.await(deleteMutator({
         collection: Projects,
         documentId: document._id,
         currentUser,
-        validate: false
-      })
-    } catch (err) {
-      console.error('error in deleteProject:', err)
-    }
-  }
-
-  if (newStatusIsPast) {
-    const newPastProject = (await createNewPastProject()).data
-
-    if (newPastProject.projectTitle === document.projectTitle) {
-      await deleteProject()
+        validate: false,
+        context
+      }))
     }
 
     if (document.castingOfficeId) {

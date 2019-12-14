@@ -24,8 +24,7 @@ const Offices = createCollection({
       after: [OfficeEditUpdateContacts, OfficeEditUpdatePastProjects, OfficeEditUpdateProjects]
     },
     update: {
-      before: [OfficeEditUpdateContacts, OfficeEditUpdatePastProjects],
-      after: [OfficeEditUpdateProjects]
+      before: [OfficeEditUpdateContacts, OfficeEditUpdatePastProjects, OfficeEditUpdateProjects]
     }
   }
 })

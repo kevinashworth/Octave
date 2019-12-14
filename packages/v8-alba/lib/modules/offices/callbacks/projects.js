@@ -1,37 +1,57 @@
 import { Connectors } from 'meteor/vulcan:core'
+import _ from 'lodash'
 import Projects from '../../projects/collection.js'
+import { isEmptyValue } from '../../helpers.js'
 
-/*
-When updating a project on an office, also update that project with the office.
-I get confused, so here's a description:
+export function OfficeEditUpdateProjects (data, { document, originalDocument }) {
+  // [a] if the two `projects` arrays are equal, do nothing
+  // [b] else for deleted projects in oldOffice but not newOffice, remove castingOfficeId from those projects
+  // [c] and for added projects in newOffice but not oldOffice, add castingOfficeId to those projects
 
-Where i represents the project(s) we're adding to our office,
-office.projects[i] has { projectId }
-
-But we actually get all projects, not just i, the new ones.
-
-So for each of the office.projects we update project.castingOfficeId of the Project with _id === projectId with
-{
-  castingOfficeId: office._id
-}
-*/
-
-export function OfficeEditUpdateProjects (document, properties) {
   const office = document
-  if (!office.projects) {
-    return
-  }
+  let projectsToRemoveThisOfficeFrom = null
+  let projectsToAddThisOfficeTo = null
 
-  office.projects.forEach(officeProject => {
-    const project = Projects.findOne(officeProject.projectId) // TODO: error handling
-    const newOfficeId = office._id
-    if (project.castingOfficeId !== newOfficeId) {
+  if (!originalDocument) { // newly created office, skip to --> [c] add office to these projects, if any
+    if (!isEmptyValue(office.projects)) {
+      projectsToAddThisOfficeTo = office.projects
+    } else {
+      return
+    }
+  } else {
+    const newOffice = document
+    const oldOffice = originalDocument
+    projectsToAddThisOfficeTo = _.differenceWith(newOffice.projects, oldOffice.projects, _.isEqual)
+    projectsToRemoveThisOfficeFrom = _.differenceWith(oldOffice.projects, newOffice.projects, _.isEqual)
+    console.group('OfficeEditUpdateContacts:')
+    console.info('projectsToRemoveThisOfficeFrom:', projectsToRemoveThisOfficeFrom)
+    console.info('projectsToAddThisOfficeTo:', projectsToAddThisOfficeTo)
+    console.groupEnd()
+  }
+  // [b]
+  if (projectsToRemoveThisOfficeFrom) {
+    projectsToRemoveThisOfficeFrom.forEach(deletedProject => {
+      const project = Projects.findOne(deletedProject.projectId)
+      if (project.castingOfficeId === office._id) {
+        Connectors.update(Projects, project._id, {
+          $unset: {
+            castingOfficeId: 1,
+            updatedAt: new Date()
+          }
+        })
+      }
+    })
+  }
+  // [c]
+  if (projectsToAddThisOfficeTo) {
+    projectsToAddThisOfficeTo.forEach(addedProject => {
+      const project = Projects.findOne(addedProject.projectId)
       Connectors.update(Projects, project._id, {
         $set: {
-          castingOfficeId: newOfficeId,
+          castingOfficeId: office._id,
           updatedAt: new Date()
         }
       })
-    }
-  })
+    })
+  }
 }

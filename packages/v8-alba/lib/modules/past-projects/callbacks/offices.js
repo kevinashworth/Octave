@@ -54,69 +54,64 @@ So for each of the pastProject.offices we update office.pastProjects of the Offi
 // }
 
 export function PastProjectEditUpdateOfficeBefore (data, { document, originalDocument }) {
-  const oldOffice = originalDocument.castingOfficeId
-  const newOffice = document.castingOfficeId
-  let adding = false
-  if (newOffice && !oldOffice) {
-    adding = true
-  }
-  let removing = false
-  if (oldOffice && !newOffice) {
-    // this is an office getting removed from the project, so we also need to remove the project from that office
-    removing = true
-  }
-  let replacing = false
-  if (newOffice && oldOffice && oldOffice !== newOffice) {
-    // this is one office replacing another on the project
-    removing = false
-    replacing = true
-  }
-  let itmightnotbethereforsomereason = false
-  if (newOffice === oldOffice) {
-    console.info('itmightnotbethereforsomereason')
-    itmightnotbethereforsomereason = true
-  }
+  const oldOfficeId = originalDocument.castingOfficeId
+  const newOfficeId = document.castingOfficeId
 
-  let office = null
-  let pastProjects = null
-  if (adding) {
-    office = Offices.findOne(newOffice) // TODO: error handling
-    pastProjects = office && office.pastProjects
-  }
-  if (removing || replacing || itmightnotbethereforsomereason) {
-    office = Offices.findOne(oldOffice) // TODO: error handling
-    pastProjects = office && office.pastProjects
-  }
-  if (!office) {
-    console.log('findOne didn\'t find one office!')
+  if (newOfficeId === oldOfficeId) {
     return
   }
-  if (!isEmptyValue(pastProjects)) {
-    if (itmightnotbethereforsomereason) {
-      if (_.indexOf(pastProjects, { projectId: document._id }) < 0) {
-        replacing = true
-        console.info('itisnotthereforsomereason')
+
+  let addingToNewOffice = false
+  let removingFromOldOffice = false
+  if (newOfficeId && !oldOfficeId) {
+    addingToNewOffice = true
+  }
+  if (oldOfficeId && !newOfficeId) {
+    removingFromOldOffice = true
+  }
+  if ((newOfficeId && oldOfficeId) && (oldOfficeId !== newOfficeId)) {
+    addingToNewOffice = true
+    removingFromOldOffice = true
+  }
+
+  if (addingToNewOffice) {
+    const newOffice = Promise.await(Offices.findOne(newOfficeId)) // TODO: error handling
+    const currentNewOfficePastProjects = newOffice && newOffice.pastProjects
+    // add this pastProject to the new office's pastProjects,
+    // avoiding any potential duplication in case of database being slightly off
+    // TODO: _.unionWith is best?
+    const updatedNewOfficePastProjects = _.unionWith([{
+      projectId: document._id,
+      projectTitle: document.projectTitle
+    }], currentNewOfficePastProjects, _.isEqual)
+    Connectors.update(Offices, newOfficeId, {
+      $set: {
+        pastProjects: updatedNewOfficePastProjects,
+        // updatedAt: new Date() // 2019-12-13: don't want to modify ancient past projects' dates
       }
-    }
-    _.remove(pastProjects, function (p) {
+    })
+  }
+  if (removingFromOldOffice) {
+    const oldOffice = Promise.await(Offices.findOne(oldOfficeId)) // TODO: error handling
+    let oldOfficePastProjects = oldOffice && oldOffice.pastProjects
+
+    _.remove(oldOfficePastProjects, function (p) {
       return p.projectId === document._id
     })
-    if (adding || replacing) {
-      pastProjects.push({ projectId: document._id })
+
+    if (isEmptyValue(oldOfficePastProjects)) {
+      Connectors.update(Offices, oldOfficeId, {
+        $unset: {
+          pastProjects: 1
+        }
+      })
+    } else {
+      Connectors.update(Offices, oldOfficeId, {
+        $set: {
+          pastProjects: oldOfficePastProjects,
+          // updatedAt: new Date() // 2019-12-13: don't want to modify ancient pastProjects' dates
+        }
+      })
     }
-    Connectors.update(Offices, office._id, {
-      $set: {
-        pastProjects: pastProjects,
-        updatedAt: new Date()
-      }
-    })
-  } else if (adding || itmightnotbethereforsomereason) { // means we are adding to empty (or null) projects
-    pastProjects = [{ projectId: document._id }]
-    Connectors.update(Offices, office._id, {
-      $set: {
-        pastProjects: pastProjects,
-        updatedAt: new Date()
-      }
-    })
   }
 }

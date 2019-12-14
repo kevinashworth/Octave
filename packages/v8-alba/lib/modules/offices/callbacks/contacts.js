@@ -21,21 +21,9 @@ export function OfficeEditUpdateContacts (data, { document, originalDocument }) 
   } else {
     const newOffice = document
     const oldOffice = originalDocument
-    const oldOfficeContactsLength = oldOffice.contacts ? oldOffice.contacts.length : 0
-    const newOfficeContactsLength = newOffice.contacts ? newOffice.contacts.length : 0
-    // [a]
-    if (oldOfficeContactsLength === newOfficeContactsLength && newOfficeContactsLength === 0) {
-      return
-    }
-    if (oldOfficeContactsLength && newOfficeContactsLength && _.isEqual(oldOffice.contacts, newOffice.contacts)) {
-      return
-    }
-    // [b]
-    contactsToRemoveThisOfficeFrom = _.difference(oldOffice.contacts, newOffice.contacts)
-    // [c]
-    contactsToAddThisOfficeTo = _.difference(newOffice.contacts, oldOffice.contacts)
+    contactsToAddThisOfficeTo = _.differenceWith(newOffice.contacts, oldOffice.contacts, _.isEqual)
+    contactsToRemoveThisOfficeFrom = _.differenceWith(oldOffice.contacts, newOffice.contacts, _.isEqual)
     console.group('OfficeEditUpdateContacts:')
-    console.info('OfficeEditUpdateContacts lengths:', oldOfficeContactsLength, newOfficeContactsLength)
     console.info('contactsToRemoveThisOfficeFrom:', contactsToRemoveThisOfficeFrom)
     console.info('contactsToAddThisOfficeTo:', contactsToAddThisOfficeTo)
     console.groupEnd()

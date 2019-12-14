@@ -11,22 +11,22 @@ const ProjectsEditForm = ({ documentId, match, history, toggle, currentUser }) =
   const theDocumentId = documentId || match && match.params._id
   return (
     <div className='animated fadeIn'>
-      <Components.HeadTags title={'V8 Alba: Edit Project'} />
+      <Components.HeadTags title='V8 Alba: Edit Project' />
       <Card className='card-accent-danger'>
         <CardBody>
           <Components.SmartForm
             collection={Projects}
             documentId={theDocumentId}
-            queryFragment={getFragment('ProjectsEditFragment')}
             mutationFragment={getFragment('ProjectsEditFragment')}
             showRemove={Users.canDo(currentUser, ['project.delete.own', 'project.delete.all'])}
             successCallback={document => {
+              console.log('[KA] successCallback document:', document)
               if (_.includes(PAST_PROJECT_STATUSES_ARRAY, document.status)) {
-                history.push(`/past-projects/${theDocumentId}/${document.slug}`)
+                history.push(`/past-projects/${document._id}/${document.slug}`)
               } else if (toggle) {
                 toggle()
               } else {
-                history.push(`/projects/${theDocumentId}/${document.slug}`)
+                history.push(`/projects/${document._id}/${document.slug}`)
               }
             }}
             removeSuccessCallback={document => {
@@ -51,3 +51,14 @@ const ProjectsEditForm = ({ documentId, match, history, toggle, currentUser }) =
 }
 
 registerComponent('ProjectsEditForm', ProjectsEditForm, withCurrentUser, withRouter)
+//
+// submitCallback={data => {
+//   console.log('[KA] submitCallback data:', data)
+//   if (_.includes(PAST_PROJECT_STATUSES_ARRAY, data.status)) {
+//     history.push(`/past-projects/${theDocumentId}/${data.slug}`)
+//   } else if (toggle) {
+//     toggle()
+//   } else {
+//     history.push(`/projects/${theDocumentId}/${data.slug}`)
+//   }
+// }}
