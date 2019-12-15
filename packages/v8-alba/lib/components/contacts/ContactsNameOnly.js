@@ -243,7 +243,7 @@ class ContactsNameOnly extends PureComponent {
                 (cell, row) => {
                   return (
                     <Link to={`/contacts/${row._id}/${row.slug}`}>
-                      {cell}
+                      {row.firstName} {row.middleName ? row.middleName : null} <strong>{row.lastName}</strong>
                     </Link>
                   )
                 }

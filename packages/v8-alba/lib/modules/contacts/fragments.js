@@ -71,6 +71,9 @@ registerFragment(/* GraphQL */ `
   fragment ContactsDataTableFragment on Contact {
     _id
     displayName
+    firstName
+    middleName
+    lastName
     title
     addressString
     theAddress {

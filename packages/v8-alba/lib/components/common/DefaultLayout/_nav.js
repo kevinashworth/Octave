@@ -151,24 +151,9 @@ const navItems = {
       icon: 'fa fa-camera'
     },
     {
-      name: 'Contacts (L)',
-      url: '/contacts/list',
-      icon: 'icon-people'
-    },
-    {
-      name: 'Contacts (VL)',
-      url: '/contacts/vlist',
-      icon: 'icon-people'
-    },
-    {
       name: 'Fragments',
       url: '/fragments',
       icon: 'fa fa-file-code-o'
-    },
-    {
-      name: 'Modals',
-      url: '/modals',
-      icon: 'fa fa-external-link'
     },
     {
       name: 'Statistics',
@@ -179,6 +164,36 @@ const navItems = {
       name: 'User Admin',
       url: '/admin',
       icon: 'fa fa-user-o'
+    },
+    {
+      name: 'Contacts (M)',
+      url: '/m/contacts',
+      icon: 'icon-people'
+    },
+    {
+      name: 'Offices (M)',
+      url: '/m/offices',
+      icon: 'icon-briefcase'
+    },
+    {
+      name: 'Projects (M)',
+      url: '/m/projects',
+      icon: 'fa fa-camera'
+    },
+    {
+      name: 'Contacts (L)',
+      url: '/contacts/list',
+      icon: 'icon-people'
+    },
+    {
+      name: 'Contacts (VL)',
+      url: '/contacts/vlist',
+      icon: 'icon-people'
+    },
+    {
+      name: 'Modals',
+      url: '/modals',
+      icon: 'fa fa-external-link'
     }
   ]
 };

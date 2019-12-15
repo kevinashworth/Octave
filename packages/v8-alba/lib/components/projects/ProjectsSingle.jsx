@@ -65,8 +65,8 @@ class ProjectsSingle extends PureComponent {
             </CardTitle>
             <CardSubtitle className='mb-1'>
               { project.union }{ project.platformType && ` (${project.platformType})` }<br />
-              { project.status }<br />
-              { seasonorder }
+              { seasonorder }{ seasonorder ? <br /> : null }
+              { project.status }
             </CardSubtitle>
             <hr />
             {project.htmlSummary
