@@ -3,7 +3,8 @@ import Users from 'meteor/vulcan:users'
 import { FormattedMessage } from 'meteor/vulcan:i18n'
 import React, { PureComponent } from 'react'
 import { Link } from 'react-router-dom'
-import { Button, Card, CardBody, CardFooter, CardHeader, CardText, CardTitle, Collapse, Col, Row } from 'reactstrap'
+import { Button, Card, CardBody, CardFooter, CardHeader, CardText, CardTitle, Collapse, Nav, NavItem, NavLink, TabContent, TabPane } from 'reactstrap'
+import classnames from 'classnames'
 import Interweave from 'interweave'
 import mapProps from 'recompose/mapProps'
 import moment from 'moment'
@@ -31,12 +32,24 @@ function PastProjects (props) {
 class OfficesSingle extends PureComponent {
   constructor (props) {
     super(props)
-    this.toggle = this.toggle.bind(this)
-    this.state = { collapseIsOpen: false }
+    this.toggleCollapse = this.toggleCollapse.bind(this)
+    this.toggleTab = this.toggleTab.bind(this)
+    this.state = {
+      activeTab: 'Main',
+      collapseIsOpen: false
+    }
   }
 
-  toggle () {
+  toggleCollapse () {
     this.setState({ collapseIsOpen: !this.state.collapseIsOpen })
+  }
+
+  toggleTab (tab) {
+    if (this.state.activeTab !== tab) {
+      this.setState({
+        activeTab: tab
+      })
+    }
   }
 
   render () {
@@ -61,57 +74,64 @@ class OfficesSingle extends PureComponent {
               <Button tag={Link} to={`/offices/${office._id}/edit`}>Edit</Button>
             </div> : null}
           </CardHeader>
-          {office.addresses &&
-            <CardBody>
-              {office.addresses.map((o, index) => <Components.AddressDetail key={index} address={o} />)}
-            </CardBody>
-          }
-          {office.htmlBody &&
-            <CardBody className='mb-1'>
-              <Interweave content={office.htmlBody} transform={transform} />
-            </CardBody>
-          }
-          <Row>
-            <Col xs='12' lg='6'>
-              {office.theContacts &&
-               office.theContacts.length > 0 &&
-                <CardBody>
-                {office.theContacts.map((o, index) => <Components.ContactMini key={`ContactMini${index}`} documentId={o._id} />)}
-                </CardBody>
+          <CardBody>
+          <Nav tabs>
+            <NavItem>
+              <NavLink
+                className={classnames({ active: this.state.activeTab === 'Main' })}
+                onClick={() => { this.toggleTab('Main'); }}
+              >
+                Main
+              </NavLink>
+            </NavItem>
+            <NavItem>
+              <NavLink
+                className={classnames({ active: this.state.activeTab === 'Comments' })}
+                onClick={() => { this.toggleTab('Comments'); }}
+              >
+                Comments
+              </NavLink>
+            </NavItem>
+          </Nav>
+          <TabContent activeTab={this.state.activeTab}>
+            <TabPane tabId='Main'>
+              {office.addresses &&
+                office.addresses.map((o, index) => <Components.AddressDetail key={index} address={o} />)}
+              {office.htmlBody &&
+                  <Interweave content={office.htmlBody} transform={transform} />
               }
-              <Components.ErrorBoundary>
-                {office.theProjects &&
-                  <CardBody>
-                    <CardTitle><b>Projects</b></CardTitle>
-                    {office.theProjects.map((o, index) => <Components.ProjectMini key={`ProjectMini-${index}`} documentId={o._id} />)}
-                  </CardBody>
-                }
-              </Components.ErrorBoundary>
-              {office.links &&
-              <CardBody>
-                <CardText>
-                  {office.links.map((link, index) =>
-                    <Components.LinkDetail key={`link-detail-${index}`} link={link} />
-                  )}
-                </CardText>
-              </CardBody>
-              }
-            </Col>
-            <Col xs='12' lg='6'>
-              <CardBody>
+                  {office.theContacts &&
+                   office.theContacts.length > 0 &&
+                    office.theContacts.map((o, index) => <Components.ContactMini key={`ContactMini${index}`} documentId={o._id} />)}
+                  <Components.ErrorBoundary>
+                    {office.theProjects &&
+                        <CardTitle><b>Projects</b></CardTitle>}
+                    {office.theProjects &&
+                        office.theProjects.map((o, index) => <Components.ProjectMini key={`ProjectMini-${index}`} documentId={o._id} />)}
+                  </Components.ErrorBoundary>
+                  {office.links &&
+                    <CardText>
+                      {office.links.map((link, index) =>
+                        <Components.LinkDetail key={`link-detail-${index}`} link={link} />
+                      )}
+                    </CardText>
+                  }
+            </TabPane>
+            <TabPane tabId='Comments'>
                 <Components.CommentsThread
                   terms={{ objectId: document._id, collectionName: 'Offices', view: 'Comments' }}
                 />
-            </CardBody>
-            </Col>
-          </Row>
+            </TabPane>
+          </TabContent>
+        </CardBody>
+
           <CardFooter>
             <small className='text-muted'>{displayDate}</small>
           </CardFooter>
         </Card>
         {office.pastProjects &&
         <div>
-          <Button color='link' onClick={this.toggle}
+          <Button color='link' onClick={this.toggleCollapse}
             style={{ marginBottom: '1rem' }}>{`${this.state.collapseIsOpen ? 'Hide' : 'Show'} Past Projects`}</Button>
           <Collapse isOpen={this.state.collapseIsOpen}>
             <PastProjects collapseIsOpen={this.state.collapseIsOpen} pastProjects={office.pastProjects} />
