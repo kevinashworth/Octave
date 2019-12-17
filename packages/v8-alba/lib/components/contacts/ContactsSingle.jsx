@@ -5,22 +5,52 @@ import React, { PureComponent } from 'react'
 import PropTypes from 'prop-types'
 import { Link } from 'react-router-dom'
 import mapProps from 'recompose/mapProps'
-import { Button, Card, CardBody, CardFooter, CardHeader, CardText, CardTitle, Col, Collapse, Row } from 'reactstrap'
+import { Button, Card, CardBody, CardFooter, CardHeader, CardText, CardTitle, Collapse, Nav, NavItem, NavLink, TabContent, TabPane } from 'reactstrap'
 import Interweave from 'interweave'
 import moment from 'moment'
+import pluralize from 'pluralize'
 import { DATE_FORMAT_LONG, DATE_FORMAT_SHORT } from '../../modules/constants.js'
 import { createdFormattedAddress, isEmptyValue, transform } from '../../modules/helpers.js'
 import Contacts from '../../modules/contacts/collection.js'
 
+// Don't fetch and render PastProjects unless user clicks to see them
+// See https://reactjs.org/docs/conditional-rendering.html
+function PastProjects (props) {
+  if (!props.collapseIsOpen) {
+    return null
+  }
+
+  return (
+    <Card>
+      <CardBody>
+        <CardTitle>Past Projects</CardTitle>
+        {props.pastProjects.map((o, index) => <Components.PastProjectMini key={`PastProjectMini${index}`} documentId={o.projectId} />)}
+      </CardBody>
+    </Card>
+  )
+}
+
 class ContactsSingle extends PureComponent {
   constructor (props) {
     super(props)
-    this.toggle = this.toggle.bind(this)
-    this.state = { collapse: false }
+    this.toggleCollapse = this.toggleCollapse.bind(this)
+    this.toggleTab = this.toggleTab.bind(this)
+    this.state = {
+      activeTab: 'Main',
+      collapseIsOpen: false
+    }
   }
 
-  toggle () {
-    this.setState({ collapse: !this.state.collapse })
+  toggleCollapse () {
+    this.setState({ collapseIsOpen: !this.state.collapseIsOpen })
+  }
+
+  toggleTab (tab) {
+    if (this.state.activeTab !== tab) {
+      this.setState({
+        activeTab: tab
+      })
+    }
   }
 
   render () {
@@ -45,84 +75,75 @@ class ContactsSingle extends PureComponent {
               </div> : null}
             </CardHeader>
             <CardBody>
-              <CardText tag='div'>
-                { contact.displayName }
-                { contact.title && <div>{contact.title}</div> }
-                { contact.gender && <div>{contact.gender}</div> }
-                <hr />
-                {contact.htmlBody
-                  ? <Interweave content={contact.htmlBody} transform={transform} />
-                  : <div>{ contact.body }</div>
-                }
-              </CardText>
-            </CardBody>
-            <Row>
-              <Col xs='12' lg='6'>
-                {!isEmptyValue(contact.offices) &&
-                <CardBody>
-                  <CardTitle>Offices</CardTitle>
-                  {contact.offices.map((o, index) =>
-                    <Components.OfficeMini key={index} documentId={o.officeId} />
-                  )}
-                </CardBody>
-                }
-                {contact.addresses &&
-                <CardBody>
-                  {contact.addresses[0] && <CardTitle>Addresses</CardTitle>}
-                  {contact.addresses.map((address, index) =>
-                    <Interweave key={`address${index}`} content={createdFormattedAddress(address)} />
-                  )}
-                </CardBody>
-                }
-                {!isEmptyValue(contact.projects) &&
-                <CardBody>
-                  <CardTitle>Projects</CardTitle>
-                  {contact.projects.map(project =>
-                    <CardText key={project.projectId}>
-                      <b><Link to={`/projects/${project.projectId}`}>{project.projectTitle}</Link></b>
-                      {project.titleForProject && ` (${project.titleForProject})`}
-                    </CardText>
-                  )}
-                </CardBody>
-                }
-                {contact.links &&
-                <CardBody>
-                  <CardText>
-                    {contact.links.map((link, index) =>
-                      <Components.LinkDetail key={`link-detail-${index}`} link={link} />
-                    )}
+              <Nav tabs>
+                <NavItem>
+                  <NavLink active={this.state.activeTab === 'Main'}
+                    onClick={() => { this.toggleTab('Main') }}
+                  >Main</NavLink>
+                </NavItem>
+                <NavItem>
+                  <NavLink active={this.state.activeTab === 'Comments'}
+                    onClick={() => { this.toggleTab('Comments') }}
+                  >Comments</NavLink>
+                </NavItem>
+              </Nav>
+              <TabContent activeTab={this.state.activeTab}>
+                <TabPane tabId='Main'>
+                  <CardText tag='div'>
+                    <b>{ contact.displayName }</b>
+                    { contact.title && <div>{contact.title}</div> }
+                    { contact.gender && <div>{contact.gender}</div> }
+                    <hr />
+                    {contact.htmlBody
+                      ? <Interweave content={contact.htmlBody} transform={transform} />
+                      : <div>{ contact.body }</div>
+                    }
                   </CardText>
-                </CardBody>
-                }
-              </Col>
-              <Col xs='12' lg='6'>
-                <CardBody>
+                  {!isEmptyValue(contact.offices) &&
+                    <CardTitle className='mt-5'><b>Offices</b></CardTitle>}
+                  {!isEmptyValue(contact.offices) &&
+                    contact.offices.map((o, index) =>
+                      <Components.OfficeMini key={index} documentId={o.officeId} />
+                    )}
+                  {contact.addresses &&
+                    contact.addresses[0] && <CardTitle className='mt-5'><b>{pluralize('Address', contact.addresses.length)}</b></CardTitle>}
+                    {contact.addresses.map((address, index) =>
+                      <Interweave key={`address${index}`} content={createdFormattedAddress(address)} />
+                    )}
+                  {!isEmptyValue(contact.projects) &&
+                    <CardTitle className='mt-5'><b>Projects</b></CardTitle>}
+                  {!isEmptyValue(contact.projects) &&
+                    contact.projects.map(project =>
+                      <CardText key={project.projectId}>
+                        <b><Link to={`/projects/${project.projectId}`}>{project.projectTitle}</Link></b>
+                        {project.titleForProject && ` (${project.titleForProject})`}
+                      </CardText>
+                    )}
+                  {contact.links &&
+                    <CardText>
+                      {contact.links.map((link, index) =>
+                        <Components.LinkDetail key={`link-detail-${index}`} link={link} />
+                      )}
+                    </CardText>
+                  }
+                </TabPane>
+                <TabPane tabId='Comments'>
                   <Components.CommentsThread
-                    terms={{ objectId: document._id, collectionName: 'Contacts', view: 'Comments' }}
+                    terms={{ objectId: document._id, collectionName: 'Offices', view: 'Comments' }}
                   />
-              </CardBody>
-              </Col>
-            </Row>
+                </TabPane>
+              </TabContent>
+            </CardBody>
             <CardFooter>
               <small className='text-muted'>{displayDate}</small>
             </CardFooter>
           </Card>
           {contact.pastProjects &&
           <div>
-            <Button color='link' onClick={this.toggle}
-              style={{ marginBottom: '1rem' }}>{`${this.state.collapse ? 'Hide' : 'Show'} Past Projects`}</Button>
-            <Collapse isOpen={this.state.collapse}>
-              <Card>
-                <CardBody>
-                  <CardTitle>Past Projects</CardTitle>
-                  {contact.pastProjects.map(project =>
-                    <CardText key={project.projectId}>
-                      <b><Link to={`/past-projects/${project.projectId}`}>{project.projectTitle}</Link></b>
-                      {project.titleForProject && ` (${project.titleForProject})`}
-                    </CardText>
-                  )}
-                </CardBody>
-              </Card>
+            <Button color='link' onClick={this.toggleCollapse}
+              className='mb-3'>{`${this.state.collapseIsOpen ? 'Hide' : 'Show'} Past Projects`}</Button>
+            <Collapse isOpen={this.state.collapseIsOpen}>
+              <PastProjects collapseIsOpen={this.state.collapseIsOpen} pastProjects={contact.pastProjects} />
             </Collapse>
           </div>
           }

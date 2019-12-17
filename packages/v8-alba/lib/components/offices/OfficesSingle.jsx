@@ -102,7 +102,7 @@ class OfficesSingle extends PureComponent {
                   <CardTitle className='mt-5'><b>Contacts</b></CardTitle>}
                     {office.theContacts &&
                       office.theContacts.length > 0 &&
-                  office.theContacts.map((o, index) => <Components.ContactMini key={`ContactMini${index}`} documentId={o._id} />)}
+                      office.theContacts.map((o, index) => <Components.ContactMini key={`ContactMini${index}`} documentId={o._id} />)}
                 <Components.ErrorBoundary>
                   {office.theProjects &&
                     <CardTitle className='mt-5'><b>Projects</b></CardTitle>}
@@ -131,7 +131,7 @@ class OfficesSingle extends PureComponent {
         {office.pastProjects &&
         <div>
           <Button color='link' onClick={this.toggleCollapse}
-            style={{ marginBottom: '1rem' }}>{`${this.state.collapseIsOpen ? 'Hide' : 'Show'} Past Projects`}</Button>
+            className='mb-3'>{`${this.state.collapseIsOpen ? 'Hide' : 'Show'} Past Projects`}</Button>
           <Collapse isOpen={this.state.collapseIsOpen}>
             <PastProjects collapseIsOpen={this.state.collapseIsOpen} pastProjects={office.pastProjects} />
           </Collapse>
