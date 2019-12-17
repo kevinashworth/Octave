@@ -1,9 +1,12 @@
 import { Connectors, createMutator, deleteMutator } from 'meteor/vulcan:core'
 import _ from 'lodash'
+import Contacts from '../../contacts/collection.js'
 import Offices from '../../offices/collection.js'
 import Projects from '../collection.js'
 import PastProjects from '../../past-projects/collection.js'
 import { PAST_PROJECT_STATUSES_ARRAY } from '../../constants.js'
+import { isEmptyValue } from '../../helpers.js'
+
 
 // if the new status is now a past-project, create a new past-project then remove this active project
 // if the new project is created and matches (TODO: matches what, exactly?), delete current
@@ -49,6 +52,33 @@ export function ProjectEditUpdateStatusAfter (document, { context, currentUser }
           projects,
           updatedAt: new Date()
         }
+      })
+    }
+
+    if (!isEmptyValue(document.contacts)) {
+      document.contacts.forEach(cntct => {
+        // let pastProjects = []
+        let projects = []
+        const contact = Contacts.findOne(cntct.contactId)
+        if (contact.projects && contact.projects.length) {
+          projects = contact.projects
+          _.remove(projects, function (p) {
+            return p.projectId === document._id
+          })
+        }
+        // this is done in the callback for past project create
+        // if (contact.pastProjects && contact.pastProjects.length) {
+        //   pastProjects = contact.pastProjects
+        // }
+        // pastProjects.push({ projectId: newPastProject._id })
+        Connectors.update(Contacts, cntct.contactId, {
+          $set: {
+            // pastProjects,
+            projects,
+            updatedAt: new Date()
+          }
+        })
+
       })
     }
   }

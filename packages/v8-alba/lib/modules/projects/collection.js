@@ -8,6 +8,7 @@ import schema from './schema.js'
 
 import {
   ProjectEditUpdateContacts,
+  ProjectCreateUpdateContacts,
   ProjectCreateUpdateOfficeAfter,
   ProjectEditUpdateOfficeBefore,
   ProjectCreateUpdateStatisticsAfter,
@@ -28,7 +29,7 @@ const Projects = createCollection({
   },
   callbacks: {
     create: {
-      after: [ProjectEditUpdateContacts, ProjectCreateUpdateOfficeAfter, ProjectCreateUpdateStatisticsAfter]
+      after: [ProjectCreateUpdateContacts, ProjectCreateUpdateOfficeAfter, ProjectCreateUpdateStatisticsAfter]
     },
     update: {
       after: [ProjectEditUpdateContacts, ProjectEditUpdateStatusAfter],
