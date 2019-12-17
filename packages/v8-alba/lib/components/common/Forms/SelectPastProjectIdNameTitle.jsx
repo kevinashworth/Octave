@@ -42,9 +42,9 @@ class SelectPastProjectIdNameTitle extends PureComponent {
 
   handleNameChange ({ target }) {
     this.setState({
-      [target.id]: target.value
+      projectTitle: target.value
     })
-    const path = this.state.pathPrefix + target.id
+    const path = this.state.pathPrefix + 'projectTitle'
     this.context.updateCurrentValues({
       [path]: target.value
     })

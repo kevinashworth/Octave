@@ -42,9 +42,9 @@ class SelectContactIdNameTitle extends PureComponent {
 
   handleNameChange ({ target }) {
     this.setState({
-      [target.id]: target.value
+      contactName: target.value
     })
-    const path = this.state.pathPrefix + target.id
+    const path = this.state.pathPrefix + 'contactName'
     this.context.updateCurrentValues({
       [path]: target.value
     })
