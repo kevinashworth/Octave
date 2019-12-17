@@ -100,7 +100,7 @@ class ContactsSingle extends PureComponent {
                     }
                   </CardText>
                   {!isEmptyValue(contact.offices) &&
-                    <CardTitle className='mt-5'><b>Offices</b></CardTitle>}
+                    <CardTitle className='mt-5'><b>{pluralize('Office', contact.offices.length)}</b></CardTitle>}
                   {!isEmptyValue(contact.offices) &&
                     contact.offices.map((o, index) =>
                       <Components.OfficeMini key={index} documentId={o.officeId} />

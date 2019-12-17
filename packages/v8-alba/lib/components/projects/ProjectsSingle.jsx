@@ -91,7 +91,7 @@ class ProjectsSingle extends PureComponent {
             </Nav>
             <TabContent activeTab={this.state.activeTab}>
               <TabPane tabId='Main'>
-                <CardTitle><b>Infomation</b></CardTitle>
+                <CardTitle><b>Project Information</b></CardTitle>
                 <CardText tag='div'>
                   <b>{ project.projectTitle }</b><br />
                   { project.projectType }{ project.network && ` – ${project.network}` }<br />
@@ -115,21 +115,17 @@ class ProjectsSingle extends PureComponent {
               </CardText>
               }
               {(project.castingCompany || project.castingOfficeId) &&
-                <CardTitle className='mt-5'><b>Office</b></CardTitle>}
+                <CardTitle className='mt-5'><b>Casting Office</b></CardTitle>}
               <CardText className='mb-0'>
                 <b>{ project.castingCompany }</b>
               </CardText>
               {project.castingOfficeId &&
                 <Components.OfficeMini documentId={project.castingOfficeId} />
               }
-              {project.contacts &&
-                <CardTitle className='mt-5'><b>Contacts</b></CardTitle>}
               {project.contacts
                 ? project.contacts.map(contact => <Components.ContactDetail key={contact.contactId} contact={contact} />)
                 : null }
-              {project.addresses &&
-                project.addresses[0] && <CardTitle className='mt-5'><b>{pluralize('Address', project.addresses.length)}</b></CardTitle>}
-              {project.addresses
+              {project.addresses && project.addresses[0]
                 ? project.addresses.map(address => <Components.ProjectsAddressDetail key={address} address={address} />)
                 : null }
               {project.contactId}
