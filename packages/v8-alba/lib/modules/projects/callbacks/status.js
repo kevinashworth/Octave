@@ -36,7 +36,7 @@ export function ProjectEditUpdateStatusAfter (document, { context, currentUser }
       if (office.projects && office.projects.length) {
         projects = office.projects
         _.remove(projects, function (p) {
-          return p._id === document._id
+          return p.projectId === document._id
         })
       }
       if (office.pastProjects && office.pastProjects.length) {
