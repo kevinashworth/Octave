@@ -4,14 +4,32 @@ import { FormattedMessage } from 'meteor/vulcan:i18n'
 import React, { PureComponent } from 'react'
 import { Link } from 'react-router-dom'
 import mapProps from 'recompose/mapProps'
-import { Button, Card, CardBody, CardFooter, CardHeader, CardLink, CardSubtitle, CardText, CardTitle, Col, Row } from 'reactstrap'
+import { Button, Card, CardBody, CardFooter, CardHeader, CardLink, CardSubtitle, CardText, CardTitle, Nav, NavItem, NavLink, TabContent, TabPane } from 'reactstrap'
 import Interweave from 'interweave'
 import moment from 'moment'
+import pluralize from 'pluralize'
 import { DATE_FORMAT_LONG, DATE_FORMAT_SHORT } from '../../modules/constants.js'
 import { transform } from '../../modules/helpers.js'
 import Projects from '../../modules/projects/collection.js'
 
 class ProjectsSingle extends PureComponent {
+  constructor (props) {
+    super(props)
+    this.toggleTab = this.toggleTab.bind(this)
+    this.state = {
+      activeTab: 'Main',
+      collapseIsOpen: false
+    }
+  }
+
+  toggleTab (tab) {
+    if (this.state.activeTab !== tab) {
+      this.setState({
+        activeTab: tab
+      })
+    }
+  }
+
   seasonorder (project) {
     if (!project.season) {
       return null
@@ -59,66 +77,79 @@ class ProjectsSingle extends PureComponent {
               : null }
           </CardHeader>
           <CardBody>
-            <CardTitle>
-              { project.projectType }
-              { project.network && ` – ${project.network}` }
-            </CardTitle>
-            <CardSubtitle className='mb-1'>
-              { project.union }{ project.platformType && ` (${project.platformType})` }<br />
-              { seasonorder }{ seasonorder ? <br /> : null }
-              { project.status }
-            </CardSubtitle>
-            <hr />
-            {project.htmlSummary
-              ? <Interweave content={project.htmlSummary} transform={transform} />
-              : <CardText>{ project.summary }</CardText>
-            }
-            {project.htmlNotes
-              ? <Interweave content={project.htmlNotes} transform={transform} />
-              : <CardText>{ project.notes }</CardText>
-            }
-            <hr />
-            {project.website &&
-            <CardText>
-              <CardLink href={project.website} target='_websites'>Open official website <i className='fa fa-external-link' /></CardLink>
-            </CardText>
-            }
-          </CardBody>
-          <Row>
-            <Col xs='12' lg='6'>
-              <CardBody>
-                <CardText className='mb-0'>
-                  <b>{ project.castingCompany }</b>
+            <Nav tabs>
+              <NavItem>
+                <NavLink active={this.state.activeTab === 'Main'}
+                  onClick={() => { this.toggleTab('Main') }}
+                >Main</NavLink>
+              </NavItem>
+              <NavItem>
+                <NavLink active={this.state.activeTab === 'Comments'}
+                  onClick={() => { this.toggleTab('Comments') }}
+                >Comments</NavLink>
+              </NavItem>
+            </Nav>
+            <TabContent activeTab={this.state.activeTab}>
+              <TabPane tabId='Main'>
+                <CardTitle><b>Infomation</b></CardTitle>
+                <CardText tag='div'>
+                  <b>{ project.projectTitle }</b><br />
+                  { project.projectType }{ project.network && ` – ${project.network}` }<br />
+                  { project.union }{ project.platformType && ` (${project.platformType})` }<br />
+                  { seasonorder }{ seasonorder ? <br /> : null }
+                  { project.status }
+                  <hr />
+                  {project.htmlSummary
+                    ? <Interweave content={project.htmlSummary} transform={transform} />
+                    : <CardText>{ project.summary }</CardText>
+                  }
+                  {project.htmlNotes
+                    ? <Interweave content={project.htmlNotes} transform={transform} />
+                    : <CardText>{ project.notes }</CardText>
+                  }
+                  <hr />
                 </CardText>
-                {project.castingOfficeId &&
-                  <Components.OfficeMini documentId={project.castingOfficeId} />
-                }
-                {project.contacts
-                  ? project.contacts.map(contact => <Components.ContactDetail key={contact.contactId} contact={contact} />)
-                  : null }
-                {project.addresses
-                  ? project.addresses.map(address => <Components.ProjectsAddressDetail key={address} address={address} />)
-                  : null }
-                {project.contactId}
-              </CardBody>
+              {project.website &&
+              <CardText>
+                <CardLink href={project.website} target='_websites'>Open official website <i className='fa fa-external-link' /></CardLink>
+              </CardText>
+              }
+              {(project.castingCompany || project.castingOfficeId) &&
+                <CardTitle className='mt-5'><b>Office</b></CardTitle>}
+              <CardText className='mb-0'>
+                <b>{ project.castingCompany }</b>
+              </CardText>
+              {project.castingOfficeId &&
+                <Components.OfficeMini documentId={project.castingOfficeId} />
+              }
+              {project.contacts &&
+                <CardTitle className='mt-5'><b>Contacts</b></CardTitle>}
+              {project.contacts
+                ? project.contacts.map(contact => <Components.ContactDetail key={contact.contactId} contact={contact} />)
+                : null }
+              {project.addresses &&
+                project.addresses[0] && <CardTitle className='mt-5'><b>{pluralize('Address', project.addresses.length)}</b></CardTitle>}
+              {project.addresses
+                ? project.addresses.map(address => <Components.ProjectsAddressDetail key={address} address={address} />)
+                : null }
+              {project.contactId}
               {project.links &&
-              <CardBody>
+                <CardTitle className='mt-5'><b>Links</b></CardTitle>}
+              {project.links &&
                 <CardText>
                   {project.links.map((link, index) =>
                     <Components.LinkDetail key={`link-detail-${index}`} link={link} />
                   )}
                 </CardText>
-              </CardBody>
               }
-            </Col>
-            <Col xs='12' lg='6'>
-              <CardBody>
+              </TabPane>
+              <TabPane tabId='Comments'>
                 <Components.CommentsThread
                   terms={{ objectId: document._id, collectionName: 'Projects', view: 'Comments' }}
                 />
-            </CardBody>
-            </Col>
-          </Row>
+              </TabPane>
+            </TabContent>
+          </CardBody>
           <CardFooter>
             <small className='text-muted'>{displayDate}</small>
           </CardFooter>
