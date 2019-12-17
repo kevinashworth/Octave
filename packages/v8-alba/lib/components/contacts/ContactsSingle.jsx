@@ -107,7 +107,8 @@ class ContactsSingle extends PureComponent {
                     )}
                   {contact.addresses &&
                     contact.addresses[0] && <CardTitle className='mt-5'><b>{pluralize('Address', contact.addresses.length)}</b></CardTitle>}
-                    {contact.addresses.map((address, index) =>
+                  {contact.addresses &&
+                    contact.addresses.map((address, index) =>
                       <Interweave key={`address${index}`} content={createdFormattedAddress(address)} />
                     )}
                   {!isEmptyValue(contact.projects) &&
@@ -120,6 +121,8 @@ class ContactsSingle extends PureComponent {
                       </CardText>
                     )}
                   {contact.links &&
+                    <CardTitle className='mt-5'><b>Links</b></CardTitle>}
+                  {contact.links &&
                     <CardText>
                       {contact.links.map((link, index) =>
                         <Components.LinkDetail key={`link-detail-${index}`} link={link} />
@@ -129,7 +132,7 @@ class ContactsSingle extends PureComponent {
                 </TabPane>
                 <TabPane tabId='Comments'>
                   <Components.CommentsThread
-                    terms={{ objectId: document._id, collectionName: 'Offices', view: 'Comments' }}
+                    terms={{ objectId: document._id, collectionName: 'Contacts', view: 'Comments' }}
                   />
                 </TabPane>
               </TabContent>
