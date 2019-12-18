@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom'
 import PropTypes from 'prop-types'
 import { Card, CardBody, CardFooter, CardHeader, CardTitle, Col, Row } from 'reactstrap'
 import Markup from 'interweave'
+import pluralize from 'pluralize'
 import Contacts from '../../../modules/contacts/collection.js'
 import Offices from '../../../modules/offices/collection.js'
 import Projects from '../../../modules/projects/collection.js'
@@ -36,7 +37,7 @@ class LatestContactUpdates extends Component {
                 </CardHeader>
                 <CardBody className='text-truncate d-block'>
                   {contact.title}<br />
-                  {contact.projects ? contact.projects.length + ' Projects' : null}
+                  {pluralize('Project', contact.projects ? contact.projects.length : 0, true)}
                 </CardBody>
                 <CardFooter>
                   <small className='text-muted'><Markup content={displayHtml} /></small>
@@ -90,7 +91,7 @@ class LatestOfficeUpdates extends Component {
                 </CardHeader>
                 <CardBody className='text-truncate d-block'>
                   {office.theCity} {office.theState}<br />
-                  {office.projects ? office.projects.length + ' Projects' : null}
+                  {pluralize('Project', office.projects ? office.projects.length : 0, true)}
                 </CardBody>
                 <CardFooter>
                   <small className='text-muted'><Markup content={displayHtml} /></small>
@@ -253,20 +254,40 @@ class LatestUpdates extends Component {
       <div className='animated fadeIn'>
         <Components.HeadTags title='V8 Alba: Latest Updates' />
 
-        <CardTitle className='mt-3'><b>Newest Projects</b></CardTitle>
-        <Components.NewestProjectsAdded />
+        <Card>
+          <CardBody>
+            <CardTitle>Newest Projects</CardTitle>
+            <Components.NewestProjectsAdded />
+          </CardBody>
+        </Card>
 
-        <CardTitle><b>Recently Updated Contacts</b></CardTitle>
-        <Components.LatestContactUpdates />
+        <Card>
+          <CardBody>
+            <CardTitle>Recently Updated Contacts</CardTitle>
+            <Components.LatestContactUpdates />
+          </CardBody>
+        </Card>
 
-        <CardTitle><b>Recently Updated Offices</b></CardTitle>
-        <Components.LatestOfficeUpdates />
+        <Card>
+          <CardBody>
+            <CardTitle>Recently Updated Offices</CardTitle>
+            <Components.LatestOfficeUpdates />
+          </CardBody>
+        </Card>
 
-        <CardTitle><b>Recently Updated Projects</b></CardTitle>
-        <Components.LatestProjectUpdates />
+          <Card>
+            <CardBody>
+              <CardTitle>Recently Updated Projects</CardTitle>
+              <Components.LatestProjectUpdates />
+            </CardBody>
+          </Card>
 
-        <CardTitle><b>Newest Past Projects</b></CardTitle>
-        <Components.LatestPastProjectUpdates />
+          <Card>
+            <CardBody>
+              <CardTitle>Newest Past Projects</CardTitle>
+              <Components.LatestPastProjectUpdates />
+            </CardBody>
+          </Card>
       </div>
     )
   }
