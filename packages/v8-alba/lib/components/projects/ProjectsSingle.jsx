@@ -4,10 +4,9 @@ import { FormattedMessage } from 'meteor/vulcan:i18n'
 import React, { PureComponent } from 'react'
 import { Link } from 'react-router-dom'
 import mapProps from 'recompose/mapProps'
-import { Button, Card, CardBody, CardFooter, CardHeader, CardLink, CardSubtitle, CardText, CardTitle, Nav, NavItem, NavLink, TabContent, TabPane } from 'reactstrap'
+import { Button, Card, CardBody, CardFooter, CardHeader, CardLink, CardText, CardTitle, Nav, NavItem, NavLink, TabContent, TabPane } from 'reactstrap'
 import Interweave from 'interweave'
 import moment from 'moment'
-import pluralize from 'pluralize'
 import { DATE_FORMAT_LONG, DATE_FORMAT_SHORT } from '../../modules/constants.js'
 import { transform } from '../../modules/helpers.js'
 import Projects from '../../modules/projects/collection.js'
@@ -16,17 +15,12 @@ class ProjectsSingle extends PureComponent {
   constructor (props) {
     super(props)
     this.toggleTab = this.toggleTab.bind(this)
-    this.state = {
-      activeTab: 'Main',
-      collapseIsOpen: false
-    }
+    this.state = { activeTab: 'Main' }
   }
 
   toggleTab (tab) {
     if (this.state.activeTab !== tab) {
-      this.setState({
-        activeTab: tab
-      })
+      this.setState({ activeTab: tab })
     }
   }
 
@@ -34,7 +28,6 @@ class ProjectsSingle extends PureComponent {
     if (!project.season) {
       return null
     }
-
     var so = 'Season Info Missing'
     if (project.renewed && project.status === 'On Hiatus' || project.status === 'Ordered') {
       so = `Renewed for Season ${project.season}`
