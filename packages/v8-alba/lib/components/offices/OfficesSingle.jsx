@@ -3,13 +3,24 @@ import Users from 'meteor/vulcan:users'
 import { FormattedMessage } from 'meteor/vulcan:i18n'
 import React, { PureComponent } from 'react'
 import { Link } from 'react-router-dom'
-import { Button, Card, CardBody, CardFooter, CardHeader, CardText, CardTitle, Collapse, Col, Row } from 'reactstrap'
+import { Button, Card, CardBody, CardFooter, CardHeader, CardText, CardTitle, Collapse, Nav, NavItem, NavLink, TabContent, TabPane } from 'reactstrap'
 import Interweave from 'interweave'
 import mapProps from 'recompose/mapProps'
 import moment from 'moment'
+import pluralize from 'pluralize'
+import styled from 'styled-components'
 import { DATE_FORMAT_LONG, DATE_FORMAT_SHORT } from '../../modules/constants.js'
 import { transform } from '../../modules/helpers.js'
 import Offices from '../../modules/offices/collection.js'
+
+const Flextest = styled.div`
+  display: flex;
+	flex-direction: column;
+	flex-wrap: wrap;
+	justify-content: flex-start;
+	align-items: stretch;
+	align-content: flex-start;
+`
 
 // Don't fetch and render PastProjects unless user clicks to see them
 // See https://reactjs.org/docs/conditional-rendering.html
@@ -31,12 +42,24 @@ function PastProjects (props) {
 class OfficesSingle extends PureComponent {
   constructor (props) {
     super(props)
-    this.toggle = this.toggle.bind(this)
-    this.state = { collapseIsOpen: false }
+    this.toggleCollapse = this.toggleCollapse.bind(this)
+    this.toggleTab = this.toggleTab.bind(this)
+    this.state = {
+      activeTab: 'Main',
+      collapseIsOpen: false
+    }
   }
 
-  toggle () {
+  toggleCollapse () {
     this.setState({ collapseIsOpen: !this.state.collapseIsOpen })
+  }
+
+  toggleTab (tab) {
+    if (this.state.activeTab !== tab) {
+      this.setState({
+        activeTab: tab
+      })
+    }
   }
 
   render () {
@@ -61,58 +84,67 @@ class OfficesSingle extends PureComponent {
               <Button tag={Link} to={`/offices/${office._id}/edit`}>Edit</Button>
             </div> : null}
           </CardHeader>
-          {office.addresses &&
-            <CardBody>
-              {office.addresses.map((o, index) => <Components.AddressDetail key={index} address={o} />)}
-            </CardBody>
-          }
-          {office.htmlBody &&
-            <CardBody className='mb-1'>
-              <Interweave content={office.htmlBody} transform={transform} />
-            </CardBody>
-          }
-          <Row>
-            <Col xs='12' lg='6'>
-              {office.theContacts &&
-               office.theContacts.length > 0 &&
-                <CardBody>
-                {office.theContacts.map((o, index) => <Components.ContactMini key={`ContactMini${index}`} documentId={o._id} />)}
-                </CardBody>
-              }
-              <Components.ErrorBoundary>
-                {office.theProjects &&
-                  <CardBody>
-                    <CardTitle><b>Projects</b></CardTitle>
+          <CardBody>
+            <Nav tabs>
+              <NavItem>
+                <NavLink active={this.state.activeTab === 'Main'}
+                  onClick={() => { this.toggleTab('Main') }}
+                >Main</NavLink>
+              </NavItem>
+              <NavItem>
+                <NavLink active={this.state.activeTab === 'Comments'}
+                  onClick={() => { this.toggleTab('Comments') }}
+                >Comments</NavLink>
+              </NavItem>
+            </Nav>
+            <TabContent activeTab={this.state.activeTab}>
+              <TabPane tabId='Main'>
+                {office.addresses &&
+                  <CardTitle><b>{pluralize('Address', office.addresses.length)}</b></CardTitle>}
+                {office.addresses &&
+                  office.addresses.map((o, index) => <Components.AddressDetail key={index} address={o} />)}
+                {office.htmlBody &&
+                  <CardTitle className='mt-5'><b>Notes</b></CardTitle>}
+                {office.htmlBody &&
+                  <Interweave content={office.htmlBody} transform={transform} />}
+                {office.theContacts &&
+                  office.theContacts.length > 0 &&
+                  <CardTitle className='mt-5'><b>Contacts</b></CardTitle>}
+                    {office.theContacts &&
+                      office.theContacts.length > 0 &&
+                      office.theContacts.map((o, index) => <Components.ContactMini key={`ContactMini${index}`} documentId={o._id} />)}
+                <Components.ErrorBoundary>
+                  {office.theProjects &&
+                    <CardTitle className='mt-5'><b>Projects</b></CardTitle>}
+                  {office.theProjects &&
+                    <Flextest>
                     {office.theProjects.map((o, index) => <Components.ProjectMini key={`ProjectMini-${index}`} documentId={o._id} />)}
-                  </CardBody>
+                    </Flextest>
+                  }
+                </Components.ErrorBoundary>
+                {office.links &&
+                  <CardText className='mt-5'>
+                    {office.links.map((link, index) =>
+                      <Components.LinkDetail key={`link-detail-${index}`} link={link} />
+                    )}
+                  </CardText>
                 }
-              </Components.ErrorBoundary>
-              {office.links &&
-              <CardBody>
-                <CardText>
-                  {office.links.map((link, index) =>
-                    <Components.LinkDetail key={`link-detail-${index}`} link={link} />
-                  )}
-                </CardText>
-              </CardBody>
-              }
-            </Col>
-            <Col xs='12' lg='6'>
-              <CardBody>
-                <Components.CommentsThread
-                  terms={{ objectId: document._id, collectionName: 'Offices', view: 'Comments' }}
-                />
-            </CardBody>
-            </Col>
-          </Row>
+              </TabPane>
+              <TabPane tabId='Comments'>
+                  <Components.CommentsThread
+                    terms={{ objectId: document._id, collectionName: 'Offices', view: 'Comments' }}
+                  />
+              </TabPane>
+            </TabContent>
+          </CardBody>
           <CardFooter>
             <small className='text-muted'>{displayDate}</small>
           </CardFooter>
         </Card>
         {office.pastProjects &&
         <div>
-          <Button color='link' onClick={this.toggle}
-            style={{ marginBottom: '1rem' }}>{`${this.state.collapseIsOpen ? 'Hide' : 'Show'} Past Projects`}</Button>
+          <Button color='link' onClick={this.toggleCollapse}
+            className='mb-3'>{`${this.state.collapseIsOpen ? 'Hide' : 'Show'} Past Projects`}</Button>
           <Collapse isOpen={this.state.collapseIsOpen}>
             <PastProjects collapseIsOpen={this.state.collapseIsOpen} pastProjects={office.pastProjects} />
           </Collapse>

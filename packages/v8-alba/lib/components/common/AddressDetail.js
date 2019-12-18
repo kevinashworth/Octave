@@ -7,7 +7,7 @@ class AddressDetail extends PureComponent {
   render () {
     const address = this.props.address
     return (
-      <CardText className='mt-1'>
+      <CardText>
         { address.street1 }<br />
         {address.street2 &&
           <span>{ address.street2 }<br /></span>

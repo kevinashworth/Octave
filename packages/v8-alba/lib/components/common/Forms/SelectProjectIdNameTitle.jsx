@@ -42,9 +42,9 @@ class SelectProjectIdNameTitle extends PureComponent {
 
   handleNameChange ({ target }) {
     this.setState({
-      [target.id]: target.value
+      projectTitle: target.value
     })
-    const path = this.state.pathPrefix + target.id
+    const path = this.state.pathPrefix + 'projectTitle'
     this.context.updateCurrentValues({
       [path]: target.value
     })
@@ -69,10 +69,10 @@ class SelectProjectIdNameTitle extends PureComponent {
     return (
       <div>
         <FormGroup row>
-          <Label for='projectId' sm={3}>Project Name</Label>
+          <Label for={`projectId${itemIndex}`} sm={3}>Project Name</Label>
           <Col sm={9}>
             <OptimizedSelect
-              id='projectId'
+              id={`projectId${itemIndex}`}
               value={value}
               onChange={this.handleIdChange}
               options={this.props.options}
@@ -81,11 +81,11 @@ class SelectProjectIdNameTitle extends PureComponent {
           </Col>
         </FormGroup>
         <FormGroup row>
-          <Label for='projectTitle' sm={3}>Editable Name</Label>
+          <Label for={`projectTitle${itemIndex}`} sm={3}>Editable Name</Label>
           <Col sm={9}>
             <OptimizedInput
               type='text'
-              id='projectTitle'
+              id={`projectTitle${itemIndex}`}
               value={projectTitle}
               onChange={this.handleNameChange}
               required
@@ -93,10 +93,10 @@ class SelectProjectIdNameTitle extends PureComponent {
           </Col>
         </FormGroup>
         <FormGroup row>
-          <Label for='titleForProject' sm={3}>Title for Project</Label>
+          <Label for={`titleForProject${itemIndex}`} sm={3}>Title for Project</Label>
           <Col sm={9}>
             <OptimizedSelect
-              id='titleForProject'
+              id={`titleForProject${itemIndex}`}
               value={titleForProject}
               onChange={this.handleTitleChange}
               options={CASTING_TITLES_ENUM}

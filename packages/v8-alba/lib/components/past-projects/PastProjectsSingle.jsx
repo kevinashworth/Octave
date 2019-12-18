@@ -4,24 +4,30 @@ import { FormattedMessage } from 'meteor/vulcan:i18n'
 import React, { PureComponent } from 'react'
 import { Link } from 'react-router-dom'
 import mapProps from 'recompose/mapProps'
-import { Button, Card, CardBody, CardFooter, CardHeader, CardLink, CardText, CardTitle } from 'reactstrap'
+import { Button, Card, CardBody, CardFooter, CardHeader, CardLink, CardText, CardTitle, Nav, NavItem, NavLink, TabContent, TabPane } from 'reactstrap'
 import Interweave from 'interweave'
-import styled from 'styled-components'
 import moment from 'moment'
 import { DATE_FORMAT_LONG, DATE_FORMAT_SHORT } from '../../modules/constants.js'
 import { transform } from '../../modules/helpers.js'
 import PastProjects from '../../modules/past-projects/collection.js'
 
-const SpanVerticalBarBefore = styled.span`
-  ::before { content: " | "; };
-`
-
 class PastProjectsSingle extends PureComponent {
+  constructor (props) {
+    super(props)
+    this.toggleTab = this.toggleTab.bind(this)
+    this.state = { activeTab: 'Main' }
+  }
+
+  toggleTab (tab) {
+    if (this.state.activeTab !== tab) {
+      this.setState({ activeTab: tab })
+    }
+  }
+
   seasonorder (project) {
     if (!project.season) {
       return null
     }
-
     var so = 'Season Info Missing'
     if (project.renewed && project.status === 'On Hiatus') {
       so = `Renewed for Season ${project.season}`
@@ -61,28 +67,42 @@ class PastProjectsSingle extends PureComponent {
             </div> : null}
           </CardHeader>
           <CardBody>
-            <CardTitle className='mb-1'>
+          <Nav tabs>
+            <NavItem>
+              <NavLink active={this.state.activeTab === 'Main'}
+                onClick={() => { this.toggleTab('Main') }}
+              >Main</NavLink>
+            </NavItem>
+            <NavItem>
+              <NavLink active={this.state.activeTab === 'Comments'}
+                onClick={() => { this.toggleTab('Comments') }}
+              >Comments</NavLink>
+            </NavItem>
+          </Nav>
+          <TabContent activeTab={this.state.activeTab}>
+            <TabPane tabId='Main'>
+            <CardText className='mb-1'>
               { project.projectType &&
                 <span>
                   { project.projectType }
                 </span>
               }
               { project.network &&
-                <SpanVerticalBarBefore>
+                <div>
                   { project.network }
-                </SpanVerticalBarBefore>
+                </div>
               }
               { project.platformType &&
-                <SpanVerticalBarBefore>
+                <div>
                   { project.platformType }
-                </SpanVerticalBarBefore>
+                </div>
               }
               { project.union &&
-                <SpanVerticalBarBefore>
+                (<div>
                   { project.union }
-                </SpanVerticalBarBefore>
+                </div>)
               }
-            </CardTitle>
+            </CardText>
             <CardText className='mb-1'>{ project.status }</CardText>
             { seasonorder &&
               <CardText>{ seasonorder }</CardText>
@@ -102,8 +122,8 @@ class PastProjectsSingle extends PureComponent {
               <CardLink href={project.website} target='_websites'>Open official website <i className='fa fa-external-link' /></CardLink>
             </CardText>
             }
-          </CardBody>
-          <CardBody>
+            {(project.castingCompany || project.castingOfficeId) &&
+              <CardTitle className='mt-5'><b>Casting Office</b></CardTitle>}
             <CardText className='mb-0'>
               <b>{ project.castingCompany }</b>
             </CardText>
@@ -119,16 +139,22 @@ class PastProjectsSingle extends PureComponent {
               : null
             }
             {project.contactId}
+            {project.links &&
+              <CardTitle className='mt-5'><b>Links</b></CardTitle>}
+            {project.links &&
+              <CardText>
+                {project.links.map((link, index) =>
+                  <Components.LinkDetail key={`link-detail-${index}`} link={link} />
+                )}
+              </CardText>}
+            </TabPane>
+            <TabPane tabId='Comments'>
+              <Components.CommentsThread
+                terms={{ objectId: document._id, collectionName: 'Projects', view: 'Comments' }}
+              />
+            </TabPane>
+          </TabContent>
           </CardBody>
-          {project.links &&
-          <CardBody>
-            <CardText>
-              {project.links.map((link, index) =>
-                <Components.LinkDetail key={`link-detail-${index}`} link={link} />
-              )}
-            </CardText>
-          </CardBody>
-          }
           <CardFooter>
             <small className='text-muted'>{displayDate}</small>
           </CardFooter>

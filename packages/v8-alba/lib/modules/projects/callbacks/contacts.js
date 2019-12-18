@@ -29,25 +29,17 @@ export function ProjectEditUpdateContacts (data, { document, originalDocument })
   // TODO: what happens when Project becomes PastProject ???
 
   const project = document
-  let contactsToRemoveThisProjectFrom = null
-  let contactsToAddThisProjectTo = null
+  let contactsToRemoveThisProjectFrom = []
+  let contactsToAddThisProjectTo = []
+  const newProject = document
+  const oldProject = originalDocument
+  contactsToAddThisProjectTo = _.differenceWith(newProject.contacts, oldProject.contacts, _.isEqual)
+  contactsToRemoveThisProjectFrom = _.differenceWith(oldProject.contacts, newProject.contacts, _.isEqual)
+  console.group('ProjectEditUpdateContacts:')
+  console.info('contactsToRemoveThisProjectFrom:', contactsToRemoveThisProjectFrom)
+  console.info('contactsToAddThisProjectTo:', contactsToAddThisProjectTo)
+  console.groupEnd()
 
-  if (!originalDocument) { // newly created project --> [c] add project to its contacts, if any
-    if (!isEmptyValue(project.contacts)) {
-      contactsToAddThisProjectTo = project.contacts
-    } else {
-      return
-    }
-  } else {
-    const newProject = document
-    const oldProject = originalDocument
-    contactsToAddThisProjectTo = _.differenceWith(newProject.contacts, oldProject.contacts, _.isEqual)
-    contactsToRemoveThisProjectFrom = _.differenceWith(oldProject.contacts, newProject.contacts, _.isEqual)
-    console.group('ProjectEditUpdateContacts:')
-    console.info('contactsToRemoveThisProjectFrom:', contactsToRemoveThisProjectFrom)
-    console.info('contactsToAddThisProjectTo:', contactsToAddThisProjectTo)
-    console.groupEnd()
-  }
   // [b]
   if (contactsToRemoveThisProjectFrom) {
     contactsToRemoveThisProjectFrom.forEach(deletedContact => {
@@ -76,6 +68,46 @@ export function ProjectEditUpdateContacts (data, { document, originalDocument })
   }
 
   // [c]
+  if (contactsToAddThisProjectTo) {
+    contactsToAddThisProjectTo.forEach(addedContact => {
+      const contact = Contacts.findOne(addedContact.contactId)
+      const updatedProject = {
+        projectId: project._id,
+        projectTitle: project.projectTitle,
+        titleForProject: addedContact.contactTitle
+      }
+      let updatedProjects = []
+      // case 1: nothing there
+      if (isEmptyValue(contact.projects)) {
+        updatedProjects = [updatedProject]
+      } else {
+        updatedProjects = contact.projects
+        const i = _.findIndex(contact.projects, { projectId: project._id })
+        if (i < 0) {
+          // case 2: add to it
+          updatedProjects.push(updatedProject)
+        } else {
+          // case 3: already there
+          return
+        }
+      }
+      Connectors.update(Contacts, contact._id, {
+        $set: {
+          projects: updatedProjects,
+          updatedAt: new Date()
+        }
+      })
+    })
+  }
+}
+
+export function ProjectCreateUpdateContacts (data, { document, originalDocument }) {
+  const project = document
+  let contactsToAddThisProjectTo = project.contacts
+  console.group('ProjectCreateUpdateContacts:')
+  console.info('contactsToAddThisProjectTo:', contactsToAddThisProjectTo)
+  console.groupEnd()
+
   if (contactsToAddThisProjectTo) {
     contactsToAddThisProjectTo.forEach(addedContact => {
       const contact = Contacts.findOne(addedContact.contactId)

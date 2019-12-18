@@ -42,9 +42,9 @@ class SelectContactIdNameTitle extends PureComponent {
 
   handleNameChange ({ target }) {
     this.setState({
-      [target.id]: target.value
+      contactName: target.value
     })
-    const path = this.state.pathPrefix + target.id
+    const path = this.state.pathPrefix + 'contactName'
     this.context.updateCurrentValues({
       [path]: target.value
     })
@@ -69,9 +69,9 @@ class SelectContactIdNameTitle extends PureComponent {
     return (
       <div>
         <FormGroup>
-          <Label for='contactId'>Name from Database</Label>
+          <Label for={`contactId${itemIndex}`}>Name from Database</Label>
           <OptimizedSelect
-            id='contactId'
+            id={`contactId${itemIndex}`}
             value={value}
             onChange={this.handleIdChange}
             options={this.props.options}
@@ -79,19 +79,19 @@ class SelectContactIdNameTitle extends PureComponent {
           />
         </FormGroup>
         <FormGroup>
-          <Label for='contactName'>Editable Name</Label>
+          <Label for={`contactName${itemIndex}`}>Editable Name</Label>
           <OptimizedInput
             type='text'
-            id='contactName'
+            id={`contactName${itemIndex}`}
             value={contactName}
             onChange={this.handleNameChange}
             required
           />
         </FormGroup>
         <FormGroup>
-          <Label for='contactTitle'>Title for This</Label>
+          <Label for={`contactTitle${itemIndex}`}>Title for This</Label>
           <OptimizedSelect
-            id='contactTitle'
+            id={`contactTitle${itemIndex}`}
             value={contactTitle}
             onChange={this.handleTitleChange}
             options={CASTING_TITLES_ENUM}
