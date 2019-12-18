@@ -21,7 +21,13 @@ let keptState = {
 }
 
 function dateFormatter (cell, row) {
-  return moment(cell).format(DATE_FORMAT_SHORT)
+  let theDate
+  if (!cell) { // i.e. there is only a createdAt, not an updatedAt
+    theDate = row.createdAt
+  } else {
+    theDate = cell
+  }
+  return moment(theDate).format(DATE_FORMAT_SHORT)
 }
 
 class ProjectsDataTable extends PureComponent {
