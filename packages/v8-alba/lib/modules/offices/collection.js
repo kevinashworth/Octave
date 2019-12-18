@@ -2,6 +2,7 @@ import { createCollection, getDefaultResolvers, getDefaultMutations } from 'mete
 import schema from './schema.js'
 
 import {
+  OfficeCreateUpdateContacts,
   OfficeEditUpdateContacts,
   OfficeEditUpdatePastProjects,
   OfficeEditUpdateProjects
@@ -21,7 +22,7 @@ const Offices = createCollection({
   },
   callbacks: {
     create: {
-      after: [OfficeEditUpdateContacts, OfficeEditUpdatePastProjects, OfficeEditUpdateProjects]
+      after: [OfficeCreateUpdateContacts, OfficeEditUpdatePastProjects, OfficeEditUpdateProjects]
     },
     update: {
       before: [OfficeEditUpdateContacts, OfficeEditUpdatePastProjects, OfficeEditUpdateProjects]
