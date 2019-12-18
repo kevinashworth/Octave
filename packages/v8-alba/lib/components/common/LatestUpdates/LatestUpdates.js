@@ -2,7 +2,7 @@ import { Components, registerComponent, withAccess, withMulti } from 'meteor/vul
 import React, { Component } from 'react'
 import { Link } from 'react-router-dom'
 import PropTypes from 'prop-types'
-import { Card, CardBody, CardFooter, CardHeader, Col, Row } from 'reactstrap'
+import { Card, CardBody, CardFooter, CardHeader, CardTitle, Col, Row } from 'reactstrap'
 import Markup from 'interweave'
 import Contacts from '../../../modules/contacts/collection.js'
 import Offices from '../../../modules/offices/collection.js'
@@ -183,13 +183,13 @@ const projectsOptions2 = {
 }
 
 registerComponent({
-  name: 'LatestProjectUpdates1',
+  name: 'NewestProjectsAdded',
   component: LatestProjectUpdates,
   hocs: [[withMulti, projectsOptions1]]
 })
 
 registerComponent({
-  name: 'LatestProjectUpdates2',
+  name: 'LatestProjectUpdates',
   component: LatestProjectUpdates,
   hocs: [[withMulti, projectsOptions2]]
 })
@@ -252,10 +252,20 @@ class LatestUpdates extends Component {
     return (
       <div className='animated fadeIn'>
         <Components.HeadTags title='V8 Alba: Latest Updates' />
-        <Components.LatestProjectUpdates1 />
+
+        <CardTitle className='mt-3'><b>Newest Projects</b></CardTitle>
+        <Components.NewestProjectsAdded />
+
+        <CardTitle><b>Recently Updated Contacts</b></CardTitle>
         <Components.LatestContactUpdates />
+
+        <CardTitle><b>Recently Updated Offices</b></CardTitle>
         <Components.LatestOfficeUpdates />
-        <Components.LatestProjectUpdates2 />
+
+        <CardTitle><b>Recently Updated Projects</b></CardTitle>
+        <Components.LatestProjectUpdates />
+
+        <CardTitle><b>Newest Past Projects</b></CardTitle>
         <Components.LatestPastProjectUpdates />
       </div>
     )
