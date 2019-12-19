@@ -1,12 +1,9 @@
-/*
-
-Seed the database with some dummy content.
-
-*/
+/* Seed the database with some dummy content. */
 
 import { Promise } from 'meteor/promise'
 import Users from 'meteor/vulcan:users'
 import { newMutation } from 'meteor/vulcan:core'
+import Algolia from '../modules/algolia/collection.js'
 import Contacts from '../modules/contacts/collection.js'
 import Projects from '../modules/projects/collection.js'
 import PastProjects from '../modules/past-projects/collection.js'
@@ -39,6 +36,11 @@ const createDummyUsers = async () => {
     createUser('Arnold', 'dummyuser2@telescopeapp.org'),
     createUser('Julia', 'dummyuser3@telescopeapp.org')
   ])
+}
+
+const seedAlgolia = {
+  date: new Date(),
+  objectCount: 0
 }
 
 // eslint-disable-next-line no-undef
@@ -104,6 +106,17 @@ Meteor.startup(() => {
       action: 'statistics.new',
       collection: Statistics,
       document: seedStatistics,
+      currentUser,
+      validate: false
+    }))
+  }
+  if (Algolia.find().fetch().length === 0) {
+    // eslint-disable-next-line no-console
+    console.log('// creating dummy algolia')
+    Promise.await(newMutation({
+      action: 'algolia.new',
+      collection: Algolia,
+      document: seedAlgolia,
       currentUser,
       validate: false
     }))
