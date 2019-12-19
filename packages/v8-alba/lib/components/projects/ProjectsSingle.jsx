@@ -107,8 +107,7 @@ class ProjectsSingle extends PureComponent {
                 <CardLink href={project.website} target='_websites'>Open official website <i className='fa fa-external-link' /></CardLink>
               </CardText>
               }
-              {(project.castingCompany || project.castingOfficeId) &&
-                <CardTitle className='mt-5'><b>Casting Office</b></CardTitle>}
+              <CardTitle className='mt-5'><b>Casting Information</b></CardTitle>
               <CardText className='mb-0'>
                 <b>{ project.castingCompany }</b>
               </CardText>
