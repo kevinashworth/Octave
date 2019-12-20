@@ -39,6 +39,7 @@ addRoute([
 
 addRoute({ path: '/statistics/list', name: 'StatisticsList', componentName: 'StatisticsList' })
 addRoute({ path: '/statistics/:_id/edit', name: 'StatisticsEditForm', componentName: 'StatisticsEditForm' })
+addRoute({ path: '/algolia/list', name: 'AlgoliaLog', componentName: 'AlgoliaLog' })
 
 addRoute([
   { name: 'users.profile', path: '/users/:slug',      componentName: 'UsersProfile' },
