@@ -39,8 +39,10 @@ const createDummyUsers = async () => {
 }
 
 const seedAlgolia = {
-  date: new Date(),
-  objectCount: 0
+  algolia: [{
+    date: '2019-12-13 22:20:46',
+    objectCount: 1546
+  }]
 }
 
 // eslint-disable-next-line no-undef

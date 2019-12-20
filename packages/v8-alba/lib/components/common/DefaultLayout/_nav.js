@@ -163,7 +163,7 @@ const navItems = {
     {
       name: 'Algolia Log',
       url: '/algolia/list',
-      icon: 'icon-search'
+      icon: 'fa fa-search'
     },
     {
       name: 'User Admin',
