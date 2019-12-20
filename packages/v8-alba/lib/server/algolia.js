@@ -1,4 +1,7 @@
+import { updateMutator } from 'meteor/vulcan:core'
+import Users from 'meteor/vulcan:users'
 import algoliasearch from 'algoliasearch'
+import Algolia from '../modules/algolia/collection.js'
 import Contacts from '../modules/contacts/collection.js'
 import Offices from '../modules/offices/collection.js'
 import Projects from '../modules/projects/collection.js'
@@ -8,10 +11,13 @@ let applicationid = Meteor.settings.private.algolia.ApplicationID
 let adminapikey   = Meteor.settings.private.algolia.AdminAPIKey
 let algoliaindex  = Meteor.settings.private.algolia.AlgoliaIndex
 
+const currentUser = Users.findOne() // just get the first user available
+let algoliaLog = Algolia.findOne()
+
 const createAlgoliaIndex = () => {
   const client = algoliasearch(applicationid, adminapikey)
-
   const index = client.initIndex(algoliaindex)
+
   index.getSettings((err, content) => {
     if (err) {
       console.error('Algolia getSettings error:', err)
@@ -69,6 +75,15 @@ const createAlgoliaIndex = () => {
   index
     .saveObjects(objects)
     .then(({ objectIDs }) => {
+      algoliaLog.push({ date: new Date(), objectCount: objectIDs.length })
+      Promise.await(updateMutator({
+        action: 'algolia.update',
+        documentId: algoliaLog._id,
+        collection: Algolia,
+        set: algoliaLog,
+        currentUser,
+        validate: false
+      }))
       console.group('Algolia saveObjects:')
       console.log(objectIDs)
       console.groupEnd()
