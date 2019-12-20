@@ -35,7 +35,8 @@ const createAlgoliaIndex = () => {
       url: `/contacts/${o._id}/${o.slug}`,
       addressString: o.addressString,
       allLinks: o.allLinks,
-      body: o.body
+      body: o.body,
+      boosted: 3
     }
     objects.push(indexedObject)
   })
@@ -45,7 +46,8 @@ const createAlgoliaIndex = () => {
       name: o.displayName,
       url: `/offices/${o._id}/${o.slug}`,
       fullAddress: o.fullAddress,
-      body: o.body
+      body: o.body,
+      boosted: 2
     }
     objects.push(indexedObject)
   })
@@ -56,7 +58,8 @@ const createAlgoliaIndex = () => {
       url: `/projects/${o._id}/${o.slug}`,
       network: o.network,
       summary: o.summary,
-      notes: o.notes
+      notes: o.notes,
+      boosted: 3
     }
     objects.push(indexedObject)
   })
@@ -67,7 +70,8 @@ const createAlgoliaIndex = () => {
       url: `/past-projects/${o._id}/${o.slug}`,
       network: o.network,
       summary: o.summary,
-      notes: o.notes
+      notes: o.notes,
+      boosted: 0
     }
     objects.push(indexedObject)
   })

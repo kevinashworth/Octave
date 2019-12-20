@@ -1,5 +1,5 @@
 import '../modules/index.js'
-import './seed.js'
+// import './seed.js'
 import './migrations.js'
 
 // Meteor.call('getProcessEnvMongoUrl', function (err, results) {
