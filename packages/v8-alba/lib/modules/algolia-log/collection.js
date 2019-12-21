@@ -2,8 +2,8 @@ import { createCollection } from 'meteor/vulcan:core'
 import schema from './schema.js'
 
 const Algolia = createCollection({
-  typeName: 'Algolia',
-  collectionName: 'Algolia',
+  typeName: 'AlgoliaLog',
+  collectionName: 'AlgoliaLogs',
   schema,
   permissions: {
     canCreate: ['members'],

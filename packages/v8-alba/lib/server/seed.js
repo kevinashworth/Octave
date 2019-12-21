@@ -3,7 +3,7 @@
 import { Promise } from 'meteor/promise'
 import Users from 'meteor/vulcan:users'
 import { newMutation } from 'meteor/vulcan:core'
-import Algolia from '../modules/algolia/collection.js'
+import AlgoliaLog from '../modules/algolia-log/collection.js'
 import Contacts from '../modules/contacts/collection.js'
 import Projects from '../modules/projects/collection.js'
 import PastProjects from '../modules/past-projects/collection.js'
@@ -38,7 +38,7 @@ const createDummyUsers = async () => {
   ])
 }
 
-const seedAlgolia = {
+const seedAlgoliaLog = {
   algolia: [{
     date: '2019-12-13 22:20:46',
     objectCount: 1546
@@ -112,13 +112,13 @@ Meteor.startup(() => {
       validate: false
     }))
   }
-  if (Algolia.find().fetch().length === 0) {
+  if (AlgoliaLog.find().fetch().length === 0) {
     // eslint-disable-next-line no-console
     console.log('// creating dummy algolia')
     Promise.await(newMutation({
       action: 'algolia.new',
-      collection: Algolia,
-      document: seedAlgolia,
+      collection: AlgoliaLog,
+      document: seedAlgoliaLog,
       currentUser,
       validate: false
     }))

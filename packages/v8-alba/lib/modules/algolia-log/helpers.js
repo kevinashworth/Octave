@@ -1,34 +1,33 @@
 import { updateMutator } from 'meteor/vulcan:core'
 import Users from 'meteor/vulcan:users'
 import algoliasearch from 'algoliasearch'
-import AlgoliaLog from '../modules/algolia-log/collection.js'
-import Contacts from '../modules/contacts/collection.js'
-import Offices from '../modules/offices/collection.js'
-import Projects from '../modules/projects/collection.js'
-import PastProjects from '../modules/past-projects/collection.js'
+import moment from 'moment'
+import AlgoliaLog from './collection.js'
+import Contacts from '../contacts/collection.js'
+import Offices from '../offices/collection.js'
+import Projects from '../projects/collection.js'
+import PastProjects from '../past-projects/collection.js'
+import { DATE_FORMAT_MONGO } from '../constants.js'
 
-const applicationid = Meteor.settings.private.algolia.ApplicationID
-const adminapikey   = Meteor.settings.private.algolia.AdminAPIKey
-const algoliaindex  = Meteor.settings.private.algolia.AlgoliaIndex
+const applicationid = '14RUP1OK0B'
+const adminapikey   = '3dc35c472370620d7003a876bf992abe'
+const algoliaindex  = 'dev_v8-alba-mlab'
 
 const currentUser = Users.findOne() // just get the first user available
-let algoliaLog = AlgoliaLog.findOne()
 
-const createAlgoliaIndex = () => {
+export const updateAlgoliaIndex = (algoliaLog) => {
   const client = algoliasearch(applicationid, adminapikey)
   const index = client.initIndex(algoliaindex)
 
-  index.getSettings((err, content) => {
-    if (err) {
-      console.error('AlgoliaLog getSettings error:', err)
-    }
-    console.group('AlgoliaLog getSettings:')
-    console.log(content)
-    console.groupEnd()
-  })
+  console.group('[KA] algoliaLog:')
+  console.log(algoliaLog)
+  console.groupEnd()
+  const lastUpdate = new Date(algoliaLog.algolia[0].Date)
+
+  const selector = { $or: [ { createdAt: { $gte: lastUpdate }, updatedAt: { $gte: lastUpdate } } ] }
 
   let objects = []
-  Contacts.find().forEach((o) => {
+  Contacts.find(selector).forEach((o) => {
     const indexedObject = {
       objectID: o._id,
       name: o.displayName,
@@ -40,7 +39,7 @@ const createAlgoliaIndex = () => {
     }
     objects.push(indexedObject)
   })
-  Offices.find().forEach((o) => {
+  Offices.find(selector).forEach((o) => {
     const indexedObject = {
       objectID: o._id,
       name: o.displayName,
@@ -51,7 +50,7 @@ const createAlgoliaIndex = () => {
     }
     objects.push(indexedObject)
   })
-  Projects.find().forEach((o) => {
+  Projects.find(selector).forEach((o) => {
     const indexedObject = {
       objectID: o._id,
       name: o.projectTitle,
@@ -63,7 +62,7 @@ const createAlgoliaIndex = () => {
     }
     objects.push(indexedObject)
   })
-  PastProjects.find().forEach((o) => {
+  PastProjects.find(selector).forEach((o) => {
     const indexedObject = {
       objectID: o._id,
       name: o.projectTitle,
@@ -79,7 +78,7 @@ const createAlgoliaIndex = () => {
   index
     .saveObjects(objects)
     .then(({ objectIDs }) => {
-      algoliaLog.push({ date: new Date(), objectCount: objectIDs.length })
+      algoliaLog.algolia.push({ date: moment().format(DATE_FORMAT_MONGO), objectCount: objectIDs.length })
       Promise.await(updateMutator({
         action: 'algolia.update',
         documentId: algoliaLog._id,
@@ -88,15 +87,11 @@ const createAlgoliaIndex = () => {
         currentUser,
         validate: false
       }))
-      console.group('AlgoliaLog saveObjects:')
-      console.log(objectIDs)
+      console.group('updateAlgoliaIndex saveObjects:')
+      console.log(objects)
       console.groupEnd()
     })
     .catch(err => {
       console.error('AlgoliaLog saveObjects error:', err)
     })
 }
-
-Meteor.startup(() => {
-  createAlgoliaIndex()
-})
