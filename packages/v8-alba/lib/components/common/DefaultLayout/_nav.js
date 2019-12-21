@@ -162,7 +162,7 @@ const navItems = {
     },
     {
       name: 'Algolia Log',
-      url: '/algolia/list',
+      url: '/algolia/log',
       icon: 'fa fa-search'
     },
     {
