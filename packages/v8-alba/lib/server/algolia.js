@@ -10,7 +10,7 @@ import PastProjects from '../modules/past-projects/collection.js'
 const applicationid = Meteor.settings.private.algolia.ApplicationID
 const adminapikey   = Meteor.settings.private.algolia.AdminAPIKey
 const algoliaindex  = Meteor.settings.private.algolia.AlgoliaIndex
-
+//
 const currentUser = Users.findOne() // just get the first user available
 let algoliaLog = AlgoliaLog.findOne()
 
@@ -18,11 +18,26 @@ const createAlgoliaIndex = () => {
   const client = algoliasearch(applicationid, adminapikey)
   const index = client.initIndex(algoliaindex)
 
+  index.setSettings({
+    customRanking: [
+      'desc(name)',
+      'desc(boosted)',
+      'asc(updatedAt)'
+    ],
+    searchableAttributes: [
+      'name',
+      'body',
+      'notes',
+      'addressString',
+      'network'
+    ]
+  });
+
   index.getSettings((err, content) => {
     if (err) {
-      console.error('AlgoliaLog getSettings error:', err)
+      console.error('Algolia getSettings error:', err)
     }
-    console.group('AlgoliaLog getSettings:')
+    console.group('Algolia getSettings:')
     console.log(content)
     console.groupEnd()
   })
@@ -32,10 +47,10 @@ const createAlgoliaIndex = () => {
     const indexedObject = {
       objectID: o._id,
       name: o.displayName,
-      url: `/contacts/${o._id}/${o.slug}`,
       addressString: o.addressString,
-      allLinks: o.allLinks,
       body: o.body,
+      url: `/contacts/${o._id}/${o.slug}`,
+      updatedAt: o.updatedAt ? o.updatedAt : o.createdAt,
       boosted: 3
     }
     objects.push(indexedObject)
@@ -44,10 +59,11 @@ const createAlgoliaIndex = () => {
     const indexedObject = {
       objectID: o._id,
       name: o.displayName,
-      url: `/offices/${o._id}/${o.slug}`,
-      fullAddress: o.fullAddress,
+      addressString: o.fullAddress,
       body: o.body,
-      boosted: 2
+      url: `/offices/${o._id}/${o.slug}`,
+      updatedAt: o.updatedAt ? o.updatedAt : o.createdAt,
+      boosted: 1
     }
     objects.push(indexedObject)
   })
@@ -55,11 +71,12 @@ const createAlgoliaIndex = () => {
     const indexedObject = {
       objectID: o._id,
       name: o.projectTitle,
-      url: `/projects/${o._id}/${o.slug}`,
-      network: o.network,
-      summary: o.summary,
+      body: o.summary,
       notes: o.notes,
-      boosted: 3
+      network: o.network,
+      url: `/projects/${o._id}/${o.slug}`,
+      updatedAt: o.updatedAt ? o.updatedAt : o.createdAt,
+      boosted: 2
     }
     objects.push(indexedObject)
   })
@@ -67,10 +84,11 @@ const createAlgoliaIndex = () => {
     const indexedObject = {
       objectID: o._id,
       name: o.projectTitle,
-      url: `/past-projects/${o._id}/${o.slug}`,
-      network: o.network,
-      summary: o.summary,
+      body: o.summary,
       notes: o.notes,
+      network: o.network,
+      url: `/past-projects/${o._id}/${o.slug}`,
+      updatedAt: o.updatedAt ? o.updatedAt : o.createdAt,
       boosted: 0
     }
     objects.push(indexedObject)
@@ -78,18 +96,18 @@ const createAlgoliaIndex = () => {
 
   index
     .saveObjects(objects)
-    .then(({ objectIDs }) => {
-      algoliaLog.push({ date: new Date(), objectCount: objectIDs.length })
+    .then((response) => {
+      algoliaLog.algolia.push({ dateOfSend: new Date(), sentObjectCount: response.objectIDs.length })
       Promise.await(updateMutator({
-        action: 'algolia.update',
+        action: 'algolialog.update',
         documentId: algoliaLog._id,
         collection: AlgoliaLog,
-        set: algoliaLog,
+        set: AlgoliaLog,
         currentUser,
         validate: false
       }))
-      console.group('AlgoliaLog saveObjects:')
-      console.log(objectIDs)
+      console.group('AlgoliaLog saveObjects response:')
+      console.log(response)
       console.groupEnd()
     })
     .catch(err => {

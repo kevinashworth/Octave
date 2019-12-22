@@ -4,7 +4,7 @@ import './components.js'
 import './routes.js'
 import './i18n.js'
 
-import './algolia-log'
+// import './algolia-log'
 import './comments'
 import './contacts'
 import './offices'

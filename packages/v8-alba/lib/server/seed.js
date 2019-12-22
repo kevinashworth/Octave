@@ -3,7 +3,7 @@
 import { Promise } from 'meteor/promise'
 import Users from 'meteor/vulcan:users'
 import { newMutation } from 'meteor/vulcan:core'
-import AlgoliaLog from '../modules/algolia-log/collection.js'
+// import AlgoliaLog from '../modules/algolia-log/collection.js'
 import Contacts from '../modules/contacts/collection.js'
 import Projects from '../modules/projects/collection.js'
 import PastProjects from '../modules/past-projects/collection.js'
@@ -38,12 +38,12 @@ const createDummyUsers = async () => {
   ])
 }
 
-const seedAlgoliaLog = {
-  algolia: [{
-    date: '2019-12-13 22:20:46',
-    objectCount: 1546
-  }]
-}
+// const seedAlgoliaLog = {
+//   algolia: [{
+//     dateOfSend: '2019-12-13 22:20:46',
+//     sentObjectCount: 1546
+//   }]
+// }
 
 // eslint-disable-next-line no-undef
 Vulcan.removeGettingStartedContent = () => {
@@ -112,15 +112,15 @@ Meteor.startup(() => {
       validate: false
     }))
   }
-  if (AlgoliaLog.find().fetch().length === 0) {
-    // eslint-disable-next-line no-console
-    console.log('// creating dummy algolia')
-    Promise.await(newMutation({
-      action: 'algolia.new',
-      collection: AlgoliaLog,
-      document: seedAlgoliaLog,
-      currentUser,
-      validate: false
-    }))
-  }
+  // if (AlgoliaLog.find().fetch().length === 0) {
+  //   // eslint-disable-next-line no-console
+  //   console.log('// creating dummy algolia')
+  //   Promise.await(newMutation({
+  //     action: 'algolia.new',
+  //     collection: AlgoliaLog,
+  //     document: seedAlgoliaLog,
+  //     currentUser,
+  //     validate: false
+  //   }))
+  // }
 })

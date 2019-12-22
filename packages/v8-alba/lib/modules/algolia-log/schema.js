@@ -1,5 +1,70 @@
 import SimpleSchema from 'simpl-schema'
 
+const algoliaSchema = new SimpleSchema({
+  dateOfSend: {
+    type: String, // YYYY-MM-DD HH:mm:ss
+    optional: true,
+    canRead: ['members'],
+    canCreate: ['members', 'admins'],
+    canUpdate: ['members', 'admins']
+  },
+  sentObjectCount: {
+    type: Number,
+    optional: true,
+    canRead: ['members'],
+    canCreate: ['members', 'admins'],
+    canUpdate: ['members', 'admins']
+  }
+})
+
+const schema = {
+  // default properties
+  _id: {
+    type: String,
+    optional: true,
+    canRead: ['members']
+  },
+  createdAt: {
+    type: Date,
+    optional: true,
+    canRead: ['members'],
+    onCreate: () => {
+      return new Date()
+    }
+  },
+  userId: {
+    type: String,
+    optional: true,
+    canRead: ['members']
+  },
+
+  // custom properties
+  updatedAt: {
+    type: Date,
+    optional: true,
+    canRead: ['members'],
+    onCreate: () => {
+      return new Date()
+    },
+    onUpdate: () => {
+      return new Date()
+    }
+  },
+  algolia: {
+    label: 'Algolia',
+    type: Array,
+    optional: true,
+    canRead: ['members'],
+    canCreate: ['members', 'admins'],
+    canUpdate: ['members', 'admins']
+  },
+  'algolia.$': {
+    type: algoliaSchema
+  },
+}
+
+export default schema
+
 // const algoliaObjectSchema = new SimpleSchema({
 //   objectID: {
 //     type: String,
@@ -52,68 +117,3 @@ import SimpleSchema from 'simpl-schema'
 //     canRead: ['members']
 //   }
 // })
-
-const algoliaSchema = new SimpleSchema({
-  date: {
-    type: String, // YYYY-MM-DD HH:mm:ss
-    optional: true,
-    canRead: ['members'],
-    canCreate: ['members', 'admins'],
-    canUpdate: ['members', 'admins']
-  },
-  objectCount: {
-    type: Number,
-    optional: true,
-    canRead: ['members'],
-    canCreate: ['members', 'admins'],
-    canUpdate: ['members', 'admins']
-  }
-})
-
-const schema = {
-  // default properties
-  _id: {
-    type: String,
-    optional: true,
-    canRead: ['members']
-  },
-  createdAt: {
-    type: Date,
-    optional: true,
-    canRead: ['members'],
-    onInsert: () => {
-      return new Date()
-    }
-  },
-  userId: {
-    type: String,
-    optional: true,
-    canRead: ['members']
-  },
-
-  // custom properties
-  updatedAt: {
-    type: Date,
-    optional: true,
-    canRead: ['members'],
-    onInsert: () => {
-      return new Date()
-    },
-    onEdit: () => {
-      return new Date()
-    }
-  },
-  algolia: {
-    label: 'Algolia',
-    type: Array,
-    optional: true,
-    canRead: ['members'],
-    canCreate: ['members', 'admins'],
-    canUpdate: ['members', 'admins']
-  },
-  'algolia.$': {
-    type: algoliaSchema
-  },
-}
-
-export default schema
