@@ -21,7 +21,8 @@ I get confused, so here's a description:
 TODO: What about the contact's title for this office?
 */
 
-export function ContactEditUpdateOffices (document, properties) {
+export function ContactCreateUpdateOffices (document, properties) {
+  console.log('just entered ContactCreateUpdateOffices'); // eslint-disable-line no-console
   const contact = document
   if (!contact.offices) {
     return
@@ -58,4 +59,48 @@ export function ContactEditUpdateOffices (document, properties) {
       }
     })
   })
+  console.log('now leaving ContactCreateUpdateOffices'); // eslint-disable-line no-console
+  return document
+}
+
+export function ContactEditUpdateOffices (document, properties) {
+  console.log('just entered ContactEditUpdateOffices'); // eslint-disable-line no-console
+  const contact = document
+  if (!contact.offices) {
+    return
+  }
+  const fullName = getFullNameFromContact(contact)
+
+  contact.offices.forEach(contactOffice => {
+    const office = Offices.findOne(contactOffice.officeId) // TODO: error handling
+    const newContact = {
+      contactId: contact._id,
+      contactName: fullName
+    }
+    let newContacts = []
+
+    // case 1: there are no contacts on the office and office.contacts is undefined
+    if (!office.contacts) {
+      newContacts = [newContact]
+    } else {
+      const i = _.findIndex(office.contacts, { contactId: contact._id })
+      newContacts = office.contacts
+      if (i < 0) {
+        // case 2: this contact is not on this office but other contacts are and we're adding this contact
+        newContacts.push(newContact)
+      } else {
+        // case 3: this contact is on this office and we're updating the info
+        newContacts[i] = newContact
+      }
+    }
+
+    Connectors.update(Offices, office._id, {
+      $set: {
+        contacts: newContacts,
+        updatedAt: new Date()
+      }
+    })
+  })
+  console.log('now leaving ContactEditUpdateOffices'); // eslint-disable-line no-console
+  return document
 }

@@ -1,6 +1,10 @@
-import '../modules/index.js'
-import './seed.js'
+export * from '../modules/index.js';
+
+import './methods.js'
 import './migrations.js'
+import './seed.js'
+
+import './contacts/index.js'
 
 // Meteor.call('getProcessEnvMongoUrl', function (err, results) {
 //   if (err) {
@@ -11,6 +15,6 @@ import './migrations.js'
 //   }
 // })
 
-import Contacts from '../modules/contacts/collection.js'
+// import Contacts from '../modules/contacts/collection.js'
 
-Contacts.rawCollection().createIndex({ lastName: 1 })
+// Contacts.rawCollection().createIndex({ lastName: 1 })

@@ -1,34 +1,33 @@
 import { Connectors } from 'meteor/vulcan:core'
 import _ from 'lodash'
-import PastProjects from '../../past-projects/collection.js'
+import Projects from '../../projects/collection.js'
 import { getFullNameFromContact } from '../../helpers.js'
 
 /*
-When updating a past-project on a contact, also update that past-project with the contact.
+When updating a project on a contact, also update that project with the contact.
 I get confused, so here's a description:
 
   Where i represents the project(s) we're adding to our contact,
-  contact.pastProjects[i] has { projectId, projectTitle, titleForProject }
+  contact.projects[i] has { projectId, projectTitle, titleForProject }
 
-  But we actually get all pastProjects, not just i, the new ones.
+  But we actually get all projects, not just i, the new ones.
 
-  So for each of the contact.pastProjects we update project.contacts of the Project with _id === projectId with
+  So for each of the contact.projects we update project.contacts of the Project with _id === projectId with
   {
     contactId: contact._id,
     contactName: fullName -- which is getFullNameFromContact(contact),
     contactTitle: project.titleForProject
   }
 */
-
-export function ContactEditUpdatePastProjects (document, properties) {
+export function ContactEditUpdateProjects (document, properties) {
   const contact = document
-  if (!contact.pastProjects) {
+  if (!contact.projects) {
     return
   }
   const fullName = getFullNameFromContact(contact)
 
-  contact.pastProjects.forEach(contactProject => {
-    const pastProject = PastProjects.findOne(contactProject.projectId) // TODO: error handling
+  contact.projects.forEach(contactProject => {
+    const project = Projects.findOne(contactProject.projectId) // TODO: error handling
     const newContact = {
       contactId: contact._id,
       contactName: fullName,
@@ -37,11 +36,11 @@ export function ContactEditUpdatePastProjects (document, properties) {
     let newContacts = []
 
     // case 1: there are no contacts on the project and project.contacts is undefined
-    if (!pastProject.contacts) {
+    if (!project.contacts) {
       newContacts = [newContact]
     } else {
-      const i = _.findIndex(pastProject.contacts, { contactId: contact._id })
-      newContacts = pastProject.contacts
+      const i = _.findIndex(project.contacts, { contactId: contact._id })
+      newContacts = project.contacts
       if (i < 0) {
         // case 2: this contact is not on this project but other contacts are and we're adding this contact
         newContacts.push(newContact)
@@ -50,11 +49,13 @@ export function ContactEditUpdatePastProjects (document, properties) {
         newContacts[i] = newContact
       }
     }
-    Connectors.update(PastProjects, pastProject._id, {
+    Connectors.update(Projects, project._id, {
       $set: {
-        contacts: newContacts,
-        updatedAt: new Date()
+        contacts: newContacts
+        // updatedAt: new Date() 2019-11-22: let's not update the date of ancient projects
       }
     })
   })
+
+  return document
 }
