@@ -6,7 +6,7 @@ import {
   ContactEditUpdateOffices,
   ContactEditUpdateProjects,
   ContactEditUpdatePastProjects
-} from './callbacks/algolia.js';
+} from './callbacks/index.js';
 
 extendCollection(Contacts, {
   callbacks: {

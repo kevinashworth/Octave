@@ -1,7 +1,7 @@
 import { Connectors } from 'meteor/vulcan:core'
 import _ from 'lodash'
-import Offices from '../../offices/collection.js'
-import { getFullNameFromContact } from '../../helpers.js'
+import Offices from '../../../modules/offices/collection.js'
+import { getFullNameFromContact } from '../../../modules/helpers.js'
 
 /*
 When updating an office on a contact, also update that office with the contact.

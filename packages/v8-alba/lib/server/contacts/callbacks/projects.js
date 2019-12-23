@@ -1,7 +1,7 @@
 import { Connectors } from 'meteor/vulcan:core'
 import _ from 'lodash'
-import Projects from '../../projects/collection.js'
-import { getFullNameFromContact } from '../../helpers.js'
+import Projects from '../../../modules/projects/collection.js'
+import { getFullNameFromContact } from '../../../modules/helpers.js'
 
 /*
 When updating a project on a contact, also update that project with the contact.
