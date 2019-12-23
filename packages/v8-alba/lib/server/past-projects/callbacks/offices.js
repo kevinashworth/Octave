@@ -1,7 +1,7 @@
 import { Connectors } from 'meteor/vulcan:core'
 import _ from 'lodash'
-import Offices from '../../offices/collection.js'
-import { isEmptyValue } from '../../helpers.js'
+import Offices from '../../../modules/offices/collection.js'
+import { isEmptyValue } from '../../../modules/helpers.js'
 
 /*
 When updating a office on a pastProject, also update that office with the pastProject.

@@ -1,9 +1,9 @@
 import { Connectors, createMutator, deleteMutator } from 'meteor/vulcan:core'
 import _ from 'lodash'
-import Offices from '../../offices/collection.js'
-import Projects from '../../projects/collection.js'
-import PastProjects from '../collection.js'
-import { ACTIVE_PROJECT_STATUSES_ARRAY } from '../../constants.js'
+import Offices from '../../../modules/offices/collection.js'
+import Projects from '../../../modules/projects/collection.js'
+import PastProjects from '../../../modules/past-projects/collection.js'
+import { ACTIVE_PROJECT_STATUSES_ARRAY } from '../../../modules/constants.js'
 
 // if the new status is now an active project, create a new project then remove this past-project
 // if the new project is created and matches (TODO: matches what, exactly?), delete current

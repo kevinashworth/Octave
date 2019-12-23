@@ -1,8 +1,8 @@
 import { Connectors } from 'meteor/vulcan:core'
-import Contacts from '../../contacts/collection.js'
 import _ from 'lodash'
-import { ACTIVE_PROJECT_STATUSES_ARRAY } from '../../constants.js'
-import { isEmptyValue } from '../../helpers.js'
+import Contacts from '../../../modules/contacts/collection.js'
+import { ACTIVE_PROJECT_STATUSES_ARRAY } from '../../../modules/constants.js'
+import { isEmptyValue } from '../../../modules/helpers.js'
 
 /*
 When updating a contact on a pastproject, also update that contact with the pastproject.

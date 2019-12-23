@@ -14,7 +14,7 @@ import './statistics'
 import './users'
 
 // export * from './comments/index.js'
-export * from './contacts/index.js'
+// export * from './contacts/index.js'
 // export * from './offices/index.js'
 // export * from './past-projects/index.js'
 // export * from './projects/index.js'
