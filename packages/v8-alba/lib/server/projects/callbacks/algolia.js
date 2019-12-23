@@ -1,5 +1,7 @@
 import { Promise } from 'meteor/promise'
 import algoliasearch from 'algoliasearch'
+import _ from 'lodash'
+import { ACTIVE_PROJECT_STATUSES_ARRAY } from '../../../modules/constants.js'
 
 const applicationid = Meteor.settings.private.algolia.ApplicationID
 const adminapikey   = Meteor.settings.private.algolia.AdminAPIKey
@@ -30,6 +32,14 @@ export function ProjectEditUpdateAlgoliaBefore (data, { document, originalDocume
     indexedObject.url = `/projects/${document._id}/${document.slug}`
     dirty = true
   }
+  if (document.status !== originalDocument.status) {
+    if (_.includes(ACTIVE_PROJECT_STATUSES_ARRAY, document.status)) {
+      indexedObject.url = `/projects/${document._id}/${document.slug}`
+    } else {
+      indexedObject.url = `/past-projects/${document._id}/${document.slug}`
+    }
+    dirty = true
+  }
 
   if (dirty) {
     const client = algoliasearch(applicationid, adminapikey)
@@ -54,7 +64,7 @@ export function ProjectCreateSaveToAlgolia (document) {
    network: document.network,
    url: `/projects/${document._id}/${document.slug}`,
    updatedAt: document.createdAt,
-   boosted: 0
+   boosted: 2
  }
 
  const client = algoliasearch(applicationid, adminapikey)

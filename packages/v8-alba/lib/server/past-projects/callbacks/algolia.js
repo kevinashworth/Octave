@@ -1,5 +1,7 @@
 import { Promise } from 'meteor/promise'
 import algoliasearch from 'algoliasearch'
+import _ from 'lodash'
+import { PAST_PROJECT_STATUSES_ARRAY } from '../../../modules/constants.js'
 
 const applicationid = Meteor.settings.private.algolia.ApplicationID
 const adminapikey   = Meteor.settings.private.algolia.AdminAPIKey
@@ -28,6 +30,14 @@ export function PastProjectEditUpdateAlgoliaBefore (data, { document, originalDo
   }
   if (document.slug !== originalDocument.slug) {
     indexedObject.url = `/past-projects/${document._id}/${document.slug}`
+    dirty = true
+  }
+  if (document.status !== originalDocument.status) {
+    if (_.includes(PAST_PROJECT_STATUSES_ARRAY, document.status)) {
+      indexedObject.url = `/past-projects/${document._id}/${document.slug}`
+    } else {
+      indexedObject.url = `/projects/${document._id}/${document.slug}`
+    }
     dirty = true
   }
 

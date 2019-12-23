@@ -20,7 +20,7 @@ const createAlgoliaIndex = () => {
 
   index.setSettings({
     customRanking: [
-      'desc(name)',
+      'asc(name)',
       'desc(boosted)',
       'asc(updatedAt)'
     ],

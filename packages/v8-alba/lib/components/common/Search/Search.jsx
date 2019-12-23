@@ -40,7 +40,11 @@ const Hits = ({ hits }) => {
         {hits.length === 0
           ? <DropdownItem>No search results</DropdownItem>
           : hits.map(hit => (
-            <DropdownItem key={hit.objectID}><Link to={hit.url}>{hit.name}</Link></DropdownItem>
+            <DropdownItem key={hit.objectID}>
+              <Components.ErrorBoundary>
+                <Link to={hit.url}>{hit.name}</Link>
+              </Components.ErrorBoundary>
+            </DropdownItem>
             ))
           }
         </DropdownMenu>
