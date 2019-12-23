@@ -1,5 +1,5 @@
 import { registerComponent, Components } from 'meteor/vulcan:core'
-import React, { Fragment, useState } from 'react'
+import React, { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { Button, Dropdown, DropdownItem, DropdownMenu, DropdownToggle, Form, Input, InputGroup, InputGroupAddon } from 'reactstrap'
 import algoliasearch from 'algoliasearch/lite'
@@ -16,7 +16,7 @@ const SearchBox = ({ currentRefinement, refine }) => {
   return (
     <Form noValidate action='' role='search' inline={true}>
       <InputGroup>
-        <Input placeholder='Algolia!'
+        <Input placeholder='Search all of V8&hellip;'
           type='search'
           value={currentRefinement}
           onChange={event => refine(event.currentTarget.value)}
@@ -33,7 +33,7 @@ const CustomSearchBox = connectSearchBox(SearchBox);
 
 const Hits = ({ hits }) => {
   return (
-    <Fragment>
+    <>
       <DropdownToggle nav></DropdownToggle>
       <DropdownMenu>
         <DropdownItem header>Search powered by <CustomPoweredBy /></DropdownItem>
@@ -48,7 +48,7 @@ const Hits = ({ hits }) => {
             ))
           }
         </DropdownMenu>
-    </Fragment>
+    </>
   )
 }
 
