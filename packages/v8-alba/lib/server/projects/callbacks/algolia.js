@@ -10,20 +10,24 @@ export function ProjectEditUpdateAlgoliaBefore (data, { document, originalDocume
     objectID: document._id
   }
   var dirty = false
-  if (document.body !== originalDocument.body) {
-    indexedObject.body = document.body
+  if (document.summary !== originalDocument.summary) {
+    indexedObject.body = document.summary
     dirty = true
   }
-  if (document.displayName !== originalDocument.displayName) {
-    indexedObject.name = document.displayName
+  if (document.notes !== originalDocument.notes) {
+    indexedObject.notes = document.notes
     dirty = true
   }
-  if (document.addressString !== originalDocument.addressString) {
-    indexedObject.addressString = document.addressString
+  if (document.projectTitle !== originalDocument.projectTitle) {
+    indexedObject.name = document.projectTitle
+    dirty = true
+  }
+  if (document.network !== originalDocument.network) {
+    indexedObject.network = document.network
     dirty = true
   }
   if (document.slug !== originalDocument.slug) {
-    indexedObject.url = `/contacts/${document._id}/${document.slug}`
+    indexedObject.url = `/projects/${document._id}/${document.slug}`
     dirty = true
   }
 
