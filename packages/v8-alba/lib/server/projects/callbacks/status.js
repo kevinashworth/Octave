@@ -1,11 +1,11 @@
 import { Connectors, createMutator, deleteMutator } from 'meteor/vulcan:core'
 import _ from 'lodash'
-import Contacts from '../../contacts/collection.js'
-import Offices from '../../offices/collection.js'
-import Projects from '../collection.js'
-import PastProjects from '../../past-projects/collection.js'
-import { PAST_PROJECT_STATUSES_ARRAY } from '../../constants.js'
-import { isEmptyValue } from '../../helpers.js'
+import Contacts from '../../../modules/contacts/collection.js'
+import Offices from '../../../modules/offices/collection.js'
+import Projects from '../../../modules/projects/collection.js'
+import PastProjects from '../../../modules/past-projects/collection.js'
+import { PAST_PROJECT_STATUSES_ARRAY } from '../../../modules/constants.js'
+import { isEmptyValue } from '../../../modules/helpers.js'
 
 
 // if the new status is now a past-project, create a new past-project then remove this active project

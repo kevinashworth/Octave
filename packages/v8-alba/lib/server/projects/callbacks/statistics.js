@@ -1,6 +1,6 @@
 import { updateMutator } from 'meteor/vulcan:core'
-import Projects from '../collection.js'
-import Statistics from '../../statistics/collection.js'
+import Projects from '../../../modules/projects/collection.js'
+import Statistics from '../../../modules/statistics/collection.js'
 import moment from 'moment'
 
 function latestStatIsFromToday (theStatsArray) {

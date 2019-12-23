@@ -5,6 +5,7 @@ import './migrations.js'
 import './seed.js'
 
 import './contacts/index.js'
+import './projects/index.js'
 
 // Meteor.call('getProcessEnvMongoUrl', function (err, results) {
 //   if (err) {
