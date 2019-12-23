@@ -40,3 +40,25 @@ export function OfficeEditUpdateAlgoliaBefore (data, { document, originalDocumen
       }))
   }
 }
+
+export function OfficeCreateSaveToAlgolia (document) {
+  const indexedObject = {
+    objectID: document._id,
+    name: document.displayName,
+    addressString: document.fullAddress,
+    body: document.body,
+    url: `/offices/${document._id}/${document.slug}`,
+    updatedAt: document.createdAt,
+    boosted: 1
+  }
+
+  const client = algoliasearch(applicationid, adminapikey)
+  const index = client.initIndex(algoliaindex)
+  Promise.await(index.saveObject(indexedObject,
+    (err, response) => {
+      if (err) {
+        console.error('saveObject error:', err)
+      }
+      console.log('saveObject response:', response)
+    }))
+}

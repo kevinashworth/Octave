@@ -44,3 +44,26 @@ export function ProjectEditUpdateAlgoliaBefore (data, { document, originalDocume
       }))
   }
 }
+
+export function ProjectCreateSaveToAlgolia (document) {
+ const indexedObject = {
+   objectID: document._id,
+   name: document.projectTitle,
+   body: document.summary,
+   notes: document.notes,
+   network: document.network,
+   url: `/projects/${document._id}/${document.slug}`,
+   updatedAt: document.createdAt,
+   boosted: 0
+ }
+
+ const client = algoliasearch(applicationid, adminapikey)
+ const index = client.initIndex(algoliaindex)
+ Promise.await(index.saveObject(indexedObject,
+   (err, response) => {
+     if (err) {
+       console.error('saveObject error:', err)
+     }
+     console.log('saveObject response:', response)
+   }))
+}

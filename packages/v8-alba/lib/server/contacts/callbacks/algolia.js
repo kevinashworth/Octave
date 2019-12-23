@@ -40,3 +40,25 @@ export function ContactEditUpdateAlgoliaBefore (data, { document, originalDocume
       }))
   }
 }
+
+export function ContactCreateSaveToAlgolia (document) {
+  const indexedObject = {
+    objectID: document._id,
+    name: document.displayName,
+    addressString: document.addressString,
+    body: document.body,
+    url: `/contacts/${document._id}/${document.slug}`,
+    updatedAt: document.createdAt,
+    boosted: 3
+  }
+
+  const client = algoliasearch(applicationid, adminapikey)
+  const index = client.initIndex(algoliaindex)
+  Promise.await(index.saveObject(indexedObject,
+    (err, response) => {
+      if (err) {
+        console.error('saveObject error:', err)
+      }
+      console.log('saveObject response:', response)
+    }))
+}

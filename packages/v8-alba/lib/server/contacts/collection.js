@@ -1,6 +1,7 @@
 import { extendCollection } from 'meteor/vulcan:core'
 import { Contacts } from '../../modules/contacts/collection.js'
 import {
+  ContactCreateSaveToAlgolia,
   ContactEditUpdateAlgoliaBefore,
   ContactCreateUpdateOffices,
   ContactEditUpdateOffices,
@@ -11,7 +12,7 @@ import {
 extendCollection(Contacts, {
   callbacks: {
     create: {
-      after: [ContactCreateUpdateOffices, ContactEditUpdateProjects, ContactEditUpdatePastProjects]
+      after: [ContactCreateSaveToAlgolia, ContactCreateUpdateOffices, ContactEditUpdateProjects, ContactEditUpdatePastProjects]
     },
     update: {
       after: [ContactEditUpdateOffices, ContactEditUpdateProjects, ContactEditUpdatePastProjects],
