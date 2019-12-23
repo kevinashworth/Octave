@@ -256,7 +256,7 @@ class LatestUpdates extends Component {
 
         <Card>
           <CardBody>
-            <CardTitle>Newest Projects</CardTitle>
+            <CardTitle>Newest Projects Casting</CardTitle>
             <Components.NewestProjectsAdded />
           </CardBody>
         </Card>
