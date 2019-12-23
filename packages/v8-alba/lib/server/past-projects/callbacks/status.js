@@ -8,7 +8,7 @@ import { ACTIVE_PROJECT_STATUSES_ARRAY } from '../../../modules/constants.js'
 // if the new status is now an active project, create a new project then remove this past-project
 // if the new project is created and matches (TODO: matches what, exactly?), delete current
 
-export function PastProjectUpdateStatusAfter (document, { context, currentUser }) {
+export function PastProjectEditUpdateStatusAfter (document, { context, currentUser }) {
   const newStatusIsActive = _.includes(ACTIVE_PROJECT_STATUSES_ARRAY, document.status)
 
   if (newStatusIsActive) {
