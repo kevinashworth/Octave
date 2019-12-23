@@ -22,7 +22,6 @@ TODO: What about the contact's title for this office?
 */
 
 export function ContactCreateUpdateOffices (document, properties) {
-  console.log('just entered ContactCreateUpdateOffices'); // eslint-disable-line no-console
   const contact = document
   if (!contact.offices) {
     return
@@ -59,12 +58,10 @@ export function ContactCreateUpdateOffices (document, properties) {
       }
     })
   })
-  console.log('now leaving ContactCreateUpdateOffices'); // eslint-disable-line no-console
   return document
 }
 
 export function ContactEditUpdateOffices (document, properties) {
-  console.log('just entered ContactEditUpdateOffices'); // eslint-disable-line no-console
   const contact = document
   if (!contact.offices) {
     return
@@ -101,6 +98,5 @@ export function ContactEditUpdateOffices (document, properties) {
       }
     })
   })
-  console.log('now leaving ContactEditUpdateOffices'); // eslint-disable-line no-console
   return document
 }

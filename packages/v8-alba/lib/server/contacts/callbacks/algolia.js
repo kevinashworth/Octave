@@ -1,3 +1,4 @@
+import { Promise } from 'meteor/promise'
 import algoliasearch from 'algoliasearch'
 
 const applicationid = Meteor.settings.private.algolia.ApplicationID
@@ -18,11 +19,11 @@ export function ContactEditUpdateAlgoliaBefore (data, { document, originalDocume
     dirty = true
   }
   if (document.addressString !== originalDocument.addressString) {
-    indexedObject['addressString'] = document.addressString
+    indexedObject.addressString = document.addressString
     dirty = true
   }
   if (document.slug !== originalDocument.slug) {
-    indexedObject['url'] = `/contacts/${document._id}/${document.slug}`
+    indexedObject.url = `/contacts/${document._id}/${document.slug}`
     dirty = true
   }
 
@@ -31,16 +32,11 @@ export function ContactEditUpdateAlgoliaBefore (data, { document, originalDocume
     const index = client.initIndex(algoliaindex)
     indexedObject['updatedAt'] = new Date()
     Promise.await(index.partialUpdateObject(indexedObject,
-      (err, content) => {
+      (err, response) => {
         if (err) {
           console.error('partialUpdateObject error:', err)
-        } else {
-          console.log('partialUpdateObject response:', content)
-          data.updatedAlgoliaAt = new Date()
         }
+        console.log('partialUpdateObject response:', response)
       }))
   }
-
-  console.log('ContactEditUpdateAlgoliaBefore data at return:', data)
-  return data
 }
