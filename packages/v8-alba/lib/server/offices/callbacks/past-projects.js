@@ -1,7 +1,7 @@
 import { Connectors } from 'meteor/vulcan:core'
 import _ from 'lodash'
-import PastProjects from '../../past-projects/collection.js'
-import { isEmptyValue } from '../../helpers.js'
+import PastProjects from '../../../modules/past-projects/collection.js'
+import { isEmptyValue } from '../../../modules/helpers.js'
 
 export function OfficeEditUpdatePastProjects (data, { document, originalDocument }) {
   // [a] if the two `pastProjects` arrays are equal, do nothing
