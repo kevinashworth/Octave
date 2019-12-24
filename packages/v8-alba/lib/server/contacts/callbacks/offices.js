@@ -1,7 +1,7 @@
 import { Connectors } from 'meteor/vulcan:core'
 import _ from 'lodash'
-import Offices from '../../offices/collection.js'
-import { getFullNameFromContact } from '../../helpers.js'
+import Offices from '../../../modules/offices/collection.js'
+import { getFullNameFromContact } from '../../../modules/helpers.js'
 
 /*
 When updating an office on a contact, also update that office with the contact.
@@ -20,6 +20,46 @@ I get confused, so here's a description:
 
 TODO: What about the contact's title for this office?
 */
+
+export function ContactCreateUpdateOffices (document, properties) {
+  const contact = document
+  if (!contact.offices) {
+    return
+  }
+  const fullName = getFullNameFromContact(contact)
+
+  contact.offices.forEach(contactOffice => {
+    const office = Offices.findOne(contactOffice.officeId) // TODO: error handling
+    const newContact = {
+      contactId: contact._id,
+      contactName: fullName
+    }
+    let newContacts = []
+
+    // case 1: there are no contacts on the office and office.contacts is undefined
+    if (!office.contacts) {
+      newContacts = [newContact]
+    } else {
+      const i = _.findIndex(office.contacts, { contactId: contact._id })
+      newContacts = office.contacts
+      if (i < 0) {
+        // case 2: this contact is not on this office but other contacts are and we're adding this contact
+        newContacts.push(newContact)
+      } else {
+        // case 3: this contact is on this office and we're updating the info
+        newContacts[i] = newContact
+      }
+    }
+
+    Connectors.update(Offices, office._id, {
+      $set: {
+        contacts: newContacts,
+        updatedAt: new Date()
+      }
+    })
+  })
+  return document
+}
 
 export function ContactEditUpdateOffices (document, properties) {
   const contact = document
@@ -58,4 +98,5 @@ export function ContactEditUpdateOffices (document, properties) {
       }
     })
   })
+  return document
 }

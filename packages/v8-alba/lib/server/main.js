@@ -1,6 +1,13 @@
-import '../modules/index.js'
-// import './seed.js'
+export * from '../modules/index.js';
+
+import './methods.js'
 import './migrations.js'
+import './seed.js'
+
+import './contacts/index.js'
+import './offices/index.js'
+import './past-projects/index.js'
+import './projects/index.js'
 
 // Meteor.call('getProcessEnvMongoUrl', function (err, results) {
 //   if (err) {
@@ -11,6 +18,6 @@ import './migrations.js'
 //   }
 // })
 
-import Contacts from '../modules/contacts/collection.js'
+// import Contacts from '../modules/contacts/collection.js'
 
-Contacts.rawCollection().createIndex({ lastName: 1 })
+// Contacts.rawCollection().createIndex({ lastName: 1 })

@@ -1,7 +1,7 @@
 import { Connectors } from 'meteor/vulcan:core'
 import _ from 'lodash'
-import Contacts from '../../contacts/collection.js'
-import { isEmptyValue } from '../../helpers.js'
+import Contacts from '../../../modules/contacts/collection.js'
+import { isEmptyValue } from '../../../modules/helpers.js'
 
 export function OfficeEditUpdateContacts (data, { document, originalDocument }) {
   // [a] if the two `contacts` arrays are equal, do nothing

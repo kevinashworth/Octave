@@ -160,6 +160,11 @@ const navItems = {
       url: '/statistics/list',
       icon: 'fa fa-bar-chart'
     },
+    // {
+    //   name: 'Algolia Log',
+    //   url: '/algolia/log',
+    //   icon: 'fa fa-search'
+    // },
     {
       name: 'User Admin',
       url: '/admin',

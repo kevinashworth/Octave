@@ -1,6 +1,6 @@
 import { updateMutator } from 'meteor/vulcan:core'
-import Projects from '../collection.js'
-import Statistics from '../../statistics/collection.js'
+import Projects from '../../../modules/projects/collection.js'
+import Statistics from '../../../modules/statistics/collection.js'
 import moment from 'moment'
 
 function latestStatIsFromToday (theStatsArray) {
@@ -9,10 +9,10 @@ function latestStatIsFromToday (theStatsArray) {
   return moment(latestDate).isSame(today, 'day')
 }
 
-/* When adding a project, update statistics */
-export function ProjectCreateUpdateStatisticsAfter (document, { currentUser }) {
+/* When adding a past-project, update statistics on projects */
+export async function PastProjectUpdateStatisticsAsync ({ currentUser, document }) {
   const project = document
-  const theStats = Promise.await(Statistics.findOne())
+  const theStats = await Statistics.findOne()
   let newStats = { ...theStats } // TODO: do we need to work with a copy?
 
   switch (project.projectType) {

@@ -1,6 +1,7 @@
 const DATE_FORMAT_LONG = 'MMMM D YYYY, h:mm A'
 const DATE_FORMAT_SHORT = 'YYYY-MM-DD'
 const DATE_FORMAT_SHORT_FRIENDLY = 'MMM D'
+const DATE_FORMAT_MONGO = 'YYYY-MM-DD HH:mm:ss'
 
 const CASTING_TITLES_ENUM = [
   { value: 'Casting Director', label: 'Casting Director' },
@@ -167,6 +168,7 @@ module.exports = {
   DATE_FORMAT_LONG,
   DATE_FORMAT_SHORT,
   DATE_FORMAT_SHORT_FRIENDLY,
+  DATE_FORMAT_MONGO,
   CASTING_TITLES_ENUM,
   PROJECT_TYPES_ENUM,
   BROADCAST_ENUM,
