@@ -20,7 +20,7 @@ const OfficeMini = (props) => {
   const officeName = props.officeName ? props.officeName : office.displayName
 
   return (
-    <Card className='card-accent-primary' style={{minWidth: '8rem', maxWidth: '16rem'}}>
+    <Card className='card-accent-primary' style={{minWidth: '8rem', maxWidth: '18rem'}}>
       <CardHeader tag='h6'><Link to={`/offices/${office._id}/${office.slug}`}>{officeName}</Link></CardHeader>
       {office.addresses && office.addresses.map(address => {
         return (
