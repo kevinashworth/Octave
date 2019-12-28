@@ -1,6 +1,6 @@
 import { registerComponent, Components } from 'meteor/vulcan:core'
 import React, { useState } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useHistory } from 'react-router-dom'
 import { Button, Dropdown, DropdownItem, DropdownMenu, DropdownToggle, Form, Input, InputGroup, InputGroupAddon } from 'reactstrap'
 import algoliasearch from 'algoliasearch/lite'
 import { connectHits, connectPoweredBy, connectSearchBox, connectStateResults, Highlight, InstantSearch, SearchBox, Snippet } from 'react-instantsearch-dom'
@@ -39,15 +39,18 @@ const Hits = ({ hits }) => {
         <DropdownItem header>Search powered by <CustomPoweredBy /></DropdownItem>
         {hits.length === 0
           ? <DropdownItem>No search results</DropdownItem>
-          : hits.map(hit => (
-            <DropdownItem key={hit.objectID}>
-              <Components.ErrorBoundary>
-                <Link to={hit.url}><Highlight attribute='name' hit={hit} /></Link><br />
-                <small className='text-muted'><Snippet attribute='body' hit={hit} /></small>
-              </Components.ErrorBoundary>
-            </DropdownItem>
-            ))
-          }
+          : hits.map((hit) => {
+              let history = useHistory()
+              return (
+                <DropdownItem key={hit.objectID} onClick={() => history.push(`${hit.url}`)}>
+                  <Components.ErrorBoundary>
+                    <Link to={hit.url}><Highlight attribute='name' hit={hit} /></Link><br />
+                    <small className='text-muted'><Snippet attribute='body' hit={hit} /></small>
+                  </Components.ErrorBoundary>
+                </DropdownItem>
+              )
+            }
+          )}
         </DropdownMenu>
     </>
   )
