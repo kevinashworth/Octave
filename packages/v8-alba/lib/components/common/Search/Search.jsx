@@ -79,7 +79,7 @@ const Algolia = () => {
       searchClient={searchClient} indexName='dev_v8-alba-mlab'
       onSearchStateChange={onSearchStateChange}>
       <Dropdown isOpen={isDropdownOpen} direction='right' toggle={toggle} history={history}>
-        <SearchBox translations={{ placeholder: 'Search all of V8…' }} />
+        <SearchBox translations={{ placeholder: 'Search all of V8…' }} reset={<img src='/img/white-times-11x11.gif'></img>} />
         <Content history={history}/>
       </Dropdown>
     </InstantSearch>
