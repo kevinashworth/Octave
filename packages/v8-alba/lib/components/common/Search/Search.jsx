@@ -1,35 +1,15 @@
 import { registerComponent, Components } from 'meteor/vulcan:core'
 import React, { useState } from 'react'
 import { Link, useHistory } from 'react-router-dom'
-import { Button, Dropdown, DropdownItem, DropdownMenu, DropdownToggle, Form, Input, InputGroup, InputGroupAddon } from 'reactstrap'
+import { Dropdown, DropdownItem, DropdownMenu, DropdownToggle } from 'reactstrap'
 import algoliasearch from 'algoliasearch/lite'
-import { connectHits, connectPoweredBy, connectSearchBox, connectStateResults, Highlight, InstantSearch, SearchBox, Snippet } from 'react-instantsearch-dom'
+import { connectHits, connectPoweredBy, connectStateResults, Highlight, InstantSearch, SearchBox, Snippet } from 'react-instantsearch-dom'
 
 const searchClient = algoliasearch('14RUP1OK0B', '2cd70a6b9a01c10aeaee6f6f11105f46')
 
 const PoweredBy = ({ url }) => <a href={url} target='_blank' rel='noopener noreferrer'>Algolia</a>
 
 const CustomPoweredBy = connectPoweredBy(PoweredBy)
-
-// const SearchBox = ({ currentRefinement, refine }) => {
-//   const onClick = () => refine('')
-//   return (
-//     <Form noValidate action='' role='search' inline={true}>
-//       <InputGroup>
-//         <Input placeholder='Search all of V8&hellip;'
-//           type='search'
-//           value={currentRefinement}
-//           onChange={event => refine(event.currentTarget.value)}
-//         />
-//         <InputGroupAddon addonType='append'>
-//           <Button onClick={onClick} close />
-//         </InputGroupAddon>
-//       </InputGroup>
-//     </Form>
-//   )
-// }
-
-// const CustomSearchBox = connectSearchBox(SearchBox);
 
 const Hits = ({ hits }) => {
   return (
