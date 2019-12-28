@@ -30,7 +30,14 @@ const createAlgoliaIndex = () => {
       'notes',
       'addressString',
       'network'
-    ]
+    ],
+    highlightPreTag: '<strong>',
+    highlightPostTag: '</strong>',
+    attributesToSnippet: [
+      'body:10'
+    ],
+    snippetEllipsisText: '…',
+    hitsPerPage: 16
   });
 
   index.getSettings((err, content) => {
