@@ -1,0 +1,29 @@
+button.ais-SearchBox-reset {
+  display: inline;
+  color: #2f353a;
+  background-color: #73818f;
+  border-color: #73818f;
+}
+
+button.ais-SearchBox-submit {
+  display: none;
+}
+
+em.ais-Highlight-highlighted, strong.ais-Highlight-highlighted,
+em.ais-Snippet-highlighted, strong.ais-Snippet-highlighted {
+  font-style: normal;
+  font-weight: bolder;
+}
+
+input.ais-SearchBox-input {
+  color: #fff;
+  background: #181b1e;
+  border: 0;
+  padding: 0.375rem 0.75rem;
+}
+
+button.ais-SearchBox-reset2 {
+  color: #fff;
+  background-color: #4c4f54;
+  border-color: #4c4f54;
+}

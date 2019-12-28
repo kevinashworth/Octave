@@ -3,7 +3,7 @@ import React, { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { Button, Dropdown, DropdownItem, DropdownMenu, DropdownToggle, Form, Input, InputGroup, InputGroupAddon } from 'reactstrap'
 import algoliasearch from 'algoliasearch/lite'
-import { connectHits, connectPoweredBy, connectSearchBox, connectStateResults, InstantSearch } from 'react-instantsearch-dom'
+import { connectHits, connectPoweredBy, connectSearchBox, connectStateResults, Highlight, InstantSearch, SearchBox, Snippet } from 'react-instantsearch-dom'
 
 const searchClient = algoliasearch('14RUP1OK0B', '2cd70a6b9a01c10aeaee6f6f11105f46')
 
@@ -11,25 +11,25 @@ const PoweredBy = ({ url }) => <a href={url} target='_blank' rel='noopener noref
 
 const CustomPoweredBy = connectPoweredBy(PoweredBy)
 
-const SearchBox = ({ currentRefinement, refine }) => {
-  const onClick = () => refine('')
-  return (
-    <Form noValidate action='' role='search' inline={true}>
-      <InputGroup>
-        <Input placeholder='Search all of V8&hellip;'
-          type='search'
-          value={currentRefinement}
-          onChange={event => refine(event.currentTarget.value)}
-        />
-        <InputGroupAddon addonType='append'>
-          <Button onClick={onClick} close />
-        </InputGroupAddon>
-      </InputGroup>
-    </Form>
-  )
-}
+// const SearchBox = ({ currentRefinement, refine }) => {
+//   const onClick = () => refine('')
+//   return (
+//     <Form noValidate action='' role='search' inline={true}>
+//       <InputGroup>
+//         <Input placeholder='Search all of V8&hellip;'
+//           type='search'
+//           value={currentRefinement}
+//           onChange={event => refine(event.currentTarget.value)}
+//         />
+//         <InputGroupAddon addonType='append'>
+//           <Button onClick={onClick} close />
+//         </InputGroupAddon>
+//       </InputGroup>
+//     </Form>
+//   )
+// }
 
-const CustomSearchBox = connectSearchBox(SearchBox);
+// const CustomSearchBox = connectSearchBox(SearchBox);
 
 const Hits = ({ hits }) => {
   return (
@@ -42,7 +42,8 @@ const Hits = ({ hits }) => {
           : hits.map(hit => (
             <DropdownItem key={hit.objectID}>
               <Components.ErrorBoundary>
-                <Link to={hit.url}>{hit.name}</Link>
+                <Link to={hit.url}><Highlight attribute='name' hit={hit} /></Link><br />
+                <small className='text-muted'><Snippet attribute='body' hit={hit} /></small>
               </Components.ErrorBoundary>
             </DropdownItem>
             ))
@@ -74,9 +75,9 @@ const Algolia = () => {
     <InstantSearch
       searchClient={searchClient} indexName='dev_v8-alba-mlab'
       onSearchStateChange={onSearchStateChange}>
-      <Dropdown isOpen={isDropdownOpen} direction='right' toggle={toggle}>
-        <CustomSearchBox />
-        <Content />
+      <Dropdown isOpen={isDropdownOpen} direction='right' toggle={toggle} history={history}>
+        <SearchBox translations={{ placeholder: 'Search all of V8…' }} />
+        <Content history={history}/>
       </Dropdown>
     </InstantSearch>
   )
