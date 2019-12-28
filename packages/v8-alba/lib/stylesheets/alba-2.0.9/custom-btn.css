@@ -956,14 +956,14 @@
       height: 1.6484375rem; }
 
 .btn-csa {
-  background: #551A8B; }
+  background: #B6B294; }
   .btn-csa::before {
-    content: "\f26c";
-    background: #481676; }
+    content: "\f10a";
+    background: #aca785; }
   .btn-csa:hover {
-    background: #481676; }
+    background: #aca785; }
     .btn-csa:hover::before {
-      background: #3b1260; }
+      background: #a19c76; }
 
 .btn-website {
   background: #551A8B; }
