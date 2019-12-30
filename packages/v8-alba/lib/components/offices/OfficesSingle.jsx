@@ -103,6 +103,8 @@ class OfficesSingle extends PureComponent {
                   <CardTitle><b>{pluralize('Address', office.addresses.length)}</b></CardTitle>}
                 {office.addresses &&
                   office.addresses.map((o, index) => <Components.AddressDetail key={index} address={o} />)}
+                {office.phones &&
+                  office.phones.map((o, index) => <Components.PhoneDetail key={index} phone={o} />)}
                 {office.htmlBody &&
                   <CardTitle className='mt-5'><b>Notes</b></CardTitle>}
                 {office.htmlBody &&
