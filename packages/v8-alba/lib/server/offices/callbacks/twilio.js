@@ -9,28 +9,54 @@ const getFormattedValidatedNumber = async (n) => {
   return response
 }
 
-export async function OfficeEditFormatPhones (unused, {document, originalDocument}) {
+export async function OfficeUpdateFormatPhones (unused, {document, originalDocument}) {
+  console.log('[KA] document.phones:', document.phones)
+  console.log('[KA] originalDocument.phones:', originalDocument.phones)
   // if there are no changes to `phones`, do nothing
   if (_.isEqual(document.phones, originalDocument.phones)) {
     return document
   }
   if (document.phones && document.phones.length) {
-    const updatedPhonesObject = await Promise.all(
-      document.phones.map(async (phone, index) => {
+    const fvnPhones = await Promise.all(
+      document.phones.map(async phone => {
         const fvn = await getFormattedValidatedNumber(phone.phoneNumberAsInput)
-        const newPhone = {
+        const fvnPhone = {
           phoneNumberAsInput: phone.phoneNumberAsInput,
           phoneNumberType: phone.phoneNumberType,
           phoneNumber: fvn.phoneNumber,
           nationalFormat: fvn.nationalFormat
         }
-        console.log('[KA] newPhone from Twilio:', newPhone)
-        return newPhone
+        console.log('[OfficeUpdateFormatPhones] fvnPhone:', fvnPhone)
+        return fvnPhone
       })
     )
-    console.log('[KA] updatedPhonesObject:', updatedPhonesObject)
+    console.log('[OfficeUpdateFormatPhones] fvnPhones:', fvnPhones)
     // eslint-disable-next-line require-atomic-updates
-    document.phones = updatedPhonesObject
+    document.phones = fvnPhones
+    return document
+  } else {
+    return document
+  }
+}
+
+export async function OfficeCreateFormatPhones (document) {
+  if (document.phones && document.phones.length) {
+    const fvnPhones = await Promise.all(
+      document.phones.map(async phone => {
+        const fvn = await getFormattedValidatedNumber(phone.phoneNumberAsInput)
+        const fvnPhone = {
+          phoneNumberAsInput: phone.phoneNumberAsInput,
+          phoneNumberType: phone.phoneNumberType,
+          phoneNumber: fvn.phoneNumber,
+          nationalFormat: fvn.nationalFormat
+        }
+        console.log('[OfficeCreateFormatPhones] fvnPhone from Twilio:', fvnPhone)
+        return fvnPhone
+      })
+    )
+    console.log('[OfficeCreateFormatPhones] fvnPhones:', fvnPhones)
+    // eslint-disable-next-line require-atomic-updates
+    document.phones = fvnPhones
     return document
   } else {
     return document
