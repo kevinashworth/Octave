@@ -98,24 +98,43 @@ const projectSubSchema = new SimpleSchema({
 })
 
 const phoneSubSchema = new SimpleSchema({
-  phoneNumber: {
+  phoneNumberAsInput: {
     type: String,
+    label: 'Phone Number',
     optional: true,
     canRead: ['members'],
     canCreate: ['members', 'admins'],
     canUpdate: ['members', 'admins'],
   },
-  numberType: {
+  phoneNumberType: {
     type: String,
+    label: 'Phone Type',
     optional: true,
     input: 'select',
     options: () => {
       return PHONE_NUMBER_TYPES_ENUM
     },
+    defaultValue: 'Office',
     canRead: ['members'],
     canCreate: ['members', 'admins'],
     canUpdate: ['members', 'admins']
-  }
+  },
+  phoneNumber: { // validated and formatted by Twilio
+    type: String,
+    hidden: true,
+    optional: true,
+    canRead: ['members'],
+    canCreate: ['members', 'admins'],
+    canUpdate: ['members', 'admins']
+  },
+  nationalFormat: { // validated and formatted by Twilio
+    type: String,
+    hidden: true,
+    optional: true,
+    canRead: ['members'],
+    canCreate: ['members', 'admins'],
+    canUpdate: ['members', 'admins']
+  },
 })
 
 const pastProjectSubSchema = new SimpleSchema({

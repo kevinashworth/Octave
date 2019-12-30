@@ -1,3 +1,5 @@
+import _ from 'lodash'
+
 const accountSid = '***REMOVED***';
 const authToken = '***REMOVED***';
 const client = require('twilio')(accountSid, authToken);
@@ -7,29 +9,61 @@ const getFormattedValidatedNumber = async (n) => {
   return response
 }
 
-export function OfficeEditFormatPhones (document, properties) {
+export async function OfficeEditFormatPhones (unused, {document, originalDocument}) {
+  // if there are no changes to `phones`, do nothing
+  if (_.isEqual(document.phones, originalDocument.phones)) {
+    return document
+  }
   if (document.phones && document.phones.length) {
-    const newPhones = document.phones.map(phone => {
-      const v = getFormattedValidatedNumber(phone.phoneNumber)
-      const newPhone = {
-        phoneNumber: v,
-        numberType: phone.numberType
-      }
-      console.log('[KA] newPhone:', newPhone)
-      return newPhone
-    })
-    console.log('[KA] newPhones:', newPhones)
-    document.phones = newPhones
+    const updatedPhonesObject = await Promise.all(
+      document.phones.map(async (phone, index) => {
+        const fvn = await getFormattedValidatedNumber(phone.phoneNumberAsInput)
+        const newPhone = {
+          phoneNumberAsInput: phone.phoneNumberAsInput,
+          phoneNumberType: phone.phoneNumberType,
+          phoneNumber: fvn.phoneNumber,
+          nationalFormat: fvn.nationalFormat
+        }
+        console.log('[KA] newPhone from Twilio:', newPhone)
+        return newPhone
+      })
+    )
+    console.log('[KA] updatedPhonesObject:', updatedPhonesObject)
+    // eslint-disable-next-line require-atomic-updates
+    document.phones = updatedPhonesObject
     return document
   } else {
     return document
   }
 }
 
-// const list = [1, 2, 3, 4, 5] //...an array filled with values
+// export const someFunction = (document) => {
+//   const promises = document.phones.map(async (phone) => {
+//     console.log('[KA] document.phones.map(async):', phone)
+//     return {
+//       numberType: phone.numberType,
+//       myValue: await client.lookups.phoneNumbers(phone.phoneNumber).fetch({countryCode: 'US'})
+//     }
+//   });
+//   // const thePromises = Promise.all(promises);
+//   // console.log('[KA] thePromises:', thePromises)
+//   return Promise.all(promises);
+// }
 //
-// const functionWithPromise = item => { //a function that returns a promise
-//   return Promise.resolve('ok')
+// let characterResponse = await fetch('http://swapi.co/api/people/2/')
+// let characterResponseJson = await characterResponse.json()
+// let films = await Promise.all(
+//   characterResponseJson.films.map(async filmUrl => {
+//     let filmResponse = await fetch(filmUrl)
+//     return filmResponse.json()
+//   })
+// )
+// console.log(films)
+
+// const list = document.phones //...an array filled with values
+//
+// const functionWithPromise = n => { //a function that returns a promise
+//   return client.lookups.phoneNumbers(n).fetch({countryCode: 'US'})
 // }
 //
 // const anAsyncFunction = async item => {
@@ -37,9 +71,11 @@ export function OfficeEditFormatPhones (document, properties) {
 // }
 //
 // const getData = async () => {
-//   return Promise.all(list.map(item => anAsyncFunction(item)))
+//   return Promise.all(list.map(phone => anAsyncFunction(phone.phoneNumber)))
 // }
 //
 // getData().then(data => {
 //   console.log(data)
 // })
+//
+//
