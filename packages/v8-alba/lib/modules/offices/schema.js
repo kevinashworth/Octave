@@ -3,6 +3,7 @@ import SimpleSchema from 'simpl-schema'
 import marked from 'marked'
 import { addressSubSchema, linkSubSchema } from '../shared_schemas.js'
 import { getFullAddress, isEmptyValue } from '../helpers.js'
+import { PHONE_NUMBER_TYPES_ENUM } from '../constants.js'
 
 const contactGroup = {
   name: 'contacts',
@@ -20,6 +21,12 @@ const addressGroup = {
   name: 'addresses',
   label: 'Addresses',
   order: 30
+}
+
+const phoneGroup = {
+  name: 'phones',
+  label: 'Phone Numbers',
+  order: 35
 }
 
 const linkGroup = {
@@ -84,6 +91,27 @@ const projectSubSchema = new SimpleSchema({
     type: String,
     optional: true,
     hidden: true,
+    canRead: ['members'],
+    canCreate: ['members', 'admins'],
+    canUpdate: ['members', 'admins']
+  }
+})
+
+const phoneSubSchema = new SimpleSchema({
+  phoneNumber: {
+    type: String,
+    optional: true,
+    canRead: ['members'],
+    canCreate: ['members', 'admins'],
+    canUpdate: ['members', 'admins'],
+  },
+  numberType: {
+    type: String,
+    optional: true,
+    input: 'select',
+    options: () => {
+      return PHONE_NUMBER_TYPES_ENUM
+    },
     canRead: ['members'],
     canCreate: ['members', 'admins'],
     canUpdate: ['members', 'admins']
@@ -158,6 +186,23 @@ const schema = {
     canCreate: ['members', 'admins'],
     canUpdate: ['members', 'admins']
   },
+  slug: {
+    type: String,
+    optional: true,
+    canRead: ['members'],
+    onCreate: ({ document }) => {
+      return Utils.slugify(document.displayName)
+    },
+    onUpdate: ({ data }) => {
+      if (data.slug) {
+        return Utils.slugify(data.slug)
+      }
+      if (data.displayName) {
+        return Utils.slugify(data.displayName)
+      }
+    }
+  },
+
   // Body (Markdown)
   body: {
     label: 'Notes',
@@ -186,122 +231,6 @@ const schema = {
         return null
       }
     }
-  },
-  links: {
-    label: 'Links',
-    type: Array,
-    optional: true,
-    canRead: ['members'],
-    canCreate: ['members', 'admins'],
-    canUpdate: ['members', 'admins'],
-    group: linkGroup
-  },
-  'links.$': {
-    type: linkSubSchema
-  },
-  addresses: {
-    type: Array,
-    optional: true,
-    canRead: ['members'],
-    canCreate: ['members', 'admins'],
-    canUpdate: ['members', 'admins'],
-    group: addressGroup
-  },
-  'addresses.$': {
-    type: addressSubSchema
-  },
-  allAddresses: {
-    type: String,
-    optional: true,
-    canRead: ['members'],
-    resolveAs: {
-      resolver: (o) => {
-        if (o.addresses) {
-          return o.addresses.reduce(function (acc, cur) {
-            return acc + ' ' + getFullAddress(cur)
-          }, '')
-        }
-        return null
-      }
-    }
-  },
-  slug: {
-    type: String,
-    optional: true,
-    canRead: ['members'],
-    onCreate: ({ document }) => {
-      return Utils.slugify(document.displayName)
-    },
-    onUpdate: ({ data }) => {
-      if (data.slug) {
-        return Utils.slugify(data.slug)
-      }
-      if (data.displayName) {
-        return Utils.slugify(data.displayName)
-      }
-    }
-  },
-
-  // An office has many projects
-  projects: {
-    type: Array,
-    optional: true,
-    canRead: ['members'],
-    canCreate: ['members', 'admins'],
-    canUpdate: ['members', 'admins'],
-    query: `
-      projects{
-        results{
-          _id
-          projectTitle
-        }
-      }
-    `,
-    group: projectGroup,
-    resolveAs: {
-      fieldName: 'theProjects',
-      type: '[Project]',
-      resolver: (office, args, { Projects }) => {
-        if (isEmptyValue(office.projects)) return []
-        const projectIds = office.projects.map(function (p) {
-          return p.projectId
-        })
-        const projects = Projects.find(
-          {
-            _id: { $in: projectIds }
-          }, {
-            sort: { status: 1, sortTitle: 1 } // Case-sensitive, alas
-          }
-        ).fetch()
-        return projects
-      },
-      addOriginalField: true
-    }
-  },
-  'projects.$': {
-    type: projectSubSchema
-  },
-
-  // A contact has many pastProjects
-  pastProjects: {
-    label: 'Past Projects',
-    type: Array,
-    optional: true,
-    canRead: ['members'],
-    canCreate: ['members', 'admins'],
-    canUpdate: ['members', 'admins'],
-    query: `
-      pastProjects{
-        results{
-          _id
-          projectTitle
-        }
-      }
-    `,
-    group: pastProjectGroup
-  },
-  'pastProjects.$': {
-    type: pastProjectSubSchema
   },
 
   // An office has many contacts
@@ -359,6 +288,123 @@ const schema = {
         return null
       }
     }
+  },
+
+  // An office has many projects
+  projects: {
+    type: Array,
+    optional: true,
+    canRead: ['members'],
+    canCreate: ['members', 'admins'],
+    canUpdate: ['members', 'admins'],
+    query: `
+      projects{
+        results{
+          _id
+          projectTitle
+        }
+      }
+    `,
+    group: projectGroup,
+    resolveAs: {
+      fieldName: 'theProjects',
+      type: '[Project]',
+      resolver: (office, args, { Projects }) => {
+        if (isEmptyValue(office.projects)) return []
+        const projectIds = office.projects.map(function (p) {
+          return p.projectId
+        })
+        const projects = Projects.find(
+          {
+            _id: { $in: projectIds }
+          }, {
+            sort: { status: 1, sortTitle: 1 } // Case-sensitive, alas
+          }
+        ).fetch()
+        return projects
+      },
+      addOriginalField: true
+    }
+  },
+  'projects.$': {
+    type: projectSubSchema
+  },
+
+  // An office has many links
+  links: {
+    label: 'Links',
+    type: Array,
+    optional: true,
+    canRead: ['members'],
+    canCreate: ['members', 'admins'],
+    canUpdate: ['members', 'admins'],
+    group: linkGroup
+  },
+  'links.$': {
+    type: linkSubSchema
+  },
+
+  // An office has many addresses
+  addresses: {
+    type: Array,
+    optional: true,
+    canRead: ['members'],
+    canCreate: ['members', 'admins'],
+    canUpdate: ['members', 'admins'],
+    group: addressGroup
+  },
+  'addresses.$': {
+    type: addressSubSchema
+  },
+  allAddresses: {
+    type: String,
+    optional: true,
+    canRead: ['members'],
+    resolveAs: {
+      resolver: (o) => {
+        if (o.addresses) {
+          return o.addresses.reduce(function (acc, cur) {
+            return acc + ' ' + getFullAddress(cur)
+          }, '')
+        }
+        return null
+      }
+    }
+  },
+
+  // An office has many phones
+  phones: {
+    type: Array,
+    optional: true,
+    canRead: ['members'],
+    canCreate: ['members', 'admins'],
+    canUpdate: ['members', 'admins'],
+    group: phoneGroup
+  },
+  'phones.$': {
+    type: phoneSubSchema
+  },
+
+  // A contact has many pastProjects
+  pastProjects: {
+    label: 'Past Projects',
+    type: Array,
+    optional: true,
+    canRead: ['members'],
+    canCreate: ['members', 'admins'],
+    canUpdate: ['members', 'admins'],
+    query: `
+      pastProjects{
+        results{
+          _id
+          projectTitle
+        }
+      }
+    `,
+    group: pastProjectGroup
+  },
+  'pastProjects.$': {
+    type: pastProjectSubSchema
   },
 
   // GraphQL-only fields to provide flexibility
