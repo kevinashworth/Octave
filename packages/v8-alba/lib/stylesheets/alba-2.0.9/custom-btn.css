@@ -958,7 +958,7 @@
 .btn-csa {
   background: #B6B294; }
   .btn-csa::before {
-    content: "\f10a";
+    content: "\f108";
     background: #aca785; }
   .btn-csa:hover {
     background: #aca785; }
@@ -968,7 +968,7 @@
 .btn-website {
   background: #551A8B; }
   .btn-website::before {
-    content: "\f26c";
+    content: "\f108";
     background: #481676; }
   .btn-website:hover {
     background: #481676; }
