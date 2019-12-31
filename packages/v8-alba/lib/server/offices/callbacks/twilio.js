@@ -27,9 +27,9 @@ export async function OfficeUpdateFormatPhones (data, {document, originalDocumen
         return fvnPhone
       })
     )
-    // eslint-disable-next-line require-atomic-updates
-    document.phones = fvnPhones
-    return document
+    let updatedDocument = document
+    updatedDocument.phones = fvnPhones
+    return updatedDocument
   } else {
     return data
   }
@@ -49,9 +49,9 @@ export async function OfficeCreateFormatPhones (document) {
         return fvnPhone
       })
     )
-    // eslint-disable-next-line require-atomic-updates
-    document.phones = fvnPhones
-    return document
+    let updatedDocument = document
+    updatedDocument.phones = fvnPhones
+    return updatedDocument
   } else {
     return document
   }
