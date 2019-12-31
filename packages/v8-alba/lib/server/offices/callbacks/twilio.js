@@ -9,12 +9,12 @@ const getFormattedValidatedNumber = async (n) => {
   return response
 }
 
-export async function OfficeUpdateFormatPhones (unused, {document, originalDocument}) {
+export async function OfficeUpdateFormatPhones (data, {document, originalDocument}) {
   console.log('[KA] document.phones:', document.phones)
   console.log('[KA] originalDocument.phones:', originalDocument.phones)
   // if there are no changes to `phones`, do nothing
   if (_.isEqual(document.phones, originalDocument.phones)) {
-    return document
+    return data
   }
   if (document.phones && document.phones.length) {
     const fvnPhones = await Promise.all(
@@ -35,7 +35,7 @@ export async function OfficeUpdateFormatPhones (unused, {document, originalDocum
     document.phones = fvnPhones
     return document
   } else {
-    return document
+    return data
   }
 }
 
