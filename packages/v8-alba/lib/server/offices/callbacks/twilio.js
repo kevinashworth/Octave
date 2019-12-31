@@ -27,9 +27,9 @@ export async function OfficeUpdateFormatPhones (data, {document, originalDocumen
         return fvnPhone
       })
     )
-    let updatedDocument = document
-    updatedDocument.phones = fvnPhones
-    return updatedDocument
+    let updatedData = data
+    updatedData.phones = fvnPhones
+    return updatedData
   } else {
     return data
   }
