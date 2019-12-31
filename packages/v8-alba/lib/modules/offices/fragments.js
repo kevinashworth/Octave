@@ -9,24 +9,7 @@ registerFragment(/* GraphQL */ `
     displayName
     body
     htmlBody
-    links {
-      platformName
-      profileLink
-      profileName
-    }
-    projects {
-      projectId
-      projectTitle
-    }
-    theProjects {
-      _id
-      projectTitle
-      sortTitle
-    }
-    pastProjects {
-      projectId
-      projectTitle
-    }
+    slug
     contacts {
       contactId
       contactName
@@ -51,7 +34,30 @@ registerFragment(/* GraphQL */ `
     theCity
     theState
     theLocation
-    slug
+    projects {
+      projectId
+      projectTitle
+    }
+    theProjects {
+      _id
+      projectTitle
+      sortTitle
+    }
+    phones {
+      phoneNumberAsInput
+      phoneNumberType
+      phoneNumber
+      nationalFormat
+    }
+    pastProjects {
+      projectId
+      projectTitle
+    }
+    links {
+      platformName
+      profileLink
+      profileName
+    }
   }
 `)
 

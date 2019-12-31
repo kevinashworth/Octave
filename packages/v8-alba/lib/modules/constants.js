@@ -18,6 +18,15 @@ const CASTING_TITLES_ENUM = [
   { value: 'Unknown', label: 'Unknown' }
 ]
 
+const PHONE_NUMBER_TYPES_ENUM = [
+  { value: 'Home', label: 'Home' },
+  { value: 'Home Fax', label: 'Home Fax' },
+  { value: 'Mobile', label: 'Mobile' },
+  { value: 'Office', label: 'Office' },
+  { value: 'Office Fax', label: 'Office Fax' },
+  { value: 'Other', label: 'Other' },
+]
+
 const PROJECT_TYPES_ENUM = [
   { value: 'Feature Film', label: 'Feature Film' },
   { value: 'Feature Film (LB)', label: 'Feature Film (LB)' },
@@ -170,6 +179,7 @@ module.exports = {
   DATE_FORMAT_SHORT_FRIENDLY,
   DATE_FORMAT_MONGO,
   CASTING_TITLES_ENUM,
+  PHONE_NUMBER_TYPES_ENUM,
   PROJECT_TYPES_ENUM,
   BROADCAST_ENUM,
   CABLE_ENUM,
