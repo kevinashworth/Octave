@@ -1,8 +1,9 @@
 import { registerComponent } from 'meteor/vulcan:lib'
 import React, { PureComponent } from 'react'
-import { FormGroup, Input, Label } from 'reactstrap'
-import Select from 'react-virtualized-select'
 import PropTypes from 'prop-types'
+import { Form, FormGroup, Input, Label } from 'reactstrap'
+import Select from 'react-select'
+import _ from 'lodash'
 import { CASTING_TITLES_ENUM } from '../../../modules/constants.js'
 
 import pure from 'recompose/pure'
@@ -26,17 +27,19 @@ class SelectContactIdNameTitle extends PureComponent {
     this.state = {
       path: this.props.path,
       pathPrefix: this.props.parentFieldName + '.' + this.props.itemIndex + '.',
+      contactId: this.props.value
     }
   }
 
-  handleIdChange (value) {
+  handleIdChange (selectedOption) {
+    console.log('Option selected:', selectedOption)
     this.setState({
-      value,
-      contactName: value.label
+      contactId: selectedOption.value,
+      contactName: selectedOption.label
     })
     this.context.updateCurrentValues({
-      [this.state.path]: value.value,
-      [this.state.pathPrefix + 'contactName']: value.label
+      [this.state.path]: selectedOption.value,
+      [this.state.pathPrefix + 'contactName']: selectedOption.label
     })
   }
 
@@ -44,18 +47,17 @@ class SelectContactIdNameTitle extends PureComponent {
     this.setState({
       contactName: target.value
     })
-    const path = this.state.pathPrefix + 'contactName'
     this.context.updateCurrentValues({
-      [path]: target.value
+      [this.state.pathPrefix + 'contactName']: target.value
     })
   }
 
-  handleTitleChange (value) {
+  handleTitleChange (selectedOption) {
     this.setState({
-      contactTitle: value.label
+      contactTitle: selectedOption.label
     })
     this.context.updateCurrentValues({
-      [this.state.pathPrefix + 'contactTitle']: value.label
+      [this.state.pathPrefix + 'contactTitle']: selectedOption.label
     })
   }
 
@@ -64,17 +66,19 @@ class SelectContactIdNameTitle extends PureComponent {
     const itemIndex = this.props.itemIndex
     const contactName = contacts[itemIndex] ? contacts[itemIndex].contactName : ''
     const contactTitle = contacts[itemIndex] ? contacts[itemIndex].contactTitle : ''
-    const value = this.props.value
+    const selectedIdOption = _.find(this.props.options, { value: this.props.value }) || null
+    const selectedTitleOption = _.find(CASTING_TITLES_ENUM, { value: contactTitle }) || null
 
     return (
-      <div>
+      <Form>
         <FormGroup>
           <Label for={`contactId${itemIndex}`}>Name from Database</Label>
           <OptimizedSelect
             id={`contactId${itemIndex}`}
-            value={value}
+            value={selectedIdOption}
             onChange={this.handleIdChange}
             options={this.props.options}
+            isClearable
             resetValue={{ value: null, label: '' }}
           />
         </FormGroup>
@@ -85,21 +89,20 @@ class SelectContactIdNameTitle extends PureComponent {
             id={`contactName${itemIndex}`}
             value={contactName}
             onChange={this.handleNameChange}
-            required
           />
         </FormGroup>
         <FormGroup>
           <Label for={`contactTitle${itemIndex}`}>Title for This</Label>
           <OptimizedSelect
             id={`contactTitle${itemIndex}`}
-            value={contactTitle}
+            value={selectedTitleOption}
             onChange={this.handleTitleChange}
             options={CASTING_TITLES_ENUM}
+            isClearable
             resetValue={{ value: null, label: '' }}
-            required
           />
         </FormGroup>
-      </div>
+      </Form>
     )
   }
 }
