@@ -51,6 +51,7 @@ const PROJECT_TYPES_ENUM = [
 const SHOOTING_LOCATIONS_ENUM = [
   { value: 'Albuquerque', label: 'Albuquerque, NM' },
   { value: 'Atlanta', label: 'Atlanta, GA' },
+  { value: 'Austin', label: 'Austin, TX' },
   { value: 'Boston', label: 'Boston, MA' },
   { value: 'Chicago', label: 'Chicago, IL' },
   { value: 'Hawaii', label: 'Hawaii' },
@@ -72,7 +73,9 @@ const SHOOTING_LOCATIONS_ENUM = [
 
   { value: 'London', label: 'London, UK' },
   { value: 'Mexico', label: 'Mexico' },
-  { value: 'Tokyo', label: 'Tokyo' },
+  { value: 'New Zealand', label: 'New Zealand' },
+  { value: 'South Africa', label: 'South Africa' },
+  { value: 'Tokyo', label: 'Tokyo, Japan' },
   { value: 'Toronto', label: 'Toronto, ON' },
   { value: 'Vancouver', label: 'Vancouver, BC' },
   { value: 'Winnipeg', label: 'Winnipeg, MB' },

@@ -114,7 +114,6 @@ const phoneSubSchema = new SimpleSchema({
     options: () => {
       return PHONE_NUMBER_TYPES_ENUM
     },
-    defaultValue: 'Office',
     canRead: ['members'],
     canCreate: ['members', 'admins'],
     canUpdate: ['members', 'admins']
