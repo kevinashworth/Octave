@@ -1,8 +1,9 @@
 import { registerComponent } from 'meteor/vulcan:lib'
 import React, { PureComponent } from 'react'
-import { Col, FormGroup, Input, Label } from 'reactstrap'
-import Select from 'react-virtualized-select'
 import PropTypes from 'prop-types'
+import { Col, FormGroup, Input, Label } from 'reactstrap'
+import Select from 'react-select'
+import _ from 'lodash'
 import { CASTING_TITLES_ENUM } from '../../../modules/constants.js'
 
 import pure from 'recompose/pure'
@@ -25,18 +26,19 @@ class SelectProjectIdNameTitle extends PureComponent {
 
     this.state = {
       path: this.props.path,
-      pathPrefix: this.props.parentFieldName + '.' + this.props.itemIndex + '.'
+      pathPrefix: this.props.parentFieldName + '.' + this.props.itemIndex + '.',
+      projectId: this.props.value
     }
   }
 
-  handleIdChange (value) {
+  handleIdChange (selectedOption) {
     this.setState({
-      value,
-      projectTitle: value.label
+      projectId: selectedOption.value,
+      projectTitle: selectedOption.label
     })
     this.context.updateCurrentValues({
-      [this.state.path]: value.value,
-      [this.state.pathPrefix + 'projectTitle']: value.label
+      [this.state.path]: selectedOption.value,
+      [this.state.pathPrefix + 'projectTitle']: selectedOption.label
     })
   }
 
@@ -44,18 +46,17 @@ class SelectProjectIdNameTitle extends PureComponent {
     this.setState({
       projectTitle: target.value
     })
-    const path = this.state.pathPrefix + 'projectTitle'
     this.context.updateCurrentValues({
-      [path]: target.value
+      [this.state.pathPrefix + 'projectTitle']: target.value
     })
   }
 
-  handleTitleChange (value) {
+  handleTitleChange (selectedOption) {
     this.setState({
-      titleForProject: value.label
+      titleForProject: selectedOption.label
     })
     this.context.updateCurrentValues({
-      [this.state.pathPrefix + 'titleForProject']: value.label
+      [this.state.pathPrefix + 'titleForProject']: selectedOption.label
     })
   }
 
@@ -64,16 +65,17 @@ class SelectProjectIdNameTitle extends PureComponent {
     const itemIndex = this.props.itemIndex
     const projectTitle = projects[itemIndex] ? projects[itemIndex].projectTitle : ''
     const titleForProject = projects[itemIndex] ? projects[itemIndex].titleForProject : ''
-    const value = this.props.value
+    const selectedIdOption = _.find(this.props.options, { value: this.props.value }) || null
+    const selectedTitleOption = _.find(CASTING_TITLES_ENUM, { value: titleForProject }) || null
 
     return (
-      <div>
+      <>
         <FormGroup row>
           <Label for={`projectId${itemIndex}`} sm={3}>Project Name</Label>
           <Col sm={9}>
             <OptimizedSelect
               id={`projectId${itemIndex}`}
-              value={value}
+              value={selectedIdOption}
               onChange={this.handleIdChange}
               options={this.props.options}
               resetValue={{ value: null, label: '' }}
@@ -97,7 +99,7 @@ class SelectProjectIdNameTitle extends PureComponent {
           <Col sm={9}>
             <OptimizedSelect
               id={`titleForProject${itemIndex}`}
-              value={titleForProject}
+              value={selectedTitleOption}
               onChange={this.handleTitleChange}
               options={CASTING_TITLES_ENUM}
               resetValue={{ value: null, label: '' }}
@@ -105,7 +107,7 @@ class SelectProjectIdNameTitle extends PureComponent {
             />
           </Col>
         </FormGroup>
-      </div>
+      </>
     )
   }
 }
