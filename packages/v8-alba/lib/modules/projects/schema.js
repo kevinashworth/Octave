@@ -2,7 +2,7 @@ import { Utils } from 'meteor/vulcan:core'
 import SimpleSchema from 'simpl-schema'
 import marked from 'marked'
 import { addressSubSchema, linkSubSchema } from '../shared_schemas.js'
-import { PROJECT_TYPES_ENUM, PROJECT_STATUSES_ENUM } from '../constants.js'
+import { PROJECT_TYPES_ENUM, PROJECT_STATUSES_ENUM, SHOOTING_LOCATIONS_ENUM } from '../constants.js'
 import { getFullAddress, getPlatformType, getSortTitle } from '../helpers.js'
 
 const addressGroup = {
@@ -176,6 +176,18 @@ const schema = {
     },
     type: Boolean,
     optional: true,
+    canRead: ['guests'],
+    canCreate: ['members', 'admins'],
+    canUpdate: ['members', 'admins']
+  },
+  shootingLocation: {
+    label: 'Shooting Location',
+    type: String,
+    optional: true,
+    input: 'MyDatalist',
+    options: () => {
+      return SHOOTING_LOCATIONS_ENUM
+    },
     canRead: ['guests'],
     canCreate: ['members', 'admins'],
     canUpdate: ['members', 'admins']

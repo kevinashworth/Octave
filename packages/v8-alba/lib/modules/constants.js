@@ -48,6 +48,38 @@ const PROJECT_TYPES_ENUM = [
   { value: 'New Media', label: 'New Media' }
 ]
 
+const SHOOTING_LOCATIONS_ENUM = [
+  { value: 'Albuquerque', label: 'Albuquerque, NM' },
+  { value: 'Atlanta', label: 'Atlanta, GA' },
+  { value: 'Boston', label: 'Boston, MA' },
+  { value: 'Chicago', label: 'Chicago, IL' },
+  { value: 'Hawaii', label: 'Hawaii' },
+  { value: 'Las Vegas', label: 'Las Vegas, NV' },
+  { value: 'Los Angeles', label: 'Los Angeles, CA' },
+  { value: 'Miami', label: 'Miami, FL' },
+  { value: 'New Mexico', label: 'New Mexico' },
+  { value: 'New Orleans', label: 'New Orleans, LA' },
+  { value: 'New York', label: 'New York, NY' },
+  { value: 'Pittsburgh', label: 'Pittsburgh, PA' },
+  { value: 'Portland', label: 'Portland, OR' },
+  { value: 'Salt Lake City', label: 'Salt Lake City, UT' },
+  { value: 'San Francisco', label: 'San Francisco, CA' },
+  { value: 'Santa Fe', label: 'Santa Fe, NM' },
+  { value: 'Savannah', label: 'Savannah, GA' },
+  { value: 'Seattle', label: 'Seattle, WA' },
+  { value: 'Washington', label: 'Washington, DC' },
+  { value: 'Wilmington', label: 'Wilmington, NC' },
+
+  { value: 'London', label: 'London, UK' },
+  { value: 'Mexico', label: 'Mexico' },
+  { value: 'Tokyo', label: 'Tokyo' },
+  { value: 'Toronto', label: 'Toronto, ON' },
+  { value: 'Vancouver', label: 'Vancouver, BC' },
+  { value: 'Winnipeg', label: 'Winnipeg, MB' },
+
+  { value: 'TBD', label: 'TBD' },
+]
+
 const BROADCAST_ENUM = [
   'ABC',
   'CBS',
@@ -181,6 +213,7 @@ module.exports = {
   CASTING_TITLES_ENUM,
   PHONE_NUMBER_TYPES_ENUM,
   PROJECT_TYPES_ENUM,
+  SHOOTING_LOCATIONS_ENUM,
   BROADCAST_ENUM,
   CABLE_ENUM,
   PAYTV_ENUM,

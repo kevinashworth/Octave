@@ -100,6 +100,9 @@ class ProjectsSingle extends PureComponent {
                     ? <Interweave content={project.htmlNotes} transform={transform} />
                     : <CardText>{ project.notes }</CardText>
                   }
+                  {project.shootingLocation &&
+                    <CardText><b>Shooting Location</b>: { project.shootingLocation }</CardText>
+                  }
                   <hr />
                 </CardText>
               {project.website &&
