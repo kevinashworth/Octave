@@ -51,7 +51,7 @@ class MySelect extends Component {
   }
 
   render () {
-    const { selectOne } = this.props.inputProperties
+    const { inputOnly } = this.props.itemProperties
     const selectedOption = find(this.props.options, { value: this.props.value }) || null
     const noneOption = {
       label: this.context.intl.formatMessage({ id: 'forms.select_option' }),
@@ -71,7 +71,13 @@ class MySelect extends Component {
       )
     }
 
-    if (selectOne) {
+    if (inputOnly) {
+      return (
+        <>
+          {theSelect()}
+        </>
+      )
+    } else {
       return (
         <div className='form-group row'>
           <label className='form-label col-form-label col-sm-3'>{this.props.label}</label>
@@ -79,12 +85,6 @@ class MySelect extends Component {
             {theSelect()}
           </div>
         </div>
-      )
-    } else {
-      return (
-        <>
-          {theSelect()}
-        </>
       )
     }
   }

@@ -26,7 +26,7 @@ const linkGroup = {
 const contactSchema = new SimpleSchema({
   contactId: {
     type: String,
-    control: 'SelectContactIdNameTitle',
+    input: 'SelectContactIdNameTitle',
     optional: true,
     canRead: ['members'],
     canCreate: ['members', 'admins'],
@@ -122,7 +122,7 @@ const schema = {
     label: 'Type',
     type: String,
     optional: false,
-    input: 'select',
+    input: 'MySelect',
     options: () => {
       return PROJECT_TYPES_ENUM
     },
@@ -161,7 +161,7 @@ const schema = {
   status: {
     type: String,
     optional: false,
-    input: 'select',
+    input: 'MySelect',
     options: () => {
       return PROJECT_STATUSES_ENUM
     },
@@ -196,7 +196,7 @@ const schema = {
   summary: {
     type: String,
     optional: true,
-    control: 'textarea', // use a textarea form component
+    input: 'textarea',
     canRead: ['guests'],
     canCreate: ['members', 'admins'],
     canUpdate: ['members', 'admins'],
@@ -235,7 +235,7 @@ const schema = {
   notes: {
     type: String,
     optional: true,
-    control: 'textarea', // use a textarea form component
+    input: 'textarea',
     canRead: ['members'],
     canCreate: ['members', 'admins'],
     canUpdate: ['members', 'admins'],
@@ -306,9 +306,6 @@ const schema = {
   castingOfficeId: {
     type: String,
     input: 'MySelect',
-    inputProperties: {
-      selectOne: true
-    },
     label: 'Office',
     optional: true,
     canRead: ['members'],
