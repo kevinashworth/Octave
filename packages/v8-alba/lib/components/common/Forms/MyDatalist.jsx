@@ -3,6 +3,7 @@ import { intlShape } from 'meteor/vulcan:i18n'
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import CreatableSelect from 'react-select/creatable'
+import _ from 'lodash'
 import { customStyles, theme } from './react-select-settings'
 
 class MyDatalist extends Component {
@@ -26,7 +27,7 @@ class MyDatalist extends Component {
 
   componentDidMount () {
     // if it's one of the values in the system
-    let selectedOption = find(this.props.options, { value: this.props.value })
+    let selectedOption = _.find(this.props.options, { value: this.props.value })
     // if it's a value the user has input
     if (!selectedOption) {
       selectedOption = { value: this.props.value, label: this.props.value }
@@ -38,9 +39,9 @@ class MyDatalist extends Component {
     }
   }
 
-  render() {
+  render () {
     // if it's one of the values in the system
-    let selectedOption = find(this.props.options, { value: this.props.value })
+    let selectedOption = _.find(this.props.options, { value: this.props.value })
     // if it's a value the user has input
     if (!selectedOption) {
       selectedOption = { value: this.props.value, label: this.props.value }
@@ -49,17 +50,17 @@ class MyDatalist extends Component {
       <div className='form-group row'>
         <label className='form-label col-form-label col-sm-3'>{this.props.label}</label>
         <div className='col-sm-9'>
-        <CreatableSelect
-          styles={customStyles}
-          maxMenuHeight={400}
-          theme={theme}
-          isClearable
-          onChange={this.handleChange}
-          onInputChange={this.handleInputChange}
-          defaultValue={{ value: null, label: '' }}
-          options={this.props.options}
-          value={selectedOption}
-        />
+          <CreatableSelect
+            styles={customStyles}
+            maxMenuHeight={400}
+            theme={theme}
+            isClearable
+            onChange={this.handleChange}
+            onInputChange={this.handleInputChange}
+            defaultValue={{ value: null, label: '' }}
+            options={this.props.options}
+            value={selectedOption}
+          />
         </div>
       </div>
     )
