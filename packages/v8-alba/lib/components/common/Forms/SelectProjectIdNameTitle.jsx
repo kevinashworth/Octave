@@ -60,7 +60,7 @@ class SelectProjectIdNameTitle extends PureComponent {
     })
   }
 
-  render () {
+  componentDidMount () {
     const projects = this.props.document.projects
     const itemIndex = this.props.itemIndex
     const projectTitle = projects[itemIndex] ? projects[itemIndex].projectTitle : ''
@@ -68,32 +68,41 @@ class SelectProjectIdNameTitle extends PureComponent {
     const selectedIdOption = _.find(this.props.options, { value: this.props.value }) || null
     const selectedTitleOption = _.find(CASTING_TITLES_ENUM, { value: titleForProject }) || null
 
+    this.setState({
+      itemIndex,
+      projectTitle,
+      selectedIdOption,
+      selectedTitleOption
+    })
+  }
+
+  render () {
     return (
       <>
         <FormGroup>
-          <Label for={`projectId${itemIndex}`}>Project Name</Label>
+          <Label for={`projectId${this.state.itemIndex}`}>Project Name</Label>
           <OptimizedSelect
-            id={`projectId${itemIndex}`}
-            value={selectedIdOption}
+            id={`projectId${this.state.itemIndex}`}
+            value={this.state.selectedIdOption}
             onChange={this.handleIdChange}
             options={this.props.options}
             resetValue={{ value: null, label: '' }}
           />
         </FormGroup>
         <FormGroup>
-          <Label for={`projectTitle${itemIndex}`}>Editable Name</Label>
+          <Label for={`projectTitle${this.state.itemIndex}`}>Editable Name</Label>
           <OptimizedInput
             type='text'
-            id={`projectTitle${itemIndex}`}
-            value={projectTitle}
+            id={`projectTitle${this.state.itemIndex}`}
+            value={this.state.projectTitle}
             onChange={this.handleNameChange}
           />
         </FormGroup>
         <FormGroup>
-          <Label for={`titleForProject${itemIndex}`}>Title for Project</Label>
+          <Label for={`titleForProject${this.state.itemIndex}`}>Title for Project</Label>
           <OptimizedSelect
-            id={`titleForProject${itemIndex}`}
-            value={selectedTitleOption}
+            id={`titleForProject${this.state.itemIndex}`}
+            value={this.state.selectedTitleOption}
             onChange={this.handleTitleChange}
             options={CASTING_TITLES_ENUM}
             resetValue={{ value: null, label: '' }}
