@@ -6,9 +6,9 @@ import Select from 'react-select'
 import _ from 'lodash'
 import { CASTING_TITLES_ENUM } from '../../../modules/constants.js'
 
-import pure from 'recompose/pure'
+// import pure from 'recompose/pure'
 import onlyUpdateForKeys from 'recompose/onlyUpdateForKeys'
-const OptimizedInput = pure(Input)
+// const OptimizedInput = pure(Input)
 const OptimizedSelect = onlyUpdateForKeys(['value'])(Select)
 
 /**
@@ -27,8 +27,8 @@ class SelectContactIdNameTitle extends PureComponent {
     this.state = {
       path: this.props.path,
       pathPrefix: this.props.parentFieldName + '.' + this.props.itemIndex + '.',
+      itemIndex: this.props.itemIndex,
       contactId: this.props.value,
-      itemIndex: 0,
       contactName: '',
       selectedIdOption: null,
       selectedTitleOption: null
@@ -67,14 +67,12 @@ class SelectContactIdNameTitle extends PureComponent {
 
   componentDidMount () {
     const contacts = this.props.document.contacts
-    const itemIndex = this.props.itemIndex
-    const contactName = contacts[itemIndex] ? contacts[itemIndex].contactName : ''
-    const contactTitle = contacts[itemIndex] ? contacts[itemIndex].contactTitle : ''
+    const contactName = contacts[this.state.itemIndex] ? contacts[this.state.itemIndex].contactName : ''
+    const contactTitle = contacts[this.state.itemIndex] ? contacts[this.state.itemIndex].contactTitle : ''
     const selectedIdOption = _.find(this.props.options, { value: this.props.value }) || null
     const selectedTitleOption = _.find(CASTING_TITLES_ENUM, { value: contactTitle }) || null
 
     this.setState({
-      itemIndex,
       contactName,
       selectedIdOption,
       selectedTitleOption
@@ -97,7 +95,7 @@ class SelectContactIdNameTitle extends PureComponent {
         </FormGroup>
         <FormGroup>
           <Label for={`contactName${this.state.itemIndex}`}>Editable Name</Label>
-          <OptimizedInput
+          <Input
             type='text'
             id={`contactName${this.state.itemIndex}`}
             value={this.state.contactName}

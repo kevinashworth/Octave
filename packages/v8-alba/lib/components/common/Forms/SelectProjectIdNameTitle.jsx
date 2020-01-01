@@ -6,9 +6,9 @@ import Select from 'react-select'
 import _ from 'lodash'
 import { CASTING_TITLES_ENUM } from '../../../modules/constants.js'
 
-import pure from 'recompose/pure'
+// import pure from 'recompose/pure'
 import onlyUpdateForKeys from 'recompose/onlyUpdateForKeys'
-const OptimizedInput = pure(Input)
+// const OptimizedInput = pure(Input)
 const OptimizedSelect = onlyUpdateForKeys(['value'])(Select)
 
 /**
@@ -27,7 +27,11 @@ class SelectProjectIdNameTitle extends PureComponent {
     this.state = {
       path: this.props.path,
       pathPrefix: this.props.parentFieldName + '.' + this.props.itemIndex + '.',
-      projectId: this.props.value
+      itemIndex: this.props.itemIndex,
+      projectId: this.props.value,
+      projectTitle: '',
+      selectedIdOption: null,
+      selectedTitleOption: null
     }
   }
 
@@ -62,14 +66,12 @@ class SelectProjectIdNameTitle extends PureComponent {
 
   componentDidMount () {
     const projects = this.props.document.projects
-    const itemIndex = this.props.itemIndex
-    const projectTitle = projects[itemIndex] ? projects[itemIndex].projectTitle : ''
-    const titleForProject = projects[itemIndex] ? projects[itemIndex].titleForProject : ''
+    const projectTitle = projects[this.state.itemIndex] ? projects[this.state.itemIndex].projectTitle : ''
+    const titleForProject = projects[this.state.itemIndex] ? projects[this.state.itemIndex].titleForProject : ''
     const selectedIdOption = _.find(this.props.options, { value: this.props.value }) || null
     const selectedTitleOption = _.find(CASTING_TITLES_ENUM, { value: titleForProject }) || null
 
     this.setState({
-      itemIndex,
       projectTitle,
       selectedIdOption,
       selectedTitleOption
@@ -91,7 +93,7 @@ class SelectProjectIdNameTitle extends PureComponent {
         </FormGroup>
         <FormGroup>
           <Label for={`projectTitle${this.state.itemIndex}`}>Editable Name</Label>
-          <OptimizedInput
+          <Input
             type='text'
             id={`projectTitle${this.state.itemIndex}`}
             value={this.state.projectTitle}

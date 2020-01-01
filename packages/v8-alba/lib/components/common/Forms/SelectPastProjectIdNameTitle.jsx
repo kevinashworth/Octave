@@ -6,9 +6,9 @@ import Select from 'react-select'
 import _ from 'lodash'
 import { CASTING_TITLES_ENUM } from '../../../modules/constants.js'
 
-import pure from 'recompose/pure'
+// import pure from 'recompose/pure'
 import onlyUpdateForKeys from 'recompose/onlyUpdateForKeys'
-const OptimizedInput = pure(Input)
+// const OptimizedInput = pure(Input)
 const OptimizedSelect = onlyUpdateForKeys(['value'])(Select)
 
 /**
@@ -27,7 +27,11 @@ class SelectPastProjectIdNameTitle extends PureComponent {
     this.state = {
       path: this.props.path,
       pathPrefix: this.props.parentFieldName + '.' + this.props.itemIndex + '.',
-      projectId: this.props.value
+      itemIndex: this.props.itemIndex,
+      projectId: this.props.value,
+      projectTitle: '',
+      selectedIdOption: null,
+      selectedTitleOption: null
     }
   }
 
@@ -60,40 +64,47 @@ class SelectPastProjectIdNameTitle extends PureComponent {
     })
   }
 
-  render () {
+  componentDidMount () {
     const pastProjects = this.props.document.pastProjects
-    const itemIndex = this.props.itemIndex
-    const projectTitle = pastProjects[itemIndex] ? pastProjects[itemIndex].projectTitle : ''
-    const titleForProject = pastProjects[itemIndex] ? pastProjects[itemIndex].titleForProject : ''
+    const projectTitle = pastProjects[this.state.itemIndex] ? pastProjects[this.state.itemIndex].projectTitle : ''
+    const titleForProject = pastProjects[this.state.itemIndex] ? pastProjects[this.state.itemIndex].titleForProject : ''
     const selectedIdOption = _.find(this.props.options, { value: this.props.value }) || null
     const selectedTitleOption = _.find(CASTING_TITLES_ENUM, { value: titleForProject }) || null
 
+    this.setState({
+      projectTitle,
+      selectedIdOption,
+      selectedTitleOption
+    })
+  }
+
+  render () {
     return (
       <div>
         <FormGroup>
-          <Label for={`pastProjectId${itemIndex}`}>Past Project from Database</Label>
+          <Label for={`pastProjectId${this.state.itemIndex}`}>Past Project from Database</Label>
           <OptimizedSelect
-            id={`pastProjectId${itemIndex}`}
-            value={selectedIdOption}
+            id={`pastProjectId${this.state.itemIndex}`}
+            value={this.state.selectedIdOption}
             onChange={this.handleIdChange}
             options={this.props.options}
             resetValue={{ value: null, label: '' }}
           />
         </FormGroup>
         <FormGroup>
-          <Label for={`pastProjectTitle${itemIndex}`}>Editable Past Project Name</Label>
-          <OptimizedInput
+          <Label for={`pastProjectTitle${this.state.this.state.itemIndex}`}>Editable Past Project Name</Label>
+          <Input
             type='text'
-            id={`pastProjectTitle${itemIndex}`}
-            value={projectTitle}
+            id={`pastProjectTitle${this.state.itemIndex}`}
+            value={this.state.projectTitle}
             onChange={this.handleNameChange}
           />
         </FormGroup>
         <FormGroup>
-          <Label for={`titleForPastProject${itemIndex}`}>Title for Past Project</Label>
+          <Label for={`titleForPastProject${this.state.itemIndex}`}>Title for Past Project</Label>
           <OptimizedSelect
-            id={`titleForPastProject${itemIndex}`}
-            value={selectedTitleOption}
+            id={`titleForPastProject${this.state.itemIndex}`}
+            value={this.state.selectedTitleOption}
             onChange={this.handleTitleChange}
             options={CASTING_TITLES_ENUM}
             resetValue={{ value: null, label: '' }}
