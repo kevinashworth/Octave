@@ -4,6 +4,7 @@ import PropTypes from 'prop-types'
 import { FormGroup, Input, Label } from 'reactstrap'
 import Select from 'react-select'
 import _ from 'lodash'
+import { customStyles, theme } from './react-select-settings'
 import { CASTING_TITLES_ENUM } from '../../../modules/constants.js'
 
 import onlyUpdateForKeys from 'recompose/onlyUpdateForKeys'
@@ -82,6 +83,9 @@ class SelectContactIdNameTitle extends PureComponent {
         <FormGroup>
           <Label for={`contactId${this.state.itemIndex}`}>Name from Database</Label>
           <OptimizedSelect
+            styles={customStyles}
+            maxMenuHeight={400}
+            theme={theme}
             id={`contactId${this.state.itemIndex}`}
             value={this.state.selectedIdOption}
             onChange={this.handleIdChange}
@@ -102,6 +106,9 @@ class SelectContactIdNameTitle extends PureComponent {
         <FormGroup>
           <Label for={`contactTitle${this.state.itemIndex}`}>Title for This</Label>
           <OptimizedSelect
+            styles={customStyles}
+            maxMenuHeight={400}
+            theme={theme}
             id={`contactTitle${this.state.itemIndex}`}
             value={this.state.selectedTitleOption}
             onChange={this.handleTitleChange}

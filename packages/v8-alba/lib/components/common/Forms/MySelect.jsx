@@ -4,13 +4,7 @@ import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import Select from 'react-select'
 import find from 'lodash/find'
-
-const customStyles = {
-  option: (provided, state) => ({
-    ...provided,
-    padding: '1px 10px'
-  })
-}
+import { customStyles, theme } from './react-select-settings'
 
 class MySelect extends Component {
   constructor (props) {
@@ -66,13 +60,7 @@ class MySelect extends Component {
         <Select
           styles={customStyles}
           maxMenuHeight={400}
-          theme={theme => ({
-            ...theme,
-            colors: {
-              ...theme.colors,
-              neutral80: '#5c6873'
-            },
-          })}
+          theme={theme}
           value={selectedOption}
           onChange={this.handleChange}
           options={this.props.options}
