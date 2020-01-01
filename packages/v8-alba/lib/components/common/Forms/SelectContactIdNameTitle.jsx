@@ -1,18 +1,16 @@
 import { registerComponent } from 'meteor/vulcan:lib'
 import React, { PureComponent } from 'react'
-import { FormGroup, Input, Label } from 'reactstrap'
-import Select from 'react-virtualized-select'
 import PropTypes from 'prop-types'
+import { FormGroup, Input, Label } from 'reactstrap'
+import Select from 'react-select'
+import _ from 'lodash'
 import { CASTING_TITLES_ENUM } from '../../../modules/constants.js'
 
-import pure from 'recompose/pure'
 import onlyUpdateForKeys from 'recompose/onlyUpdateForKeys'
-const OptimizedInput = pure(Input)
 const OptimizedSelect = onlyUpdateForKeys(['value'])(Select)
 
 /**
 * This version explicity for contactId, contactName, contactTitle
-* TODO: a DRY component of this to not repeat all this code in SelectProjectIdNameTitle.jsx
 */
 
 class SelectContactIdNameTitle extends PureComponent {
@@ -26,17 +24,23 @@ class SelectContactIdNameTitle extends PureComponent {
     this.state = {
       path: this.props.path,
       pathPrefix: this.props.parentFieldName + '.' + this.props.itemIndex + '.',
+      itemIndex: this.props.itemIndex,
+      contactId: this.props.value,
+      contactName: '',
+      selectedIdOption: null,
+      selectedTitleOption: null
     }
   }
 
-  handleIdChange (value) {
+  handleIdChange (selectedOption) {
     this.setState({
-      value,
-      contactName: value.label
+      contactId: selectedOption.value,
+      contactName: selectedOption.label,
+      selectedIdOption: selectedOption
     })
     this.context.updateCurrentValues({
-      [this.state.path]: value.value,
-      [this.state.pathPrefix + 'contactName']: value.label
+      [this.state.path]: selectedOption.value,
+      [this.state.pathPrefix + 'contactName']: selectedOption.label
     })
   }
 
@@ -44,62 +48,69 @@ class SelectContactIdNameTitle extends PureComponent {
     this.setState({
       contactName: target.value
     })
-    const path = this.state.pathPrefix + 'contactName'
     this.context.updateCurrentValues({
-      [path]: target.value
+      [this.state.pathPrefix + 'contactName']: target.value
     })
   }
 
-  handleTitleChange (value) {
+  handleTitleChange (selectedOption) {
     this.setState({
-      contactTitle: value.label
+      selectedTitleOption: selectedOption
     })
     this.context.updateCurrentValues({
-      [this.state.pathPrefix + 'contactTitle']: value.label
+      [this.state.pathPrefix + 'contactTitle']: selectedOption.label
+    })
+  }
+
+  componentDidMount () {
+    const contacts = this.props.document.contacts
+    const contactName = contacts[this.state.itemIndex] ? contacts[this.state.itemIndex].contactName : ''
+    const contactTitle = contacts[this.state.itemIndex] ? contacts[this.state.itemIndex].contactTitle : ''
+    const selectedIdOption = _.find(this.props.options, { value: this.props.value }) || null
+    const selectedTitleOption = _.find(CASTING_TITLES_ENUM, { value: contactTitle }) || null
+
+    this.setState({
+      contactName,
+      selectedIdOption,
+      selectedTitleOption
     })
   }
 
   render () {
-    const contacts = this.props.document.contacts
-    const itemIndex = this.props.itemIndex
-    const contactName = contacts[itemIndex] ? contacts[itemIndex].contactName : ''
-    const contactTitle = contacts[itemIndex] ? contacts[itemIndex].contactTitle : ''
-    const value = this.props.value
-
     return (
-      <div>
+      <>
         <FormGroup>
-          <Label for={`contactId${itemIndex}`}>Name from Database</Label>
+          <Label for={`contactId${this.state.itemIndex}`}>Name from Database</Label>
           <OptimizedSelect
-            id={`contactId${itemIndex}`}
-            value={value}
+            id={`contactId${this.state.itemIndex}`}
+            value={this.state.selectedIdOption}
             onChange={this.handleIdChange}
             options={this.props.options}
+            isClearable
             resetValue={{ value: null, label: '' }}
           />
         </FormGroup>
         <FormGroup>
-          <Label for={`contactName${itemIndex}`}>Editable Name</Label>
-          <OptimizedInput
+          <Label for={`contactName${this.state.itemIndex}`}>Editable Name</Label>
+          <Input
             type='text'
-            id={`contactName${itemIndex}`}
-            value={contactName}
+            id={`contactName${this.state.itemIndex}`}
+            value={this.state.contactName}
             onChange={this.handleNameChange}
-            required
           />
         </FormGroup>
         <FormGroup>
-          <Label for={`contactTitle${itemIndex}`}>Title for This</Label>
+          <Label for={`contactTitle${this.state.itemIndex}`}>Title for This</Label>
           <OptimizedSelect
-            id={`contactTitle${itemIndex}`}
-            value={contactTitle}
+            id={`contactTitle${this.state.itemIndex}`}
+            value={this.state.selectedTitleOption}
             onChange={this.handleTitleChange}
             options={CASTING_TITLES_ENUM}
+            isClearable
             resetValue={{ value: null, label: '' }}
-            required
           />
         </FormGroup>
-      </div>
+      </>
     )
   }
 }
@@ -108,4 +119,7 @@ SelectContactIdNameTitle.contextTypes = {
   updateCurrentValues: PropTypes.func
 }
 
-registerComponent('SelectContactIdNameTitle', SelectContactIdNameTitle)
+registerComponent({
+  name: 'SelectContactIdNameTitle',
+  component: SelectContactIdNameTitle
+})

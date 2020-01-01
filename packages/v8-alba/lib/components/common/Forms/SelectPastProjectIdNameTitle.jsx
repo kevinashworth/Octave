@@ -1,18 +1,17 @@
 import { registerComponent } from 'meteor/vulcan:lib'
 import React, { PureComponent } from 'react'
-import { FormGroup, Input, Label } from 'reactstrap'
-import Select from 'react-virtualized-select'
 import PropTypes from 'prop-types'
+import { FormGroup, Input, Label } from 'reactstrap'
+import Select from 'react-select'
+import _ from 'lodash'
 import { CASTING_TITLES_ENUM } from '../../../modules/constants.js'
 
-import pure from 'recompose/pure'
 import onlyUpdateForKeys from 'recompose/onlyUpdateForKeys'
-const OptimizedInput = pure(Input)
 const OptimizedSelect = onlyUpdateForKeys(['value'])(Select)
 
 /**
 * This version explicity for projectId, projectTitle, titleForProject
-* TODO: a DRY component of this to not repeat all this code in SelectContactIdNameTitle.jsx
+* TODO: a DRY component of this to not repeat all this code in SelectProjectIdNameTitle.jsx
 */
 
 class SelectPastProjectIdNameTitle extends PureComponent {
@@ -25,18 +24,23 @@ class SelectPastProjectIdNameTitle extends PureComponent {
 
     this.state = {
       path: this.props.path,
-      pathPrefix: this.props.parentFieldName + '.' + this.props.itemIndex + '.'
+      pathPrefix: this.props.parentFieldName + '.' + this.props.itemIndex + '.',
+      itemIndex: this.props.itemIndex,
+      projectId: this.props.value,
+      projectTitle: '',
+      selectedIdOption: null,
+      selectedTitleOption: null
     }
   }
 
-  handleIdChange (value) {
+  handleIdChange (selectedOption) {
     this.setState({
-      value,
-      projectTitle: value.label
+      projectId: selectedOption.value,
+      projectTitle: selectedOption.label
     })
     this.context.updateCurrentValues({
-      [this.state.path]: value.value,
-      [this.state.pathPrefix + 'projectTitle']: value.label
+      [this.state.path]: selectedOption.value,
+      [this.state.pathPrefix + 'projectTitle']: selectedOption.label
     })
   }
 
@@ -44,59 +48,64 @@ class SelectPastProjectIdNameTitle extends PureComponent {
     this.setState({
       projectTitle: target.value
     })
-    const path = this.state.pathPrefix + 'projectTitle'
     this.context.updateCurrentValues({
-      [path]: target.value
+      [this.state.pathPrefix + 'projectTitle']: target.value
     })
   }
 
-  handleTitleChange (value) {
+  handleTitleChange (selectedOption) {
     this.setState({
-      titleForProject: value.label
+      titleForProject: selectedOption.label
     })
     this.context.updateCurrentValues({
-      [this.state.pathPrefix + 'titleForProject']: value.label
+      [this.state.pathPrefix + 'titleForProject']: selectedOption.label
+    })
+  }
+
+  componentDidMount () {
+    const pastProjects = this.props.document.pastProjects
+    const projectTitle = pastProjects[this.state.itemIndex] ? pastProjects[this.state.itemIndex].projectTitle : ''
+    const titleForProject = pastProjects[this.state.itemIndex] ? pastProjects[this.state.itemIndex].titleForProject : ''
+    const selectedIdOption = _.find(this.props.options, { value: this.props.value }) || null
+    const selectedTitleOption = _.find(CASTING_TITLES_ENUM, { value: titleForProject }) || null
+
+    this.setState({
+      projectTitle,
+      selectedIdOption,
+      selectedTitleOption
     })
   }
 
   render () {
-    const pastProjects = this.props.document.pastProjects
-    const itemIndex = this.props.itemIndex
-    const projectTitle = pastProjects[itemIndex] ? pastProjects[itemIndex].projectTitle : ''
-    const titleForProject = pastProjects[itemIndex] ? pastProjects[itemIndex].titleForProject : ''
-    const value = this.props.value
-
     return (
       <div>
         <FormGroup>
-          <Label for={`pastProjectId${itemIndex}`}>Past Project from Database</Label>
+          <Label for={`pastProjectId${this.state.itemIndex}`}>Past Project from Database</Label>
           <OptimizedSelect
-            id={`pastProjectId${itemIndex}`}
-            value={value}
+            id={`pastProjectId${this.state.itemIndex}`}
+            value={this.state.selectedIdOption}
             onChange={this.handleIdChange}
             options={this.props.options}
             resetValue={{ value: null, label: '' }}
           />
         </FormGroup>
         <FormGroup>
-          <Label for={`pastProjectTitle${itemIndex}`}>Editable Past Project Name</Label>
-          <OptimizedInput
+          <Label for={`pastProjectTitle${this.state.this.state.itemIndex}`}>Editable Past Project Name</Label>
+          <Input
             type='text'
-            id={`pastProjectTitle${itemIndex}`}
-            value={projectTitle}
+            id={`pastProjectTitle${this.state.itemIndex}`}
+            value={this.state.projectTitle}
             onChange={this.handleNameChange}
-            required
           />
         </FormGroup>
         <FormGroup>
-          <Label for={`titleForPastProject${itemIndex}`}>Title for Past Project</Label>
+          <Label for={`titleForPastProject${this.state.itemIndex}`}>Title for Past Project</Label>
           <OptimizedSelect
-            id={`titleForPastProject${itemIndex}`}
-            value={titleForProject}
+            id={`titleForPastProject${this.state.itemIndex}`}
+            value={this.state.selectedTitleOption}
             onChange={this.handleTitleChange}
             options={CASTING_TITLES_ENUM}
             resetValue={{ value: null, label: '' }}
-            required
           />
         </FormGroup>
       </div>
@@ -108,4 +117,7 @@ SelectPastProjectIdNameTitle.contextTypes = {
   updateCurrentValues: PropTypes.func
 }
 
-registerComponent('SelectPastProjectIdNameTitle', SelectPastProjectIdNameTitle)
+registerComponent({
+  name: 'SelectPastProjectIdNameTitle',
+  component: SelectPastProjectIdNameTitle
+})
