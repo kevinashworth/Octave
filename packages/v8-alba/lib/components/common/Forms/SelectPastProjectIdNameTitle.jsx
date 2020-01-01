@@ -6,14 +6,12 @@ import Select from 'react-select'
 import _ from 'lodash'
 import { CASTING_TITLES_ENUM } from '../../../modules/constants.js'
 
-// import pure from 'recompose/pure'
 import onlyUpdateForKeys from 'recompose/onlyUpdateForKeys'
-// const OptimizedInput = pure(Input)
 const OptimizedSelect = onlyUpdateForKeys(['value'])(Select)
 
 /**
 * This version explicity for projectId, projectTitle, titleForProject
-* TODO: a DRY component of this to not repeat all this code in SelectContactIdNameTitle.jsx
+* TODO: a DRY component of this to not repeat all this code in SelectProjectIdNameTitle.jsx
 */
 
 class SelectPastProjectIdNameTitle extends PureComponent {
@@ -119,4 +117,7 @@ SelectPastProjectIdNameTitle.contextTypes = {
   updateCurrentValues: PropTypes.func
 }
 
-registerComponent('SelectPastProjectIdNameTitle', SelectPastProjectIdNameTitle)
+registerComponent({
+  name: 'SelectPastProjectIdNameTitle',
+  component: SelectPastProjectIdNameTitle
+})
