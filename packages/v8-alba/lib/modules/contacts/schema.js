@@ -203,7 +203,7 @@ const schema = {
   title: {
     type: String,
     optional: true,
-    input: 'select',
+    input: 'MySelect',
     options: () => {
       return CASTING_TITLES_ENUM
     },

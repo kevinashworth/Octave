@@ -104,7 +104,7 @@ const schema = {
     label: 'Type',
     type: String,
     optional: false,
-    input: 'select',
+    input: 'MySelect',
     options: () => {
       return PROJECT_TYPES_ENUM
     },
@@ -142,7 +142,7 @@ const schema = {
     label: 'Status',
     type: String,
     optional: false,
-    input: 'select',
+    input: 'MySelect',
     options: () => {
       return PROJECT_STATUSES_ENUM
     },

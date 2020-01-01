@@ -110,7 +110,7 @@ const phoneSubSchema = new SimpleSchema({
     type: String,
     label: 'Phone Type',
     optional: true,
-    input: 'select',
+    input: 'MySelect',
     options: () => {
       return PHONE_NUMBER_TYPES_ENUM
     },

@@ -5,6 +5,13 @@ import PropTypes from 'prop-types'
 import Select from 'react-select'
 import find from 'lodash/find'
 
+const customStyles = {
+  option: (provided, state) => ({
+    ...provided,
+    padding: '1px 10px'
+  })
+}
+
 class MySelect extends Component {
   constructor (props) {
     super(props)
@@ -53,18 +60,22 @@ class MySelect extends Component {
   render () {
     const { inputOnly } = this.props.itemProperties
     const selectedOption = find(this.props.options, { value: this.props.value }) || null
-    const noneOption = {
-      label: this.context.intl.formatMessage({ id: 'forms.select_option' }),
-      value: null,
-      isDisabled: true
-    }
 
     const theSelect = () => {
       return (
         <Select
+          styles={customStyles}
+          maxMenuHeight={400}
+          theme={theme => ({
+            ...theme,
+            colors: {
+              ...theme.colors,
+              neutral80: '#5c6873'
+            },
+          })}
           value={selectedOption}
           onChange={this.handleChange}
-          options={[noneOption, ...this.props.options]}
+          options={this.props.options}
           defaultValue={{ value: null, label: '' }}
           isClearable
         />
