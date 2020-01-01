@@ -1,7 +1,7 @@
 import { registerComponent } from 'meteor/vulcan:lib'
 import React, { PureComponent } from 'react'
 import PropTypes from 'prop-types'
-import { Col, FormGroup, Input, Label } from 'reactstrap'
+import { FormGroup, Input, Label } from 'reactstrap'
 import Select from 'react-select'
 import _ from 'lodash'
 import { CASTING_TITLES_ENUM } from '../../../modules/constants.js'
@@ -70,42 +70,34 @@ class SelectProjectIdNameTitle extends PureComponent {
 
     return (
       <>
-        <FormGroup row>
-          <Label for={`projectId${itemIndex}`} sm={3}>Project Name</Label>
-          <Col sm={9}>
-            <OptimizedSelect
-              id={`projectId${itemIndex}`}
-              value={selectedIdOption}
-              onChange={this.handleIdChange}
-              options={this.props.options}
-              resetValue={{ value: null, label: '' }}
-            />
-          </Col>
+        <FormGroup>
+          <Label for={`projectId${itemIndex}`}>Project Name</Label>
+          <OptimizedSelect
+            id={`projectId${itemIndex}`}
+            value={selectedIdOption}
+            onChange={this.handleIdChange}
+            options={this.props.options}
+            resetValue={{ value: null, label: '' }}
+          />
         </FormGroup>
-        <FormGroup row>
-          <Label for={`projectTitle${itemIndex}`} sm={3}>Editable Name</Label>
-          <Col sm={9}>
-            <OptimizedInput
-              type='text'
-              id={`projectTitle${itemIndex}`}
-              value={projectTitle}
-              onChange={this.handleNameChange}
-              required
-            />
-          </Col>
+        <FormGroup>
+          <Label for={`projectTitle${itemIndex}`}>Editable Name</Label>
+          <OptimizedInput
+            type='text'
+            id={`projectTitle${itemIndex}`}
+            value={projectTitle}
+            onChange={this.handleNameChange}
+          />
         </FormGroup>
-        <FormGroup row>
-          <Label for={`titleForProject${itemIndex}`} sm={3}>Title for Project</Label>
-          <Col sm={9}>
-            <OptimizedSelect
-              id={`titleForProject${itemIndex}`}
-              value={selectedTitleOption}
-              onChange={this.handleTitleChange}
-              options={CASTING_TITLES_ENUM}
-              resetValue={{ value: null, label: '' }}
-              required
-            />
-          </Col>
+        <FormGroup>
+          <Label for={`titleForProject${itemIndex}`}>Title for Project</Label>
+          <OptimizedSelect
+            id={`titleForProject${itemIndex}`}
+            value={selectedTitleOption}
+            onChange={this.handleTitleChange}
+            options={CASTING_TITLES_ENUM}
+            resetValue={{ value: null, label: '' }}
+          />
         </FormGroup>
       </>
     )
