@@ -310,15 +310,15 @@ const schema = {
     canRead: ['members'],
     canCreate: ['members', 'admins'],
     canUpdate: ['members', 'admins'],
-    onInsert: (project) => {
+    onCreate: (project) => {
       return Utils.slugify(project.projectTitle)
     },
-    onEdit: (modifier, project) => {
-      if (modifier.$set.slug) {
-        return Utils.slugify(modifier.$set.slug)
+    onUpdate: ({ data }) => {
+      if (data.slug) {
+        return Utils.slugify(data.slug)
       }
-      if (modifier.$set.projectTitle) {
-        return Utils.slugify(modifier.$set.projectTitle)
+      if (data.projectTitle) {
+        return Utils.slugify(data.projectTitle)
       }
     }
   },

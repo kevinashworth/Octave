@@ -29,7 +29,7 @@ const schema = {
     type: Date,
     optional: true,
     canRead: ['members'],
-    onInsert: () => {
+    onCreate: () => {
       return new Date()
     }
   },
@@ -45,10 +45,10 @@ const schema = {
     type: Date,
     optional: true,
     canRead: ['members'],
-    onInsert: () => {
+    onCreate: () => {
       return new Date()
     },
-    onEdit: () => {
+    onUpdate: () => {
       return new Date()
     }
   },

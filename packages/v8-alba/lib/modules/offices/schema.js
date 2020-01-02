@@ -173,7 +173,7 @@ const schema = {
     type: Date,
     optional: true,
     canRead: ['guests'],
-    onInsert: () => {
+    onCreate: () => {
       return new Date()
     }
   },
@@ -189,10 +189,10 @@ const schema = {
     type: Date,
     optional: true,
     canRead: ['guests'],
-    onInsert: () => {
+    onCreate: () => {
       return new Date()
     },
-    onEdit: () => {
+    onUpdate: () => {
       return new Date()
     }
   },
