@@ -8,7 +8,7 @@ import { Button, Card, CardBody, CardFooter, CardHeader, CardLink, CardText, Car
 import Interweave from 'interweave'
 import moment from 'moment'
 import { DATE_FORMAT_LONG, DATE_FORMAT_SHORT } from '../../modules/constants.js'
-import { transform } from '../../modules/helpers.js'
+import { getFullAddress, transform } from '../../modules/helpers.js'
 import Projects from '../../modules/projects/collection.js'
 
 class ProjectsSingle extends PureComponent {
@@ -121,7 +121,7 @@ class ProjectsSingle extends PureComponent {
                 ? project.contacts.map(contact => <Components.ContactDetail key={contact.contactId} contact={contact} />)
                 : null }
               {project.addresses && project.addresses[0]
-                ? project.addresses.map(address => <Components.ProjectsAddressDetail key={address} address={address} />)
+                ? project.addresses.map((address, index) => <Components.ProjectsAddressDetail key={getFullAddress(address)+index} address={address} />)
                 : null }
               {project.contactId}
               {project.links &&
