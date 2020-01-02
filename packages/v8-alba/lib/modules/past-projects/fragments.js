@@ -26,6 +26,7 @@ registerFragment(/* GraphQL */ `
     projectTitle
     projectType
     platformType
+    shootingLocation
     casting
     castingCompany
     castingOfficeId
@@ -73,7 +74,9 @@ registerFragment(/* GraphQL */ `
     createdAt
     updatedAt
     projectTitle
+    sortTitle
     projectType
+    platformType
     casting
     status
     network
@@ -96,6 +99,7 @@ registerFragment(/* GraphQL */ `
     userId
     projectTitle
     projectType
+    shootingLocation
     castingCompany
     castingOfficeId
     contacts {
@@ -111,8 +115,11 @@ registerFragment(/* GraphQL */ `
       zip
       location
     }
+    allAddresses
+    allContactNames
     network
     status
+    renewed
     union
     notes
     htmlNotes
@@ -121,6 +128,11 @@ registerFragment(/* GraphQL */ `
     website
     season
     order
+    links {
+      platformName
+      profileLink
+      profileName
+    }
     slug
   }
 `)
