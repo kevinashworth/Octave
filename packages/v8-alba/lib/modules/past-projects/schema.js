@@ -100,6 +100,13 @@ const schema = {
     canCreate: ['members', 'admins'],
     canUpdate: ['members', 'admins']
   },
+  sortTitle: {
+    type: String,
+    optional: true,
+    canRead: ['guests'],
+    canCreate: ['members', 'admins'],
+    canUpdate: ['members', 'admins']
+  },
   projectType: {
     label: 'Type',
     type: String,
@@ -113,6 +120,7 @@ const schema = {
     canUpdate: ['members', 'admins']
   },
   platformType: {
+    label: 'Platform Type',
     type: String,
     optional: true,
     hidden: true,
@@ -128,7 +136,9 @@ const schema = {
     type: String,
     optional: true,
     defaultValue: 'SAG-AFTRA',
-    canRead: ['guests']
+    canRead: ['guests'],
+    canCreate: ['members', 'admins'],
+    canUpdate: ['members', 'admins']
   },
   network: {
     label: 'Network',
@@ -146,7 +156,7 @@ const schema = {
     options: () => {
       return PROJECT_STATUSES_ENUM
     },
-    canRead: ['members'],
+    canRead: ['guests'],
     canCreate: ['members', 'admins'],
     canUpdate: ['members', 'admins']
   },
@@ -154,7 +164,7 @@ const schema = {
     label: 'On Hiatus but Renewed',
     type: Boolean,
     optional: true,
-    canRead: ['members'],
+    canRead: ['guests'],
     canCreate: ['members', 'admins'],
     canUpdate: ['members', 'admins']
   },
@@ -198,7 +208,7 @@ const schema = {
     label: 'Official Site',
     type: String,
     optional: true,
-    canRead: ['members'],
+    canRead: ['guests'],
     canCreate: ['members', 'admins'],
     canUpdate: ['members', 'admins']
   },
@@ -267,6 +277,7 @@ const schema = {
     }
   },
   castingCompany: {
+    label: 'Casting Company',
     type: String,
     optional: true,
     canRead: ['members'],
@@ -274,12 +285,9 @@ const schema = {
     canUpdate: ['members', 'admins']
   },
   castingOfficeId: {
-    type: String,
     label: 'Casting Office',
+    type: String,
     input: 'MySelect',
-    inputProperties: {
-      selectOne: true
-    },
     optional: true,
     canRead: ['members'],
     canCreate: ['members', 'admins'],
@@ -307,11 +315,11 @@ const schema = {
   slug: {
     type: String,
     optional: true,
-    canRead: ['members'],
+    canRead: ['guests'],
     canCreate: ['members', 'admins'],
     canUpdate: ['members', 'admins'],
-    onCreate: (project) => {
-      return Utils.slugify(project.projectTitle)
+    onCreate: ({ document }) => {
+      return Utils.slugify(document.projectTitle)
     },
     onUpdate: ({ data }) => {
       if (data.slug) {

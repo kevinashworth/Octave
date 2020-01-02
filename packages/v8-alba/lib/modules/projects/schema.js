@@ -152,6 +152,7 @@ const schema = {
     canUpdate: ['members', 'admins']
   },
   network: {
+    label: 'Network',
     type: String,
     optional: true,
     canRead: ['guests'],
@@ -159,6 +160,7 @@ const schema = {
     canUpdate: ['members', 'admins']
   },
   status: {
+    label: 'Status',
     type: String,
     optional: false,
     input: 'MySelect',
@@ -304,9 +306,9 @@ const schema = {
     canUpdate: ['members', 'admins']
   },
   castingOfficeId: {
+    label: 'Casting Office',
     type: String,
     input: 'MySelect',
-    label: 'Office',
     optional: true,
     canRead: ['members'],
     canCreate: ['members', 'admins'],
@@ -337,8 +339,8 @@ const schema = {
     canRead: ['guests'],
     canCreate: ['members', 'admins'],
     canUpdate: ['members', 'admins'],
-    onCreate: ({ document: project }) => {
-      return Utils.slugify(project.projectTitle)
+    onCreate: ({ document }) => {
+      return Utils.slugify(document.projectTitle)
     },
     onUpdate: ({ data }) => {
       if (data.slug) {
