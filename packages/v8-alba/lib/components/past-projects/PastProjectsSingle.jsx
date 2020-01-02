@@ -81,42 +81,26 @@ class PastProjectsSingle extends PureComponent {
           </Nav>
           <TabContent activeTab={this.state.activeTab}>
             <TabPane tabId='Main'>
-            <CardText className='mb-1'>
-              { project.projectType &&
-                <span>
-                  { project.projectType }
-                </span>
+            <CardText tag='div'>
+              <b>{ project.projectTitle }</b><br />
+              { project.projectType }{ project.network && ` – ${project.network}` }<br />
+              { project.union }{ project.platformType && ` (${project.platformType})` }<br />
+              { seasonorder }{ seasonorder ? <br /> : null }
+              { project.status }
+              <hr />
+              {project.htmlSummary
+                ? <Interweave content={project.htmlSummary} transform={transform} />
+                : <CardText className='mb-1'>{ project.summary }</CardText>
               }
-              { project.network &&
-                <div>
-                  { project.network }
-                </div>
+              {project.htmlNotes
+                ? <Interweave content={project.htmlNotes} transform={transform} />
+                : <CardText className='mb-1'>{ project.notes }</CardText>
               }
-              { project.platformType &&
-                <div>
-                  { project.platformType }
-                </div>
+              {project.shootingLocation &&
+                <CardText><b>Shooting Location</b>: { project.shootingLocation }</CardText>
               }
-              { project.union &&
-                (<div>
-                  { project.union }
-                </div>)
-              }
+              <hr />
             </CardText>
-            <CardText className='mb-1'>{ project.status }</CardText>
-            { seasonorder &&
-              <CardText>{ seasonorder }</CardText>
-            }
-            {project.htmlSummary
-              ? <Interweave content={project.htmlSummary} transform={transform} />
-              : <CardText className='mb-1'>{ project.summary }</CardText>
-            }
-            <hr />
-            {project.htmlNotes
-              ? <Interweave content={project.htmlNotes} transform={transform} />
-              : <CardText className='mb-1'>{ project.notes }</CardText>
-            }
-            <hr />
             {project.website &&
             <CardText>
               <CardLink href={project.website} target='_websites'>Open official website <i className='fa fa-external-link' /></CardLink>

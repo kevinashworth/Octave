@@ -158,6 +158,14 @@ const schema = {
     canCreate: ['members', 'admins'],
     canUpdate: ['members', 'admins']
   },
+  shootingLocation: {
+    label: 'Shooting Location',
+    type: String,
+    optional: true,
+    canRead: ['guests'],
+    canCreate: ['members', 'admins'],
+    canUpdate: ['members', 'admins']
+  },
   // Summary (Markdown)
   summary: {
     type: String,

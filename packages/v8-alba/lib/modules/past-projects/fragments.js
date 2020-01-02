@@ -26,6 +26,7 @@ registerFragment(/* GraphQL */ `
     projectTitle
     projectType
     platformType
+    shootingLocation
     casting
     castingCompany
     castingOfficeId
@@ -96,6 +97,7 @@ registerFragment(/* GraphQL */ `
     userId
     projectTitle
     projectType
+    shootingLocation
     castingCompany
     castingOfficeId
     contacts {
