@@ -59,7 +59,7 @@ const pastProjectGroup = {
 const projectSubSchema = new SimpleSchema({
   projectId: {
     type: String,
-    control: 'SelectProjectIdNameTitle',
+    input: 'SelectProjectIdNameTitle',
     optional: true,
     canRead: ['members'],
     canCreate: ['members', 'admins'],
@@ -90,7 +90,7 @@ const projectSubSchema = new SimpleSchema({
 const pastProjectSubSchema = new SimpleSchema({
   projectId: {
     type: String,
-    control: 'SelectPastProjectIdNameTitle',
+    input: 'SelectPastProjectIdNameTitle',
     optional: true,
     canRead: ['members'],
     canCreate: ['members', 'admins'],
@@ -223,7 +223,7 @@ const schema = {
     label: 'Notes',
     type: String,
     optional: true,
-    control: 'textarea',
+    input: 'textarea',
     canRead: ['members'],
     canCreate: ['members', 'admins'],
     canUpdate: ['members', 'admins']

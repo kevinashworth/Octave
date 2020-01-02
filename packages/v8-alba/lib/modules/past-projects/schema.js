@@ -26,7 +26,7 @@ const linkGroup = {
 const contactSchema = new SimpleSchema({
   contactId: {
     type: String,
-    control: 'SelectContactIdNameTitle',
+    input: 'SelectContactIdNameTitle',
     optional: true,
     canRead: ['members'],
     canCreate: ['members', 'admins'],
@@ -162,7 +162,7 @@ const schema = {
   summary: {
     type: String,
     optional: true,
-    control: 'textarea',
+    input: 'textarea',
     canRead: ['guests'],
     canCreate: ['members', 'admins'],
     canUpdate: ['members', 'admins']
@@ -198,7 +198,7 @@ const schema = {
   notes: {
     type: String,
     optional: true,
-    control: 'textarea',
+    input: 'textarea',
     canRead: ['members'],
     canCreate: ['members', 'admins'],
     canUpdate: ['members', 'admins'],

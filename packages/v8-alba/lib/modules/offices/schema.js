@@ -45,7 +45,7 @@ const pastProjectGroup = {
 const contactSchema = new SimpleSchema({
   contactId: {
     type: String,
-    control: 'SelectContactIdNameTitle',
+    input: 'SelectContactIdNameTitle',
     optional: true,
     canRead: ['members'],
     canCreate: ['members', 'admins'],
@@ -226,7 +226,7 @@ const schema = {
     label: 'Notes',
     type: String,
     optional: true,
-    control: 'textarea', // use a textarea form component
+    input: 'textarea',
     canRead: ['members'],
     canCreate: ['members', 'admins'],
     canUpdate: ['members', 'admins']
