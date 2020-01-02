@@ -1,6 +1,7 @@
 import { Components, replaceComponent } from 'meteor/vulcan:core'
 import { FormattedMessage } from 'meteor/vulcan:i18n'
 import React from 'react'
+import { NavLink } from 'react-router-dom'
 import PropTypes from 'prop-types'
 
 const MyFormSubmit = ({
@@ -50,9 +51,9 @@ const MyFormSubmit = ({
     {deleteDocument ? (
       <div>
         <hr />
-        <a href='javascript:void(0)' onClick={deleteDocument} className={`delete-link ${collectionName}-delete-link btn btn-danger`}>
+        <NavLink to='#' onClick={deleteDocument} className={`delete-link ${collectionName}-delete-link btn btn-danger`}>
           <FormattedMessage id='forms.delete' />
-        </a>
+        </NavLink>
         <br />
       </div>
     ) : null}
