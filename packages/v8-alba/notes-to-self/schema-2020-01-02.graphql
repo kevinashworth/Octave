@@ -637,18 +637,19 @@ type Office {
   userId: String 
   updatedAt: Date 
   displayName: String 
+  slug: String 
   body: String 
   htmlBody: String 
-  links: [OfficeLinks] 
-  addresses: [OfficeAddresses] 
-  allAddresses: String 
-  slug: String 
-  projects: [OfficeProjects] 
-  theProjects: [Project] 
-  pastProjects: [OfficePastProjects] 
   contacts: [OfficeContacts] 
   theContacts: [Contact] 
   allContactNames: String 
+  projects: [OfficeProjects] 
+  theProjects: [Project] 
+  links: [OfficeLinks] 
+  addresses: [OfficeAddresses] 
+  allAddresses: String 
+  phones: [OfficePhones] 
+  pastProjects: [OfficePastProjects] 
   fullAddress: String 
   street: String 
   location: String 
@@ -727,11 +728,12 @@ input CreateOfficeInput {
 input CreateOfficeDataInput {
   displayName: String 
   body: String 
+  contacts: [CreateOfficeContactsDataInput] 
+  projects: [CreateOfficeProjectsDataInput] 
   links: [CreateOfficeLinksDataInput] 
   addresses: [CreateOfficeAddressesDataInput] 
-  projects: [CreateOfficeProjectsDataInput] 
+  phones: [CreateOfficePhonesDataInput] 
   pastProjects: [CreateOfficePastProjectsDataInput] 
-  contacts: [CreateOfficeContactsDataInput] 
 }
 
 input UpdateOfficeInput{
@@ -749,11 +751,12 @@ input UpsertOfficeInput{
 input UpdateOfficeDataInput {
   displayName: String 
   body: String 
+  contacts: [UpdateOfficeContactsDataInput] 
+  projects: [UpdateOfficeProjectsDataInput] 
   links: [UpdateOfficeLinksDataInput] 
   addresses: [UpdateOfficeAddressesDataInput] 
-  projects: [UpdateOfficeProjectsDataInput] 
+  phones: [UpdateOfficePhonesDataInput] 
   pastProjects: [UpdateOfficePastProjectsDataInput] 
-  contacts: [UpdateOfficeContactsDataInput] 
 }
 
 input OfficeFilterInput {
@@ -767,16 +770,17 @@ input OfficeFilterInput {
   userId: String_Selector
   updatedAt: Date_Selector
   displayName: String_Selector
+  slug: String_Selector
   body: String_Selector
   htmlBody: String_Selector
 
+  allContactNames: String_Selector
+
+
 
   allAddresses: String_Selector
-  slug: String_Selector
 
 
-
-  allContactNames: String_Selector
   fullAddress: String_Selector
   street: String_Selector
   location: String_Selector
@@ -795,16 +799,17 @@ input OfficeSortInput {
   userId: SortOptions
   updatedAt: SortOptions
   displayName: SortOptions
+  slug: SortOptions
   body: SortOptions
   htmlBody: SortOptions
+  contacts: SortOptions
+  allContactNames: SortOptions
+  projects: SortOptions
   links: SortOptions
   addresses: SortOptions
   allAddresses: SortOptions
-  slug: SortOptions
-  projects: SortOptions
+  phones: SortOptions
   pastProjects: SortOptions
-  contacts: SortOptions
-  allContactNames: SortOptions
   fullAddress: SortOptions
   street: SortOptions
   location: SortOptions
@@ -828,6 +833,107 @@ input OfficeSelectorUniqueInput {
   documentId: String # OpenCRUD backwards compatibility
   slug: String
 
+}
+
+
+type OfficeContacts {
+  contactId: String 
+  contactName: String 
+  contactTitle: String 
+}
+
+
+input CreateOfficeContactsInput {
+  data: CreateOfficeContactsDataInput!
+}
+
+input CreateOfficeContactsDataInput {
+  contactId: String 
+  contactName: String 
+  contactTitle: String 
+}
+
+input UpdateOfficeContactsInput{
+  filter: OfficeContactsFilterInput
+  id: String
+  data: UpdateOfficeContactsDataInput!
+}
+
+input UpsertOfficeContactsInput{
+  filter: OfficeContactsFilterInput
+  id: String
+  data: UpdateOfficeContactsDataInput!
+}
+
+input UpdateOfficeContactsDataInput {
+  contactId: String 
+  contactName: String 
+  contactTitle: String 
+}
+
+input OfficeContactsFilterInput {
+  _and: [OfficeContactsFilterInput]
+  _not: OfficeContactsFilterInput
+  _or: [OfficeContactsFilterInput]
+
+
+  contactId: String_Selector
+  contactName: String_Selector
+  contactTitle: String_Selector
+}
+
+input OfficeContactsSortInput {
+  contactId: SortOptions
+  contactName: SortOptions
+  contactTitle: SortOptions
+}
+
+
+type OfficeProjects {
+  projectId: String 
+  projectTitle: String 
+}
+
+
+input CreateOfficeProjectsInput {
+  data: CreateOfficeProjectsDataInput!
+}
+
+input CreateOfficeProjectsDataInput {
+  projectId: String 
+  projectTitle: String 
+}
+
+input UpdateOfficeProjectsInput{
+  filter: OfficeProjectsFilterInput
+  id: String
+  data: UpdateOfficeProjectsDataInput!
+}
+
+input UpsertOfficeProjectsInput{
+  filter: OfficeProjectsFilterInput
+  id: String
+  data: UpdateOfficeProjectsDataInput!
+}
+
+input UpdateOfficeProjectsDataInput {
+  projectId: String 
+  projectTitle: String 
+}
+
+input OfficeProjectsFilterInput {
+  _and: [OfficeProjectsFilterInput]
+  _not: OfficeProjectsFilterInput
+  _or: [OfficeProjectsFilterInput]
+
+
+  projectId: String_Selector
+  projectTitle: String_Selector
+}
+
+input OfficeProjectsSortInput {
+  projectId: SortOptions
+  projectTitle: SortOptions
 }
 
 
@@ -952,51 +1058,61 @@ input OfficeAddressesSortInput {
 }
 
 
-type OfficeProjects {
-  projectId: String 
-  projectTitle: String 
+type OfficePhones {
+  phoneNumberAsInput: String 
+  phoneNumberType: String 
+  phoneNumber: String 
+  nationalFormat: String 
 }
 
 
-input CreateOfficeProjectsInput {
-  data: CreateOfficeProjectsDataInput!
+input CreateOfficePhonesInput {
+  data: CreateOfficePhonesDataInput!
 }
 
-input CreateOfficeProjectsDataInput {
-  projectId: String 
-  projectTitle: String 
+input CreateOfficePhonesDataInput {
+  phoneNumberAsInput: String 
+  phoneNumberType: String 
+  phoneNumber: String 
+  nationalFormat: String 
 }
 
-input UpdateOfficeProjectsInput{
-  filter: OfficeProjectsFilterInput
+input UpdateOfficePhonesInput{
+  filter: OfficePhonesFilterInput
   id: String
-  data: UpdateOfficeProjectsDataInput!
+  data: UpdateOfficePhonesDataInput!
 }
 
-input UpsertOfficeProjectsInput{
-  filter: OfficeProjectsFilterInput
+input UpsertOfficePhonesInput{
+  filter: OfficePhonesFilterInput
   id: String
-  data: UpdateOfficeProjectsDataInput!
+  data: UpdateOfficePhonesDataInput!
 }
 
-input UpdateOfficeProjectsDataInput {
-  projectId: String 
-  projectTitle: String 
+input UpdateOfficePhonesDataInput {
+  phoneNumberAsInput: String 
+  phoneNumberType: String 
+  phoneNumber: String 
+  nationalFormat: String 
 }
 
-input OfficeProjectsFilterInput {
-  _and: [OfficeProjectsFilterInput]
-  _not: OfficeProjectsFilterInput
-  _or: [OfficeProjectsFilterInput]
+input OfficePhonesFilterInput {
+  _and: [OfficePhonesFilterInput]
+  _not: OfficePhonesFilterInput
+  _or: [OfficePhonesFilterInput]
 
 
-  projectId: String_Selector
-  projectTitle: String_Selector
+  phoneNumberAsInput: String_Selector
+  phoneNumberType: String_Selector
+  phoneNumber: String_Selector
+  nationalFormat: String_Selector
 }
 
-input OfficeProjectsSortInput {
-  projectId: SortOptions
-  projectTitle: SortOptions
+input OfficePhonesSortInput {
+  phoneNumberAsInput: SortOptions
+  phoneNumberType: SortOptions
+  phoneNumber: SortOptions
+  nationalFormat: SortOptions
 }
 
 
@@ -1048,59 +1164,6 @@ input OfficePastProjectsSortInput {
 }
 
 
-type OfficeContacts {
-  contactId: String 
-  contactName: String 
-  contactTitle: String 
-}
-
-
-input CreateOfficeContactsInput {
-  data: CreateOfficeContactsDataInput!
-}
-
-input CreateOfficeContactsDataInput {
-  contactId: String 
-  contactName: String 
-  contactTitle: String 
-}
-
-input UpdateOfficeContactsInput{
-  filter: OfficeContactsFilterInput
-  id: String
-  data: UpdateOfficeContactsDataInput!
-}
-
-input UpsertOfficeContactsInput{
-  filter: OfficeContactsFilterInput
-  id: String
-  data: UpdateOfficeContactsDataInput!
-}
-
-input UpdateOfficeContactsDataInput {
-  contactId: String 
-  contactName: String 
-  contactTitle: String 
-}
-
-input OfficeContactsFilterInput {
-  _and: [OfficeContactsFilterInput]
-  _not: OfficeContactsFilterInput
-  _or: [OfficeContactsFilterInput]
-
-
-  contactId: String_Selector
-  contactName: String_Selector
-  contactTitle: String_Selector
-}
-
-input OfficeContactsSortInput {
-  contactId: SortOptions
-  contactName: SortOptions
-  contactTitle: SortOptions
-}
-
-
 # Type for Projects
 type Project {
   _id: String 
@@ -1115,6 +1178,7 @@ type Project {
   network: String 
   status: String 
   renewed: Boolean 
+  shootingLocation: String 
   summary: String 
   htmlSummary: String 
   website: String 
@@ -1204,6 +1268,7 @@ input CreateProjectDataInput {
   network: String 
   status: String 
   renewed: Boolean 
+  shootingLocation: String 
   summary: String 
   website: String 
   notes: String 
@@ -1236,6 +1301,7 @@ input UpdateProjectDataInput {
   network: String 
   status: String 
   renewed: Boolean 
+  shootingLocation: String 
   summary: String 
   website: String 
   notes: String 
@@ -1267,6 +1333,7 @@ input ProjectFilterInput {
   network: String_Selector
   status: String_Selector
   renewed: Boolean_Selector
+  shootingLocation: String_Selector
   summary: String_Selector
   htmlSummary: String_Selector
   website: String_Selector
@@ -1298,6 +1365,7 @@ input ProjectSortInput {
   network: SortOptions
   status: SortOptions
   renewed: SortOptions
+  shootingLocation: SortOptions
   summary: SortOptions
   htmlSummary: SortOptions
   website: SortOptions
@@ -2054,12 +2122,14 @@ type PastProject {
   userId: String 
   updatedAt: Date 
   projectTitle: String 
+  sortTitle: String 
   projectType: String 
   platformType: String 
   union: String 
   network: String 
   status: String 
   renewed: Boolean 
+  shootingLocation: String 
   summary: String 
   htmlSummary: String 
   website: String 
@@ -2144,10 +2214,13 @@ input CreatePastProjectInput {
 
 input CreatePastProjectDataInput {
   projectTitle: String 
+  sortTitle: String 
   projectType: String 
+  union: String 
   network: String 
   status: String 
   renewed: Boolean 
+  shootingLocation: String 
   summary: String 
   website: String 
   notes: String 
@@ -2175,10 +2248,13 @@ input UpsertPastProjectInput{
 
 input UpdatePastProjectDataInput {
   projectTitle: String 
+  sortTitle: String 
   projectType: String 
+  union: String 
   network: String 
   status: String 
   renewed: Boolean 
+  shootingLocation: String 
   summary: String 
   website: String 
   notes: String 
@@ -2203,12 +2279,14 @@ input PastProjectFilterInput {
   userId: String_Selector
   updatedAt: Date_Selector
   projectTitle: String_Selector
+  sortTitle: String_Selector
   projectType: String_Selector
   platformType: String_Selector
   union: String_Selector
   network: String_Selector
   status: String_Selector
   renewed: Boolean_Selector
+  shootingLocation: String_Selector
   summary: String_Selector
   htmlSummary: String_Selector
   website: String_Selector
@@ -2233,12 +2311,14 @@ input PastProjectSortInput {
   userId: SortOptions
   updatedAt: SortOptions
   projectTitle: SortOptions
+  sortTitle: SortOptions
   projectType: SortOptions
   platformType: SortOptions
   union: SortOptions
   network: SortOptions
   status: SortOptions
   renewed: SortOptions
+  shootingLocation: SortOptions
   summary: SortOptions
   htmlSummary: SortOptions
   website: SortOptions
