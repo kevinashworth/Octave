@@ -94,7 +94,7 @@ class SelectPastProjectIdNameTitle extends PureComponent {
           />
         </FormGroup>
         <FormGroup>
-          <Label for={`pastProjectTitle${this.state.this.state.itemIndex}`}>Editable Past Project Name</Label>
+          <Label for={`pastProjectTitle${this.state.itemIndex}`}>Editable Past Project Name</Label>
           <Input
             type='text'
             id={`pastProjectTitle${this.state.itemIndex}`}
