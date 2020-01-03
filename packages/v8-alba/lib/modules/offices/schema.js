@@ -11,27 +11,27 @@ const contactGroup = {
   order: 10
 }
 
-const projectGroup = {
-  name: 'projects',
-  label: 'Projects',
-  order: 20
-}
-
 const addressGroup = {
   name: 'addresses',
   label: 'Addresses',
-  order: 30
+  order: 20
 }
 
 const phoneGroup = {
   name: 'phones',
   label: 'Phone Numbers',
-  order: 35
+  order: 25
 }
 
 const linkGroup = {
   name: 'links',
   label: 'Links',
+  order: 30
+}
+
+const projectGroup = {
+  name: 'projects',
+  label: 'Projects',
   order: 40
 }
 
