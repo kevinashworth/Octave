@@ -6,6 +6,18 @@ import CreatableSelect from 'react-select/creatable'
 import _ from 'lodash'
 import { customStyles, theme } from './react-select-settings'
 
+const groupStyles = {
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'space-between',
+};
+const formatGroupLabel = data => (
+  <div style={groupStyles}>
+    <span>{data.label}</span>
+  </div>
+);
+
+
 class MyDatalist extends Component {
   constructor (props) {
     super(props)
@@ -59,6 +71,7 @@ class MyDatalist extends Component {
             onInputChange={this.handleInputChange}
             defaultValue={{ value: null, label: '' }}
             options={this.props.options}
+            formatGroupLabel={formatGroupLabel}
             value={selectedOption}
           />
         </div>

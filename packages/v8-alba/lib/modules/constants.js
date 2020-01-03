@@ -48,7 +48,7 @@ const PROJECT_TYPES_ENUM = [
   { value: 'New Media', label: 'New Media' }
 ]
 
-const SHOOTING_LOCATIONS_ENUM = [
+const SHOOTING_LOCATIONS_US_ENUM = [
   { value: 'Albuquerque', label: 'Albuquerque, NM' },
   { value: 'Atlanta', label: 'Atlanta, GA' },
   { value: 'Austin', label: 'Austin, TX' },
@@ -70,18 +70,42 @@ const SHOOTING_LOCATIONS_ENUM = [
   { value: 'Seattle', label: 'Seattle, WA' },
   { value: 'Washington', label: 'Washington, DC' },
   { value: 'Wilmington', label: 'Wilmington, NC' },
-
-  { value: 'London', label: 'London, UK' },
-  { value: 'Mexico', label: 'Mexico' },
-  { value: 'New Zealand', label: 'New Zealand' },
-  { value: 'South Africa', label: 'South Africa' },
-  { value: 'Tokyo', label: 'Tokyo, Japan' },
+]
+const SHOOTING_LOCATIONS_CANADA_ENUM = [
   { value: 'Toronto', label: 'Toronto, ON' },
   { value: 'Vancouver', label: 'Vancouver, BC' },
   { value: 'Winnipeg', label: 'Winnipeg, MB' },
-
-  { value: 'TBD', label: 'TBD' },
 ]
+const SHOOTING_LOCATIONS_WORLDWIDE_ENUM = [
+    { value: 'Paris', label: 'Paris, France' },
+    { value: 'London', label: 'London, UK' },
+    { value: 'Mexico', label: 'Mexico' },
+    { value: 'New Zealand', label: 'New Zealand' },
+    { value: 'South Africa', label: 'South Africa' },
+    { value: 'Tokyo', label: 'Tokyo, Japan' },
+]
+const SHOOTING_LOCATIONS_OTHER_ENUM = [
+    { value: 'TBD', label: 'TBD' },
+]
+export const GROUPED_LOCATIONS_ENUM = [
+  {
+    label: 'United States',
+    options: SHOOTING_LOCATIONS_US_ENUM,
+  },
+  {
+    label: 'Canada',
+    options: SHOOTING_LOCATIONS_CANADA_ENUM,
+  },
+  {
+    label: 'Worldwide',
+    options: SHOOTING_LOCATIONS_WORLDWIDE_ENUM,
+  },
+  {
+    label: 'Other',
+    options: SHOOTING_LOCATIONS_OTHER_ENUM,
+  },
+];
+
 
 const BROADCAST_ENUM = [
   'ABC',
@@ -216,7 +240,6 @@ module.exports = {
   CASTING_TITLES_ENUM,
   PHONE_NUMBER_TYPES_ENUM,
   PROJECT_TYPES_ENUM,
-  SHOOTING_LOCATIONS_ENUM,
   BROADCAST_ENUM,
   CABLE_ENUM,
   PAYTV_ENUM,
