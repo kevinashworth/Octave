@@ -5,9 +5,10 @@ import Users from 'meteor/vulcan:users'
 import { newMutation } from 'meteor/vulcan:core'
 // import AlgoliaLog from '../modules/algolia-log/collection.js'
 import Contacts from '../modules/contacts/collection.js'
+import Histories from '../modules/history/collection.js'
+import Offices from '../modules/offices/collection.js'
 import Projects from '../modules/projects/collection.js'
 import PastProjects from '../modules/past-projects/collection.js'
-import Offices from '../modules/offices/collection.js'
 import Statistics from '../modules/statistics/collection.js'
 import seedContacts from './seeds/_contacts3.js'
 import seedProjects from './seeds/_projects.js'
@@ -38,12 +39,19 @@ const createDummyUsers = async () => {
   ])
 }
 
-// const seedAlgoliaLog = {
-//   algolia: [{
-//     dateOfSend: '2019-12-13 22:20:46',
-//     sentObjectCount: 1546
-//   }]
-// }
+const seedHistory = {
+	_id: 'v4vAkMJ2EyqMmFKGw',
+	changes: [
+		{
+			'Fri Jan 03 2020 09:56:38 GMT-0800 (PST)': {
+				body: 'I\'m loving it!',
+				htmlBody: '<p>I\'m loving it!</p>\n'
+			}
+		}
+	],
+	collectionName: 'Offices'
+}
+
 
 // eslint-disable-next-line no-undef
 Vulcan.removeGettingStartedContent = () => {
@@ -108,6 +116,17 @@ Meteor.startup(() => {
       action: 'statistics.new',
       collection: Statistics,
       document: seedStatistics,
+      currentUser,
+      validate: false
+    }))
+  }
+  if (Histories.find().fetch().length === 0) {
+    // eslint-disable-next-line no-console
+    console.log('// creating dummy histories')
+    Promise.await(newMutation({
+      action: 'histories.new',
+      collection: Histories,
+      document: seedHistory,
       currentUser,
       validate: false
     }))
