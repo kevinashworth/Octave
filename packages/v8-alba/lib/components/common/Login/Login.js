@@ -11,7 +11,7 @@ class Login extends Component {
           <Col md='6'>
             <Card className='p-4'>
               <CardBody>
-                <Components.AccountsLoginForm />
+                <Components.AccountsLoginForm onSignedInHook={() => window.location.assign('/dashboard')}/>
               </CardBody>
             </Card>
           </Col>
@@ -21,4 +21,7 @@ class Login extends Component {
   }
 }
 
-registerComponent('Login', Login)
+registerComponent({
+  name: 'Login',
+  component: Login
+})
