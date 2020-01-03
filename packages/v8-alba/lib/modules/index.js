@@ -6,6 +6,7 @@ import './i18n.js'
 
 import './comments'
 import './contacts'
+import './history'
 import './offices'
 import './projects'
 import './past-projects'
