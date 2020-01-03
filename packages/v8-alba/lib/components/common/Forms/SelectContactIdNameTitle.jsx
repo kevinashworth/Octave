@@ -25,7 +25,6 @@ class SelectContactIdNameTitle extends PureComponent {
     this.state = {
       path: this.props.path,
       pathPrefix: this.props.parentFieldName + '.' + this.props.itemIndex + '.',
-      itemIndex: this.props.itemIndex,
       contactId: this.props.value,
       contactName: '',
       selectedIdOption: null,
@@ -65,8 +64,8 @@ class SelectContactIdNameTitle extends PureComponent {
 
   componentDidMount () {
     const contacts = this.props.document.contacts
-    const contactName = contacts[this.state.itemIndex] ? contacts[this.state.itemIndex].contactName : ''
-    const contactTitle = contacts[this.state.itemIndex] ? contacts[this.state.itemIndex].contactTitle : ''
+    const contactName = contacts[this.props.itemIndex] ? contacts[this.props.itemIndex].contactName : ''
+    const contactTitle = contacts[this.props.itemIndex] ? contacts[this.props.itemIndex].contactTitle : ''
     const selectedIdOption = _.find(this.props.options, { value: this.props.value }) || null
     const selectedTitleOption = _.find(CASTING_TITLES_ENUM, { value: contactTitle }) || null
 
@@ -81,12 +80,12 @@ class SelectContactIdNameTitle extends PureComponent {
     return (
       <>
         <FormGroup>
-          <Label for={`contactId${this.state.itemIndex}`}>Name from Database</Label>
+          <Label for={`contactId${this.props.itemIndex}`}>Name from Database</Label>
           <OptimizedSelect
             styles={customStyles}
             maxMenuHeight={400}
             theme={theme}
-            id={`contactId${this.state.itemIndex}`}
+            id={`contactId${this.props.itemIndex}`}
             value={this.state.selectedIdOption}
             onChange={this.handleIdChange}
             options={this.props.options}
@@ -95,21 +94,21 @@ class SelectContactIdNameTitle extends PureComponent {
           />
         </FormGroup>
         <FormGroup>
-          <Label for={`contactName${this.state.itemIndex}`}>Editable Name</Label>
+          <Label for={`contactName${this.props.itemIndex}`}>Editable Name</Label>
           <Input
             type='text'
-            id={`contactName${this.state.itemIndex}`}
+            id={`contactName${this.props.itemIndex}`}
             value={this.state.contactName}
             onChange={this.handleNameChange}
           />
         </FormGroup>
         <FormGroup>
-          <Label for={`contactTitle${this.state.itemIndex}`}>Title for This</Label>
+          <Label for={`contactTitle${this.props.itemIndex}`}>Title for This</Label>
           <OptimizedSelect
             styles={customStyles}
             maxMenuHeight={400}
             theme={theme}
-            id={`contactTitle${this.state.itemIndex}`}
+            id={`contactTitle${this.props.itemIndex}`}
             value={this.state.selectedTitleOption}
             onChange={this.handleTitleChange}
             options={CASTING_TITLES_ENUM}
