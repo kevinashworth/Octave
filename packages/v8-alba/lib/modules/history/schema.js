@@ -84,7 +84,7 @@ const schema = {
   isDeleted: {
     type: Boolean,
     optional: true,
-    default: false,
+    defaultValue: false,
     canRead: ['guests'],
     canCreate: ['members', 'admins'],
     canUpdate: ['members', 'admins'],
