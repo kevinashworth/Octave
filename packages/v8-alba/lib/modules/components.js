@@ -58,6 +58,8 @@ import '../components/contacts/ContactsNewForm'
 import '../components/contacts/ContactsSingle'
 import '../components/contacts/ContactsVirtualizedList'
 
+import '../components/history/History.jsx'
+
 import '../components/offices/OfficeMini'
 import '../components/offices/OfficesDataTable'
 import '../components/offices/OfficesEditForm'

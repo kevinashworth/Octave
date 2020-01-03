@@ -133,9 +133,12 @@ class OfficesSingle extends PureComponent {
                 }
               </TabPane>
               <TabPane tabId='Comments'>
-                  <Components.CommentsThread
-                    terms={{ objectId: document._id, collectionName: 'Offices', view: 'Comments' }}
-                  />
+                <Components.CommentsThread
+                  terms={{ objectId: document._id, collectionName: 'Offices', view: 'Comments' }}
+                />
+              </TabPane>
+              <TabPane tabId='History'>
+                <Components.History documentId={document._id}/>
               </TabPane>
             </TabContent>
           </CardBody>
