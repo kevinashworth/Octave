@@ -8,15 +8,20 @@ import Projects from '../../modules/projects/collection.js'
 
 const ProjectMini = (props) => {
   if (props.loading) {
-    return (<div><Components.Loading /></div>)
+    return <Components.Loading />
   }
   if (!props.document) {
-    return (<div><FormattedMessage id='app.404' /></div>)
+    return <FormattedMessage id='app.404' />
   }
 
   const project = props.document
   return (
-    <CardText><b><Link to={`/projects/${project._id}/${project.slug}`}>{project.projectTitle}</Link></b> ({project.status})</CardText>
+    <CardText>
+      <b><Link to={`/projects/${project._id}/${project.slug}`}>{project.projectTitle}</Link></b><br />
+      <small>
+        { project.projectType }{ project.network && ` – ${project.network} ` } ({ project.status })
+      </small>
+      </CardText>
   )
 }
 
