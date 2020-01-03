@@ -1,5 +1,6 @@
 export * from './algolia.js'
 export * from './contacts.js'
+export * from './history.js'
 export * from './projects.js'
 export * from './past-projects.js'
 export * from './twilio.js'
