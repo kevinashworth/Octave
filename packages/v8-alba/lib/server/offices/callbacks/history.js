@@ -41,7 +41,8 @@ export function OfficeEditUpdateHistoryBefore (data, { originalDocument }) {
           $set: { collectionName: 'Offices'},
           $addToSet: {
             changes: {
-              [updatedAt]: { ...rest }
+              date: updatedAt,
+              diff: { ...rest }
             }
           }
         },

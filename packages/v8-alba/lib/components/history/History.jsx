@@ -1,19 +1,30 @@
 import { Components,  registerComponent, withCurrentUser, withSingle } from 'meteor/vulcan:core'
 import React, { PureComponent } from 'react'
 import PropTypes from 'prop-types'
-import { Card, CardBody, CardFooter, CardHeader } from 'reactstrap'
+import { Card, CardBody, CardFooter, CardHeader, CardSubtitle, CardText } from 'reactstrap'
+import Histories from '../../modules/history/collection.js'
 
-const History = ({ currentUser, document, loading }) => {
+const Diff = ({ change }) => {
+  return (
+    <>
+    <CardSubtitle>{change.date}</CardSubtitle>
+    <CardText>{JSON.stringify(change.diff)}</CardText>
+    </>
+  )
+}
+
+const History = ({ document, loading }) => {
   if (loading) {
     return <Components.Loading />
   }
+  const changes = document.changes
   return (
     <Card>
       <CardHeader>
-        <i className='icon-briefcase' />History
+        <i className='icon-refresh' />History
       </CardHeader>
       <CardBody>
-        {document}
+        {changes.map((change, index) => <Diff key={index} change={change} />)}
       </CardBody>
       <CardFooter>
         This is the footer
@@ -23,7 +34,7 @@ const History = ({ currentUser, document, loading }) => {
 }
 
 const options = {
-  collection: History
+  collection: Histories
 }
 
 History.propTypes = {

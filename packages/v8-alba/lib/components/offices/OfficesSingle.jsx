@@ -96,6 +96,11 @@ class OfficesSingle extends PureComponent {
                   onClick={() => { this.toggleTab('Comments') }}
                 >Comments</NavLink>
               </NavItem>
+              <NavItem>
+                <NavLink active={this.state.activeTab === 'History'}
+                  onClick={() => { this.toggleTab('History') }}
+                >History</NavLink>
+              </NavItem>
             </Nav>
             <TabContent activeTab={this.state.activeTab}>
               <TabPane tabId='Main'>

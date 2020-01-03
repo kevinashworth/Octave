@@ -42,10 +42,11 @@ const createDummyUsers = async () => {
 const seedHistory = {
 	_id: 'v4vAkMJ2EyqMmFKGw',
 	changes: [
-		{
-			'Fri Jan 03 2020 09:56:38 GMT-0800 (PST)': {
-				body: 'I\'m loving it!',
-				htmlBody: '<p>I\'m loving it!</p>\n'
+    {
+			date: new Date('2020-01-03T21:08:58.333Z'),
+			diff: {
+				body: 'Foo',
+				htmlBody: '<p>Foo</p>\n'
 			}
 		}
 	],
