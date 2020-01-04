@@ -7,8 +7,8 @@ import Histories from '../../modules/history/collection.js'
 const Diff = ({ change }) => {
   return (
     <>
-    <CardSubtitle>{change.date}</CardSubtitle>
-    <CardText>{JSON.stringify(change.diff)}</CardText>
+    <CardSubtitle>{change.date}:</CardSubtitle>
+    <CardText>{JSON.stringify(change.patch)}</CardText>
     </>
   )
 }
@@ -24,7 +24,7 @@ const History = ({ document, loading }) => {
   return (
     <Card>
       <CardHeader>
-        <i className='icon-refresh' />History
+        <i className='fa fa-history' />History
       </CardHeader>
       <CardBody>
         {changes.map((change, index) => <Diff key={index} change={change} />)}

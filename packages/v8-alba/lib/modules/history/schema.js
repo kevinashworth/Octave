@@ -1,7 +1,8 @@
 const schema = {
+
   // default properties
 
-  _id: {
+  _id: {  // equal to contact's, office's, or project's _id
     type: String,
     optional: true,
     canRead: ['members']
@@ -22,7 +23,7 @@ const schema = {
 
   // custom properties
 
-  updatedAt: {
+  updatedAt: { // Dates and fast-json-patch don't work together, so use String not Date
     type: String,
     optional: true,
     canRead: ['members'],
@@ -42,30 +43,7 @@ const schema = {
     hidden: true,
     canRead: ['members'],
     canCreate: ['members', 'admins'],
-    canUpdate: ['members', 'admins'],
-    onCreate: ({ document }) => {
-      if (document.collectionName) {
-        return document.collectionName
-      } else {
-        console.log('collectionName missing! Here is the document:', document)
-      }
-    }
-  },
-  // That contact's, office's, or project's _id
-  objectId: {
-    type: String,
-    optional: true,
-    hidden: true,
-    canRead: ['members'],
-    canCreate: ['members', 'admins'],
-    canUpdate: ['members', 'admins'],
-    onCreate: ({ document }) => {
-      if (document.objectId) {
-        return document.objectId
-      } else {
-        console.log('objectId missing! Here is the document:', document)
-      }
-    }
+    canUpdate: ['members', 'admins']
   },
   // This is the meat of the matter
   changes: {
@@ -81,14 +59,14 @@ const schema = {
     optional: true
   },
   // Deleted objects don't appear.
-  isDeleted: {
-    type: Boolean,
-    optional: true,
-    defaultValue: false,
-    canRead: ['guests'],
-    canCreate: ['members', 'admins'],
-    canUpdate: ['members', 'admins'],
-  },
+  // isDeleted: {
+  //   type: Boolean,
+  //   optional: true,
+  //   defaultValue: false,
+  //   canRead: ['guests'],
+  //   canCreate: ['members', 'admins'],
+  //   canUpdate: ['members', 'admins'],
+  // },
 }
 
 export default schema
