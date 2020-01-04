@@ -119,9 +119,9 @@ Meteor.startup(() => {
   }
   if (Patches.find().fetch().length === 0) {
     // eslint-disable-next-line no-console
-    console.log('// creating dummy histories')
+    console.log('// creating dummy patches')
     Promise.await(newMutation({
-      action: 'histories.new',
+      action: 'patches.new',
       collection: Patches,
       document: seedPatch,
       currentUser,
