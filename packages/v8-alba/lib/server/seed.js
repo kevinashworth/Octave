@@ -43,11 +43,8 @@ const seedHistory = {
 	_id: 'v4vAkMJ2EyqMmFKGw',
 	changes: [
     {
-			date: new Date('2020-01-03T21:08:58.333Z'),
-			diff: {
-				body: 'Foo',
-				htmlBody: '<p>Foo</p>\n'
-			}
+			date: new Date('2020-01-03T21:08:58.333Z').toUTCString(),
+			diff: { op: 'replace', path: '/addresses/0/street2', value: 'Stage 4, 5th Floor' }
 		}
 	],
 	collectionName: 'Offices'

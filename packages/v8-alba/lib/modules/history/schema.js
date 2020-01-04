@@ -23,16 +23,16 @@ const schema = {
   // custom properties
 
   updatedAt: {
-    type: Date,
+    type: String,
     optional: true,
     canRead: ['members'],
     canCreate: ['members', 'admins'],
     canUpdate: ['members', 'admins'],
     onCreate: () => {
-      return new Date()
+      return new Date().toUTCString()
     },
     onUpdate: () => {
-      return new Date()
+      return new Date().toUTCString()
     }
   },
   // History of a contact, office, or project

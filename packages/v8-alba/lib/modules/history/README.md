@@ -58,3 +58,71 @@ See https://stackoverflow.com/questions/4185105/ways-to-implement-data-versionin
 	"collectionName" : "Offices"
 }
 ```
+
+OR THIS IS BEST!
+
+```
+{
+	"_id" : "YcRdgf2rNfZoYkbn7",
+	"changes" : [
+		{
+			"date" : ISODate("2020-01-03T21:12:52.207Z"),
+			"diff" : {
+				"body" : "_Foo_",
+				"htmlBody" : "<p><em>Foo</em></p>\n"
+			}
+		},
+		{
+			"date" : ISODate("2020-01-03T21:37:13.534Z"),
+			"diff" : {
+				"addresses" : [
+					{
+						"street2" : "Stage 4, 5th Floor"
+					}
+				]
+			}
+		}
+	],
+	"collectionName" : "Offices"
+}
+```
+
+
+AND THIS IS `FAST`:
+
+```
+[KA] YcRdgf2rNfZoYkbn7 FAST diff:
+[
+{ op: 'add', path: '/updatedAt/0', value: '2' },
+{ op: 'add', path: '/updatedAt/1', value: '0' },
+{ op: 'add', path: '/updatedAt/2', value: '2' },
+{ op: 'add', path: '/updatedAt/3', value: '0' },
+{ op: 'add', path: '/updatedAt/4', value: '-' },
+{ op: 'add', path: '/updatedAt/5', value: '0' },
+{ op: 'add', path: '/updatedAt/6', value: '1' },
+{ op: 'add', path: '/updatedAt/7', value: '-' },
+{ op: 'add', path: '/updatedAt/8', value: '0' },
+{ op: 'add', path: '/updatedAt/9', value: '3' },
+{ op: 'add', path: '/updatedAt/10', value: 'T' },
+{ op: 'add', path: '/updatedAt/11', value: '2' },
+{ op: 'add', path: '/updatedAt/12', value: '1' },
+{ op: 'add', path: '/updatedAt/13', value: ':' },
+{ op: 'add', path: '/updatedAt/14', value: '3' },
+{ op: 'add', path: '/updatedAt/15', value: '7' },
+{ op: 'add', path: '/updatedAt/16', value: ':' },
+{ op: 'add', path: '/updatedAt/17', value: '1' },
+{ op: 'add', path: '/updatedAt/18', value: '3' },
+{ op: 'add', path: '/updatedAt/19', value: '.' },
+{ op: 'add', path: '/updatedAt/20', value: '5' },
+{ op: 'add', path: '/updatedAt/21', value: '3' },
+{ op: 'add', path: '/updatedAt/22', value: '4' },
+{ op: 'add', path: '/updatedAt/23', value: 'Z' },
+{ op: 'remove', path: '/pastProjects' },
+{ op: 'remove', path: '/links' },
+{ op: 'remove', path: '/projects' },
+{ op: 'replace', path: '/addresses/0/street2', value: 'Stage 4, 5th Floor' },
+{ op: 'add', path: '/_id', value: 'YcRdgf2rNfZoYkbn7' },
+{ op: 'add', path: '/userId', value: 'AhH3HnQKsiAYNQnrj' },
+{ op: 'add', path: '/createdAt', value: '2019-12-30T17:26:46.180Z' }
+]
+```

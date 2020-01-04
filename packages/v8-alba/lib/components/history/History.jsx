@@ -17,6 +17,9 @@ const History = ({ document, loading }) => {
   if (loading) {
     return <Components.Loading />
   }
+  if (!document) {
+    return <>No History</>
+  }
   const changes = document.changes
   return (
     <Card>
