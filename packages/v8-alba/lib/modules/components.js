@@ -58,7 +58,7 @@ import '../components/contacts/ContactsNewForm'
 import '../components/contacts/ContactsSingle'
 import '../components/contacts/ContactsVirtualizedList'
 
-import '../components/history/History.jsx'
+import '../components/patches/PatchesList.jsx'
 
 import '../components/offices/OfficeMini'
 import '../components/offices/OfficesDataTable'

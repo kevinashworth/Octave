@@ -4,7 +4,7 @@ import { Promise } from 'meteor/promise'
 import { Connectors, newMutation } from 'meteor/vulcan:core'
 import * as jsonpatch from 'fast-json-patch'
 // import _ from 'lodash'
-import Histories from '../../../modules/history/collection.js'
+import Patches from '../../../modules/patches/collection.js'
 
 export function OfficeEditUpdateHistoryBefore (data, { currentUser, document, originalDocument }) {
   var objectId = originalDocument._id
@@ -24,16 +24,16 @@ export function OfficeEditUpdateHistoryBefore (data, { currentUser, document, or
 
   // If there are no differences, `compare` returns an empty array (length 0).
   if (patch.length > 0) {
-    const patchHistory = Histories.findOne(objectId)
+    const patchHistory = Patches.findOne(objectId)
     if (patchHistory) {
       Promise.await(
-        Connectors.update(Histories, objectId,
+        Connectors.update(Patches, objectId,
           {
             $set: { collectionName: 'Offices' },
             $addToSet: {
-              changes: {
+              patches: {
                 date: new Date().toUTCString(),
-                patch: patch
+                patch
               }
             }
           }
@@ -43,14 +43,14 @@ export function OfficeEditUpdateHistoryBefore (data, { currentUser, document, or
       const theHistory = {
         _id: objectId,
         collectionName: 'Offices',
-        changes: [{
+        patches: [{
           date: new Date().toUTCString(),
-          patch: patch
+          patch
         }]
       }
       Promise.await(newMutation({
         action: 'histories.new',
-        collection: Histories,
+        collection: Patches,
         document: theHistory,
         currentUser,
         validate: false

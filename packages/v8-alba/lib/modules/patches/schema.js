@@ -46,7 +46,7 @@ const schema = {
     canUpdate: ['members', 'admins']
   },
   // This is the meat of the matter
-  changes: {
+  patches: {
     type: Array,
     optional: true,
     canRead: ['guests'],
@@ -54,7 +54,7 @@ const schema = {
     canUpdate: ['members', 'admins'],
     blackbox: true
   },
-  'changes.$': {
+  'patches.$': {
     type: Object,
     optional: true
   },

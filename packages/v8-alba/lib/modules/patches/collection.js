@@ -1,9 +1,9 @@
 import { createCollection } from 'meteor/vulcan:core'
 import schema from './schema.js'
 
-const History = createCollection({
-  typeName: 'History',
-  collectionName: 'Histories',
+const Patches = createCollection({
+  typeName: 'Patch',
+  collectionName: 'Patches',
   schema,
   permissions: {
     canCreate: ['members'],
@@ -13,4 +13,4 @@ const History = createCollection({
   }
 })
 
-export default History
+export default Patches

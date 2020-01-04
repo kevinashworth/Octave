@@ -1,4 +1,4 @@
-Store diffs, not whole copies of documents in History/Histories.
+Store diffs, not whole copies of documents in Patches.
 
 Started out here. See https://stackoverflow.com/questions/4185105/ways-to-implement-data-versioning-in-mongodb/4189257#4189257
 ```

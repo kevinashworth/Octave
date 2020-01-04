@@ -5,8 +5,8 @@ import Users from 'meteor/vulcan:users'
 import { newMutation } from 'meteor/vulcan:core'
 // import AlgoliaLog from '../modules/algolia-log/collection.js'
 import Contacts from '../modules/contacts/collection.js'
-import Histories from '../modules/history/collection.js'
 import Offices from '../modules/offices/collection.js'
+import Patches from '../modules/patches/collection.js'
 import Projects from '../modules/projects/collection.js'
 import PastProjects from '../modules/past-projects/collection.js'
 import Statistics from '../modules/statistics/collection.js'
@@ -39,17 +39,16 @@ const createDummyUsers = async () => {
   ])
 }
 
-const seedHistory = {
-	_id: 'v4vAkMJ2EyqMmFKGw',
-	changes: [
+const seedPatch = {
+  _id: 'v4vAkMJ2EyqMmFKGw',
+  patches: [
     {
-			date: new Date('2020-01-03T21:08:58.333Z').toUTCString(),
-			diff: { op: 'replace', path: '/addresses/0/street2', value: 'Stage 4, 5th Floor' }
-		}
-	],
-	collectionName: 'Offices'
+      date: new Date('2020-01-03T21:08:58.333Z').toUTCString(),
+      patch: { op: 'replace', path: '/addresses/0/street2', value: 'Stage 4, 5th Floor' }
+    }
+  ],
+  collectionName: 'Offices'
 }
-
 
 // eslint-disable-next-line no-undef
 Vulcan.removeGettingStartedContent = () => {
@@ -118,13 +117,13 @@ Meteor.startup(() => {
       validate: false
     }))
   }
-  if (Histories.find().fetch().length === 0) {
+  if (Patches.find().fetch().length === 0) {
     // eslint-disable-next-line no-console
     console.log('// creating dummy histories')
     Promise.await(newMutation({
       action: 'histories.new',
-      collection: Histories,
-      document: seedHistory,
+      collection: Patches,
+      document: seedPatch,
       currentUser,
       validate: false
     }))

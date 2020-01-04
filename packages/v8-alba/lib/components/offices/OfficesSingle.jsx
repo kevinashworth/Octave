@@ -143,7 +143,7 @@ class OfficesSingle extends PureComponent {
                 />
               </TabPane>
               <TabPane tabId='History'>
-                <Components.History documentId={document._id}/>
+                <Components.PatchesList documentId={document._id}/>
               </TabPane>
             </TabContent>
           </CardBody>
