@@ -6,7 +6,8 @@ import {
   ContactCreateUpdateOffices,
   ContactEditUpdateOffices,
   ContactEditUpdateProjects,
-  ContactEditUpdatePastProjects
+  ContactEditUpdatePastProjects,
+  ContactEditUpdateHistoryBefore
 } from './callbacks/index.js'
 
 extendCollection(Contacts, {
@@ -16,7 +17,7 @@ extendCollection(Contacts, {
     },
     update: {
       after: [ContactEditUpdateOffices, ContactEditUpdateProjects, ContactEditUpdatePastProjects],
-      before: [ContactEditUpdateAlgoliaBefore]
+      before: [ContactEditUpdateHistoryBefore, ContactEditUpdateAlgoliaBefore]
     }
   }
 })
