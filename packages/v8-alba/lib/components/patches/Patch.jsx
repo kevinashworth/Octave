@@ -2,9 +2,11 @@ import { Components,  registerComponent, withCurrentUser, withSingle } from 'met
 import React, { PureComponent, useState } from 'react'
 import PropTypes from 'prop-types'
 import * as jsonpatch from 'fast-json-patch'
-import { Card, CardSubtitle, CardText, Collapse } from 'reactstrap'
+import moment from 'moment'
+import { Collapse } from 'reactstrap'
 import Contacts from '../../modules/contacts/collection.js'
 // import Patches from '../../modules/patches/collection.js'
+import { DATE_FORMAT_LONG } from '../../modules/constants.js'
 
 const Patch = ({ document, loading, patch }) => { // `document` is the Contact as presently in db
   if (loading) {
@@ -15,21 +17,19 @@ const Patch = ({ document, loading, patch }) => { // `document` is the Contact a
     const [collapseIsOpen, toggleCollapse] = useState(false)
     const toggle = () => toggleCollapse(!collapseIsOpen)
 
-    var patchedContact = { ...document }
+    var patchedContact = jsonpatch.deepClone(document)
+    patchedContact = jsonpatch.applyPatch(patchedContact, patch.patch).newDocument
 
     console.log('[KA] contact:', document)
     console.log('[KA] patch:', patch.patch)
-
-    patchedContact = jsonpatch.applyPatch(patchedContact, patch.patch).newDocument
     console.log('[KA] patchedContact:', patchedContact)
     return (
-      <Card>
-      <CardSubtitle>{patch.date}:</CardSubtitle>
-      <CardText><a onClick={toggle}>{JSON.stringify(patch.patch)}</a></CardText>
+      <>
+      <a onClick={toggle}>{moment(patch.date).format(DATE_FORMAT_LONG)}</a>:
         <Collapse isOpen={collapseIsOpen}>
           <Components.ContactPatchDisplay document={patchedContact} />
         </Collapse>
-      </Card>
+      </>
     )
   }
 }

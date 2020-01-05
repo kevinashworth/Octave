@@ -6,6 +6,26 @@ import { Card, CardBody, CardFooter, CardHeader, CardSubtitle, CardText, Collaps
 // import Contacts from '../../modules/contacts/collection.js'
 import Patches from '../../modules/patches/collection.js'
 
+function preparePatches (patches) {
+  let myPatches = patches.reverse()
+  // myPatches.forEach((patch, index) => {
+  //
+  // })
+
+  let newPatches = []
+  newPatches[0] = {
+    date: myPatches[0].date,
+    patch: myPatches[0].patch
+  }
+  newPatches[1] = {
+    date: myPatches[1].date,
+    patch: newPatches[0].patch.concat(myPatches[1].patch)
+  }
+
+  console.log('newPatches:', newPatches)
+  return newPatches
+}
+
 const PatchesList = ({ document, loading }) => { // `document` is the patches object for this Contact
   if (loading) {
     return <Components.Loading />
@@ -15,13 +35,14 @@ const PatchesList = ({ document, loading }) => { // `document` is the patches ob
     const { patches } = document
     console.log('what the hell is this document:', document)
     console.log('what the hell are these patches:', patches)
+    const preparedPatches = preparePatches(patches)
     return (
       <Card>
         <CardHeader>
           <i className='fa fa-history' />History
         </CardHeader>
         <CardBody>
-          {patches.map((patch) => <Components.Patch
+          {preparedPatches.map((patch) => <Components.Patch
             collectionName={document.collectionName}
             documentId={document._id}
             key={patch.date}
