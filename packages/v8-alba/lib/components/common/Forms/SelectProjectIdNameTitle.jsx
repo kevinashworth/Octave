@@ -56,7 +56,7 @@ class SelectProjectIdNameTitle extends PureComponent {
 
   handleTitleChange (selectedOption) {
     this.setState({
-      titleForProject: selectedOption.label
+      selectedTitleOption: selectedOption
     })
     this.context.updateCurrentValues({
       [this.state.pathPrefix + 'titleForProject']: selectedOption.label
@@ -90,6 +90,7 @@ class SelectProjectIdNameTitle extends PureComponent {
             value={this.state.selectedIdOption}
             onChange={this.handleIdChange}
             options={this.props.options}
+            isClearable
             resetValue={{ value: null, label: '' }}
           />
         </FormGroup>
@@ -112,6 +113,7 @@ class SelectProjectIdNameTitle extends PureComponent {
             value={this.state.selectedTitleOption}
             onChange={this.handleTitleChange}
             options={CASTING_TITLES_ENUM}
+            isClearable
             resetValue={{ value: null, label: '' }}
           />
         </FormGroup>
