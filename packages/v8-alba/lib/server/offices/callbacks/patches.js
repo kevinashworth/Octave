@@ -2,9 +2,14 @@ import { Connectors, newMutation } from 'meteor/vulcan:core'
 import * as jsonpatch from 'fast-json-patch'
 import Patches from '../../../modules/patches/collection.js'
 
-export function OfficeEditUpdateHistoryBefore (data, { currentUser, document, originalDocument }) {
+export function OfficeEditUpdateHistoryAfter (document, { currentUser, originalDocument }) {
   const objectId = originalDocument._id
-  const patch = jsonpatch.compare(originalDocument, document)
+  // eslint-disable-next-line no-unused-vars
+  let myDocument, myOriginalDocument, _id, userId, createdAt, updatedAt, theContact, street, location, fullAddress, theStreet, theCity, theState, theLocation, theProjects;
+  ({ _id, userId, createdAt, updatedAt, theContact, street, location, fullAddress, theStreet, theCity, theState, theLocation, theProjects, ...myDocument } = document);
+  ({ _id, userId, createdAt, updatedAt, theContact, street, location, fullAddress, theStreet, theCity, theState, theLocation, theProjects, ...myOriginalDocument } = originalDocument);
+
+  const patch = jsonpatch.compare(myDocument, myOriginalDocument, true)
 
   if (patch.length > 0) { // If there are no differences, `compare` returns an empty array (length 0)
     const patchHistory = Patches.findOne(objectId)

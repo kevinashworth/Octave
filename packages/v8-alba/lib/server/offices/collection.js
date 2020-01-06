@@ -9,7 +9,7 @@ import {
   OfficeEditUpdateProjects,
   OfficeCreateFormatPhones,
   OfficeUpdateFormatPhones,
-  OfficeEditUpdateHistoryBefore,
+  OfficeEditUpdateHistoryAfter,
 } from './callbacks/index.js'
 
 extendCollection(Offices, {
@@ -26,12 +26,12 @@ extendCollection(Offices, {
     update: {
       before: [
         // OfficeEditUpdateAlgoliaBefore,
-        OfficeEditUpdateHistoryBefore,
         OfficeEditUpdateContacts,
         OfficeEditUpdatePastProjects,
         OfficeEditUpdateProjects,
         OfficeUpdateFormatPhones
-      ]
+      ],
+      after: [OfficeEditUpdateHistoryAfter]
     }
   }
 })
