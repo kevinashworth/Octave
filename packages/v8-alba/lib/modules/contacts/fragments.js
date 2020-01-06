@@ -68,6 +68,44 @@ registerFragment(/* GraphQL */ `
 `)
 
 registerFragment(/* GraphQL */ `
+  fragment ContactsOnlyDirectlyEditableFieldsFragment on Contact {
+    displayName
+    firstName
+    middleName
+    lastName
+    gender
+    title
+    body
+    links {
+      platformName
+      profileLink
+      profileName
+    }
+    addresses {
+      street1
+      street2
+      city
+      state
+      zip
+    }
+    projects {
+      projectId
+      projectTitle
+      titleForProject
+    }
+    pastProjects {
+      projectId
+      projectTitle
+      titleForProject
+    }
+    offices {
+      officeId
+    }
+    slug
+  }
+`)
+
+registerFragment(/* GraphQL */ `
   fragment ContactsDataTableFragment on Contact {
     _id
     displayName

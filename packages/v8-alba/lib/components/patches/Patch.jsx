@@ -2,10 +2,10 @@ import { Components,  registerComponent, withCurrentUser, withSingle } from 'met
 import React, { PureComponent, useState } from 'react'
 import PropTypes from 'prop-types'
 import * as jsonpatch from 'fast-json-patch'
-import _ from 'lodash'
+// import _ from 'lodash'
 import moment from 'moment'
-import { Collapse } from 'reactstrap'
 var omitDeep = require('omit-deep')
+import { Button, Collapse } from 'reactstrap'
 import Contacts from '../../modules/contacts/collection.js'
 // import Patches from '../../modules/patches/collection.js'
 import { DATE_FORMAT_LONG } from '../../modules/constants.js'
@@ -19,26 +19,26 @@ const Patch = ({ document, loading, patch }) => { // `document` is the Contact a
     const [collapseIsOpen, toggleCollapse] = useState(false)
     const toggle = () => toggleCollapse(!collapseIsOpen)
 
-    var patchedContact = _.cloneDeepWith(omitDeep(document, ['__typename']), customizer)
+    var patchedContact = jsonpatch.deepClone(omitDeep(document, ['__typename']))
     patchedContact = jsonpatch.applyPatch(patchedContact, patch.patch).newDocument
 
     console.log('[KA] contact:', document)
     console.log('[KA] patch:', patch.patch)
     console.log('[KA] patchedContact:', patchedContact)
     return (
-      <>
-      <a onClick={toggle}>{moment(patch.date).format(DATE_FORMAT_LONG)}</a>:
-        <Collapse isOpen={collapseIsOpen}>
-          <Components.ContactPatchDisplay document={patchedContact} />
-        </Collapse>
-      </>
+      <div>
+      <Button onClick={toggle}>Toggle {moment(patch.date).format(DATE_FORMAT_LONG)} Version</Button>
+      <Collapse isOpen={collapseIsOpen}>
+        <Components.ContactPatchDisplay document={patchedContact} />
+      </Collapse>
+      </div>
     )
   }
 }
 
 const options = {
   collection: Contacts,
-  fragmentName: 'ContactsSingleFragment'
+  fragmentName: 'ContactsOnlyDirectlyEditableFieldsFragment'
 }
 
 Patch.propTypes = {

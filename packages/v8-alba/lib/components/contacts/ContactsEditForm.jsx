@@ -15,7 +15,7 @@ const ContactsEditForm = ({ documentId, match, history, toggle, currentUser }) =
           <Components.SmartForm
             collection={Contacts}
             documentId={theDocumentId}
-            mutationFragment={getFragment('ContactsEditFragment')}
+            mutationFragment={getFragment('ContactsOnlyDirectlyEditableFieldsFragment')}
             showRemove={Users.canDo(currentUser, 'contact.delete.own')}
             successCallback={document => {
               if (toggle) {
