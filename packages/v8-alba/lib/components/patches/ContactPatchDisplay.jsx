@@ -20,7 +20,7 @@ const ContactPatchDisplay = (props) => {
 
   const contact = props.document
   const displayDate =
-    'Contact before edited at ' + moment(contact.updatedAt).format(DATE_FORMAT_LONG)
+    'Contact as it was in the database before it was edited ' + moment(contact.updatedAt).format(DATE_FORMAT_LONG)
   return (
     <Card className='card-accent-warning'>
       <CardHeader tag='h2'>{ contact.fullName }</CardHeader>
@@ -67,7 +67,7 @@ const ContactPatchDisplay = (props) => {
         }
       </CardBody>
       <CardFooter>
-        <small className='text-muted'>{displayDate}</small>
+        <span className='text-muted'>{displayDate}</span>
       </CardFooter>
     </Card>
   )

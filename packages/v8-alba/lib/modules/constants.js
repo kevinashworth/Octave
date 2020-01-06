@@ -15,7 +15,7 @@ const CASTING_TITLES_ENUM = [
   { value: 'Casting Director / Casting Executive', label: 'Casting Director / Casting Executive' },
   { value: 'Casting Consultant', label: 'Casting Consultant' },
   { value: 'Not Currently In Casting', label: 'Not Currently In Casting' },
-  { value: 'Unknown', label: 'Unknown' }
+  { value: 'Unknown Title', label: 'Unknown Title' }
 ]
 
 const PHONE_NUMBER_TYPES_ENUM = [

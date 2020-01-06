@@ -49,7 +49,7 @@ const PatchesList = ({ document, loading }) => { // `document` is the patches ob
             patch={patch} />)}
         </CardBody>
         <CardFooter>
-          This is the footer
+          <small className='text-muted'>This is the unused footer</small>
         </CardFooter>
       </Card>
     )
