@@ -10,7 +10,7 @@ import Contacts from '../../modules/contacts/collection.js'
 // import Patches from '../../modules/patches/collection.js'
 import { DATE_FORMAT_LONG } from '../../modules/constants.js'
 
-const Patch = ({ document, loading, patch }) => { // `document` is the Contact as presently in db
+const ContactPatch = ({ document, loading, patch }) => { // `document` is the Contact as presently in db
   if (loading) {
     return <Components.Loading />
   } else if (!document) {
@@ -41,12 +41,12 @@ const options = {
   fragmentName: 'ContactsOnlyDirectlyEditableFieldsFragment'
 }
 
-Patch.propTypes = {
+ContactPatch.propTypes = {
   documentId: PropTypes.string.isRequired,
 }
 
 registerComponent({
-  name: 'Patch',
-  component: Patch,
+  name: 'ContactPatch',
+  component: ContactPatch,
   hocs: [withCurrentUser, [withSingle, options]]
 })

@@ -59,7 +59,7 @@ import '../components/contacts/ContactsSingle'
 import '../components/contacts/ContactsVirtualizedList'
 
 import '../components/patches/ContactPatchDisplay'
-import '../components/patches/Patch.jsx'
+import '../components/patches/ContactPatch.jsx'
 import '../components/patches/PatchesList.jsx'
 
 import '../components/offices/OfficeMini'

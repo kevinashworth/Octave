@@ -42,7 +42,7 @@ const PatchesList = ({ document, loading }) => { // `document` is the patches ob
           <i className='fa fa-history' />History
         </CardHeader>
         <CardBody>
-          {preparedPatches.map((patch) => <Components.Patch
+          {preparedPatches.map((patch) => <Components.ContactPatch
             collectionName={document.collectionName}
             documentId={document._id}
             key={patch.date}
