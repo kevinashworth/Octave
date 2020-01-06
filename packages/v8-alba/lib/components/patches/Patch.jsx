@@ -2,8 +2,10 @@ import { Components,  registerComponent, withCurrentUser, withSingle } from 'met
 import React, { PureComponent, useState } from 'react'
 import PropTypes from 'prop-types'
 import * as jsonpatch from 'fast-json-patch'
+import _ from 'lodash'
 import moment from 'moment'
 import { Collapse } from 'reactstrap'
+var omitDeep = require('omit-deep')
 import Contacts from '../../modules/contacts/collection.js'
 // import Patches from '../../modules/patches/collection.js'
 import { DATE_FORMAT_LONG } from '../../modules/constants.js'
@@ -17,7 +19,7 @@ const Patch = ({ document, loading, patch }) => { // `document` is the Contact a
     const [collapseIsOpen, toggleCollapse] = useState(false)
     const toggle = () => toggleCollapse(!collapseIsOpen)
 
-    var patchedContact = jsonpatch.deepClone(document)
+    var patchedContact = _.cloneDeepWith(omitDeep(document, ['__typename']), customizer)
     patchedContact = jsonpatch.applyPatch(patchedContact, patch.patch).newDocument
 
     console.log('[KA] contact:', document)
