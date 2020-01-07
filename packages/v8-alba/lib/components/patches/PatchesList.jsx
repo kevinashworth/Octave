@@ -1,27 +1,28 @@
 import { Components,  registerComponent, withCurrentUser, withSingle } from 'meteor/vulcan:core'
-import React, { PureComponent, useState } from 'react'
+import React, { PureComponent } from 'react'
 import PropTypes from 'prop-types'
 // import * as jsonpatch from 'fast-json-patch'
-import { Card, CardBody, CardFooter, CardHeader, CardSubtitle, CardText, Collapse } from 'reactstrap'
+import { Card, CardBody, CardFooter, CardHeader } from 'reactstrap'
 // import Contacts from '../../modules/contacts/collection.js'
 import Patches from '../../modules/patches/collection.js'
 
 function preparePatches (patches) {
   let myPatches = patches.reverse()
-  // myPatches.forEach((patch, index) => {
-  //
-  // })
-
   let newPatches = []
   newPatches[0] = {
     date: myPatches[0].date,
     patch: myPatches[0].patch
   }
-  newPatches[1] = {
-    date: myPatches[1].date,
-    patch: newPatches[0].patch.concat(myPatches[1].patch)
+  // newPatches[2] = {
+  //   date: myPatches[2].date,
+  //   patch: newPatches[1].patch.concat(myPatches[2].patch)
+  // }
+  for (var i = 1; i < newPatches.length; i++) {
+    newPatches[i] = {
+      date: myPatches[i].date,
+      patch: newPatches[i-1].patch.concat(myPatches[i].patch)
+    }
   }
-
   console.log('newPatches:', newPatches)
   return newPatches
 }
@@ -33,8 +34,8 @@ const PatchesList = ({ document, loading }) => { // `document` is the patches ob
     return <>No History</>
   } else {
     const { patches } = document
-    console.log('what the hell is this document:', document)
-    console.log('what the hell are these patches:', patches)
+    console.log('PatchesList document:', document)
+    console.log('PatchesList patches:', patches)
     const preparedPatches = preparePatches(patches)
     return (
       <Card>
