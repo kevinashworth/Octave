@@ -67,6 +67,7 @@ registerFragment(/* GraphQL */ `
   }
 `)
 
+// ContactsOnlyDirectlyEditableFieldsFragment actually includes htmlBody, too
 registerFragment(/* GraphQL */ `
   fragment ContactsOnlyDirectlyEditableFieldsFragment on Contact {
     displayName
@@ -76,6 +77,7 @@ registerFragment(/* GraphQL */ `
     gender
     title
     body
+    htmlBody
     links {
       platformName
       profileLink
