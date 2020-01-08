@@ -81,6 +81,11 @@ class ProjectsSingle extends PureComponent {
                   onClick={() => { this.toggleTab('Comments') }}
                 >Comments</NavLink>
               </NavItem>
+              <NavItem>
+                <NavLink active={this.state.activeTab === 'History'}
+                  onClick={() => { this.toggleTab('History') }}
+                >History</NavLink>
+              </NavItem>
             </Nav>
             <TabContent activeTab={this.state.activeTab}>
               <TabPane tabId='Main'>
@@ -138,6 +143,9 @@ class ProjectsSingle extends PureComponent {
                 <Components.CommentsThread
                   terms={{ objectId: document._id, collectionName: 'Projects', view: 'Comments' }}
                 />
+              </TabPane>
+              <TabPane tabId='History'>
+                <Components.ProjectPatchesList documentId={document._id}/>
               </TabPane>
             </TabContent>
           </CardBody>
