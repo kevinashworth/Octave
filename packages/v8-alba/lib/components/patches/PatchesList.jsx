@@ -1,10 +1,10 @@
-import { Components,  registerComponent, withCurrentUser, withSingle } from 'meteor/vulcan:core'
+import { Components, registerComponent, withCurrentUser, withSingle } from 'meteor/vulcan:core'
 import { FormattedMessage } from 'meteor/vulcan:i18n'
 import React, { PureComponent } from 'react'
 import PropTypes from 'prop-types'
 // import * as jsonpatch from 'fast-json-patch'
 import { Card, CardBody, CardFooter, CardHeader } from 'reactstrap'
-// import Contacts from '../../modules/contacts/collection.js'
+import Contacts from '../../modules/contacts/collection.js'
 import Patches from '../../modules/patches/collection.js'
 
 class PatchesList extends PureComponent {
@@ -13,19 +13,19 @@ class PatchesList extends PureComponent {
   }
 
   render () {
-    const { contact, document, networkStatus } = this.props
+    const { patchesDocument, contactsDocument, networkStatus } = this.props
     if (networkStatus !== 8 && networkStatus !== 7) {
       return <Components.Loading />
-    } else if (!document) {
-      return <FormattedMessage id='app.missing_document' />
+    } else if (!patchesDocument) {
+      return <FormattedMessage id='patches.missing_document' />
     } else {
-      let reversedPatches = [...document.patches].reverse()
+      let reversedPatches = [...patchesDocument.patches].reverse()
       let accumulatedPatches = []
       accumulatedPatches[0] = {
         date: reversedPatches[0].date,
         patch: reversedPatches[0].patch
       }
-      for (var i = 1; i < document.patches.length; i++) {
+      for (var i = 1; i < patchesDocument.patches.length; i++) {
         accumulatedPatches[i] = {
           date: reversedPatches[i].date,
           patch: [...accumulatedPatches[i-1].patch, ...reversedPatches[i].patch]
@@ -39,8 +39,7 @@ class PatchesList extends PureComponent {
           </CardHeader>
           <CardBody>
             {accumulatedPatches.map((patch) => <Components.ContactPatch
-              collectionName={document.collectionName}
-              contact={contact}
+              contact={contactsDocument}
               key={patch.date}
               patch={patch} />)}
           </CardBody>
@@ -53,8 +52,15 @@ class PatchesList extends PureComponent {
   }
 }
 
-const options = {
-  collection: Patches
+const patchOptions = {
+  collection: Patches,
+  propertyName: 'patchesDocument'
+}
+
+const contactOptions = {
+  collection: Contacts,
+  fragmentName: 'ContactsOnlyDirectlyEditableFieldsFragment',
+  propertyName: 'contactsDocument'
 }
 
 PatchesList.propTypes = {
@@ -64,5 +70,5 @@ PatchesList.propTypes = {
 registerComponent({
   name: 'PatchesList',
   component: PatchesList,
-  hocs: [withCurrentUser, [withSingle, options]]
+  hocs: [withCurrentUser, [withSingle, patchOptions], [withSingle, contactOptions]]
 })
