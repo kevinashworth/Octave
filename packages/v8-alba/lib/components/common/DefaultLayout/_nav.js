@@ -1,85 +1,3 @@
-// export default {
-//   items: [
-//     {
-//       title: true,
-//       name: 'Home'
-//     },
-//     {
-//       name: 'Dashboard',
-//       url: '/dashboard',
-//       icon: 'icon-speedometer'
-//     },
-//     {
-//       name: 'Latest Updates',
-//       url: '/latest',
-//       icon: 'icon-clock'
-//     },
-//     {
-//       title: true,
-//       name: 'The Info'
-//     },
-//     {
-//       name: 'Contacts',
-//       url: '/contacts',
-//       icon: 'icon-people'
-//     },
-//     {
-//       name: 'Offices',
-//       url: '/offices',
-//       icon: 'icon-briefcase'
-//     },
-//     {
-//       name: 'Projects',
-//       url: '/projects',
-//       icon: 'fa fa-camera'
-//     },
-//     {
-//       name: 'Past Projects',
-//       url: '/past-projects',
-//       icon: 'fa fa-camera'
-//     },
-//     {
-//       title: true,
-//       name: 'Admin'
-//     },
-//     {
-//       name: 'New Project',
-//       url: '/projects/new',
-//       icon: 'fa fa-camera'
-//     },
-//     {
-//       name: 'Contacts (L)',
-//       url: '/contacts/list',
-//       icon: 'icon-people'
-//     },
-//     {
-//       name: 'Contacts (VL)',
-//       url: '/contacts/vlist',
-//       icon: 'icon-people'
-//     },
-//     {
-//       name: 'Fragments',
-//       url: '/fragments',
-//       icon: 'fa fa-file-code-o'
-//     },
-//     {
-//       name: 'Modals',
-//       url: '/modals',
-//       icon: 'fa fa-external-link'
-//     },
-//     {
-//       name: 'Statistics',
-//       url: '/statistics/list',
-//       icon: 'fa fa-bar-chart'
-//     },
-//     {
-//       name: 'User Admin',
-//       url: '/admin',
-//       icon: 'fa fa-user-o'
-//     }
-//   ],
-// };
-//
 const navItems = {
   topItems: [
     {
@@ -151,11 +69,6 @@ const navItems = {
       icon: 'fa fa-camera'
     },
     {
-      name: 'Fragments',
-      url: '/fragments',
-      icon: 'fa fa-file-code-o'
-    },
-    {
       name: 'Statistics',
       url: '/statistics/list',
       icon: 'fa fa-bar-chart'
@@ -196,10 +109,24 @@ const navItems = {
       icon: 'icon-people'
     },
     {
+      title: true,
+      name: 'Development'
+    },
+    {
+      name: 'Debug',
+      url: '/debug',
+      icon: 'fa fa-file-code-o'
+    },
+    {
+      name: 'Fragments',
+      url: '/fragments',
+      icon: 'fa fa-files-o'
+    },
+    {
       name: 'Modals',
       url: '/modals',
       icon: 'fa fa-external-link'
-    }
+    },
   ]
 };
 
