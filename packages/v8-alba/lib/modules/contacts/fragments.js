@@ -67,10 +67,11 @@ registerFragment(/* GraphQL */ `
   }
 `)
 
-// ContactsOnlyDirectlyEditableFieldsFragment actually includes htmlBody, too
+// ContactsPatchesFragment includes only directly-editable fields, plus fullName and htmlBody
 registerFragment(/* GraphQL */ `
-  fragment ContactsOnlyDirectlyEditableFieldsFragment on Contact {
+  fragment ContactsPatchesFragment on Contact {
     displayName
+    fullName
     firstName
     middleName
     lastName

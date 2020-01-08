@@ -2,21 +2,20 @@ import { Components, registerComponent, withCurrentUser, withSingle } from 'mete
 import { FormattedMessage } from 'meteor/vulcan:i18n'
 import React, { PureComponent } from 'react'
 import PropTypes from 'prop-types'
-// import * as jsonpatch from 'fast-json-patch'
 import { Card, CardBody, CardFooter, CardHeader } from 'reactstrap'
 import Contacts from '../../modules/contacts/collection.js'
 import Patches from '../../modules/patches/collection.js'
 
-class PatchesList extends PureComponent {
+class ContactPatchesList extends PureComponent {
   constructor(props) {
     super(props)
   }
 
   render () {
-    const { patchesDocument, contactsDocument, networkStatus } = this.props
+    const { contactDocument, patchesDocument, networkStatus } = this.props
     if (networkStatus !== 8 && networkStatus !== 7) {
       return <Components.Loading />
-    } else if (!patchesDocument) {
+    } else if (!patchesDocument || !contactDocument) {
       return <FormattedMessage id='patches.missing_document' />
     } else {
       let reversedPatches = [...patchesDocument.patches].reverse()
@@ -39,12 +38,12 @@ class PatchesList extends PureComponent {
           </CardHeader>
           <CardBody>
             {accumulatedPatches.map((patch) => <Components.ContactPatch
-              contact={contactsDocument}
+              contact={contactDocument}
               key={patch.date}
               patch={patch} />)}
           </CardBody>
           <CardFooter>
-            <small className='text-muted'>This is the unused footer of PatchesList</small>
+            <small className='text-muted'>This is the unused footer of ContactPatchesList</small>
           </CardFooter>
         </Card>
       )
@@ -59,16 +58,16 @@ const patchOptions = {
 
 const contactOptions = {
   collection: Contacts,
-  fragmentName: 'ContactsOnlyDirectlyEditableFieldsFragment',
-  propertyName: 'contactsDocument'
+  fragmentName: 'ContactsPatchesFragment',
+  propertyName: 'contactDocument'
 }
 
-PatchesList.propTypes = {
+ContactPatchesList.propTypes = {
   documentId: PropTypes.string.isRequired,
 }
 
 registerComponent({
-  name: 'PatchesList',
-  component: PatchesList,
+  name: 'ContactPatchesList',
+  component: ContactPatchesList,
   hocs: [withCurrentUser, [withSingle, patchOptions], [withSingle, contactOptions]]
 })
