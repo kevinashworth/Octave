@@ -10,15 +10,12 @@ import pluralize from 'pluralize'
 import { DATE_FORMAT_LONG } from '../../modules/constants.js'
 import { createdFormattedAddress, isEmptyValue, transform } from '../../modules/helpers.js'
 
-const ContactPatchDisplay = (props) => {
-  if (props.loading) {
-    return <Components.Loading />
-  }
-  if (!props.document) {
-    return <FormattedMessage id='app.404' />
+const ContactPatchDisplay = ({ document }) => {
+  if (!document) {
+    return <FormattedMessage id='app.missing_document' />
   }
 
-  const contact = props.document
+  const contact = document
   const displayDate =
     'Contact as it was in the database before it was edited ' + moment(contact.updatedAt).format(DATE_FORMAT_LONG)
   return (

@@ -58,7 +58,7 @@ import '../components/contacts/ContactsNewForm'
 import '../components/contacts/ContactsSingle'
 import '../components/contacts/ContactsVirtualizedList'
 
-import '../components/patches/ContactPatchDisplay'
+// import '../components/patches/ContactPatchDisplay'
 import '../components/patches/ContactPatch.jsx'
 import '../components/patches/PatchesList.jsx'
 
