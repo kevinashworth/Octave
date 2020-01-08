@@ -26,7 +26,6 @@ class SelectProjectIdNameTitle extends PureComponent {
     this.state = {
       path: this.props.path,
       pathPrefix: this.props.parentFieldName + '.' + this.props.itemIndex + '.',
-      itemIndex: this.props.itemIndex,
       projectId: this.props.value,
       projectTitle: '',
       selectedIdOption: null,
@@ -37,7 +36,8 @@ class SelectProjectIdNameTitle extends PureComponent {
   handleIdChange (selectedOption) {
     this.setState({
       projectId: selectedOption.value,
-      projectTitle: selectedOption.label
+      projectTitle: selectedOption.label,
+      selectedIdOption: selectedOption
     })
     this.context.updateCurrentValues({
       [this.state.path]: selectedOption.value,
@@ -65,8 +65,8 @@ class SelectProjectIdNameTitle extends PureComponent {
 
   componentDidMount () {
     const projects = this.props.document.projects
-    const projectTitle = projects[this.state.itemIndex] ? projects[this.state.itemIndex].projectTitle : ''
-    const titleForProject = projects[this.state.itemIndex] ? projects[this.state.itemIndex].titleForProject : ''
+    const projectTitle = projects[this.props.itemIndex] ? projects[this.props.itemIndex].projectTitle : ''
+    const titleForProject = projects[this.props.itemIndex] ? projects[this.props.itemIndex].titleForProject : ''
     const selectedIdOption = _.find(this.props.options, { value: this.props.value }) || null
     const selectedTitleOption = _.find(CASTING_TITLES_ENUM, { value: titleForProject }) || null
 
@@ -81,12 +81,12 @@ class SelectProjectIdNameTitle extends PureComponent {
     return (
       <>
         <FormGroup>
-          <Label for={`projectId${this.state.itemIndex}`}>Project Name</Label>
+          <Label for={`projectId${this.props.itemIndex}`}>Project Name</Label>
           <OptimizedSelect
             styles={customStyles}
             maxMenuHeight={400}
             theme={theme}
-            id={`projectId${this.state.itemIndex}`}
+            id={`projectId${this.props.itemIndex}`}
             value={this.state.selectedIdOption}
             onChange={this.handleIdChange}
             options={this.props.options}
@@ -95,21 +95,21 @@ class SelectProjectIdNameTitle extends PureComponent {
           />
         </FormGroup>
         <FormGroup>
-          <Label for={`projectTitle${this.state.itemIndex}`}>Editable Name</Label>
+          <Label for={`projectTitle${this.props.itemIndex}`}>Editable Name</Label>
           <Input
             type='text'
-            id={`projectTitle${this.state.itemIndex}`}
+            id={`projectTitle${this.props.itemIndex}`}
             value={this.state.projectTitle}
             onChange={this.handleNameChange}
           />
         </FormGroup>
         <FormGroup>
-          <Label for={`titleForProject${this.state.itemIndex}`}>Title for Project</Label>
+          <Label for={`titleForProject${this.props.itemIndex}`}>Title for Project</Label>
           <OptimizedSelect
             styles={customStyles}
             maxMenuHeight={400}
             theme={theme}
-            id={`titleForProject${this.state.itemIndex}`}
+            id={`titleForProject${this.props.itemIndex}`}
             value={this.state.selectedTitleOption}
             onChange={this.handleTitleChange}
             options={CASTING_TITLES_ENUM}
