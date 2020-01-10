@@ -132,15 +132,18 @@ class ProjectsSingle extends PureComponent {
               {project.castingOfficeId &&
                 <Components.OfficeMini documentId={project.castingOfficeId} />
               }
-              {project.contacts
-                ? project.contacts.map(contact => <Components.ContactDetail key={contact.contactId} contact={contact} />)
-                : null }
-              {project.addresses && project.addresses[0]
-                ? project.addresses.map((address, index) => <Components.ProjectsAddressDetail key={getFullAddress(address)+index} address={address} />)
-                : null }
-              {project.contactId}
+              {project.contacts &&
+                project.contacts.map(contact => <Components.ContactDetail key={contact.contactId} contact={contact} />)
+              }
+              {project.addresses &&
+                <br />
+              }
+              {project.addresses && project.addresses[0] &&
+                project.addresses.map((address, index) => <Components.AddressDetail key={getFullAddress(address)+index} address={address} />)
+              }
               {project.links &&
-                <CardTitle className='mt-5'><b>Links</b></CardTitle>}
+                <CardTitle className='mt-5'><b>Links</b></CardTitle>
+              }
               {project.links &&
                 <CardText>
                   {project.links.map((link, index) =>

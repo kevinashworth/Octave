@@ -70,7 +70,7 @@ const ProjectDisplay = ({ project }) => {
       ? project.contacts.map(contact => <Components.ContactDetail key={contact.contactId} contact={contact} />)
       : null }
     {project.addresses && project.addresses[0]
-      ? project.addresses.map((address, index) => <Components.ProjectsAddressDetail key={getFullAddress(address)+index} address={address} />)
+      ? project.addresses.map((address, index) => <Components.AddressDetail key={getFullAddress(address)+index} address={address} />)
       : null }
     {project.contactId}
     {project.links &&

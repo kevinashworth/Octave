@@ -129,10 +129,9 @@ class PastProjectsSingle extends PureComponent {
               : null
             }
             {project.addresses
-              ? project.addresses.map(address => <Components.ProjectsAddressDetail key={address} address={address} />)
+              ? project.addresses.map(address => <Components.AddressDetail key={address} address={address} />)
               : null
             }
-            {project.contactId}
             {project.links &&
               <CardTitle className='mt-5'><b>Links</b></CardTitle>}
             {project.links &&

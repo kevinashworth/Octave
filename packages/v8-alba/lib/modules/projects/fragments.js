@@ -40,6 +40,7 @@ registerFragment(/* GraphQL */ `
       state
       zip
       location
+      addressType
     }
     allAddresses
     contacts {
@@ -87,6 +88,14 @@ registerFragment(/* GraphQL */ `
     htmlNotes
     allContactNames
     allAddresses
+    addresses {
+      street1
+      street2
+      city
+      state
+      zip
+      addressType
+    }
     slug
   }
 `)
@@ -109,6 +118,7 @@ registerFragment(/* GraphQL */ `
       city
       state
       zip
+      addressType
     }
     network
     status
@@ -153,6 +163,7 @@ registerFragment(/* GraphQL */ `
       state
       zip
       location
+      addressType
     }
     allAddresses
     allContactNames
