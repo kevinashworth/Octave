@@ -14,18 +14,18 @@ import Projects from '../../modules/projects/collection.js'
 class ProjectsSingle extends PureComponent {
   constructor (props) {
     super(props)
-    this.toggleTab = this.toggleTab.bind(this)
-    this.commentsCallback = this.commentsCallback.bind(this)
+
     this.state = {
       activeTab: 'Main',
       commentsTabLabel: 'Comments'
     }
+
+    this.commentsCallback = this.commentsCallback.bind(this)
+    this.toggleTab = this.toggleTab.bind(this)
   }
 
-  toggleTab (tab) {
-    if (this.state.activeTab !== tab) {
-      this.setState({ activeTab: tab })
-    }
+  commentsCallback (labelFromCommentsThread) {
+    this.setState({ commentsTabLabel: labelFromCommentsThread })
   }
 
   seasonorder (project) {
@@ -47,8 +47,10 @@ class ProjectsSingle extends PureComponent {
     return so
   }
 
-  commentsCallback (labelFromCommentsThread) {
-    this.setState({ commentsTabLabel: labelFromCommentsThread })
+  toggleTab (tab) {
+    if (this.state.activeTab !== tab) {
+      this.setState({ activeTab: tab })
+    }
   }
 
   render () {
@@ -87,7 +89,7 @@ class ProjectsSingle extends PureComponent {
               <NavItem>
                 <NavLink active={this.state.activeTab === 'Comments'}
                   onClick={() => { this.toggleTab('Comments') }}
-                >{this.state.commentsTabLabel}</NavLink>
+                >{ this.state.commentsTabLabel }</NavLink>
               </NavItem>
               <NavItem>
                 <NavLink active={this.state.activeTab === 'History'}
