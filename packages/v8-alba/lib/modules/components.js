@@ -58,6 +58,13 @@ import '../components/contacts/ContactsNewForm'
 import '../components/contacts/ContactsSingle'
 import '../components/contacts/ContactsVirtualizedList'
 
+import '../components/patches/ContactPatchesList.jsx'
+import '../components/patches/ContactPatch.jsx'
+import '../components/patches/OfficePatchesList.jsx'
+import '../components/patches/OfficePatch.jsx'
+import '../components/patches/ProjectPatchesList.jsx'
+import '../components/patches/ProjectPatch.jsx'
+
 import '../components/offices/OfficeMini'
 import '../components/offices/OfficesDataTable'
 import '../components/offices/OfficesEditForm'

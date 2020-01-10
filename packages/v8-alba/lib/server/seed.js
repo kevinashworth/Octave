@@ -5,9 +5,10 @@ import Users from 'meteor/vulcan:users'
 import { newMutation } from 'meteor/vulcan:core'
 // import AlgoliaLog from '../modules/algolia-log/collection.js'
 import Contacts from '../modules/contacts/collection.js'
+import Offices from '../modules/offices/collection.js'
+import Patches from '../modules/patches/collection.js'
 import Projects from '../modules/projects/collection.js'
 import PastProjects from '../modules/past-projects/collection.js'
-import Offices from '../modules/offices/collection.js'
 import Statistics from '../modules/statistics/collection.js'
 import seedContacts from './seeds/_contacts3.js'
 import seedProjects from './seeds/_projects.js'
@@ -38,12 +39,16 @@ const createDummyUsers = async () => {
   ])
 }
 
-// const seedAlgoliaLog = {
-//   algolia: [{
-//     dateOfSend: '2019-12-13 22:20:46',
-//     sentObjectCount: 1546
-//   }]
-// }
+const seedPatch = {
+  _id: 'v4vAkMJ2EyqMmFKGw',
+  patches: [
+    {
+      date: new Date('2020-01-03T21:08:58.333Z').toUTCString(),
+      patch: { op: 'replace', path: '/addresses/0/street2', value: 'Stage 4, 5th Floor' }
+    }
+  ],
+  collectionName: 'Offices'
+}
 
 // eslint-disable-next-line no-undef
 Vulcan.removeGettingStartedContent = () => {
@@ -108,6 +113,17 @@ Meteor.startup(() => {
       action: 'statistics.new',
       collection: Statistics,
       document: seedStatistics,
+      currentUser,
+      validate: false
+    }))
+  }
+  if (Patches.find().fetch().length === 0) {
+    // eslint-disable-next-line no-console
+    console.log('// creating dummy patches')
+    Promise.await(newMutation({
+      action: 'patches.new',
+      collection: Patches,
+      document: seedPatch,
       currentUser,
       validate: false
     }))

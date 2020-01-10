@@ -14,14 +14,18 @@ import Projects from '../../modules/projects/collection.js'
 class ProjectsSingle extends PureComponent {
   constructor (props) {
     super(props)
+
+    this.state = {
+      activeTab: 'Main',
+      commentsTabLabel: 'Comments'
+    }
+
+    this.commentsCallback = this.commentsCallback.bind(this)
     this.toggleTab = this.toggleTab.bind(this)
-    this.state = { activeTab: 'Main' }
   }
 
-  toggleTab (tab) {
-    if (this.state.activeTab !== tab) {
-      this.setState({ activeTab: tab })
-    }
+  commentsCallback (labelFromCommentsThread) {
+    this.setState({ commentsTabLabel: labelFromCommentsThread })
   }
 
   seasonorder (project) {
@@ -41,6 +45,12 @@ class ProjectsSingle extends PureComponent {
       so += ` (${project.order}-episode order)`
     }
     return so
+  }
+
+  toggleTab (tab) {
+    if (this.state.activeTab !== tab) {
+      this.setState({ activeTab: tab })
+    }
   }
 
   render () {
@@ -79,7 +89,12 @@ class ProjectsSingle extends PureComponent {
               <NavItem>
                 <NavLink active={this.state.activeTab === 'Comments'}
                   onClick={() => { this.toggleTab('Comments') }}
-                >Comments</NavLink>
+                >{ this.state.commentsTabLabel }</NavLink>
+              </NavItem>
+              <NavItem>
+                <NavLink active={this.state.activeTab === 'History'}
+                  onClick={() => { this.toggleTab('History') }}
+                >History</NavLink>
               </NavItem>
             </Nav>
             <TabContent activeTab={this.state.activeTab}>
@@ -135,9 +150,12 @@ class ProjectsSingle extends PureComponent {
               }
               </TabPane>
               <TabPane tabId='Comments'>
-                <Components.CommentsThread
+                <Components.CommentsThread callbackFromSingle={this.commentsCallback}
                   terms={{ objectId: document._id, collectionName: 'Projects', view: 'Comments' }}
                 />
+              </TabPane>
+              <TabPane tabId='History'>
+                <Components.ProjectPatchesList documentId={document._id}/>
               </TabPane>
             </TabContent>
           </CardBody>

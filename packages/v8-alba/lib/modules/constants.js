@@ -15,7 +15,7 @@ const CASTING_TITLES_ENUM = [
   { value: 'Casting Director / Casting Executive', label: 'Casting Director / Casting Executive' },
   { value: 'Casting Consultant', label: 'Casting Consultant' },
   { value: 'Not Currently In Casting', label: 'Not Currently In Casting' },
-  { value: 'Unknown', label: 'Unknown' }
+  { value: 'Unknown Title', label: 'Unknown Title' }
 ]
 
 const PHONE_NUMBER_TYPES_ENUM = [
@@ -49,6 +49,7 @@ const PROJECT_TYPES_ENUM = [
 ]
 
 const SHOOTING_LOCATIONS_US_ENUM = [
+  { value: 'Alabama', label: 'Alabama' },
   { value: 'Albuquerque', label: 'Albuquerque, NM' },
   { value: 'Atlanta', label: 'Atlanta, GA' },
   { value: 'Austin', label: 'Austin, TX' },
@@ -61,6 +62,7 @@ const SHOOTING_LOCATIONS_US_ENUM = [
   { value: 'New Mexico', label: 'New Mexico' },
   { value: 'New Orleans', label: 'New Orleans, LA' },
   { value: 'New York', label: 'New York, NY' },
+  { value: 'Oklahoma', label: 'Oklahoma' },
   { value: 'Philadelphia', label: 'Philadelphia, PA' },
   { value: 'Pittsburgh', label: 'Pittsburgh, PA' },
   { value: 'Portland, ME', label: 'Portland, Maine' },

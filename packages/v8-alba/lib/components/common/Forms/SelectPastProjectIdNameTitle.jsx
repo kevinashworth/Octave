@@ -26,7 +26,6 @@ class SelectPastProjectIdNameTitle extends PureComponent {
     this.state = {
       path: this.props.path,
       pathPrefix: this.props.parentFieldName + '.' + this.props.itemIndex + '.',
-      itemIndex: this.props.itemIndex,
       projectId: this.props.value,
       projectTitle: '',
       selectedIdOption: null,
@@ -37,7 +36,8 @@ class SelectPastProjectIdNameTitle extends PureComponent {
   handleIdChange (selectedOption) {
     this.setState({
       projectId: selectedOption.value,
-      projectTitle: selectedOption.label
+      projectTitle: selectedOption.label,
+      selectedIdOption: selectedOption
     })
     this.context.updateCurrentValues({
       [this.state.path]: selectedOption.value,
@@ -56,7 +56,7 @@ class SelectPastProjectIdNameTitle extends PureComponent {
 
   handleTitleChange (selectedOption) {
     this.setState({
-      titleForProject: selectedOption.label
+      selectedTitleOption: selectedOption
     })
     this.context.updateCurrentValues({
       [this.state.pathPrefix + 'titleForProject']: selectedOption.label
@@ -65,8 +65,8 @@ class SelectPastProjectIdNameTitle extends PureComponent {
 
   componentDidMount () {
     const pastProjects = this.props.document.pastProjects
-    const projectTitle = pastProjects[this.state.itemIndex] ? pastProjects[this.state.itemIndex].projectTitle : ''
-    const titleForProject = pastProjects[this.state.itemIndex] ? pastProjects[this.state.itemIndex].titleForProject : ''
+    const projectTitle = pastProjects[this.props.itemIndex] ? pastProjects[this.props.itemIndex].projectTitle : ''
+    const titleForProject = pastProjects[this.props.itemIndex] ? pastProjects[this.props.itemIndex].titleForProject : ''
     const selectedIdOption = _.find(this.props.options, { value: this.props.value }) || null
     const selectedTitleOption = _.find(CASTING_TITLES_ENUM, { value: titleForProject }) || null
 
@@ -81,37 +81,39 @@ class SelectPastProjectIdNameTitle extends PureComponent {
     return (
       <div>
         <FormGroup>
-          <Label for={`pastProjectId${this.state.itemIndex}`}>Past Project from Database</Label>
+          <Label for={`pastProjectId${this.props.itemIndex}`}>Past Project from Database</Label>
           <OptimizedSelect
             styles={customStyles}
             maxMenuHeight={400}
             theme={theme}
-            id={`pastProjectId${this.state.itemIndex}`}
+            id={`pastProjectId${this.props.itemIndex}`}
             value={this.state.selectedIdOption}
             onChange={this.handleIdChange}
             options={this.props.options}
+            isClearable
             resetValue={{ value: null, label: '' }}
           />
         </FormGroup>
         <FormGroup>
-          <Label for={`pastProjectTitle${this.state.itemIndex}`}>Editable Past Project Name</Label>
+          <Label for={`pastProjectTitle${this.props.itemIndex}`}>Editable Past Project Name</Label>
           <Input
             type='text'
-            id={`pastProjectTitle${this.state.itemIndex}`}
+            id={`pastProjectTitle${this.props.itemIndex}`}
             value={this.state.projectTitle}
             onChange={this.handleNameChange}
           />
         </FormGroup>
         <FormGroup>
-          <Label for={`titleForPastProject${this.state.itemIndex}`}>Title for Past Project</Label>
+          <Label for={`titleForPastProject${this.props.itemIndex}`}>Title for Past Project</Label>
           <OptimizedSelect
             styles={customStyles}
             maxMenuHeight={400}
             theme={theme}
-            id={`titleForPastProject${this.state.itemIndex}`}
+            id={`titleForPastProject${this.props.itemIndex}`}
             value={this.state.selectedTitleOption}
             onChange={this.handleTitleChange}
             options={CASTING_TITLES_ENUM}
+            isClearable
             resetValue={{ value: null, label: '' }}
           />
         </FormGroup>

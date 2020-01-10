@@ -42,12 +42,20 @@ function PastProjects (props) {
 class OfficesSingle extends PureComponent {
   constructor (props) {
     super(props)
-    this.toggleCollapse = this.toggleCollapse.bind(this)
-    this.toggleTab = this.toggleTab.bind(this)
+
     this.state = {
       activeTab: 'Main',
-      collapseIsOpen: false
+      collapseIsOpen: false,
+      commentsTabLabel: 'Comments'
     }
+
+    this.commentsCallback = this.commentsCallback.bind(this)
+    this.toggleCollapse = this.toggleCollapse.bind(this)
+    this.toggleTab = this.toggleTab.bind(this)
+  }
+
+  commentsCallback (labelFromCommentsThread) {
+    this.setState({ commentsTabLabel: labelFromCommentsThread })
   }
 
   toggleCollapse () {
@@ -94,7 +102,12 @@ class OfficesSingle extends PureComponent {
               <NavItem>
                 <NavLink active={this.state.activeTab === 'Comments'}
                   onClick={() => { this.toggleTab('Comments') }}
-                >Comments</NavLink>
+                >{ this.state.commentsTabLabel }</NavLink>
+              </NavItem>
+              <NavItem>
+                <NavLink active={this.state.activeTab === 'History'}
+                  onClick={() => { this.toggleTab('History') }}
+                >History</NavLink>
               </NavItem>
             </Nav>
             <TabContent activeTab={this.state.activeTab}>
@@ -133,9 +146,12 @@ class OfficesSingle extends PureComponent {
                 }
               </TabPane>
               <TabPane tabId='Comments'>
-                  <Components.CommentsThread
-                    terms={{ objectId: document._id, collectionName: 'Offices', view: 'Comments' }}
-                  />
+                <Components.CommentsThread callbackFromSingle={this.commentsCallback}
+                  terms={{ objectId: document._id, collectionName: 'Offices', view: 'Comments' }}
+                />
+              </TabPane>
+              <TabPane tabId='History'>
+                <Components.OfficePatchesList documentId={document._id}/>
               </TabPane>
             </TabContent>
           </CardBody>

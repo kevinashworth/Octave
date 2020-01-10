@@ -8,7 +8,8 @@ import {
   ProjectEditUpdateOfficeBefore,
   ProjectCreateUpdateOfficeAfter,
   ProjectCreateUpdateStatisticsAfter,
-  ProjectEditUpdateStatusAfter
+  ProjectEditUpdateStatusAfter,
+  ProjectEditUpdateHistoryAfter
 } from './callbacks/index.js'
 
 extendCollection(Projects, {
@@ -17,7 +18,7 @@ extendCollection(Projects, {
       after: [ProjectCreateSaveToAlgolia, ProjectCreateUpdateContacts, ProjectCreateUpdateOfficeAfter, ProjectCreateUpdateStatisticsAfter]
     },
     update: {
-      after: [ProjectEditUpdateContacts, ProjectEditUpdateStatusAfter],
+      after: [ProjectEditUpdateContacts, ProjectEditUpdateStatusAfter, ProjectEditUpdateHistoryAfter],
       before: [ProjectEditUpdateAlgoliaBefore, ProjectEditUpdateOfficeBefore]
     }
   }

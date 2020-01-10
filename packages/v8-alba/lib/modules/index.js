@@ -11,6 +11,7 @@ import './projects'
 import './past-projects'
 import './statistics'
 import './users'
+import './patches'
 
 // See https://stackoverflow.com/questions/14342848/how-do-i-access-process-env-in-meteor
 // if (Meteor.isClient) {
