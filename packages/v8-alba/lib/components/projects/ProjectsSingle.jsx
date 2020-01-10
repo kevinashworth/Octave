@@ -15,7 +15,11 @@ class ProjectsSingle extends PureComponent {
   constructor (props) {
     super(props)
     this.toggleTab = this.toggleTab.bind(this)
-    this.state = { activeTab: 'Main' }
+    this.commentsCallback = this.commentsCallback.bind(this)
+    this.state = {
+      activeTab: 'Main',
+      commentsTabLabel: 'Comments'
+    }
   }
 
   toggleTab (tab) {
@@ -41,6 +45,10 @@ class ProjectsSingle extends PureComponent {
       so += ` (${project.order}-episode order)`
     }
     return so
+  }
+
+  commentsCallback (labelFromCommentsThread) {
+    this.setState({ commentsTabLabel: labelFromCommentsThread })
   }
 
   render () {
@@ -79,7 +87,7 @@ class ProjectsSingle extends PureComponent {
               <NavItem>
                 <NavLink active={this.state.activeTab === 'Comments'}
                   onClick={() => { this.toggleTab('Comments') }}
-                >Comments</NavLink>
+                >{this.state.commentsTabLabel}</NavLink>
               </NavItem>
               <NavItem>
                 <NavLink active={this.state.activeTab === 'History'}
@@ -140,7 +148,7 @@ class ProjectsSingle extends PureComponent {
               }
               </TabPane>
               <TabPane tabId='Comments'>
-                <Components.CommentsThread
+                <Components.CommentsThread callbackFromSingle={this.commentsCallback}
                   terms={{ objectId: document._id, collectionName: 'Projects', view: 'Comments' }}
                 />
               </TabPane>
