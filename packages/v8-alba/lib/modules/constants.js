@@ -36,6 +36,7 @@ const ADDRESS_TYPES_ENUM = [
   { value: 'Office', label: 'Office' },
   { value: 'Other', label: 'Other' },
   { value: 'Personal', label: 'Personal' },
+  { value: 'Project', label: 'Project' },
   { value: 'Secondary Office', label: 'Secondary Office' },
   { value: 'Unverified', label: 'Unverified' },
 ]

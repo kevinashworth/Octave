@@ -81,7 +81,6 @@ import '../components/past-projects/PastProjectsSingle'
 
 import '../components/projects/ProjectMini'
 import '../components/projects/ProjectModal'
-import '../components/projects/ProjectsAddressDetail'
 import '../components/projects/ProjectsDataTable'
 import '../components/projects/ProjectsEditForm'
 import '../components/projects/ProjectsNameOnly'
