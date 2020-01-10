@@ -26,6 +26,7 @@ registerFragment(/* GraphQL */ `
       state
       zip
       location
+      addressType
     }
     street
     location
@@ -96,6 +97,7 @@ registerFragment(/* GraphQL */ `
       city
       state
       zip
+      addressType
     }
     slug
   }
@@ -129,6 +131,7 @@ registerFragment(/* GraphQL */ `
       state
       zip
       location
+      addressType
     }
     street
     location

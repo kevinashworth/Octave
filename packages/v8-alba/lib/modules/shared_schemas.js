@@ -1,4 +1,5 @@
 import SimpleSchema from 'simpl-schema'
+import { ADDRESS_TYPES_ENUM } from './constants.js'
 
 export const addressSchema = {
   street1: {
@@ -32,6 +33,18 @@ export const addressSchema = {
   zip: {
     type: String,
     optional: true,
+    canRead: ['members'],
+    canCreate: ['members', 'admins'],
+    canUpdate: ['members', 'admins']
+  },
+  addressType: {
+    label: 'Type',
+    type: String,
+    optional: true,
+    input: 'MySelect',
+    options: () => {
+      return ADDRESS_TYPES_ENUM
+    },
     canRead: ['members'],
     canCreate: ['members', 'admins'],
     canUpdate: ['members', 'admins']

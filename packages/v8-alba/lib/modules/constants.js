@@ -27,6 +27,19 @@ const PHONE_NUMBER_TYPES_ENUM = [
   { value: 'Other', label: 'Other' },
 ]
 
+const ADDRESS_TYPES_ENUM = [
+  { value: 'Auditions', label: 'Auditions' },
+  { value: 'Former', label: 'Former' },
+  { value: 'GPS', label: 'GPS' },
+  { value: 'Mailing', label: 'Mailing' },
+  { value: 'Main Office', label: 'Main Office' },
+  { value: 'Office', label: 'Office' },
+  { value: 'Other', label: 'Other' },
+  { value: 'Personal', label: 'Personal' },
+  { value: 'Secondary Office', label: 'Secondary Office' },
+  { value: 'Unverified', label: 'Unverified' },
+]
+
 const PROJECT_TYPES_ENUM = [
   { value: 'Feature Film', label: 'Feature Film' },
   { value: 'Feature Film (LB)', label: 'Feature Film (LB)' },
@@ -243,6 +256,7 @@ module.exports = {
   DATE_FORMAT_SHORT_FRIENDLY,
   DATE_FORMAT_MONGO,
   CASTING_TITLES_ENUM,
+  ADDRESS_TYPES_ENUM,
   PHONE_NUMBER_TYPES_ENUM,
   PROJECT_TYPES_ENUM,
   BROADCAST_ENUM,
