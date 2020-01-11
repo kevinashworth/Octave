@@ -12,3 +12,7 @@ PastProjects.addView('collectionWithStatus', terms => ({
     status: terms.status
   }
 }))
+
+PastProjects.addView('newestPastProjects', terms => ({
+  options: { sort: { createdAt: -1 } }
+}))

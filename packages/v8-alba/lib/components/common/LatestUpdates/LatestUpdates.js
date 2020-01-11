@@ -239,7 +239,8 @@ LatestPastProjectUpdates.propTypes = {
 const pastProjectsOptions = {
   collection: PastProjects,
   fragmentName: 'PastProjectsSingleFragment',
-  limit: 6
+  limit: 6,
+  terms: { view: 'newestPastProjects' }
 }
 
 registerComponent({
