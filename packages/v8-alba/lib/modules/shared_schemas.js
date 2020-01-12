@@ -1,7 +1,7 @@
 import SimpleSchema from 'simpl-schema'
 import { ADDRESS_TYPES_ENUM } from './constants.js'
 
-export const addressSchema = {
+export const addressSubSchema = new SimpleSchema({
   street1: {
     type: String,
     optional: true,
@@ -57,9 +57,38 @@ export const addressSchema = {
     canCreate: ['members', 'admins'],
     canUpdate: ['members', 'admins']
   }
-}
+})
 
-export const addressSubSchema = new SimpleSchema(addressSchema)
+export const contactSubSchema = new SimpleSchema({
+  contactId: {
+    type: String,
+    input: 'SelectContactIdNameTitle',
+    optional: true,
+    canRead: ['members'],
+    canCreate: ['members', 'admins'],
+    canUpdate: ['members', 'admins'],
+    options: props => props.data.contacts.results.map(contact => ({
+      value: contact._id,
+      label: contact.fullName
+    }))
+  },
+  contactName: {
+    type: String,
+    optional: true,
+    hidden: true,
+    canRead: ['members'],
+    canCreate: ['members', 'admins'],
+    canUpdate: ['members', 'admins']
+  },
+  contactTitle: {
+    type: String,
+    optional: true,
+    hidden: true,
+    canRead: ['members'],
+    canCreate: ['members', 'admins'],
+    canUpdate: ['members', 'admins']
+  }
+})
 
 export const linkSubSchema = new SimpleSchema({
   platformName: {

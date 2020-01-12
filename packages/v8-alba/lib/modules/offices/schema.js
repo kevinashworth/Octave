@@ -1,7 +1,7 @@
 import { Utils } from 'meteor/vulcan:core'
 import SimpleSchema from 'simpl-schema'
 import marked from 'marked'
-import { addressSubSchema, linkSubSchema } from '../shared_schemas.js'
+import { addressSubSchema, contactSubSchema, linkSubSchema } from '../shared_schemas.js'
 import { getFullAddress, isEmptyValue } from '../helpers.js'
 import { PHONE_NUMBER_TYPES_ENUM } from '../constants.js'
 
@@ -41,37 +41,6 @@ const pastProjectGroup = {
   order: 50,
   startCollapsed: true
 }
-
-const contactSchema = new SimpleSchema({
-  contactId: {
-    type: String,
-    input: 'SelectContactIdNameTitle',
-    optional: true,
-    canRead: ['members'],
-    canCreate: ['members', 'admins'],
-    canUpdate: ['members', 'admins'],
-    options: props => props.data.contacts.results.map(contact => ({
-      value: contact._id,
-      label: contact.fullName
-    }))
-  },
-  contactName: {
-    type: String,
-    optional: true,
-    hidden: true,
-    canRead: ['members'],
-    canCreate: ['members', 'admins'],
-    canUpdate: ['members', 'admins']
-  },
-  contactTitle: {
-    type: String,
-    optional: true,
-    hidden: true,
-    canRead: ['members'],
-    canCreate: ['members', 'admins'],
-    canUpdate: ['members', 'admins']
-  }
-})
 
 const projectSubSchema = new SimpleSchema({
   projectId: {
@@ -289,7 +258,7 @@ const schema = {
     }
   },
   'contacts.$': {
-    type: contactSchema
+    type: contactSubSchema
   },
   allContactNames: {
     type: String,
