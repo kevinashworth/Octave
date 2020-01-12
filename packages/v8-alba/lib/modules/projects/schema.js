@@ -246,6 +246,42 @@ const schema = {
     canCreate: ['members', 'admins'],
     canUpdate: ['members', 'admins']
   },
+  castingCompany: {
+    label: 'Casting Company',
+    type: String,
+    optional: true,
+    canRead: ['members'],
+    canCreate: ['members', 'admins'],
+    canUpdate: ['members', 'admins']
+  },
+  castingOfficeId: {
+    label: 'Casting Office',
+    type: String,
+    input: 'MySelect',
+    optional: true,
+    canRead: ['members'],
+    canCreate: ['members', 'admins'],
+    canUpdate: ['members', 'admins'],
+    options: props => props.data.offices.results.map(office => ({
+      value: office._id,
+      label: office.displayName
+    })),
+    query: `
+      offices{
+        results{
+          _id
+          displayName
+        }
+      }
+    `,
+    resolveAs: {
+      fieldName: 'castingOffice',
+      type: 'Office',
+      resolver: (o, args, { Offices }) =>
+        o.castingOfficeId && Offices.loader.load(o.castingOfficeId),
+      addOriginalField: true
+    }
+  },
   casting: {
     label: 'Casting Calculated',
     type: String,
@@ -265,15 +301,6 @@ const schema = {
       }
     }
   },
-  castingCompany: {
-    label: 'Casting Company',
-    type: String,
-    optional: true,
-    canRead: ['members'],
-    canCreate: ['members', 'admins'],
-    canUpdate: ['members', 'admins']
-  },
-
   slug: {
     type: String,
     optional: true,
