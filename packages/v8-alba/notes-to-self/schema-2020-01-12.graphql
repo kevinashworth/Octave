@@ -1,0 +1,3493 @@
+
+scalar JSON
+scalar Date
+
+# see https://docs.hasura.io/1.0/graphql/manual/queries/query-filters.html
+
+input String_Selector {
+  _eq: String
+  #_gt: String
+  #_gte: String
+  #_ilike: String
+  _in: [String!]
+  _is_null: Boolean
+  #_like: String
+  #_lt: String
+  #_lte: String
+  #_neq: String
+  #_nilike: String
+  #_nin: [String!]
+  #_nlike: String
+  #_nsimilar: String
+  #_similar: String
+}
+
+input String_Array_Selector {
+  contains: String_Selector
+  # contains_all: [String_Selector]
+}
+
+input Int_Selector {
+  _eq: Int
+  _gt: Int
+  _gte: Int
+  _in: [Int!]
+  #_is_null: Boolean
+  _lt: Int
+  _lte: Int
+  #_neq: Int
+  #_nin: [Int!]
+}
+
+input Int_Array_Selector {
+  contains: Int_Selector
+  # contains_all: [Int_Selector]
+}
+
+input Float_Selector {
+  _eq: Float
+  _gt: Float
+  _gte: Float
+  _in: [Float!]
+  #_is_null: Boolean
+  _lt: Float
+  _lte: Float
+  #_neq: Float
+  #_nin: [Float!]
+}
+
+input Float_Array_Selector {
+  contains: Float_Selector
+  # contains_all: [Float_Selector]
+}
+
+input Boolean_Selector {
+  _eq: Boolean
+  #_neq: Boolean
+}
+
+input Boolean_Array_Selector {
+  contains: Boolean_Selector
+  # contains_all: [Boolean_Selector]
+}
+
+input Date_Selector {
+  _eq: Date
+  _gt: Date
+  _gte: Date
+  _in: [Date!]
+  #_is_null: Boolean
+  _lt: Date
+  _lte: Date
+  #_neq: Date
+  #_nin: [Date!]
+}
+
+input Date_Array_Selector {
+  contains: Date_Selector
+  # contains_all: [Date_Selector]
+}
+
+# column ordering options
+enum SortOptions {
+  asc
+  desc
+}
+
+input OptionsInput {
+  # Whether to enable caching for this query
+  enableCache: Boolean
+  # For single document queries, return null instead of throwing MissingDocumentError
+  allowNull: Boolean
+}
+
+type Site {
+  title: String
+  url: String
+  logoUrl: String
+  sourceVersion: String
+}
+type IntlValue {
+  locale: String
+  value: String
+}
+input IntlValueInput{
+  locale: String
+  value: String
+}
+directive @intl on FIELD_DEFINITION
+
+# A user object
+type User {
+  _id: String 
+  username: String 
+  emails: [JSON] 
+  createdAt: Date 
+  isAdmin: Boolean 
+  locale: String 
+  profile: JSON 
+  services: JSON 
+  displayName: String 
+  email: String 
+  emailHash: String 
+  avatarUrl: String 
+  slug: String 
+  twitterUsername: String 
+  groups: [String] 
+  pageUrl: String 
+  pagePath: String 
+  editUrl: String 
+  commentCount: Float 
+  bio: String 
+  htmlBio: String 
+  website: String 
+  updatedAt: Date 
+}
+
+
+input DeleteUserInput{
+  filter: UserFilterInput
+  id: String
+}
+
+input SingleUserInput {
+  # filtering
+  filter: UserFilterInput
+  sort: UserSortInput
+  search: String
+  id: String
+
+  # backwards-compatibility
+  "Deprecated (use 'filter/id' fields instead)."
+  selector: UserSelectorUniqueInput
+
+  # options (backwards-compatibility)
+  # Whether to enable caching for this query
+  enableCache: Boolean
+  # Return null instead of throwing MissingDocumentError
+  allowNull: Boolean
+}
+
+input MultiUserInput {
+
+  # filtering
+  filter: UserFilterInput
+  sort: UserSortInput
+  search: String
+  offset: Int
+  limit: Int
+
+  # backwards-compatibility
+  # A JSON object that contains the query terms used to fetch data
+  "Deprecated (use 'filter/id' fields instead)."
+  terms: JSON
+
+  # options (backwards-compatibility)
+  # Whether to enable caching for this query
+  enableCache: Boolean
+  # Whether to calculate totalCount for this query
+  enableTotal: Boolean
+  
+}
+
+type SingleUserOutput{
+  result: User
+}
+
+type  MultiUserOutput{
+  results: [User]
+  totalCount: Int
+}
+
+type UserMutationOutput{
+  data: User
+}
+
+input CreateUserInput {
+  data: CreateUserDataInput!
+}
+
+input CreateUserDataInput {
+  username: String 
+  isAdmin: Boolean 
+  locale: String 
+  profile: JSON 
+  displayName: String 
+  email: String 
+  twitterUsername: String 
+  groups: [String] 
+  bio: String 
+  website: String 
+  updatedAt: Date 
+}
+
+input UpdateUserInput{
+  filter: UserFilterInput
+  id: String
+  data: UpdateUserDataInput!
+}
+
+input UpsertUserInput{
+  filter: UserFilterInput
+  id: String
+  data: UpdateUserDataInput!
+}
+
+input UpdateUserDataInput {
+  username: String 
+  isAdmin: Boolean 
+  locale: String 
+  displayName: String 
+  email: String 
+  twitterUsername: String 
+  groups: [String] 
+  bio: String 
+  website: String 
+  updatedAt: Date 
+}
+
+input UserFilterInput {
+  _and: [UserFilterInput]
+  _not: UserFilterInput
+  _or: [UserFilterInput]
+
+
+  _id: String_Selector
+  username: String_Selector
+
+  createdAt: Date_Selector
+  isAdmin: Boolean_Selector
+  locale: String_Selector
+
+  displayName: String_Selector
+  email: String_Selector
+  emailHash: String_Selector
+  avatarUrl: String_Selector
+  slug: String_Selector
+  twitterUsername: String_Selector
+
+  pageUrl: String_Selector
+  pagePath: String_Selector
+  editUrl: String_Selector
+  commentCount: Float_Selector
+  bio: String_Selector
+  htmlBio: String_Selector
+  website: String_Selector
+  updatedAt: Date_Selector
+}
+
+input UserSortInput {
+  _id: SortOptions
+  username: SortOptions
+  emails: SortOptions
+  createdAt: SortOptions
+  isAdmin: SortOptions
+  locale: SortOptions
+  services: SortOptions
+  displayName: SortOptions
+  email: SortOptions
+  emailHash: SortOptions
+  avatarUrl: SortOptions
+  slug: SortOptions
+  twitterUsername: SortOptions
+  groups: SortOptions
+  pageUrl: SortOptions
+  pagePath: SortOptions
+  editUrl: SortOptions
+  commentCount: SortOptions
+  bio: SortOptions
+  htmlBio: SortOptions
+  website: SortOptions
+  updatedAt: SortOptions
+}
+
+input UserSelectorInput {
+  _and: [UserSelectorInput]
+  _or: [UserSelectorInput]
+
+}
+
+input UserSelectorUniqueInput {
+  _id: String
+  documentId: String # OpenCRUD backwards compatibility
+  slug: String
+
+}
+
+
+# Type for Emails
+type Email {
+  name: String 
+  template: String 
+  subject: String 
+  path: String 
+}
+
+
+input DeleteEmailInput{
+  filter: EmailFilterInput
+  id: String
+}
+
+input SingleEmailInput {
+  # filtering
+  filter: EmailFilterInput
+  sort: EmailSortInput
+  search: String
+  id: String
+
+  # backwards-compatibility
+  "Deprecated (use 'filter/id' fields instead)."
+  selector: EmailSelectorUniqueInput
+
+  # options (backwards-compatibility)
+  # Whether to enable caching for this query
+  enableCache: Boolean
+  # Return null instead of throwing MissingDocumentError
+  allowNull: Boolean
+}
+
+input MultiEmailInput {
+
+  # filtering
+  filter: EmailFilterInput
+  sort: EmailSortInput
+  search: String
+  offset: Int
+  limit: Int
+
+  # backwards-compatibility
+  # A JSON object that contains the query terms used to fetch data
+  "Deprecated (use 'filter/id' fields instead)."
+  terms: JSON
+
+  # options (backwards-compatibility)
+  # Whether to enable caching for this query
+  enableCache: Boolean
+  # Whether to calculate totalCount for this query
+  enableTotal: Boolean
+  
+}
+
+type SingleEmailOutput{
+  result: Email
+}
+
+type  MultiEmailOutput{
+  results: [Email]
+  totalCount: Int
+}
+
+type EmailMutationOutput{
+  data: Email
+}
+
+input EmailFilterInput {
+  _and: [EmailFilterInput]
+  _not: EmailFilterInput
+  _or: [EmailFilterInput]
+
+
+  name: String_Selector
+  template: String_Selector
+  subject: String_Selector
+  path: String_Selector
+}
+
+input EmailSortInput {
+  name: SortOptions
+  template: SortOptions
+  subject: SortOptions
+  path: SortOptions
+}
+
+input EmailSelectorInput {
+  _and: [EmailSelectorInput]
+  _or: [EmailSelectorInput]
+
+}
+
+input EmailSelectorUniqueInput {
+  _id: String
+  documentId: String # OpenCRUD backwards compatibility
+  slug: String
+
+}
+
+
+# Type for Settings
+type Setting {
+  name: String 
+  value: JSON 
+  defaultValue: JSON 
+  isPublic: Boolean 
+  description: String 
+}
+
+
+input DeleteSettingInput{
+  filter: SettingFilterInput
+  id: String
+}
+
+input SingleSettingInput {
+  # filtering
+  filter: SettingFilterInput
+  sort: SettingSortInput
+  search: String
+  id: String
+
+  # backwards-compatibility
+  "Deprecated (use 'filter/id' fields instead)."
+  selector: SettingSelectorUniqueInput
+
+  # options (backwards-compatibility)
+  # Whether to enable caching for this query
+  enableCache: Boolean
+  # Return null instead of throwing MissingDocumentError
+  allowNull: Boolean
+}
+
+input MultiSettingInput {
+
+  # filtering
+  filter: SettingFilterInput
+  sort: SettingSortInput
+  search: String
+  offset: Int
+  limit: Int
+
+  # backwards-compatibility
+  # A JSON object that contains the query terms used to fetch data
+  "Deprecated (use 'filter/id' fields instead)."
+  terms: JSON
+
+  # options (backwards-compatibility)
+  # Whether to enable caching for this query
+  enableCache: Boolean
+  # Whether to calculate totalCount for this query
+  enableTotal: Boolean
+  
+}
+
+type SingleSettingOutput{
+  result: Setting
+}
+
+type  MultiSettingOutput{
+  results: [Setting]
+  totalCount: Int
+}
+
+type SettingMutationOutput{
+  data: Setting
+}
+
+input SettingFilterInput {
+  _and: [SettingFilterInput]
+  _not: SettingFilterInput
+  _or: [SettingFilterInput]
+
+
+  name: String_Selector
+
+
+  isPublic: Boolean_Selector
+  description: String_Selector
+}
+
+input SettingSortInput {
+  name: SortOptions
+  value: SortOptions
+  defaultValue: SortOptions
+  isPublic: SortOptions
+  description: SortOptions
+}
+
+input SettingSelectorInput {
+  _and: [SettingSelectorInput]
+  _or: [SettingSelectorInput]
+
+}
+
+input SettingSelectorUniqueInput {
+  _id: String
+  documentId: String # OpenCRUD backwards compatibility
+  slug: String
+
+}
+
+
+# Type for Callbacks
+type Callback {
+  name: String 
+  iterator: JSON 
+  properties: [JSON] 
+  runs: String 
+  newSyntax: Boolean 
+  returns: String 
+  description: String 
+  hooks: [String] 
+}
+
+
+input DeleteCallbackInput{
+  filter: CallbackFilterInput
+  id: String
+}
+
+input SingleCallbackInput {
+  # filtering
+  filter: CallbackFilterInput
+  sort: CallbackSortInput
+  search: String
+  id: String
+
+  # backwards-compatibility
+  "Deprecated (use 'filter/id' fields instead)."
+  selector: CallbackSelectorUniqueInput
+
+  # options (backwards-compatibility)
+  # Whether to enable caching for this query
+  enableCache: Boolean
+  # Return null instead of throwing MissingDocumentError
+  allowNull: Boolean
+}
+
+input MultiCallbackInput {
+
+  # filtering
+  filter: CallbackFilterInput
+  sort: CallbackSortInput
+  search: String
+  offset: Int
+  limit: Int
+
+  # backwards-compatibility
+  # A JSON object that contains the query terms used to fetch data
+  "Deprecated (use 'filter/id' fields instead)."
+  terms: JSON
+
+  # options (backwards-compatibility)
+  # Whether to enable caching for this query
+  enableCache: Boolean
+  # Whether to calculate totalCount for this query
+  enableTotal: Boolean
+  
+}
+
+type SingleCallbackOutput{
+  result: Callback
+}
+
+type  MultiCallbackOutput{
+  results: [Callback]
+  totalCount: Int
+}
+
+type CallbackMutationOutput{
+  data: Callback
+}
+
+input CallbackFilterInput {
+  _and: [CallbackFilterInput]
+  _not: CallbackFilterInput
+  _or: [CallbackFilterInput]
+
+
+  name: String_Selector
+
+
+  runs: String_Selector
+  newSyntax: Boolean_Selector
+  returns: String_Selector
+  description: String_Selector
+
+}
+
+input CallbackSortInput {
+  name: SortOptions
+  iterator: SortOptions
+  properties: SortOptions
+  runs: SortOptions
+  newSyntax: SortOptions
+  returns: SortOptions
+  description: SortOptions
+  hooks: SortOptions
+}
+
+input CallbackSelectorInput {
+  _and: [CallbackSelectorInput]
+  _or: [CallbackSelectorInput]
+
+}
+
+input CallbackSelectorUniqueInput {
+  _id: String
+  documentId: String # OpenCRUD backwards compatibility
+  slug: String
+
+}
+
+
+# Type for Offices
+type Office {
+  _id: String 
+  createdAt: Date 
+  userId: String 
+  updatedAt: Date 
+  displayName: String 
+  slug: String 
+  body: String 
+  htmlBody: String 
+  contacts: [OfficeContacts] 
+  theContacts: [Contact] 
+  allContactNames: String 
+  projects: [OfficeProjects] 
+  theProjects: [Project] 
+  links: [OfficeLinks] 
+  addresses: [OfficeAddresses] 
+  allAddresses: String 
+  phones: [OfficePhones] 
+  pastProjects: [OfficePastProjects] 
+  fullAddress: String 
+  street: String 
+  location: String 
+  theStreet: String 
+  theStreet1: String 
+  theStreet2: String 
+  theCity: String 
+  theState: String 
+  theLocation: String 
+  theZip: String 
+}
+
+
+input DeleteOfficeInput{
+  filter: OfficeFilterInput
+  id: String
+}
+
+input SingleOfficeInput {
+  # filtering
+  filter: OfficeFilterInput
+  sort: OfficeSortInput
+  search: String
+  id: String
+
+  # backwards-compatibility
+  "Deprecated (use 'filter/id' fields instead)."
+  selector: OfficeSelectorUniqueInput
+
+  # options (backwards-compatibility)
+  # Whether to enable caching for this query
+  enableCache: Boolean
+  # Return null instead of throwing MissingDocumentError
+  allowNull: Boolean
+}
+
+input MultiOfficeInput {
+
+  # filtering
+  filter: OfficeFilterInput
+  sort: OfficeSortInput
+  search: String
+  offset: Int
+  limit: Int
+
+  # backwards-compatibility
+  # A JSON object that contains the query terms used to fetch data
+  "Deprecated (use 'filter/id' fields instead)."
+  terms: JSON
+
+  # options (backwards-compatibility)
+  # Whether to enable caching for this query
+  enableCache: Boolean
+  # Whether to calculate totalCount for this query
+  enableTotal: Boolean
+  
+}
+
+type SingleOfficeOutput{
+  result: Office
+}
+
+type  MultiOfficeOutput{
+  results: [Office]
+  totalCount: Int
+}
+
+type OfficeMutationOutput{
+  data: Office
+}
+
+input CreateOfficeInput {
+  data: CreateOfficeDataInput!
+}
+
+input CreateOfficeDataInput {
+  displayName: String 
+  body: String 
+  contacts: [CreateOfficeContactsDataInput] 
+  projects: [CreateOfficeProjectsDataInput] 
+  links: [CreateOfficeLinksDataInput] 
+  addresses: [CreateOfficeAddressesDataInput] 
+  phones: [CreateOfficePhonesDataInput] 
+  pastProjects: [CreateOfficePastProjectsDataInput] 
+}
+
+input UpdateOfficeInput{
+  filter: OfficeFilterInput
+  id: String
+  data: UpdateOfficeDataInput!
+}
+
+input UpsertOfficeInput{
+  filter: OfficeFilterInput
+  id: String
+  data: UpdateOfficeDataInput!
+}
+
+input UpdateOfficeDataInput {
+  displayName: String 
+  body: String 
+  contacts: [UpdateOfficeContactsDataInput] 
+  projects: [UpdateOfficeProjectsDataInput] 
+  links: [UpdateOfficeLinksDataInput] 
+  addresses: [UpdateOfficeAddressesDataInput] 
+  phones: [UpdateOfficePhonesDataInput] 
+  pastProjects: [UpdateOfficePastProjectsDataInput] 
+}
+
+input OfficeFilterInput {
+  _and: [OfficeFilterInput]
+  _not: OfficeFilterInput
+  _or: [OfficeFilterInput]
+
+
+  _id: String_Selector
+  createdAt: Date_Selector
+  userId: String_Selector
+  updatedAt: Date_Selector
+  displayName: String_Selector
+  slug: String_Selector
+  body: String_Selector
+  htmlBody: String_Selector
+
+  allContactNames: String_Selector
+
+
+
+  allAddresses: String_Selector
+
+
+  fullAddress: String_Selector
+  street: String_Selector
+  location: String_Selector
+  theStreet: String_Selector
+  theStreet1: String_Selector
+  theStreet2: String_Selector
+  theCity: String_Selector
+  theState: String_Selector
+  theLocation: String_Selector
+  theZip: String_Selector
+}
+
+input OfficeSortInput {
+  _id: SortOptions
+  createdAt: SortOptions
+  userId: SortOptions
+  updatedAt: SortOptions
+  displayName: SortOptions
+  slug: SortOptions
+  body: SortOptions
+  htmlBody: SortOptions
+  contacts: SortOptions
+  allContactNames: SortOptions
+  projects: SortOptions
+  links: SortOptions
+  addresses: SortOptions
+  allAddresses: SortOptions
+  phones: SortOptions
+  pastProjects: SortOptions
+  fullAddress: SortOptions
+  street: SortOptions
+  location: SortOptions
+  theStreet: SortOptions
+  theStreet1: SortOptions
+  theStreet2: SortOptions
+  theCity: SortOptions
+  theState: SortOptions
+  theLocation: SortOptions
+  theZip: SortOptions
+}
+
+input OfficeSelectorInput {
+  _and: [OfficeSelectorInput]
+  _or: [OfficeSelectorInput]
+
+}
+
+input OfficeSelectorUniqueInput {
+  _id: String
+  documentId: String # OpenCRUD backwards compatibility
+  slug: String
+
+}
+
+
+type OfficeContacts {
+  contactId: String 
+  contactName: String 
+  contactTitle: String 
+}
+
+
+input CreateOfficeContactsInput {
+  data: CreateOfficeContactsDataInput!
+}
+
+input CreateOfficeContactsDataInput {
+  contactId: String 
+  contactName: String 
+  contactTitle: String 
+}
+
+input UpdateOfficeContactsInput{
+  filter: OfficeContactsFilterInput
+  id: String
+  data: UpdateOfficeContactsDataInput!
+}
+
+input UpsertOfficeContactsInput{
+  filter: OfficeContactsFilterInput
+  id: String
+  data: UpdateOfficeContactsDataInput!
+}
+
+input UpdateOfficeContactsDataInput {
+  contactId: String 
+  contactName: String 
+  contactTitle: String 
+}
+
+input OfficeContactsFilterInput {
+  _and: [OfficeContactsFilterInput]
+  _not: OfficeContactsFilterInput
+  _or: [OfficeContactsFilterInput]
+
+
+  contactId: String_Selector
+  contactName: String_Selector
+  contactTitle: String_Selector
+}
+
+input OfficeContactsSortInput {
+  contactId: SortOptions
+  contactName: SortOptions
+  contactTitle: SortOptions
+}
+
+
+type OfficeProjects {
+  projectId: String 
+  projectTitle: String 
+}
+
+
+input CreateOfficeProjectsInput {
+  data: CreateOfficeProjectsDataInput!
+}
+
+input CreateOfficeProjectsDataInput {
+  projectId: String 
+  projectTitle: String 
+}
+
+input UpdateOfficeProjectsInput{
+  filter: OfficeProjectsFilterInput
+  id: String
+  data: UpdateOfficeProjectsDataInput!
+}
+
+input UpsertOfficeProjectsInput{
+  filter: OfficeProjectsFilterInput
+  id: String
+  data: UpdateOfficeProjectsDataInput!
+}
+
+input UpdateOfficeProjectsDataInput {
+  projectId: String 
+  projectTitle: String 
+}
+
+input OfficeProjectsFilterInput {
+  _and: [OfficeProjectsFilterInput]
+  _not: OfficeProjectsFilterInput
+  _or: [OfficeProjectsFilterInput]
+
+
+  projectId: String_Selector
+  projectTitle: String_Selector
+}
+
+input OfficeProjectsSortInput {
+  projectId: SortOptions
+  projectTitle: SortOptions
+}
+
+
+type OfficeLinks {
+  platformName: String 
+  profileName: String 
+  profileLink: String 
+}
+
+
+input CreateOfficeLinksInput {
+  data: CreateOfficeLinksDataInput!
+}
+
+input CreateOfficeLinksDataInput {
+  platformName: String 
+  profileName: String 
+  profileLink: String 
+}
+
+input UpdateOfficeLinksInput{
+  filter: OfficeLinksFilterInput
+  id: String
+  data: UpdateOfficeLinksDataInput!
+}
+
+input UpsertOfficeLinksInput{
+  filter: OfficeLinksFilterInput
+  id: String
+  data: UpdateOfficeLinksDataInput!
+}
+
+input UpdateOfficeLinksDataInput {
+  platformName: String 
+  profileName: String 
+  profileLink: String 
+}
+
+input OfficeLinksFilterInput {
+  _and: [OfficeLinksFilterInput]
+  _not: OfficeLinksFilterInput
+  _or: [OfficeLinksFilterInput]
+
+
+  platformName: String_Selector
+  profileName: String_Selector
+  profileLink: String_Selector
+}
+
+input OfficeLinksSortInput {
+  platformName: SortOptions
+  profileName: SortOptions
+  profileLink: SortOptions
+}
+
+
+type OfficeAddresses {
+  street1: String 
+  street2: String 
+  city: String 
+  state: String 
+  zip: String 
+  addressType: String 
+  location: String 
+}
+
+
+input CreateOfficeAddressesInput {
+  data: CreateOfficeAddressesDataInput!
+}
+
+input CreateOfficeAddressesDataInput {
+  street1: String 
+  street2: String 
+  city: String 
+  state: String 
+  zip: String 
+  addressType: String 
+  location: String 
+}
+
+input UpdateOfficeAddressesInput{
+  filter: OfficeAddressesFilterInput
+  id: String
+  data: UpdateOfficeAddressesDataInput!
+}
+
+input UpsertOfficeAddressesInput{
+  filter: OfficeAddressesFilterInput
+  id: String
+  data: UpdateOfficeAddressesDataInput!
+}
+
+input UpdateOfficeAddressesDataInput {
+  street1: String 
+  street2: String 
+  city: String 
+  state: String 
+  zip: String 
+  addressType: String 
+  location: String 
+}
+
+input OfficeAddressesFilterInput {
+  _and: [OfficeAddressesFilterInput]
+  _not: OfficeAddressesFilterInput
+  _or: [OfficeAddressesFilterInput]
+
+
+  street1: String_Selector
+  street2: String_Selector
+  city: String_Selector
+  state: String_Selector
+  zip: String_Selector
+  addressType: String_Selector
+  location: String_Selector
+}
+
+input OfficeAddressesSortInput {
+  street1: SortOptions
+  street2: SortOptions
+  city: SortOptions
+  state: SortOptions
+  zip: SortOptions
+  addressType: SortOptions
+  location: SortOptions
+}
+
+
+type OfficePhones {
+  phoneNumberAsInput: String 
+  phoneNumberType: String 
+  phoneNumber: String 
+  nationalFormat: String 
+}
+
+
+input CreateOfficePhonesInput {
+  data: CreateOfficePhonesDataInput!
+}
+
+input CreateOfficePhonesDataInput {
+  phoneNumberAsInput: String 
+  phoneNumberType: String 
+  phoneNumber: String 
+  nationalFormat: String 
+}
+
+input UpdateOfficePhonesInput{
+  filter: OfficePhonesFilterInput
+  id: String
+  data: UpdateOfficePhonesDataInput!
+}
+
+input UpsertOfficePhonesInput{
+  filter: OfficePhonesFilterInput
+  id: String
+  data: UpdateOfficePhonesDataInput!
+}
+
+input UpdateOfficePhonesDataInput {
+  phoneNumberAsInput: String 
+  phoneNumberType: String 
+  phoneNumber: String 
+  nationalFormat: String 
+}
+
+input OfficePhonesFilterInput {
+  _and: [OfficePhonesFilterInput]
+  _not: OfficePhonesFilterInput
+  _or: [OfficePhonesFilterInput]
+
+
+  phoneNumberAsInput: String_Selector
+  phoneNumberType: String_Selector
+  phoneNumber: String_Selector
+  nationalFormat: String_Selector
+}
+
+input OfficePhonesSortInput {
+  phoneNumberAsInput: SortOptions
+  phoneNumberType: SortOptions
+  phoneNumber: SortOptions
+  nationalFormat: SortOptions
+}
+
+
+type OfficePastProjects {
+  projectId: String 
+  projectTitle: String 
+}
+
+
+input CreateOfficePastProjectsInput {
+  data: CreateOfficePastProjectsDataInput!
+}
+
+input CreateOfficePastProjectsDataInput {
+  projectId: String 
+  projectTitle: String 
+}
+
+input UpdateOfficePastProjectsInput{
+  filter: OfficePastProjectsFilterInput
+  id: String
+  data: UpdateOfficePastProjectsDataInput!
+}
+
+input UpsertOfficePastProjectsInput{
+  filter: OfficePastProjectsFilterInput
+  id: String
+  data: UpdateOfficePastProjectsDataInput!
+}
+
+input UpdateOfficePastProjectsDataInput {
+  projectId: String 
+  projectTitle: String 
+}
+
+input OfficePastProjectsFilterInput {
+  _and: [OfficePastProjectsFilterInput]
+  _not: OfficePastProjectsFilterInput
+  _or: [OfficePastProjectsFilterInput]
+
+
+  projectId: String_Selector
+  projectTitle: String_Selector
+}
+
+input OfficePastProjectsSortInput {
+  projectId: SortOptions
+  projectTitle: SortOptions
+}
+
+
+# Type for Projects
+type Project {
+  _id: String 
+  createdAt: Date 
+  userId: String 
+  updatedAt: Date 
+  projectTitle: String 
+  sortTitle: String 
+  projectType: String 
+  platformType: String 
+  union: String 
+  network: String 
+  status: String 
+  renewed: Boolean 
+  shootingLocation: String 
+  summary: String 
+  htmlSummary: String 
+  website: String 
+  notes: String 
+  htmlNotes: String 
+  season: String 
+  order: String 
+  casting: String 
+  castingCompany: String 
+  slug: String 
+  links: [ProjectLinks] 
+  contacts: [ProjectContacts] 
+  allContactNames: String 
+  addresses: [ProjectAddresses] 
+  allAddresses: String 
+}
+
+
+input DeleteProjectInput{
+  filter: ProjectFilterInput
+  id: String
+}
+
+input SingleProjectInput {
+  # filtering
+  filter: ProjectFilterInput
+  sort: ProjectSortInput
+  search: String
+  id: String
+
+  # backwards-compatibility
+  "Deprecated (use 'filter/id' fields instead)."
+  selector: ProjectSelectorUniqueInput
+
+  # options (backwards-compatibility)
+  # Whether to enable caching for this query
+  enableCache: Boolean
+  # Return null instead of throwing MissingDocumentError
+  allowNull: Boolean
+}
+
+input MultiProjectInput {
+
+  # filtering
+  filter: ProjectFilterInput
+  sort: ProjectSortInput
+  search: String
+  offset: Int
+  limit: Int
+
+  # backwards-compatibility
+  # A JSON object that contains the query terms used to fetch data
+  "Deprecated (use 'filter/id' fields instead)."
+  terms: JSON
+
+  # options (backwards-compatibility)
+  # Whether to enable caching for this query
+  enableCache: Boolean
+  # Whether to calculate totalCount for this query
+  enableTotal: Boolean
+  
+}
+
+type SingleProjectOutput{
+  result: Project
+}
+
+type  MultiProjectOutput{
+  results: [Project]
+  totalCount: Int
+}
+
+type ProjectMutationOutput{
+  data: Project
+}
+
+input CreateProjectInput {
+  data: CreateProjectDataInput!
+}
+
+input CreateProjectDataInput {
+  projectTitle: String 
+  projectType: String 
+  union: String 
+  network: String 
+  status: String 
+  renewed: Boolean 
+  shootingLocation: String 
+  summary: String 
+  website: String 
+  notes: String 
+  season: String 
+  order: String 
+  castingCompany: String 
+  slug: String 
+  links: [CreateProjectLinksDataInput] 
+  contacts: [CreateProjectContactsDataInput] 
+  addresses: [CreateProjectAddressesDataInput] 
+}
+
+input UpdateProjectInput{
+  filter: ProjectFilterInput
+  id: String
+  data: UpdateProjectDataInput!
+}
+
+input UpsertProjectInput{
+  filter: ProjectFilterInput
+  id: String
+  data: UpdateProjectDataInput!
+}
+
+input UpdateProjectDataInput {
+  projectTitle: String 
+  projectType: String 
+  union: String 
+  network: String 
+  status: String 
+  renewed: Boolean 
+  shootingLocation: String 
+  summary: String 
+  website: String 
+  notes: String 
+  season: String 
+  order: String 
+  castingCompany: String 
+  slug: String 
+  links: [UpdateProjectLinksDataInput] 
+  contacts: [UpdateProjectContactsDataInput] 
+  addresses: [UpdateProjectAddressesDataInput] 
+}
+
+input ProjectFilterInput {
+  _and: [ProjectFilterInput]
+  _not: ProjectFilterInput
+  _or: [ProjectFilterInput]
+
+
+  _id: String_Selector
+  createdAt: Date_Selector
+  userId: String_Selector
+  updatedAt: Date_Selector
+  projectTitle: String_Selector
+  sortTitle: String_Selector
+  projectType: String_Selector
+  platformType: String_Selector
+  union: String_Selector
+  network: String_Selector
+  status: String_Selector
+  renewed: Boolean_Selector
+  shootingLocation: String_Selector
+  summary: String_Selector
+  htmlSummary: String_Selector
+  website: String_Selector
+  notes: String_Selector
+  htmlNotes: String_Selector
+  season: String_Selector
+  order: String_Selector
+  casting: String_Selector
+  castingCompany: String_Selector
+  slug: String_Selector
+
+
+  allContactNames: String_Selector
+
+  allAddresses: String_Selector
+}
+
+input ProjectSortInput {
+  _id: SortOptions
+  createdAt: SortOptions
+  userId: SortOptions
+  updatedAt: SortOptions
+  projectTitle: SortOptions
+  sortTitle: SortOptions
+  projectType: SortOptions
+  platformType: SortOptions
+  union: SortOptions
+  network: SortOptions
+  status: SortOptions
+  renewed: SortOptions
+  shootingLocation: SortOptions
+  summary: SortOptions
+  htmlSummary: SortOptions
+  website: SortOptions
+  notes: SortOptions
+  htmlNotes: SortOptions
+  season: SortOptions
+  order: SortOptions
+  casting: SortOptions
+  castingCompany: SortOptions
+  slug: SortOptions
+  links: SortOptions
+  contacts: SortOptions
+  allContactNames: SortOptions
+  addresses: SortOptions
+  allAddresses: SortOptions
+}
+
+input ProjectSelectorInput {
+  _and: [ProjectSelectorInput]
+  _or: [ProjectSelectorInput]
+
+}
+
+input ProjectSelectorUniqueInput {
+  _id: String
+  documentId: String # OpenCRUD backwards compatibility
+  slug: String
+
+}
+
+
+type ProjectLinks {
+  platformName: String 
+  profileName: String 
+  profileLink: String 
+}
+
+
+input CreateProjectLinksInput {
+  data: CreateProjectLinksDataInput!
+}
+
+input CreateProjectLinksDataInput {
+  platformName: String 
+  profileName: String 
+  profileLink: String 
+}
+
+input UpdateProjectLinksInput{
+  filter: ProjectLinksFilterInput
+  id: String
+  data: UpdateProjectLinksDataInput!
+}
+
+input UpsertProjectLinksInput{
+  filter: ProjectLinksFilterInput
+  id: String
+  data: UpdateProjectLinksDataInput!
+}
+
+input UpdateProjectLinksDataInput {
+  platformName: String 
+  profileName: String 
+  profileLink: String 
+}
+
+input ProjectLinksFilterInput {
+  _and: [ProjectLinksFilterInput]
+  _not: ProjectLinksFilterInput
+  _or: [ProjectLinksFilterInput]
+
+
+  platformName: String_Selector
+  profileName: String_Selector
+  profileLink: String_Selector
+}
+
+input ProjectLinksSortInput {
+  platformName: SortOptions
+  profileName: SortOptions
+  profileLink: SortOptions
+}
+
+
+type ProjectContacts {
+  contactId: String 
+  contactName: String 
+  contactTitle: String 
+}
+
+
+input CreateProjectContactsInput {
+  data: CreateProjectContactsDataInput!
+}
+
+input CreateProjectContactsDataInput {
+  contactId: String 
+  contactName: String 
+  contactTitle: String 
+}
+
+input UpdateProjectContactsInput{
+  filter: ProjectContactsFilterInput
+  id: String
+  data: UpdateProjectContactsDataInput!
+}
+
+input UpsertProjectContactsInput{
+  filter: ProjectContactsFilterInput
+  id: String
+  data: UpdateProjectContactsDataInput!
+}
+
+input UpdateProjectContactsDataInput {
+  contactId: String 
+  contactName: String 
+  contactTitle: String 
+}
+
+input ProjectContactsFilterInput {
+  _and: [ProjectContactsFilterInput]
+  _not: ProjectContactsFilterInput
+  _or: [ProjectContactsFilterInput]
+
+
+  contactId: String_Selector
+  contactName: String_Selector
+  contactTitle: String_Selector
+}
+
+input ProjectContactsSortInput {
+  contactId: SortOptions
+  contactName: SortOptions
+  contactTitle: SortOptions
+}
+
+
+type ProjectAddresses {
+  street1: String 
+  street2: String 
+  city: String 
+  state: String 
+  zip: String 
+  addressType: String 
+  location: String 
+}
+
+
+input CreateProjectAddressesInput {
+  data: CreateProjectAddressesDataInput!
+}
+
+input CreateProjectAddressesDataInput {
+  street1: String 
+  street2: String 
+  city: String 
+  state: String 
+  zip: String 
+  addressType: String 
+  location: String 
+}
+
+input UpdateProjectAddressesInput{
+  filter: ProjectAddressesFilterInput
+  id: String
+  data: UpdateProjectAddressesDataInput!
+}
+
+input UpsertProjectAddressesInput{
+  filter: ProjectAddressesFilterInput
+  id: String
+  data: UpdateProjectAddressesDataInput!
+}
+
+input UpdateProjectAddressesDataInput {
+  street1: String 
+  street2: String 
+  city: String 
+  state: String 
+  zip: String 
+  addressType: String 
+  location: String 
+}
+
+input ProjectAddressesFilterInput {
+  _and: [ProjectAddressesFilterInput]
+  _not: ProjectAddressesFilterInput
+  _or: [ProjectAddressesFilterInput]
+
+
+  street1: String_Selector
+  street2: String_Selector
+  city: String_Selector
+  state: String_Selector
+  zip: String_Selector
+  addressType: String_Selector
+  location: String_Selector
+}
+
+input ProjectAddressesSortInput {
+  street1: SortOptions
+  street2: SortOptions
+  city: SortOptions
+  state: SortOptions
+  zip: SortOptions
+  addressType: SortOptions
+  location: SortOptions
+}
+
+
+# Type for Contacts
+type Contact {
+  _id: String 
+  createdAt: Date 
+  userId: String 
+  firstName: String 
+  middleName: String 
+  lastName: String 
+  displayName: String 
+  title: String 
+  gender: String 
+  body: String 
+  htmlBody: String 
+  links: [ContactLinks] 
+  allLinks: String 
+  addresses: [ContactAddresses] 
+  allAddresses: String 
+  addressString: String 
+  theAddress: ContactTheAddress 
+  slug: String 
+  updatedAt: Date 
+  offices: [ContactOffices] 
+  projects: [ContactProjects] 
+  pastProjects: [ContactPastProjects] 
+  fullName: String 
+}
+
+
+input DeleteContactInput{
+  filter: ContactFilterInput
+  id: String
+}
+
+input SingleContactInput {
+  # filtering
+  filter: ContactFilterInput
+  sort: ContactSortInput
+  search: String
+  id: String
+
+  # backwards-compatibility
+  "Deprecated (use 'filter/id' fields instead)."
+  selector: ContactSelectorUniqueInput
+
+  # options (backwards-compatibility)
+  # Whether to enable caching for this query
+  enableCache: Boolean
+  # Return null instead of throwing MissingDocumentError
+  allowNull: Boolean
+}
+
+input MultiContactInput {
+
+  # filtering
+  filter: ContactFilterInput
+  sort: ContactSortInput
+  search: String
+  offset: Int
+  limit: Int
+
+  # backwards-compatibility
+  # A JSON object that contains the query terms used to fetch data
+  "Deprecated (use 'filter/id' fields instead)."
+  terms: JSON
+
+  # options (backwards-compatibility)
+  # Whether to enable caching for this query
+  enableCache: Boolean
+  # Whether to calculate totalCount for this query
+  enableTotal: Boolean
+  
+}
+
+type SingleContactOutput{
+  result: Contact
+}
+
+type  MultiContactOutput{
+  results: [Contact]
+  totalCount: Int
+}
+
+type ContactMutationOutput{
+  data: Contact
+}
+
+input CreateContactInput {
+  data: CreateContactDataInput!
+}
+
+input CreateContactDataInput {
+  firstName: String 
+  middleName: String 
+  lastName: String 
+  displayName: String 
+  title: String 
+  gender: String 
+  body: String 
+  links: [CreateContactLinksDataInput] 
+  addresses: [CreateContactAddressesDataInput] 
+  slug: String 
+  offices: [CreateContactOfficesDataInput] 
+  projects: [CreateContactProjectsDataInput] 
+  pastProjects: [CreateContactPastProjectsDataInput] 
+}
+
+input UpdateContactInput{
+  filter: ContactFilterInput
+  id: String
+  data: UpdateContactDataInput!
+}
+
+input UpsertContactInput{
+  filter: ContactFilterInput
+  id: String
+  data: UpdateContactDataInput!
+}
+
+input UpdateContactDataInput {
+  firstName: String 
+  middleName: String 
+  lastName: String 
+  displayName: String 
+  title: String 
+  gender: String 
+  body: String 
+  links: [UpdateContactLinksDataInput] 
+  addresses: [UpdateContactAddressesDataInput] 
+  slug: String 
+  offices: [UpdateContactOfficesDataInput] 
+  projects: [UpdateContactProjectsDataInput] 
+  pastProjects: [UpdateContactPastProjectsDataInput] 
+}
+
+input ContactFilterInput {
+  _and: [ContactFilterInput]
+  _not: ContactFilterInput
+  _or: [ContactFilterInput]
+
+
+  _id: String_Selector
+  createdAt: Date_Selector
+  userId: String_Selector
+  firstName: String_Selector
+  middleName: String_Selector
+  lastName: String_Selector
+  displayName: String_Selector
+  title: String_Selector
+  gender: String_Selector
+  body: String_Selector
+  htmlBody: String_Selector
+
+  allLinks: String_Selector
+
+  allAddresses: String_Selector
+  addressString: String_Selector
+
+  slug: String_Selector
+  updatedAt: Date_Selector
+
+
+
+  fullName: String_Selector
+}
+
+input ContactSortInput {
+  _id: SortOptions
+  createdAt: SortOptions
+  userId: SortOptions
+  firstName: SortOptions
+  middleName: SortOptions
+  lastName: SortOptions
+  displayName: SortOptions
+  title: SortOptions
+  gender: SortOptions
+  body: SortOptions
+  htmlBody: SortOptions
+  links: SortOptions
+  allLinks: SortOptions
+  addresses: SortOptions
+  allAddresses: SortOptions
+  addressString: SortOptions
+  theAddress: SortOptions
+  slug: SortOptions
+  updatedAt: SortOptions
+  offices: SortOptions
+  projects: SortOptions
+  pastProjects: SortOptions
+  fullName: SortOptions
+}
+
+input ContactSelectorInput {
+  _and: [ContactSelectorInput]
+  _or: [ContactSelectorInput]
+
+}
+
+input ContactSelectorUniqueInput {
+  _id: String
+  documentId: String # OpenCRUD backwards compatibility
+  slug: String
+
+}
+
+
+type ContactLinks {
+  platformName: String 
+  profileName: String 
+  profileLink: String 
+}
+
+
+input CreateContactLinksInput {
+  data: CreateContactLinksDataInput!
+}
+
+input CreateContactLinksDataInput {
+  platformName: String 
+  profileName: String 
+  profileLink: String 
+}
+
+input UpdateContactLinksInput{
+  filter: ContactLinksFilterInput
+  id: String
+  data: UpdateContactLinksDataInput!
+}
+
+input UpsertContactLinksInput{
+  filter: ContactLinksFilterInput
+  id: String
+  data: UpdateContactLinksDataInput!
+}
+
+input UpdateContactLinksDataInput {
+  platformName: String 
+  profileName: String 
+  profileLink: String 
+}
+
+input ContactLinksFilterInput {
+  _and: [ContactLinksFilterInput]
+  _not: ContactLinksFilterInput
+  _or: [ContactLinksFilterInput]
+
+
+  platformName: String_Selector
+  profileName: String_Selector
+  profileLink: String_Selector
+}
+
+input ContactLinksSortInput {
+  platformName: SortOptions
+  profileName: SortOptions
+  profileLink: SortOptions
+}
+
+
+type ContactAddresses {
+  street1: String 
+  street2: String 
+  city: String 
+  state: String 
+  zip: String 
+  addressType: String 
+  location: String 
+}
+
+
+input CreateContactAddressesInput {
+  data: CreateContactAddressesDataInput!
+}
+
+input CreateContactAddressesDataInput {
+  street1: String 
+  street2: String 
+  city: String 
+  state: String 
+  zip: String 
+  addressType: String 
+  location: String 
+}
+
+input UpdateContactAddressesInput{
+  filter: ContactAddressesFilterInput
+  id: String
+  data: UpdateContactAddressesDataInput!
+}
+
+input UpsertContactAddressesInput{
+  filter: ContactAddressesFilterInput
+  id: String
+  data: UpdateContactAddressesDataInput!
+}
+
+input UpdateContactAddressesDataInput {
+  street1: String 
+  street2: String 
+  city: String 
+  state: String 
+  zip: String 
+  addressType: String 
+  location: String 
+}
+
+input ContactAddressesFilterInput {
+  _and: [ContactAddressesFilterInput]
+  _not: ContactAddressesFilterInput
+  _or: [ContactAddressesFilterInput]
+
+
+  street1: String_Selector
+  street2: String_Selector
+  city: String_Selector
+  state: String_Selector
+  zip: String_Selector
+  addressType: String_Selector
+  location: String_Selector
+}
+
+input ContactAddressesSortInput {
+  street1: SortOptions
+  street2: SortOptions
+  city: SortOptions
+  state: SortOptions
+  zip: SortOptions
+  addressType: SortOptions
+  location: SortOptions
+}
+
+
+type ContactTheAddress {
+  street1: String 
+  street2: String 
+  city: String 
+  state: String 
+  zip: String 
+  addressType: String 
+  location: String 
+}
+
+
+input CreateContactTheAddressInput {
+  data: CreateContactTheAddressDataInput!
+}
+
+input CreateContactTheAddressDataInput {
+  street1: String 
+  street2: String 
+  city: String 
+  state: String 
+  zip: String 
+  addressType: String 
+  location: String 
+}
+
+input UpdateContactTheAddressInput{
+  filter: ContactTheAddressFilterInput
+  id: String
+  data: UpdateContactTheAddressDataInput!
+}
+
+input UpsertContactTheAddressInput{
+  filter: ContactTheAddressFilterInput
+  id: String
+  data: UpdateContactTheAddressDataInput!
+}
+
+input UpdateContactTheAddressDataInput {
+  street1: String 
+  street2: String 
+  city: String 
+  state: String 
+  zip: String 
+  addressType: String 
+  location: String 
+}
+
+input ContactTheAddressFilterInput {
+  _and: [ContactTheAddressFilterInput]
+  _not: ContactTheAddressFilterInput
+  _or: [ContactTheAddressFilterInput]
+
+
+  street1: String_Selector
+  street2: String_Selector
+  city: String_Selector
+  state: String_Selector
+  zip: String_Selector
+  addressType: String_Selector
+  location: String_Selector
+}
+
+input ContactTheAddressSortInput {
+  street1: SortOptions
+  street2: SortOptions
+  city: SortOptions
+  state: SortOptions
+  zip: SortOptions
+  addressType: SortOptions
+  location: SortOptions
+}
+
+
+type ContactOffices {
+  officeId: String 
+}
+
+
+input CreateContactOfficesInput {
+  data: CreateContactOfficesDataInput!
+}
+
+input CreateContactOfficesDataInput {
+  officeId: String 
+}
+
+input UpdateContactOfficesInput{
+  filter: ContactOfficesFilterInput
+  id: String
+  data: UpdateContactOfficesDataInput!
+}
+
+input UpsertContactOfficesInput{
+  filter: ContactOfficesFilterInput
+  id: String
+  data: UpdateContactOfficesDataInput!
+}
+
+input UpdateContactOfficesDataInput {
+  officeId: String 
+}
+
+input ContactOfficesFilterInput {
+  _and: [ContactOfficesFilterInput]
+  _not: ContactOfficesFilterInput
+  _or: [ContactOfficesFilterInput]
+
+
+  officeId: String_Selector
+}
+
+input ContactOfficesSortInput {
+  officeId: SortOptions
+}
+
+
+type ContactProjects {
+  projectId: String 
+  projectTitle: String 
+  titleForProject: String 
+}
+
+
+input CreateContactProjectsInput {
+  data: CreateContactProjectsDataInput!
+}
+
+input CreateContactProjectsDataInput {
+  projectId: String 
+  projectTitle: String 
+  titleForProject: String 
+}
+
+input UpdateContactProjectsInput{
+  filter: ContactProjectsFilterInput
+  id: String
+  data: UpdateContactProjectsDataInput!
+}
+
+input UpsertContactProjectsInput{
+  filter: ContactProjectsFilterInput
+  id: String
+  data: UpdateContactProjectsDataInput!
+}
+
+input UpdateContactProjectsDataInput {
+  projectId: String 
+  projectTitle: String 
+  titleForProject: String 
+}
+
+input ContactProjectsFilterInput {
+  _and: [ContactProjectsFilterInput]
+  _not: ContactProjectsFilterInput
+  _or: [ContactProjectsFilterInput]
+
+
+  projectId: String_Selector
+  projectTitle: String_Selector
+  titleForProject: String_Selector
+}
+
+input ContactProjectsSortInput {
+  projectId: SortOptions
+  projectTitle: SortOptions
+  titleForProject: SortOptions
+}
+
+
+type ContactPastProjects {
+  projectId: String 
+  projectTitle: String 
+  titleForProject: String 
+}
+
+
+input CreateContactPastProjectsInput {
+  data: CreateContactPastProjectsDataInput!
+}
+
+input CreateContactPastProjectsDataInput {
+  projectId: String 
+  projectTitle: String 
+  titleForProject: String 
+}
+
+input UpdateContactPastProjectsInput{
+  filter: ContactPastProjectsFilterInput
+  id: String
+  data: UpdateContactPastProjectsDataInput!
+}
+
+input UpsertContactPastProjectsInput{
+  filter: ContactPastProjectsFilterInput
+  id: String
+  data: UpdateContactPastProjectsDataInput!
+}
+
+input UpdateContactPastProjectsDataInput {
+  projectId: String 
+  projectTitle: String 
+  titleForProject: String 
+}
+
+input ContactPastProjectsFilterInput {
+  _and: [ContactPastProjectsFilterInput]
+  _not: ContactPastProjectsFilterInput
+  _or: [ContactPastProjectsFilterInput]
+
+
+  projectId: String_Selector
+  projectTitle: String_Selector
+  titleForProject: String_Selector
+}
+
+input ContactPastProjectsSortInput {
+  projectId: SortOptions
+  projectTitle: SortOptions
+  titleForProject: SortOptions
+}
+
+
+# Type for PastProjects
+type PastProject {
+  _id: String 
+  createdAt: Date 
+  userId: String 
+  updatedAt: Date 
+  projectTitle: String 
+  sortTitle: String 
+  projectType: String 
+  platformType: String 
+  union: String 
+  network: String 
+  status: String 
+  renewed: Boolean 
+  shootingLocation: String 
+  summary: String 
+  htmlSummary: String 
+  website: String 
+  notes: String 
+  htmlNotes: String 
+  season: String 
+  order: String 
+  casting: String 
+  castingCompany: String 
+  castingOfficeId: String 
+  castingOffice: Office 
+  slug: String 
+  links: [PastProjectLinks] 
+  contacts: [PastProjectContacts] 
+  allContactNames: String 
+  addresses: [PastProjectAddresses] 
+  allAddresses: String 
+}
+
+
+input DeletePastProjectInput{
+  filter: PastProjectFilterInput
+  id: String
+}
+
+input SinglePastProjectInput {
+  # filtering
+  filter: PastProjectFilterInput
+  sort: PastProjectSortInput
+  search: String
+  id: String
+
+  # backwards-compatibility
+  "Deprecated (use 'filter/id' fields instead)."
+  selector: PastProjectSelectorUniqueInput
+
+  # options (backwards-compatibility)
+  # Whether to enable caching for this query
+  enableCache: Boolean
+  # Return null instead of throwing MissingDocumentError
+  allowNull: Boolean
+}
+
+input MultiPastProjectInput {
+
+  # filtering
+  filter: PastProjectFilterInput
+  sort: PastProjectSortInput
+  search: String
+  offset: Int
+  limit: Int
+
+  # backwards-compatibility
+  # A JSON object that contains the query terms used to fetch data
+  "Deprecated (use 'filter/id' fields instead)."
+  terms: JSON
+
+  # options (backwards-compatibility)
+  # Whether to enable caching for this query
+  enableCache: Boolean
+  # Whether to calculate totalCount for this query
+  enableTotal: Boolean
+  
+}
+
+type SinglePastProjectOutput{
+  result: PastProject
+}
+
+type  MultiPastProjectOutput{
+  results: [PastProject]
+  totalCount: Int
+}
+
+type PastProjectMutationOutput{
+  data: PastProject
+}
+
+input CreatePastProjectInput {
+  data: CreatePastProjectDataInput!
+}
+
+input CreatePastProjectDataInput {
+  projectTitle: String 
+  sortTitle: String 
+  projectType: String 
+  union: String 
+  network: String 
+  status: String 
+  renewed: Boolean 
+  shootingLocation: String 
+  summary: String 
+  website: String 
+  notes: String 
+  season: String 
+  order: String 
+  castingCompany: String 
+  castingOfficeId: String 
+  slug: String 
+  links: [CreatePastProjectLinksDataInput] 
+  contacts: [CreatePastProjectContactsDataInput] 
+  addresses: [CreatePastProjectAddressesDataInput] 
+}
+
+input UpdatePastProjectInput{
+  filter: PastProjectFilterInput
+  id: String
+  data: UpdatePastProjectDataInput!
+}
+
+input UpsertPastProjectInput{
+  filter: PastProjectFilterInput
+  id: String
+  data: UpdatePastProjectDataInput!
+}
+
+input UpdatePastProjectDataInput {
+  projectTitle: String 
+  sortTitle: String 
+  projectType: String 
+  union: String 
+  network: String 
+  status: String 
+  renewed: Boolean 
+  shootingLocation: String 
+  summary: String 
+  website: String 
+  notes: String 
+  season: String 
+  order: String 
+  castingCompany: String 
+  castingOfficeId: String 
+  slug: String 
+  links: [UpdatePastProjectLinksDataInput] 
+  contacts: [UpdatePastProjectContactsDataInput] 
+  addresses: [UpdatePastProjectAddressesDataInput] 
+}
+
+input PastProjectFilterInput {
+  _and: [PastProjectFilterInput]
+  _not: PastProjectFilterInput
+  _or: [PastProjectFilterInput]
+
+
+  _id: String_Selector
+  createdAt: Date_Selector
+  userId: String_Selector
+  updatedAt: Date_Selector
+  projectTitle: String_Selector
+  sortTitle: String_Selector
+  projectType: String_Selector
+  platformType: String_Selector
+  union: String_Selector
+  network: String_Selector
+  status: String_Selector
+  renewed: Boolean_Selector
+  shootingLocation: String_Selector
+  summary: String_Selector
+  htmlSummary: String_Selector
+  website: String_Selector
+  notes: String_Selector
+  htmlNotes: String_Selector
+  season: String_Selector
+  order: String_Selector
+  casting: String_Selector
+  castingCompany: String_Selector
+  castingOfficeId: String_Selector
+  slug: String_Selector
+
+
+  allContactNames: String_Selector
+
+  allAddresses: String_Selector
+}
+
+input PastProjectSortInput {
+  _id: SortOptions
+  createdAt: SortOptions
+  userId: SortOptions
+  updatedAt: SortOptions
+  projectTitle: SortOptions
+  sortTitle: SortOptions
+  projectType: SortOptions
+  platformType: SortOptions
+  union: SortOptions
+  network: SortOptions
+  status: SortOptions
+  renewed: SortOptions
+  shootingLocation: SortOptions
+  summary: SortOptions
+  htmlSummary: SortOptions
+  website: SortOptions
+  notes: SortOptions
+  htmlNotes: SortOptions
+  season: SortOptions
+  order: SortOptions
+  casting: SortOptions
+  castingCompany: SortOptions
+  castingOfficeId: SortOptions
+  slug: SortOptions
+  links: SortOptions
+  contacts: SortOptions
+  allContactNames: SortOptions
+  addresses: SortOptions
+  allAddresses: SortOptions
+}
+
+input PastProjectSelectorInput {
+  _and: [PastProjectSelectorInput]
+  _or: [PastProjectSelectorInput]
+
+}
+
+input PastProjectSelectorUniqueInput {
+  _id: String
+  documentId: String # OpenCRUD backwards compatibility
+  slug: String
+
+}
+
+
+type PastProjectLinks {
+  platformName: String 
+  profileName: String 
+  profileLink: String 
+}
+
+
+input CreatePastProjectLinksInput {
+  data: CreatePastProjectLinksDataInput!
+}
+
+input CreatePastProjectLinksDataInput {
+  platformName: String 
+  profileName: String 
+  profileLink: String 
+}
+
+input UpdatePastProjectLinksInput{
+  filter: PastProjectLinksFilterInput
+  id: String
+  data: UpdatePastProjectLinksDataInput!
+}
+
+input UpsertPastProjectLinksInput{
+  filter: PastProjectLinksFilterInput
+  id: String
+  data: UpdatePastProjectLinksDataInput!
+}
+
+input UpdatePastProjectLinksDataInput {
+  platformName: String 
+  profileName: String 
+  profileLink: String 
+}
+
+input PastProjectLinksFilterInput {
+  _and: [PastProjectLinksFilterInput]
+  _not: PastProjectLinksFilterInput
+  _or: [PastProjectLinksFilterInput]
+
+
+  platformName: String_Selector
+  profileName: String_Selector
+  profileLink: String_Selector
+}
+
+input PastProjectLinksSortInput {
+  platformName: SortOptions
+  profileName: SortOptions
+  profileLink: SortOptions
+}
+
+
+type PastProjectContacts {
+  contactId: String 
+  contactName: String 
+  contactTitle: String 
+}
+
+
+input CreatePastProjectContactsInput {
+  data: CreatePastProjectContactsDataInput!
+}
+
+input CreatePastProjectContactsDataInput {
+  contactId: String 
+  contactName: String 
+  contactTitle: String 
+}
+
+input UpdatePastProjectContactsInput{
+  filter: PastProjectContactsFilterInput
+  id: String
+  data: UpdatePastProjectContactsDataInput!
+}
+
+input UpsertPastProjectContactsInput{
+  filter: PastProjectContactsFilterInput
+  id: String
+  data: UpdatePastProjectContactsDataInput!
+}
+
+input UpdatePastProjectContactsDataInput {
+  contactId: String 
+  contactName: String 
+  contactTitle: String 
+}
+
+input PastProjectContactsFilterInput {
+  _and: [PastProjectContactsFilterInput]
+  _not: PastProjectContactsFilterInput
+  _or: [PastProjectContactsFilterInput]
+
+
+  contactId: String_Selector
+  contactName: String_Selector
+  contactTitle: String_Selector
+}
+
+input PastProjectContactsSortInput {
+  contactId: SortOptions
+  contactName: SortOptions
+  contactTitle: SortOptions
+}
+
+
+type PastProjectAddresses {
+  street1: String 
+  street2: String 
+  city: String 
+  state: String 
+  zip: String 
+  addressType: String 
+  location: String 
+}
+
+
+input CreatePastProjectAddressesInput {
+  data: CreatePastProjectAddressesDataInput!
+}
+
+input CreatePastProjectAddressesDataInput {
+  street1: String 
+  street2: String 
+  city: String 
+  state: String 
+  zip: String 
+  addressType: String 
+  location: String 
+}
+
+input UpdatePastProjectAddressesInput{
+  filter: PastProjectAddressesFilterInput
+  id: String
+  data: UpdatePastProjectAddressesDataInput!
+}
+
+input UpsertPastProjectAddressesInput{
+  filter: PastProjectAddressesFilterInput
+  id: String
+  data: UpdatePastProjectAddressesDataInput!
+}
+
+input UpdatePastProjectAddressesDataInput {
+  street1: String 
+  street2: String 
+  city: String 
+  state: String 
+  zip: String 
+  addressType: String 
+  location: String 
+}
+
+input PastProjectAddressesFilterInput {
+  _and: [PastProjectAddressesFilterInput]
+  _not: PastProjectAddressesFilterInput
+  _or: [PastProjectAddressesFilterInput]
+
+
+  street1: String_Selector
+  street2: String_Selector
+  city: String_Selector
+  state: String_Selector
+  zip: String_Selector
+  addressType: String_Selector
+  location: String_Selector
+}
+
+input PastProjectAddressesSortInput {
+  street1: SortOptions
+  street2: SortOptions
+  city: SortOptions
+  state: SortOptions
+  zip: SortOptions
+  addressType: SortOptions
+  location: SortOptions
+}
+
+
+# Type for Comments
+type Comment {
+  _id: String 
+  createdAt: Date 
+  userId: String 
+  user: User 
+  parentCommentId: String 
+  parentComment: Comment 
+  topLevelCommentId: String 
+  topLevelComment: Comment 
+  postedAt: Date 
+  body: String 
+  htmlBody: String 
+  author: String 
+  collectionName: String 
+  objectId: String 
+  isDeleted: Boolean 
+}
+
+
+input DeleteCommentInput{
+  filter: CommentFilterInput
+  id: String
+}
+
+input SingleCommentInput {
+  # filtering
+  filter: CommentFilterInput
+  sort: CommentSortInput
+  search: String
+  id: String
+
+  # backwards-compatibility
+  "Deprecated (use 'filter/id' fields instead)."
+  selector: CommentSelectorUniqueInput
+
+  # options (backwards-compatibility)
+  # Whether to enable caching for this query
+  enableCache: Boolean
+  # Return null instead of throwing MissingDocumentError
+  allowNull: Boolean
+}
+
+input MultiCommentInput {
+
+  # filtering
+  filter: CommentFilterInput
+  sort: CommentSortInput
+  search: String
+  offset: Int
+  limit: Int
+
+  # backwards-compatibility
+  # A JSON object that contains the query terms used to fetch data
+  "Deprecated (use 'filter/id' fields instead)."
+  terms: JSON
+
+  # options (backwards-compatibility)
+  # Whether to enable caching for this query
+  enableCache: Boolean
+  # Whether to calculate totalCount for this query
+  enableTotal: Boolean
+  
+}
+
+type SingleCommentOutput{
+  result: Comment
+}
+
+type  MultiCommentOutput{
+  results: [Comment]
+  totalCount: Int
+}
+
+type CommentMutationOutput{
+  data: Comment
+}
+
+input CreateCommentInput {
+  data: CreateCommentDataInput!
+}
+
+input CreateCommentDataInput {
+  parentCommentId: String 
+  topLevelCommentId: String 
+  body: String 
+  collectionName: String 
+  objectId: String 
+}
+
+input UpdateCommentInput{
+  filter: CommentFilterInput
+  id: String
+  data: UpdateCommentDataInput!
+}
+
+input UpsertCommentInput{
+  filter: CommentFilterInput
+  id: String
+  data: UpdateCommentDataInput!
+}
+
+input UpdateCommentDataInput {
+  body: String 
+}
+
+input CommentFilterInput {
+  _and: [CommentFilterInput]
+  _not: CommentFilterInput
+  _or: [CommentFilterInput]
+
+
+  _id: String_Selector
+  createdAt: Date_Selector
+  userId: String_Selector
+  parentCommentId: String_Selector
+  topLevelCommentId: String_Selector
+  postedAt: Date_Selector
+  body: String_Selector
+  htmlBody: String_Selector
+  author: String_Selector
+  collectionName: String_Selector
+  objectId: String_Selector
+  isDeleted: Boolean_Selector
+}
+
+input CommentSortInput {
+  _id: SortOptions
+  createdAt: SortOptions
+  userId: SortOptions
+  parentCommentId: SortOptions
+  topLevelCommentId: SortOptions
+  postedAt: SortOptions
+  body: SortOptions
+  htmlBody: SortOptions
+  author: SortOptions
+  collectionName: SortOptions
+  objectId: SortOptions
+  isDeleted: SortOptions
+}
+
+input CommentSelectorInput {
+  _and: [CommentSelectorInput]
+  _or: [CommentSelectorInput]
+
+}
+
+input CommentSelectorUniqueInput {
+  _id: String
+  documentId: String # OpenCRUD backwards compatibility
+  slug: String
+
+}
+
+
+# Type for Patches
+type Patch {
+  _id: String 
+  createdAt: Date 
+  userId: String 
+  updatedAt: String 
+  collectionName: String 
+  patches: [JSON] 
+}
+
+
+input DeletePatchInput{
+  filter: PatchFilterInput
+  id: String
+}
+
+input SinglePatchInput {
+  # filtering
+  filter: PatchFilterInput
+  sort: PatchSortInput
+  search: String
+  id: String
+
+  # backwards-compatibility
+  "Deprecated (use 'filter/id' fields instead)."
+  selector: PatchSelectorUniqueInput
+
+  # options (backwards-compatibility)
+  # Whether to enable caching for this query
+  enableCache: Boolean
+  # Return null instead of throwing MissingDocumentError
+  allowNull: Boolean
+}
+
+input MultiPatchInput {
+
+  # filtering
+  filter: PatchFilterInput
+  sort: PatchSortInput
+  search: String
+  offset: Int
+  limit: Int
+
+  # backwards-compatibility
+  # A JSON object that contains the query terms used to fetch data
+  "Deprecated (use 'filter/id' fields instead)."
+  terms: JSON
+
+  # options (backwards-compatibility)
+  # Whether to enable caching for this query
+  enableCache: Boolean
+  # Whether to calculate totalCount for this query
+  enableTotal: Boolean
+  
+}
+
+type SinglePatchOutput{
+  result: Patch
+}
+
+type  MultiPatchOutput{
+  results: [Patch]
+  totalCount: Int
+}
+
+type PatchMutationOutput{
+  data: Patch
+}
+
+input CreatePatchInput {
+  data: CreatePatchDataInput!
+}
+
+input CreatePatchDataInput {
+  updatedAt: String 
+  collectionName: String 
+  patches: [JSON] 
+}
+
+input UpdatePatchInput{
+  filter: PatchFilterInput
+  id: String
+  data: UpdatePatchDataInput!
+}
+
+input UpsertPatchInput{
+  filter: PatchFilterInput
+  id: String
+  data: UpdatePatchDataInput!
+}
+
+input UpdatePatchDataInput {
+  updatedAt: String 
+  collectionName: String 
+  patches: [JSON] 
+}
+
+input PatchFilterInput {
+  _and: [PatchFilterInput]
+  _not: PatchFilterInput
+  _or: [PatchFilterInput]
+
+
+  _id: String_Selector
+  createdAt: Date_Selector
+  userId: String_Selector
+  updatedAt: String_Selector
+  collectionName: String_Selector
+
+}
+
+input PatchSortInput {
+  _id: SortOptions
+  createdAt: SortOptions
+  userId: SortOptions
+  updatedAt: SortOptions
+  collectionName: SortOptions
+  patches: SortOptions
+}
+
+input PatchSelectorInput {
+  _and: [PatchSelectorInput]
+  _or: [PatchSelectorInput]
+
+}
+
+input PatchSelectorUniqueInput {
+  _id: String
+  documentId: String # OpenCRUD backwards compatibility
+  slug: String
+
+}
+
+
+# Type for Statistics
+type Statistic {
+  _id: String 
+  createdAt: Date 
+  userId: String 
+  updatedAt: Date 
+  episodics: [StatisticEpisodics] 
+  pilots: [StatisticPilots] 
+  features: [StatisticFeatures] 
+  others: [StatisticOthers] 
+}
+
+
+input DeleteStatisticInput{
+  filter: StatisticFilterInput
+  id: String
+}
+
+input SingleStatisticInput {
+  # filtering
+  filter: StatisticFilterInput
+  sort: StatisticSortInput
+  search: String
+  id: String
+
+  # backwards-compatibility
+  "Deprecated (use 'filter/id' fields instead)."
+  selector: StatisticSelectorUniqueInput
+
+  # options (backwards-compatibility)
+  # Whether to enable caching for this query
+  enableCache: Boolean
+  # Return null instead of throwing MissingDocumentError
+  allowNull: Boolean
+}
+
+input MultiStatisticInput {
+
+  # filtering
+  filter: StatisticFilterInput
+  sort: StatisticSortInput
+  search: String
+  offset: Int
+  limit: Int
+
+  # backwards-compatibility
+  # A JSON object that contains the query terms used to fetch data
+  "Deprecated (use 'filter/id' fields instead)."
+  terms: JSON
+
+  # options (backwards-compatibility)
+  # Whether to enable caching for this query
+  enableCache: Boolean
+  # Whether to calculate totalCount for this query
+  enableTotal: Boolean
+  
+}
+
+type SingleStatisticOutput{
+  result: Statistic
+}
+
+type  MultiStatisticOutput{
+  results: [Statistic]
+  totalCount: Int
+}
+
+type StatisticMutationOutput{
+  data: Statistic
+}
+
+input CreateStatisticInput {
+  data: CreateStatisticDataInput!
+}
+
+input CreateStatisticDataInput {
+  episodics: [CreateStatisticEpisodicsDataInput] 
+  pilots: [CreateStatisticPilotsDataInput] 
+  features: [CreateStatisticFeaturesDataInput] 
+  others: [CreateStatisticOthersDataInput] 
+}
+
+input UpdateStatisticInput{
+  filter: StatisticFilterInput
+  id: String
+  data: UpdateStatisticDataInput!
+}
+
+input UpsertStatisticInput{
+  filter: StatisticFilterInput
+  id: String
+  data: UpdateStatisticDataInput!
+}
+
+input UpdateStatisticDataInput {
+  episodics: [UpdateStatisticEpisodicsDataInput] 
+  pilots: [UpdateStatisticPilotsDataInput] 
+  features: [UpdateStatisticFeaturesDataInput] 
+  others: [UpdateStatisticOthersDataInput] 
+}
+
+input StatisticFilterInput {
+  _and: [StatisticFilterInput]
+  _not: StatisticFilterInput
+  _or: [StatisticFilterInput]
+
+
+  _id: String_Selector
+  createdAt: Date_Selector
+  userId: String_Selector
+  updatedAt: Date_Selector
+
+
+
+
+}
+
+input StatisticSortInput {
+  _id: SortOptions
+  createdAt: SortOptions
+  userId: SortOptions
+  updatedAt: SortOptions
+  episodics: SortOptions
+  pilots: SortOptions
+  features: SortOptions
+  others: SortOptions
+}
+
+input StatisticSelectorInput {
+  _and: [StatisticSelectorInput]
+  _or: [StatisticSelectorInput]
+
+}
+
+input StatisticSelectorUniqueInput {
+  _id: String
+  documentId: String # OpenCRUD backwards compatibility
+  slug: String
+
+}
+
+
+type StatisticEpisodics {
+  date: String 
+  quantity: Float 
+}
+
+
+input CreateStatisticEpisodicsInput {
+  data: CreateStatisticEpisodicsDataInput!
+}
+
+input CreateStatisticEpisodicsDataInput {
+  date: String 
+  quantity: Float 
+}
+
+input UpdateStatisticEpisodicsInput{
+  filter: StatisticEpisodicsFilterInput
+  id: String
+  data: UpdateStatisticEpisodicsDataInput!
+}
+
+input UpsertStatisticEpisodicsInput{
+  filter: StatisticEpisodicsFilterInput
+  id: String
+  data: UpdateStatisticEpisodicsDataInput!
+}
+
+input UpdateStatisticEpisodicsDataInput {
+  date: String 
+  quantity: Float 
+}
+
+input StatisticEpisodicsFilterInput {
+  _and: [StatisticEpisodicsFilterInput]
+  _not: StatisticEpisodicsFilterInput
+  _or: [StatisticEpisodicsFilterInput]
+
+
+  date: String_Selector
+  quantity: Float_Selector
+}
+
+input StatisticEpisodicsSortInput {
+  date: SortOptions
+  quantity: SortOptions
+}
+
+
+type StatisticPilots {
+  date: String 
+  quantity: Float 
+}
+
+
+input CreateStatisticPilotsInput {
+  data: CreateStatisticPilotsDataInput!
+}
+
+input CreateStatisticPilotsDataInput {
+  date: String 
+  quantity: Float 
+}
+
+input UpdateStatisticPilotsInput{
+  filter: StatisticPilotsFilterInput
+  id: String
+  data: UpdateStatisticPilotsDataInput!
+}
+
+input UpsertStatisticPilotsInput{
+  filter: StatisticPilotsFilterInput
+  id: String
+  data: UpdateStatisticPilotsDataInput!
+}
+
+input UpdateStatisticPilotsDataInput {
+  date: String 
+  quantity: Float 
+}
+
+input StatisticPilotsFilterInput {
+  _and: [StatisticPilotsFilterInput]
+  _not: StatisticPilotsFilterInput
+  _or: [StatisticPilotsFilterInput]
+
+
+  date: String_Selector
+  quantity: Float_Selector
+}
+
+input StatisticPilotsSortInput {
+  date: SortOptions
+  quantity: SortOptions
+}
+
+
+type StatisticFeatures {
+  date: String 
+  quantity: Float 
+}
+
+
+input CreateStatisticFeaturesInput {
+  data: CreateStatisticFeaturesDataInput!
+}
+
+input CreateStatisticFeaturesDataInput {
+  date: String 
+  quantity: Float 
+}
+
+input UpdateStatisticFeaturesInput{
+  filter: StatisticFeaturesFilterInput
+  id: String
+  data: UpdateStatisticFeaturesDataInput!
+}
+
+input UpsertStatisticFeaturesInput{
+  filter: StatisticFeaturesFilterInput
+  id: String
+  data: UpdateStatisticFeaturesDataInput!
+}
+
+input UpdateStatisticFeaturesDataInput {
+  date: String 
+  quantity: Float 
+}
+
+input StatisticFeaturesFilterInput {
+  _and: [StatisticFeaturesFilterInput]
+  _not: StatisticFeaturesFilterInput
+  _or: [StatisticFeaturesFilterInput]
+
+
+  date: String_Selector
+  quantity: Float_Selector
+}
+
+input StatisticFeaturesSortInput {
+  date: SortOptions
+  quantity: SortOptions
+}
+
+
+type StatisticOthers {
+  date: String 
+  quantity: Float 
+}
+
+
+input CreateStatisticOthersInput {
+  data: CreateStatisticOthersDataInput!
+}
+
+input CreateStatisticOthersDataInput {
+  date: String 
+  quantity: Float 
+}
+
+input UpdateStatisticOthersInput{
+  filter: StatisticOthersFilterInput
+  id: String
+  data: UpdateStatisticOthersDataInput!
+}
+
+input UpsertStatisticOthersInput{
+  filter: StatisticOthersFilterInput
+  id: String
+  data: UpdateStatisticOthersDataInput!
+}
+
+input UpdateStatisticOthersDataInput {
+  date: String 
+  quantity: Float 
+}
+
+input StatisticOthersFilterInput {
+  _and: [StatisticOthersFilterInput]
+  _not: StatisticOthersFilterInput
+  _or: [StatisticOthersFilterInput]
+
+
+  date: String_Selector
+  quantity: Float_Selector
+}
+
+input StatisticOthersSortInput {
+  date: SortOptions
+  quantity: SortOptions
+}
+
+
+
+
+type Query {
+  SiteData: Site
+  
+  currentUser: User
+  
+  # A single User document fetched by ID or slug
+  user(input: SingleUserInput!): SingleUserOutput
+  
+  # A list of User documents matching a set of query terms
+  users(input: MultiUserInput):  MultiUserOutput
+  
+  emails(input: MultiEmailInput):  MultiEmailOutput
+  
+  settings(input: MultiSettingInput):  MultiSettingOutput
+  
+  callbacks(input: MultiCallbackInput):  MultiCallbackOutput
+  
+  # A single Office document fetched by ID or slug
+  office(input: SingleOfficeInput!): SingleOfficeOutput
+  
+  # A list of Office documents matching a set of query terms
+  offices(input: MultiOfficeInput):  MultiOfficeOutput
+  
+  # A single Project document fetched by ID or slug
+  project(input: SingleProjectInput!): SingleProjectOutput
+  
+  # A list of Project documents matching a set of query terms
+  projects(input: MultiProjectInput):  MultiProjectOutput
+  
+  # A single Contact document fetched by ID or slug
+  contact(input: SingleContactInput!): SingleContactOutput
+  
+  # A list of Contact documents matching a set of query terms
+  contacts(input: MultiContactInput):  MultiContactOutput
+  
+  # A single PastProject document fetched by ID or slug
+  pastProject(input: SinglePastProjectInput!): SinglePastProjectOutput
+  
+  # A list of PastProject documents matching a set of query terms
+  pastProjects(input: MultiPastProjectInput):  MultiPastProjectOutput
+  
+  # A single Comment document fetched by ID or slug
+  comment(input: SingleCommentInput!): SingleCommentOutput
+  
+  # A list of Comment documents matching a set of query terms
+  comments(input: MultiCommentInput):  MultiCommentOutput
+  
+  # A single Patch document fetched by ID or slug
+  patch(input: SinglePatchInput!): SinglePatchOutput
+  
+  # A list of Patch documents matching a set of query terms
+  patches(input: MultiPatchInput):  MultiPatchOutput
+  
+  # A single Statistic document fetched by ID or slug
+  statistic(input: SingleStatisticInput!): SingleStatisticOutput
+  
+  # A list of Statistic documents matching a set of query terms
+  statistics(input: MultiStatisticInput):  MultiStatisticOutput
+  
+}
+  
+
+type Mutation {
+  # Mutation for creating new User documents
+  createUser(
+  input: CreateUserInput,
+  "Deprecated (use 'input' field instead)."
+  data: CreateUserDataInput
+) : UserMutationOutput
+
+  # Mutation for updating a User document
+  updateUser(
+  input: UpdateUserInput,
+  "Deprecated (use 'input' field instead)."
+  selector: UserSelectorUniqueInput,
+  "Deprecated (use 'input' field instead)."
+  data: UpdateUserDataInput 
+) : UserMutationOutput
+
+  # Mutation for upserting a User document
+  upsertUser(
+  input: UpsertUserInput,
+  "Deprecated (use 'input' field instead)."
+  selector: UserSelectorUniqueInput,
+  "Deprecated (use 'input' field instead)."
+  data: UpdateUserDataInput
+) : UserMutationOutput
+
+  # Mutation for deleting a User document
+  deleteUser(
+  input: DeleteUserInput,
+  "Deprecated (use 'input' field instead)."
+  selector: UserSelectorUniqueInput
+) : UserMutationOutput
+
+  # Mutation for creating new Office documents
+  createOffice(
+  input: CreateOfficeInput,
+  "Deprecated (use 'input' field instead)."
+  data: CreateOfficeDataInput
+) : OfficeMutationOutput
+
+  # Mutation for updating a Office document
+  updateOffice(
+  input: UpdateOfficeInput,
+  "Deprecated (use 'input' field instead)."
+  selector: OfficeSelectorUniqueInput,
+  "Deprecated (use 'input' field instead)."
+  data: UpdateOfficeDataInput 
+) : OfficeMutationOutput
+
+  # Mutation for upserting a Office document
+  upsertOffice(
+  input: UpsertOfficeInput,
+  "Deprecated (use 'input' field instead)."
+  selector: OfficeSelectorUniqueInput,
+  "Deprecated (use 'input' field instead)."
+  data: UpdateOfficeDataInput
+) : OfficeMutationOutput
+
+  # Mutation for deleting a Office document
+  deleteOffice(
+  input: DeleteOfficeInput,
+  "Deprecated (use 'input' field instead)."
+  selector: OfficeSelectorUniqueInput
+) : OfficeMutationOutput
+
+  # Mutation for creating new Project documents
+  createProject(
+  input: CreateProjectInput,
+  "Deprecated (use 'input' field instead)."
+  data: CreateProjectDataInput
+) : ProjectMutationOutput
+
+  # Mutation for updating a Project document
+  updateProject(
+  input: UpdateProjectInput,
+  "Deprecated (use 'input' field instead)."
+  selector: ProjectSelectorUniqueInput,
+  "Deprecated (use 'input' field instead)."
+  data: UpdateProjectDataInput 
+) : ProjectMutationOutput
+
+  # Mutation for upserting a Project document
+  upsertProject(
+  input: UpsertProjectInput,
+  "Deprecated (use 'input' field instead)."
+  selector: ProjectSelectorUniqueInput,
+  "Deprecated (use 'input' field instead)."
+  data: UpdateProjectDataInput
+) : ProjectMutationOutput
+
+  # Mutation for deleting a Project document
+  deleteProject(
+  input: DeleteProjectInput,
+  "Deprecated (use 'input' field instead)."
+  selector: ProjectSelectorUniqueInput
+) : ProjectMutationOutput
+
+  # Mutation for creating new Contact documents
+  createContact(
+  input: CreateContactInput,
+  "Deprecated (use 'input' field instead)."
+  data: CreateContactDataInput
+) : ContactMutationOutput
+
+  # Mutation for updating a Contact document
+  updateContact(
+  input: UpdateContactInput,
+  "Deprecated (use 'input' field instead)."
+  selector: ContactSelectorUniqueInput,
+  "Deprecated (use 'input' field instead)."
+  data: UpdateContactDataInput 
+) : ContactMutationOutput
+
+  # Mutation for upserting a Contact document
+  upsertContact(
+  input: UpsertContactInput,
+  "Deprecated (use 'input' field instead)."
+  selector: ContactSelectorUniqueInput,
+  "Deprecated (use 'input' field instead)."
+  data: UpdateContactDataInput
+) : ContactMutationOutput
+
+  # Mutation for deleting a Contact document
+  deleteContact(
+  input: DeleteContactInput,
+  "Deprecated (use 'input' field instead)."
+  selector: ContactSelectorUniqueInput
+) : ContactMutationOutput
+
+  # Mutation for creating new PastProject documents
+  createPastProject(
+  input: CreatePastProjectInput,
+  "Deprecated (use 'input' field instead)."
+  data: CreatePastProjectDataInput
+) : PastProjectMutationOutput
+
+  # Mutation for updating a PastProject document
+  updatePastProject(
+  input: UpdatePastProjectInput,
+  "Deprecated (use 'input' field instead)."
+  selector: PastProjectSelectorUniqueInput,
+  "Deprecated (use 'input' field instead)."
+  data: UpdatePastProjectDataInput 
+) : PastProjectMutationOutput
+
+  # Mutation for upserting a PastProject document
+  upsertPastProject(
+  input: UpsertPastProjectInput,
+  "Deprecated (use 'input' field instead)."
+  selector: PastProjectSelectorUniqueInput,
+  "Deprecated (use 'input' field instead)."
+  data: UpdatePastProjectDataInput
+) : PastProjectMutationOutput
+
+  # Mutation for deleting a PastProject document
+  deletePastProject(
+  input: DeletePastProjectInput,
+  "Deprecated (use 'input' field instead)."
+  selector: PastProjectSelectorUniqueInput
+) : PastProjectMutationOutput
+
+  # Mutation for creating new Comment documents
+  createComment(
+  input: CreateCommentInput,
+  "Deprecated (use 'input' field instead)."
+  data: CreateCommentDataInput
+) : CommentMutationOutput
+
+  # Mutation for updating a Comment document
+  updateComment(
+  input: UpdateCommentInput,
+  "Deprecated (use 'input' field instead)."
+  selector: CommentSelectorUniqueInput,
+  "Deprecated (use 'input' field instead)."
+  data: UpdateCommentDataInput 
+) : CommentMutationOutput
+
+  # Mutation for upserting a Comment document
+  upsertComment(
+  input: UpsertCommentInput,
+  "Deprecated (use 'input' field instead)."
+  selector: CommentSelectorUniqueInput,
+  "Deprecated (use 'input' field instead)."
+  data: UpdateCommentDataInput
+) : CommentMutationOutput
+
+  # Mutation for deleting a Comment document
+  deleteComment(
+  input: DeleteCommentInput,
+  "Deprecated (use 'input' field instead)."
+  selector: CommentSelectorUniqueInput
+) : CommentMutationOutput
+
+  # Mutation for creating new Patch documents
+  createPatch(
+  input: CreatePatchInput,
+  "Deprecated (use 'input' field instead)."
+  data: CreatePatchDataInput
+) : PatchMutationOutput
+
+  # Mutation for updating a Patch document
+  updatePatch(
+  input: UpdatePatchInput,
+  "Deprecated (use 'input' field instead)."
+  selector: PatchSelectorUniqueInput,
+  "Deprecated (use 'input' field instead)."
+  data: UpdatePatchDataInput 
+) : PatchMutationOutput
+
+  # Mutation for upserting a Patch document
+  upsertPatch(
+  input: UpsertPatchInput,
+  "Deprecated (use 'input' field instead)."
+  selector: PatchSelectorUniqueInput,
+  "Deprecated (use 'input' field instead)."
+  data: UpdatePatchDataInput
+) : PatchMutationOutput
+
+  # Mutation for deleting a Patch document
+  deletePatch(
+  input: DeletePatchInput,
+  "Deprecated (use 'input' field instead)."
+  selector: PatchSelectorUniqueInput
+) : PatchMutationOutput
+
+  # Mutation for creating new Statistic documents
+  createStatistic(
+  input: CreateStatisticInput,
+  "Deprecated (use 'input' field instead)."
+  data: CreateStatisticDataInput
+) : StatisticMutationOutput
+
+  # Mutation for updating a Statistic document
+  updateStatistic(
+  input: UpdateStatisticInput,
+  "Deprecated (use 'input' field instead)."
+  selector: StatisticSelectorUniqueInput,
+  "Deprecated (use 'input' field instead)."
+  data: UpdateStatisticDataInput 
+) : StatisticMutationOutput
+
+  # Mutation for upserting a Statistic document
+  upsertStatistic(
+  input: UpsertStatisticInput,
+  "Deprecated (use 'input' field instead)."
+  selector: StatisticSelectorUniqueInput,
+  "Deprecated (use 'input' field instead)."
+  data: UpdateStatisticDataInput
+) : StatisticMutationOutput
+
+  # Mutation for deleting a Statistic document
+  deleteStatistic(
+  input: DeleteStatisticInput,
+  "Deprecated (use 'input' field instead)."
+  selector: StatisticSelectorUniqueInput
+) : StatisticMutationOutput
+
+}
+
+
