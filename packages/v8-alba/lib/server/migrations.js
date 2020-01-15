@@ -517,5 +517,5 @@ Migrations.add({
 })
 
 Meteor.startup(() => {
-  Migrations.migrateTo('14')
+  Migrations.migrateTo('latest')
 })
