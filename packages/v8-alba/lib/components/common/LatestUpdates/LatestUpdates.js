@@ -145,8 +145,9 @@ class LatestProjectUpdates extends Component {
                   <b><Link to={`/projects/${project._id}/${project.slug}`}>{project.projectTitle}</Link></b>
                 </CardHeader>
                 <CardBody className='text-truncate d-block'>
-                  {project.projectType.indexOf('TV') === 0 || project.projectType.indexOf('Pilot') === 0
-                    ? `${project.projectType} • ${project.network}` : `${project.projectType}`}<br />
+                  {project.network && (project.projectType.indexOf('TV') === 0 || project.projectType.indexOf('Pilot') === 0)
+                    ? `${project.projectType} • ${project.network}`
+                    : `${project.projectType}`}<br />
                   {project.status}<br />
                   {project.castingCompany
                     ? project.castingCompany
