@@ -84,6 +84,11 @@ const navItems = {
       icon: 'fa fa-user-o'
     },
     {
+      name: 'Back Office',
+      url: '/backoffice',
+      icon: 'fa fa-pencil'
+    },
+    {
       name: 'Contacts (M)',
       url: '/m/contacts',
       icon: 'icon-people'

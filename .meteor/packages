@@ -17,6 +17,7 @@ accounts-password@1.5.2
 vulcan:debug
 vulcan:ui-bootstrap
 vulcan:redux
+vulcan:backoffice
 
 fortawesome:fontawesome
 jss:flag-icon
