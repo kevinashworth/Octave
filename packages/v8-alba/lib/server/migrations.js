@@ -516,6 +516,66 @@ Migrations.add({
   }
 })
 
+Migrations.add({
+  version: 15,
+  name: 'Clean [Past]Projects of six unused fields.',
+  up: function () {
+    Projects.find({
+      $or: [
+        { mtime: { $exists: true } },
+        { last_modified: { $exists: true } },
+        { project_id: { $exists: true } },
+        { personnel: { $exists: true } },
+        { isArchived: { $exists: true } },
+        { address: { $exists: true } },
+      ]
+      }).forEach((o) => {
+      // eslint-disable-next-line no-unused-vars
+      let cleanProject, _id, mtime, last_modified, project_id, personnel, isArchived, address;
+      ({ _id, mtime, last_modified, project_id, personnel, isArchived, address, ...cleanProject } = o);
+      Projects.update(o._id,
+        {
+          $set: { ...cleanProject },
+          $unset: {
+            mtime: true,
+            last_modified: true,
+            project_id: true,
+            personnel: true,
+            isArchived: true,
+            address: true
+          }
+        })
+    })
+    PastProjects.find({
+      $or: [
+        { mtime: { $exists: true } },
+        { last_modified: { $exists: true } },
+        { project_id: { $exists: true } },
+        { personnel: { $exists: true } },
+        { isArchived: { $exists: true } },
+        { address: { $exists: true } },
+      ]
+      }).forEach((o) => {
+      // eslint-disable-next-line no-unused-vars
+      let cleanProject, _id, mtime, last_modified, project_id, personnel, isArchived, address;
+      ({ _id, mtime, last_modified, project_id, personnel, isArchived, address, ...cleanProject } = o);
+      PastProjects.update(o._id,
+        {
+          $set: { ...cleanProject },
+          $unset: {
+            mtime: true,
+            last_modified: true,
+            project_id: true,
+            personnel: true,
+            isArchived: true,
+            address: true
+          }
+        })
+    })
+  },
+  down: function () { /* There is no undoing this one. */ }
+})
+
 Meteor.startup(() => {
-  Migrations.migrateTo('14')
+  Migrations.migrateTo('15')
 })
