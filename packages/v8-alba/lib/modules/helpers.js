@@ -366,10 +366,11 @@ export function sortObjectByKeyNameList (object, sortWith) { // copied from sort
   }, Object.create({}))
 }
 
+// lowercase sortTitle because `views` are case-sensitive
 export function getSortTitle (title) {
-  const theTitle = title.trim()
+  const theTitle = title.trim().toLowerCase()
   const firstSpace = theTitle.indexOf(' ')
-  const firstWord = theTitle.slice(0, firstSpace).toLowerCase()
+  const firstWord = theTitle.slice(0, firstSpace)
   let newTitle = ''
   switch (firstWord) {
     case 'a':

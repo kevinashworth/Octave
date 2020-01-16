@@ -576,6 +576,21 @@ Migrations.add({
   down: function () { /* There is no undoing this one. */ }
 })
 
+Migrations.add({
+  version: 16,
+  name: 'Lowercase sortTitle (because `views` are case-sensitive).',
+  up: function () {
+    Projects.find().forEach((o) => {
+      const sortTitle = getSortTitle(o.projectTitle)
+      Projects.update(o._id,
+        {
+          $set: { sortTitle }
+        })
+    })
+  },
+  down: function () { /* There is no undoing this one. */ }
+})
+
 Meteor.startup(() => {
   Migrations.migrateTo('latest')
 })
