@@ -89,8 +89,10 @@ class ProjectFilters extends PureComponent {
 
   handleClickProjectType (event) {
     const all = event.target.innerHTML.indexOf('All') !== -1
+    const film = event.target.innerHTML.indexOf('Film') !== -1
     const none = event.target.innerHTML.indexOf('None') !== -1
     const toggle = event.target.innerHTML.indexOf('Toggle') !== -1
+    const tv = event.target.innerHTML.indexOf('TV') !== -1
     const length = this.props.projectTypeFilters.length
     if (toggle) {
       for (let i = 0; i < length; i++) {
@@ -100,6 +102,22 @@ class ProjectFilters extends PureComponent {
       for (let i = 0; i < length; i++) {
         if ((this.props.projectTypeFilters[i].value && none) || (!this.props.projectTypeFilters[i].value && !none)) {
           this.props.actions.toggleProjectTypeFilter(i)
+        }
+      }
+    } else if (film) {
+      for (let i = 0; i < length; i++) {
+        if (this.props.projectTypeFilters[i].projectType.indexOf('Film') !== -1) {
+          this.props.actions.setProjectTypeFilter(i)
+        } else {
+          this.props.actions.clearProjectTypeFilter(i)
+        }
+      }
+    } else if (tv) {
+      for (let i = 0; i < length; i++) {
+        if (this.props.projectTypeFilters[i].projectType.indexOf('TV') !== -1) {
+          this.props.actions.setProjectTypeFilter(i)
+        } else {
+          this.props.actions.clearProjectTypeFilter(i)
         }
       }
     }
@@ -187,6 +205,8 @@ class ProjectFilters extends PureComponent {
                     checked={project.value} onChange={this.handleChange} />
               )}
               </DropdownItemStatic>
+              <DropdownItem onClick={this.handleClickProjectType} toggle={false}>Film</DropdownItem>
+              <DropdownItem onClick={this.handleClickProjectType} toggle={false}>TV</DropdownItem>
               <DropdownItem onClick={this.handleClickProjectType} toggle={false}>All</DropdownItem>
               <DropdownItem onClick={this.handleClickProjectType} toggle={false}>None</DropdownItem>
               <DropdownItem onClick={this.handleClickProjectType} toggle={false}>Toggle</DropdownItem>

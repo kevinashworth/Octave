@@ -145,6 +145,18 @@ addAction({
       i
     }
   },
+  setProjectTypeFilter (i) {
+    return {
+      type: 'SET_PROJECT_TYPE_FILTER',
+      i
+    }
+  },
+  clearProjectTypeFilter (i) {
+    return {
+      type: 'CLEAR_PROJECT_TYPE_FILTER',
+      i
+    }
+  },
   toggleProjectStatusFilter (i) {
     return {
       type: 'TOGGLE_PROJECT_STATUS_FILTER',
@@ -296,6 +308,20 @@ addReducer({
         return state.map((filter, index) => {
           if (index === Number(action.i)) {
             return { ...filter, value: !filter.value }
+          }
+          return filter
+        })
+      case 'SET_PROJECT_TYPE_FILTER':
+        return state.map((filter, index) => {
+          if (index === Number(action.i)) {
+            return { ...filter, value: true }
+          }
+          return filter
+        })
+      case 'CLEAR_PROJECT_TYPE_FILTER':
+        return state.map((filter, index) => {
+          if (index === Number(action.i)) {
+            return { ...filter, value: false }
           }
           return filter
         })
