@@ -3,19 +3,19 @@ import { FormattedMessage } from 'meteor/vulcan:i18n'
 import React, { PureComponent } from 'react'
 import PropTypes from 'prop-types'
 import { Card, CardBody, CardFooter, CardHeader } from 'reactstrap'
-import Contacts from '../../modules/contacts/collection.js'
+import PastProjects from '../../modules/past-projects/collection.js'
 import Patches from '../../modules/patches/collection.js'
 
-class ContactPatchesList extends PureComponent {
+class PastProjectPatchesList extends PureComponent {
   constructor(props) {
     super(props)
   }
 
   render () {
-    const { contactDocument, patchesDocument, networkStatus } = this.props
+    const { pastProjectDocument, patchesDocument, networkStatus } = this.props
     if (networkStatus !== 8 && networkStatus !== 7) {
       return <Components.Loading />
-    } else if (!patchesDocument || !contactDocument) {
+    } else if (!patchesDocument || !pastProjectDocument) {
       return <FormattedMessage id='patches.missing_document' />
     } else {
       let reversedPatches = [...patchesDocument.patches].reverse()
@@ -37,13 +37,13 @@ class ContactPatchesList extends PureComponent {
             <i className='fa fa-history' />History
           </CardHeader>
           <CardBody>
-            {accumulatedPatches.map((patch) => <Components.ContactPatch
-              contact={contactDocument}
+            {accumulatedPatches.map((patch) => <Components.ProjectPatch
+              project={pastProjectDocument}
               key={patch.date}
               patch={patch} />)}
           </CardBody>
           <CardFooter>
-            <small className='text-muted'>This is the unused footer of ContactPatchesList</small>
+            <small className='text-muted'>This is the unused footer of PastProjectPatchesList</small>
           </CardFooter>
         </Card>
       )
@@ -59,18 +59,18 @@ const patchOptions = {
   }
 }
 
-const contactOptions = {
-  collection: Contacts,
-  fragmentName: 'ContactsPatchesFragment',
-  propertyName: 'contactDocument'
+const projectOptions = {
+  collection: PastProjects,
+  fragmentName: 'PastProjectsPatchesFragment',
+  propertyName: 'pastProjectDocument'
 }
 
-ContactPatchesList.propTypes = {
+PastProjectPatchesList.propTypes = {
   documentId: PropTypes.string.isRequired,
 }
 
 registerComponent({
-  name: 'ContactPatchesList',
-  component: ContactPatchesList,
-  hocs: [withCurrentUser, [withSingle, patchOptions], [withSingle, contactOptions]]
+  name: 'PastProjectPatchesList',
+  component: PastProjectPatchesList,
+  hocs: [withCurrentUser, [withSingle, patchOptions], [withSingle, projectOptions]]
 })

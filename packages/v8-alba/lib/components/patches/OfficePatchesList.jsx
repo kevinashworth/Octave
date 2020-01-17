@@ -53,7 +53,10 @@ class OfficePatchesList extends PureComponent {
 
 const patchOptions = {
   collection: Patches,
-  propertyName: 'patchesDocument'
+  propertyName: 'patchesDocument',
+  queryOptions: {
+    pollInterval: 0
+  }
 }
 
 const officeOptions = {

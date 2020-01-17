@@ -21,7 +21,7 @@ class OfficePatchDisplay extends PureComponent {
       return null
     }
     if (!office) {
-      return <FormattedMessage id='app.missing_document' />
+      return <FormattedMessage id='patches.missing_document' />
     }
     var clonedOffice = _.cloneDeep(omitDeep(office, ['__typename']))
     // console.log('[OfficePatchDisplay] clonedOffice:', clonedOffice)

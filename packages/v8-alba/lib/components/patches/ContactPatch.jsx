@@ -21,7 +21,7 @@ class ContactPatchDisplay extends PureComponent {
       return null
     }
     if (!contact) {
-      return <FormattedMessage id='app.missing_document' />
+      return <FormattedMessage id='patches.missing_document' />
     }
     var clonedContact = _.cloneDeep(omitDeep(contact, ['__typename']))
     // console.log('[ContactPatchDisplay] clonedContact:', clonedContact)

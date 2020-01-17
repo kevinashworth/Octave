@@ -92,6 +92,46 @@ registerFragment(/* GraphQL */ `
 `)
 
 registerFragment(/* GraphQL */ `
+  fragment PastProjectsPatchesFragment on PastProject {
+    projectTitle
+    projectType
+    shootingLocation
+    castingCompany
+    castingOfficeId
+    contacts {
+      contactId
+      contactName
+      contactTitle
+    }
+    addresses {
+      street1
+      street2
+      city
+      state
+      zip
+      addressType
+    }
+    network
+    status
+    renewed
+    union
+    notes
+    htmlNotes
+    summary
+    htmlSummary
+    website
+    season
+    order
+    links {
+      platformName
+      profileLink
+      profileName
+    }
+    slug
+  }
+`)
+
+registerFragment(/* GraphQL */ `
   fragment PastProjectsEditFragment on PastProject {
     _id
     createdAt

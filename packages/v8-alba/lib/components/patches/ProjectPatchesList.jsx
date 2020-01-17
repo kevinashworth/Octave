@@ -53,7 +53,10 @@ class ProjectPatchesList extends PureComponent {
 
 const patchOptions = {
   collection: Patches,
-  propertyName: 'patchesDocument'
+  propertyName: 'patchesDocument',
+  queryOptions: {
+    pollInterval: 0    
+  }
 }
 
 const projectOptions = {

@@ -62,6 +62,8 @@ import '../components/patches/ContactPatchesList.jsx'
 import '../components/patches/ContactPatch.jsx'
 import '../components/patches/OfficePatchesList.jsx'
 import '../components/patches/OfficePatch.jsx'
+import '../components/patches/PastProjectPatchesList.jsx'
+import '../components/patches/PastProjectPatch.jsx'
 import '../components/patches/ProjectPatchesList.jsx'
 import '../components/patches/ProjectPatch.jsx'
 

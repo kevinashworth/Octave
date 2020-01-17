@@ -158,7 +158,7 @@ class ProjectsSingle extends PureComponent {
                 />
               </TabPane>
               <TabPane tabId='History'>
-                <Components.ProjectPatchesList documentId={document._id}/>
+                <Components.ProjectPatchesList documentId={document._id} />
               </TabPane>
             </TabContent>
           </CardBody>

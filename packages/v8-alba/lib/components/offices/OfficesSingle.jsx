@@ -151,7 +151,7 @@ class OfficesSingle extends PureComponent {
                 />
               </TabPane>
               <TabPane tabId='History'>
-                <Components.OfficePatchesList documentId={document._id}/>
+                <Components.OfficePatchesList documentId={document._id} />
               </TabPane>
             </TabContent>
           </CardBody>

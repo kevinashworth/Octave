@@ -148,7 +148,7 @@ class ContactsSingle extends PureComponent {
                   />
                 </TabPane>
                 <TabPane tabId='History'>
-                  <Components.ContactPatchesList documentId={document._id}/>
+                  <Components.ContactPatchesList documentId={document._id} />
                 </TabPane>
               </TabContent>
             </CardBody>
