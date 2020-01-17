@@ -29,6 +29,7 @@ const PHONE_NUMBER_TYPES_ENUM = [
 
 const ADDRESS_TYPES_ENUM = [
   { value: 'Auditions', label: 'Auditions' },
+  { value: 'CSA', label: 'CSA' },
   { value: 'Former', label: 'Former' },
   { value: 'GPS', label: 'GPS' },
   { value: 'Mailing', label: 'Mailing' },
@@ -65,6 +66,7 @@ const PROJECT_TYPES_ENUM = [
 const SHOOTING_LOCATIONS_US_ENUM = [
   { value: 'Alabama', label: 'Alabama' },
   { value: 'Albuquerque', label: 'Albuquerque, NM' },
+  { value: 'Arkansas', label: 'Arkansas' },
   { value: 'Atlanta', label: 'Atlanta, GA' },
   { value: 'Austin', label: 'Austin, TX' },
   { value: 'Boston', label: 'Boston, MA' },
