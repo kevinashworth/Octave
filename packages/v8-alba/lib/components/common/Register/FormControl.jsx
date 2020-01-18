@@ -2,25 +2,27 @@ import { replaceComponent } from 'meteor/vulcan:lib'
 import React from 'react'
 import { Input, InputGroup, InputGroupAddon, InputGroupText } from 'reactstrap'
 
-const MyFormControl = ({ id }) => {
+const MyFormControl = (props) => {
+  const { autoComplete, defaultValue, id, placeholder, type, ...rest } = props
   let icon = <i className='icon-user'></i>
-  let placeholder = 'Username'
-  let type = 'text'
-  let autocomplete = 'email'
-  if (id ==='password') {
-    icon = <i className="icon-lock"></i>
-    placeholder = 'Password'
-    type = 'password'
-    autocomplete = 'current-password'
+  switch (id) {
+    case 'email':
+      icon = '@'
+      break
+    case 'password':
+      icon = <i className='icon-lock'></i>
+      break
+    default:
   }
+
   return (
-  <InputGroup className="mb-3">
-    <InputGroupAddon addonType="prepend">
+  <InputGroup className='mb-3'>
+    <InputGroupAddon addonType='prepend'>
       <InputGroupText>
         {icon}
       </InputGroupText>
     </InputGroupAddon>
-    <Input type={type} placeholder={placeholder} autoComplete={autocomplete} />
+    <Input type={type} placeholder={placeholder} autoComplete={autoComplete} defaultValue={defaultValue} {...rest} />
   </InputGroup>
 )}
 
@@ -28,3 +30,7 @@ replaceComponent('FormControl', MyFormControl);
 
 // from a Vulcan comment
 // note: only used by old accounts package, remove soon?
+
+// sign-up id's: username, email, password
+// sign-in id's: usernameOrEmail, password
+// forgot id: email
