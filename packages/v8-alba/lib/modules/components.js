@@ -33,6 +33,8 @@ import '../components/common/ErrorBoundary.jsx'
 
 // V8
 
+import '../components/admin/AdminComments'
+
 import '../components/common/AddressDetail'
 import '../components/common/ContactDetail'
 import '../components/common/LinkDetail'
