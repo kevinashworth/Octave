@@ -80,7 +80,7 @@ const navItems = {
     // },
     {
       name: 'User Admin',
-      url: '/admin',
+      url: '/admin/users',
       icon: 'fa fa-user-o'
     },
     {

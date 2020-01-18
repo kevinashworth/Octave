@@ -12,28 +12,38 @@ class AdminComments extends Component {
           options={{
             fragmentName: 'CommentItemAdmin'
           }}
+          initialState={{
+            sort: {
+              postedAt: 'asc'
+            }
+          }}
+          showNew={false}
+          showSearch={true}
           columns={[
             {
-              name: 'createdAt',
+              name: 'postedAt',
+              sortable: true
             },
-            // {
-            //   name: 'postedAt',
-            // },
             {
               name: 'objectId',
-              label: 'Object',
+              label: 'Document',
+              sortable: true,
               component: ({ document }) => <Link to={`/${document.collectionName.toLowerCase()}/${document.objectId}`}>{document.objectId}</Link>
             },
             {
               name: 'collectionName',
               label: 'Collection',
+              sortable: true
             },
             {
               name: 'userId',
               label: 'User',
+              sortable: true,
+              component: ({ document }) => <Link to={`/users/${document.user.username}`}>{document.userId}</Link>
             },
             {
               name: 'body',
+              filterable: true
             }
           ]}
         />
