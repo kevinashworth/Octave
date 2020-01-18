@@ -100,3 +100,5 @@ import '../components/users/UsersEditForm.jsx'
 import '../components/users/UsersMenu.jsx'
 import '../components/users/UsersName.jsx'
 import '../components/users/UsersProfile.jsx'
+
+import '../components/common/Register/FormControl.jsx' // replaceComponent
