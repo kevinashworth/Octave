@@ -102,3 +102,4 @@ import '../components/users/UsersName.jsx'
 import '../components/users/UsersProfile.jsx'
 
 import '../components/common/Register/FormControl.jsx' // replaceComponent
+import '../components/common/Register/LoginForm.jsx' // replaceComponent
