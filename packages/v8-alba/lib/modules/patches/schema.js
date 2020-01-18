@@ -2,7 +2,7 @@ const schema = {
 
   // default properties
 
-  _id: {  // equal to contact's, office's, or project's _id
+  _id: { // equal to contact's, office's, or project's _id
     type: String,
     optional: true,
     canRead: ['members']
@@ -57,7 +57,7 @@ const schema = {
   'patches.$': {
     type: Object,
     optional: true
-  },
+  }
   // Deleted objects don't appear.
   // isDeleted: {
   //   type: Boolean,
