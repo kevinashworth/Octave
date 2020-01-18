@@ -14,11 +14,14 @@ class AdminComments extends Component {
           }}
           initialState={{
             sort: {
-              postedAt: 'asc'
+              postedAt: 'desc'
             }
           }}
           showNew={false}
           showSearch={true}
+          editFormProps={{
+            size: 'sm'
+          }}
           columns={[
             {
               name: 'postedAt',
