@@ -6,7 +6,8 @@ import { Comments } from '../../modules/comments/collection.js'
 class AdminComments extends Component {
   render () {
     return (
-      <div className='admin-comments'>
+      <div className='animated fadeIn'>
+        <Components.HeadTags title='Comments Admin' />
         <Components.Datatable
           collection={Comments}
           options={{
@@ -58,7 +59,7 @@ class AdminComments extends Component {
 const accessOptions = {
   groups: ['admins'],
   redirect: '/',
-  message: 'Sorry, you do not have the rights to access this page.'
+  message: 'Sorry, you do not have the rights to access the Comments Admin page.'
 }
 
 registerComponent({
