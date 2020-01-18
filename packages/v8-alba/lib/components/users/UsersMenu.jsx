@@ -1,15 +1,16 @@
-import { Meteor } from 'meteor/meteor';
-import { Components, registerComponent, withCurrentUser } from 'meteor/vulcan:core';
-import { STATES } from 'meteor/vulcan:accounts';
-import Users from 'meteor/vulcan:users';
-import { FormattedMessage } from 'meteor/vulcan:i18n';
-import { withApollo } from 'react-apollo';
-import React from 'react';
-import PropTypes from 'prop-types';
+import { Meteor } from 'meteor/meteor'
+import { Components, registerComponent, withCurrentUser } from 'meteor/vulcan:core'
+import Users from 'meteor/vulcan:users'
+import { FormattedMessage } from 'meteor/vulcan:i18n'
+import { withApollo } from 'react-apollo'
+import React from 'react'
+import { Link } from 'react-router-dom'
+import PropTypes from 'prop-types'
+import { DropdownItem } from 'reactstrap'
 
 const UsersMenu = ({ currentUser, currentUserLoading, client, state }) => {
   return (
-    <div className="users-menu">
+    <div className='users-menu'>
       {currentUserLoading ? (
         <Components.Loading />
       ) : currentUser ? (
@@ -18,8 +19,8 @@ const UsersMenu = ({ currentUser, currentUserLoading, client, state }) => {
         <UserLoggedOutMenu state={state} />
       )}
     </div>
-  );
-};
+  )
+}
 
 const UserLoggedInMenu = ({ currentUser, client }) => {
   const menuItems = [
@@ -29,81 +30,60 @@ const UserLoggedInMenu = ({ currentUser, client }) => {
     },
     {
       to: `/users/${currentUser.slug}`,
-      labelId: 'users.profile',
+      labelId: 'users.profile'
     },
     {
       to: '/account',
-      labelId: 'users.edit_account',
-    },
-  ];
+      labelId: 'users.edit_account'
+    }
+  ]
 
   if (Users.isAdmin(currentUser)) {
     menuItems.push({
       to: '/admin',
-      labelId: 'admin.users',
-    });
-    // menuItems.push({
-    //   to: '/admin/categories',
-    //   labelId: 'admin.categories',
-    // });
-    // menuItems.push({
-    //   to: '/admin/comments',
-    //   labelId: 'admin.comments',
-    // });
-    // menuItems.push({
-    //   to: '/admin/posts',
-    //   labelId: 'admin.posts',
-    // });
+      labelId: 'admin.users'
+    })
   }
 
   menuItems.push({
     labelId: 'users.log_out',
     itemProps: {
       onClick: () => Meteor.logout(() => {
-        client.resetStore();
-        window.location.assign('/');
-      }),
-    },
-  });
+        client.resetStore()
+        window.location.assign('/')
+      })
+    }
+  })
 
   return (
     <Components.Dropdown
       buttonProps={{ variant: 'secondary' }}
-      id="user-dropdown"
+      id='user-dropdown'
       trigger={
-        <div className="dropdown-toggle-inner">
-          <Components.Avatar size="small" user={currentUser} addLink={false} />
-          <div className="users-menu-name">{Users.getDisplayName(currentUser)}</div>
+        <div className='dropdown-toggle-inner'>
+          <Components.Avatar size='small' user={currentUser} addLink={false} />
+          <div className='users-menu-name'>{Users.getDisplayName(currentUser)}</div>
         </div>
       }
       menuItems={menuItems}
-      variant={ 'flat' }
+      variant='flat'
     />
-  );
-};
+  )
+}
 
-const UserLoggedOutMenu = ({ state }) => (
-  <Components.Dropdown
-    buttonProps={{ variant: 'btn-secondary' }}
-    id="accounts-dropdown"
-    className="users-account-menu"
-    trigger={
-      <div className="dropdown-toggle-inner">
-        <Components.Icon name="user" />
-        <FormattedMessage id="users.sign_up_log_in" />
-      </div>
-    }
-    menuContents={<Components.AccountsLoginForm formState={state ? STATES[state] : STATES.SIGN_UP} />}
-  />
-);
+const UserLoggedOutMenu = ({ state }) => {
+  return (
+    <DropdownItem tag={Link} to='/login'><FormattedMessage id='users.sign_up_log_in' /></DropdownItem>
+  )
+}
 
 UsersMenu.propsTypes = {
   currentUser: PropTypes.object,
-  client: PropTypes.object,
-};
+  client: PropTypes.object
+}
 
 registerComponent({
   name: 'UsersMenu',
   component: UsersMenu,
   hocs: [withCurrentUser, withApollo]
-});
+})
