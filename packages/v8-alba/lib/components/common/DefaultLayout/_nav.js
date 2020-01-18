@@ -12,7 +12,7 @@ const navItems = {
     {
       name: 'Latest Updates',
       url: '/latest',
-      icon: 'icon-clock'
+      icon: 'fa fa-bullhorn'
     },
     {
       title: true,
@@ -38,7 +38,7 @@ const navItems = {
     {
       name: 'Past Projects',
       url: '/past-projects',
-      icon: 'fa fa-camera'
+      icon: 'fa fa-camera-retro'
     }
   ],
   xsItems: [
@@ -69,24 +69,43 @@ const navItems = {
       icon: 'fa fa-camera'
     },
     {
-      name: 'Statistics',
-      url: '/statistics/list',
-      icon: 'fa fa-bar-chart'
-    },
-    // {
-    //   name: 'Algolia Log',
-    //   url: '/algolia/log',
-    //   icon: 'fa fa-search'
-    // },
-    {
       name: 'User Admin',
-      url: '/admin',
+      url: '/admin/users',
       icon: 'fa fa-user-o'
+    },
+    {
+      name: 'Comments Admin',
+      url: '/admin/comments',
+      icon: 'fa fa-comments-o'
     },
     {
       name: 'Back Office',
       url: '/backoffice',
       icon: 'fa fa-pencil'
+    },
+    {
+      name: 'Statistics',
+      url: '/statistics/list',
+      icon: 'fa fa-bar-chart'
+    },
+    {
+      title: true,
+      name: 'Development'
+    },
+    {
+      name: 'Debug',
+      url: '/debug',
+      icon: 'fa fa-file-code-o'
+    },
+    {
+      name: 'Fragments',
+      url: '/fragments',
+      icon: 'fa fa-files-o'
+    },
+    {
+      name: 'Modals',
+      url: '/modals',
+      icon: 'fa fa-external-link'
     },
     {
       name: 'Contacts (M)',
@@ -112,25 +131,6 @@ const navItems = {
       name: 'Contacts (VL)',
       url: '/contacts/vlist',
       icon: 'icon-people'
-    },
-    {
-      title: true,
-      name: 'Development'
-    },
-    {
-      name: 'Debug',
-      url: '/debug',
-      icon: 'fa fa-file-code-o'
-    },
-    {
-      name: 'Fragments',
-      url: '/fragments',
-      icon: 'fa fa-files-o'
-    },
-    {
-      name: 'Modals',
-      url: '/modals',
-      icon: 'fa fa-external-link'
     },
   ]
 };

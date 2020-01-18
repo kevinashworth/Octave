@@ -18,3 +18,16 @@ registerFragment(/* GraphQL */`
     }
   }
 `)
+
+registerFragment(/* GraphQL */`
+  fragment CommentItem on Comment {
+    ...CommentsList
+  }
+`)
+
+registerFragment(/* GraphQL */`
+  fragment CommentItemAdmin on Comment {
+    ...CommentItem
+    createdAt
+  }
+`)

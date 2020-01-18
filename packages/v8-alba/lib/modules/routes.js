@@ -46,3 +46,9 @@ addRoute([
   { name: 'users.account', path: '/account',          componentName: 'UsersAccount' },
   { name: 'users.edit',    path: '/users/:slug/edit', componentName: 'UsersEdit' }
 ])
+
+addRoute([
+  {name: 'admin.comments', path: '/admin/comments',   componentName: 'AdminComments'}
+  // {name: 'admin.posts',    path: '/admin/posts',      componentName: 'AdminPosts'},
+  // {name: 'admin.users',    path: '/admin/users',      componentName: 'AdminUsers'}
+])

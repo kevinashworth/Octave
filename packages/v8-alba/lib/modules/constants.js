@@ -24,7 +24,7 @@ const PHONE_NUMBER_TYPES_ENUM = [
   { value: 'Mobile', label: 'Mobile' },
   { value: 'Office', label: 'Office' },
   { value: 'Office Fax', label: 'Office Fax' },
-  { value: 'Other', label: 'Other' },
+  { value: 'Other', label: 'Other' }
 ]
 
 const ADDRESS_TYPES_ENUM = [
@@ -39,7 +39,7 @@ const ADDRESS_TYPES_ENUM = [
   { value: 'Personal', label: 'Personal' },
   { value: 'Project', label: 'Project' },
   { value: 'Secondary Office', label: 'Secondary Office' },
-  { value: 'Unverified', label: 'Unverified' },
+  { value: 'Unverified', label: 'Unverified' }
 ]
 
 const PROJECT_TYPES_ENUM = [
@@ -90,43 +90,42 @@ const SHOOTING_LOCATIONS_US_ENUM = [
   { value: 'Savannah', label: 'Savannah, GA' },
   { value: 'Seattle', label: 'Seattle, WA' },
   { value: 'Washington', label: 'Washington, DC' },
-  { value: 'Wilmington', label: 'Wilmington, NC' },
+  { value: 'Wilmington', label: 'Wilmington, NC' }
 ]
 const SHOOTING_LOCATIONS_CANADA_ENUM = [
   { value: 'Toronto', label: 'Toronto, ON' },
   { value: 'Vancouver', label: 'Vancouver, BC' },
-  { value: 'Winnipeg', label: 'Winnipeg, MB' },
+  { value: 'Winnipeg', label: 'Winnipeg, MB' }
 ]
 const SHOOTING_LOCATIONS_WORLDWIDE_ENUM = [
-    { value: 'Paris', label: 'Paris, France' },
-    { value: 'London', label: 'London, UK' },
-    { value: 'Mexico', label: 'Mexico' },
-    { value: 'New Zealand', label: 'New Zealand' },
-    { value: 'South Africa', label: 'South Africa' },
-    { value: 'Tokyo', label: 'Tokyo, Japan' },
+  { value: 'Paris', label: 'Paris, France' },
+  { value: 'London', label: 'London, UK' },
+  { value: 'Mexico', label: 'Mexico' },
+  { value: 'New Zealand', label: 'New Zealand' },
+  { value: 'South Africa', label: 'South Africa' },
+  { value: 'Tokyo', label: 'Tokyo, Japan' }
 ]
 const SHOOTING_LOCATIONS_OTHER_ENUM = [
-    { value: 'TBD', label: 'TBD' },
+  { value: 'TBD', label: 'TBD' }
 ]
 export const GROUPED_LOCATIONS_ENUM = [
   {
     label: 'United States',
-    options: SHOOTING_LOCATIONS_US_ENUM,
+    options: SHOOTING_LOCATIONS_US_ENUM
   },
   {
     label: 'Canada',
-    options: SHOOTING_LOCATIONS_CANADA_ENUM,
+    options: SHOOTING_LOCATIONS_CANADA_ENUM
   },
   {
     label: 'Worldwide',
-    options: SHOOTING_LOCATIONS_WORLDWIDE_ENUM,
+    options: SHOOTING_LOCATIONS_WORLDWIDE_ENUM
   },
   {
     label: 'Other',
-    options: SHOOTING_LOCATIONS_OTHER_ENUM,
-  },
-];
-
+    options: SHOOTING_LOCATIONS_OTHER_ENUM
+  }
+]
 
 const BROADCAST_ENUM = [
   'ABC',

@@ -85,6 +85,7 @@ const schema = {
   // Body (Markdown)
   body: {
     type: String,
+    searchable: true,
     canRead: ['members'],
     canCreate: ['members', 'admins'],
     canUpdate: ['members', 'admins'],

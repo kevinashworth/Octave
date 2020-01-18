@@ -7,10 +7,6 @@ import PastProjects from '../../modules/past-projects/collection.js'
 import Patches from '../../modules/patches/collection.js'
 
 class PastProjectPatchesList extends PureComponent {
-  constructor(props) {
-    super(props)
-  }
-
   render () {
     const { pastProjectDocument, patchesDocument, networkStatus } = this.props
     if (networkStatus !== 8 && networkStatus !== 7) {
@@ -18,7 +14,7 @@ class PastProjectPatchesList extends PureComponent {
     } else if (!patchesDocument || !pastProjectDocument) {
       return <FormattedMessage id='patches.missing_document' />
     } else {
-      let reversedPatches = [...patchesDocument.patches].reverse()
+      const reversedPatches = [...patchesDocument.patches].reverse()
       let accumulatedPatches = []
       accumulatedPatches[0] = {
         date: reversedPatches[0].date,
@@ -27,7 +23,7 @@ class PastProjectPatchesList extends PureComponent {
       for (var i = 1; i < patchesDocument.patches.length; i++) {
         accumulatedPatches[i] = {
           date: reversedPatches[i].date,
-          patch: [...accumulatedPatches[i-1].patch, ...reversedPatches[i].patch]
+          patch: [...accumulatedPatches[i - 1].patch, ...reversedPatches[i].patch]
         }
       }
 
@@ -37,10 +33,13 @@ class PastProjectPatchesList extends PureComponent {
             <i className='fa fa-history' />History
           </CardHeader>
           <CardBody>
-            {accumulatedPatches.map((patch) => <Components.ProjectPatch
-              project={pastProjectDocument}
-              key={patch.date}
-              patch={patch} />)}
+            {accumulatedPatches.map((patch) =>
+              <Components.ProjectPatch
+                project={pastProjectDocument}
+                key={patch.date}
+                patch={patch}
+              />
+            )}
           </CardBody>
           <CardFooter>
             <small className='text-muted'>This is the unused footer of PastProjectPatchesList</small>
@@ -66,7 +65,7 @@ const projectOptions = {
 }
 
 PastProjectPatchesList.propTypes = {
-  documentId: PropTypes.string.isRequired,
+  documentId: PropTypes.string.isRequired
 }
 
 registerComponent({

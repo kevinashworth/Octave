@@ -1,4 +1,4 @@
-import { Components,  registerComponent } from 'meteor/vulcan:core'
+import { registerComponent } from 'meteor/vulcan:core'
 import { FormattedMessage } from 'meteor/vulcan:i18n'
 import React, { PureComponent, useState } from 'react'
 import PropTypes from 'prop-types'
@@ -6,15 +6,12 @@ import { Button, Collapse } from 'reactstrap'
 import * as jsonpatch from 'fast-json-patch'
 import _ from 'lodash'
 import moment from 'moment'
-var omitDeep = require('omit-deep')
+// var omitDeep = require('omit-deep')
+import omitDeep from 'omit-deep'
 import { DATE_FORMAT_LONG } from '../../modules/constants.js'
 import ContactDisplay from './ContactDisplay.jsx'
 
 class ContactPatchDisplay extends PureComponent {
-  constructor(props) {
-    super(props)
-  }
-
   render () {
     const { collapseIsOpen, contact, patch } = this.props
     if (!collapseIsOpen) {
@@ -28,9 +25,8 @@ class ContactPatchDisplay extends PureComponent {
 
     var patchedContact = contact
     try {
-      patchedContact= jsonpatch.applyPatch(clonedContact, patch.patch).newDocument
-    }
-    catch (e) {
+      patchedContact = jsonpatch.applyPatch(clonedContact, patch.patch).newDocument
+    } catch (e) {
       console.log('[ContactPatch] error:', e)
     }
     // console.log('[ContactPatchDisplay] patch:', patch.patch)
@@ -41,7 +37,7 @@ class ContactPatchDisplay extends PureComponent {
 }
 
 ContactPatchDisplay.propTypes = {
-  contact: PropTypes.object.isRequired,
+  contact: PropTypes.object.isRequired
 }
 
 const ContactPatch = ({ contact, patch }) => {
@@ -53,17 +49,17 @@ const ContactPatch = ({ contact, patch }) => {
 
     return (
       <div>
-      <Button onClick={toggle}>Toggle {moment(patch.date).format(DATE_FORMAT_LONG)} Version</Button>
-      <Collapse isOpen={collapseIsOpen}>
-        <ContactPatchDisplay contact={contact} patch={patch} collapseIsOpen={collapseIsOpen} />
-      </Collapse>
+        <Button onClick={toggle}>Toggle {moment(patch.date).format(DATE_FORMAT_LONG)} Version</Button>
+        <Collapse isOpen={collapseIsOpen}>
+          <ContactPatchDisplay contact={contact} patch={patch} collapseIsOpen={collapseIsOpen} />
+        </Collapse>
       </div>
     )
   }
 }
 
 ContactPatch.propTypes = {
-  contact: PropTypes.object.isRequired,
+  contact: PropTypes.object.isRequired
 }
 
 registerComponent({

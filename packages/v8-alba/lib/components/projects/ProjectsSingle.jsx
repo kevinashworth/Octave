@@ -33,7 +33,7 @@ class ProjectsSingle extends PureComponent {
       return null
     }
     var so = 'Season Info Missing'
-    if (project.renewed && project.status === 'On Hiatus' || project.status === 'Ordered') {
+    if (project.renewed && (project.status === 'On Hiatus' || project.status === 'Ordered')) {
       so = `Renewed for Season ${project.season}`
     } else if (project.status === 'On Hiatus' || project.status === 'Wrapped' || project.status === 'Canceled') {
       so = `Completed Season ${project.season}`
@@ -72,27 +72,31 @@ class ProjectsSingle extends PureComponent {
         <Components.HeadTags title={`V8 Alba: ${project.projectTitle}`} />
         <Card className='card-accent-danger'>
           <CardHeader tag='h2'>
-            { project.projectTitle }
-            { Users.canUpdate({ collection: Projects, user: currentUser, document })
+            {project.projectTitle}
+            {Users.canUpdate({ collection: Projects, user: currentUser, document })
               ? <div className='float-right'>
                   <Button tag={Link} to={`/projects/${project._id}/edit`}>Edit</Button>
                 </div>
-              : null }
+              : null
+            }
           </CardHeader>
           <CardBody>
             <Nav tabs>
               <NavItem>
-                <NavLink active={this.state.activeTab === 'Main'}
+                <NavLink
+                  active={this.state.activeTab === 'Main'}
                   onClick={() => { this.toggleTab('Main') }}
                 >Main</NavLink>
               </NavItem>
               <NavItem>
-                <NavLink active={this.state.activeTab === 'Comments'}
+                <NavLink
+                  active={this.state.activeTab === 'Comments'}
                   onClick={() => { this.toggleTab('Comments') }}
                 >{ this.state.commentsTabLabel }</NavLink>
               </NavItem>
               <NavItem>
-                <NavLink active={this.state.activeTab === 'History'}
+                <NavLink
+                  active={this.state.activeTab === 'History'}
                   onClick={() => { this.toggleTab('History') }}
                 >History</NavLink>
               </NavItem>
@@ -101,22 +105,22 @@ class ProjectsSingle extends PureComponent {
               <TabPane tabId='Main'>
                 <CardTitle><b>Project Information</b></CardTitle>
                 <CardText tag='div'>
-                  <b>{ project.projectTitle }</b><br />
-                  { project.projectType }{ project.network && ` – ${project.network}` }<br />
-                  { project.union }{ project.platformType && ` (${project.platformType})` }<br />
-                  { seasonorder }{ seasonorder ? <br /> : null }
-                  { project.status }
+                  <b>{project.projectTitle}</b><br />
+                  {project.projectType}{project.network && ` – ${project.network}`}<br />
+                  {project.union }{project.platformType && ` (${project.platformType})`}<br />
+                  {seasonorder}{seasonorder ? <br /> : null}
+                  {project.status}
                   <hr />
                   {project.htmlSummary
                     ? <Interweave content={project.htmlSummary} transform={transform} />
-                    : <CardText>{ project.summary }</CardText>
+                    : <CardText>{project.summary}</CardText>
                   }
                   {project.htmlNotes
                     ? <Interweave content={project.htmlNotes} transform={transform} />
-                    : <CardText>{ project.notes }</CardText>
+                    : <CardText>{project.notes}</CardText>
                   }
                   {project.shootingLocation &&
-                    <CardText><b>Shooting Location</b>: { project.shootingLocation }</CardText>
+                    <CardText><b>Shooting Location</b>: {project.shootingLocation}</CardText>
                   }
                   <hr />
                 </CardText>
@@ -127,7 +131,7 @@ class ProjectsSingle extends PureComponent {
               }
               <CardTitle className='mt-5'><b>Casting Information</b></CardTitle>
               <CardText className='mb-0'>
-                <b>{ project.castingCompany }</b>
+                <b>{project.castingCompany}</b>
               </CardText>
               {project.castingOfficeId &&
                 <Components.OfficeMini documentId={project.castingOfficeId} />
@@ -139,8 +143,9 @@ class ProjectsSingle extends PureComponent {
                 <br />
               }
               {project.addresses && project.addresses[0] &&
-                project.addresses.map((address, index) => <Components.AddressDetail key={getFullAddress(address)+index} address={address} />)
-              }
+                project.addresses.map((address, index) =>
+                  <Components.AddressDetail key={getFullAddress(address) + index} address={address} />
+              )}
               {project.links &&
                 <CardTitle className='mt-5'><b>Links</b></CardTitle>
               }
@@ -153,7 +158,8 @@ class ProjectsSingle extends PureComponent {
               }
               </TabPane>
               <TabPane tabId='Comments'>
-                <Components.CommentsThread callbackFromSingle={this.commentsCallback}
+                <Components.CommentsThread
+                  callbackFromSingle={this.commentsCallback}
                   terms={{ objectId: document._id, collectionName: 'Projects', view: 'Comments' }}
                 />
               </TabPane>

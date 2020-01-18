@@ -73,7 +73,7 @@ const phoneSubSchema = new SimpleSchema({
     optional: true,
     canRead: ['members'],
     canCreate: ['members', 'admins'],
-    canUpdate: ['members', 'admins'],
+    canUpdate: ['members', 'admins']
   },
   phoneNumberType: {
     type: String,
@@ -102,7 +102,7 @@ const phoneSubSchema = new SimpleSchema({
     canRead: ['members'],
     canCreate: ['members', 'admins'],
     canUpdate: ['members', 'admins']
-  },
+  }
 })
 
 const pastProjectSubSchema = new SimpleSchema({
