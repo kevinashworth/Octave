@@ -19,11 +19,15 @@ let initialState = {
   ],
   contactUpdatedFilters: [
     { contactUpdated: 'One Day', value: false, moment1: '1', moment2: 'day' },
+    { contactUpdated: 'Two Days', value: false, moment1: '2', moment2: 'day' },
     { contactUpdated: 'One Week', value: false, moment1: '1', moment2: 'week' },
     { contactUpdated: 'Two Weeks', value: false, moment1: '2', moment2: 'week' },
     { contactUpdated: 'One Month', value: false, moment1: '1', moment2: 'month' },
     { contactUpdated: 'Two Months', value: false, moment1: '2', moment2: 'month' },
+    { contactUpdated: 'One Quarter', value: false, moment1: '3', moment2: 'month' },
+    { contactUpdated: 'Two Quarters', value: false, moment1: '6', moment2: 'month' },
     { contactUpdated: 'One Year', value: false, moment1: '1', moment2: 'year' },
+    { contactUpdated: 'Two Years', value: false, moment1: '2', moment2: 'year' },
     { contactUpdated: 'All', value: true, moment1: '100', moment2: 'year' }
   ]
 }
@@ -40,12 +44,12 @@ initialState = {
   pastProjectTypeFilters: projectTypeListBuilder,
   pastProjectStatusFilters: pastProjectStatusListBuilder,
   pastProjectUpdatedFilters: [
-    { projectUpdated: 'One Day', value: false, moment1: '1', moment2: 'day' },
-    { projectUpdated: 'One Week', value: false, moment1: '1', moment2: 'week' },
+    { projectUpdated: 'Two Days', value: false, moment1: '2', moment2: 'day' },
     { projectUpdated: 'Two Weeks', value: false, moment1: '2', moment2: 'week' },
-    { projectUpdated: 'One Month', value: false, moment1: '1', moment2: 'month' },
     { projectUpdated: 'Two Months', value: false, moment1: '2', moment2: 'month' },
+    { projectUpdated: 'Two Quarters', value: false, moment1: '6', moment2: 'month' },
     { projectUpdated: 'One Year', value: false, moment1: '1', moment2: 'year' },
+    { projectUpdated: 'Two Years', value: false, moment1: '2', moment2: 'year' },
     { projectUpdated: 'All', value: true, moment1: '100', moment2: 'year' }
   ],
   ...initialState
@@ -64,11 +68,15 @@ initialState = {
   projectStatusFilters: projectStatusListBuilder,
   projectUpdatedFilters: [
     { projectUpdated: 'One Day', value: false, moment1: '1', moment2: 'day' },
+    { projectUpdated: 'Two Days', value: false, moment1: '2', moment2: 'day' },
     { projectUpdated: 'One Week', value: false, moment1: '1', moment2: 'week' },
     { projectUpdated: 'Two Weeks', value: false, moment1: '2', moment2: 'week' },
     { projectUpdated: 'One Month', value: false, moment1: '1', moment2: 'month' },
     { projectUpdated: 'Two Months', value: false, moment1: '2', moment2: 'month' },
+    { projectUpdated: 'One Quarter', value: false, moment1: '3', moment2: 'month' },
+    { projectUpdated: 'Two Quarters', value: false, moment1: '6', moment2: 'month' },
     { projectUpdated: 'One Year', value: false, moment1: '1', moment2: 'year' },
+    { projectUpdated: 'Two Years', value: false, moment1: '2', moment2: 'year' },
     { projectUpdated: 'All', value: true, moment1: '100', moment2: 'year' }
   ],
   projectPlatformFilters: [
