@@ -1,6 +1,6 @@
 import { registerComponent, Components } from 'meteor/vulcan:core'
 import React, { Component } from 'react'
-import { Card, CardBody, Col, Row } from 'reactstrap'
+import { Card, CardBody, Col, Form, Row } from 'reactstrap'
 
 class Login extends Component {
   render () {
@@ -11,7 +11,11 @@ class Login extends Component {
           <Col md='6'>
             <Card className='p-4'>
               <CardBody>
-                <Components.AccountsLoginForm onSignedInHook={() => window.location.assign('/dashboard')}/>
+                <Form>
+                  <h1>Sign In / Sign Up</h1>
+                  <p className='text-muted'>Access your V8 account</p>
+                  <Components.AccountsLoginForm onSignedInHook={() => window.location.assign('/dashboard')} />
+                </Form>
               </CardBody>
             </Card>
           </Col>

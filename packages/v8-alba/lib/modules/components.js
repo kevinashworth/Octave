@@ -101,5 +101,5 @@ import '../components/users/UsersMenu.jsx'
 import '../components/users/UsersName.jsx'
 import '../components/users/UsersProfile.jsx'
 
-import '../components/common/Register/FormControl.jsx' // replaceComponent
-import '../components/common/Register/LoginForm.jsx' // replaceComponent
+import '../components/common/Login/MyFormControl.jsx' // replaceComponent
+import '../components/common/Login/MyAccountsLoginForm.jsx' // replaceComponent
