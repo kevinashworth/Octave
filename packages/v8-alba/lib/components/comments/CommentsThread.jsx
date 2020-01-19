@@ -23,10 +23,11 @@ class CommentsThread extends Component {
       callbackFromSingle(commentsHeader)
     }
   }
+
   componentDidUpdate (prevProps) {
     const { totalCount, callbackFromSingle } = this.props
     if (prevProps.totalCount !== totalCount) {
-      const commentsHeader = pluralize('Comment', totalCount, true)
+      const commentsHeader = pluralize('Comment', totalCount, totalCount > 0)
       this.setState({ commentsHeader })
       callbackFromSingle(commentsHeader)
     }
@@ -54,12 +55,11 @@ class CommentsThread extends Component {
                   objectId={objectId}
                   type='comment'
                 />
-              : null }
+              : null}
           </CardBody>
         </Card>
       )
     }
-
   }
 }
 

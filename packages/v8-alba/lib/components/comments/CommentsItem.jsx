@@ -63,7 +63,8 @@ class CommentsItem extends PureComponent {
         {showReplyButton
           ? <small className='text-muted'>
               <a onClick={this.showReply}><FormattedMessage id='comments.reply' /></a>
-            </small> : null }
+            </small>
+          : null}
       </div>
     )
   }
@@ -108,8 +109,7 @@ class CommentsItem extends PureComponent {
                 <small className='text-muted'>
                   <a onClick={this.showEdit}><FormattedMessage id='comments.edit' /></a>
                 </small>
-              </div>
-            }
+              </div>}
           </div>
           {this.state.showEdit ? this.renderEdit() : this.renderComment()}
         </div>

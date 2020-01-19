@@ -8,9 +8,8 @@ const CommentsNode = ({ comment, currentUser }) =>
     {comment.childrenResults
       ? <div className='comments-children'>
         {comment.childrenResults.map(comment => <CommentsNode currentUser={currentUser} comment={comment} key={comment._id} />)}
-      </div>
-      : null
-    }
+        </div>
+      : null}
   </div>
 
 CommentsNode.propTypes = {

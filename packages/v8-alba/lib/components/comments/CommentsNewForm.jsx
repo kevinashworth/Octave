@@ -19,20 +19,18 @@ const CommentsNewForm = ({ currentUser, collectionName, objectId, parentComment,
     })
   }
 
-  return Users.canCreate({ collection: Comments, user: currentUser }) ? (
-    <div className='comments-new-form'>
-      <Components.SmartForm
-        collection={Comments}
-        mutationFragment={getFragment('CommentsList')}
-        successCallback={successCallback}
-        cancelCallback={type === 'reply' ? cancelCallback : null}
-        prefilledProps={prefilledProps}
-        layout='inputOnly'
-      />
-    </div>
-    ) : (
-    <FormattedMessage id="users.cannot_comment" />
-  )
+  return Users.canCreate({ collection: Comments, user: currentUser })
+    ? <div className='comments-new-form'>
+        <Components.SmartForm
+          collection={Comments}
+          mutationFragment={getFragment('CommentsList')}
+          successCallback={successCallback}
+          cancelCallback={type === 'reply' ? cancelCallback : null}
+          prefilledProps={prefilledProps}
+          layout='inputOnly'
+        />
+      </div>
+    : <FormattedMessage id='users.cannot_comment' />
 }
 
 CommentsNewForm.propTypes = {
