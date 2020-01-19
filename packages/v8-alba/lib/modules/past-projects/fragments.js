@@ -40,6 +40,7 @@ registerFragment(/* GraphQL */ `
       state
       zip
       location
+      addressType
     }
     allAddresses
     contacts {

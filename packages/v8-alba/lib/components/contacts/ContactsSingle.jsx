@@ -117,12 +117,10 @@ class ContactsSingle extends PureComponent {
                     contact.offices.map((o, index) =>
                       <Components.OfficeMini key={index} documentId={o.officeId} />
                     )}
-                  {contact.addresses &&
-                    contact.addresses[0] && <CardTitle className='mt-5'><b>{pluralize('Address', contact.addresses.length)}</b></CardTitle>}
-                  {contact.addresses &&
-                    contact.addresses.map((address, index) =>
-                      <Interweave key={`address${index}`} content={createdFormattedAddress(address)} />
-                    )}
+                    {contact.addresses &&
+                      <CardTitle><b>{pluralize('Address', contact.addresses.length)}</b></CardTitle>}
+                    {contact.addresses &&
+                      contact.addresses.map((o, index) => <Components.AddressDetail key={index} address={o} />)}
                   {!isEmptyValue(contact.projects) &&
                     <CardTitle className='mt-5'><b>Projects</b></CardTitle>}
                   {!isEmptyValue(contact.projects) &&
