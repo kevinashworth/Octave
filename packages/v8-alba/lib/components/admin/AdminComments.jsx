@@ -1,6 +1,8 @@
 import { Components, registerComponent, withAccess } from 'meteor/vulcan:core'
 import React, { Component } from 'react'
 import { Link } from 'react-router-dom'
+import moment from 'moment'
+import { DATE_FORMAT_MONGO } from '../../modules/constants.js'
 import { Comments } from '../../modules/comments/collection.js'
 
 class AdminComments extends Component {
@@ -26,24 +28,26 @@ class AdminComments extends Component {
           columns={[
             {
               name: 'postedAt',
+              label: 'Date',
+              sortable: true,
+              component: ({ document }) => <span style={{ fontFamily: 'monospace' }}>{moment(document.postedAt).format(DATE_FORMAT_MONGO)}</span>
+            },
+            {
+              name: 'userId',
+              label: 'User ID',
+              sortable: true,
+              component: ({ document }) => <Link to={`/users/${document.user.username}`} title={document.user.displayName}>{document.userId}</Link>
+            },
+            {
+              name: 'collectionName',
+              label: 'Coll.',
               sortable: true
             },
             {
               name: 'objectId',
-              label: 'Document',
+              label: 'Doc ID',
               sortable: true,
               component: ({ document }) => <Link to={`/${document.collectionName.toLowerCase()}/${document.objectId}`}>{document.objectId}</Link>
-            },
-            {
-              name: 'collectionName',
-              label: 'Collection',
-              sortable: true
-            },
-            {
-              name: 'userId',
-              label: 'User',
-              sortable: true,
-              component: ({ document }) => <Link to={`/users/${document.user.username}`}>{document.userId}</Link>
             },
             {
               name: 'body',
