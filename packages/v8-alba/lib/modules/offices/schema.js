@@ -267,10 +267,8 @@ const schema = {
     resolveAs: {
       resolver: (o) => {
         if (o.contacts) {
-          const reduced = o.contacts.reduce(function (acc, cur) {
-            return { contactName: acc.contactName + ' ' + cur.contactName }
-          }, { contactName: '' })
-          return reduced.contactName
+          const contactNames = o.contacts.map(contact => contact.contactName)
+          return contactNames.join(' ')
         }
         return null
       }
@@ -350,9 +348,8 @@ const schema = {
     resolveAs: {
       resolver: (o) => {
         if (o.addresses) {
-          return o.addresses.reduce(function (acc, cur) {
-            return acc + ' ' + getFullAddress(cur)
-          }, '')
+          const addressStrings = o.addresses.map(office => getFullAddress(office))
+          return addressStrings.join(' ')
         }
         return null
       }

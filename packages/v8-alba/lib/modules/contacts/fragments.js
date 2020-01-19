@@ -133,6 +133,7 @@ registerFragment(/* GraphQL */ `
       zip
       location
     }
+    allAddresses
     createdAt
     updatedAt
     allLinks

@@ -256,10 +256,8 @@ const schema = {
     resolveAs: {
       resolver: (o) => {
         if (o.links) {
-          const reduced = o.links.reduce(function (acc, cur) {
-            return { theGoods: acc.theGoods + cur.platformName + ' ' + cur.profileName + ' ' + cur.profileLink + ' ' }
-          }, { theGoods: '' })
-          return reduced.theGoods
+          const linkStrings = o.links.map(contact => contact.platformName + ' ' + contact.profileName + ' ' + contact.profileLink)
+          return linkStrings.join(' ')
         }
         return null
       }
@@ -283,9 +281,8 @@ const schema = {
     resolveAs: {
       resolver: (o) => {
         if (o.addresses) {
-          return o.addresses.reduce(function (acc, cur) {
-            return acc + ' ' + getFullAddress(cur)
-          }, '')
+          const addressStrings = o.addresses.map(contact => getFullAddress(contact))
+          return addressStrings.join(' ')
         }
         return null
       }

@@ -369,10 +369,8 @@ const schema = {
     resolveAs: {
       resolver: (project) => {
         if (project.contacts) {
-          const reduced = project.contacts.reduce(function (acc, cur) {
-            return { contactName: acc.contactName + ' ' + cur.contactName }
-          }, { contactName: '' })
-          return reduced.contactName
+          const contactNames = project.contacts.map(contact => contact.contactName)
+          return contactNames.join(' ')
         }
         return null
       }
@@ -396,9 +394,8 @@ const schema = {
     resolveAs: {
       resolver: (project) => {
         if (project.addresses) {
-          return project.addresses.reduce(function (acc, cur) {
-            return acc + ' ' + getFullAddress(cur)
-          }, '')
+          const addressStrings = project.addresses.map(project => getFullAddress(project))
+          return addressStrings.join(' ')
         }
         return null
       }

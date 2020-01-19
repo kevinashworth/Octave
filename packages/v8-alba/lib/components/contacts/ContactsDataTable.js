@@ -254,9 +254,10 @@ class ContactsDataTable extends PureComponent {
               }>Name</TableHeaderColumn>
               <TableHeaderColumn dataField='title' dataSort>Title</TableHeaderColumn>
               <TableHeaderColumn dataField='addressString' dataSort>Address</TableHeaderColumn>
-                <TableHeaderColumn dataField='updatedAt' dataSort dataFormat={dateFormatter}
+              <TableHeaderColumn dataField='updatedAt' dataSort dataFormat={dateFormatter}
                   dataAlign='right' width='94px'>Updated</TableHeaderColumn>
               <TableHeaderColumn dataField='allLinks' hidden>Hidden</TableHeaderColumn>
+              <TableHeaderColumn dataField='allAddresses' hidden>Hidden</TableHeaderColumn>
               <TableHeaderColumn dataField='body' hidden>Hidden</TableHeaderColumn>
             </BootstrapTable>
           </CardBody>

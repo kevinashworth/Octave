@@ -19,6 +19,7 @@ registerFragment(/* GraphQL */ `
       _id
       displayName
     }
+    allContactNames
     addresses {
       street1
       street2
@@ -69,6 +70,7 @@ registerFragment(/* GraphQL */ `
     updatedAt
     displayName
     fullAddress
+    allContactNames
     body
     slug
   }

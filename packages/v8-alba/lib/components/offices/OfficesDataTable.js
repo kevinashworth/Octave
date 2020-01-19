@@ -175,6 +175,7 @@ class OfficesDataTable extends PureComponent {
               <TableHeaderColumn dataField='updatedAt' dataSort dataFormat={dateFormatter}
                 dataAlign='right' width='94px'>Updated</TableHeaderColumn>
               <TableHeaderColumn dataField='body' hidden>Hidden</TableHeaderColumn>
+              <TableHeaderColumn dataField='allContactNames' hidden>Hidden</TableHeaderColumn>
             </BootstrapTable>
           </CardBody>
           {hasMore &&
