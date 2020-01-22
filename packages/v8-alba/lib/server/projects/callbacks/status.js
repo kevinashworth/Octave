@@ -14,12 +14,12 @@ export function ProjectEditUpdateStatusAfter (document, { context, currentUser }
   const newStatusIsPast = _.includes(PAST_PROJECT_STATUSES_ARRAY, document.status)
 
   if (newStatusIsPast) {
-    const { data: newPastProject } = createMutator({
+    const { data: newPastProject } = Promise.await(createMutator({
       collection: PastProjects,
       document,
       currentUser,
       validate: false
-    })
+    }))
 
     if (newPastProject.projectTitle === document.projectTitle) {
       Promise.await(deleteMutator({

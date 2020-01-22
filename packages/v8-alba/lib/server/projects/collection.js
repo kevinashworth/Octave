@@ -9,6 +9,7 @@ import {
   ProjectCreateUpdateOfficeAfter,
   ProjectCreateUpdateStatisticsAfter,
   testCallback2,
+  ProjectEditUpdateStatusAfter,
   ProjectEditUpdateHistoryAfter
 } from './callbacks/index.js'
 
@@ -18,7 +19,7 @@ extendCollection(Projects, {
       after: [ProjectCreateSaveToAlgolia, ProjectCreateUpdateContacts, ProjectCreateUpdateOfficeAfter, ProjectCreateUpdateStatisticsAfter]
     },
     update: {
-      after: [ProjectEditUpdateContacts, ProjectEditUpdateHistoryAfter],
+      after: [ProjectEditUpdateContacts, ProjectEditUpdateHistoryAfter, ProjectEditUpdateStatusAfter],
       before: [ProjectEditUpdateAlgoliaBefore, ProjectEditUpdateOfficeBefore],
       async: [testCallback2]
     }
