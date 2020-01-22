@@ -10,11 +10,11 @@ import Interweave from 'interweave'
 import moment from 'moment'
 import pluralize from 'pluralize'
 import { DATE_FORMAT_LONG, DATE_FORMAT_SHORT } from '../../modules/constants.js'
-import { createdFormattedAddress, isEmptyValue, transform } from '../../modules/helpers.js'
+import { isEmptyValue, transform } from '../../modules/helpers.js'
 import Contacts from '../../modules/contacts/collection.js'
 
-// Don't fetch and render PastProjects unless user clicks to see them
-// See https://reactjs.org/docs/conditional-rendering.html
+// Don't fetch PastProjects unless user clicks to see them
+// See https://reactjs.org/docs/conditional-rendering.html#preventing-component-from-rendering
 function PastProjects (props) {
   if (!props.collapseIsOpen) {
     return null
@@ -117,18 +117,14 @@ class ContactsSingle extends PureComponent {
                     contact.offices.map((o, index) =>
                       <Components.OfficeMini key={index} documentId={o.officeId} />
                     )}
-                    {contact.addresses &&
+                    {contact.addresses && contact.addresses.length > 0 &&
                       <CardTitle><b>{pluralize('Address', contact.addresses.length)}</b></CardTitle>}
-                    {contact.addresses &&
+                    {contact.addresses && contact.addresses.length > 0 &&
                       contact.addresses.map((o, index) => <Components.AddressDetail key={index} address={o} />)}
                   {!isEmptyValue(contact.projects) &&
                     <CardTitle className='mt-5'><b>Projects</b></CardTitle>}
                   {!isEmptyValue(contact.projects) &&
-                    contact.projects.map(project =>
-                      <CardText key={project.projectId}>
-                        <b><Link to={`/projects/${project.projectId}`}>{project.projectTitle}</Link></b>
-                        {project.titleForProject && ` (${project.titleForProject})`}
-                      </CardText>
+                    contact.projects.map((project, index) => <Components.ProjectMini key={`ProjectMini-${index}`} documentId={project.projectId} titleForProject={contact.title === project.titleForProject ? null : project.titleForProject} />
                     )}
                   {contact.links &&
                     <CardTitle className='mt-5'><b>Links</b></CardTitle>}

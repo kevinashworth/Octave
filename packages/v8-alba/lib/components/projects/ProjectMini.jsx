@@ -17,7 +17,9 @@ const ProjectMini = (props) => {
   const project = props.document
   return (
     <CardText>
-      <b><Link to={`/projects/${project._id}/${project.slug}`}>{project.projectTitle}</Link></b><br />
+      <b><Link to={`/projects/${project._id}/${project.slug}`}>{project.projectTitle}</Link></b>
+      {props.titleForProject && ` (${props.titleForProject})`}
+      <br />
       <small>
         { project.projectType }{ project.network && ` – ${project.network} ` } ({ project.status })
       </small>
