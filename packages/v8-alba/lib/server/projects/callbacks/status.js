@@ -55,29 +55,27 @@ export function ProjectEditUpdateStatusAfter (document, { context, currentUser }
     }
 
     if (!isEmptyValue(document.contacts)) {
-      document.contacts.forEach(cntct => {
-        // let pastProjects = []
+      document.contacts.forEach(c => {
+        let pastProjects = []
         let projects = []
-        const contact = Contacts.findOne(cntct.contactId)
+        const contact = Contacts.findOne(c.contactId)
         if (contact.projects && contact.projects.length) {
           projects = contact.projects
           _.remove(projects, function (p) {
             return p.projectId === document._id
           })
         }
-        // this is done in the callback for past project create
-        // if (contact.pastProjects && contact.pastProjects.length) {
-        //   pastProjects = contact.pastProjects
-        // }
-        // pastProjects.push({ projectId: newPastProject._id })
-        Connectors.update(Contacts, cntct.contactId, {
+        if (contact.pastProjects && contact.pastProjects.length) {
+          pastProjects = contact.pastProjects
+        }
+        pastProjects.push({ projectId: newPastProject._id })
+        Connectors.update(Contacts, c.contactId, {
           $set: {
-            // pastProjects,
+            pastProjects,
             projects,
             updatedAt: new Date()
           }
         })
-
       })
     }
   }
