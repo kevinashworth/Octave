@@ -1,33 +1,33 @@
-import { Connectors, createMutator, deleteMutator } from 'meteor/vulcan:core'
+import { addCallback, Connectors, createMutator, deleteMutator } from 'meteor/vulcan:core'
 import _ from 'lodash'
-import Contacts from '../../../modules/contacts/collection.js'
-import Offices from '../../../modules/offices/collection.js'
-import Projects from '../../../modules/projects/collection.js'
-import PastProjects from '../../../modules/past-projects/collection.js'
-import { PAST_PROJECT_STATUSES_ARRAY } from '../../../modules/constants.js'
-import { isEmptyValue } from '../../../modules/helpers.js'
+import Contacts from '../contacts/collection.js'
+import Offices from '../offices/collection.js'
+import Projects from './collection.js'
+import PastProjects from '../past-projects/collection.js'
+import { PAST_PROJECT_STATUSES_ARRAY } from '../constants.js'
+import { isEmptyValue } from '../helpers.js'
 
-// if the new status is now a past-project, create a new past-project then remove this active project
-// if the new project is created and matches (TODO: matches what, exactly?), delete current
+async function ProjectUpdateStatusAsync (document, oldDocument, currentUser, collection) {
+  console.log('[ProjectUpdateStatusAsync] document.status:', document.status)
+  console.log('[ProjectUpdateStatusAsync] oldDocument.status:', oldDocument.status)
 
-export function ProjectEditUpdateStatusAfter (document, { context, currentUser }) {
+  // if the new status is now a past-project, create a new past-project then remove this active project
   const newStatusIsPast = _.includes(PAST_PROJECT_STATUSES_ARRAY, document.status)
 
   if (newStatusIsPast) {
-    const { data: newPastProject } = createMutator({
+    const { data: newPastProject } = Promise.await(createMutator({
       collection: PastProjects,
       document,
       currentUser,
       validate: false
-    })
+    }))
 
     if (newPastProject.projectTitle === document.projectTitle) {
       Promise.await(deleteMutator({
         collection: Projects,
         documentId: document._id,
         currentUser,
-        validate: false,
-        context
+        validate: false
       }))
     }
 
@@ -83,8 +83,11 @@ export function ProjectEditUpdateStatusAfter (document, { context, currentUser }
   }
 }
 
-export function testCallback2 (properties) {
-  console.group('testCallback2')
-  console.info('[testCallback2] properties:', properties)
-  console.groupEnd()
-}
+// function testCallback1 (document, oldDocument, currentUser, collection) {
+//   console.group('testCallback1')
+//   console.info('[testCallback1] document._id:', document._id)
+//   console.info('[testCallback1] collection.collectionName:', collection.collectionName)
+//   console.groupEnd()
+// }
+
+addCallback('projects.edit.async', ProjectUpdateStatusAsync)

@@ -4,20 +4,22 @@ import {
   PastProjectEditUpdateAlgoliaBefore,
   PastProjectEditUpdateContacts,
   PastProjectEditUpdateOfficeBefore,
-  PastProjectCreateUpdateContacts,
-  PastProjectCreateUpdateOfficeAfter,
-  PastProjectCreateUpdateStatisticsAfter,
   PastProjectEditUpdateStatusAfter
 } from './callbacks/index.js'
 
 extendCollection(PastProjects, {
   callbacks: {
-    create: {
-      after: [PastProjectCreateUpdateContacts, PastProjectCreateUpdateOfficeAfter, PastProjectCreateUpdateStatisticsAfter]
-    },
     update: {
       before: [PastProjectEditUpdateAlgoliaBefore, PastProjectEditUpdateOfficeBefore],
       after: [PastProjectEditUpdateContacts, PastProjectEditUpdateStatusAfter]
     }
   }
 })
+
+// create: {
+//   after: [PastProjectCreateUpdateContacts, PastProjectCreateUpdateOfficeAfter, PastProjectCreateUpdateStatisticsAfter]
+// },
+
+// PastProjectCreateUpdateContacts,
+// PastProjectCreateUpdateOfficeAfter,
+// PastProjectCreateUpdateStatisticsAfter,
