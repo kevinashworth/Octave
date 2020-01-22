@@ -112,6 +112,7 @@ class ProjectFilters extends PureComponent {
           this.props.actions.clearProjectTypeFilter(i)
         }
       }
+      this.setState({ typeColor: 'danger' })
     } else if (tv) {
       for (let i = 0; i < length; i++) {
         if (this.props.projectTypeFilters[i].projectType.indexOf('TV') !== -1) {
@@ -120,6 +121,7 @@ class ProjectFilters extends PureComponent {
           this.props.actions.clearProjectTypeFilter(i)
         }
       }
+      this.setState({ typeColor: 'danger' })
     }
     if (all) {
       this.setState({ typeColor: 'secondary' })
