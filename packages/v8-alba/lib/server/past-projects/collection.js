@@ -17,9 +17,9 @@ extendCollection(PastProjects, {
 })
 
 // create: {
-//   after: [PastProjectCreateUpdateContacts, PastProjectCreateUpdateOfficeAfter, PastProjectCreateUpdateStatisticsAfter]
+//   after: [PastProjectCreateUpdateOfficeAfter],
+  // async: [PastProjectUpdateStatisticsAsync]
 // },
 
-// PastProjectCreateUpdateContacts,
 // PastProjectCreateUpdateOfficeAfter,
-// PastProjectCreateUpdateStatisticsAfter,
+// PastProjectUpdateStatisticsAsync,
