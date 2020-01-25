@@ -71,10 +71,12 @@ const SHOOTING_LOCATIONS_US_ENUM = [
   { value: 'Austin', label: 'Austin, TX' },
   { value: 'Boston', label: 'Boston, MA' },
   { value: 'Chicago', label: 'Chicago, IL' },
+  { value: 'Dallas', label: 'Dallas, TX' },
   { value: 'Hawaii', label: 'Hawaii' },
   { value: 'Las Vegas', label: 'Las Vegas, NV' },
   { value: 'Los Angeles', label: 'Los Angeles, CA' },
   { value: 'Miami', label: 'Miami, FL' },
+  { value: 'Nashville', label: 'Nashville, TN' },
   { value: 'New Mexico', label: 'New Mexico' },
   { value: 'New Orleans', label: 'New Orleans, LA' },
   { value: 'New York', label: 'New York, NY' },
@@ -93,17 +95,26 @@ const SHOOTING_LOCATIONS_US_ENUM = [
   { value: 'Wilmington', label: 'Wilmington, NC' }
 ]
 const SHOOTING_LOCATIONS_CANADA_ENUM = [
+  { value: 'Calgary', label: 'Calgary, MB' },
+  { value: 'Montreal', label: 'Montreal, QC' },
+  { value: 'Nova Scotia', label: 'Nova Scotia' },
   { value: 'Toronto', label: 'Toronto, ON' },
   { value: 'Vancouver', label: 'Vancouver, BC' },
   { value: 'Winnipeg', label: 'Winnipeg, MB' }
 ]
 const SHOOTING_LOCATIONS_WORLDWIDE_ENUM = [
-  { value: 'Paris', label: 'Paris, France' },
+  { value: 'Budapest', label: 'Budapest, Hungary' },
+  { value: 'Germany', label: 'Germany' },
+  { value: 'Iceland', label: 'Iceland' },
   { value: 'London', label: 'London, UK' },
   { value: 'Mexico', label: 'Mexico' },
   { value: 'New Zealand', label: 'New Zealand' },
+  { value: 'Nigeria', label: 'Nigeria' },
+  { value: 'Paris', label: 'Paris, France' },
   { value: 'South Africa', label: 'South Africa' },
-  { value: 'Tokyo', label: 'Tokyo, Japan' }
+  { value: 'Spain', label: 'Spain' },
+  { value: 'Tokyo', label: 'Tokyo, Japan' },
+  { value: 'United Kingdom', label: 'United Kingdom' }
 ]
 const SHOOTING_LOCATIONS_OTHER_ENUM = [
   { value: 'TBD', label: 'TBD' }
