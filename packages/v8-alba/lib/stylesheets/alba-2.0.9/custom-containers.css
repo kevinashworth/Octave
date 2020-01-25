@@ -1,0 +1,9 @@
+/* for cellphones, remove gutters on container and make more room on all cards */
+@media (max-width: 575.98px) {
+  .main .container-fluid {
+    padding: 0;
+  }
+  .card-body {
+    padding: 0.5rem;
+  }
+}
