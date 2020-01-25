@@ -1,7 +1,7 @@
 import { extendCollection } from 'meteor/vulcan:core'
 import { Offices } from '../../modules/offices/collection.js'
 import {
-  // OfficeEditUpdateAlgoliaBefore,
+  OfficeEditUpdateAlgoliaBefore,
   OfficeCreateSaveToAlgolia,
   OfficeCreateUpdateContacts,
   OfficeEditUpdateContacts,
@@ -25,7 +25,7 @@ extendCollection(Offices, {
     },
     update: {
       before: [
-        // OfficeEditUpdateAlgoliaBefore,
+        OfficeEditUpdateAlgoliaBefore,
         OfficeEditUpdateContacts,
         OfficeEditUpdatePastProjects,
         OfficeEditUpdateProjects,
