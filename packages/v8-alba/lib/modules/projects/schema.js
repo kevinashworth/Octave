@@ -1,6 +1,6 @@
 import { Utils } from 'meteor/vulcan:core'
 import marked from 'marked'
-import { addressSubSchema, contactSubSchema, linkSubSchema } from '../shared_schemas.js'
+import { addressSubSchema, contactSubSchema, linkSubSchema, officeSubSchema } from '../shared_schemas.js'
 import { PROJECT_TYPES_ENUM, PROJECT_STATUSES_ENUM, GROUPED_LOCATIONS_ENUM } from '../constants.js'
 import { getFullAddress, getPlatformType, getSortTitle } from '../helpers.js'
 
@@ -254,34 +254,6 @@ const schema = {
     canCreate: ['members', 'admins'],
     canUpdate: ['members', 'admins']
   },
-  castingOfficeId: {
-    label: 'Casting Office',
-    type: String,
-    input: 'MySelect',
-    optional: true,
-    canRead: ['members'],
-    canCreate: ['members', 'admins'],
-    canUpdate: ['members', 'admins'],
-    options: props => props.data.offices.results.map(office => ({
-      value: office._id,
-      label: office.displayName
-    })),
-    query: `
-      offices{
-        results{
-          _id
-          displayName
-        }
-      }
-    `,
-    resolveAs: {
-      fieldName: 'castingOffice',
-      type: 'Office',
-      resolver: (o, args, { Offices }) =>
-        o.castingOfficeId && Offices.loader.load(o.castingOfficeId),
-      addOriginalField: true
-    }
-  },
   casting: {
     label: 'Casting Calculated',
     type: String,
@@ -301,6 +273,26 @@ const schema = {
       }
     }
   },
+  contacts: {
+    label: 'Contacts',
+     type: Array,
+     optional: true,
+     canRead: ['members'],
+     canCreate: ['members', 'admins'],
+     canUpdate: ['members', 'admins'],
+     query: `
+       contacts{
+         results{
+           _id
+           fullName
+         }
+       }
+     `,
+    group: contactGroup
+   },
+  'contacts.$': {
+    type: contactSubSchema
+   },
   slug: {
     type: String,
     optional: true,
@@ -319,6 +311,26 @@ const schema = {
       }
     }
   },
+  castingOffices: {
+    label: 'Casting Offices',
+    type: Array,
+    optional: true,
+    canRead: ['members'],
+    canCreate: ['members', 'admins'],
+    canUpdate: ['members', 'admins'],
+    group: linkGroup,
+    query: `
+      offices{
+        results{
+          _id
+          displayName
+        }
+      }
+    `,
+  },
+  'castingOffices.$': {
+    type: officeSubSchema
+  },
   links: {
     label: 'Links',
     type: Array,
@@ -330,26 +342,6 @@ const schema = {
   },
   'links.$': {
     type: linkSubSchema
-  },
-  contacts: {
-    label: 'Contacts',
-    type: Array,
-    optional: true,
-    canRead: ['members'],
-    canCreate: ['members', 'admins'],
-    canUpdate: ['members', 'admins'],
-    query: `
-      contacts{
-        results{
-          _id
-          fullName
-        }
-      }
-    `,
-    group: contactGroup
-  },
-  'contacts.$': {
-    type: contactSubSchema
   },
   allContactNames: {
     type: String,

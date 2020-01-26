@@ -17,7 +17,6 @@ const ProjectsEditForm = ({ documentId, match, history, toggle, currentUser }) =
           <Components.SmartForm
             collection={Projects}
             documentId={theDocumentId}
-            mutationFragment={getFragment('ProjectsEditFragment')}
             showRemove={Users.canDo(currentUser, ['project.delete.own', 'project.delete.all'])}
             successCallback={document => {
               if (_.includes(PAST_PROJECT_STATUSES_ARRAY, document.status)) {

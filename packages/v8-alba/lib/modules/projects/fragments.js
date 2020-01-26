@@ -29,9 +29,9 @@ registerFragment(/* GraphQL */ `
     shootingLocation
     casting
     castingCompany
-    castingOfficeId
-    castingOffice{
-      displayName
+    castingOffices{
+      castingLocation
+      castingOfficeId
     }
     addresses {
       street1

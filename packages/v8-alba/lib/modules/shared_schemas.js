@@ -1,5 +1,5 @@
 import SimpleSchema from 'simpl-schema'
-import { ADDRESS_TYPES_ENUM } from './constants.js'
+import { ADDRESS_TYPES_ENUM, GROUPED_LOCATIONS_ENUM } from './constants.js'
 
 export const addressSubSchema = new SimpleSchema({
   street1: {
@@ -109,4 +109,58 @@ export const linkSubSchema = new SimpleSchema({
     canCreate: ['members', 'admins'],
     canUpdate: ['members', 'admins']
   }
+})
+
+export const officeSubSchema = new SimpleSchema({
+  castingLocation: {
+    label: 'Casting Location',
+    type: String,
+    optional: true,
+    input: 'MyDatalist',
+    options: () => {
+      return GROUPED_LOCATIONS_ENUM
+    },
+    canRead: ['guests'],
+    canCreate: ['members', 'admins'],
+    canUpdate: ['members', 'admins']
+  },
+  castingOfficeId: {
+    label: 'Casting Office',
+    type: String,
+    input: 'MySelect',
+    optional: true,
+    canRead: ['members'],
+    canCreate: ['members', 'admins'],
+    canUpdate: ['members', 'admins'],
+    options: props => props.data.offices.results.map(office => ({
+      value: office._id,
+      label: office.displayName
+    })),
+    resolveAs: {
+      fieldName: 'castingOffice',
+      type: 'Office',
+      resolver: (o, args, { Offices }) =>
+        o.castingOfficeId && Offices.loader.load(o.castingOfficeId),
+      addOriginalField: true
+    }
+  },
+  // contacts: {
+  //   label: 'Contacts',
+  //   type: Array,
+  //   optional: true,
+  //   canRead: ['members'],
+  //   canCreate: ['members', 'admins'],
+  //   canUpdate: ['members', 'admins'],
+  //   query: `
+  //     contacts{
+  //       results{
+  //         _id
+  //         fullName
+  //       }
+  //     }
+  //   `,
+  // },
+  // 'contacts.$': {
+  //   type: contactSubSchema
+  // },
 })
