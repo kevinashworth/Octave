@@ -23,30 +23,28 @@ export default {
   "castingOffices": [
     {
       "castingLocation": "Los Angeles",
-      "castingOfficeId": "RSeoiDy7QudYFY7nx",
-      "contacts": [
-        {
-          "contactId": "RDLDBi9L7pqBdgJKG",
-          "contactName": "Leah Daniels-Butler",
-          "contactTitle": "Casting Director"
-        },
-        {
-          "contactId": "Dmg5t4b2kCWQ7xPeM",
-          "contactName": "Jill Uyeda",
-          "contactTitle": "Casting Director"
-        }
-      ]
+      "castingOfficeId": "RSeoiDy7QudYFY7nx"
     },
     {
       "castingLocation": "Chicago",
-      "castingOfficeId": "RSeoiDy7QudYFY7nx",
-      "contacts": [
-        {
-          "contactId": "7qrw7Yr5MjCRLEqb6",
-          "contactName": "Claire Simon",
-          "contactTitle": "Casting Director"
-        }
-      ]
+      "castingOfficeId": "RSeoiDy7QudYFY7nx"
+    }
+  ],
+  "contacts": [
+    {
+      "contactId": "RDLDBi9L7pqBdgJKG",
+      "contactName": "Leah Daniels-Butler",
+      "contactTitle": "Casting Director"
+    },
+    {
+      "contactId": "Dmg5t4b2kCWQ7xPeM",
+      "contactName": "Jill Uyeda",
+      "contactTitle": "Casting Director"
+    },
+    {
+      "contactId": "7qrw7Yr5MjCRLEqb6",
+      "contactName": "Claire Simon",
+      "contactTitle": "Casting Director"
     }
   ],
   "htmlNotes": "<p><strong>NOTES:</strong> Season 6 will be the last. Season 6 production dates: 07/17/2019 - 03/24/2020</p>\n<p>Shoots and primarily casts in Chicago.</p>\n",
