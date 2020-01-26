@@ -591,6 +591,39 @@ Migrations.add({
   down: function () { /* There is no undoing this one. */ }
 })
 
+Migrations.add({
+  version: 17,
+  name: 'castingOfficeId -> castingOffices',
+  up () {
+    Projects.find({ castingOfficeId: { $exists: true } }).forEach(project => {
+      Projects.update(project._id,
+        {
+          $addToSet: { castingOffices: { castingOfficeId: project.castingOfficeId } },
+          $unset: { castingOfficeId: 1 }
+        })
+      console.log(`Up Migration 17, Project ${project._id}, Casting Office ${project.castingOfficeId}`)
+    })
+  },
+  down () {
+    Projects.find({ castingOffices: { $exists: true } }).forEach(project => {
+      if (project.castingOffices[0] && project.castingOffices[0].castingOfficeId) {
+        Projects.update(project._id,
+          {
+            $set: { castingOfficeId: project.castingOffices[0].castingOfficeId },
+            $unset: { castingOffices: 1 }
+          })
+      }
+      if (project.castingOffices[1] && project.castingOffices[1].castingOfficeId) {
+        console.log(`Down Migration 17 set ${project.castingOffices[0].castingOfficeId} as castingOfficeId`)
+        console.log(`But Project ${project._id} has other castingOfficeId's:`)
+        for (var i = 1; i < project.castingOffices.length; i++) {
+          console.log(project.castingOffices[i].castingOfficeId)
+        }
+      }
+    })
+  }
+})
+
 Meteor.startup(() => {
   Migrations.migrateTo('latest')
 })
