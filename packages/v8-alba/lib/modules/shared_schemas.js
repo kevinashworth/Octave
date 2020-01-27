@@ -1,5 +1,5 @@
 import SimpleSchema from 'simpl-schema'
-import { ADDRESS_TYPES_ENUM, GROUPED_LOCATIONS_ENUM } from './constants.js'
+import { ADDRESS_TYPES_ENUM, GROUPED_LOCATIONS_ENUM, PHONE_NUMBER_TYPES_ENUM } from './constants.js'
 
 export const addressSubSchema = new SimpleSchema({
   street1: {
@@ -156,24 +156,44 @@ export const officeSubSchema = new SimpleSchema({
         office.officeId && Offices.loader.load(office.officeId),
       addOriginalField: true
     }
+  }
+})
+
+export const phoneSubSchema = new SimpleSchema({
+  phoneNumberAsInput: {
+    type: String,
+    label: 'Phone Number',
+    optional: true,
+    canRead: ['members'],
+    canCreate: ['members', 'admins'],
+    canUpdate: ['members', 'admins']
   },
-  // contacts: {
-  //   label: 'Contacts',
-  //   type: Array,
-  //   optional: true,
-  //   canRead: ['members'],
-  //   canCreate: ['members', 'admins'],
-  //   canUpdate: ['members', 'admins'],
-  //   query: `
-  //     contacts{
-  //       results{
-  //         _id
-  //         fullName
-  //       }
-  //     }
-  //   `,
-  // },
-  // 'contacts.$': {
-  //   type: contactSubSchema
-  // },
+  phoneNumberType: {
+    type: String,
+    label: 'Phone Type',
+    optional: true,
+    input: 'MySelect',
+    options: () => {
+      return PHONE_NUMBER_TYPES_ENUM
+    },
+    canRead: ['members'],
+    canCreate: ['members', 'admins'],
+    canUpdate: ['members', 'admins']
+  },
+  phoneNumber: { // validated and formatted by Twilio
+    type: String,
+    hidden: true,
+    optional: true,
+    canRead: ['members'],
+    canCreate: ['members', 'admins'],
+    canUpdate: ['members', 'admins']
+  },
+  nationalFormat: { // validated and formatted by Twilio
+    type: String,
+    hidden: true,
+    optional: true,
+    canRead: ['members'],
+    canCreate: ['members', 'admins'],
+    canUpdate: ['members', 'admins']
+  }
 })

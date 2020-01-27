@@ -230,8 +230,8 @@ let schema = {
     canRead: ['members'],
     group: officeGroup,
     query: `
-      offices{
-        results{
+      offices {
+        results {
           _id
           displayName
         }
@@ -241,40 +241,12 @@ let schema = {
   'offices.$': {
     type: officeSubSchema
   },
-  // castingOfficeId: {
-  //   label: 'Casting Office',
-  //   type: String,
-  //   input: 'MySelect',
-  //   optional: true,
-  //   canRead: ['members'],
-  //   canCreate: ['members', 'admins'],
-  //   canUpdate: ['members', 'admins'],
-  //   options: props => props.data.offices.results.map(office => ({
-  //     value: office._id,
-  //     label: office.displayName
-  //   })),
-  //   query: `
-  //     offices{
-  //       results{
-  //         _id
-  //         displayName
-  //       }
-  //     }
-  //   `,
-  //   resolveAs: {
-  //     fieldName: 'castingOffice',
-  //     type: 'Office',
-  //     resolver: (o, args, { Offices }) =>
-  //       o.castingOfficeId && Offices.loader.load(o.castingOfficeId),
-  //     addOriginalField: true
-  //   }
-  // },
   contacts: {
     type: Array,
     canRead: ['members'],
     query: `
-      contacts{
-        results{
+      contacts {
+        results {
           _id
           fullName
         }
