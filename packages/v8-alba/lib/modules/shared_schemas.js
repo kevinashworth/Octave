@@ -117,35 +117,43 @@ export const linkSubSchema = new SimpleSchema({
 })
 
 export const officeSubSchema = new SimpleSchema({
-  castingLocation: {
-    label: 'Casting Location',
+  officeName: {
+    label: 'Office Name',
     type: String,
     optional: true,
+    canRead: ['members'],
+    canCreate: ['admins'],
+    canUpdate: ['members', 'admins']
+  },
+  officeLocation: {
+    label: 'Office Location',
+    type: String,
+    optional: true,
+    canRead: ['guests'],
+    canCreate: ['admins'],
+    canUpdate: ['members', 'admins'],
     input: 'MyDatalist',
     options: () => {
       return GROUPED_LOCATIONS_ENUM
-    },
-    canRead: ['guests'],
-    canCreate: ['members', 'admins'],
-    canUpdate: ['members', 'admins']
+    }
   },
-  castingOfficeId: {
-    label: 'Casting Office',
+  officeId: {
+    label: 'Office ID',
     type: String,
-    input: 'MySelect',
     optional: true,
     canRead: ['members'],
-    canCreate: ['members', 'admins'],
+    canCreate: ['admins'],
     canUpdate: ['members', 'admins'],
+    input: 'MySelect',
     options: props => props.data.offices.results.map(office => ({
       value: office._id,
       label: office.displayName
     })),
     resolveAs: {
-      fieldName: 'castingOffice',
+      fieldName: 'office',
       type: 'Office',
-      resolver: (o, args, { Offices }) =>
-        o.castingOfficeId && Offices.loader.load(o.castingOfficeId),
+      resolver: (office, args, { Offices }) =>
+        office.officeId && Offices.loader.load(office.officeId),
       addOriginalField: true
     }
   },

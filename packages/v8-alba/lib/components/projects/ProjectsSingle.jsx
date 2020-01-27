@@ -136,11 +136,11 @@ class ProjectsSingle extends PureComponent {
               {project.castingOfficeId &&
                 <Components.OfficeMini documentId={project.castingOfficeId} />
               }
-              {project.castingOffices &&
-                  project.castingOffices.map(office =>
-                  <div key={office.castingOfficeId}>
-                  <b>{office.castingLocation}</b>
-                  <Components.OfficeMini documentId={office.castingOfficeId} />
+              {project.offices &&
+                project.offices.map(office =>
+                  <div key={office.officeId}>
+                    <b>{office.officeLocation}</b>
+                    <Components.OfficeMini documentId={office.officeId  ``} />
                   </div>
                 )
               }

@@ -20,14 +20,16 @@ export default {
   "slug": "empire",
   "htmlSummary": "<p><strong>SUMMARY:</strong> A powerful drama about a family dynasty set within the glamorous and sometimes dangerous world of hip-hop music, the show revolves around the Lyons and their media company, Empire Entertainment.</p>\n",
   "summary": "A powerful drama about a family dynasty set within the glamorous and sometimes dangerous world of hip-hop music, the show revolves around the Lyons and their media company, Empire Entertainment.",
-  "castingOffices": [
+  "offices": [
     {
-      "castingLocation": "Los Angeles",
-      "castingOfficeId": "RSeoiDy7QudYFY7nx"
+      "officeId": "RSeoiDy7QudYFY7nx",
+      "officeLocation": "Los Angeles, CA",
+      "officeName": "Leah Daniels-Butler Casting" // ??
     },
     {
-      "castingLocation": "Chicago",
-      "castingOfficeId": "RSeoiDy7QudYFY7nx"
+      "officeId": "RSeoiDy7QudYFY7nx",
+      "officeLocation": "Chicago, IL",
+      "officeName": "Simon Casting" // ??
     }
   ],
   "contacts": [

@@ -215,8 +215,8 @@ let schema = {
     resolveAs: {
       type: 'String',
       resolver: async (project, args, { Offices }) => {
-        if (project.castingOffices) {
-          const office = await Offices.loader.load(project.castingOffices[0].castingOfficeId)
+        if (project.offices) {
+          const office = await Offices.loader.load(project.offices[0].officeId)
           return office.displayName + ' (Offices)'
         } else if (project.castingOfficeId) {
           const office = await Offices.loader.load(project.castingOfficeId)
@@ -228,8 +228,7 @@ let schema = {
       }
     }
   },
-  castingOffices: {
-    label: 'Offices',
+  offices: {
     type: Array,
     canRead: ['members'],
     group: officeGroup,
@@ -242,38 +241,38 @@ let schema = {
       }
     `,
   },
-  'castingOffices.$': {
+  'offices.$': {
     type: officeSubSchema
   },
   castingOfficeId: {
-      label: 'Casting Office',
-      type: String,
-      input: 'MySelect',
-      optional: true,
-      canRead: ['members'],
-      canCreate: ['members', 'admins'],
-      canUpdate: ['members', 'admins'],
-      options: props => props.data.offices.results.map(office => ({
-        value: office._id,
-        label: office.displayName
-      })),
-      query: `
-        offices{
-          results{
-            _id
-            displayName
-          }
+    label: 'Casting Office',
+    type: String,
+    input: 'MySelect',
+    optional: true,
+    canRead: ['members'],
+    canCreate: ['members', 'admins'],
+    canUpdate: ['members', 'admins'],
+    options: props => props.data.offices.results.map(office => ({
+      value: office._id,
+      label: office.displayName
+    })),
+    query: `
+      offices{
+        results{
+          _id
+          displayName
         }
-      `,
-      resolveAs: {
-        fieldName: 'castingOffice',
-        type: 'Office',
-        resolver: (o, args, { Offices }) =>
-          o.castingOfficeId && Offices.loader.load(o.castingOfficeId),
-        addOriginalField: true
       }
-    },
-    contacts: {
+    `,
+    resolveAs: {
+      fieldName: 'castingOffice',
+      type: 'Office',
+      resolver: (o, args, { Offices }) =>
+        o.castingOfficeId && Offices.loader.load(o.castingOfficeId),
+      addOriginalField: true
+    }
+  },
+  contacts: {
     type: Array,
     canRead: ['members'],
     query: `
@@ -377,8 +376,8 @@ let schema = {
 //   'casting',
 //   'contacts',
 //   'contacts.$',
-//   'castingOffices',
-//   'castingOffices.$',
+//   'offices',
+//   'offices.$',
 //   'links',
 //   'links.$',
 //   'allContactNames',
@@ -412,7 +411,7 @@ const optionalFields = [
   'castingCompany',
   'casting',
   'contacts',
-  'castingOffices',
+  'offices',
   'links',
   'allContactNames',
   'addresses',
@@ -448,7 +447,7 @@ const permissionFields = [
   'castingCompany',
   // 'casting',
   'contacts',
-  'castingOffices',
+  'offices',
   'links',
   // 'allContactNames',
   'addresses',

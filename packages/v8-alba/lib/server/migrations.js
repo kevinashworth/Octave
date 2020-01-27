@@ -593,31 +593,31 @@ Migrations.add({
 
 Migrations.add({
   version: 17,
-  name: 'castingOfficeId -> castingOffices',
+  name: 'castingOfficeId -> offices',
   up () {
     Projects.find({ castingOfficeId: { $exists: true } }).forEach(project => {
       Projects.update(project._id,
         {
-          $addToSet: { castingOffices: { castingOfficeId: project.castingOfficeId } },
+          $addToSet: { offices: { officeId: project.castingOfficeId } },
           $unset: { castingOfficeId: 1 }
         })
-      console.log(`Up Migration 17, Project ${project._id}, Casting Office ${project.castingOfficeId}`)
+      console.log(`Migrated to 17, Project ${project._id} / Office ${project.castingOfficeId}`)
     })
   },
   down () {
-    Projects.find({ castingOffices: { $exists: true } }).forEach(project => {
-      if (project.castingOffices[0] && project.castingOffices[0].castingOfficeId) {
+    Projects.find({ offices: { $exists: true } }).forEach(project => {
+      if (project.offices[0] && project.offices[0].officeId) {
         Projects.update(project._id,
           {
-            $set: { castingOfficeId: project.castingOffices[0].castingOfficeId },
-            $unset: { castingOffices: 1 }
+            $set: { castingOfficeId: project.offices[0].officeId },
+            $unset: { offices: 1 }
           })
       }
-      if (project.castingOffices[1] && project.castingOffices[1].castingOfficeId) {
-        console.log(`Down Migration 17 set ${project.castingOffices[0].castingOfficeId} as castingOfficeId`)
-        console.log(`But Project ${project._id} has other castingOfficeId's:`)
-        for (var i = 1; i < project.castingOffices.length; i++) {
-          console.log(project.castingOffices[i].castingOfficeId)
+      if (project.offices[1] && project.offices[1].officeId) {
+        console.log(`Migrated from 17 and set ${project.offices[0].officeId} as castingOfficeId,`)
+        console.log(`but Project ${project._id} also has officeId's:`)
+        for (var i = 1; i < project.offices.length; i++) {
+          console.log(project.offices[i].officeId)
         }
       }
     })
