@@ -5,8 +5,8 @@ import {
   ProjectCreateSaveToAlgolia,
   ProjectEditUpdateContacts,
   ProjectCreateUpdateContacts,
-  ProjectEditUpdateOfficeBefore,
-  ProjectCreateUpdateOfficeAfter,
+  ProjectEditUpdateOfficesBefore,
+  ProjectCreateUpdateOfficesAfter,
   ProjectCreateUpdateStatisticsAfter,
   testCallback2,
   ProjectEditUpdateStatusAfter,
@@ -16,11 +16,11 @@ import {
 extendCollection(Projects, {
   callbacks: {
     create: {
-      after: [ProjectCreateSaveToAlgolia, ProjectCreateUpdateContacts, ProjectCreateUpdateOfficeAfter, ProjectCreateUpdateStatisticsAfter]
+      after: [ProjectCreateSaveToAlgolia, ProjectCreateUpdateContacts, ProjectCreateUpdateOfficesAfter, ProjectCreateUpdateStatisticsAfter]
     },
     update: {
       after: [ProjectEditUpdateContacts, ProjectEditUpdateHistoryAfter, ProjectEditUpdateStatusAfter],
-      before: [ProjectEditUpdateAlgoliaBefore, ProjectEditUpdateOfficeBefore],
+      before: [ProjectEditUpdateAlgoliaBefore, ProjectEditUpdateOfficesBefore],
       async: [testCallback2]
     }
   }
