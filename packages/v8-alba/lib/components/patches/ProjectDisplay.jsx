@@ -63,9 +63,6 @@ const ProjectDisplay = ({ project }) => {
     <CardText className='mb-0'>
       <b>{ project.castingCompany }</b>
     </CardText>
-    {project.castingOfficeId &&
-      <Components.OfficeMini documentId={project.castingOfficeId} />
-    }
     {project.offices &&
       project.offices.map(office =>
         <div key={office.officeId}>

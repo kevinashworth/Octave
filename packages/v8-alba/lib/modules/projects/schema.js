@@ -218,9 +218,6 @@ let schema = {
         if (project.offices) {
           const office = await Offices.loader.load(project.offices[0].officeId)
           return office.displayName + ' (Offices)'
-        } else if (project.castingOfficeId) {
-          const office = await Offices.loader.load(project.castingOfficeId)
-          return office.displayName + ' (OfficeId)'
         } else if (project.castingCompany && project.castingCompany.length) {
           return project.castingCompany + ' (Company)'
         }
@@ -244,34 +241,34 @@ let schema = {
   'offices.$': {
     type: officeSubSchema
   },
-  castingOfficeId: {
-    label: 'Casting Office',
-    type: String,
-    input: 'MySelect',
-    optional: true,
-    canRead: ['members'],
-    canCreate: ['members', 'admins'],
-    canUpdate: ['members', 'admins'],
-    options: props => props.data.offices.results.map(office => ({
-      value: office._id,
-      label: office.displayName
-    })),
-    query: `
-      offices{
-        results{
-          _id
-          displayName
-        }
-      }
-    `,
-    resolveAs: {
-      fieldName: 'castingOffice',
-      type: 'Office',
-      resolver: (o, args, { Offices }) =>
-        o.castingOfficeId && Offices.loader.load(o.castingOfficeId),
-      addOriginalField: true
-    }
-  },
+  // castingOfficeId: {
+  //   label: 'Casting Office',
+  //   type: String,
+  //   input: 'MySelect',
+  //   optional: true,
+  //   canRead: ['members'],
+  //   canCreate: ['members', 'admins'],
+  //   canUpdate: ['members', 'admins'],
+  //   options: props => props.data.offices.results.map(office => ({
+  //     value: office._id,
+  //     label: office.displayName
+  //   })),
+  //   query: `
+  //     offices{
+  //       results{
+  //         _id
+  //         displayName
+  //       }
+  //     }
+  //   `,
+  //   resolveAs: {
+  //     fieldName: 'castingOffice',
+  //     type: 'Office',
+  //     resolver: (o, args, { Offices }) =>
+  //       o.castingOfficeId && Offices.loader.load(o.castingOfficeId),
+  //     addOriginalField: true
+  //   }
+  // },
   contacts: {
     type: Array,
     canRead: ['members'],

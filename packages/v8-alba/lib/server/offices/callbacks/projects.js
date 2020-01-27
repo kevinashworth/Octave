@@ -5,8 +5,8 @@ import { isEmptyValue } from '../../../modules/helpers.js'
 
 export function OfficeEditUpdateProjects (data, { document, originalDocument }) {
   // [a] if the two `projects` arrays are equal, do nothing
-  // [b] else for deleted projects in oldOffice but not newOffice, remove castingOfficeId from those projects
-  // [c] and for added projects in newOffice but not oldOffice, add castingOfficeId to those projects
+  // [b] else for deleted projects in oldOffice but not newOffice, remove officeId from those projects
+  // [c] and for added projects in newOffice but not oldOffice, add officeId to those projects
 
   const office = document
   let projectsToRemoveThisOfficeFrom = null
@@ -39,19 +39,8 @@ export function OfficeEditUpdateProjects (data, { document, originalDocument }) 
           $set: {
             ...project
           }
-          // $pull: {
-          //   offices: { officeId: office._id }
-          // }
         })
       }
-      // if (project.castingOfficeId === office._id) {
-      //   Connectors.update(Projects, project._id, {
-      //     $unset: {
-      //       castingOfficeId: 1,
-      //       updatedAt: new Date()
-      //     }
-      //   })
-      // }
     })
   }
   // [c]

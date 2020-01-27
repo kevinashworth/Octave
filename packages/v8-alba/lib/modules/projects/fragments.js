@@ -87,10 +87,6 @@ registerFragment(/* GraphQL */ `
       officeLocation
       officeName
     }
-    castingOfficeId
-    castingOffice{
-      displayName
-    }
     status
     network
     union
