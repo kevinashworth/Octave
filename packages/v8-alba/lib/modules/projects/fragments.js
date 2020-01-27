@@ -9,9 +9,9 @@ registerFragment(/* GraphQL */ `
     projectTitle
     casting
     castingCompany
-    castingOfficeId
-    castingOffice{
-      displayName
+    castingOffices{
+      castingLocation
+      castingOfficeId
     }
     slug
   }
@@ -80,6 +80,14 @@ registerFragment(/* GraphQL */ `
     platformType
     casting
     castingCompany
+    castingOffices{
+      castingLocation
+      castingOfficeId
+    }
+    castingOfficeId
+    castingOffice{
+      displayName
+    }
     status
     network
     union
@@ -114,7 +122,10 @@ registerFragment(/* GraphQL */ `
     projectType
     shootingLocation
     castingCompany
-    castingOfficeId
+    castingOffices{
+      castingLocation
+      castingOfficeId
+    }
     contacts {
       contactId
       contactName
@@ -158,7 +169,10 @@ registerFragment(/* GraphQL */ `
     projectType
     shootingLocation
     castingCompany
-    castingOfficeId
+    castingOffices{
+      castingLocation
+      castingOfficeId
+    }
     contacts {
       contactId
       contactName
