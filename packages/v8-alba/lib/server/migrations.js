@@ -624,6 +624,22 @@ Migrations.add({
   }
 })
 
+Migrations.add({
+  version: 18,
+  name: 'castingOffice -> offices (localhost only?)',
+  up () {
+    Projects.find({ castingOffice: { $exists: true } }).forEach(project => {
+      Projects.update(project._id,
+        {
+          $addToSet: { offices: { officeId: project.castingOffice } },
+          $unset: { castingOffice: 1 }
+        })
+      console.log(`Migrated to 18, Project ${project._id} / Office ${project.castingOffice}`)
+    })
+  },
+  down: function () { /* There is no undoing this one. */ }
+})
+
 Meteor.startup(() => {
   Migrations.migrateTo('latest')
 })

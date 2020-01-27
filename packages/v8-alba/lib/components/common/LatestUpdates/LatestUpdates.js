@@ -149,11 +149,7 @@ class LatestProjectUpdates extends Component {
                     ? `${project.projectType} • ${project.network}`
                     : `${project.projectType}`}<br />
                   {project.status}<br />
-                  {project.castingCompany
-                    ? project.castingCompany
-                    : project.castingOffice
-                      ? project.castingOffice.displayName
-                      : null }
+                  {project.casting}
                 </CardBody>
                 <CardFooter>
                   <small className='text-muted'><Markup content={displayHtml} /></small>
