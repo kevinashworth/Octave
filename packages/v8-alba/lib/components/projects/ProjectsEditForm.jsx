@@ -1,4 +1,4 @@
-import { Components, getFragment, registerComponent, withCurrentUser } from 'meteor/vulcan:core'
+import { Components, registerComponent, withCurrentUser } from 'meteor/vulcan:core'
 import Users from 'meteor/vulcan:users'
 import React from 'react'
 import { withRouter } from 'react-router-dom'

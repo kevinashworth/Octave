@@ -140,7 +140,7 @@ class ProjectsSingle extends PureComponent {
                 project.offices.map(office =>
                   <div key={office.officeId}>
                     <b>{office.officeLocation}</b>
-                    <Components.OfficeMini documentId={office.officeId  ``} />
+                    <Components.OfficeMini documentId={office.officeId} />
                   </div>
                 )
               }
