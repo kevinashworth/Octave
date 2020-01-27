@@ -3,6 +3,7 @@ import { ADDRESS_TYPES_ENUM, GROUPED_LOCATIONS_ENUM } from './constants.js'
 
 export const addressSubSchema = new SimpleSchema({
   street1: {
+    label: 'Street 1',
     type: String,
     optional: true,
     canRead: ['members'],
@@ -10,6 +11,7 @@ export const addressSubSchema = new SimpleSchema({
     canUpdate: ['members', 'admins']
   },
   street2: {
+    label: 'Street 2',
     type: String,
     optional: true,
     canRead: ['members'],
@@ -92,18 +94,21 @@ export const contactSubSchema = new SimpleSchema({
 
 export const linkSubSchema = new SimpleSchema({
   platformName: {
+    label: 'Platform',
     type: String,
     canRead: ['members'],
     canCreate: ['members', 'admins'],
     canUpdate: ['members', 'admins']
   },
   profileName: {
+    label: 'Profile Name',
     type: String,
     canRead: ['members'],
     canCreate: ['members', 'admins'],
     canUpdate: ['members', 'admins']
   },
   profileLink: {
+    label: 'Profile Link',
     type: String,
     canRead: ['members'],
     canCreate: ['members', 'admins'],
