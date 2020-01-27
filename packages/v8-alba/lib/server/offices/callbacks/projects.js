@@ -30,26 +30,37 @@ export function OfficeEditUpdateProjects (data, { document, originalDocument }) 
   }
   // [b]
   if (projectsToRemoveThisOfficeFrom) {
-    projectsToRemoveThisOfficeFrom.forEach(deletedProject => {
-      const project = Projects.findOne(deletedProject.projectId)
-      if (project.castingOfficeId === office._id) {
+    projectsToRemoveThisOfficeFrom.forEach(projectToUpdate => {
+      var project = Projects.findOne(projectToUpdate.projectId)
+      const i = _.findIndex(project.offices, ['officeId', office._id])
+      if (i > -1) {
+        project.offices.splice(i, 1)
         Connectors.update(Projects, project._id, {
-          $unset: {
-            castingOfficeId: 1,
-            updatedAt: new Date()
+          $set: {
+            ...project
           }
+          // $pull: {
+          //   offices: { officeId: office._id }
+          // }
         })
       }
+      // if (project.castingOfficeId === office._id) {
+      //   Connectors.update(Projects, project._id, {
+      //     $unset: {
+      //       castingOfficeId: 1,
+      //       updatedAt: new Date()
+      //     }
+      //   })
+      // }
     })
   }
   // [c]
   if (projectsToAddThisOfficeTo) {
-    projectsToAddThisOfficeTo.forEach(addedProject => {
-      const project = Projects.findOne(addedProject.projectId)
+    projectsToAddThisOfficeTo.forEach(projectToUpdate => {
+      const project = Projects.findOne(projectToUpdate.projectId)
       Connectors.update(Projects, project._id, {
-        $set: {
-          castingOfficeId: office._id,
-          updatedAt: new Date()
+        $addToSet: {
+          offices: { officeId: office._id }
         }
       })
     })
