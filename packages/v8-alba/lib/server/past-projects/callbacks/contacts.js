@@ -65,7 +65,7 @@ export function PastProjectEditUpdateContacts (document, properties) {
         var newPastProjects = contact.pastProjects
         const i = _.findIndex(contact.pastProjects, { projectId: project._id })
         if (i > -1) {
-          newProjects.splice(i, 1)
+          newPastProjects.splice(i, 1)
           Connectors.update(Contacts, contact._id, {
             $set: {
               pastProjects: newPastProjects,
