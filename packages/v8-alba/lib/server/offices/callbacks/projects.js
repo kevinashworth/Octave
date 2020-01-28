@@ -23,9 +23,9 @@ export function OfficeEditUpdateProjects (data, { document, originalDocument }) 
     const oldOffice = originalDocument
     projectsToAddThisOfficeTo = _.differenceWith(newOffice.projects, oldOffice.projects, _.isEqual)
     projectsToRemoveThisOfficeFrom = _.differenceWith(oldOffice.projects, newOffice.projects, _.isEqual)
-    console.group('OfficeEditUpdateContacts:')
-    console.info('projectsToRemoveThisOfficeFrom:', projectsToRemoveThisOfficeFrom)
+    console.group('OfficeEditUpdateProjects:')
     console.info('projectsToAddThisOfficeTo:', projectsToAddThisOfficeTo)
+    console.info('projectsToRemoveThisOfficeFrom:', projectsToRemoveThisOfficeFrom)
     console.groupEnd()
   }
   // [b]
