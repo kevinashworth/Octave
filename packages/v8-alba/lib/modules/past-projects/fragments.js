@@ -9,9 +9,10 @@ registerFragment(/* GraphQL */ `
     projectTitle
     casting
     castingCompany
-    castingOfficeId
-    castingOffice{
-      displayName
+    offices {
+      officeId
+      officeLocation
+      officeName
     }
     slug
   }
@@ -29,9 +30,10 @@ registerFragment(/* GraphQL */ `
     shootingLocation
     casting
     castingCompany
-    castingOfficeId
-    castingOffice{
-      displayName
+    offices {
+      officeId
+      officeLocation
+      officeName
     }
     addresses {
       street1
@@ -97,8 +99,13 @@ registerFragment(/* GraphQL */ `
     projectTitle
     projectType
     shootingLocation
+    casting
     castingCompany
-    castingOfficeId
+    offices {
+      officeId
+      officeLocation
+      officeName
+    }
     contacts {
       contactId
       contactName
@@ -141,8 +148,13 @@ registerFragment(/* GraphQL */ `
     projectTitle
     projectType
     shootingLocation
+    casting
     castingCompany
-    castingOfficeId
+    offices {
+      officeId
+      officeLocation
+      officeName
+    }
     contacts {
       contactId
       contactName

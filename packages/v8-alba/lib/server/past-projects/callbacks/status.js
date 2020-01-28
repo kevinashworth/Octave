@@ -31,26 +31,28 @@ export function PastProjectEditUpdateStatusAfter (document, { context, currentUs
       }))
     }
 
-    if (document.castingOfficeId) {
-      let pastProjects = []
-      let projects = []
-      const office = Offices.findOne(document.castingOfficeId)
-      if (office.pastProjects && office.pastProjects.length) {
-        pastProjects = office.pastProjects
-        _.remove(pastProjects, function (p) {
-          return p._id === document._id
-        })
-      }
-      if (office.projects && office.projects.length) {
-        projects = office.projects
-      }
-      projects.push({ projectId: newProject._id })
-      Connectors.update(Offices, document.castingOfficeId, {
-        $set: {
-          pastProjects,
-          projects,
-          updatedAt: new Date()
+    if (document.offices & document.offices.length) {
+      document.offices.forEach(officeOfDocument => {
+        let pastProjects = []
+        let projects = []
+        const office = Offices.findOne(officeOfDocument.officeId)
+        if (office.pastProjects && office.pastProjects.length) {
+          pastProjects = office.pastProjects
+          _.remove(pastProjects, function (p) {
+            return p._id === document._id
+          })
         }
+        if (office.projects && office.projects.length) {
+          projects = office.projects
+        }
+        projects.push({ projectId: newProject._id })
+        Connectors.update(Offices, officeOfDocument.officeId, {
+          $set: {
+            pastProjects,
+            projects,
+            updatedAt: new Date()
+          }
+        })
       })
     }
 
