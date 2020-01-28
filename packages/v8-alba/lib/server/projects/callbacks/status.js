@@ -83,8 +83,8 @@ export function ProjectEditUpdateStatusAfter (document, { context, currentUser }
   }
 }
 
-export function testCallback2 (properties) {
-  console.group('testCallback2')
-  console.info('[testCallback2] properties:', properties)
-  console.groupEnd()
-}
+// export function testCallback2 (properties) {
+//   console.group('testCallback2')
+//   console.info('[testCallback2] properties:', properties)
+//   console.groupEnd()
+// }
