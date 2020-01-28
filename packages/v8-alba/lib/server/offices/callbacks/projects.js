@@ -46,8 +46,7 @@ export function OfficeEditUpdateProjects (data, { document, originalDocument }) 
   // [c]
   if (projectsToAddThisOfficeTo) {
     projectsToAddThisOfficeTo.forEach(projectToUpdate => {
-      const project = Projects.findOne(projectToUpdate.projectId)
-      Connectors.update(Projects, project._id, {
+      Connectors.update(Projects, projectToUpdate.projectId, {
         $addToSet: {
           offices: { officeId: office._id }
         }
