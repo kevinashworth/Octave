@@ -217,9 +217,9 @@ let schema = {
       resolver: async (project, args, { Offices }) => {
         if (project.offices) {
           const office = await Offices.loader.load(project.offices[0].officeId)
-          return office.displayName + ' (Offices)'
+          return office.displayName
         } else if (project.castingCompany && project.castingCompany.length) {
-          return project.castingCompany + ' (Company)'
+          return project.castingCompany
         }
         return null
       }
