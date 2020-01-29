@@ -54,3 +54,21 @@ export function OfficeEditUpdateProjects (data, { document, originalDocument }) 
     })
   }
 }
+
+export function OfficeCreateUpdateProjects (document, properties) {
+  const office = document
+  const projectsToAddThisOfficeTo = office.projects
+  console.group('OfficeCreateUpdateProjects:')
+  console.info('projectsToAddThisOfficeTo:', projectsToAddThisOfficeTo)
+  console.groupEnd()
+
+  if (!isEmptyValue(projectsToAddThisOfficeTo)) {
+    projectsToAddThisOfficeTo.forEach(projectToUpdate => {
+      Connectors.update(Projects, projectToUpdate.projectId, {
+        $addToSet: {
+          offices: { officeId: office._id }
+        }
+      })
+    })
+  }
+}

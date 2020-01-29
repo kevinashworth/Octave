@@ -6,6 +6,7 @@ import {
   OfficeCreateUpdateContacts,
   OfficeEditUpdateContacts,
   OfficeEditUpdatePastProjects,
+  OfficeCreateUpdateProjects,
   OfficeEditUpdateProjects,
   OfficeCreateFormatPhones,
   OfficeUpdateFormatPhones,
@@ -20,7 +21,7 @@ extendCollection(Offices, {
         OfficeCreateSaveToAlgolia,
         OfficeCreateUpdateContacts,
         OfficeEditUpdatePastProjects,
-        OfficeEditUpdateProjects
+        OfficeCreateUpdateProjects
       ]
     },
     update: {
