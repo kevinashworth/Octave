@@ -593,13 +593,13 @@ Migrations.add({
 
 Migrations.add({
   version: 17,
-  name: 'castingOfficeId -> offices',
+  name: 'castingOfficeId -> offices (Projects)',
   up () {
     Projects.find({ castingOfficeId: { $exists: true } }).forEach(project => {
       Projects.update(project._id,
         {
           $addToSet: { offices: { officeId: project.castingOfficeId } },
-          $unset: { castingOfficeId: 1 }
+          $unset: { castingOfficeId: 1, castingOffice: 1 }
         })
       console.log(`Migrated to 17, Project ${project._id} / Office ${project.castingOfficeId}`)
     })
@@ -624,21 +624,21 @@ Migrations.add({
   }
 })
 
-Migrations.add({
-  version: 18,
-  name: 'castingOffice -> offices (localhost only?)',
-  up () {
-    Projects.find({ castingOffice: { $exists: true } }).forEach(project => {
-      Projects.update(project._id,
-        {
-          $addToSet: { offices: { officeId: project.castingOffice } },
-          $unset: { castingOffice: 1 }
-        })
-      console.log(`Migrated to 18, Project ${project._id} / Office ${project.castingOffice}`)
-    })
-  },
-  down: function () { /* There is no undoing this one. */ }
-})
+// Migrations.add({
+//   version: 18,
+//   name: 'castingOffice -> offices (localhost only, skip this on mLab due to edit in 17 above)',
+//   up () {
+//     Projects.find({ castingOffice: { $exists: true } }).forEach(project => {
+//       Projects.update(project._id,
+//         {
+//           $addToSet: { offices: { officeId: project.castingOffice } },
+//           $unset: { castingOffice: 1 }
+//         })
+//       console.log(`Migrated to 18, Project ${project._id} / Office ${project.castingOffice}`)
+//     })
+//   },
+//   down: function () { /* There is no undoing this one. */ }
+// })
 
 Migrations.add({
   version: 19,
@@ -648,7 +648,7 @@ Migrations.add({
       PastProjects.update(project._id,
         {
           $addToSet: { offices: { officeId: project.castingOfficeId } },
-          $unset: { castingOfficeId: 1 }
+          $unset: { castingOfficeId: 1, castingOffice: 1 }
         })
       console.log(`Migrated to 19, Past Project ${project._id} / Office ${project.castingOfficeId}`)
     })
@@ -675,7 +675,7 @@ Migrations.add({
 
 // Migrations.add({
 //   version: 20,
-//   name: 'castingOffice -> offices [Past Projects] (localhost only?)',
+//   name: 'castingOffice -> offices [Past Projects] (never used on mLab due to edit in 19 above)',
 //   up () {
 //     PastProjects.find({ castingOffice: { $exists: true } }).forEach(project => {
 //       PastProjects.update(project._id,
