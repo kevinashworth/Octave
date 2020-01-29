@@ -18,6 +18,7 @@ import '../components/common/Forms/MyFormNestedArrayLayout' // replaceComponent 
 import '../components/common/Forms/MyFormSubmit' // replaceComponent FormSubmit
 import '../components/common/Forms/MySelect'
 import '../components/common/Forms/SelectContactIdNameTitle'
+import '../components/common/Forms/SelectOfficeIdName'
 import '../components/common/Forms/SelectProjectIdNameTitle'
 import '../components/common/Forms/SelectPastProjectIdNameTitle'
 import '../components/common/Search/'
