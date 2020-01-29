@@ -1,8 +1,7 @@
 import { Utils } from 'meteor/vulcan:core'
 import SimpleSchema from 'simpl-schema'
 import marked from 'marked'
-// import Offices from '../offices/collection.js'
-import { addressSubSchema, linkSubSchema } from '../shared_schemas.js'
+import { addressSubSchema, linkSubSchema, officeSubSchema } from '../shared_schemas.js'
 import { CASTING_TITLES_ENUM } from '../constants.js'
 import { getAddress, getFullAddress, getFullNameFromContact } from '../helpers.js'
 
@@ -115,22 +114,6 @@ const pastProjectSubSchema = new SimpleSchema({
     canRead: ['members'],
     canCreate: ['members', 'admins'],
     canUpdate: ['members', 'admins']
-  }
-})
-
-const officeSubSchema = new SimpleSchema({
-  officeId: {
-    type: String,
-    label: 'Office',
-    input: 'MySelect',
-    optional: true,
-    canRead: ['members'],
-    canCreate: ['members', 'admins'],
-    canUpdate: ['members', 'admins'],
-    options: props => props.data.offices.results.map(o => ({
-      value: o._id,
-      label: o.displayName
-    }))
   }
 })
 
