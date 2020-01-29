@@ -1,8 +1,9 @@
 import SimpleSchema from 'simpl-schema'
-import { ADDRESS_TYPES_ENUM } from './constants.js'
+import { ADDRESS_TYPES_ENUM, GROUPED_LOCATIONS_ENUM, PHONE_NUMBER_TYPES_ENUM } from './constants.js'
 
 export const addressSubSchema = new SimpleSchema({
   street1: {
+    label: 'Street 1',
     type: String,
     optional: true,
     canRead: ['members'],
@@ -10,6 +11,7 @@ export const addressSubSchema = new SimpleSchema({
     canUpdate: ['members', 'admins']
   },
   street2: {
+    label: 'Street 2',
     type: String,
     optional: true,
     canRead: ['members'],
@@ -92,19 +94,97 @@ export const contactSubSchema = new SimpleSchema({
 
 export const linkSubSchema = new SimpleSchema({
   platformName: {
+    label: 'Platform',
     type: String,
     canRead: ['members'],
     canCreate: ['members', 'admins'],
     canUpdate: ['members', 'admins']
   },
   profileName: {
+    label: 'Profile Name',
     type: String,
     canRead: ['members'],
     canCreate: ['members', 'admins'],
     canUpdate: ['members', 'admins']
   },
   profileLink: {
+    label: 'Profile Link',
     type: String,
+    canRead: ['members'],
+    canCreate: ['members', 'admins'],
+    canUpdate: ['members', 'admins']
+  }
+})
+
+export const officeSubSchema = new SimpleSchema({
+  officeId: {
+    label: 'Office ID',
+    type: String,
+    optional: true,
+    canRead: ['members'],
+    canCreate: ['admins'],
+    canUpdate: ['members', 'admins'],
+    input: 'MySelect',
+    options: props => props.data.offices.results.map(office => ({
+      value: office._id,
+      label: office.displayName
+    })),
+  },
+  officeLocation: {
+    label: 'Office Location',
+    type: String,
+    optional: true,
+    canRead: ['guests'],
+    canCreate: ['admins'],
+    canUpdate: ['members', 'admins'],
+    input: 'MyDatalist',
+    options: () => {
+      return GROUPED_LOCATIONS_ENUM
+    }
+  },
+  officeName: {
+    type: String,
+    optional: true,
+    hidden: true,
+    canRead: ['members'],
+    canCreate: ['admins'],
+    canUpdate: ['members', 'admins']
+  }
+})
+
+export const phoneSubSchema = new SimpleSchema({
+  phoneNumberAsInput: {
+    type: String,
+    label: 'Phone Number',
+    optional: true,
+    canRead: ['members'],
+    canCreate: ['members', 'admins'],
+    canUpdate: ['members', 'admins']
+  },
+  phoneNumberType: {
+    type: String,
+    label: 'Phone Type',
+    optional: true,
+    input: 'MySelect',
+    options: () => {
+      return PHONE_NUMBER_TYPES_ENUM
+    },
+    canRead: ['members'],
+    canCreate: ['members', 'admins'],
+    canUpdate: ['members', 'admins']
+  },
+  phoneNumber: { // validated and formatted by Twilio
+    type: String,
+    hidden: true,
+    optional: true,
+    canRead: ['members'],
+    canCreate: ['members', 'admins'],
+    canUpdate: ['members', 'admins']
+  },
+  nationalFormat: { // validated and formatted by Twilio
+    type: String,
+    hidden: true,
+    optional: true,
     canRead: ['members'],
     canCreate: ['members', 'admins'],
     canUpdate: ['members', 'admins']

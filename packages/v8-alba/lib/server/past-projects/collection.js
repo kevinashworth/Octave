@@ -3,14 +3,14 @@ import { PastProjects } from '../../modules/past-projects/collection.js'
 import {
   PastProjectEditUpdateAlgoliaBefore,
   PastProjectEditUpdateContacts,
-  PastProjectEditUpdateOfficeBefore,
+  PastProjectEditUpdateOfficesBefore,
   PastProjectEditUpdateStatusAfter
 } from './callbacks/index.js'
 
 extendCollection(PastProjects, {
   callbacks: {
     update: {
-      before: [PastProjectEditUpdateAlgoliaBefore, PastProjectEditUpdateOfficeBefore],
+      before: [PastProjectEditUpdateAlgoliaBefore, PastProjectEditUpdateOfficesBefore],
       after: [PastProjectEditUpdateContacts, PastProjectEditUpdateStatusAfter]
     }
   }

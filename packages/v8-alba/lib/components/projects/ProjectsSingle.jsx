@@ -133,8 +133,13 @@ class ProjectsSingle extends PureComponent {
               <CardText className='mb-0'>
                 <b>{project.castingCompany}</b>
               </CardText>
-              {project.castingOfficeId &&
-                <Components.OfficeMini documentId={project.castingOfficeId} />
+              {project.offices &&
+                project.offices.map(office =>
+                  <div key={office.officeId}>
+                    <b>{office.officeLocation}</b>
+                    <Components.OfficeMini documentId={office.officeId} />
+                  </div>
+                )
               }
               {project.contacts &&
                 project.contacts.map(contact => <Components.ContactDetail key={contact.contactId} contact={contact} />)

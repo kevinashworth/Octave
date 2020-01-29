@@ -1,13 +1,12 @@
 import { Utils } from 'meteor/vulcan:core'
-import SimpleSchema from 'simpl-schema'
 import marked from 'marked'
-import { addressSubSchema, linkSubSchema } from '../shared_schemas.js'
+import { addressSubSchema, contactSubSchema, linkSubSchema, officeSubSchema } from '../shared_schemas.js'
 import { PROJECT_TYPES_ENUM, PROJECT_STATUSES_ENUM } from '../constants.js'
 import { getFullAddress, getPlatformType } from '../helpers.js'
 
-const addressGroup = {
-  name: 'addresses',
-  label: 'Addresses',
+const officeGroup = {
+  name: 'offices',
+  label: 'Offices',
   order: 10
 }
 
@@ -23,36 +22,11 @@ const linkGroup = {
   order: 30
 }
 
-const contactSchema = new SimpleSchema({
-  contactId: {
-    type: String,
-    input: 'SelectContactIdNameTitle',
-    optional: true,
-    canRead: ['members'],
-    canCreate: ['members', 'admins'],
-    canUpdate: ['members', 'admins'],
-    options: props => props.data.contacts.results.map(contact => ({
-      value: contact._id,
-      label: contact.fullName
-    }))
-  },
-  contactName: {
-    type: String,
-    optional: true,
-    hidden: true,
-    canRead: ['members'],
-    canCreate: ['members', 'admins'],
-    canUpdate: ['members', 'admins']
-  },
-  contactTitle: {
-    type: String,
-    optional: true,
-    hidden: true,
-    canRead: ['members'],
-    canCreate: ['members', 'admins'],
-    canUpdate: ['members', 'admins']
-  }
-})
+const addressGroup = {
+  name: 'addresses',
+  label: 'Addresses',
+  order: 40
+}
 
 const schema = {
 
@@ -264,13 +238,12 @@ const schema = {
     canRead: ['members'],
     resolveAs: {
       type: 'String',
-      resolver: async (o, args, { Offices }) => {
-        if (o.castingCompany && o.castingCompany.length) {
-          return o.castingCompany
-        }
-        if (o.castingOfficeId) {
-          const office = await Offices.loader.load(o.castingOfficeId)
-          return office.displayName
+      resolver: async (project, args, { Offices }) => {
+        if (project.offices) {
+          const office = await Offices.loader.load(project.offices[0].officeId)
+          return office.displayName + ' (Offices)'
+        } else if (project.castingCompany && project.castingCompany.length) {
+          return project.castingCompany + ' (Company)'
         }
         return null
       }
@@ -284,34 +257,53 @@ const schema = {
     canCreate: ['members', 'admins'],
     canUpdate: ['members', 'admins']
   },
-  castingOfficeId: {
-    label: 'Casting Office',
-    type: String,
-    input: 'MySelect',
+  offices: {
+    type: Array,
     optional: true,
     canRead: ['members'],
-    canCreate: ['members', 'admins'],
+    canCreate: ['admins'],
     canUpdate: ['members', 'admins'],
-    options: props => props.data.offices.results.map(office => ({
-      value: office._id,
-      label: office.displayName
-    })),
+    group: officeGroup,
     query: `
-      offices{
-        results{
+      offices {
+        results {
           _id
           displayName
         }
       }
     `,
-    resolveAs: {
-      fieldName: 'castingOffice',
-      type: 'Office',
-      resolver: (o, args, { Offices }) =>
-        o.castingOfficeId && Offices.loader.load(o.castingOfficeId),
-      addOriginalField: true
-    }
   },
+  'offices.$': {
+    type: officeSubSchema
+  },
+  // castingOfficeId: {
+  //   label: 'Casting Office',
+  //   type: String,
+  //   input: 'MySelect',
+  //   optional: true,
+  //   canRead: ['members'],
+  //   canCreate: ['members', 'admins'],
+  //   canUpdate: ['members', 'admins'],
+  //   options: props => props.data.offices.results.map(office => ({
+  //     value: office._id,
+  //     label: office.displayName
+  //   })),
+  //   query: `
+  //     offices{
+  //       results{
+  //         _id
+  //         displayName
+  //       }
+  //     }
+  //   `,
+  //   resolveAs: {
+  //     fieldName: 'castingOffice',
+  //     type: 'Office',
+  //     resolver: (o, args, { Offices }) =>
+  //       o.castingOfficeId && Offices.loader.load(o.castingOfficeId),
+  //     addOriginalField: true
+  //   }
+  // },
   slug: {
     type: String,
     optional: true,
@@ -360,7 +352,7 @@ const schema = {
     group: contactGroup
   },
   'contacts.$': {
-    type: contactSchema
+    type: contactSubSchema
   },
   allContactNames: {
     type: String,

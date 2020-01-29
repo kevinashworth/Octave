@@ -7768,6 +7768,12 @@ canvas {
 .main .container-fluid {
   padding: 0 30px; }
 
+@media (max-width: 575.98px) {
+  .main .container-fluid {
+    padding: 0;
+  }
+}
+
 .app-header {
   position: relative;
   flex-direction: row;

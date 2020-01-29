@@ -1,9 +1,8 @@
 import { Utils } from 'meteor/vulcan:core'
 import SimpleSchema from 'simpl-schema'
 import marked from 'marked'
-import { addressSubSchema, contactSubSchema, linkSubSchema } from '../shared_schemas.js'
+import { addressSubSchema, contactSubSchema, linkSubSchema, phoneSubSchema } from '../shared_schemas.js'
 import { getFullAddress, isEmptyValue } from '../helpers.js'
-import { PHONE_NUMBER_TYPES_ENUM } from '../constants.js'
 
 const contactGroup = {
   name: 'contacts',
@@ -60,45 +59,6 @@ const projectSubSchema = new SimpleSchema({
     type: String,
     optional: true,
     hidden: true,
-    canRead: ['members'],
-    canCreate: ['members', 'admins'],
-    canUpdate: ['members', 'admins']
-  }
-})
-
-const phoneSubSchema = new SimpleSchema({
-  phoneNumberAsInput: {
-    type: String,
-    label: 'Phone Number',
-    optional: true,
-    canRead: ['members'],
-    canCreate: ['members', 'admins'],
-    canUpdate: ['members', 'admins']
-  },
-  phoneNumberType: {
-    type: String,
-    label: 'Phone Type',
-    optional: true,
-    input: 'MySelect',
-    options: () => {
-      return PHONE_NUMBER_TYPES_ENUM
-    },
-    canRead: ['members'],
-    canCreate: ['members', 'admins'],
-    canUpdate: ['members', 'admins']
-  },
-  phoneNumber: { // validated and formatted by Twilio
-    type: String,
-    hidden: true,
-    optional: true,
-    canRead: ['members'],
-    canCreate: ['members', 'admins'],
-    canUpdate: ['members', 'admins']
-  },
-  nationalFormat: { // validated and formatted by Twilio
-    type: String,
-    hidden: true,
-    optional: true,
     canRead: ['members'],
     canCreate: ['members', 'admins'],
     canUpdate: ['members', 'admins']
@@ -229,8 +189,8 @@ const schema = {
     canCreate: ['members', 'admins'],
     canUpdate: ['members', 'admins'],
     query: `
-      contacts{
-        results{
+      contacts {
+        results {
           _id
           fullName
         }
@@ -283,8 +243,8 @@ const schema = {
     canCreate: ['members', 'admins'],
     canUpdate: ['members', 'admins'],
     query: `
-      projects{
-        results{
+      projects {
+        results {
           _id
           projectTitle
         }
@@ -378,8 +338,8 @@ const schema = {
     canCreate: ['members', 'admins'],
     canUpdate: ['members', 'admins'],
     query: `
-      pastProjects{
-        results{
+      pastProjects {
+        results {
           _id
           projectTitle
         }

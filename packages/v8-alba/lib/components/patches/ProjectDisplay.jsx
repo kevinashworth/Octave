@@ -53,27 +53,31 @@ const ProjectDisplay = ({ project }) => {
         }
         <hr />
         {project.website &&
-          <CardText>
-            <CardLink href={project.website} target='_websites'>Open official website <i className='fa fa-external-link' /></CardLink>
-          </CardText>
+        <CardText>
+          <CardLink href={project.website} target='_websites'>Open official website <i className='fa fa-external-link' /></CardLink>
+        </CardText>
         }
         <CardTitle className='mt-5'><b>Casting Information</b></CardTitle>
         <CardText className='mb-0'>
-          <b>{project.castingCompany}</b>
+          <b>{ project.castingCompany }</b>
         </CardText>
-        {project.castingOfficeId &&
-          <Components.OfficeMini documentId={project.castingOfficeId} />
+        {project.offices &&
+          project.offices.map(office =>
+            <div key={office.officeId}>
+              <b>{office.officeLocation}</b>
+              <Components.OfficeMini documentId={office.officeId} />
+            </div>
+          )
         }
-        {project.contacts &&
-          project.contacts.map(contact => <Components.ContactDetail key={contact.contactId} contact={contact} />)
-        }
-        {project.addresses && project.addresses[0] &&
-          project.addresses.map((address, index) => <Components.AddressDetail key={getFullAddress(address) + index} address={address} />)
-        }
+        {project.contacts
+          ? project.contacts.map(contact => <Components.ContactDetail key={contact.contactId} contact={contact} />)
+          : null }
+        {project.addresses && project.addresses[0]
+          ? project.addresses.map((address, index) => <Components.AddressDetail key={getFullAddress(address)+index} address={address} />)
+          : null }
         {project.contactId}
         {project.links &&
-          <CardTitle className='mt-5'><b>Links</b></CardTitle>
-        }
+          <CardTitle className='mt-5'><b>Links</b></CardTitle>}
         {project.links &&
           <CardText>
             {project.links.map((link, index) =>

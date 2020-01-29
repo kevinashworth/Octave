@@ -31,26 +31,28 @@ export function ProjectEditUpdateStatusAfter (document, { context, currentUser }
       }))
     }
 
-    if (document.castingOfficeId) {
-      let pastProjects = []
-      let projects = []
-      const office = Offices.findOne(document.castingOfficeId)
-      if (office.projects && office.projects.length) {
-        projects = office.projects
-        _.remove(projects, function (p) {
-          return p.projectId === document._id
-        })
-      }
-      if (office.pastProjects && office.pastProjects.length) {
-        pastProjects = office.pastProjects
-      }
-      pastProjects.push({ projectId: newPastProject._id })
-      Connectors.update(Offices, document.castingOfficeId, {
-        $set: {
-          pastProjects,
-          projects,
-          updatedAt: new Date()
+    if (document.offices & document.offices.length) {
+      document.offices.forEach(officeOfDocument => {
+        let pastProjects = []
+        let projects = []
+        const office = Offices.findOne(officeOfDocument.officeId)
+        if (office.projects && office.projects.length) {
+          projects = office.projects
+          _.remove(projects, function (p) {
+            return p.projectId === document._id
+          })
         }
+        if (office.pastProjects && office.pastProjects.length) {
+          pastProjects = office.pastProjects
+        }
+        pastProjects.push({ projectId: newPastProject._id })
+        Connectors.update(Offices, officeOfDocument.officeId, {
+          $set: {
+            pastProjects,
+            projects,
+            updatedAt: new Date()
+          }
+        })
       })
     }
 
@@ -81,8 +83,8 @@ export function ProjectEditUpdateStatusAfter (document, { context, currentUser }
   }
 }
 
-export function testCallback2 (properties) {
-  console.group('testCallback2')
-  console.info('[testCallback2] properties:', properties)
-  console.groupEnd()
-}
+// export function testCallback2 (properties) {
+//   console.group('testCallback2')
+//   console.info('[testCallback2] properties:', properties)
+//   console.groupEnd()
+// }

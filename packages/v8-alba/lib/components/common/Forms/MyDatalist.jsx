@@ -35,11 +35,6 @@ class MyDatalist extends Component {
         [this.props.path]: newValue.label
       })
     }
-    if (actionMeta.action === 'clear') {
-      this.context.updateCurrentValues({
-        [this.props.path]: null
-      })
-    }
   }
 
   componentDidMount () {
@@ -71,11 +66,13 @@ class MyDatalist extends Component {
             styles={customStyles}
             maxMenuHeight={400}
             theme={theme}
-            formatGroupLabel={formatGroupLabel}
-            onChange={this.handleChange}
-            options={this.props.options}
-            defaultValue={selectedOption}
             isClearable
+            onChange={this.handleChange}
+            onInputChange={this.handleInputChange}
+            defaultValue={{ value: null, label: '' }}
+            options={this.props.options}
+            formatGroupLabel={formatGroupLabel}
+            value={selectedOption}
           />
         </div>
       </div>

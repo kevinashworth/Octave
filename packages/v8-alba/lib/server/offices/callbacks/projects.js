@@ -5,8 +5,8 @@ import { isEmptyValue } from '../../../modules/helpers.js'
 
 export function OfficeEditUpdateProjects (data, { document, originalDocument }) {
   // [a] if the two `projects` arrays are equal, do nothing
-  // [b] else for deleted projects in oldOffice but not newOffice, remove castingOfficeId from those projects
-  // [c] and for added projects in newOffice but not oldOffice, add castingOfficeId to those projects
+  // [b] else for deleted projects in oldOffice but not newOffice, remove officeId from those projects
+  // [c] and for added projects in newOffice but not oldOffice, add officeId to those projects
 
   const office = document
   let projectsToRemoveThisOfficeFrom = null
@@ -23,20 +23,21 @@ export function OfficeEditUpdateProjects (data, { document, originalDocument }) 
     const oldOffice = originalDocument
     projectsToAddThisOfficeTo = _.differenceWith(newOffice.projects, oldOffice.projects, _.isEqual)
     projectsToRemoveThisOfficeFrom = _.differenceWith(oldOffice.projects, newOffice.projects, _.isEqual)
-    console.group('OfficeEditUpdateContacts:')
-    console.info('projectsToRemoveThisOfficeFrom:', projectsToRemoveThisOfficeFrom)
+    console.group('OfficeEditUpdateProjects:')
     console.info('projectsToAddThisOfficeTo:', projectsToAddThisOfficeTo)
+    console.info('projectsToRemoveThisOfficeFrom:', projectsToRemoveThisOfficeFrom)
     console.groupEnd()
   }
   // [b]
   if (projectsToRemoveThisOfficeFrom) {
-    projectsToRemoveThisOfficeFrom.forEach(deletedProject => {
-      const project = Projects.findOne(deletedProject.projectId)
-      if (project.castingOfficeId === office._id) {
+    projectsToRemoveThisOfficeFrom.forEach(projectToUpdate => {
+      var project = Projects.findOne(projectToUpdate.projectId)
+      const i = _.findIndex(project.offices, ['officeId', office._id])
+      if (i > -1) {
+        project.offices.splice(i, 1)
         Connectors.update(Projects, project._id, {
-          $unset: {
-            castingOfficeId: 1,
-            updatedAt: new Date()
+          $set: {
+            ...project
           }
         })
       }
@@ -44,12 +45,28 @@ export function OfficeEditUpdateProjects (data, { document, originalDocument }) 
   }
   // [c]
   if (projectsToAddThisOfficeTo) {
-    projectsToAddThisOfficeTo.forEach(addedProject => {
-      const project = Projects.findOne(addedProject.projectId)
-      Connectors.update(Projects, project._id, {
-        $set: {
-          castingOfficeId: office._id,
-          updatedAt: new Date()
+    projectsToAddThisOfficeTo.forEach(projectToUpdate => {
+      Connectors.update(Projects, projectToUpdate.projectId, {
+        $addToSet: {
+          offices: { officeId: office._id }
+        }
+      })
+    })
+  }
+}
+
+export function OfficeCreateUpdateProjects (document, properties) {
+  const office = document
+  const projectsToAddThisOfficeTo = office.projects
+  console.group('OfficeCreateUpdateProjects:')
+  console.info('projectsToAddThisOfficeTo:', projectsToAddThisOfficeTo)
+  console.groupEnd()
+
+  if (!isEmptyValue(projectsToAddThisOfficeTo)) {
+    projectsToAddThisOfficeTo.forEach(projectToUpdate => {
+      Connectors.update(Projects, projectToUpdate.projectId, {
+        $addToSet: {
+          offices: { officeId: office._id }
         }
       })
     })
