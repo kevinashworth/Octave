@@ -117,26 +117,6 @@ export const linkSubSchema = new SimpleSchema({
 })
 
 export const officeSubSchema = new SimpleSchema({
-  officeName: {
-    label: 'Office Name',
-    type: String,
-    optional: true,
-    canRead: ['members'],
-    canCreate: ['admins'],
-    canUpdate: ['members', 'admins']
-  },
-  officeLocation: {
-    label: 'Office Location',
-    type: String,
-    optional: true,
-    canRead: ['guests'],
-    canCreate: ['admins'],
-    canUpdate: ['members', 'admins'],
-    input: 'MyDatalist',
-    options: () => {
-      return GROUPED_LOCATIONS_ENUM
-    }
-  },
   officeId: {
     label: 'Office ID',
     type: String,
@@ -156,6 +136,26 @@ export const officeSubSchema = new SimpleSchema({
         office.officeId && Offices.loader.load(office.officeId),
       addOriginalField: true
     }
+  },
+  officeLocation: {
+    label: 'Office Location',
+    type: String,
+    optional: true,
+    canRead: ['guests'],
+    canCreate: ['admins'],
+    canUpdate: ['members', 'admins'],
+    input: 'MyDatalist',
+    options: () => {
+      return GROUPED_LOCATIONS_ENUM
+    }
+  },
+  officeName: {
+    label: 'Office Name',
+    type: String,
+    optional: true,
+    canRead: ['members'],
+    canCreate: ['admins'],
+    canUpdate: ['members', 'admins']
   }
 })
 
