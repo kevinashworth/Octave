@@ -129,13 +129,6 @@ export const officeSubSchema = new SimpleSchema({
       value: office._id,
       label: office.displayName
     })),
-    resolveAs: {
-      fieldName: 'office',
-      type: 'Office',
-      resolver: (office, args, { Offices }) =>
-        office.officeId && Offices.loader.load(office.officeId),
-      addOriginalField: true
-    }
   },
   officeLocation: {
     label: 'Office Location',
@@ -150,9 +143,9 @@ export const officeSubSchema = new SimpleSchema({
     }
   },
   officeName: {
-    label: 'Office Name',
     type: String,
     optional: true,
+    hidden: true,
     canRead: ['members'],
     canCreate: ['admins'],
     canUpdate: ['members', 'admins']

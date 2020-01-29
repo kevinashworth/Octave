@@ -21,9 +21,9 @@ class MySelect extends Component {
     if (this.props.parentFieldName === 'projects' || this.props.parentFieldName === 'pastProjects') {
       siblingPath = this.props.parentFieldName + '.' + this.props.itemIndex + '.' + 'projectTitle'
     }
-    // if (this.props.parentFieldName === 'offices') {
-    //   siblingPath = this.props.parentFieldName + '.' + this.props.itemIndex + '.' + 'displayName'
-    // }
+    if (this.props.parentFieldName === 'offices') {
+      siblingPath = this.props.parentFieldName + '.' + this.props.itemIndex + '.' + 'officeName'
+    }
     if (siblingPath) {
       this.context.updateCurrentValues({
         [this.props.path]: selectedOption.value,
