@@ -5,7 +5,7 @@ import { FormGroup, Input, Label } from 'reactstrap'
 import Select from 'react-select'
 import _ from 'lodash'
 import { customStyles, theme } from './react-select-settings'
-import { CASTING_TITLES_ENUM } from '../../../modules/constants.js'
+import { CASTING_TITLES_ENUM, nullOption } from '../../../modules/constants.js'
 
 import onlyUpdateForKeys from 'recompose/onlyUpdateForKeys'
 const OptimizedSelect = onlyUpdateForKeys(['value'])(Select)
@@ -28,8 +28,8 @@ class SelectProjectIdNameTitle extends PureComponent {
       pathPrefix: this.props.parentFieldName + '.' + this.props.itemIndex + '.',
       projectId: this.props.value,
       projectTitle: '',
-      selectedIdOption: null,
-      selectedTitleOption: null
+      selectedIdOption: nullOption,
+      selectedTitleOption: nullOption
     }
   }
 
@@ -67,8 +67,8 @@ class SelectProjectIdNameTitle extends PureComponent {
     const projects = this.props.document.projects
     const projectTitle = projects[this.props.itemIndex] ? projects[this.props.itemIndex].projectTitle : ''
     const titleForProject = projects[this.props.itemIndex] ? projects[this.props.itemIndex].titleForProject : ''
-    const selectedIdOption = _.find(this.props.options, { value: this.props.value }) || null
-    const selectedTitleOption = _.find(CASTING_TITLES_ENUM, { value: titleForProject }) || null
+    const selectedIdOption = _.find(this.props.options, { value: this.props.value }) || nullOption
+    const selectedTitleOption = _.find(CASTING_TITLES_ENUM, { value: titleForProject }) || nullOption
 
     this.setState({
       projectTitle,
@@ -91,7 +91,7 @@ class SelectProjectIdNameTitle extends PureComponent {
             onChange={this.handleIdChange}
             options={this.props.options}
             isClearable
-            resetValue={{ value: null, label: '' }}
+            resetValue={nullOption}
           />
         </FormGroup>
         <FormGroup>
@@ -114,7 +114,7 @@ class SelectProjectIdNameTitle extends PureComponent {
             onChange={this.handleTitleChange}
             options={CASTING_TITLES_ENUM}
             isClearable
-            resetValue={{ value: null, label: '' }}
+            resetValue={nullOption}
           />
         </FormGroup>
       </>

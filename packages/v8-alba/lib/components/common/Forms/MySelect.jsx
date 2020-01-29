@@ -4,6 +4,7 @@ import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import Select from 'react-select'
 import _ from 'lodash'
+import { nullOption } from '../../../modules/constants.js'
 import { customStyles, theme } from './react-select-settings'
 
 class MySelect extends Component {
@@ -53,7 +54,7 @@ class MySelect extends Component {
 
   render () {
     const { inputOnly } = this.props.itemProperties
-    const selectedOption = _.find(this.props.options, { value: this.props.value }) || null
+    const selectedOption = _.find(this.props.options, { value: this.props.value }) || nullOption
 
     const theSelect = () => {
       return (
@@ -64,7 +65,7 @@ class MySelect extends Component {
           value={selectedOption}
           onChange={this.handleChange}
           options={this.props.options}
-          defaultValue={{ value: null, label: '' }}
+          defaultValue={nullOption}
           isClearable
         />
       )

@@ -263,6 +263,8 @@ const SIZE_PER_PAGE_LIST_SEED = [{
   text: '100', value: 100
 }]
 
+const nullOption = { value: null, label: '' }
+
 module.exports = {
   DATE_FORMAT_LONG,
   DATE_FORMAT_SHORT,
@@ -283,5 +285,6 @@ module.exports = {
   ACTIVE_PROJECT_STATUSES_ARRAY,
   PAST_PROJECT_STATUSES_ARRAY,
   PROJECT_STATUSES_ARRAY,
-  SIZE_PER_PAGE_LIST_SEED
+  SIZE_PER_PAGE_LIST_SEED,
+  nullOption
 }
