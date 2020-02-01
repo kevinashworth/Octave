@@ -1,2 +1,2 @@
-import './emails.js';
-import './templates.js';
+import './emails.js'
+import './templates.js'

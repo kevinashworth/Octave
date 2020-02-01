@@ -60,7 +60,10 @@
   },
   "plugins": ["babel", "meteor", "react", "graphql"],
   "settings": {
-    "import/resolver": "meteor"
+    "import/resolver": "meteor",
+    "react": {
+      "version": "detect"
+    }
   },
   "root": true,
   "globals": {
