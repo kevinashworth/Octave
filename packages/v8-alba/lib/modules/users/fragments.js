@@ -1,4 +1,5 @@
 import { registerFragment } from 'meteor/vulcan:core'
+import Users from 'meteor/vulcan:users'
 
 registerFragment(/* GraphQL */`
   fragment UsersMinimumInfo on User {
@@ -21,6 +22,7 @@ registerFragment(/* GraphQL */`
     bio
     htmlBio
     website
+    email
     twitterUsername
     commentCount
   }
@@ -35,5 +37,12 @@ registerFragment(`
     bio
     website
     isAdmin
+  }
+`)
+
+registerFragment(`
+  fragment UsersMustCompleteFragment on User {
+    _id
+    ${Users.getRequiredFields().join('\n')}
   }
 `)

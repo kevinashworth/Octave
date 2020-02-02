@@ -39,6 +39,8 @@ class DefaultLayout extends Component {
       <div className="app">
         <AppHeader fixed>
           <DefaultHeader />
+          {currentUser &&
+            <Components.UsersProfileCheck currentUser={currentUser} documentId={currentUser._id} />}
         </AppHeader>
         <div className="app-body">
           <AppSidebar fixed display="lg">

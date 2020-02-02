@@ -23,8 +23,9 @@ addStrings('en', {
   'comments.body': 'Body',
   'comments.rate_limit_error': 'Please wait {value} seconds before commenting again.',
 
-  'patches.missing_document': 'There is no History information for this document in the database.',
+  'patches.missing_document': 'There is no History for this in the database.',
 
+  'users.complete_profile': 'Complete your user profile',
   'users.delete_success': 'User deleted'
 
 })

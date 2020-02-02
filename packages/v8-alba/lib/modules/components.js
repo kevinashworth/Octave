@@ -102,6 +102,7 @@ import '../components/users/UsersEditForm.jsx'
 import '../components/users/UsersMenu.jsx'
 import '../components/users/UsersName.jsx'
 import '../components/users/UsersProfile.jsx'
+import '../components/users/UsersProfileCheck.jsx'
 
 import '../components/common/Login/MyFormControl.jsx' // replaceComponent
 import '../components/common/Login/MyAccountsLoginForm.jsx' // replaceComponent
