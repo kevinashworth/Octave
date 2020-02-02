@@ -74,65 +74,6 @@ VulcanEmail.addEmails({
 
 /*
 
-Posts
-
-*/
-
-const postsQuery = `
-  query PostsSingleQuery($documentId: String){
-    PostsSingle(documentId: $documentId){
-      title
-      url
-      pageUrl
-      linkUrl
-      htmlBody
-      thumbnailUrl
-      user{
-        pageUrl
-        displayName
-      }
-    }
-  }
-`
-
-const dummyPost = {title: '[title]', user: {displayName: '[user]'}}
-
-VulcanEmail.addEmails({
-
-  newPost: {
-    template: 'newPost',
-    path: '/email/new-post/:_id?',
-    subject(data) {
-      const post = _.isEmpty(data) ? dummyPost : data.PostsSingle
-      return post.user.displayName+' has created a new post: '+post.title
-    },
-    query: postsQuery
-  },
-
-  newPendingPost: {
-    template: 'newPendingPost',
-    path: '/email/new-pending-post/:_id?',
-    subject(data) {
-      const post = _.isEmpty(data) ? dummyPost : data.PostsSingle
-      return post.user.displayName+' has a new post pending approval: '+post.title
-    },
-    query: postsQuery
-  },
-
-  postApproved: {
-    template: 'postApproved',
-    path: '/email/post-approved/:_id?',
-    subject(data) {
-      const post = _.isEmpty(data) ? dummyPost : data.PostsSingle
-      return 'Your post “'+post.title+'” has been approved'
-    },
-    query: postsQuery
-  }
-
-})
-
-/*
-
 Comments
 
 */
@@ -140,12 +81,19 @@ Comments
 // const commentsQuery = `
 //   query CommentsSingleQuery($documentId: String){
 //     CommentsSingle(documentId: $documentId){
+// const postsQuery = `
+//   query singlePostQuery($documentId: String) {
+//     PostsSingle(documentId: $documentId) {
+//       title
+//       url
 //       pageUrl
+//       linkUrl
 //       htmlBody
 //       post{
 //         pageUrl
 //         title
 //       }
+//       thumbnailUrl
 //       user{
 //         pageUrl
 //         displayName
@@ -153,6 +101,38 @@ Comments
 //     }
 //   }
 // `
+//
+// const dummyPost = {title: '[title]', user: {displayName: '[user]'}}
+//
+// VulcanEmail.addEmails({
+//   newPost: {
+//     template: 'newPost',
+//     path: '/email/new-post/:_id?',
+//     subject(data) {
+//       const post = _.isEmpty(data) ? dummyPost : data.PostsSingle
+//       return post.user.displayName+' has created a new post: '+post.title
+//     },
+//     query: postsQuery
+//   },
+//   newPendingPost: {
+//     template: 'newPendingPost',
+//     path: '/email/new-pending-post/:_id?',
+//     subject(data) {
+//       const post = _.isEmpty(data) ? dummyPost : data.PostsSingle
+//       return post.user.displayName+' has a new post pending approval: '+post.title
+//     },
+//     query: postsQuery
+//   },
+//   postApproved: {
+//     template: 'postApproved',
+//     path: '/email/post-approved/:_id?',
+//     subject(data) {
+//       const post = _.isEmpty(data) ? dummyPost : data.PostsSingle
+//       return 'Your post “'+post.title+'” has been approved'
+//     },
+//     query: postsQuery
+//   }
+// })
 
 const commentsQuery = `
   query singleCommentQuery($input: SingleCommentInput!) {

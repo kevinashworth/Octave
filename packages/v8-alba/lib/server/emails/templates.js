@@ -5,9 +5,9 @@ VulcanEmail.addTemplates({
   newReply:                 Assets.getText('lib/server/emails/templates/comments/newReply.handlebars'),
   test:                     Assets.getText('lib/server/emails/templates/common/test.handlebars'),
   wrapper:                  Assets.getText('lib/server/emails/templates/common/wrapper.handlebars'),
-  newPost:                  Assets.getText('lib/server/emails/templates/posts/newPost.handlebars'),
-  newPendingPost:           Assets.getText('lib/server/emails/templates/posts/newPendingPost.handlebars'),
-  postApproved:             Assets.getText('lib/server/emails/templates/posts/postApproved.handlebars'),
+  // newPost:                  Assets.getText('lib/server/emails/templates/posts/newPost.handlebars'),
+  // newPendingPost:           Assets.getText('lib/server/emails/templates/posts/newPendingPost.handlebars'),
+  // postApproved:             Assets.getText('lib/server/emails/templates/posts/postApproved.handlebars'),
   accountApproved:          Assets.getText('lib/server/emails/templates/users/accountApproved.handlebars'),
   newUser:                  Assets.getText('lib/server/emails/templates/users/newUser.handlebars'),
 })

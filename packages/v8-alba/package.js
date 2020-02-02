@@ -37,9 +37,9 @@ Package.onUse(function (api) {
     'lib/server/emails/templates/common/wrapper.handlebars',
     'lib/server/emails/templates/comments/newComment.handlebars',
     'lib/server/emails/templates/comments/newReply.handlebars',
-    'lib/server/emails/templates/posts/newPendingPost.handlebars',
-    'lib/server/emails/templates/posts/newPost.handlebars',
-    'lib/server/emails/templates/posts/postApproved.handlebars',
+    // 'lib/server/emails/templates/posts/newPendingPost.handlebars',
+    // 'lib/server/emails/templates/posts/newPost.handlebars',
+    // 'lib/server/emails/templates/posts/postApproved.handlebars',
     'lib/server/emails/templates/users/accountApproved.handlebars',
     'lib/server/emails/templates/users/newUser.handlebars',
   ], ['server'])
