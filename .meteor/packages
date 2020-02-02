@@ -15,6 +15,7 @@ accounts-password@1.5.2
 ############ Your Packages ############
 
 vulcan:debug
+vulcan:email
 vulcan:ui-bootstrap
 vulcan:redux
 vulcan:backoffice

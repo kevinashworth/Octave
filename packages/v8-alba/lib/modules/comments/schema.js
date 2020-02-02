@@ -1,6 +1,7 @@
 import { Utils } from 'meteor/vulcan:core'
 import Users from 'meteor/vulcan:users'
 import marked from 'marked'
+import { getPageUrl } from './helpers.js'
 
 const schema = {
   // default properties
@@ -132,7 +133,7 @@ const schema = {
   // Comment belongs to a contact, office, or project
   collectionName: {
     type: String,
-    optional: true,
+    optional: false,
     hidden: true,
     canRead: ['members'],
     canCreate: ['members', 'admins'],
@@ -147,7 +148,7 @@ const schema = {
   // That contact's, office's, or project's _id
   objectId: {
     type: String,
-    optional: true,
+    optional: false,
     hidden: true,
     canRead: ['members'],
     canCreate: ['members', 'admins'],
@@ -164,7 +165,8 @@ const schema = {
     type: Boolean,
     optional: true,
     canRead: ['guests']
-  }
+  },
+
   // userIP: {
   //   type: String,
   //   optional: true,
@@ -183,18 +185,22 @@ const schema = {
 
   // GraphQL only fields
 
-  // pageUrl: {
-  //   type: String,
-  //   optional: true,
-  //   canRead: ['guests'],
-  //   resolveAs: {
-  //     fieldName: 'pageUrl',
-  //     type: 'String',
-  //     resolver: (comment, args, context) => {
-  //       return context.Comments.getPageUrl(comment, true);
-  //     },
-  //   }
-  // }
+  pagePath: {
+    type: String,
+    optional: true,
+    canRead: ['guests'],
+    resolveAs: {
+      resolver: comment => getPageUrl(comment, false)
+    }
+  },
+  pageUrl: {
+    type: String,
+    optional: true,
+    canRead: ['guests'],
+    resolveAs: {
+      resolver: comment => getPageUrl(comment, true)
+    }
+  }
 }
 
 export default schema

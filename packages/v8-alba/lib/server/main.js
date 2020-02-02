@@ -4,10 +4,14 @@ import './methods.js'
 import './migrations.js'
 import './seed.js'
 
+import './comments/index.js'
 import './contacts/index.js'
 import './offices/index.js'
 import './past-projects/index.js'
 import './projects/index.js'
+
+import './emails/index.js'
+
 
 // Meteor.call('getProcessEnvMongoUrl', function (err, results) {
 //   if (err) {

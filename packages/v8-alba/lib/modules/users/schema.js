@@ -1,14 +1,39 @@
 import Users from 'meteor/vulcan:users'
 import SimpleSchema from 'simpl-schema'
 
+const notificationsGroup = {
+  name: 'notifications',
+  order: 2
+}
+
+// fields we are REPLACING
 Users.addField([
-  // first, a field we are EDITING not ADDING despite `addField` function name
   {
     fieldName: 'createdAt',
     fieldSchema: {
-      canRead: ['guests']
+      type: Date,
+      optional: true,
+      canRead: ['guests'],
+      onCreate: () => {
+        return new Date();
+      }
     }
   },
+  {
+    fieldName: 'locale',
+    fieldSchema: {
+      type: String,
+      label: 'Preferred Language',
+      optional: true,
+      hidden: true,
+      defaultValue: 'en',
+      canRead: ['guests']
+    }
+  }
+])
+
+// fields we are ADDING
+Users.addField([
   // Count of user's comments
   {
     fieldName: 'commentCount',
@@ -25,10 +50,11 @@ Users.addField([
     fieldSchema: {
       type: String,
       optional: true,
+      mustComplete: true,
       input: 'textarea',
+      canRead: ['guests'],
       canCreate: ['members'],
       canUpdate: ['members'],
-      canRead: ['guests'],
       searchable: true
     }
   },
@@ -54,10 +80,11 @@ Users.addField([
       type: String,
       regEx: SimpleSchema.RegEx.Url,
       optional: true,
+      mustComplete: true,
       input: 'text',
+      canRead: ['guests'],
       canCreate: ['members'],
-      canUpdate: ['members'],
-      canRead: ['guests']
+      canUpdate: ['members']
     }
   },
   {
@@ -66,15 +93,72 @@ Users.addField([
       type: Date,
       optional: true,
       hidden: true,
+      canRead: ['guests'],
       canCreate: ['members'],
       canUpdate: ['members'],
-      canRead: ['guests'],
       onCreate: () => {
         return new Date()
       },
       onUpdate: () => {
         return new Date()
       }
+    }
+  },
+  // Add notifications options to user profile settings
+  {
+    fieldName: 'notifications_users',
+    fieldSchema: {
+      label: 'New users',
+      type: Boolean,
+      optional: true,
+      defaultValue: true,
+      input: 'checkbox',
+      canRead: ['guests'],
+      canCreate: ['admins'],
+      canUpdate: ['admins'],
+      group: notificationsGroup
+    }
+  },
+  {
+    fieldName: 'notifications_posts',
+    fieldSchema: {
+      label: 'New posts',
+      type: Boolean,
+      optional: true,
+      defaultValue: true,
+      input: 'checkbox',
+      canRead: ['guests'],
+      canCreate: ['members'],
+      canUpdate: ['members'],
+      group: notificationsGroup
+    }
+  },
+  {
+    fieldName: 'notifications_comments',
+    fieldSchema: {
+      label: 'Comments on my posts',
+      type: Boolean,
+      optional: true,
+      defaultValue: true,
+      input: 'checkbox',
+      canRead: ['guests'],
+      canCreate: ['members'],
+      canUpdate: ['members'],
+      group: notificationsGroup
+    }
+  },
+  {
+    fieldName: 'notifications_replies',
+    fieldSchema: {
+      label: 'Replies to my comments',
+      type: Boolean,
+      optional: true,
+      defaultValue: true,
+      input: 'checkbox',
+      canRead: ['guests'],
+      canCreate: ['members'],
+      canUpdate: ['members'],
+      group: notificationsGroup
     }
   }
 ])

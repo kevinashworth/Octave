@@ -9,6 +9,9 @@ const MyFormControl = (props) => {
     case 'email':
       icon = '@'
       break
+    case 'newPassword':
+      icon = <i className='icon-key' />
+      break
     case 'password':
       icon = <i className='icon-lock' />
       break
