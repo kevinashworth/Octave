@@ -137,34 +137,48 @@ Comments
 
 */
 
+// const commentsQuery = `
+//   query CommentsSingleQuery($documentId: String){
+//     CommentsSingle(documentId: $documentId){
+//       pageUrl
+//       htmlBody
+//       post{
+//         pageUrl
+//         title
+//       }
+//       user{
+//         pageUrl
+//         displayName
+//       }
+//     }
+//   }
+// `
+
 const commentsQuery = `
-  query CommentsSingleQuery($documentId: String){
-    CommentsSingle(documentId: $documentId){
-      pageUrl
-      htmlBody
-      post{
+  query singleCommentQuery($input: SingleCommentInput!) {
+    comment(input: $input) {
+      result {
         pageUrl
-        title
-      }
-      user{
-        pageUrl
-        displayName
+        htmlBody
+        user {
+          displayName
+        }
       }
     }
   }
 `
 
-const dummyComment = {post: {title: '[title]'}, user: {displayName: '[user]'}}
+const dummyComment = {
+  post: {title: '[title]'},
+  user: {displayName: '[user]'}
+}
 
 VulcanEmail.addEmails({
 
   newComment: {
     template: 'newComment',
     path: '/email/new-comment/:_id?',
-    subject(data) {
-      const comment = _.isEmpty(data) ? dummyComment : data.CommentsSingle
-      return comment.user.displayName+' left a new comment on your post "' + comment.post.title + '"'
-    },
+    subject: 'A new comment!',
     query: commentsQuery
   },
 
@@ -172,20 +186,27 @@ VulcanEmail.addEmails({
     template: 'newReply',
     path: '/email/new-reply/:_id?',
     subject(data) {
-      const comment = _.isEmpty(data) ? dummyComment : data.CommentsSingle
-      return comment.user.displayName+' replied to your comment on "'+comment.post.title+'"'
+      const comment = _.isEmpty(data) ? dummyComment : data.comment.result
+      return comment.user.displayName+' replied to your comment at ' + comment.pageUrl
     },
     query: commentsQuery
   },
 
-  newCommentSubscribed: {
-    template: 'newComment',
-    path: '/email/new-comment-subscribed/:_id?',
-    subject(data) {
-      const comment = _.isEmpty(data) ? dummyComment : data.CommentsSingle
-      return comment.user.displayName+' left a new comment on "' + comment.post.title + '"'
-    },
-    query: commentsQuery
-  }
+  // newCommentSubscribed: {
+  //   template: 'newComment',
+  //   path: '/email/new-comment-subscribed/:_id?',
+  //   subject(data) {
+  //     const comment = _.isEmpty(data) ? dummyComment : data.CommentsSingle
+  //     return comment.user.displayName+' left a new comment on "' + comment.post.title + '"'
+  //   },
+  //   query: commentsQuery
+  // }
 
 })
+
+// subject({data}) {
+//   const comment = _.isEmpty(data) ? dummyComment : data.comment.result
+//   console.log('newComment comment:')
+//   console.dir(comment)
+//   return comment.user.displayName + ' left a new comment on your post'
+// },
