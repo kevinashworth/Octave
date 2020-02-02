@@ -6,14 +6,34 @@ const notificationsGroup = {
   order: 2
 }
 
+// fields we are REPLACING
 Users.addField([
-  // first, a field we are EDITING not ADDING despite `addField` function name
   {
     fieldName: 'createdAt',
     fieldSchema: {
-      canRead: ['guests']
+      type: Date,
+      optional: true,
+      canRead: ['guests'],
+      onCreate: () => {
+        return new Date();
+      }
     }
   },
+  {
+    fieldName: 'locale',
+    fieldSchema: {
+      type: String,
+      label: 'Preferred Language',
+      optional: true,
+      hidden: true,
+      defaultValue: 'en',
+      canRead: ['guests']
+    }
+  }
+])
+
+// fields we are ADDING
+Users.addField([
   // Count of user's comments
   {
     fieldName: 'commentCount',
