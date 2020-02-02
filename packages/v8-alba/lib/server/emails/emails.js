@@ -1,19 +1,6 @@
-/*
-
-Emails
-
-*/
-
 import VulcanEmail from 'meteor/vulcan:email'
 
-/*
-
-Test
-
-*/
-
 VulcanEmail.addEmails({
-
   test: {
     template: 'test',
     path: '/email/test',
@@ -24,17 +11,9 @@ VulcanEmail.addEmails({
       return 'This is a test'
     },
   }
-
 })
 
-/*
-
-Users
-
-*/
-
 VulcanEmail.addEmails({
-
   newUser: {
     template: 'newUser',
     path: '/email/new-user/:_id?',
@@ -42,15 +21,16 @@ VulcanEmail.addEmails({
       return 'A new user has been created'
     },
     query: `
-      query UsersSingleQuery($documentId: String){
-        UsersSingle(documentId: $documentId){
-          displayName
-          pageUrl
+      query singleUserQuery($input: SingleUserInput!) {
+        user(input: $input) {
+          result {
+            displayName
+            pageUrl
+          }
         }
       }
     `
   },
-
   accountApproved: {
     template: 'accountApproved',
     path: '/email/account-approved/:_id?',
@@ -58,29 +38,21 @@ VulcanEmail.addEmails({
       return 'Your account has been approved.'
     },
     query: `
-      query UsersSingleQuery($documentId: String){
-        UsersSingle(documentId: $documentId){
-          displayName
-        }
-        SiteData{
-          title
-          url
+      query singleUserQuery($input: SingleUserInput!) {
+        user(input: $input) {
+          result {
+            displayName
+            SiteData {
+              title
+              url
+            }
+          }
         }
       }
     `
   }
-
 })
 
-/*
-
-Comments
-
-*/
-
-// const commentsQuery = `
-//   query CommentsSingleQuery($documentId: String){
-//     CommentsSingle(documentId: $documentId){
 // const postsQuery = `
 //   query singlePostQuery($documentId: String) {
 //     PostsSingle(documentId: $documentId) {
@@ -89,10 +61,6 @@ Comments
 //       pageUrl
 //       linkUrl
 //       htmlBody
-//       post{
-//         pageUrl
-//         title
-//       }
 //       thumbnailUrl
 //       user{
 //         pageUrl
@@ -142,6 +110,7 @@ const commentsQuery = `
         htmlBody
         user {
           displayName
+          pageUrl
         }
       }
     }
@@ -149,19 +118,21 @@ const commentsQuery = `
 `
 
 const dummyComment = {
-  post: {title: '[title]'},
   user: {displayName: '[user]'}
 }
 
 VulcanEmail.addEmails({
-
   newComment: {
     template: 'newComment',
     path: '/email/new-comment/:_id?',
-    subject: 'A new comment!',
+    subject({data}) {
+      const comment = _.isEmpty(data) ? dummyComment : data.comment.result
+      console.log('newComment comment:')
+      console.dir(comment)
+      return comment.user.displayName + ' left a new comment on your post'
+    },
     query: commentsQuery
   },
-
   newReply: {
     template: 'newReply',
     path: '/email/new-reply/:_id?',
@@ -171,7 +142,6 @@ VulcanEmail.addEmails({
     },
     query: commentsQuery
   },
-
   // newCommentSubscribed: {
   //   template: 'newComment',
   //   path: '/email/new-comment-subscribed/:_id?',
@@ -181,12 +151,4 @@ VulcanEmail.addEmails({
   //   },
   //   query: commentsQuery
   // }
-
 })
-
-// subject({data}) {
-//   const comment = _.isEmpty(data) ? dummyComment : data.comment.result
-//   console.log('newComment comment:')
-//   console.dir(comment)
-//   return comment.user.displayName + ' left a new comment on your post'
-// },

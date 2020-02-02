@@ -15,15 +15,15 @@ export function notifications (document, properties) {
   console.groupCollapsed('Hello from notifications (as an `after` callback)!')
   const comment = document
 
-  console.log('comment:', comment)
+  // console.log('comment:', comment)
 
   // note: dummy content has disableNotifications set to true
   if(Meteor.isServer && !comment.disableNotifications) {
 
     const theObject = getCollection(comment.collectionName).findOne(comment.objectId);
     const theAuthor = Users.findOne(theObject.userId);
-    console.log('theObject:', theObject)
-    console.log('theAuthor:', theAuthor)
+    // console.log('theObject:', theObject)
+    // console.log('theAuthor:', theAuthor)
 
     const theBoolean1 = Users.getSetting(theAuthor, 'notifications_comments', false)
     console.log('theBoolean1:', theBoolean1)
