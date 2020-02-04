@@ -117,16 +117,19 @@ export const getLocation = (address) => { // have to repeat theState code, not a
   } catch (e) {
     // eslint-disable-next-line no-console
     // console.error(e)
-    return 'Other'
+    return 'Unknown'
   }
   if (!state) {
-    return 'Other'
+    return 'Unknown'
   }
   if (state === 'ca' || state.indexOf('calif') > -1) {
-    return 'CA'
+    return 'Calif.'
   }
   if (state === 'ny' || state === 'n.y.' || state === 'new york') {
     return 'NY'
+  }
+  if (state === 'mb' || state === 'qc' || state === 'ns'|| state === 'on' || state === 'bc' || state === 'mb') {
+    return 'Canada'
   }
   return 'Other'
 }
