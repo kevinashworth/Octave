@@ -19,9 +19,6 @@ const UsersProfileCheck = ({currentUser, document, loading, flash, toggle}, cont
       return !userMustCompleteFields[fieldName]
     })
 
-    console.log('fieldsToComplete:')
-    console.dir(fieldsToComplete)
-
     const showModal = fieldsToComplete.length > 0
 
     if (showModal) {
