@@ -1,4 +1,10 @@
+import { registerSetting } from 'meteor/vulcan:lib'
 import VulcanEmail from 'meteor/vulcan:email'
+import footer from './templates/common/footer'
+
+registerSetting('secondaryColor', '#2f353a', 'email secondary color')
+registerSetting('accentColor', '#20a8d8', 'email accent color')
+registerSetting('emailFooter', footer, 'email footer')
 
 VulcanEmail.addEmails({
   test: {
