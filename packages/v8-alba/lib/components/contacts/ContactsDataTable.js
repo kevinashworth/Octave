@@ -6,9 +6,10 @@ import { Button, Card, CardBody, CardFooter, CardHeader, Modal, ModalBody, Modal
 import { BootstrapTable, ClearSearchButton, SearchField, TableHeaderColumn } from 'react-bootstrap-table'
 import _ from 'lodash'
 import moment from 'moment'
-import { DATE_FORMAT_SHORT, SIZE_PER_PAGE_LIST_SEED } from '../../modules/constants.js'
 import Contacts from '../../modules/contacts/collection.js'
 import withFilters from '../../modules/hocs/withFilters.js'
+import { DATE_FORMAT_SHORT, SIZE_PER_PAGE_LIST_SEED } from '../../modules/constants.js'
+import { getLocation } from '../../modules/helpers.js'
 
 // Set initial state. Just options I want to keep.
 // See https://github.com/amannn/react-keep-state
@@ -177,40 +178,28 @@ class ContactsDataTable extends PureComponent {
       }
     })
 
-    const filteredResults = _.filter(results, function (o) {
-      // compare current time to filter, but generous, so start of day then, not the time it is now - filter plus up to 23:59
+    const filteredResults = _.filter(results, function (contact) {
+      // compare current time generously, so start of day, i.e., filter plus up to 23:59
       const now = moment()
-      const dateToCompare = o.updatedAt ? o.updatedAt : o.createdAt
+      const dateToCompare = contact.updatedAt ? contact.updatedAt : contact.createdAt
       const displayThis = moment(dateToCompare).isAfter(now.subtract(moment1, moment2).startOf('day'))
       if (!displayThis) {
         return false
       }
-      let theLocation = 'Unknown'
-      if (o.theAddress) {
-        if (o.theAddress.location) {
-          theLocation = o.theAddress.location
-        }
-      } else if (o.addresses) {
-        if (o.addresses[0]) {
-          if (o.addresses[0].state) {
-            theLocation = o.addresses[0].state
-          }
-        }
-      }
-
+      const location = getLocation(contact)
       // if "Other" is not checked, filter per normal via titleFilters:
       if (!(_.includes(titleFilters, 'Other'))) {
-        return _.includes(locationFilters, theLocation) &&
-            _.includes(titleFilters, o.title) &&
+        return _.includes(locationFilters, location) &&
+            _.includes(titleFilters, contact.title) &&
             displayThis
       } else if (_.every(titleFilters, { value: true })) {
         // if "Other" is checked and so are all the titles, do not filter by title
-        return _.includes(locationFilters, theLocation) &&
+        return _.includes(locationFilters, location) &&
             displayThis
       } else {
         // if "Other" is checked and some are not checked, eliminate based on titles in contactTitleFilters
-        return _.includes(locationFilters, theLocation) &&
-            !_.includes(otherFilters, o.title) &&
+        return _.includes(locationFilters, location) &&
+            !_.includes(otherFilters, contact.title) &&
             displayThis
       }
     })
@@ -219,12 +208,10 @@ class ContactsDataTable extends PureComponent {
       <div className='animated fadeIn'>
         <Components.HeadTags title='V8 Alba: Contacts' />
         <Modal isOpen={this.state.modal} toggle={this.toggle} modalTransition={{ timeout: 100 }}>
-          {this.state.contact
-            ? <ModalHeader toggle={this.toggle}>
+          {this.state.contact &&
+            <ModalHeader toggle={this.toggle}>
               <Link to={`/contacts/${this.state.contact._id}/${this.state.contact.slug}`}>{this.state.contact.displayName}</Link>
-            </ModalHeader>
-            : null
-          }
+            </ModalHeader>}
           <ModalBody>
             <Components.ContactModal document={this.state.contact} />
           </ModalBody>
@@ -291,8 +278,7 @@ const accessOptions = {
 const multiOptions = {
   collection: Contacts,
   fragmentName: 'ContactsDataTableFragment',
-  limit: 1000,
-  queryOptions: { pollInterval: 10000 }
+  limit: 1000
 }
 
 registerComponent({
