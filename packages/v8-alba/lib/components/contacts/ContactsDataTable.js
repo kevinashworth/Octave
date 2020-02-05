@@ -9,7 +9,7 @@ import moment from 'moment'
 import Contacts from '../../modules/contacts/collection.js'
 import withFilters from '../../modules/hocs/withFilters.js'
 import { DATE_FORMAT_SHORT, SIZE_PER_PAGE_LIST_SEED } from '../../modules/constants.js'
-import { getLocation } from '../../modules/helpers.js'
+import { getAddress } from '../../modules/helpers.js'
 
 // Set initial state. Just options I want to keep.
 // See https://github.com/amannn/react-keep-state
@@ -186,7 +186,7 @@ class ContactsDataTable extends PureComponent {
       if (!displayThis) {
         return false
       }
-      const location = getLocation(contact)
+      const location = contact.theAddress.location ? contact.theAddress.location : getAddress({ contact }).location
       // if "Other" is not checked, filter per normal via titleFilters:
       if (!(_.includes(titleFilters, 'Other'))) {
         return _.includes(locationFilters, location) &&

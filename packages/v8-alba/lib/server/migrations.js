@@ -673,21 +673,20 @@ Migrations.add({
   }
 })
 
-// Migrations.add({
-//   version: 20,
-//   name: 'castingOffice -> offices [Past Projects] (never used on mLab due to edit in 19 above)',
-//   up () {
-//     PastProjects.find({ castingOffice: { $exists: true } }).forEach(project => {
-//       PastProjects.update(project._id,
-//         {
-//           $addToSet: { offices: { officeId: project.castingOffice } },
-//           $unset: { castingOffice: 1 }
-//         })
-//       console.log(`Migrated to 18, Project ${project._id} / Office ${project.castingOffice}`)
-//     })
-//   },
-//   down: function () { /* There is no undoing this one. */ }
-// })
+Migrations.add({
+  version: 20,
+  name: 'NY / CA --> NY / Calif. / Canada',
+  up () {
+    Contacts.find({ theAddress: { $exists: true } }).forEach(contact => {
+      const theNewAddress = getAddress({ contact: contact }) // will generate `location` again
+      Contacts.update(contact._id,
+        {
+          $set: { theAddress: theNewAddress },
+        })
+    })
+  },
+  down: function () { /* There is no undoing this one. */ }
+})
 
 Meteor.startup(() => {
   Migrations.migrateTo('latest')

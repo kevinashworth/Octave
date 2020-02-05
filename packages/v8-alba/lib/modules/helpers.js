@@ -173,12 +173,6 @@ export const getAddress = ({ project, office, contact }) => {
         }
       }
     }
-    if (!_.isEqual(address, blankAddress)) {
-      if (!address.location) {
-        address.location = getLocation(address)
-      }
-      return address
-    }
   }
 
   if (project) {
@@ -205,12 +199,6 @@ export const getAddress = ({ project, office, contact }) => {
           break
         }
       }
-    }
-    if (!_.isEqual(address, blankAddress)) {
-      if (!address.location) {
-        address.location = getLocation(address)
-      }
-      return address
     }
   }
 
@@ -239,15 +227,15 @@ export const getAddress = ({ project, office, contact }) => {
         }
       }
     }
-    if (!_.isEqual(address, blankAddress)) {
-      if (!address.location) {
-        address.location = getLocation(address)
-      }
-      return address
-    }
   }
 
-  return blankAddress
+  if (!_.isEqual(address, blankAddress)) {
+      address.location = getLocation(address)
+      return address
+  } else {
+    return blankAddress
+  }
+
 }
 
 const findProjectAddress = (project) => {
