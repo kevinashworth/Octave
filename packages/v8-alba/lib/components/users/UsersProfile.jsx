@@ -52,7 +52,7 @@ class UsersProfile extends PureComponent {
               <CardBody>
                 <CardText>
                   <Button className='btn-twitter'>
-                    @<CardLink href={'https://twitter.com/' + user.twitterUsername}>{user.twitterUsername}</CardLink>
+                    <span><CardLink href={'https://twitter.com/' + user.twitterUsername}>{user.twitterUsername}</CardLink></span>
                   </Button>
                 </CardText>
               </CardBody>
