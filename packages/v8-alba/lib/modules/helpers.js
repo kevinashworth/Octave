@@ -128,7 +128,7 @@ export const getLocation = (address) => { // have to repeat theState code, not a
   if (state === 'ny' || state === 'n.y.' || state === 'new york') {
     return 'NY'
   }
-  if (state === 'mb' || state === 'qc' || state === 'ns'|| state === 'on' || state === 'bc' || state === 'mb') {
+  if (state === 'ab' || state === 'bc' || state === 'mb' || state === 'ns'|| state === 'on' || state === 'qc') {
     return 'Canada'
   }
   return 'Other'
