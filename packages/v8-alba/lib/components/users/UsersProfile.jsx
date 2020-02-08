@@ -28,7 +28,7 @@ class UsersProfile extends PureComponent {
         <div className='animated fadeIn'>
           <Components.HeadTags
             url={Users.getProfileUrl(user, true)}
-            title={`V8 Alba: ${Users.getDisplayName(user)}`}
+            title={`V8: ${Users.getDisplayName(user)}`}
           />
           <Card className='card-accent-success'>
             <CardHeader tag='h2'>{Users.getDisplayName(user)}{ Users.canUpdate({ collection: Users, user: currentUser, document: user })

@@ -6,7 +6,7 @@ class Login extends Component {
   render () {
     return (
       <div className='animated fadeIn'>
-        <Components.HeadTags title='V8 Alba: Login/Logout' />
+        <Components.HeadTags title='V8: Login/Logout' />
         <Row className='justify-content-center'>
           <Col md='6'>
             <Card className='p-4'>
