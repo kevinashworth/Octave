@@ -112,7 +112,10 @@ export const linkSubSchema = new SimpleSchema({
     type: String,
     canRead: ['members'],
     canCreate: ['members', 'admins'],
-    canUpdate: ['members', 'admins']
+    canUpdate: ['members', 'admins'],
+    inputProperties: {
+      placeholder: 'https://'
+    }
   }
 })
 

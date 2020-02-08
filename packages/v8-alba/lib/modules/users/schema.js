@@ -108,11 +108,13 @@ Users.addField([
       type: String,
       regEx: SimpleSchema.RegEx.Url,
       optional: true,
-      mustComplete: true,
       input: 'text',
       canRead: ['guests'],
       canCreate: ['members'],
-      canUpdate: ['members']
+      canUpdate: ['members'],
+      inputProperties: {
+        placeholder: 'http://'
+      }
     }
   },
   {
