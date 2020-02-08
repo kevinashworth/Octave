@@ -194,6 +194,9 @@ let schema = {
     label: 'Official Site',
     type: String,
     canRead: ['guests'],
+    inputProperties: {
+      placeholder: 'https://'
+    }
   },
   season: {
     type: String,
