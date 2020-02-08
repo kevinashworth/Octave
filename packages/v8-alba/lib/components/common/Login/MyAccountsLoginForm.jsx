@@ -29,9 +29,13 @@ import React, { Component } from 'react'
 // }
 
 export class MyAccountsLoginForm extends Component {
-  componentDidMount() {
-    document.getElementById('facebook').innerHTML = '<span>Facebook</span>'
-    document.getElementById('github').innerHTML = '<span>Github</span>'
+  componentDidMount () {
+    if (document.getElementById('facebook')) {
+      document.getElementById('facebook').innerHTML = '<span>Facebook</span>'
+    }
+    if (document.getElementById('github')) {
+      document.getElementById('github').innerHTML = '<span>Github</span>'
+    }
   }
 
   render () {
