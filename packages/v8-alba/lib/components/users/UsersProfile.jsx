@@ -30,7 +30,7 @@ class UsersProfile extends PureComponent {
             url={Users.getProfileUrl(user, true)}
             title={`V8 Alba: ${Users.getDisplayName(user)}`}
           />
-          <Card className='card-accent-muted'>
+          <Card className='card-accent-success'>
             <CardHeader tag='h2'>{Users.getDisplayName(user)}{ Users.canUpdate({ collection: Users, user: currentUser, document: user })
               ? <div className='float-right'>
                   <Button tag={Link} to={`/users/${user.slug}/edit`}>Edit</Button>
