@@ -23,6 +23,12 @@ registerFragment(/* GraphQL */`
     htmlBio
     website
     email
+    emails {
+      address
+      verified
+    }
+    emailAddress
+    emailVerified
     twitterUsername
     commentCount
   }
@@ -31,11 +37,19 @@ registerFragment(/* GraphQL */`
 registerFragment(`
   fragment UsersEditFragment on User {
     displayName
-    email
-    twitterUsername
     username
+    twitterUsername
+    email
+    emails {
+      address
+      verified
+    }
     bio
     website
+    notifications_comments
+    notifications_posts
+    notifications_replies
+    notifications_users
     isAdmin
   }
 `)

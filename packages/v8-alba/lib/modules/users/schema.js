@@ -34,6 +34,34 @@ Users.addField([
 
 // fields we are ADDING
 Users.addField([
+  // email.address - REDUNDANT FOR NOW, MAY NOT KEEP
+  {
+    fieldName: 'emailAddress',
+    fieldSchema: {
+      type: String,
+      canRead: ['admins'],
+      resolveAs: {
+        resolver: (user) => {
+          if (user.email) {
+            return user.email
+          }
+          return null
+        }
+      }
+    }
+  },
+  // email.verified
+  {
+    fieldName: 'emailVerified',
+    fieldSchema: {
+      type: Boolean,
+      optional: true,
+      defaultValue: false,
+      canRead: ['members'],
+      canCreate: ['members'],
+      canUpdate: ['admins'],
+    }
+  },
   // Count of user's comments
   {
     fieldName: 'commentCount',

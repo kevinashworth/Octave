@@ -26,6 +26,7 @@ addStrings('en', {
   'patches.missing_document': 'There is no History for this in the database.',
 
   'users.complete_profile': 'Complete your user profile',
-  'users.delete_success': 'User deleted'
+  'users.delete_success': 'User deleted',
+  'users.verify_email': 'Verify email address'
 
 })

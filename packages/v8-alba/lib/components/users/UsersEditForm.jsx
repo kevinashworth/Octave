@@ -17,7 +17,7 @@ const UsersEditForm = ({ document: user, currentUser, flash, history, loading, t
       <Components.HeadTags title={`V8: ${context.intl.formatMessage({ id: 'users.edit_account' })}`} />
       <Card className='card-accent-success'>
         <CardBody>
-          <div className='change-password-link'>
+          <div className='change-password-modal'>
             <Components.ModalTrigger
               size='small'
               title={<FormattedMessage id='accounts.change_password' />}
@@ -28,6 +28,20 @@ const UsersEditForm = ({ document: user, currentUser, flash, history, loading, t
               }
             >
               <Components.AccountsLoginForm formState={STATES.PASSWORD_CHANGE} />
+            </Components.ModalTrigger>
+          </div>
+
+          <div className='verify-email-modal'>
+            <Components.ModalTrigger
+              size='small'
+              title={<FormattedMessage id='users.verify_email' />}
+              component={
+                <Button>
+                  <FormattedMessage id='users.verify_email' />
+                </Button>
+              }
+            >
+              <Components.Loading />
             </Components.ModalTrigger>
           </div>
 
