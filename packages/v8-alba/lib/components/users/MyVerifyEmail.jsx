@@ -1,3 +1,4 @@
+import { Accounts } from 'meteor/accounts-base'
 import { Components, replaceComponent, withCurrentUser } from 'meteor/vulcan:core'
 import { intlShape } from 'meteor/vulcan:i18n'
 import React, { PureComponent } from 'react'
@@ -16,7 +17,6 @@ class MyAccountsVerifyEmail extends PureComponent {
 
   componentDidMount () {
     const token = this.props.match.params.token
-    // eslint-disable-next-line no-undef
     Accounts.verifyEmail(token, (verifyEmailResult) => {
       if (verifyEmailResult && verifyEmailResult.error) {
         this.setState({

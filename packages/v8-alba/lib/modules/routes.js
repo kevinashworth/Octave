@@ -42,9 +42,10 @@ addRoute({ path: '/statistics/:_id/edit', name: 'StatisticsEditForm', componentN
 // addRoute({ path: '/algolia/log', name: 'AlgoliaLog', componentName: 'AlgoliaLog' })
 
 addRoute([
-  { name: 'users.profile', path: '/users/:slug',      componentName: 'UsersProfile' },
-  { name: 'users.account', path: '/account',          componentName: 'UsersAccount' },
-  { name: 'users.edit',    path: '/users/:slug/edit', componentName: 'UsersEdit' }
+  { name: 'users.profile', path: '/users/:slug', componentName: 'UsersProfile' },
+  { name: 'users.account', path: '/account', componentName: 'UsersAccount' },
+  { name: 'users.edit', path: '/users/:slug/edit', componentName: 'UsersEdit' },
+  { name: 'verifyEmail', path: '/verify-email/:token', componentName: 'AccountsVerifyEmail'}
 ])
 
 addRoute([
