@@ -9,6 +9,6 @@ export const theme = (themeObj) => ({
   ...themeObj,
   colors: {
     ...themeObj.colors,
-    neutral80: '#5c6873'
+    neutral80: '#2f353a'
   },
 })
