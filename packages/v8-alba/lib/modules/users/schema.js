@@ -6,7 +6,8 @@ const notificationsGroup = {
   order: 2
 }
 
-const emailSubSchema = new SimpleSchema({
+// Can't use `emails`, so use `handles` because it is non-similar
+const handleSubSchema = new SimpleSchema({
   address: {
     type: String,
     optional: true,
@@ -25,7 +26,6 @@ const emailSubSchema = new SimpleSchema({
   }
 })
 
-// Users.removeField('emails.$')
 // fields we are REPLACING
 Users.addField([
   {
@@ -55,7 +55,7 @@ Users.addField([
 // fields we are ADDING
 Users.addField([
   {
-    fieldName: 'dwellings',
+    fieldName: 'handles',
     fieldSchema: {
       type: Array,
       optional: true,
@@ -65,9 +65,9 @@ Users.addField([
     }
   },
   {
-    fieldName: 'dwellings.$',
+    fieldName: 'handles.$',
     fieldSchema: {
-      type: emailSubSchema
+      type: handleSubSchema
     }
   },
   // email.address - REDUNDANT FOR NOW, MAY NOT KEEP
@@ -80,8 +80,8 @@ Users.addField([
       canUpdate: ['admins'],
       resolveAs: {
         resolver: (user) => {
-          if (user.dwellings && user.dwellings[0]) {
-            return user.dwellings[0].address
+          if (user.handles && user.handles[0]) {
+            return user.handles[0].address
           } else if (user.emails && user.emails[0]) {
             return user.emails[0].address
           }
@@ -102,8 +102,8 @@ Users.addField([
       canUpdate: ['admins'],
       resolveAs: {
         resolver: (user) => {
-          if (user.dwellings && user.dwellings[0]) {
-            return user.dwellings[0].verified
+          if (user.handles && user.handles[0]) {
+            return user.handles[0].verified
           } else if (user.emails && user.emails[0]) {
             return user.emails[0].verified
           }
@@ -242,3 +242,25 @@ Users.addField([
     }
   }
 ])
+
+Users.find({ emails: { $exists: true } }).forEach(user => {
+  if (user.emails && user.emails[0]) {
+    const [...handles] = user.emails
+    const emailAddress = user.emails[0].address
+    const emailVerified = user.emails[0].verified
+    Users.update(user._id,
+      {
+        $set: {
+          handles,
+          emailAddress,
+          emailVerified
+        }
+      })
+  }
+})
+
+// `removeField` causes errors no matter which order.
+// Different errors, but errors, unless Vulcan changed to remove both at once.
+// So `emails` will be unused, but it will remain in the schema.
+// Users.removeField('emails.$')
+// Users.removeField('emails')

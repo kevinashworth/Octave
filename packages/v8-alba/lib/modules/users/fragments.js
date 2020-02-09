@@ -1,6 +1,29 @@
 import { registerFragment } from 'meteor/vulcan:core'
 import Users from 'meteor/vulcan:users'
 
+// replace default
+registerFragment(/* GraphQL */`
+  fragment UsersDefaultFragment on User {
+    _id
+    username
+    handles {
+      address
+      verified
+    }
+    emailAddress
+    emailVerified
+    createdAt
+    isAdmin
+    locale
+    services
+    displayName
+    email
+    emailHash
+    slug
+    groups
+  }
+`)
+
 registerFragment(/* GraphQL */`
   fragment UsersMinimumInfo on User {
     _id
@@ -23,7 +46,7 @@ registerFragment(/* GraphQL */`
     htmlBio
     website
     email
-    dwellings {
+    handles {
       address
       verified
     }
@@ -34,13 +57,12 @@ registerFragment(/* GraphQL */`
   }
 `)
 
-registerFragment(`
+registerFragment(/* GraphQL */`
   fragment UsersEditFragment on User {
+    _id
     displayName
     username
     twitterUsername
-    email
-    emails
     bio
     website
     notifications_comments
@@ -51,7 +73,7 @@ registerFragment(`
   }
 `)
 
-registerFragment(`
+registerFragment(/* GraphQL */`
   fragment UsersMustCompleteFragment on User {
     _id
     ${Users.getRequiredFields().join('\n')}

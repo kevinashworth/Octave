@@ -8,18 +8,26 @@ import '../components/common/Dashboard/LineChartSmall'
 import '../components/common/DefaultLayout/'
 import '../components/common/Login/'
 import '../components/common/LatestUpdates/'
-import '../components/common/MyDropdown.jsx' // replaceComponent Dropdown
-import '../components/common/MyModalTrigger.jsx' // replaceComponent ModalTrigger
+
+// My changes
+
+import '../components/common/Login/MyFormControl.jsx' // replaceComponent
+import '../components/common/Login/MyAccountsLoginForm.jsx' // replaceComponent
+import '../components/common/MyDropdown.jsx' // replaceComponent
+import '../components/common/MyModalTrigger.jsx' // replaceComponent
 
 // Forms
 
 import '../components/common/Forms/MyDatalist'
-import '../components/common/Forms/MyFormNestedArrayLayout' // replaceComponent FormNestedArrayLayout
-import '../components/common/Forms/MyFormSubmit' // replaceComponent FormSubmit
+import '../components/common/Forms/MyFormNestedArrayLayout' // replaceComponent
+import '../components/common/Forms/MyFormSubmit' // replaceComponent
 import '../components/common/Forms/MySelect'
 import '../components/common/Forms/SelectContactIdNameTitle'
 import '../components/common/Forms/SelectProjectIdNameTitle'
 import '../components/common/Forms/SelectPastProjectIdNameTitle'
+
+// Algolia
+
 import '../components/common/Search/'
 
 // Debug
@@ -94,8 +102,9 @@ import '../components/projects/ProjectsSingle'
 import '../components/statistics/StatisticsEditForm.jsx'
 import '../components/statistics/StatisticsList.jsx'
 
-// from example-forum
+// Starting with example-forum
 
+import '../components/users/MyVerifyEmail.jsx'
 import '../components/users/UsersAccount.jsx'
 import '../components/users/UsersEdit.jsx'
 import '../components/users/UsersEditForm.jsx'
@@ -103,6 +112,3 @@ import '../components/users/UsersMenu.jsx'
 import '../components/users/UsersName.jsx'
 import '../components/users/UsersProfile.jsx'
 import '../components/users/UsersProfileCheck.jsx'
-
-import '../components/common/Login/MyFormControl.jsx' // replaceComponent
-import '../components/common/Login/MyAccountsLoginForm.jsx' // replaceComponent
