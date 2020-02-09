@@ -6,6 +6,26 @@ const notificationsGroup = {
   order: 2
 }
 
+const emailSubSchema = new SimpleSchema({
+  address: {
+    type: String,
+    optional: true,
+    canRead: ['guests'],
+    canCreate: ['members'],
+    canUpdate: ['members'],
+  },
+  verified: {
+    type: Boolean,
+    optional: true,
+    defaultValue: false,
+    input: 'checkbox',
+    canRead: ['guests'],
+    canCreate: ['members'],
+    canUpdate: ['members'],
+  }
+})
+
+// Users.removeField('emails.$')
 // fields we are REPLACING
 Users.addField([
   {
@@ -34,16 +54,36 @@ Users.addField([
 
 // fields we are ADDING
 Users.addField([
+  {
+    fieldName: 'dwellings',
+    fieldSchema: {
+      type: Array,
+      optional: true,
+      canRead: ['guests'],
+      canCreate: ['members'],
+      canUpdate: ['members'],
+    }
+  },
+  {
+    fieldName: 'dwellings.$',
+    fieldSchema: {
+      type: emailSubSchema
+    }
+  },
   // email.address - REDUNDANT FOR NOW, MAY NOT KEEP
   {
     fieldName: 'emailAddress',
     fieldSchema: {
       type: String,
-      canRead: ['admins'],
+      canRead: ['members'],
+      canCreate: ['members'],
+      canUpdate: ['admins'],
       resolveAs: {
         resolver: (user) => {
-          if (user.email) {
-            return user.email
+          if (user.dwellings && user.dwellings[0]) {
+            return user.dwellings[0].address
+          } else if (user.emails && user.emails[0]) {
+            return user.emails[0].address
           }
           return null
         }
@@ -60,6 +100,16 @@ Users.addField([
       canRead: ['members'],
       canCreate: ['members'],
       canUpdate: ['admins'],
+      resolveAs: {
+        resolver: (user) => {
+          if (user.dwellings && user.dwellings[0]) {
+            return user.dwellings[0].verified
+          } else if (user.emails && user.emails[0]) {
+            return user.emails[0].verified
+          }
+          return null
+        }
+      }
     }
   },
   // Count of user's comments

@@ -23,7 +23,10 @@ registerFragment(/* GraphQL */`
     htmlBio
     website
     email
-    emails
+    dwellings {
+      address
+      verified
+    }
     emailAddress
     emailVerified
     twitterUsername
