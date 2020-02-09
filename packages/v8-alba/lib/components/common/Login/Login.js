@@ -11,11 +11,9 @@ class Login extends Component {
           <Col md='6'>
             <Card className='p-4'>
               <CardBody>
-                <Form>
-                  <h1>Sign In / Sign Up</h1>
-                  <p className='text-muted'>Access your V8 account</p>
-                  <Components.AccountsLoginForm onSignedInHook={() => window.location.assign('/dashboard')} />
-                </Form>
+                <h1>Sign In / Sign Up</h1>
+                <p className='text-muted'>Access your V8 account</p>
+                <Components.AccountsLoginForm onSignedInHook={() => window.location.assign('/dashboard')} />
               </CardBody>
             </Card>
           </Col>

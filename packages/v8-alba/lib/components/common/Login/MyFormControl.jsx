@@ -3,7 +3,7 @@ import React from 'react'
 import { Input, InputGroup, InputGroupAddon, InputGroupText } from 'reactstrap'
 
 const MyFormControl = (props) => {
-  const { autoComplete, defaultValue, id, placeholder, type, ...rest } = props
+  const { autoComplete, defaultValue, id, inputRef, onChange, placeholder, type } = props
   let icon = <i className='icon-user' />
   switch (id) {
     case 'email':
@@ -25,7 +25,15 @@ const MyFormControl = (props) => {
           {icon}
         </InputGroupText>
       </InputGroupAddon>
-      <Input type={type} placeholder={placeholder} autoComplete={autoComplete} defaultValue={defaultValue} {...rest} />
+      <Input
+        id={id}
+        type={type}
+        innerRef={inputRef}
+        onChange={onChange}
+        placeholder={placeholder}
+        defaultValue={defaultValue}
+        autoComplete={autoComplete}
+      />
     </InputGroup>
   )
 }
