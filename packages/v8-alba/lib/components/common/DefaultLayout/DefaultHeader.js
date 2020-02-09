@@ -1,9 +1,9 @@
 import { Components } from 'meteor/vulcan:core';
 import React, { Component } from 'react';
-import { DropdownMenu, DropdownToggle, Nav } from 'reactstrap';
+import { Dropdown, DropdownMenu, DropdownToggle, Nav } from 'reactstrap';
 import PropTypes from 'prop-types';
 
-import { AppHeaderDropdown, AppNavbarBrand, AppSidebarToggler } from '@coreui/react';
+import { AppNavbarBrand, AppSidebarToggler } from '@coreui/react';
 
 const propTypes = {
   children: PropTypes.node,
@@ -12,8 +12,21 @@ const propTypes = {
 const defaultProps = {};
 
 class DefaultHeader extends Component {
-  render() {
+  constructor (props) {
+    super(props)
+    this.state = {
+      dropdownOpen: false
+    }
+    this.toggle = this.toggle.bind(this)
+  }
 
+  toggle () {
+    this.setState({
+      dropdownOpen: !this.state.dropdownOpen
+    })
+  }
+
+  render() {
     // eslint-disable-next-line
     const { children, ...attributes } = this.props;
 
@@ -26,14 +39,14 @@ class DefaultHeader extends Component {
         />
         <AppSidebarToggler className="d-md-down-none" display="lg" />
         <Nav className="ml-auto" navbar>
-          <AppHeaderDropdown>
+          <Dropdown isOpen={this.state.dropdownOpen} toggle={this.toggle} nav>
             <DropdownToggle nav>
               <i className  ='icon-user font-2xl' />
             </DropdownToggle>
             <DropdownMenu right>
               <Components.UsersMenu />
             </DropdownMenu>
-          </AppHeaderDropdown>
+          </Dropdown>
         </Nav>
         {/*<AppAsideToggler className="d-md-down-none" />
         <AppAsideToggler className="d-lg-none" mobile />*/}
