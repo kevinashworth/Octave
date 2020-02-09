@@ -1,6 +1,6 @@
 import { registerComponent, Components } from 'meteor/vulcan:core'
 import React, { Component } from 'react'
-import { Card, CardBody, Col, Form, Row } from 'reactstrap'
+import { Card, CardBody, Col, Row } from 'reactstrap'
 
 class Login extends Component {
   render () {
