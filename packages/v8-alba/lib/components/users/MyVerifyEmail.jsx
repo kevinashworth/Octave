@@ -34,22 +34,35 @@ class MyAccountsVerifyEmail extends PureComponent {
 
   render () {
     if (this.state.pending) {
-      return <Components.Loading />
+      return (
+        <div className='animated fadeIn'>
+          <Components.HeadTags title={'V8: Verification Pending'} />
+          <Card className='card-accent-success'>
+            <CardBody>
+              <Components.Loading />
+            </CardBody>
+          </Card>
+        </div>
+      )
     } else if (this.state.error) {
       return (
-        <div className='password-reset-form'>
-          {this.state.error}
+        <div className='animated fadeIn'>
+          <Components.HeadTags title={'V8: Verification Error'} />
+          <Card className='card-accent-success'>
+            <CardBody>
+              {this.state.error}
+            </CardBody>
+          </Card>
         </div>
       )
     } else {
       return (
-        <div className='animated fadeIn page users-edit-form'>
-          <Components.HeadTags title={`V8: ${this.context.intl.formatMessage({ id: 'accounts.email_verified' })}`} />
+        <div className='animated fadeIn'>
+          <Components.HeadTags
+            title={`V8: ${this.context.intl.formatMessage({ id: 'accounts.email_verified' })}`} />
           <Card className='card-accent-success'>
             <CardBody>
-              <div className='password-reset-form'>
-                {this.context.intl.formatMessage({ id: 'accounts.email_verified' })}
-              </div>
+              {this.context.intl.formatMessage({ id: 'accounts.email_verified' })}
               <Components.UsersMenu />
             </CardBody>
           </Card>
