@@ -26,28 +26,24 @@ const handleSubSchema = new SimpleSchema({
   }
 })
 
-// fields we are REPLACING
+// fields we are MODIFYING
 Users.addField([
   {
     fieldName: 'createdAt',
     fieldSchema: {
-      type: Date,
-      optional: true,
-      canRead: ['guests'],
-      onCreate: () => {
-        return new Date();
-      }
+      canRead: ['guests']
     }
   },
   {
     fieldName: 'locale',
     fieldSchema: {
-      type: String,
-      label: 'Preferred Language',
-      optional: true,
-      hidden: true,
-      defaultValue: 'en',
-      canRead: ['guests']
+      hidden: true
+    }
+  },
+  {
+    fieldName: 'isAdmin',
+    fieldSchema: {
+      itemProperties: { layout: 'inputOnly' }
     }
   }
 ])
