@@ -6,18 +6,13 @@ import { STATES } from 'meteor/vulcan:accounts'
 import React, { PureComponent } from 'react'
 import { withRouter } from 'react-router-dom'
 import PropTypes from 'prop-types'
-import { Button, Card, CardBody } from 'reactstrap'
+import { Button, Card, CardBody, CardTitle, Col, Row } from 'reactstrap'
 
 class UsersEditForm extends PureComponent {
   constructor (props) {
     super(props)
     this.sendVerificationEmail = this.sendVerificationEmail.bind(this)
   }
-
-  // sendVerificationEmail () {
-  //   Accounts.sendVerificationEmail(this.props.document._id)
-  //   this.props.flash({ id: 'users.verify_email', type: 'success' })
-  // }
 
   sendVerificationEmail () {
     Meteor.call('sendVerificationEmail', this.props.document._id, this.props.flash, function (err, results) {
@@ -40,30 +35,56 @@ class UsersEditForm extends PureComponent {
         <Components.HeadTags title={`V8: ${this.context.intl.formatMessage({ id: 'users.edit_account' })}`} />
         <Card className='card-accent-success'>
           <CardBody>
-            <div className='change-password-modal'>
-              <Components.ModalTrigger
-                size='small'
-                title={<FormattedMessage id='accounts.change_password' />}
-                component={
-                  <Button>
-                    <FormattedMessage id='accounts.change_password' />
-                  </Button>
-                }
-              >
-                <Components.AccountsLoginForm formState={STATES.PASSWORD_CHANGE} />
-              </Components.ModalTrigger>
-            </div>
+            <CardTitle>{user.displayName}</CardTitle>
+              <hr />
+              <Row>
+                <Col className='col-auto mr-auto'>
+                  {user.emailAddress
+                    ? <strong>{user.emailAddress}&nbsp;</strong>
+                    : <Button size='sm' color='warning'>
+                        <FormattedMessage id='users.add_email' />
+                      </Button>}
 
-            <div className='verify-email-modal'>
-              <Button onClick={this.sendVerificationEmail}>
-                <FormattedMessage id='users.verify_email' />
-              </Button>
-            </div>
-
+                    {(user.emailAddress && user.emailVerified)
+                      ? <span className='badge badge-success'><FormattedMessage id='users.verified' /></span>
+                      : <>
+                        <span className='badge badge-warning'><FormattedMessage id='users.unverified' /></span>
+                        <Button size='sm' color='link' onClick={this.sendVerificationEmail}>
+                          <FormattedMessage id='users.verify_email' />
+                        </Button>
+                        </>}
+              </Col>
+              <Col className='col-auto'>
+                <Components.ModalTrigger
+                  title={<FormattedMessage id='accounts.change_password' />}
+                  component={
+                    <Button className='btn-sm btn-warning'>
+                      <FormattedMessage id='accounts.change_password' />
+                    </Button>
+                  }
+                >
+                  <Components.AccountsLoginForm formState={STATES.PASSWORD_CHANGE} />
+                </Components.ModalTrigger>
+              </Col>
+            </Row>
+            <hr />
             <Components.SmartForm
               documentId={user._id}
               collection={Users}
+              queryFragment={getFragment('UsersEditFragment')}
               mutationFragment={getFragment('UsersEditFragment')}
+              fields={[
+                'displayName',
+                'username',
+                'twitterUsername',
+                'bio',
+                'website',
+                'notifications_comments',
+                'notifications_posts',
+                'notifications_replies',
+                'notifications_users',
+                'isAdmin'
+              ]}
               successCallback={user => {
                 if (toggle) {
                   toggle()

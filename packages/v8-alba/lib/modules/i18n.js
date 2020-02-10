@@ -27,6 +27,9 @@ addStrings('en', {
 
   'users.complete_profile': 'Complete your user profile',
   'users.delete_success': 'User deleted',
-  'users.verify_email': 'Verify email address'
+  'users.add_email': 'Add an Email',
+  'users.unverified': 'Unverified',
+  'users.verified': 'Verified',
+  'users.verify_email': 'Send verification email'
 
 })
