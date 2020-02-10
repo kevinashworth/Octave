@@ -196,7 +196,8 @@ Users.addField([
       canRead: ['guests'],
       canCreate: ['admins'],
       canUpdate: ['admins'],
-      group: notificationsGroup
+      group: notificationsGroup,
+      itemProperties: { layout: 'inputOnly' }
     }
   },
   {
@@ -210,7 +211,8 @@ Users.addField([
       canRead: ['guests'],
       canCreate: ['members'],
       canUpdate: ['members'],
-      group: notificationsGroup
+      group: notificationsGroup,
+      itemProperties: { layout: 'inputOnly' }
     }
   },
   {
@@ -224,7 +226,8 @@ Users.addField([
       canRead: ['guests'],
       canCreate: ['members'],
       canUpdate: ['members'],
-      group: notificationsGroup
+      group: notificationsGroup,
+      itemProperties: { layout: 'inputOnly' }
     }
   },
   {
@@ -238,7 +241,8 @@ Users.addField([
       canRead: ['guests'],
       canCreate: ['members'],
       canUpdate: ['members'],
-      group: notificationsGroup
+      group: notificationsGroup,
+      itemProperties: { layout: 'inputOnly' }
     }
   }
 ])
