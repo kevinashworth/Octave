@@ -2,7 +2,7 @@ import { Components, registerComponent } from 'meteor/vulcan:core'
 import { FormattedMessage } from 'meteor/vulcan:i18n'
 import React, { PureComponent } from 'react'
 import PropTypes from 'prop-types'
-import { Button, Card, CardBody } from 'reactstrap'
+import { Card, CardBody, Col, Row } from 'reactstrap'
 
 class EmailDetail extends PureComponent {
   constructor (props) {
@@ -19,16 +19,34 @@ class EmailDetail extends PureComponent {
     return (
       <Card>
         <CardBody>
-          <strong>{handle.address}&nbsp;</strong>
-          {handle.primary && <span className='text-success'>&nbsp;(<FormattedMessage id='users.primary_email' />)&nbsp;</span> }
-          {(handle.address && handle.verified)
-            ? <span className='badge badge-success'><FormattedMessage id='users.verified' /></span>
-            : <>
-                <span className='badge badge-warning'><FormattedMessage id='users.unverified' /></span>
-                <Button size='sm' color='link' onClick={this.sendVerificationEmail}>
-                  <FormattedMessage id='users.verify_email' />
-                </Button>
-              </>}
+          <Row>
+            <Col>
+              <strong>{handle.address}&nbsp;</strong>
+              {handle.primary && <span className='text-success'>&nbsp;(<FormattedMessage id='users.primary_email' />)&nbsp;</span> }
+            </Col>
+            <Col>[remove/update]</Col>
+          </Row>
+          <Row>
+            <Col>
+              <ul className='custom-list'>
+                <li>{handle.verified
+                  ? <FormattedMessage id='users.verified' />
+                  : <>
+                      <span className='text-warning'>
+                        <strong><FormattedMessage id='users.unverified' /></strong>&nbsp;
+                      </span>
+                      &nbsp;
+                      <a className='text-primary' onClick={this.sendVerificationEmail}>
+                        <FormattedMessage id='users.verify_email' />
+                      </a>
+                    </>}
+                </li>
+                {handle.visibility &&
+                  <li className='text-capitalize'>{handle.visibility}</li>}
+              </ul>
+            </Col>
+            <Col></Col>
+          </Row>
         </CardBody>
       </Card>
     )
