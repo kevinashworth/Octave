@@ -38,16 +38,21 @@ class UsersEditForm extends PureComponent {
             <CardTitle>{user.displayName}</CardTitle>
               <hr />
               <Row>
-                <Col className='col-auto mr-auto'>
+                <Col>
+                  {user.handles &&
+                    user.handles.length > 0 &&
+                    <CardTitle><b>Emails</b></CardTitle>}
                   {user.handles &&
                     user.handles.map(handle => <Components.EmailDetail key={handle.address} handle={handle} />)
                   }
               </Col>
-              <Col className='col-auto'>
+            </Row>
+            <Row>
+              <Col>
                 <Components.ModalTrigger
                   title={<FormattedMessage id='accounts.change_password' />}
                   component={
-                    <Button className='btn-sm btn-warning'>
+                    <Button className='btn-warning'>
                       <FormattedMessage id='accounts.change_password' />
                     </Button>
                   }

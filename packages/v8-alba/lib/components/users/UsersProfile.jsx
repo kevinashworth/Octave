@@ -4,7 +4,7 @@ import { FormattedMessage } from 'meteor/vulcan:i18n'
 import React, { PureComponent } from 'react'
 import { Link } from 'react-router-dom'
 import mapProps from 'recompose/mapProps'
-import { Button, Card, CardBody, CardFooter, CardHeader, CardLink, CardText } from 'reactstrap'
+import { Button, Card, CardBody, CardFooter, CardHeader, CardLink, CardText, CardTitle } from 'reactstrap'
 import Markup from 'interweave'
 import _ from 'lodash'
 import moment from 'moment'
@@ -39,12 +39,17 @@ class UsersProfile extends PureComponent {
             </CardHeader>
             <CardBody>
               {user.handles &&
+                user.handles.length > 0 &&
+                <CardTitle><b>Emails</b></CardTitle>}
+              {user.handles &&
                 user.handles.map(handle => <Components.EmailDetail key={handle.address} handle={handle} />)
               }
+              <CardTitle><b>Bio</b></CardTitle>
               {user.htmlBio
                ? <Markup content={user.htmlBio} />
                : <CardText>{ user.bio }</CardText>
               }
+              <CardTitle><b>Links</b></CardTitle>
               {user.website ? (
                 <CardText>
                 <a href={user.website} target='profilelinks'>{user.website} </a>
