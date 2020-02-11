@@ -38,6 +38,9 @@ class UsersProfile extends PureComponent {
               : null}
             </CardHeader>
             <CardBody>
+              {user.handles &&
+                user.handles.map(handle => <Components.EmailDetail key={handle.address} handle={handle} />)
+              }
               {user.htmlBio
                ? <Markup content={user.htmlBio} />
                : <CardText>{ user.bio }</CardText>

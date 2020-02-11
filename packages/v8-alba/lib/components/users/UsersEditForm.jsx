@@ -39,20 +39,9 @@ class UsersEditForm extends PureComponent {
               <hr />
               <Row>
                 <Col className='col-auto mr-auto'>
-                  {user.emailAddress
-                    ? <strong>{user.emailAddress}&nbsp;</strong>
-                    : <Button size='sm' color='warning'>
-                        <FormattedMessage id='users.add_email' />
-                      </Button>}
-
-                    {(user.emailAddress && user.emailVerified)
-                      ? <span className='badge badge-success'><FormattedMessage id='users.verified' /></span>
-                      : <>
-                        <span className='badge badge-warning'><FormattedMessage id='users.unverified' /></span>
-                        <Button size='sm' color='link' onClick={this.sendVerificationEmail}>
-                          <FormattedMessage id='users.verify_email' />
-                        </Button>
-                        </>}
+                  {user.handles &&
+                    user.handles.map(handle => <Components.EmailDetail key={handle.address} handle={handle} />)
+                  }
               </Col>
               <Col className='col-auto'>
                 <Components.ModalTrigger

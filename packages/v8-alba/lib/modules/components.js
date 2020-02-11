@@ -45,6 +45,7 @@ import '../components/admin/AdminComments'
 
 import '../components/common/AddressDetail'
 import '../components/common/ContactDetail'
+import '../components/common/EmailDetail'
 import '../components/common/LinkDetail'
 import '../components/common/PhoneDetail'
 import '../components/common/Filter/ContactFilters'

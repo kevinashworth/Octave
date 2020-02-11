@@ -13,7 +13,16 @@ const handleSubSchema = new SimpleSchema({
     optional: true,
     canRead: ['guests'],
     canCreate: ['members'],
-    canUpdate: ['members'],
+    canUpdate: ['members']
+  },
+  primary: {
+    type: Boolean,
+    optional: true,
+    defaultValue: true,
+    input: 'checkbox',
+    canRead: ['guests'],
+    canCreate: ['members'],
+    canUpdate: ['members']
   },
   verified: {
     type: Boolean,
@@ -22,8 +31,19 @@ const handleSubSchema = new SimpleSchema({
     input: 'checkbox',
     canRead: ['guests'],
     canCreate: ['members'],
+    canUpdate: ['members']
+  },
+  visibility: {
+    type: String,
+    optional: true,
+    defaultValue: 'private',
+    canRead: ['guests'],
+    canCreate: ['members'],
     canUpdate: ['members'],
-  }
+    options: () => {
+      return ['private', 'public']
+    }
+  },
 })
 
 // fields we are MODIFYING

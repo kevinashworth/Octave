@@ -8,7 +8,9 @@ registerFragment(/* GraphQL */`
     username
     handles {
       address
+      primary
       verified
+      visibility
     }
     emailAddress
     emailVerified
@@ -48,7 +50,9 @@ registerFragment(/* GraphQL */`
     email
     handles {
       address
+      primary
       verified
+      visibility
     }
     emailAddress
     emailVerified
