@@ -1,9 +1,9 @@
-const DATE_FORMAT_LONG = 'MMMM D YYYY, h:mm A'
-const DATE_FORMAT_SHORT = 'YYYY-MM-DD'
-const DATE_FORMAT_SHORT_FRIENDLY = 'MMM D'
-const DATE_FORMAT_MONGO = 'YYYY-MM-DD HH:mm:ss'
+export const DATE_FORMAT_LONG = 'MMMM D YYYY, h:mm A'
+export const DATE_FORMAT_SHORT = 'YYYY-MM-DD'
+export const DATE_FORMAT_SHORT_FRIENDLY = 'MMM D'
+export const DATE_FORMAT_MONGO = 'YYYY-MM-DD HH:mm:ss'
 
-const CASTING_TITLES_ENUM = [
+export const CASTING_TITLES_ENUM = [
   { value: 'Casting Director', label: 'Casting Director' },
   { value: 'Casting Director / Associate', label: 'Casting Director / Associate' },
   { value: 'Associate', label: 'Associate' },
@@ -18,7 +18,7 @@ const CASTING_TITLES_ENUM = [
   { value: 'Unknown Title', label: 'Unknown Title' }
 ]
 
-const PHONE_NUMBER_TYPES_ENUM = [
+export const PHONE_NUMBER_TYPES_ENUM = [
   { value: 'Home', label: 'Home' },
   { value: 'Home Fax', label: 'Home Fax' },
   { value: 'Mobile', label: 'Mobile' },
@@ -27,7 +27,7 @@ const PHONE_NUMBER_TYPES_ENUM = [
   { value: 'Other', label: 'Other' }
 ]
 
-const ADDRESS_TYPES_ENUM = [
+export const ADDRESS_TYPES_ENUM = [
   { value: 'Auditions', label: 'Auditions' },
   { value: 'CSA', label: 'CSA' },
   { value: 'Former', label: 'Former' },
@@ -42,7 +42,7 @@ const ADDRESS_TYPES_ENUM = [
   { value: 'Unverified', label: 'Unverified' }
 ]
 
-const PROJECT_TYPES_ENUM = [
+export const PROJECT_TYPES_ENUM = [
   { value: 'Feature Film', label: 'Feature Film' },
   { value: 'Feature Film (LB)', label: 'Feature Film (LB)' },
   { value: 'Feature Film (MLB)', label: 'Feature Film (MLB)' },
@@ -63,7 +63,7 @@ const PROJECT_TYPES_ENUM = [
   { value: 'New Media', label: 'New Media' }
 ]
 
-const SHOOTING_LOCATIONS_US_ENUM = [
+export const SHOOTING_LOCATIONS_US_ENUM = [
   { value: 'Alabama', label: 'Alabama' },
   { value: 'Albuquerque', label: 'Albuquerque, NM' },
   { value: 'Arkansas', label: 'Arkansas' },
@@ -94,7 +94,7 @@ const SHOOTING_LOCATIONS_US_ENUM = [
   { value: 'Washington', label: 'Washington, DC' },
   { value: 'Wilmington', label: 'Wilmington, NC' }
 ]
-const SHOOTING_LOCATIONS_CANADA_ENUM = [
+export const SHOOTING_LOCATIONS_CANADA_ENUM = [
   { value: 'Calgary', label: 'Calgary, MB' },
   { value: 'Montreal', label: 'Montreal, QC' },
   { value: 'Nova Scotia', label: 'Nova Scotia' },
@@ -102,7 +102,7 @@ const SHOOTING_LOCATIONS_CANADA_ENUM = [
   { value: 'Vancouver', label: 'Vancouver, BC' },
   { value: 'Winnipeg', label: 'Winnipeg, MB' }
 ]
-const SHOOTING_LOCATIONS_WORLDWIDE_ENUM = [
+export const SHOOTING_LOCATIONS_WORLDWIDE_ENUM = [
   { value: 'Budapest', label: 'Budapest, Hungary' },
   { value: 'Germany', label: 'Germany' },
   { value: 'Iceland', label: 'Iceland' },
@@ -116,7 +116,7 @@ const SHOOTING_LOCATIONS_WORLDWIDE_ENUM = [
   { value: 'Tokyo', label: 'Tokyo, Japan' },
   { value: 'United Kingdom', label: 'United Kingdom' }
 ]
-const SHOOTING_LOCATIONS_OTHER_ENUM = [
+export const SHOOTING_LOCATIONS_OTHER_ENUM = [
   { value: 'TBD', label: 'TBD' }
 ]
 export const GROUPED_LOCATIONS_ENUM = [
@@ -138,7 +138,7 @@ export const GROUPED_LOCATIONS_ENUM = [
   }
 ]
 
-const BROADCAST_ENUM = [
+export const BROADCAST_ENUM = [
   'ABC',
   'CBS',
   'CW', // In SAG-AFTRA terms, "Made For: Broadcast Non-Network (WB/UPN/CW)" or "CW Supplement"
@@ -148,7 +148,7 @@ const BROADCAST_ENUM = [
   'The CW'
 ]
 
-const CABLE_ENUM = [
+export const CABLE_ENUM = [
   'Adult Swim',
   'AMC',
   'Audience',
@@ -196,7 +196,7 @@ const CABLE_ENUM = [
   'WGN'
 ]
 
-const PAYTV_ENUM = [
+export const PAYTV_ENUM = [
   'Cinemax',
   'Epix',
   'HBO',
@@ -204,7 +204,7 @@ const PAYTV_ENUM = [
   'Starz'
 ]
 
-const SVOD_ENUM = [
+export const SVOD_ENUM = [
   'Amazon',
   'Amazon Prime',
   'Apple TV+',
@@ -222,7 +222,7 @@ const SVOD_ENUM = [
   'YouTube Red'
 ]
 
-const AVOD_ENUM = [
+export const AVOD_ENUM = [
   'Crackle',
   'HBO Max',
   'Hulu',
@@ -232,7 +232,7 @@ const AVOD_ENUM = [
   'Vudu'
 ]
 
-const ACTIVE_PROJECT_STATUSES_ENUM = [
+export const ACTIVE_PROJECT_STATUSES_ENUM = [
   { value: 'Casting', label: 'Casting' },
   { value: 'Shooting', label: 'Shooting' },
   { value: 'See Notes', label: 'See Notes' },
@@ -242,20 +242,20 @@ const ACTIVE_PROJECT_STATUSES_ENUM = [
   { value: 'On Hold', label: 'On Hold' }
 ]
 
-const PAST_PROJECT_STATUSES_ENUM = [
+export const PAST_PROJECT_STATUSES_ENUM = [
   { value: 'Relocated', label: 'Relocated' },
   { value: 'Unknown', label: 'Unknown' },
   { value: 'Wrapped', label: 'Wrapped' },
   { value: 'Canceled', label: 'Canceled' }
 ]
 
-const PROJECT_STATUSES_ENUM = ACTIVE_PROJECT_STATUSES_ENUM.concat(PAST_PROJECT_STATUSES_ENUM)
+export const PROJECT_STATUSES_ENUM = ACTIVE_PROJECT_STATUSES_ENUM.concat(PAST_PROJECT_STATUSES_ENUM)
 
-const ACTIVE_PROJECT_STATUSES_ARRAY = ACTIVE_PROJECT_STATUSES_ENUM.map(o => o.label)
-const PAST_PROJECT_STATUSES_ARRAY = PAST_PROJECT_STATUSES_ENUM.map(o => o.label)
-const PROJECT_STATUSES_ARRAY = ACTIVE_PROJECT_STATUSES_ARRAY.concat(PAST_PROJECT_STATUSES_ARRAY)
+export const ACTIVE_PROJECT_STATUSES_ARRAY = ACTIVE_PROJECT_STATUSES_ENUM.map(o => o.label)
+export const PAST_PROJECT_STATUSES_ARRAY = PAST_PROJECT_STATUSES_ENUM.map(o => o.label)
+export const PROJECT_STATUSES_ARRAY = ACTIVE_PROJECT_STATUSES_ARRAY.concat(PAST_PROJECT_STATUSES_ARRAY)
 
-const SIZE_PER_PAGE_LIST_SEED = [{
+export const SIZE_PER_PAGE_LIST_SEED = [{
   text: '20', value: 20
 }, {
   text: '50', value: 50
@@ -263,28 +263,4 @@ const SIZE_PER_PAGE_LIST_SEED = [{
   text: '100', value: 100
 }]
 
-const nullOption = { value: null, label: '' }
-
-module.exports = {
-  DATE_FORMAT_LONG,
-  DATE_FORMAT_SHORT,
-  DATE_FORMAT_SHORT_FRIENDLY,
-  DATE_FORMAT_MONGO,
-  CASTING_TITLES_ENUM,
-  ADDRESS_TYPES_ENUM,
-  PHONE_NUMBER_TYPES_ENUM,
-  PROJECT_TYPES_ENUM,
-  BROADCAST_ENUM,
-  CABLE_ENUM,
-  PAYTV_ENUM,
-  SVOD_ENUM,
-  AVOD_ENUM,
-  ACTIVE_PROJECT_STATUSES_ENUM,
-  PAST_PROJECT_STATUSES_ENUM,
-  PROJECT_STATUSES_ENUM,
-  ACTIVE_PROJECT_STATUSES_ARRAY,
-  PAST_PROJECT_STATUSES_ARRAY,
-  PROJECT_STATUSES_ARRAY,
-  SIZE_PER_PAGE_LIST_SEED,
-  nullOption
-}
+export const nullOption = { value: null, label: '' }
