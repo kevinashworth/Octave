@@ -10,19 +10,38 @@ class EmailNewForm extends PureComponent {
       value: ''
     }
 
+    this.addEmail = this.addEmail.bind(this)
     this.handleChange = this.handleChange.bind(this)
-    this.handleSubmit = this.handleSubmit.bind(this)
+    this.handleClick = this.handleClick.bind(this)
   }
 
   handleChange (event) {
     this.setState({value: event.target.value})
   }
 
-  handleSubmit = () => {
-    console.log('addEmail:')
+  handleClick = () => {
+    this.addEmail()
+    if (this.props.toggle) {
+      this.props.toggle()
+    }
+  }
+
+  addEmail () {
+    console.log('EmailNewForm addEmail:')
+    console.log(this.props.user._id)
     console.log(this.state.value)
-    console.log(this.props.user)
-    // Accounts.addEmail(this.props.user._id, this.state.value)
+    Meteor.call('addEmail', this.props.user._id, this.state.value, function (err, results) {
+      if (err) {
+        console.error('addEmail error:', err)
+      }
+      console.info('addEmail has returned, now mapEmails')
+      Meteor.call('mapEmails', this.props.user, function (err, results) {
+        if (err) {
+          console.error('mapEmails error:', err)
+        }
+        console.info('mapEmails has returned')
+      })
+    })
   }
 
   render () {
@@ -30,11 +49,11 @@ class EmailNewForm extends PureComponent {
       <div>
         <Card>
           <CardBody>
-            <Form onSubmit={this.handleSubmit}>
+            <Form>
               <Components.FormControl id='email' type='email' onChange={this.handleChange} placeholder='Email' />
               <Row>
                 <Col>
-                  <Button color='primary'>Submit</Button>
+                  <Button color='primary' onClick={this.handleClick}>Submit</Button>
                 </Col>
               </Row>
             </Form>

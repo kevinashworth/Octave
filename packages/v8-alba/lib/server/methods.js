@@ -11,8 +11,25 @@ Meteor.methods({
   },
   sendVerificationEmail: function (id) {
     console.log('sendVerificationEmail id:', id)
-    // console.log('sendVerificationEmail flash:', flash)
     Accounts.sendVerificationEmail(id)
-    // flash({ id: 'users.verify_email', type: 'success' })
+  },
+  addEmail: function (userId, newEmail) {
+    console.log('Meteor.methods addEmail:', userId, newEmail)
+    Accounts.addEmail(userId, newEmail)
+  },
+  mapEmails: function (user) {
+    // if (user.emails && user.emails[0]) {
+    //   const [...handles] = user.emails
+    //   const emailAddress = user.emails[0].address
+    //   const emailVerified = user.emails[0].verified
+    //   await Connectors.update(Users, user._id, {
+    //       $set: {
+    //         handles,
+    //         emailAddress,
+    //         emailVerified
+    //       }
+    //     })
+    // }
+    console.log('map emails', user)
   }
 })

@@ -9,7 +9,6 @@ import './contacts/index.js'
 import './offices/index.js'
 import './past-projects/index.js'
 import './projects/index.js'
-import './users/callbacks.js'
 
 import './emails/index.js'
 
