@@ -105,6 +105,7 @@ import '../components/statistics/StatisticsList.jsx'
 
 // Starting with example-forum
 
+import '../components/users/EmailNewForm.jsx'
 import '../components/users/MyVerifyEmail.jsx'
 import '../components/users/UsersAccount.jsx'
 import '../components/users/UsersEdit.jsx'

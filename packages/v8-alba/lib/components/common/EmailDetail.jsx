@@ -24,7 +24,7 @@ class EmailDetail extends PureComponent {
               <strong>{handle.address}&nbsp;</strong>
               {handle.primary && <span className='text-success'>&nbsp;(<FormattedMessage id='users.primary_email' />)&nbsp;</span> }
             </Col>
-            <Col>[remove/update]</Col>
+            <Col className='ml-auto'>[remove/update]</Col>
           </Row>
           <Row>
             <Col>

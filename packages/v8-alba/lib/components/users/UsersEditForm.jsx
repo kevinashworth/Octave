@@ -45,6 +45,9 @@ class UsersEditForm extends PureComponent {
                   {user.handles &&
                     user.handles.map(handle => <Components.EmailDetail key={handle.address} handle={handle} />)
                   }
+                  <Components.ModalTrigger title='New Email' component={<Button>Add an Email</Button>}>
+                    <Components.EmailNewForm user={user} />
+                  </Components.ModalTrigger>
               </Col>
             </Row>
             <Row>
