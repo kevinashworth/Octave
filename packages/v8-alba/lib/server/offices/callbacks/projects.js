@@ -29,7 +29,7 @@ export function OfficeEditUpdateProjects (data, { document, originalDocument }) 
     console.groupEnd()
   }
   // [b]
-  if (projectsToRemoveThisOfficeFrom) {
+  if (!isEmptyValue(projectsToRemoveThisOfficeFrom)) {
     projectsToRemoveThisOfficeFrom.forEach(projectToUpdate => {
       var project = Projects.findOne(projectToUpdate.projectId)
       const i = _.findIndex(project.offices, ['officeId', office._id])
