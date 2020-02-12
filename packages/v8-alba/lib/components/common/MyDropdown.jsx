@@ -3,7 +3,7 @@ import { FormattedMessage } from 'meteor/vulcan:i18n'
 import React, { useState } from 'react'
 import { NavLink as RRNavLink } from 'react-router-dom'
 import PropTypes from 'prop-types'
-import { Dropdown, DropdownButton, DropdownItem, DropdownMenu, DropdownToggle, NavLink } from 'reactstrap'
+import { Dropdown, ButtonDropdown, DropdownItem, DropdownMenu, DropdownToggle, NavLink } from 'reactstrap'
 
 /*
 A node contains a menu item, and optionally a list of child items
@@ -81,11 +81,11 @@ const MyDropdown = ({ label, labelId, trigger, menuItems, menuContents, variant 
         </Dropdown>
       )
     } else {
-      // else default to DropdownButton
+      // else default to ButtonDropdown
       return (
-        <DropdownButton {...buttonProps} title={labelId ? <FormattedMessage id={labelId} /> : label} {...dropdownProps}>
+        <ButtonDropdown {...buttonProps} title={labelId ? <FormattedMessage id={labelId} /> : label} {...dropdownProps}>
           {menuBody}
-        </DropdownButton>
+        </ButtonDropdown>
       )
     }
   }
