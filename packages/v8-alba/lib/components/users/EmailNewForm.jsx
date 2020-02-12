@@ -27,20 +27,27 @@ class EmailNewForm extends PureComponent {
   }
 
   addEmail () {
+    const { user } = this.props
     console.log('EmailNewForm addEmail:')
-    console.log(this.props.user._id)
+    console.log(user._id)
     console.log(this.state.value)
-    Meteor.call('addEmail', this.props.user._id, this.state.value, function (err, results) {
+    Meteor.call('addEmail', {
+      userId: user._id,
+      newEmail: this.state.value
+    }, (err, res) => {
       if (err) {
         console.error('addEmail error:', err)
+      } else {
+        console.info('addEmail has returned, now mapEmails')
+        Meteor.call('mapEmails', {
+          user: user
+        }, (err, res) => {
+          if (err) {
+            console.error('mapEmails error:', err)
+          }
+          console.info('mapEmails has returned')
+        })
       }
-      console.info('addEmail has returned, now mapEmails')
-      Meteor.call('mapEmails', this.props.user, function (err, results) {
-        if (err) {
-          console.error('mapEmails error:', err)
-        }
-        console.info('mapEmails has returned')
-      })
     })
   }
 
