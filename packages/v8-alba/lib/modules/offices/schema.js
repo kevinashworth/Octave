@@ -2,7 +2,7 @@ import { Utils } from 'meteor/vulcan:core'
 import SimpleSchema from 'simpl-schema'
 import marked from 'marked'
 import { addressSubSchema, contactSubSchema, linkSubSchema, phoneSubSchema } from '../shared_schemas.js'
-import { getFullAddress, isEmptyValue } from '../helpers.js'
+import { getAddress, getFullAddress, isEmptyValue } from '../helpers.js'
 
 const contactGroup = {
   name: 'contacts',
@@ -393,18 +393,8 @@ const schema = {
     canRead: ['guests'],
     resolveAs: {
       type: 'String',
-      resolver: (o) => {
-        let state = ''
-        if (o.state) {
-          state = o.state.toLowerCase()
-        }
-        if (state === 'ca' || state.indexOf('calif') > -1) {
-          return 'CA'
-        }
-        if (state === 'ny' || state === 'n.y.' || state === 'new york') {
-          return 'NY'
-        }
-        return 'Other'
+      resolver: (office) => {
+        getAddress({ office }).location
       }
     }
   },
