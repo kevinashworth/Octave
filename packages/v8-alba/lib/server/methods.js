@@ -1,5 +1,7 @@
 import { Meteor } from 'meteor/meteor'
 import { Accounts } from 'meteor/accounts-base'
+import { Connectors } from 'meteor/vulcan:core'
+import Users from 'meteor/vulcan:users'
 
 Meteor.methods({
   getProcessEnvMongoUrl () {
@@ -19,18 +21,20 @@ Meteor.methods({
     Accounts.addEmail(userId, newEmail)
   },
   mapEmails ({ user }) {
-    // if (user.emails && user.emails[0]) {
-    //   const [...handles] = user.emails
-    //   const emailAddress = user.emails[0].address
-    //   const emailVerified = user.emails[0].verified
-    //   await Connectors.update(Users, user._id, {
-    //       $set: {
-    //         handles,
-    //         emailAddress,
-    //         emailVerified
-    //       }
-    //     })
-    // }
-    console.log('Meteor.methods mapEmails, user', user)
+    console.log('Meteor.methods mapEmails', user._id)
+    if (user.emails && user.emails[0]) {
+      const [...handles] = user.emails
+      const emailAddress = user.emails[0].address
+      const emailVerified = user.emails[0].verified
+      Connectors.update(Users, user._id, {
+        $addToSet: {
+          handles
+        },
+        $set: {
+          emailAddress,
+          emailVerified
+        }
+      })
+    }
   }
 })
