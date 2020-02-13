@@ -1,5 +1,7 @@
+import { Meteor } from 'meteor/meteor'
 // import { Accounts } from 'meteor/accounts-base'
 import { Components, registerComponent } from 'meteor/vulcan:core'
+import Users from 'meteor/vulcan:users'
 import React, { PureComponent } from 'react'
 import { Button, Card, CardBody, Col, Form, Row } from 'reactstrap'
 
@@ -19,7 +21,7 @@ class EmailNewForm extends PureComponent {
     this.setState({value: event.target.value})
   }
 
-  handleClick = () => {
+  handleClick () {
     this.addEmail()
     if (this.props.toggle) {
       this.props.toggle()
@@ -27,28 +29,28 @@ class EmailNewForm extends PureComponent {
   }
 
   addEmail () {
-    const { user } = this.props
     console.log('EmailNewForm addEmail:')
-    console.log(user._id)
+    console.log(this.props.user._id)
     console.log(this.state.value)
-    Meteor.call('addEmail', {
-      userId: user._id,
+    Meteor.wrapAsync(Meteor.call('addEmail', {
+      userId: this.props.user._id,
       newEmail: this.state.value
     }, (err, res) => {
       if (err) {
-        console.error('addEmail error:', err)
-      } else {
-        console.info('addEmail has returned, now mapEmails')
-        Meteor.call('mapEmails', {
-          user: user
-        }, (err, res) => {
-          if (err) {
-            console.error('mapEmails error:', err)
-          }
-          console.info('mapEmails has returned')
-        })
+        console.error('await addEmail error:', err)
       }
-    })
+      console.info('await addEmail has returned')
+
+      const freshUser = Users.findOne(this.props.user._id)
+      Meteor.wrapAsync(Meteor.call('mapEmails', {
+        user: freshUser
+      }, (err, res) => {
+        if (err) {
+          console.error('await mapEmails error:', err)
+        }
+        console.info('await mapEmails has returned')
+      }))
+    }))
   }
 
   render () {

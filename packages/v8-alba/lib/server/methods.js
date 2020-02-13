@@ -18,17 +18,20 @@ Meteor.methods({
   },
   addEmail ({ userId, newEmail }) {
     console.log('Meteor.methods addEmail:', userId, newEmail)
-    Accounts.addEmail(userId, newEmail)
+    Meteor.wrapAsync(Accounts.addEmail(userId, newEmail))
   },
   mapEmails ({ user }) {
     console.log('Meteor.methods mapEmails', user._id)
+    console.log('current emails:', user.emails)
     if (user.emails && user.emails[0]) {
+      console.log('current handles:', user.handles)
       const [...handles] = user.emails
+      console.log('after $addToset handles:', handles)
       const emailAddress = user.emails[0].address
       const emailVerified = user.emails[0].verified
       Connectors.update(Users, user._id, {
         $addToSet: {
-          handles
+          handles: { $each: handles }
         },
         $set: {
           emailAddress,
