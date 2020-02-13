@@ -11,6 +11,7 @@ import { Button, Card, CardBody, CardTitle, Col, Row } from 'reactstrap'
 class UsersEditForm extends PureComponent {
   constructor (props) {
     super(props)
+    this.emailNewSuccessCallback = this.emailNewSuccessCallback.bind(this)
     this.sendVerificationEmail = this.sendVerificationEmail.bind(this)
   }
 
@@ -20,6 +21,14 @@ class UsersEditForm extends PureComponent {
         console.error('sendVerificationEmail error:', err)
       }
       console.info('sendVerificationEmail results:', results)
+    })
+  }
+
+  emailNewSuccessCallback ({ handle }) {
+    this.props.flash({
+      id: 'users.add_email_success',
+      properties: { handle },
+      type: 'success'
     })
   }
 
@@ -46,7 +55,10 @@ class UsersEditForm extends PureComponent {
                     user.handles.map(handle => <Components.EmailDetail key={handle.address} handle={handle} />)
                   }
                   <Components.ModalTrigger component={<Button><FormattedMessage id='users.add_email' /></Button>}>
-                    <Components.EmailNewForm user={user} />
+                    <Components.EmailNewForm
+                      user={user}
+                      successCallback={this.emailNewSuccessCallback}
+                    />
                   </Components.ModalTrigger>
               </Col>
             </Row>
@@ -111,7 +123,8 @@ class UsersEditForm extends PureComponent {
 }
 
 UsersEditForm.propTypes = {
-  terms: PropTypes.object // a user is defined by its unique _id or its unique slug
+  terms: PropTypes.object, // a user is defined by its unique _id or its unique slug
+  flash: PropTypes.func
 }
 
 UsersEditForm.contextTypes = {

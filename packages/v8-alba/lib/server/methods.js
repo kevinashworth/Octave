@@ -18,7 +18,11 @@ Meteor.methods({
   },
   addEmail ({ userId, newEmail }) {
     console.log('Meteor.methods addEmail:', userId, newEmail)
-    Meteor.wrapAsync(Accounts.addEmail(userId, newEmail))
+    try {
+      Meteor.wrapAsync(Accounts.addEmail(userId, newEmail))
+    } catch(error) {
+      throw new Meteor.Error('addEmail error', error.reason)
+    }
   },
   mapEmails ({ user }) {
     console.log('Meteor.methods mapEmails', user._id)
