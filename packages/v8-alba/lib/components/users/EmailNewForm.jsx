@@ -13,7 +13,6 @@ class EmailNewForm extends PureComponent {
       value: ''
     }
 
-    this.addEmail = this.addEmail.bind(this)
     this.handleChange = this.handleChange.bind(this)
     this.handleClick = this.handleClick.bind(this)
   }
@@ -23,25 +22,9 @@ class EmailNewForm extends PureComponent {
   }
 
   handleClick () {
-    const result = this.addEmail()
-    console.log('result:', result)
-    if (typeof result === 'string' && this.props.successCallback) {
-      this.props.successCallback({ handle: result })
-    } else {
-      console.log('error:', result.error)
-    }
-    if (this.props.toggle) {
-      this.props.toggle()
-    }
-  }
-
-  addEmail () {
     const userId = this.props.user._id
     const newEmail = this.state.value
     console.log('EmailNewForm addEmail:', userId, newEmail)
-
-    var addEmailError = {} // because can't just `return` from within `wrapAsync` and `call`
-
     Meteor.call(
       'addEmail',
       {
@@ -52,33 +35,36 @@ class EmailNewForm extends PureComponent {
         if (error && error.error === 'already-exists') {
           this.props.flash(error.reason, 'error');
           console.error('addEmail error:', error)
-          addEmailError = error
-          return
+          // addEmailError = error
+          return null
         }
-        console.info('addEmail had no error')
-        const freshUser = Users.findOne(userId)
-        Meteor.call(
-          'mapEmails',
-          {
-            user: freshUser
-          },
-          (error, result) => {
-            if (error) {
-              console.error('mapEmails error:', error.error, error.reason)
-              addEmailError = error
-            }
-            console.info('mapEmails had no error')
+        // might there be other errors?
+        // if (error && error.error ....)
+        if (!error) {
+          console.info('addEmail had result', result)
+          if (typeof result === 'string' && this.props.successCallback) {
+            this.props.successCallback({ handle: result })
           }
-        )
+          const freshUser = Users.findOne(userId)
+          Meteor.call(
+            'mapEmails',
+            {
+              user: freshUser
+            },
+            (error, result) => {
+              if (error) {
+                console.error('mapEmails error:', error.error, error.reason)
+                // addEmailError = error
+                return null
+              }
+              console.info('mapEmails had no error but result', result)
+            }
+          )
+        }
       }
     )
-
-    console.log('addEmailError:', addEmailError)
-
-    if (Object.keys(addEmailError).length === 0) {
-      return newEmail
-    } else {
-      return addEmailError
+    if (this.props.toggle) {
+      this.props.toggle()
     }
   }
 
