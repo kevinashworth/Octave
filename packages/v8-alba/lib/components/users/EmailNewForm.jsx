@@ -1,6 +1,6 @@
 import { Meteor } from 'meteor/meteor'
 // import { Accounts } from 'meteor/accounts-base'
-import { Components, registerComponent } from 'meteor/vulcan:core'
+import { Components, registerComponent, withMessages } from 'meteor/vulcan:core'
 import Users from 'meteor/vulcan:users'
 import React, { PureComponent } from 'react'
 import PropTypes from 'prop-types'
@@ -42,28 +42,36 @@ class EmailNewForm extends PureComponent {
 
     var addEmailError = {} // because can't just `return` from within `wrapAsync` and `call`
 
-    Meteor.wrapAsync(Meteor.call('addEmail', {
-      userId,
-      newEmail
-    }, (err, res) => {
-      if (err) {
-        console.error('await addEmail error:', err)
-        addEmailError = err
-      }
-      console.info('await addEmail has returned')
-
-      const freshUser = Users.findOne(userId)
-
-      Meteor.wrapAsync(Meteor.call('mapEmails', {
-        user: freshUser
-      }, (err, res) => {
-        if (err) {
-          console.error('await mapEmails error:', err)
-          addEmailError = err
+    Meteor.call(
+      'addEmail',
+      {
+        userId,
+        newEmail
+      },
+      (error, result) => {
+        if (error && error.error === 'already-exists') {
+          this.props.flash(error.reason, 'error');
+          console.error('addEmail error:', error)
+          addEmailError = error
+          return
         }
-        console.info('await mapEmails has returned')
-      }))
-    }))
+        console.info('addEmail had no error')
+        const freshUser = Users.findOne(userId)
+        Meteor.call(
+          'mapEmails',
+          {
+            user: freshUser
+          },
+          (error, result) => {
+            if (error) {
+              console.error('mapEmails error:', error.error, error.reason)
+              addEmailError = error
+            }
+            console.info('mapEmails had no error')
+          }
+        )
+      }
+    )
 
     console.log('addEmailError:', addEmailError)
 
@@ -98,4 +106,8 @@ EmailNewForm.propTypes = {
   successCallback: PropTypes.func
 }
 
-registerComponent('EmailNewForm', EmailNewForm)
+registerComponent({
+  name: 'EmailNewForm',
+  component: EmailNewForm,
+  hocs: [withMessages]
+})

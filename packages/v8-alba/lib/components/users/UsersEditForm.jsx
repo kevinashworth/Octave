@@ -12,17 +12,17 @@ class UsersEditForm extends PureComponent {
   constructor (props) {
     super(props)
     this.emailNewSuccessCallback = this.emailNewSuccessCallback.bind(this)
-    this.sendVerificationEmail = this.sendVerificationEmail.bind(this)
+    // this.sendVerificationEmail = this.sendVerificationEmail.bind(this)
   }
 
-  sendVerificationEmail () {
-    Meteor.call('sendVerificationEmail', this.props.document._id, this.props.flash, function (err, results) {
-      if (err) {
-        console.error('sendVerificationEmail error:', err)
-      }
-      console.info('sendVerificationEmail results:', results)
-    })
-  }
+  // sendVerificationEmail () {
+  //   Meteor.call('sendVerificationEmail', this.props.document._id, this.props.flash, function (err, results) {
+  //     if (err) {
+  //       console.error('sendVerificationEmail error:', err)
+  //     }
+  //     console.info('sendVerificationEmail results:', results)
+  //   })
+  // }
 
   emailNewSuccessCallback ({ handle }) {
     this.props.flash({
@@ -54,7 +54,8 @@ class UsersEditForm extends PureComponent {
                   {user.handles &&
                     user.handles.map(handle => <Components.EmailDetail key={handle.address} handle={handle} />)
                   }
-                  <Components.ModalTrigger component={<Button><FormattedMessage id='users.add_email' /></Button>}>
+                  <Components.ModalTrigger
+                    component={<Button><FormattedMessage id='users.add_email' /></Button>}>
                     <Components.EmailNewForm
                       user={user}
                       successCallback={this.emailNewSuccessCallback}
@@ -102,7 +103,11 @@ class UsersEditForm extends PureComponent {
                 } else {
                   history.push('/admin')
                 }
-                flash({ id: 'users.edit_success', properties: { name: Users.getDisplayName(user) }, type: 'success' })
+                flash({
+                  id: 'users.edit_success',
+                  properties: { name: Users.getDisplayName(user) },
+                  type: 'success'
+                })
               }}
               cancelCallback={document => {
                 if (toggle) {
