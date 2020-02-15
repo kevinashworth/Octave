@@ -1,5 +1,3 @@
-// Alba components largely unchanged
-
 import '../components/common/LayoutAdmin/'
 import '../components/common/Page404/' // replaceComponent Error404
 import '../components/common/Dashboard/'
@@ -9,15 +7,11 @@ import '../components/common/DefaultLayout/'
 import '../components/common/Login/'
 import '../components/common/LatestUpdates/'
 
-// My changes
-
 import '../components/common/Login/MyFormControl.jsx' // replaceComponent
 import '../components/common/Login/MyAccountsLoginForm.jsx' // replaceComponent
 import '../components/common/MyAlert.jsx' // replaceComponent
 import '../components/common/MyDropdown.jsx' // replaceComponent
 import '../components/common/MyModalTrigger.jsx' // replaceComponent
-
-// Forms
 
 import '../components/common/Forms/MyDatalist'
 import '../components/common/Forms/MyFormNestedArrayLayout' // replaceComponent
@@ -27,20 +21,11 @@ import '../components/common/Forms/SelectContactIdNameTitle'
 import '../components/common/Forms/SelectProjectIdNameTitle'
 import '../components/common/Forms/SelectPastProjectIdNameTitle'
 
-// Algolia
-
 import '../components/common/Search/'
 
-// Debug
-
 import '../components/common/Fragments'
-
-// Testing
-
 import '../components/common/Modals.jsx'
 import '../components/common/ErrorBoundary.jsx'
-
-// V8
 
 import '../components/admin/AdminComments'
 
@@ -104,9 +89,8 @@ import '../components/projects/ProjectsSingle'
 import '../components/statistics/StatisticsEditForm.jsx'
 import '../components/statistics/StatisticsList.jsx'
 
-// Starting with example-forum
-
 import '../components/users/EmailNewForm.jsx'
+import '../components/users/EmailEditForm.jsx'
 import '../components/users/MyVerifyEmail.jsx'
 import '../components/users/UsersAccount.jsx'
 import '../components/users/UsersEdit.jsx'

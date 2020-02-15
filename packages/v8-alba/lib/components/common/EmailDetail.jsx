@@ -1,30 +1,54 @@
-import { Components, registerComponent } from 'meteor/vulcan:core'
+import { Components, registerComponent, withMessages } from 'meteor/vulcan:core'
 import { FormattedMessage } from 'meteor/vulcan:i18n'
 import React, { PureComponent } from 'react'
 import PropTypes from 'prop-types'
-import { Card, CardBody, Col, Row } from 'reactstrap'
+import { Button, Card, CardBody, Col, Row } from 'reactstrap'
 
 class EmailDetail extends PureComponent {
   constructor (props) {
     super(props)
+    this.deleteEmail = this.deleteEmail.bind(this)
+    this.emailEditSuccessCallback = this.emailEditSuccessCallback.bind(this)
+  }
+
+  deleteEmail = () => {
+    if (window.confirm('Delete email?')) {
+      console.log('delete!')
+    }
+  }
+
+  emailEditSuccessCallback ({ handle }) {
+    this.props.flash({
+      id: 'users.add_email_success',
+      properties: { handle },
+      type: 'success'
+    })
   }
 
   render () {
-    const { handle } = this.props
-
+    const { handle, user } = this.props
     if (!handle) {
       return <FormattedMessage id='app.missing_document' />
     }
-
     return (
       <Card>
         <CardBody>
           <Row>
-            <Col>
+            <Col xs>
               <strong>{handle.address}&nbsp;</strong>
               {handle.primary && <span className='text-success'>&nbsp;(<FormattedMessage id='users.primary_email' />)&nbsp;</span> }
             </Col>
-            <Col className='ml-auto'>[remove/update]</Col>
+            <Col xs='flex'>
+              <Button color='ghost-danger' onClick={this.deleteEmail}>
+                <i className='fa fa-trash-o' />
+              </Button>
+            </Col>
+            <Col xs='auto'>
+              <Components.ModalTrigger
+                component={<Button color='ghost-secondary'><i className='fa fa-pencil-square-o' /></Button>}>
+                <Components.EmailEditForm handle={handle} user={user} successCallback={this.emailEditSuccessCallback} />
+              </Components.ModalTrigger>
+            </Col>
           </Row>
           <Row>
             <Col>
@@ -45,7 +69,6 @@ class EmailDetail extends PureComponent {
                   <li className='text-capitalize'>{handle.visibility}</li>}
               </ul>
             </Col>
-            <Col></Col>
           </Row>
         </CardBody>
       </Card>
@@ -63,5 +86,6 @@ EmailDetail.propTypes = {
 
 registerComponent({
   name: 'EmailDetail',
-  component: EmailDetail
+  component: EmailDetail,
+  hocs: [withMessages]
 })

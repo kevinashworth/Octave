@@ -31,7 +31,18 @@ Meteor.methods({
     }
   },
 
-  mapEmails ({ user }) {
+  removeEmail ({ userId, email }) {
+    console.log('Meteor.methods removeEmail:', userId, email)
+    try {
+      Meteor.wrapAsync(Accounts.removeEmail(userId, email))
+      return email
+    } catch(error) {
+      console.log('removeEmail error:', error)
+      throw new Meteor.Error('remove-error', 'Meteor.methods/removeEmail error.')
+    }
+  },
+
+  mapEmails ({ user, operator = 'addToSet' }) {
     console.log('Meteor.methods mapEmails:', user.emails)
     if (user.emails && user.emails[0]) {
       console.log('current handles:', user.handles)
@@ -39,15 +50,25 @@ Meteor.methods({
       console.log('after $addToset handles:', handles)
       const emailAddress = user.emails[0].address
       const emailVerified = user.emails[0].verified
-      Meteor.wrapAsync(Connectors.update(Users, user._id, {
-        $addToSet: {
-          handles: { $each: handles }
-        },
-        $set: {
-          emailAddress,
-          emailVerified
-        }
-      }))
+      if (operator === 'set') {
+        Meteor.wrapAsync(Connectors.update(Users, user._id, {
+          $set: {
+            handles,
+            emailAddress,
+            emailVerified
+          }
+        }))
+      } else {
+        Meteor.wrapAsync(Connectors.update(Users, user._id, {
+          $addToSet: {
+            handles: { $each: handles }
+          },
+          $set: {
+            emailAddress,
+            emailVerified
+          }
+        }))
+      }
     }
   }
 })
