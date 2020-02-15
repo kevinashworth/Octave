@@ -7,14 +7,6 @@ import PropTypes from 'prop-types'
 import SimpleSchema from 'simpl-schema'
 import { Button, Card, CardBody, Col, Form, Row } from 'reactstrap'
 
-const singleEmailSchema = new SimpleSchema({
-  email: {
-    type: String,
-    optional: false,
-    regEx: SimpleSchema.RegEx.EmailWithTLD
-  }
-})
-
 class EmailNewForm extends PureComponent {
   constructor (props) {
     super(props)
@@ -26,35 +18,40 @@ class EmailNewForm extends PureComponent {
 
     this.handleChange = this.handleChange.bind(this)
     this.handleClick = this.handleClick.bind(this)
+    this.isInvalidEmail = this.isInvalidEmail.bind(this)
+  }
+
+  isInvalidEmail (email) {
+    const singleEmailSchema = new SimpleSchema({
+      email: {
+        type: String,
+        regEx: SimpleSchema.RegEx.EmailWithTLD
+      }
+    })
+    const validationContext = singleEmailSchema.namedContext('EmailNewForm')
+    validationContext.validate({ email })
+    const isInvalid = !validationContext.isValid()
+    const validationErrors = validationContext.validationErrors()
+    this.setState({
+      validationErrors
+    })
+    return isInvalid
   }
 
   handleChange (event) {
-    if (event.target.value && event.target.value.length < 6) { // x@y.zz
-      this.setState({
-        value: event.target.value,
-        isInvalid: false,
-        validationErrors: {}
-      })
-    } else {
-      const validationContext = singleEmailSchema.namedContext('EmailNewForm')
-      validationContext.validate({ email: event.target.value })
-      const isInvalid = !validationContext.isValid()
-      this.setState({
-        value: event.target.value,
-        isInvalid
-      })
-      const validationErrors = validationContext.validationErrors()
-      this.setState({
-        validationErrors
-      })
-    }
+    const isInvalid = this.isInvalidEmail(event.target.value)
+    this.setState({
+      value: event.target.value,
+      isInvalid
+    })
   }
 
   handleClick () {
-    if (this.state.isInvalid === false) {
+    const isInvalid = this.isInvalidEmail(this.state.value)
+    if (isInvalid === false) {
       const userId = this.props.user._id
       const newEmail = this.state.value
-      console.log('EmailNewForm addEmail:', userId, newEmail)
+      // console.log('EmailNewForm addEmail:', userId, newEmail)
       Meteor.call(
         'addEmail',
         {
@@ -64,8 +61,7 @@ class EmailNewForm extends PureComponent {
         (error, result) => {
           if (error && error.error === 'already-exists') {
             this.props.flash(error.reason, 'error');
-            console.error('addEmail error:', error)
-            // addEmailError = error
+            // console.error('addEmail error:', error)
             return null
           }
           // might there be other errors?
@@ -83,11 +79,9 @@ class EmailNewForm extends PureComponent {
               },
               (error, result) => {
                 if (error) {
-                  console.error('mapEmails error:', error.error, error.reason)
-                  // addEmailError = error
+                  // console.error('mapEmails error:', error.error, error.reason)
                   return null
                 }
-                console.info('mapEmails had no error but result', result)
               }
             )
           }
@@ -97,7 +91,7 @@ class EmailNewForm extends PureComponent {
         this.props.toggle()
       }
     } else {
-      console.log(this.state.validationErrors)
+      // console.log(this.state.validationErrors)
     }
   }
 

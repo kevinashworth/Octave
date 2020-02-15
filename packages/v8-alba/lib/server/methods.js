@@ -21,14 +21,14 @@ Meteor.methods({
   },
 
   addEmail ({ userId, newEmail }) {
-    console.log('Meteor.methods addEmail:', userId, newEmail)
+    // console.log('Meteor.methods addEmail:', userId, newEmail)
     try {
       Meteor.wrapAsync(Accounts.addEmail(userId, newEmail))
+      return newEmail
     } catch(error) {
-      console.log('actual error - ', error)
+      // console.log('addEmail error:', error)
       throw new Meteor.Error('already-exists', 'Email already exists in the database.')
     }
-    return newEmail
   },
 
   mapEmails ({ user }) {
