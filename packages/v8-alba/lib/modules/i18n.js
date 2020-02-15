@@ -23,6 +23,8 @@ addStrings('en', {
   'comments.body': 'Body',
   'comments.rate_limit_error': 'Please wait {value} seconds before commenting again.',
 
+  'errors.email_regex': 'Sorry, email address has the wrong formatting.',
+
   'patches.missing_document': 'There is no History for this in the database.',
 
   'users.complete_profile': 'Complete your user profile',
