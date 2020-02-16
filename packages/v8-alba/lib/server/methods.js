@@ -74,11 +74,11 @@ Meteor.methods({
 
   mapEmailsCurrentUser ({ operator }) {
     const user = Users.getUser()
-    console.log('Meteor.methods mapEmailsCurrentUser:', user)
+    // console.log('Meteor.methods mapEmailsCurrentUser:', user)
     if (user.emails && user.emails[0]) {
       const [...handles] = user.emails
-      console.log('current emails:', user.emails)
-      console.log('after handles:', handles)
+      // console.log('current emails:', user.emails)
+      // console.log('after handles:', handles)
 
       const emailAddress = user.emails[0].address
       const emailVerified = user.emails[0].verified

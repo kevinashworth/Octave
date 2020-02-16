@@ -45,7 +45,7 @@ class EmailDetail extends PureComponent {
         this.setState({ loading: false })
         return
       }
-      console.info('sendVerificationEmail results:', results)
+      // console.info('sendVerificationEmail results:', rmapEmailsCurrentUseresults)
       this.props.flash({
         id: 'users.verify_email_sent',
         properties: { handle: this.props.handle.address },

@@ -38,7 +38,7 @@ class MyAccountsVerifyEmail extends PureComponent {
               console.error('mapEmailsCurrentUser error:', error.error, error.reason)
               return null
             }
-            console.log('mapEmailsCurrentUser result:', result)
+            // console.log('mapEmailsCurrentUser result:', result)
           }
         )
       }
