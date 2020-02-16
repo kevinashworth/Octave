@@ -1,5 +1,5 @@
 import { Accounts } from 'meteor/accounts-base'
-import { Components, replaceComponent, withCurrentUser } from 'meteor/vulcan:core'
+import { Components, replaceComponent } from 'meteor/vulcan:core'
 import { intlShape } from 'meteor/vulcan:i18n'
 import React, { PureComponent } from 'react'
 import { withRouter } from 'react-router'
@@ -28,6 +28,19 @@ class MyAccountsVerifyEmail extends PureComponent {
           pending: false,
           error: null
         })
+        Meteor.call(
+          'mapEmailsCurrentUser',
+          {
+            operator: 'set'
+          },
+          (error, result) => {
+            if (error) {
+              console.error('mapEmailsCurrentUser error:', error.error, error.reason)
+              return null
+            }
+            console.log('mapEmailsCurrentUser result:', result)
+          }
+        )
       }
     })
   }
@@ -77,10 +90,14 @@ MyAccountsVerifyEmail.contextTypes = {
 }
 
 MyAccountsVerifyEmail.propsTypes = {
-  currentUser: PropTypes.object,
   match: PropTypes.object.isRequired
 }
 
 MyAccountsVerifyEmail.displayName = 'AccountsEnrollAccount'
 
-replaceComponent('AccountsVerifyEmail', MyAccountsVerifyEmail, withCurrentUser, withRouter)
+
+replaceComponent({
+  name: 'AccountsVerifyEmail',
+  component: MyAccountsVerifyEmail,
+  hocs: [withRouter]
+})
