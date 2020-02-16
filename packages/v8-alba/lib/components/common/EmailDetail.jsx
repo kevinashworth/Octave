@@ -7,8 +7,13 @@ import { Button, Card, CardBody, Col, Row } from 'reactstrap'
 class EmailDetail extends PureComponent {
   constructor (props) {
     super(props)
+    this.state = {
+      loading: false
+    }
+
     this.deleteEmail = this.deleteEmail.bind(this)
     this.emailEditSuccessCallback = this.emailEditSuccessCallback.bind(this)
+    this.sendVerificationEmail = this.sendVerificationEmail.bind(this)
   }
 
   deleteEmail = () => {
@@ -24,6 +29,32 @@ class EmailDetail extends PureComponent {
       type: 'success'
     })
   }
+
+  sendVerificationEmail () {
+    this.setState({ loading: true })
+    Meteor.call(
+      'sendVerificationEmail',
+      {
+        userId: this.props.user._id,
+        email: this.props.handle.address
+      },
+      (error, results) => {
+      if (error) {
+        console.error('sendVerificationEmail error:', error)
+        this.props.flash(error.reason, 'error')
+        this.setState({ loading: false })
+        return
+      }
+      console.info('sendVerificationEmail results:', results)
+      this.props.flash({
+        id: 'users.verify_email_sent',
+        properties: { handle: this.props.handle.address },
+        type: 'primary'
+      })
+      this.setState({ loading: false })
+    })
+  }
+
 
   render () {
     const { handle, user } = this.props
@@ -60,9 +91,10 @@ class EmailDetail extends PureComponent {
                         <strong><FormattedMessage id='users.unverified' /></strong>&nbsp;
                       </span>
                       &nbsp;
-                      <a className='text-primary' onClick={this.sendVerificationEmail}>
+                      <Button color='link' onClick={this.sendVerificationEmail}>
                         <FormattedMessage id='users.verify_email' />
-                      </a>
+                      </Button>
+                      {this.state.loading && <Components.Loading />}
                     </>}
                 </li>
                 {handle.visibility &&

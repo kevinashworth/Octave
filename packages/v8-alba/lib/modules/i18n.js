@@ -35,6 +35,7 @@ addStrings('en', {
   'users.primary_email': 'Primary Email',
   'users.unverified': 'Unverified',
   'users.verified': 'Verified',
-  'users.verify_email': 'Send verification email'
+  'users.verify_email': 'Send verification email',
+  'users.verify_email_sent': 'Sent verification email to “{handle}”'
 
 })

@@ -1,7 +1,7 @@
 import { registerFragment } from 'meteor/vulcan:core'
 import Users from 'meteor/vulcan:users'
 
-// replace default
+// replace UsersDefaultFragment
 registerFragment(/* GraphQL */`
   fragment UsersDefaultFragment on User {
     _id
@@ -48,6 +48,7 @@ registerFragment(/* GraphQL */`
     htmlBio
     website
     email
+    emails
     handles {
       address
       primary

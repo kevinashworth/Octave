@@ -42,7 +42,7 @@ class UsersProfile extends PureComponent {
                 user.handles.length > 0 &&
                 <CardTitle><b>Emails</b></CardTitle>}
               {user.handles &&
-                user.handles.map(handle => <Components.EmailDetail key={handle.address} handle={handle} />)
+                user.handles.map(handle => <Components.EmailDetail key={handle.address} handle={handle} user={user} />)
               }
               <CardTitle><b>Bio</b></CardTitle>
               {user.htmlBio

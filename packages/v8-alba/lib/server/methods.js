@@ -15,9 +15,9 @@ Meteor.methods({
     return { ...privateSettings }
   },
 
-  sendVerificationEmail (id) {
-    console.log('sendVerificationEmail id:', id)
-    Accounts.sendVerificationEmail(id)
+  sendVerificationEmail ({ userId, email }) {
+    console.log('sendVerificationEmail userId, email:', userId, email)
+    Accounts.sendVerificationEmail(userId, email)
   },
 
   addEmail ({ userId, newEmail }) {
@@ -42,7 +42,7 @@ Meteor.methods({
     }
   },
 
-  mapEmails ({ user, operator = 'addToSet' }) {
+  mapEmails ({ user, operator }) {
     console.log('Meteor.methods mapEmails:', user.emails)
     if (user.emails && user.emails[0]) {
       console.log('current handles:', user.handles)
@@ -58,7 +58,40 @@ Meteor.methods({
             emailVerified
           }
         }))
-      } else {
+      } else { // default is 'addToSet'
+        Meteor.wrapAsync(Connectors.update(Users, user._id, {
+          $addToSet: {
+            handles: { $each: handles }
+          },
+          $set: {
+            emailAddress,
+            emailVerified
+          }
+        }))
+      }
+    }
+  },
+
+  mapEmailsCurrentUser ({ operator }) {
+    const user = Users.getUser()
+    console.log('Meteor.methods mapEmailsCurrentUser:', user)
+    if (user.emails && user.emails[0]) {
+      const [...handles] = user.emails
+      console.log('current emails:', user.emails)
+      console.log('after handles:', handles)
+
+      const emailAddress = user.emails[0].address
+      const emailVerified = user.emails[0].verified
+
+      if (operator === 'set') {
+        Meteor.wrapAsync(Connectors.update(Users, user._id, {
+          $set: {
+            handles,
+            emailAddress,
+            emailVerified
+          }
+        }))
+      } else { // default is 'addToSet'
         Meteor.wrapAsync(Connectors.update(Users, user._id, {
           $addToSet: {
             handles: { $each: handles }
