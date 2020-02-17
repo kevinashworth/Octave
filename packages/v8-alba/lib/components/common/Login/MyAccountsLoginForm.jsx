@@ -1,6 +1,6 @@
 import { Components, replaceComponent } from 'meteor/vulcan:core'
 import React, { Component } from 'react'
-
+import { MyAccountsStateSwitcher } from './MyAccountsStateSwitcher.jsx'
 // let browserHistory
 // try {
 //   browserHistory = require('react-router').browserHistory
@@ -38,11 +38,20 @@ export class MyAccountsLoginForm extends Component {
     }
   }
 
+  componentDidUpdate () {
+    if (document.getElementById('facebook')) {
+      document.getElementById('facebook').innerHTML = '<span>Facebook</span>'
+    }
+    if (document.getElementById('github')) {
+      document.getElementById('github').innerHTML = '<span>Github</span>'
+    }
+  }
+
   render () {
     return (
-      <Components.AccountsStateSwitcher {...this.props} />
+      <MyAccountsStateSwitcher {...this.props} />
     )
   }
 }
 
-replaceComponent('AccountsLoginForm', MyAccountsLoginForm)
+// replaceComponent('AccountsLoginForm', MyAccountsLoginForm)

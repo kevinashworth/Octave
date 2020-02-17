@@ -4,11 +4,12 @@ import '../components/common/Dashboard/'
 import '../components/common/Dashboard/LineChartLarge'
 import '../components/common/Dashboard/LineChartSmall'
 import '../components/common/DefaultLayout/'
-import '../components/common/Login/'
 import '../components/common/LatestUpdates/'
 
-import '../components/common/Login/MyFormControl.jsx' // replaceComponent
+import '../components/common/Login/'
 import '../components/common/Login/MyAccountsLoginForm.jsx' // replaceComponent
+import '../components/common/Login/MyAccountsStateSwitcher.jsx' // replaceComponent
+import '../components/common/Login/MyFormControl.jsx' // replaceComponent
 import '../components/common/MyAlert.jsx' // replaceComponent
 import '../components/common/MyDropdown.jsx' // replaceComponent
 import '../components/common/MyModalTrigger.jsx' // replaceComponent
