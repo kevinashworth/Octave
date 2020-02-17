@@ -26,7 +26,8 @@ class Login extends Component {
         formSubheading = 'Sign up for a V8 account'
         break
       case Symbol.for('PROFILE'):
-        formHeading = 'Profile'
+        formHeading = 'Logging In'
+        formSubheading = 'This will just take a moment'
         break
       case Symbol.for('PASSWORD_CHANGE'):
         formHeading = 'Change Password'
