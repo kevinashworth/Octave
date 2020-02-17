@@ -1,9 +1,17 @@
 import { Promise } from 'meteor/promise'
 import algoliasearch from 'algoliasearch'
+import { getFullAddress } from '../../../modules/helpers.js'
 
 const applicationid = Meteor.settings.private.algolia.ApplicationID
 const adminapikey   = Meteor.settings.private.algolia.AdminAPIKey
 const algoliaindex  = Meteor.settings.private.algolia.AlgoliaIndex
+
+const fullAddress = (office) => {
+  if (office.addresses && office.addresses[0]) {
+    return getFullAddress(office.addresses[0])
+  }
+  return null
+}
 
 export function OfficeEditUpdateAlgoliaBefore (data, { document, originalDocument }) {
   var indexedObject = {
@@ -18,8 +26,10 @@ export function OfficeEditUpdateAlgoliaBefore (data, { document, originalDocumen
     indexedObject.name = document.displayName
     dirty = true
   }
-  if (document.fullAddress !== originalDocument.fullAddress) {
-    indexedObject.addressString = document.fullAddress
+  const docFullAddress = fullAddress(document)
+  const origFullAddress = fullAddress(originalDocument)
+  if (docFullAddress !== origFullAddress) {
+    indexedObject.addressString = docFullAddress
     dirty = true
   }
   if (document.slug !== originalDocument.slug) {
