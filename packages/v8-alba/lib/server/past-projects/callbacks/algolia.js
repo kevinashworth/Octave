@@ -45,12 +45,17 @@ export function PastProjectEditUpdateAlgoliaBefore (data, { document, originalDo
     const client = algoliasearch(applicationid, adminapikey)
     const index = client.initIndex(algoliaindex)
     indexedObject['updatedAt'] = new Date()
-    Promise.await(index.partialUpdateObject(indexedObject,
-      (err, response) => {
-        if (err) {
-          console.error('partialUpdateObject error:', err)
-        }
-        console.log('partialUpdateObject response:', response)
-      }))
+    Promise.await(
+      index.partialUpdateObject(
+        indexedObject,
+        { createIfNotExists: true }
+      )
+      .then(response => {
+          console.log('partialUpdateObject response:', response)
+      })
+      .catch(error => {
+        console.error('partialUpdateObject error:', error)
+      })
+    )
   }
 }

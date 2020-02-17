@@ -40,14 +40,15 @@ const createAlgoliaIndex = () => {
     hitsPerPage: 16
   });
 
-  index.getSettings((err, content) => {
-    if (err) {
-      console.error('Algolia getSettings error:', err)
-    }
-    console.group('Algolia getSettings:')
-    console.log(content)
-    console.groupEnd()
-  })
+  index.getSettings()
+    .then(response => {
+      console.group('Algolia getSettings:')
+      console.log(response)
+      console.groupEnd()
+    })
+    .catch(error => {
+      console.error('Algolia getSettings error:', error)
+    })
 
   let objects = []
   Contacts.find().forEach((o) => {

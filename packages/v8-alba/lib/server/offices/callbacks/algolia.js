@@ -31,13 +31,18 @@ export function OfficeEditUpdateAlgoliaBefore (data, { document, originalDocumen
     const client = algoliasearch(applicationid, adminapikey)
     const index = client.initIndex(algoliaindex)
     indexedObject['updatedAt'] = new Date()
-    Promise.await(index.partialUpdateObject(indexedObject,
-      (err, response) => {
-        if (err) {
-          console.error('partialUpdateObject error:', err)
-        }
-        console.log('partialUpdateObject response:', response)
-      }))
+    Promise.await(
+      index.partialUpdateObject(
+        indexedObject,
+        { createIfNotExists: true }
+      )
+      .then(response => {
+          console.log('partialUpdateObject response:', response)
+      })
+      .catch(error => {
+        console.error('partialUpdateObject error:', error)
+      })
+    )
   }
 }
 
@@ -54,11 +59,8 @@ export function OfficeCreateSaveToAlgolia (document) {
 
   const client = algoliasearch(applicationid, adminapikey)
   const index = client.initIndex(algoliaindex)
-  Promise.await(index.saveObject(indexedObject,
-    (err, response) => {
-      if (err) {
-        console.error('saveObject error:', err)
-      }
-      console.log('saveObject response:', response)
-    }))
+  Promise.await(index.saveObject(indexedObject)
+    .then(response => console.log('saveObject response:', response))
+    .catch(error => console.error('saveObject error:', error))
+  )
 }
