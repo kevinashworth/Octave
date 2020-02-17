@@ -21,6 +21,7 @@
     "@coreui/coreui-pro": "2.0.6",
     "@coreui/icons": "0.3.0",
     "@coreui/react": "git+https://git@github.com/kevinashworth/coreui-react.git#v8-alba-changes",
+    "@welldone-software/why-did-you-render": "^4.0.4",
     "algoliasearch": "^4.0.3",
     "analytics-node": "^2.1.1",
     "apollo-boost": "^0.1.16",
@@ -168,7 +169,6 @@
     "interweave-ssr": "^1.0.0",
     "standard": "^14.3.1",
     "storybook-react-router": "^1.0.2",
-    "why-did-you-update": "^0.1.1"
   },
   "postcss": {
     "plugins": {
