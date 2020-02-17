@@ -45,35 +45,37 @@ export function ProjectEditUpdateAlgoliaBefore (data, { document, originalDocume
     const client = algoliasearch(applicationid, adminapikey)
     const index = client.initIndex(algoliaindex)
     indexedObject['updatedAt'] = new Date()
-    Promise.await(index.partialUpdateObject(indexedObject,
-      (err, response) => {
-        if (err) {
-          console.error('partialUpdateObject error:', err)
-        }
-        console.log('partialUpdateObject response:', response)
-      }))
+    Promise.await(
+      index.partialUpdateObject(
+        indexedObject,
+        { createIfNotExists: true }
+      )
+      .then(response => {
+          console.log('partialUpdateObject response:', response)
+      })
+      .catch(error => {
+        console.error('partialUpdateObject error:', error)
+      })
+    )
   }
 }
 
 export function ProjectCreateSaveToAlgolia (document) {
- const indexedObject = {
-   objectID: document._id,
-   name: document.projectTitle,
-   body: document.summary,
-   notes: document.notes,
-   network: document.network,
-   url: `/projects/${document._id}/${document.slug}`,
-   updatedAt: document.createdAt,
-   boosted: 2
- }
+  const indexedObject = {
+    objectID: document._id,
+    name: document.projectTitle,
+    body: document.summary,
+    notes: document.notes,
+    network: document.network,
+    url: `/projects/${document._id}/${document.slug}`,
+    updatedAt: document.createdAt,
+    boosted: 2
+  }
 
- const client = algoliasearch(applicationid, adminapikey)
- const index = client.initIndex(algoliaindex)
- Promise.await(index.saveObject(indexedObject,
-   (err, response) => {
-     if (err) {
-       console.error('saveObject error:', err)
-     }
-     console.log('saveObject response:', response)
-   }))
+  const client = algoliasearch(applicationid, adminapikey)
+  const index = client.initIndex(algoliaindex)
+  Promise.await(index.saveObject(indexedObject)
+    .then(response => console.log('saveObject response:', response))
+    .catch(error => console.error('saveObject error:', error))
+  )
 }
