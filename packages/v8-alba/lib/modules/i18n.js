@@ -23,9 +23,19 @@ addStrings('en', {
   'comments.body': 'Body',
   'comments.rate_limit_error': 'Please wait {value} seconds before commenting again.',
 
+  'errors.email_regex': 'Sorry, email address has the wrong formatting.',
+
   'patches.missing_document': 'There is no History for this in the database.',
 
   'users.complete_profile': 'Complete your user profile',
-  'users.delete_success': 'User deleted'
+  'users.delete_success': 'User deleted',
+  'users.add_email': 'Add an Email',
+  'users.add_email_success': 'Added email “{handle}” successfully',
+  'users.new_email': 'New Email',
+  'users.primary_email': 'Primary Email',
+  'users.unverified': 'Unverified',
+  'users.verified': 'Verified',
+  'users.verify_email': 'Send verification email',
+  'users.verify_email_sent': 'Sent verification email to “{handle}”'
 
 })

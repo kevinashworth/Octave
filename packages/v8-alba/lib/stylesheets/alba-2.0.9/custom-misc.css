@@ -1,0 +1,15 @@
+ul.custom-list {
+  list-style: none; /* Remove HTML bullets */
+  padding: 0;
+  margin: 0;
+}
+
+ul.custom-list li {
+  padding-left: 16px;
+}
+
+ul.custom-list li::before {
+  content: "•"; /* Insert content that looks like bullets */
+  padding-right: 8px;
+  color: #73818f;
+}

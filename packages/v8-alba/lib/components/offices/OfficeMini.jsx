@@ -10,10 +10,14 @@ import Offices from '../../modules/offices/collection.js'
 
 const OfficeMini = (props) => {
   if (props.loading) {
-    return (<div><Components.Loading /></div>)
+    return <Components.Loading />
   }
-  if (!props.document) {
-    return (<div><FormattedMessage id='app.404' /></div>)
+  if (!props.document || !props.documentId) {
+    return (
+      <Card className='card-accent-primary' style={{minWidth: '8rem', maxWidth: '18rem'}}>
+        <FormattedMessage id='app.missing_document' />
+      </Card>
+    )
   }
 
   const office = props.document

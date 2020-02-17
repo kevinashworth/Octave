@@ -107,9 +107,6 @@ registerFragment(/* GraphQL */ `
 registerFragment(/* GraphQL */ `
   fragment OfficesEditFragment on Office {
     _id
-    createdAt
-    updatedAt
-    userId
     displayName
     body
     links {
@@ -118,6 +115,10 @@ registerFragment(/* GraphQL */ `
       profileName
     }
     projects {
+      projectId
+      projectTitle
+    }
+    pastProjects {
       projectId
       projectTitle
     }
@@ -132,16 +133,8 @@ registerFragment(/* GraphQL */ `
       city
       state
       zip
-      location
       addressType
     }
-    street
-    location
-    fullAddress
-    theStreet
-    theCity
-    theState
-    theLocation
     slug
   }
 `)

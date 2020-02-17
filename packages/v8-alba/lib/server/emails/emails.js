@@ -135,7 +135,7 @@ VulcanEmail.addEmails({
       const comment = _.isEmpty(data) ? dummyComment : data.comment.result
       console.log('newComment comment:')
       console.dir(comment)
-      return comment.user.displayName + ' left a new comment on your post'
+      return comment.user.displayName + ' left a new comment on your entry'
     },
     query: commentsQuery
   },

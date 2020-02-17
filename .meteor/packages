@@ -8,9 +8,10 @@ vulcan:i18n-en-us
 
 ############ Accounts Packages ############
 
-accounts-password@1.5.2
+accounts-password@1.5.3
 # accounts-twitter
-# accounts-facebook
+accounts-facebook
+accounts-github
 
 ############ Your Packages ############
 

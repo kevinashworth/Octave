@@ -1,78 +1,150 @@
-import { Components, registerComponent, withCurrentUser, withMessages, withSingle2 } from 'meteor/vulcan:core';
-import { FormattedMessage } from 'meteor/vulcan:i18n';
-import Users from 'meteor/vulcan:users';
-import { STATES } from 'meteor/vulcan:accounts';
-import React from 'react';
-import { withRouter } from 'react-router-dom';
-import PropTypes from 'prop-types';
+// import { Accounts } from 'meteor/accounts-base'
+import { Components, getFragment, registerComponent, withCurrentUser, withMessages, withSingle2 } from 'meteor/vulcan:core'
+import { FormattedMessage, intlShape } from 'meteor/vulcan:i18n'
+import Users from 'meteor/vulcan:users'
+import { STATES } from 'meteor/vulcan:accounts'
+import React, { PureComponent } from 'react'
+import { withRouter } from 'react-router-dom'
+import PropTypes from 'prop-types'
+import { Button, Card, CardBody, CardTitle, Col, Row } from 'reactstrap'
 
-const UsersEditForm = ({ document: user, currentUser, flash, history, loading, toggle }) => {
-
-  if (loading) {
-    return <Components.Loading />;
+class UsersEditForm extends PureComponent {
+  constructor (props) {
+    super(props)
+    this.emailNewSuccessCallback = this.emailNewSuccessCallback.bind(this)
+    // this.sendVerificationEmail = this.sendVerificationEmail.bind(this)
   }
 
-  return Users.canUpdate({ collection: Users, document: user, user: currentUser }) ? (
-    <div className="page users-edit-form">
-      <h2 className="page-title users-edit-form-title">
-        <FormattedMessage id="users.edit_account" />
-      </h2>
+  // sendVerificationEmail () {
+  //   Meteor.call('sendVerificationEmail', this.props.document._id, this.props.flash, function (err, results) {
+  //     if (err) {
+  //       console.error('sendVerificationEmail error:', err)
+  //     }
+  //     console.info('sendVerificationEmail results:', results)
+  //   })
+  // }
 
-      <div className="change-password-link">
-        <Components.ModalTrigger
-          size="small"
-          title={<FormattedMessage id="accounts.change_password" />}
-          component={
-            <a href="#">
-              <FormattedMessage id="accounts.change_password" />
-            </a>
-          }
-        >
-          <Components.AccountsLoginForm formState={STATES.PASSWORD_CHANGE} />
-        </Components.ModalTrigger>
+  emailNewSuccessCallback ({ handle }) {
+    this.props.flash({
+      id: 'users.add_email_success',
+      properties: { handle },
+      type: 'success'
+    })
+  }
+
+  render () {
+    const { document: user, currentUser, flash, history, loading, toggle } = this.props
+
+    if (loading) {
+      return <Components.Loading />
+    }
+
+    return Users.canUpdate({ collection: Users, document: user, user: currentUser }) ? (
+      <div className='animated fadeIn page users-edit-form'>
+        <Components.HeadTags title={`V8: ${this.context.intl.formatMessage({ id: 'users.edit_account' })}`} />
+        <Card className='card-accent-success'>
+          <CardBody>
+            <CardTitle>{user.displayName}</CardTitle>
+              <hr />
+              <Row>
+                <Col>
+                  {user.handles &&
+                    user.handles.length > 0 &&
+                    <CardTitle><b>Emails</b></CardTitle>}
+                  {user.handles &&
+                    user.handles.map(handle => <Components.EmailDetail key={handle.address} handle={handle} user={user} />)
+                  }
+                  <Components.ModalTrigger
+                    component={<Button><FormattedMessage id='users.add_email' /></Button>}>
+                    <Components.EmailNewForm
+                      user={user}
+                      successCallback={this.emailNewSuccessCallback}
+                    />
+                  </Components.ModalTrigger>
+              </Col>
+            </Row>
+            <Row>
+              <Col>
+                <Components.ModalTrigger
+                  title={<FormattedMessage id='accounts.change_password' />}
+                  component={
+                    <Button className='btn-warning'>
+                      <FormattedMessage id='accounts.change_password' />
+                    </Button>
+                  }
+                >
+                  <Components.AccountsLoginForm formState={STATES.PASSWORD_CHANGE} />
+                </Components.ModalTrigger>
+              </Col>
+            </Row>
+            <hr />
+            <Components.SmartForm
+              documentId={user._id}
+              collection={Users}
+              queryFragment={getFragment('UsersEditFragment')}
+              mutationFragment={getFragment('UsersEditFragment')}
+              fields={[
+                'displayName',
+                'username',
+                'twitterUsername',
+                'bio',
+                'website',
+                'notifications_comments',
+                'notifications_posts',
+                'notifications_replies',
+                'notifications_users',
+                'isAdmin'
+              ]}
+              successCallback={user => {
+                if (toggle) {
+                  toggle()
+                } else if (user.slug) {
+                  history.push(`/users/${user.slug}`)
+                } else {
+                  history.push('/admin')
+                }
+                flash({
+                  id: 'users.edit_success',
+                  properties: { name: Users.getDisplayName(user) },
+                  type: 'success'
+                })
+              }}
+              cancelCallback={document => {
+                if (toggle) {
+                  toggle()
+                } else {
+                  history.push(`/users/${user.slug}`)
+                }
+              }}
+              showRemove
+            />
+          </CardBody>
+        </Card>
       </div>
-
-      <Components.SmartForm
-        documentId={user._id}
-        collection={Users}
-        successCallback={user => {
-          if (toggle) {
-            toggle()
-          } else if (user.slug) {
-            history.push(`/users/${user.slug}`)
-          } else {
-            history.push('/admin')
-          }
-          flash({ id: 'users.edit_success', properties: { name: Users.getDisplayName(user) }, type: 'success' });
-        }}
-        cancelCallback={document => {
-          if (toggle) {
-            toggle()
-          } else {
-            history.push(`/users/${user.slug}`)
-          }
-        }}
-        showRemove={true}
-      />
-    </div>
-  ) : (
-    <FormattedMessage id="app.noPermission" />
-  );
-};
+    ) : (
+      <FormattedMessage id='app.noPermission' />
+    )
+  }
+}
 
 UsersEditForm.propTypes = {
   terms: PropTypes.object, // a user is defined by its unique _id or its unique slug
-};
+  flash: PropTypes.func
+}
 
-UsersEditForm.displayName = 'UsersEditForm';
+UsersEditForm.contextTypes = {
+  intl: intlShape
+}
+
+UsersEditForm.displayName = 'UsersEditForm'
 
 const options = {
   collection: Users,
-  fragmentName: 'UsersProfile',
-};
+  fragmentName: 'UsersProfile'
+}
 
 registerComponent({
   name: 'UsersEditForm',
   component: UsersEditForm,
-  hocs: [withMessages, withCurrentUser, withRouter, [withSingle2, options]],
-});
+  hocs: [withMessages, withCurrentUser, withRouter, [withSingle2, options]]
+})

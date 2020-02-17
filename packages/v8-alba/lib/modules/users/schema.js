@@ -6,34 +6,128 @@ const notificationsGroup = {
   order: 2
 }
 
-// fields we are REPLACING
+// Can't use `emails`, so use `handles` because it is non-similar
+const handleSubSchema = new SimpleSchema({
+  address: {
+    type: String,
+    optional: true,
+    canRead: ['guests'],
+    canCreate: ['members'],
+    canUpdate: ['members']
+  },
+  primary: {
+    type: Boolean,
+    optional: true,
+    defaultValue: true,
+    input: 'checkbox',
+    canRead: ['guests'],
+    canCreate: ['members'],
+    canUpdate: ['members']
+  },
+  verified: {
+    type: Boolean,
+    optional: true,
+    defaultValue: false,
+    input: 'checkbox',
+    canRead: ['guests'],
+    canCreate: ['members'],
+    canUpdate: ['members']
+  },
+  visibility: {
+    type: String,
+    optional: true,
+    defaultValue: 'private',
+    canRead: ['guests'],
+    canCreate: ['members'],
+    canUpdate: ['members'],
+    options: () => {
+      return ['private', 'public']
+    }
+  },
+})
+
+// fields we are MODIFYING
 Users.addField([
   {
     fieldName: 'createdAt',
     fieldSchema: {
-      type: Date,
-      optional: true,
-      canRead: ['guests'],
-      onCreate: () => {
-        return new Date();
-      }
+      canRead: ['guests']
     }
   },
   {
     fieldName: 'locale',
     fieldSchema: {
-      type: String,
-      label: 'Preferred Language',
-      optional: true,
-      hidden: true,
-      defaultValue: 'en',
-      canRead: ['guests']
+      hidden: true
+    }
+  },
+  {
+    fieldName: 'isAdmin',
+    fieldSchema: {
+      itemProperties: { layout: 'inputOnly' }
     }
   }
 ])
 
 // fields we are ADDING
 Users.addField([
+  {
+    fieldName: 'handles',
+    fieldSchema: {
+      type: Array,
+      optional: true,
+      canRead: ['guests'],
+      canCreate: ['members'],
+      canUpdate: ['members'],
+    }
+  },
+  {
+    fieldName: 'handles.$',
+    fieldSchema: {
+      type: handleSubSchema
+    }
+  },
+  // email.address - REDUNDANT FOR NOW, MAY NOT KEEP
+  {
+    fieldName: 'emailAddress',
+    fieldSchema: {
+      type: String,
+      canRead: ['members'],
+      canCreate: ['members'],
+      canUpdate: ['admins'],
+      resolveAs: {
+        resolver: (user) => {
+          if (user.handles && user.handles[0]) {
+            return user.handles[0].address
+          } else if (user.emails && user.emails[0]) {
+            return user.emails[0].address
+          }
+          return null
+        }
+      }
+    }
+  },
+  // email.verified
+  {
+    fieldName: 'emailVerified',
+    fieldSchema: {
+      type: Boolean,
+      optional: true,
+      defaultValue: false,
+      canRead: ['members'],
+      canCreate: ['members'],
+      canUpdate: ['admins'],
+      resolveAs: {
+        resolver: (user) => {
+          if (user.handles && user.handles[0]) {
+            return user.handles[0].verified
+          } else if (user.emails && user.emails[0]) {
+            return user.emails[0].verified
+          }
+          return null
+        }
+      }
+    }
+  },
   // Count of user's comments
   {
     fieldName: 'commentCount',
@@ -118,7 +212,8 @@ Users.addField([
       canRead: ['guests'],
       canCreate: ['admins'],
       canUpdate: ['admins'],
-      group: notificationsGroup
+      group: notificationsGroup,
+      itemProperties: { layout: 'inputOnly' }
     }
   },
   {
@@ -132,7 +227,8 @@ Users.addField([
       canRead: ['guests'],
       canCreate: ['members'],
       canUpdate: ['members'],
-      group: notificationsGroup
+      group: notificationsGroup,
+      itemProperties: { layout: 'inputOnly' }
     }
   },
   {
@@ -146,7 +242,8 @@ Users.addField([
       canRead: ['guests'],
       canCreate: ['members'],
       canUpdate: ['members'],
-      group: notificationsGroup
+      group: notificationsGroup,
+      itemProperties: { layout: 'inputOnly' }
     }
   },
   {
@@ -160,7 +257,30 @@ Users.addField([
       canRead: ['guests'],
       canCreate: ['members'],
       canUpdate: ['members'],
-      group: notificationsGroup
+      group: notificationsGroup,
+      itemProperties: { layout: 'inputOnly' }
     }
   }
 ])
+
+Users.find({ emails: { $exists: true } }).forEach(user => {
+  if (user.emails && user.emails[0]) {
+    const [...handles] = user.emails
+    const emailAddress = user.emails[0].address
+    const emailVerified = user.emails[0].verified
+    Users.update(user._id,
+      {
+        $set: {
+          handles,
+          emailAddress,
+          emailVerified
+        }
+      })
+  }
+})
+
+// `removeField` causes errors no matter which order.
+// Different errors, but errors, unless Vulcan changed to remove both at once.
+// So `emails` will be unused, but it will remain in the schema.
+// Users.removeField('emails.$')
+// Users.removeField('emails')

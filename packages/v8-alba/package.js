@@ -29,7 +29,8 @@ Package.onUse(function (api) {
     'lib/stylesheets/alba-2.0.9/custom-btn.css',
     'lib/stylesheets/alba-2.0.9/custom-comments.scss',
     'lib/stylesheets/alba-2.0.9/custom-containers.css',
-    'lib/stylesheets/alba-2.0.9/custom-datatable.css'
+    'lib/stylesheets/alba-2.0.9/custom-datatable.css',
+    'lib/stylesheets/alba-2.0.9/custom-misc.css'
   ], ['client']);
 
   api.addAssets([

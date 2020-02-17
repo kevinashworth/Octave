@@ -41,7 +41,7 @@ export function ProjectEditUpdateContacts (data, { document, originalDocument })
   console.groupEnd()
 
   // [b]
-  if (contactsToRemoveThisProjectFrom) {
+  if (!isEmptyValue(contactsToRemoveThisProjectFrom)) {
     contactsToRemoveThisProjectFrom.forEach(deletedContact => {
       const oldContact = Contacts.findOne(deletedContact.contactId)
       let oldContactProjects = oldContact && oldContact.projects

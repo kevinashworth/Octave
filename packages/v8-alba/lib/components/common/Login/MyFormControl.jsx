@@ -1,9 +1,21 @@
 import { replaceComponent } from 'meteor/vulcan:lib'
+import { FormattedMessage } from 'meteor/vulcan:i18n'
 import React from 'react'
-import { Input, InputGroup, InputGroupAddon, InputGroupText } from 'reactstrap'
+import { FormFeedback, Input, InputGroup, InputGroupAddon, InputGroupText } from 'reactstrap'
 
 const MyFormControl = (props) => {
-  const { autoComplete, defaultValue, id, placeholder, type, ...rest } = props
+  const {
+    autoComplete,
+    defaultValue,
+    id,
+    inputRef,
+    invalid,
+    messageId,
+    onChange,
+    placeholder,
+    type
+  } = props
+
   let icon = <i className='icon-user' />
   switch (id) {
     case 'email':
@@ -25,7 +37,19 @@ const MyFormControl = (props) => {
           {icon}
         </InputGroupText>
       </InputGroupAddon>
-      <Input type={type} placeholder={placeholder} autoComplete={autoComplete} defaultValue={defaultValue} {...rest} />
+      <Input
+        id={id}
+        type={type}
+        innerRef={inputRef}
+        onChange={onChange}
+        placeholder={placeholder}
+        defaultValue={defaultValue}
+        autoComplete={autoComplete}
+        invalid={invalid}
+      />
+      {invalid &&
+        <FormFeedback><FormattedMessage id={messageId} /></FormFeedback>
+      }
     </InputGroup>
   )
 }

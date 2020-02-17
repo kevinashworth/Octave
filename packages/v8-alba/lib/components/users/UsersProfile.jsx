@@ -4,7 +4,7 @@ import { FormattedMessage } from 'meteor/vulcan:i18n'
 import React, { PureComponent } from 'react'
 import { Link } from 'react-router-dom'
 import mapProps from 'recompose/mapProps'
-import { Button, Card, CardBody, CardFooter, CardHeader, CardLink, CardText } from 'reactstrap'
+import { Button, Card, CardBody, CardFooter, CardHeader, CardLink, CardText, CardTitle } from 'reactstrap'
 import Markup from 'interweave'
 import _ from 'lodash'
 import moment from 'moment'
@@ -28,9 +28,9 @@ class UsersProfile extends PureComponent {
         <div className='animated fadeIn'>
           <Components.HeadTags
             url={Users.getProfileUrl(user, true)}
-            title={`V8 Alba: ${Users.getDisplayName(user)}`}
+            title={`V8: ${Users.getDisplayName(user)}`}
           />
-          <Card className='card-accent-muted'>
+          <Card className='card-accent-success'>
             <CardHeader tag='h2'>{Users.getDisplayName(user)}{ Users.canUpdate({ collection: Users, user: currentUser, document: user })
               ? <div className='float-right'>
                   <Button tag={Link} to={`/users/${user.slug}/edit`}>Edit</Button>
@@ -38,10 +38,18 @@ class UsersProfile extends PureComponent {
               : null}
             </CardHeader>
             <CardBody>
+              {user.handles &&
+                user.handles.length > 0 &&
+                <CardTitle><b>Emails</b></CardTitle>}
+              {user.handles &&
+                user.handles.map(handle => <Components.EmailDetail key={handle.address} handle={handle} user={user} />)
+              }
+              <CardTitle><b>Bio</b></CardTitle>
               {user.htmlBio
                ? <Markup content={user.htmlBio} />
                : <CardText>{ user.bio }</CardText>
               }
+              <CardTitle><b>Links</b></CardTitle>
               {user.website ? (
                 <CardText>
                 <a href={user.website} target='profilelinks'>{user.website} </a>
@@ -52,7 +60,7 @@ class UsersProfile extends PureComponent {
               <CardBody>
                 <CardText>
                   <Button className='btn-twitter'>
-                    @<CardLink href={'https://twitter.com/' + user.twitterUsername}>{user.twitterUsername}</CardLink>
+                    <span><CardLink href={'https://twitter.com/' + user.twitterUsername}>{user.twitterUsername}</CardLink></span>
                   </Button>
                 </CardText>
               </CardBody>
