@@ -1,7 +1,7 @@
 import { Components, registerComponent, withCurrentUser, withSingle } from 'meteor/vulcan:core'
 import Users from 'meteor/vulcan:users'
 import { FormattedMessage } from 'meteor/vulcan:i18n'
-import React, { PureComponent } from 'react'
+import React, { Component } from 'react'
 import { Link } from 'react-router-dom'
 import mapProps from 'recompose/mapProps'
 import { Button, Card, CardBody, CardFooter, CardHeader, CardLink, CardText, CardTitle, Nav, NavItem, NavLink, TabContent, TabPane } from 'reactstrap'
@@ -11,15 +11,13 @@ import { DATE_FORMAT_LONG, DATE_FORMAT_SHORT } from '../../modules/constants.js'
 import { getFullAddress, transform } from '../../modules/helpers.js'
 import Projects from '../../modules/projects/collection.js'
 
-class ProjectsSingle extends PureComponent {
+class ProjectsSingle extends Component {
   constructor (props) {
     super(props)
-
     this.state = {
       activeTab: 'Main',
       commentsTabLabel: 'Comments'
     }
-
     this.commentsCallback = this.commentsCallback.bind(this)
     this.toggleTab = this.toggleTab.bind(this)
   }

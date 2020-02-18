@@ -1,6 +1,6 @@
 import { registerComponent } from 'meteor/vulcan:core'
 import { FormattedMessage } from 'meteor/vulcan:i18n'
-import React, { PureComponent, useState } from 'react'
+import React, { Component, useState } from 'react'
 import PropTypes from 'prop-types'
 import { Button, Collapse } from 'reactstrap'
 import * as jsonpatch from 'fast-json-patch'
@@ -10,7 +10,7 @@ import omitDeep from 'omit-deep'
 import { DATE_FORMAT_LONG } from '../../modules/constants.js'
 import OfficeDisplay from './OfficeDisplay.jsx'
 
-class OfficePatchDisplay extends PureComponent {
+class OfficePatchDisplay extends Component {
   render () {
     const { collapseIsOpen, office, patch } = this.props
     if (!collapseIsOpen) {
