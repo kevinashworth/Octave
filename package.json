@@ -116,7 +116,6 @@
     "react-stripe-checkout": "^2.4.0",
     "react-syntax-highlighter": "^6.1.2",
     "react-virtualized": "^9.21.2",
-    "react-virtualized-auto-sizer": "^1.0.2",
     "react-window": "^1.8.5",
     "react-window-infinite-loader": "^1.0.5",
     "reactstrap": "^8.4.1",
