@@ -183,8 +183,7 @@
     "ignore": [
       "**/package.json",
       "packages/v8-alba/package.js",
-      "packages/v8-alba/notes-to-self/**",
-      "packages/v8-alba/lib/server/**"
+      "packages/v8-alba/misc/**"
     ],
     "parser": "babel-eslint"
   },

@@ -69,7 +69,7 @@ class MyDatalist extends Component {
         <div className='col-sm-9'>
           <CreatableSelect
             styles={customStyles}
-            maxMenuHeight={400}
+            maxMenuHeight={500}
             theme={theme}
             formatGroupLabel={formatGroupLabel}
             onChange={this.handleChange}

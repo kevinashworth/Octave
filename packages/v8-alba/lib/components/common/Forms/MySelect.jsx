@@ -60,7 +60,7 @@ class MySelect extends Component {
       return (
         <Select
           styles={customStyles}
-          maxMenuHeight={400}
+          maxMenuHeight={500}
           theme={theme}
           value={selectedOption}
           onChange={this.handleChange}

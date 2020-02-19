@@ -49,7 +49,7 @@ addRoute([
 ])
 
 addRoute([
-  {name: 'admin.comments', path: '/admin/comments',   componentName: 'AdminComments'}
+  {name: 'admin.comments', path: '/admin/comments', componentName: 'AdminComments'},
+  {name: 'admin.users', path: '/admin/users', componentName: 'AdminUsers'}
   // {name: 'admin.posts',    path: '/admin/posts',      componentName: 'AdminPosts'},
-  // {name: 'admin.users',    path: '/admin/users',      componentName: 'AdminUsers'}
 ])
