@@ -14,6 +14,6 @@ const ContactsNewForm = ({ toggle }) =>
     />
   </div>
 
-ContactsNewForm.whyDidYouRender = false
+// ContactsNewForm.whyDidYouRender = false
 
 registerComponent('ContactsNewForm', ContactsNewForm)
