@@ -16,7 +16,7 @@ Package.onUse(function (api) {
     'percolate:migrations'
   ]);
 
-  api.addFiles('lib/stylesheets/ContactsVirtualizedList.css', 'client');
+  // api.addFiles('lib/stylesheets/ContactsVirtualizedList.css', 'client');
   api.addFiles('lib/stylesheets/react-bootstrap-table-all.min.css', 'client');
   api.addFiles('lib/stylesheets/react-virtualized-styles.css', 'client');
   api.addFiles('lib/stylesheets/simple-line-icons.scss', 'client');

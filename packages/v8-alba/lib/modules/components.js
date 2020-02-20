@@ -29,6 +29,7 @@ import '../components/common/Modals.jsx'
 import '../components/common/ErrorBoundary.jsx'
 
 import '../components/admin/AdminComments'
+import '../components/admin/AdminUsers'
 
 import '../components/common/AddressDetail'
 import '../components/common/ContactDetail'

@@ -1,7 +1,7 @@
 import { Components, registerComponent, withCurrentUser, withSingle } from 'meteor/vulcan:core'
 import Users from 'meteor/vulcan:users'
 import { FormattedMessage } from 'meteor/vulcan:i18n'
-import React, { PureComponent } from 'react'
+import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import { Link } from 'react-router-dom'
 import mapProps from 'recompose/mapProps'
@@ -30,7 +30,7 @@ function PastProjects (props) {
   )
 }
 
-class ContactsSingle extends PureComponent {
+class ContactsSingle extends Component {
   constructor (props) {
     super(props)
 

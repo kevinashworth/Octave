@@ -11,7 +11,7 @@ addRoute([
   { name: 'contacts.table', path: '/contacts', componentName: 'ContactsDataTable' },
   { name: 'contacts.mobile', path: '/m/contacts', componentName: 'ContactsNameOnly' },
   { name: 'contacts.list', path: '/contacts/list', componentName: 'ContactsList' },
-  { name: 'contacts.vlist', path: '/contacts/vlist', componentName: 'ContactsVirtualizedList' },
+  // { name: 'contacts.vlist', path: '/contacts/vlist', componentName: 'ContactsVirtualizedList' },
   { name: 'contacts.edit', path: '/contacts/:_id/edit', componentName: 'ContactsEditForm' },
   { name: 'contacts.single', path: '/contacts/:_id/:slug?', componentName: 'ContactsSingle' }
 ])
@@ -49,7 +49,7 @@ addRoute([
 ])
 
 addRoute([
-  {name: 'admin.comments', path: '/admin/comments',   componentName: 'AdminComments'}
+  {name: 'admin.comments', path: '/admin/comments', componentName: 'AdminComments'},
+  {name: 'admin.users', path: '/admin/users', componentName: 'AdminUsers'}
   // {name: 'admin.posts',    path: '/admin/posts',      componentName: 'AdminPosts'},
-  // {name: 'admin.users',    path: '/admin/users',      componentName: 'AdminUsers'}
 ])

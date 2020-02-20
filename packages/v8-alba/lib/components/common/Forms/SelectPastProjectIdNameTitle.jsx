@@ -2,18 +2,29 @@ import { registerComponent } from 'meteor/vulcan:lib'
 import React, { PureComponent } from 'react'
 import PropTypes from 'prop-types'
 import { FormGroup, Input, Label } from 'reactstrap'
-import Select from 'react-select'
+import Select from 'react-select-virtualized'
 import _ from 'lodash'
 import { customStyles, theme } from './react-select-settings'
 import { CASTING_TITLES_ENUM, nullOption } from '../../../modules/constants.js'
 
 import onlyUpdateForKeys from 'recompose/onlyUpdateForKeys'
-const OptimizedSelect = onlyUpdateForKeys(['value'])(Select)
+// import pure from 'recompose/pure'
+// const PureSelect = pure(Select)
+// const OptimizedSelect = onlyUpdateForKeys(['value'])(PureSelect)
 
 /**
 * This version explicity for projectId, projectTitle, titleForProject
 * TODO: a DRY component of this to not repeat all this code in SelectProjectIdNameTitle.jsx
 */
+
+const OptimizedOptionsSelect = onlyUpdateForKeys(['options'])(({ options, ...otherProps }) => {
+  return (
+    <Select
+      options={options}
+      {...otherProps}
+    />
+  )
+})
 
 class SelectPastProjectIdNameTitle extends PureComponent {
   constructor (props) {
@@ -79,10 +90,10 @@ class SelectPastProjectIdNameTitle extends PureComponent {
 
   render () {
     return (
-      <div>
+      <>
         <FormGroup>
           <Label for={`pastProjectId${this.props.itemIndex}`}>Past Project from Database</Label>
-          <OptimizedSelect
+          <OptimizedOptionsSelect
             styles={customStyles}
             maxMenuHeight={400}
             theme={theme}
@@ -105,7 +116,7 @@ class SelectPastProjectIdNameTitle extends PureComponent {
         </FormGroup>
         <FormGroup>
           <Label for={`titleForPastProject${this.props.itemIndex}`}>Title for Past Project</Label>
-          <OptimizedSelect
+          <Select
             styles={customStyles}
             maxMenuHeight={400}
             theme={theme}
@@ -117,7 +128,7 @@ class SelectPastProjectIdNameTitle extends PureComponent {
             resetValue={nullOption}
           />
         </FormGroup>
-      </div>
+      </>
     )
   }
 }

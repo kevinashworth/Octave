@@ -1,6 +1,6 @@
 import { Components, registerComponent, withAccess, withCurrentUser, withMulti } from 'meteor/vulcan:core'
 import Users from 'meteor/vulcan:users'
-import React, { PureComponent } from 'react'
+import React, { Component, PureComponent } from 'react'
 import { Link } from 'react-router-dom'
 import { Button, Card, CardBody, CardFooter, CardHeader, Modal, ModalBody, ModalHeader } from 'reactstrap'
 import { BootstrapTable, ClearSearchButton, SearchField, TableHeaderColumn } from 'react-bootstrap-table'
@@ -30,7 +30,19 @@ function dateFormatter (cell, row) {
   return moment(theDate).format(DATE_FORMAT_SHORT)
 }
 
-class ProjectsDataTable extends PureComponent {
+class AddButtonFooter extends PureComponent {
+  render () {
+    return (
+      <CardFooter>
+        <Components.ModalTrigger title='New Project' component={<Button>Add a Project</Button>}>
+          <Components.ProjectsNewForm />
+        </Components.ModalTrigger>
+      </CardFooter>
+    )
+  }
+}
+
+class ProjectsDataTable extends Component {
   constructor (props) {
     super(props)
 
@@ -74,7 +86,7 @@ class ProjectsDataTable extends PureComponent {
     const createCustomSearchField = (props) => {
       if (props.defaultValue.length) {
         this.setState({ searchColor: 'btn-danger' })
-      } else {
+      } else if (this.state.searchColor !== 'btn-secondary') {
         this.setState({ searchColor: 'btn-secondary' })
       }
       return (
@@ -270,14 +282,7 @@ class ProjectsDataTable extends PureComponent {
             }
           </CardFooter>
           }
-          {Users.canCreate({ collection: Projects, user: currentUser })
-            ? <CardFooter>
-              <Components.ModalTrigger title='New Project' component={<Button>Add a Project</Button>}>
-                <Components.ProjectsNewForm currentUser={currentUser} />
-              </Components.ModalTrigger>
-            </CardFooter>
-            : null
-          }
+          {Users.canCreate({ collection: Projects, user: currentUser }) && <AddButtonFooter />}
         </Card>
       </div>
     )

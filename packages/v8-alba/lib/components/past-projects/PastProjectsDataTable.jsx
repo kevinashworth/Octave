@@ -1,5 +1,5 @@
 import { Components, registerComponent, withAccess, withMulti } from 'meteor/vulcan:core'
-import React, { PureComponent } from 'react'
+import React, { Component } from 'react'
 import { Link } from 'react-router-dom'
 import { Button, Card, CardBody, CardFooter, CardHeader, Modal, ModalBody, ModalHeader } from 'reactstrap'
 import { BootstrapTable, ClearSearchButton, SearchField, TableHeaderColumn } from 'react-bootstrap-table'
@@ -23,7 +23,7 @@ function dateFormatter (cell, row) {
   return moment(cell).format(DATE_FORMAT_SHORT)
 }
 
-class PastProjectsDataTable extends PureComponent {
+class PastProjectsDataTable extends Component {
   constructor (props) {
     super(props)
 
@@ -67,7 +67,7 @@ class PastProjectsDataTable extends PureComponent {
     const createCustomSearchField = (props) => {
       if (props.defaultValue.length) {
         this.setState({ searchColor: 'btn-danger' })
-      } else {
+      } else if (this.state.searchColor !== 'btn-secondary') {
         this.setState({ searchColor: 'btn-secondary' })
       }
       return (

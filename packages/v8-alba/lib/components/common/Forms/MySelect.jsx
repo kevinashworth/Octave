@@ -2,7 +2,7 @@ import { registerComponent } from 'meteor/vulcan:lib'
 import { intlShape } from 'meteor/vulcan:i18n'
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
-import Select from 'react-select'
+import Select from 'react-select-virtualized'
 import _ from 'lodash'
 import { nullOption } from '../../../modules/constants.js'
 import { customStyles, theme } from './react-select-settings'
@@ -60,12 +60,11 @@ class MySelect extends Component {
       return (
         <Select
           styles={customStyles}
-          maxMenuHeight={400}
+          maxMenuHeight={500}
           theme={theme}
           value={selectedOption}
           onChange={this.handleChange}
           options={this.props.options}
-          defaultValue={nullOption}
           isClearable
         />
       )

@@ -1,12 +1,12 @@
 import { Components, registerComponent, withCurrentUser, withSingle } from 'meteor/vulcan:core'
 import { FormattedMessage } from 'meteor/vulcan:i18n'
-import React, { PureComponent } from 'react'
+import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import { Card, CardBody, CardFooter, CardHeader } from 'reactstrap'
 import Offices from '../../modules/offices/collection.js'
 import Patches from '../../modules/patches/collection.js'
 
-class OfficePatchesList extends PureComponent {
+class OfficePatchesList extends Component {
   render () {
     const { officeDocument, patchesDocument, networkStatus } = this.props
     if (networkStatus !== 8 && networkStatus !== 7) {

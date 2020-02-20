@@ -1,6 +1,6 @@
 import { Components, registerComponent, withAccess, withCurrentUser, withMulti } from 'meteor/vulcan:core'
 import Users from 'meteor/vulcan:users'
-import React, { PureComponent } from 'react'
+import React, { Component, PureComponent } from 'react'
 import { Link } from 'react-router-dom'
 import { Button, Card, CardBody, CardFooter, CardHeader, Modal, ModalBody, ModalHeader } from 'reactstrap'
 import { BootstrapTable, ClearSearchButton, SearchField, TableHeaderColumn } from 'react-bootstrap-table'
@@ -25,7 +25,19 @@ function dateFormatter (cell, row) {
   return moment(cell).format(DATE_FORMAT_SHORT)
 }
 
-class ContactsDataTable extends PureComponent {
+class AddButtonFooter extends PureComponent {
+  render () {
+    return (
+      <CardFooter>
+        <Components.ModalTrigger title='New Contact' component={<Button>Add a Contact</Button>}>
+          <Components.ContactsNewForm />
+        </Components.ModalTrigger>
+      </CardFooter>
+    )
+  }
+}
+
+class ContactsDataTable extends Component {
   constructor (props) {
     super(props)
 
@@ -69,7 +81,7 @@ class ContactsDataTable extends PureComponent {
     const createCustomSearchField = (props) => {
       if (props.defaultValue.length) {
         this.setState({ searchColor: 'btn-danger' })
-      } else {
+      } else if (this.state.searchColor !== 'btn-secondary') {
         this.setState({ searchColor: 'btn-secondary' })
       }
       return (
@@ -256,14 +268,7 @@ class ContactsDataTable extends PureComponent {
             }
           </CardFooter>
           }
-          {Users.canCreate({ collection: Contacts, user: currentUser })
-            ? <CardFooter>
-              <Components.ModalTrigger title='New Contact' component={<Button>Add a Contact</Button>}>
-                <Components.ContactsNewForm currentUser={currentUser} />
-              </Components.ModalTrigger>
-            </CardFooter>
-            : null
-          }
+          {Users.canCreate({ collection: Contacts, user: currentUser }) && <AddButtonFooter />}
         </Card>
       </div>
     )

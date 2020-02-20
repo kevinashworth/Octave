@@ -1,7 +1,7 @@
 import { Components, registerComponent, withCurrentUser, withSingle } from 'meteor/vulcan:core'
 import Users from 'meteor/vulcan:users'
 import { FormattedMessage } from 'meteor/vulcan:i18n'
-import React, { PureComponent } from 'react'
+import React, { Component } from 'react'
 import { Link } from 'react-router-dom'
 import { Button, Card, CardBody, CardFooter, CardHeader, CardText, CardTitle, Collapse, Nav, NavItem, NavLink, TabContent, TabPane } from 'reactstrap'
 import Interweave from 'interweave'
@@ -39,7 +39,7 @@ function PastProjects (props) {
   )
 }
 
-class OfficesSingle extends PureComponent {
+class OfficesSingle extends Component {
   constructor (props) {
     super(props)
 

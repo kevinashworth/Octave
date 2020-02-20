@@ -1,6 +1,6 @@
 import { Components, registerComponent, withAccess, withCurrentUser, withMulti } from 'meteor/vulcan:core'
 import Users from 'meteor/vulcan:users'
-import React, { PureComponent } from 'react'
+import React, { Component, PureComponent } from 'react'
 import { Link } from 'react-router-dom'
 import { Button, Card, CardBody, CardFooter, CardHeader } from 'reactstrap'
 import { BootstrapTable, ClearSearchButton, SearchField, TableHeaderColumn } from 'react-bootstrap-table'
@@ -22,7 +22,19 @@ function dateFormatter (cell, row) {
   return moment(cell).format(DATE_FORMAT_SHORT)
 }
 
-class OfficesDataTable extends PureComponent {
+class AddButtonFooter extends PureComponent {
+  render () {
+    return (
+      <CardFooter>
+        <Components.ModalTrigger title='New Office' component={<Button>Add an Office</Button>}>
+          <Components.OfficesNewForm />
+        </Components.ModalTrigger>
+      </CardFooter>
+    )
+  }
+}
+
+class OfficesDataTable extends Component {
   constructor (props) {
     super(props)
 
@@ -61,7 +73,7 @@ class OfficesDataTable extends PureComponent {
     const createCustomSearchField = (props) => {
       if (props.defaultValue.length) {
         this.setState({ searchColor: 'btn-danger' })
-      } else {
+      } else if (this.state.searchColor !== 'btn-secondary') {
         this.setState({ searchColor: 'btn-secondary' })
       }
       return (
@@ -186,14 +198,7 @@ class OfficesDataTable extends PureComponent {
               }
             </CardFooter>
           }
-          {Users.canCreate({ collection: Offices, user: currentUser })
-            ? <CardFooter>
-              <Components.ModalTrigger title='New Office' component={<Button>Add an Office</Button>}>
-                <Components.OfficesNewForm currentUser={currentUser} />
-              </Components.ModalTrigger>
-            </CardFooter>
-            : null
-          }
+          {Users.canCreate({ collection: Offices, user: currentUser }) && <AddButtonFooter />}
         </Card>
       </div>
     )

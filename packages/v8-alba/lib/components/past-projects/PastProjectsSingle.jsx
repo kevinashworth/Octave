@@ -1,7 +1,7 @@
 import { Components, registerComponent, withCurrentUser, withSingle } from 'meteor/vulcan:core'
 import Users from 'meteor/vulcan:users'
 import { FormattedMessage } from 'meteor/vulcan:i18n'
-import React, { PureComponent } from 'react'
+import React, { Component } from 'react'
 import { Link } from 'react-router-dom'
 import mapProps from 'recompose/mapProps'
 import { Button, Card, CardBody, CardFooter, CardHeader, CardLink, CardText, CardTitle, Nav, NavItem, NavLink, TabContent, TabPane } from 'reactstrap'
@@ -11,7 +11,7 @@ import { DATE_FORMAT_LONG, DATE_FORMAT_SHORT } from '../../modules/constants.js'
 import { transform } from '../../modules/helpers.js'
 import PastProjects from '../../modules/past-projects/collection.js'
 
-class PastProjectsSingle extends PureComponent {
+class PastProjectsSingle extends Component {
   constructor (props) {
     super(props)
 
@@ -32,15 +32,7 @@ class PastProjectsSingle extends PureComponent {
     if (!project.season) {
       return null
     }
-    var so = 'Season Info Missing'
-    if (project.renewed && project.status === 'On Hiatus') {
-      so = `Renewed for Season ${project.season}`
-    } else if (project.status === 'On Hiatus' || project.status === 'Wrapped' || project.status === 'Canceled') {
-      so = `Completed Season ${project.season}`
-    }
-    if (project.status === 'Casting') {
-      so = `Season ${project.season}`
-    }
+    var so = `Completed Season ${project.season}`
     if (project.order) {
       so += ` (${project.order}-episode order)`
     }
