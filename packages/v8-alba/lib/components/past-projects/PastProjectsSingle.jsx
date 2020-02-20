@@ -32,15 +32,7 @@ class PastProjectsSingle extends Component {
     if (!project.season) {
       return null
     }
-    var so = 'Season Info Missing'
-    if (project.renewed && project.status === 'On Hiatus') {
-      so = `Renewed for Season ${project.season}`
-    } else if (project.status === 'On Hiatus' || project.status === 'Wrapped' || project.status === 'Canceled') {
-      so = `Completed Season ${project.season}`
-    }
-    if (project.status === 'Casting') {
-      so = `Season ${project.season}`
-    }
+    var so = `Completed Season ${project.season}`
     if (project.order) {
       so += ` (${project.order}-episode order)`
     }

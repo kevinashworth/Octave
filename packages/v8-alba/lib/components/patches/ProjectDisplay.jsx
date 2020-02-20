@@ -17,7 +17,7 @@ const ProjectDisplay = ({ project }) => {
     } else if (project.status === 'On Hiatus' || project.status === 'Wrapped' || project.status === 'Canceled') {
       so = `Completed Season ${project.season}`
     }
-    if (project.status === 'Casting' || project.status === 'See Notes') {
+    if (project.status === 'Casting' || project.status === 'See Notes' || project.status === 'Pre-Prod.') {
       so = `Season ${project.season}`
     }
     if (project.order) {
