@@ -1,6 +1,6 @@
 Package.describe({
   name: 'v8-alba',
-  version: '1.14.0'
+  version: '1.14.1'
 });
 
 Package.onUse(function (api) {
@@ -8,6 +8,7 @@ Package.onUse(function (api) {
     'vulcan:core',
     'vulcan:accounts',
     'vulcan:admin',
+    'vulcan:backoffice',
     'vulcan:debug',
     'vulcan:email',
     'vulcan:forms',
