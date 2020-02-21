@@ -77,6 +77,8 @@ let schema = {
     type: String,
     hidden: true,
     canRead: ['guests'],
+    canCreate: ['members', 'admins'],
+    canUpdate: ['members', 'admins'],
     onCreate: ({ document }) => {
       return getSortTitle(document.projectTitle)
     },

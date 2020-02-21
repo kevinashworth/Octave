@@ -11,6 +11,8 @@ import {
   SVOD_ENUM,
   AVOD_ENUM
 } from './constants.js'
+import moment from 'moment'
+import { DATE_FORMAT_SHORT } from './constants.js'
 
 export function getFullNameFromContact ({ firstName, middleName, lastName }) {
   let tempName = ''
@@ -382,6 +384,46 @@ export const transform = (node, children) => {
       return (<Link to={href}>{children}</Link>)
     } else if (href.indexOf('http') === 0) {
       return (<a href={href} target='notelinks'>{children}</a>)
+    }
+  }
+}
+
+/* for DataTables */
+
+// export function dateFormatter (cell, row) {
+//   return moment(cell).format(DATE_FORMAT_SHORT)
+// }
+
+export function dateFormatter (cell, row) {
+  let theDate
+  if (!cell) { // i.e. there is only a createdAt, not an updatedAt
+    theDate = row.createdAt
+  } else {
+    theDate = cell
+  }
+  return moment(theDate).format(DATE_FORMAT_SHORT)
+}
+
+export function renderShowsTotal (start, to, total) {
+  return (
+    <span>
+      Showing { start } to { to } out of { total } &nbsp;&nbsp;
+    </span>
+  )
+}
+
+export function titleSortFunc (a, b, order) {
+  if (a.sortTitle && b.sortTitle) {
+    if (order === 'asc') {
+      return a.sortTitle.localeCompare(b.sortTitle)
+    } else {
+      return b.sortTitle.localeCompare(a.sortTitle)
+    }
+  } else {
+    if (order === 'asc') {
+      return getSortTitle(a.projectTitle).localeCompare(getSortTitle(b.projectTitle))
+    } else {
+      return getSortTitle(b.projectTitle).localeCompare(getSortTitle(a.projectTitle))
     }
   }
 }

@@ -6,28 +6,22 @@ import { Button, Card, CardBody, CardFooter, CardHeader, Modal, ModalBody, Modal
 import { BootstrapTable, ClearSearchButton, SearchField, TableHeaderColumn } from 'react-bootstrap-table'
 import _ from 'lodash'
 import moment from 'moment'
-import { DATE_FORMAT_SHORT, SIZE_PER_PAGE_LIST_SEED } from '../../modules/constants.js'
+import { SIZE_PER_PAGE_LIST_SEED } from '../../modules/constants.js'
+import { dateFormatter, renderShowsTotal, titleSortFunc } from '../../modules/helpers.js'
 import Projects from '../../modules/projects/collection.js'
 import withFilters from '../../modules/hocs/withFilters.js'
 
 // Set initial state. Just options I want to keep.
 // See https://github.com/amannn/react-keep-state
 let keptState = {
-  defaultSearch: '',
-  page: 1,
-  sizePerPage: 50,
-  sortName: 'projectTitle',
-  sortOrder: 'asc'
-}
-
-function dateFormatter (cell, row) {
-  let theDate
-  if (!cell) { // i.e. there is only a createdAt, not an updatedAt
-    theDate = row.createdAt
-  } else {
-    theDate = cell
+  searchColor: 'btn-secondary',
+  options: {
+    defaultSearch: '',
+    page: 1,
+    sizePerPage: 50,
+    sortName: 'projectTitle',
+    sortOrder: 'asc'
   }
-  return moment(theDate).format(DATE_FORMAT_SHORT)
 }
 
 class AddButtonFooter extends PureComponent {
@@ -45,70 +39,7 @@ class AddButtonFooter extends PureComponent {
 class ProjectsDataTable extends Component {
   constructor (props) {
     super(props)
-
-    const pageChangeHandler = (page, sizePerPage) => {
-      this.setState((prevState) => ({
-        options: { ...prevState.options, page, sizePerPage }
-      }))
-    }
-
-    function renderShowsTotal (start, to, total) {
-      return (
-        <span>
-          Showing { start } to { to } out of { total } &nbsp;&nbsp;
-        </span>
-      )
-    }
-
-    const rowClickHandler = (row, columnIndex, rowIndex, event) => {
-      this.setState({ project: row })
-      this.setState({ modal: true })
-    }
-
-    const sortChangeHandler = (sortName, sortOrder) => {
-      this.setState((prevState) => ({
-        options: { ...prevState.options, sortName, sortOrder }
-      }))
-    }
-
-    const searchChangeHandler = (searchText) => {
-      this.setState((prevState) => ({
-        options: { ...prevState.options, defaultSearch: searchText }
-      }))
-    }
-
-    const sizePerPageListHandler = (sizePerPage) => {
-      this.setState((prevState) => ({
-        options: { ...prevState.options, sizePerPage }
-      }))
-    }
-
-    const createCustomSearchField = (props) => {
-      if (props.defaultValue.length) {
-        this.setState({ searchColor: 'btn-danger' })
-      } else if (this.state.searchColor !== 'btn-secondary') {
-        this.setState({ searchColor: 'btn-secondary' })
-      }
-      return (
-        <SearchField defaultValue={props.defaultValue} />
-      )
-    }
-
-    const handleClearButtonClick = (onClick) => {
-      this.setState({ searchColor: 'btn-secondary' })
-      onClick()
-    }
-
-    const createCustomClearButton = (onClick) => {
-      return (
-        <ClearSearchButton className='btn-sm'
-          btnContextual={this.state.searchColor}
-          onClick={e => handleClearButtonClick(onClick)} />
-      )
-    }
-
     this.state = {
-      searchColor: 'btn-secondary',
       modal: false,
       project: null,
       options: {
@@ -130,18 +61,26 @@ class ProjectsDataTable extends Component {
         }],
         paginationShowsTotal: renderShowsTotal,
         paginationPosition: 'both',
-        onPageChange: pageChangeHandler,
-        onSizePerPageList: sizePerPageListHandler,
-        onSortChange: sortChangeHandler,
-        onSearchChange: searchChangeHandler,
-        onRowClick: rowClickHandler,
+        onPageChange: this.pageChangeHandler,
+        onSizePerPageList: this.sizePerPageListHandler,
+        onSortChange: this.sortChangeHandler,
+        onSearchChange: this.searchChangeHandler,
+        onRowClick: this.rowClickHandler,
         clearSearch: true,
-        clearSearchBtn: createCustomClearButton,
-        searchField: createCustomSearchField,
+        clearSearchBtn: this.createCustomClearButton,
+        searchField: this.createCustomSearchField,
         // Retrieve the last state
-        ...keptState
-      }
+        ...keptState.options
+      },
+      ...keptState.searchColor
     }
+    this.createCustomClearButton = this.createCustomClearButton.bind(this)
+    this.createCustomSearchField = this.createCustomSearchField.bind(this)
+    this.pageChangeHandler = this.pageChangeHandler.bind(this)
+    this.rowClickHandler = this.rowClickHandler.bind(this)
+    this.searchChangeHandler = this.searchChangeHandler.bind(this)
+    this.sizePerPageListHandler = this.sizePerPageListHandler.bind(this)
+    this.sortChangeHandler = this.toggle.bind(this)
     this.toggle = this.toggle.bind(this)
   }
 
@@ -149,12 +88,63 @@ class ProjectsDataTable extends Component {
     // Remember state for the next mount
     const { options } = this.state
     keptState = {
-      defaultSearch: options.defaultSearch,
-      page: options.page,
-      sizePerPage: options.sizePerPage,
-      sortName: options.sortName,
-      sortOrder: options.sortOrder
+      searchColor: options.searchColor,
+      options: {
+        defaultSearch: options.defaultSearch,
+        page: options.page,
+        sizePerPage: options.sizePerPage,
+        sortName: options.sortName,
+        sortOrder: options.sortOrder
+      }
     }
+  }
+
+  pageChangeHandler = (page, sizePerPage) => {
+    this.setState((prevState) => ({
+      options: { ...prevState.options, page, sizePerPage }
+    }))
+  }
+
+  sortChangeHandler = (sortName, sortOrder) => {
+    this.setState((prevState) => ({
+      options: { ...prevState.options, sortName, sortOrder }
+    }))
+  }
+
+  searchChangeHandler = (searchText) => {
+    this.setState((prevState) => ({
+      options: { ...prevState.options, defaultSearch: searchText }
+    }))
+  }
+
+  sizePerPageListHandler = (sizePerPage) => {
+    this.setState((prevState) => ({
+      options: { ...prevState.options, sizePerPage }
+    }))
+  }
+
+  createCustomSearchField = (props) => {
+    if (props.defaultValue.length && this.state.searchColor !== 'btn-danger') {
+      this.setState({ searchColor: 'btn-danger' })
+    } else if (props.defaultValue.length === 0 && this.state.searchColor !== 'btn-secondary') {
+      this.setState({ searchColor: 'btn-secondary' })
+    }
+    return (
+      <SearchField defaultValue={props.defaultValue} />
+    )
+  }
+
+  handleClearButtonClick = (onClick) => {
+    this.setState({ searchColor: 'btn-secondary' })
+    onClick()
+  }
+
+  createCustomClearButton = (onClick) => {
+    return (
+      <ClearSearchButton className='btn-sm'
+        btnContextual={this.state.searchColor}
+        onClick={e => this.handleClearButtonClick(onClick)} />
+    )
   }
 
   toggle () {
@@ -163,12 +153,9 @@ class ProjectsDataTable extends Component {
     })
   }
 
-  titleSortFunc (a, b, order) {
-    if (order === 'asc') {
-      return a.sortTitle.localeCompare(b.sortTitle)
-    } else {
-      return b.sortTitle.localeCompare(a.sortTitle)
-    }
+  rowClickHandler = (row, columnIndex, rowIndex, event) => {
+    this.setState({ contact: row })
+    this.setState({ modal: true })
   }
 
   render () {
@@ -253,7 +240,7 @@ class ProjectsDataTable extends Component {
                 }])
               }}
               version='4'>
-              <TableHeaderColumn dataField='projectTitle' dataSort sortFunc={ this.titleSortFunc } dataFormat={
+              <TableHeaderColumn dataField='projectTitle' dataSort sortFunc={titleSortFunc} dataFormat={
                 (cell, row) => {
                   return (
                     <Link to={`/projects/${row._id}/${row.slug}`}>

@@ -2,7 +2,7 @@ import { Utils } from 'meteor/vulcan:core'
 import marked from 'marked'
 import { addressSubSchema, contactSubSchema, linkSubSchema, officeSubSchema } from '../shared_schemas.js'
 import { PROJECT_TYPES_ENUM, PROJECT_STATUSES_ENUM } from '../constants.js'
-import { getFullAddress, getPlatformType } from '../helpers.js'
+import { getFullAddress, getPlatformType, getSortTitle } from '../helpers.js'
 
 const officeGroup = {
   name: 'offices',
@@ -79,7 +79,13 @@ const schema = {
     optional: true,
     canRead: ['guests'],
     canCreate: ['members', 'admins'],
-    canUpdate: ['members', 'admins']
+    canUpdate: ['members', 'admins'],
+    onCreate: ({ document }) => {
+      return getSortTitle(document.projectTitle)
+    },
+    onUpdate: ({ data }) => {
+      return getSortTitle(data.projectTitle)
+    }
   },
   projectType: {
     label: 'Type',

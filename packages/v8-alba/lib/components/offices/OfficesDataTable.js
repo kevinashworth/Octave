@@ -4,22 +4,21 @@ import React, { Component, PureComponent } from 'react'
 import { Link } from 'react-router-dom'
 import { Button, Card, CardBody, CardFooter, CardHeader } from 'reactstrap'
 import { BootstrapTable, ClearSearchButton, SearchField, TableHeaderColumn } from 'react-bootstrap-table'
-import moment from 'moment'
-import { DATE_FORMAT_SHORT, SIZE_PER_PAGE_LIST_SEED } from '../../modules/constants.js'
+import { SIZE_PER_PAGE_LIST_SEED } from '../../modules/constants.js'
+import { dateFormatter, renderShowsTotal } from '../../modules/helpers.js'
 import Offices from '../../modules/offices/collection.js'
 
 // Set initial state. Just options I want to keep.
 // See https://github.com/amannn/react-keep-state
 let keptState = {
-  defaultSearch: '',
-  page: 1,
-  sizePerPage: 20,
-  sortName: 'updatedAt',
-  sortOrder: 'desc'
-}
-
-function dateFormatter (cell, row) {
-  return moment(cell).format(DATE_FORMAT_SHORT)
+  searchColor: 'btn-secondary',
+  options: {
+    defaultSearch: '',
+    page: 1,
+    sizePerPage: 20,
+    sortName: 'updatedAt',
+    sortOrder: 'desc'
+  }
 }
 
 class AddButtonFooter extends PureComponent {
@@ -37,63 +36,6 @@ class AddButtonFooter extends PureComponent {
 class OfficesDataTable extends Component {
   constructor (props) {
     super(props)
-
-    const pageChangeHandler = (page, sizePerPage) => {
-      this.setState((prevState) => ({
-        options: { ...prevState.options, page, sizePerPage }
-      }))
-    }
-
-    function renderShowsTotal (start, to, total) {
-      return (
-        <span>
-          Showing { start } to { to } out of { total } &nbsp;&nbsp;
-        </span>
-      )
-    }
-
-    const sortChangeHandler = (sortName, sortOrder) => {
-      this.setState((prevState) => ({
-        options: { ...prevState.options, sortName, sortOrder }
-      }))
-    }
-
-    const searchChangeHandler = (searchText) => {
-      this.setState((prevState) => ({
-        options: { ...prevState.options, defaultSearch: searchText }
-      }))
-    }
-
-    const sizePerPageListHandler = (sizePerPage) => {
-      this.setState((prevState) => ({
-        options: { ...prevState.options, sizePerPage }
-      }))
-    }
-
-    const createCustomSearchField = (props) => {
-      if (props.defaultValue.length) {
-        this.setState({ searchColor: 'btn-danger' })
-      } else if (this.state.searchColor !== 'btn-secondary') {
-        this.setState({ searchColor: 'btn-secondary' })
-      }
-      return (
-        <SearchField defaultValue={props.defaultValue} />
-      )
-    }
-
-    const handleClearButtonClick = (onClick) => {
-      this.setState({ searchColor: 'btn-secondary' })
-      onClick()
-    }
-
-    const createCustomClearButton = (onClick) => {
-      return (
-        <ClearSearchButton className='btn-sm'
-          btnContextual={this.state.searchColor}
-          onClick={e => handleClearButtonClick(onClick)} />
-      )
-    }
-
     this.state = {
       options: {
         sortIndicator: true,
@@ -114,29 +56,88 @@ class OfficesDataTable extends Component {
         }],
         paginationShowsTotal: renderShowsTotal,
         paginationPosition: 'both',
-        onPageChange: pageChangeHandler,
-        onSizePerPageList: sizePerPageListHandler,
-        onSortChange: sortChangeHandler,
-        onSearchChange: searchChangeHandler,
+        onPageChange: this.pageChangeHandler,
+        onSizePerPageList: this.sizePerPageListHandler,
+        onSortChange: this.sortChangeHandler,
+        onSearchChange: this.searchChangeHandler,
         clearSearch: true,
-        clearSearchBtn: createCustomClearButton,
-        searchField: createCustomSearchField,
+        clearSearchBtn: this.createCustomClearButton,
+        searchField: this.createCustomSearchField,
         // Retrieve the last state
-        ...keptState
-      }
+        ...keptState.options
+      },
+      ...keptState.searchColor
     }
+    this.createCustomClearButton = this.createCustomClearButton.bind(this)
+    this.createCustomSearchField = this.createCustomSearchField.bind(this)
+    this.handleClearButtonClick = this.handleClearButtonClick.bind(this)
+    this.pageChangeHandler = this.pageChangeHandler.bind(this)
+    this.searchChangeHandler = this.searchChangeHandler.bind(this)
+    this.sizePerPageListHandler = this.sizePerPageListHandler.bind(this)
+    this.sortChangeHandler = this.sortChangeHandler.bind(this)
   }
 
   componentWillUnmount () {
     // Remember state for the next mount
     const { options } = this.state
     keptState = {
-      defaultSearch: options.defaultSearch,
-      page: options.page,
-      sizePerPage: options.sizePerPage,
-      sortName: options.sortName,
-      sortOrder: options.sortOrder
+      searchColor: options.searchColor,
+      options: {
+        defaultSearch: options.defaultSearch,
+        page: options.page,
+        sizePerPage: options.sizePerPage,
+        sortName: options.sortName,
+        sortOrder: options.sortOrder
+      }
     }
+  }
+
+  pageChangeHandler = (page, sizePerPage) => {
+    this.setState((prevState) => ({
+      options: { ...prevState.options, page, sizePerPage }
+    }))
+  }
+
+  sortChangeHandler = (sortName, sortOrder) => {
+    this.setState((prevState) => ({
+      options: { ...prevState.options, sortName, sortOrder }
+    }))
+  }
+
+  searchChangeHandler = (searchText) => {
+    this.setState((prevState) => ({
+      options: { ...prevState.options, defaultSearch: searchText }
+    }))
+  }
+
+  sizePerPageListHandler = (sizePerPage) => {
+    this.setState((prevState) => ({
+      options: { ...prevState.options, sizePerPage }
+    }))
+  }
+
+  createCustomSearchField = (props) => {
+    if (props.defaultValue.length && this.state.searchColor !== 'btn-danger') {
+      this.setState({ searchColor: 'btn-danger' })
+    } else if (props.defaultValue.length === 0 && this.state.searchColor !== 'btn-secondary') {
+      this.setState({ searchColor: 'btn-secondary' })
+    }
+    return (
+      <SearchField defaultValue={props.defaultValue} />
+    )
+  }
+
+  handleClearButtonClick = (onClick) => {
+    this.setState({ searchColor: 'btn-secondary' })
+    onClick()
+  }
+
+  createCustomClearButton = (onClick) => {
+    return (
+      <ClearSearchButton className='btn-sm'
+        btnContextual={this.state.searchColor}
+        onClick={e => this.handleClearButtonClick(onClick)} />
+    )
   }
 
   render () {
