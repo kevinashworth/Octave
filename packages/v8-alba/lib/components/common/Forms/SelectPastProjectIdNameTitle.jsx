@@ -1,5 +1,5 @@
 import { registerComponent } from 'meteor/vulcan:lib'
-import React, { PureComponent } from 'react'
+import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import { FormGroup, Input, Label } from 'reactstrap'
 import Select from 'react-select-virtualized'
@@ -7,7 +7,7 @@ import _ from 'lodash'
 import { customStyles, theme } from './react-select-settings'
 import { CASTING_TITLES_ENUM, nullOption } from '../../../modules/constants.js'
 
-import onlyUpdateForKeys from 'recompose/onlyUpdateForKeys'
+// import onlyUpdateForKeys from 'recompose/onlyUpdateForKeys'
 // import pure from 'recompose/pure'
 // const PureSelect = pure(Select)
 // const OptimizedSelect = onlyUpdateForKeys(['value'])(PureSelect)
@@ -17,7 +17,7 @@ import onlyUpdateForKeys from 'recompose/onlyUpdateForKeys'
 * TODO: a DRY component of this to not repeat all this code in SelectProjectIdNameTitle.jsx
 */
 
-const OptimizedOptionsSelect = onlyUpdateForKeys(['options'])(({ options, ...otherProps }) => {
+const OptionsSelect = (({ options, ...otherProps }) => {
   return (
     <Select
       options={options}
@@ -26,7 +26,7 @@ const OptimizedOptionsSelect = onlyUpdateForKeys(['options'])(({ options, ...oth
   )
 })
 
-class SelectPastProjectIdNameTitle extends PureComponent {
+class SelectPastProjectIdNameTitle extends Component {
   constructor (props) {
     super(props)
 
@@ -93,7 +93,7 @@ class SelectPastProjectIdNameTitle extends PureComponent {
       <>
         <FormGroup>
           <Label for={`pastProjectId${this.props.itemIndex}`}>Past Project from Database</Label>
-          <OptimizedOptionsSelect
+          <OptionsSelect
             styles={customStyles}
             maxMenuHeight={400}
             theme={theme}

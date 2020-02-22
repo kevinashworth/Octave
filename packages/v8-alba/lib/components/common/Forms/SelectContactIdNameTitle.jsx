@@ -1,5 +1,5 @@
 import { registerComponent } from 'meteor/vulcan:lib'
-import React, { PureComponent } from 'react'
+import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import { FormGroup, Input, Label } from 'reactstrap'
 import Select from 'react-select-virtualized'
@@ -14,7 +14,7 @@ const OptimizedSelect = onlyUpdateForKeys(['value'])(Select)
 * This version explicity for contactId, contactName, contactTitle
 */
 
-class SelectContactIdNameTitle extends PureComponent {
+class SelectContactIdNameTitle extends Component {
   constructor (props) {
     super(props)
 
