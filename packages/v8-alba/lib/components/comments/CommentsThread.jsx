@@ -26,7 +26,7 @@ class CommentsThread extends Component {
 
   componentDidUpdate (prevProps) {
     const { totalCount, callbackFromSingle } = this.props
-    if (prevProps.totalCount && prevProps.totalCount !== totalCount) {
+    if (totalCount && prevProps.totalCount !== totalCount) {
       const commentsHeader = pluralize('Comment', totalCount, totalCount > 0)
       this.setState({ commentsHeader })
       callbackFromSingle(commentsHeader)
