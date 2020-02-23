@@ -2,7 +2,7 @@ import { Components, registerComponent, withMessages } from 'meteor/vulcan:core'
 import { FormattedMessage } from 'meteor/vulcan:i18n'
 import React, { PureComponent } from 'react'
 import PropTypes from 'prop-types'
-import { Button, Card, CardBody, Col, Row } from 'reactstrap'
+import { Button, ButtonGroup, Card, CardBody, Col, Row } from 'reactstrap'
 
 class EmailDetail extends PureComponent {
   constructor (props) {
@@ -69,16 +69,16 @@ class EmailDetail extends PureComponent {
               <strong>{handle.address}&nbsp;</strong>
               {handle.primary && <span className='text-success'>&nbsp;(<FormattedMessage id='users.primary_email' />)&nbsp;</span> }
             </Col>
-            <Col xs='flex'>
-              <Button color='ghost-danger' onClick={this.deleteEmail}>
-                <i className='fa fa-trash-o' />
-              </Button>
-            </Col>
             <Col xs='auto'>
-              <Components.ModalTrigger
+              <ButtonGroup>
+                <Button color='ghost-danger' onClick={this.deleteEmail}>
+                  <i className='fa fa-trash-o' />
+                </Button>
+                <Components.ModalTrigger
                 component={<Button color='ghost-secondary'><i className='fa fa-pencil-square-o' /></Button>}>
-                <Components.EmailEditForm handle={handle} user={user} successCallback={this.emailEditSuccessCallback} />
-              </Components.ModalTrigger>
+                  <Components.EmailEditForm handle={handle} user={user} successCallback={this.emailEditSuccessCallback} />
+                </Components.ModalTrigger>
+              </ButtonGroup>
             </Col>
           </Row>
           <Row>
