@@ -29,6 +29,7 @@ addStrings('en', {
 
   'users.complete_profile': 'Complete your user profile',
   'users.delete_success': 'User deleted',
+  'users.delete_email_success': 'Email “{handle}” deleted',
   'users.add_email': 'Add an Email',
   'users.add_email_success': 'Added email “{handle}” successfully',
   'users.new_email': 'New Email',

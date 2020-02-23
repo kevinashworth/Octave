@@ -16,9 +16,30 @@ class EmailDetail extends PureComponent {
     this.sendVerificationEmail = this.sendVerificationEmail.bind(this)
   }
 
-  deleteEmail = () => {
+  deleteEmail = ({ handle }) => {
+    this.setState({ loading: true })
     if (window.confirm('Delete email?')) {
-      console.log('delete!')
+      Meteor.call(
+        'removeEmail',
+        {
+          userId: this.props.user._id,
+          email: this.props.handle.address
+        },
+        (error, results) => {
+        if (error) {
+          console.error('deleteEmail error:', error)
+          this.props.flash(error.reason, 'error')
+          this.setState({ loading: false })
+          return
+        }
+        console.info('deleteEmail results:', results)
+        this.props.flash({
+          id: 'users.delete_email_success',
+          properties: { handle: this.props.handle.address },
+          type: 'primary'
+        })
+        this.setState({ loading: false })
+      })
     }
   }
 

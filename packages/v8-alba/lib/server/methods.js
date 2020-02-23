@@ -3,6 +3,36 @@ import { Accounts } from 'meteor/accounts-base'
 import { Connectors } from 'meteor/vulcan:core'
 import Users from 'meteor/vulcan:users'
 
+function mapEmailsLocalFunction ({ user, operator }) {
+  console.log('Meteor.methods mapEmails:', user.emails)
+  if (user.emails && user.emails[0]) {
+    console.log('current handles:', user.handles)
+    const [...handles] = user.emails
+    console.log('after $addToset handles:', handles)
+    const emailAddress = user.emails[0].address
+    const emailVerified = user.emails[0].verified
+    if (operator === 'set') {
+      Meteor.wrapAsync(Connectors.update(Users, user._id, {
+        $set: {
+          handles,
+          emailAddress,
+          emailVerified
+        }
+      }))
+    } else { // default is 'addToSet'
+      Meteor.wrapAsync(Connectors.update(Users, user._id, {
+        $addToSet: {
+          handles: { $each: handles }
+        },
+        $set: {
+          emailAddress,
+          emailVerified
+        }
+      }))
+    }
+  }
+}
+
 Meteor.methods({
 
   getProcessEnvMongoUrl () {
@@ -32,13 +62,22 @@ Meteor.methods({
   },
 
   removeEmail ({ userId, email }) {
+    var removeSuccess = false
     console.log('Meteor.methods removeEmail:', userId, email)
     try {
       Meteor.wrapAsync(Accounts.removeEmail(userId, email))
-      return email
+      removeSuccess = true
     } catch(error) {
       console.log('removeEmail error:', error)
+      removeSuccess = false
       throw new Meteor.Error('remove-error', 'Meteor.methods/removeEmail error.')
+    }
+    if (removeSuccess) {
+      const user = Users.getUser(userId)
+      mapEmailsLocalFunction({ user, operator: 'set' })
+      return email
+    } else {
+      return null
     }
   },
 
