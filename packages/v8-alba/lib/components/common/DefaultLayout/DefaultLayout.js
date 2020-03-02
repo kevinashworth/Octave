@@ -52,7 +52,7 @@ class DefaultLayout extends Component {
         </AppHeader>
         <div className="app-body">
           <AppSidebar fixed display="lg">
-            <AppSidebarHeader>V8</AppSidebarHeader>
+            <AppSidebarHeader>The 4th Wall</AppSidebarHeader>
             <AppSidebarForm>
               <Components.Search />
             </AppSidebarForm>
