@@ -29,14 +29,14 @@ addStrings('en', {
 
   'users.complete_profile': 'Complete your user profile',
   'users.delete_success': 'User deleted',
-  'users.delete_email_success': 'Email “{handle}” deleted',
+  'users.delete_email_success': 'Email “{address}” deleted',
   'users.add_email': 'Add an Email',
-  'users.add_email_success': 'Added email “{handle}” successfully',
+  'users.add_email_success': 'Added email “{address}” successfully',
   'users.new_email': 'New Email',
   'users.primary_email': 'Primary Email',
   'users.unverified': 'Unverified',
   'users.verified': 'Verified',
   'users.verify_email': 'Send verification email',
-  'users.verify_email_sent': 'Sent verification email to “{handle}”'
+  'users.verify_email_sent': 'Sent verification email to “{address}”'
 
 })

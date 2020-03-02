@@ -11,8 +11,8 @@ class EmailEditForm extends PureComponent {
   constructor (props) {
     super(props)
     this.state = {
-      value: props.handle.address,
-      initialValue: props.handle.address,
+      value: props.user.emailAddress,
+      initialValue: props.user.emailAddress,
       isInvalid: false,
       validationErrors: {}
     }
@@ -85,7 +85,7 @@ class EmailEditForm extends PureComponent {
           if (!error) {
             // console.info('addEmail had result', result)
             if (typeof result === 'string' && this.props.successCallback) {
-              this.props.successCallback({ handle: result })
+              this.props.successCallback({ address: result })
             }
             const freshUser = Users.findOne(userId)
             Meteor.call(
@@ -121,7 +121,7 @@ class EmailEditForm extends PureComponent {
               <Components.FormControl
                 id='email' type='email'
                 value={this.state.value}
-                defaultValue={this.props.handle.address}
+                defaultValue={this.props.user.emailAddress}
                 onChange={this.handleChange}
                 invalid={this.state.isInvalid}
                 messageId='errors.email_regex' />
@@ -140,10 +140,11 @@ class EmailEditForm extends PureComponent {
 
 EmailEditForm.propTypes = {
   successCallback: PropTypes.func,
-  handle: PropTypes.shape({
-    address: PropTypes.string.isRequired,
-    primary: PropTypes.bool,
-    verified: PropTypes.bool.isRequired
+  user: PropTypes.shape({
+    email: PropTypes.string.isRequired,
+    emailAddress: PropTypes.string.isRequired,
+    emailPrimary: PropTypes.bool,
+    emailVerified: PropTypes.bool
   })
 }
 

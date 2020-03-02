@@ -3,33 +3,17 @@ import { Accounts } from 'meteor/accounts-base'
 import { Connectors } from 'meteor/vulcan:core'
 import Users from 'meteor/vulcan:users'
 
-function mapEmailsLocalFunction ({ user, operator }) {
+function mapEmailsLocalFunction ({ user }) {
   console.log('Meteor.methods mapEmails:', user.emails)
   if (user.emails && user.emails[0]) {
-    console.log('current handles:', user.handles)
-    const [...handles] = user.emails
-    console.log('after $addToset handles:', handles)
     const emailAddress = user.emails[0].address
     const emailVerified = user.emails[0].verified
-    if (operator === 'set') {
-      Meteor.wrapAsync(Connectors.update(Users, user._id, {
-        $set: {
-          handles,
-          emailAddress,
-          emailVerified
-        }
-      }))
-    } else { // default is 'addToSet'
-      Meteor.wrapAsync(Connectors.update(Users, user._id, {
-        $addToSet: {
-          handles: { $each: handles }
-        },
-        $set: {
-          emailAddress,
-          emailVerified
-        }
-      }))
-    }
+    Meteor.wrapAsync(Connectors.update(Users, user._id, {
+      $set: {
+        emailAddress,
+        emailVerified
+      }
+    }))
   }
 }
 
@@ -81,66 +65,35 @@ Meteor.methods({
     }
   },
 
-  mapEmails ({ user, operator }) {
+  mapEmails ({ user }) {
     console.log('Meteor.methods mapEmails:', user.emails)
     if (user.emails && user.emails[0]) {
-      console.log('current handles:', user.handles)
-      const [...handles] = user.emails
-      console.log('after $addToset handles:', handles)
       const emailAddress = user.emails[0].address
       const emailVerified = user.emails[0].verified
-      if (operator === 'set') {
-        Meteor.wrapAsync(Connectors.update(Users, user._id, {
-          $set: {
-            handles,
-            emailAddress,
-            emailVerified
-          }
-        }))
-      } else { // default is 'addToSet'
-        Meteor.wrapAsync(Connectors.update(Users, user._id, {
-          $addToSet: {
-            handles: { $each: handles }
-          },
-          $set: {
-            emailAddress,
-            emailVerified
-          }
-        }))
-      }
+      Meteor.wrapAsync(Connectors.update(Users, user._id, {
+        $set: {
+          emailAddress,
+          emailVerified
+        }
+      }))
     }
   },
 
-  mapEmailsCurrentUser ({ operator }) {
+  mapEmailsCurrentUser () {
     const user = Users.getUser()
     // console.log('Meteor.methods mapEmailsCurrentUser:', user)
     if (user.emails && user.emails[0]) {
-      const [...handles] = user.emails
       // console.log('current emails:', user.emails)
-      // console.log('after handles:', handles)
 
       const emailAddress = user.emails[0].address
       const emailVerified = user.emails[0].verified
 
-      if (operator === 'set') {
-        Meteor.wrapAsync(Connectors.update(Users, user._id, {
-          $set: {
-            handles,
-            emailAddress,
-            emailVerified
-          }
-        }))
-      } else { // default is 'addToSet'
-        Meteor.wrapAsync(Connectors.update(Users, user._id, {
-          $addToSet: {
-            handles: { $each: handles }
-          },
-          $set: {
-            emailAddress,
-            emailVerified
-          }
-        }))
-      }
+      Meteor.wrapAsync(Connectors.update(Users, user._id, {
+        $set: {
+          emailAddress,
+          emailVerified
+        }
+      }))
     }
   }
 })

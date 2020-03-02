@@ -8,49 +8,17 @@ class EmailSingle extends PureComponent {
   constructor (props) {
     super(props)
     this.state = {
-      showLoading: false,
-      justBeenDeleted: false
+      showLoading: false
     }
 
-    this.deleteEmail = this.deleteEmail.bind(this)
     this.emailEditSuccessCallback = this.emailEditSuccessCallback.bind(this)
     this.sendVerificationEmail = this.sendVerificationEmail.bind(this)
   }
 
-  deleteEmail = ({ handle }) => {
-    this.setState({ showLoading: true })
-    if (window.confirm('Delete email?')) {
-      Meteor.call(
-        'removeEmail',
-        {
-          userId: this.props.user._id,
-          email: this.props.handle.address
-        },
-        (error, results) => {
-        if (error) {
-          console.error('deleteEmail error:', error)
-          this.props.flash(error.reason, 'error')
-          this.setState({ showLoading: false })
-          return
-        }
-        console.info('deleteEmail results:', results)
-        this.props.flash({
-          id: 'users.delete_email_success',
-          properties: { handle: this.props.handle.address },
-          type: 'primary'
-        })
-        this.setState({
-          justBeenDeleted: true
-       })
-      })
-    }
-    this.setState({ showLoading: false })
-  }
-
-  emailEditSuccessCallback ({ handle }) {
+  emailEditSuccessCallback ({ address }) {
     this.props.flash({
       id: 'users.add_email_success',
-      properties: { handle },
+      properties: { address },
       type: 'success'
     })
   }
@@ -62,7 +30,7 @@ class EmailSingle extends PureComponent {
       'sendVerificationEmail',
       {
         userId: this.props.user._id,
-        email: this.props.handle.address
+        email: this.props.user.emailAddress
       },
       (error, results) => {
       if (error) {
@@ -74,7 +42,7 @@ class EmailSingle extends PureComponent {
       // console.info('sendVerificationEmail results:', rmapEmailsCurrentUseresults)
       this.props.flash({
         id: 'users.verify_email_sent',
-        properties: { handle: this.props.handle.address },
+        properties: { address: this.props.user.emailAddress },
         type: 'primary'
       })
       this.setState({ showLoading: false })
@@ -83,26 +51,17 @@ class EmailSingle extends PureComponent {
 
 
   render () {
-    const { handle, user } = this.props
-    if (!handle) {
+    const { user } = this.props
+    if (!user) {
       return <FormattedMessage id='app.missing_document' />
-    }
-    if (this.state.justBeenDeleted) {
-      return (
-        <Card>
-          <CardBody>
-            <Components.Loading />
-          </CardBody>
-        </Card>
-      )
     }
     return (
       <Card>
         <CardBody>
           <Row>
             <Col xs>
-              <strong>{handle.address}&nbsp;</strong>
-              {handle.primary && <span className='text-success'>&nbsp;(<FormattedMessage id='users.primary_email' />)&nbsp;</span> }
+              <strong>{user.emailAddress}&nbsp;</strong>
+              {user.emailPrimary && <span className='text-success'>&nbsp;(<FormattedMessage id='users.primary_email' />)&nbsp;</span> }
             </Col>
             <Col xs='auto'>
               <ButtonGroup>
@@ -111,7 +70,7 @@ class EmailSingle extends PureComponent {
                 </Button>
                 <Components.ModalTrigger
                 component={<Button color='ghost-primary' className='py-0 px-1'><i className='fa fa-pencil-square-o' /></Button>}>
-                  <Components.EmailEditForm handle={handle} user={user} successCallback={this.emailEditSuccessCallback} />
+                  <Components.EmailEditForm user={user} successCallback={this.emailEditSuccessCallback} />
                 </Components.ModalTrigger>
               </ButtonGroup>
             </Col>
@@ -119,7 +78,7 @@ class EmailSingle extends PureComponent {
           <Row>
             <Col>
               <ul className='custom-list'>
-                <li>{handle.verified
+                <li>{user.emailVerified
                   ? <FormattedMessage id='users.verified' />
                   : <>
                       <span className='text-warning'>
@@ -132,8 +91,6 @@ class EmailSingle extends PureComponent {
                       {this.state.showLoading && <Components.Loading />}
                     </>}
                 </li>
-                {handle.visibility &&
-                  <li className='text-capitalize'>{handle.visibility}</li>}
               </ul>
             </Col>
           </Row>
@@ -144,10 +101,11 @@ class EmailSingle extends PureComponent {
 }
 
 EmailSingle.propTypes = {
-  handle: PropTypes.shape({
-    address: PropTypes.string.isRequired,
-    primary: PropTypes.bool,
-    verified: PropTypes.bool.isRequired
+  user: PropTypes.shape({
+    email: PropTypes.string.isRequired,
+    emailAddress: PropTypes.string.isRequired,
+    emailPrimary: PropTypes.bool,
+    emailVerified: PropTypes.bool
   })
 }
 

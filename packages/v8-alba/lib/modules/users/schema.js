@@ -6,46 +6,6 @@ const notificationsGroup = {
   order: 2
 }
 
-// Can't use `emails`, so use `handles` because it is non-similar
-const handleSubSchema = new SimpleSchema({
-  address: {
-    type: String,
-    optional: true,
-    canRead: ['guests'],
-    canCreate: ['members'],
-    canUpdate: ['members']
-  },
-  primary: {
-    type: Boolean,
-    optional: true,
-    defaultValue: true,
-    input: 'checkbox',
-    canRead: ['guests'],
-    canCreate: ['members'],
-    canUpdate: ['members']
-  },
-  verified: {
-    type: Boolean,
-    optional: true,
-    defaultValue: false,
-    input: 'checkbox',
-    canRead: ['guests'],
-    canCreate: ['members'],
-    canUpdate: ['members']
-  },
-  visibility: {
-    type: String,
-    optional: true,
-    defaultValue: 'private',
-    canRead: ['guests'],
-    canCreate: ['members'],
-    canUpdate: ['members'],
-    options: () => {
-      return ['private', 'public']
-    }
-  },
-})
-
 // fields we are MODIFYING
 Users.addField([
   {
@@ -70,35 +30,18 @@ Users.addField([
 
 // fields we are ADDING
 Users.addField([
-  {
-    fieldName: 'handles',
-    fieldSchema: {
-      type: Array,
-      optional: true,
-      canRead: ['guests'],
-      canCreate: ['members'],
-      canUpdate: ['members'],
-    }
-  },
-  {
-    fieldName: 'handles.$',
-    fieldSchema: {
-      type: handleSubSchema
-    }
-  },
   // email.address - REDUNDANT FOR NOW, MAY NOT KEEP
   {
     fieldName: 'emailAddress',
     fieldSchema: {
+      label: 'Email Address (V8 - do not edit)',
       type: String,
       canRead: ['members'],
       canCreate: ['members'],
       canUpdate: ['admins'],
       resolveAs: {
         resolver: (user) => {
-          if (user.handles && user.handles[0]) {
-            return user.handles[0].address
-          } else if (user.emails && user.emails[0]) {
+          if (user.emails && user.emails[0]) {
             return user.emails[0].address
           }
           return null
@@ -109,6 +52,7 @@ Users.addField([
   // email.verified
   {
     fieldName: 'emailVerified',
+    label: 'Email Verified? (V8 - do not edit)',
     fieldSchema: {
       type: Boolean,
       optional: true,
@@ -118,9 +62,7 @@ Users.addField([
       canUpdate: ['admins'],
       resolveAs: {
         resolver: (user) => {
-          if (user.handles && user.handles[0]) {
-            return user.handles[0].verified
-          } else if (user.emails && user.emails[0]) {
+          if (user.emails && user.emails[0]) {
             return user.emails[0].verified
           }
           return null
@@ -265,13 +207,11 @@ Users.addField([
 
 Users.find({ emails: { $exists: true } }).forEach(user => {
   if (user.emails && user.emails[0]) {
-    const [...handles] = user.emails
     const emailAddress = user.emails[0].address
     const emailVerified = user.emails[0].verified
     Users.update(user._id,
       {
         $set: {
-          handles,
           emailAddress,
           emailVerified
         }

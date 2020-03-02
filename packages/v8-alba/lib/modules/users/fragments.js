@@ -6,12 +6,6 @@ registerFragment(/* GraphQL */`
   fragment UsersDefaultFragment on User {
     _id
     username
-    handles {
-      address
-      primary
-      verified
-      visibility
-    }
     emailAddress
     emailVerified
     createdAt
@@ -49,12 +43,6 @@ registerFragment(/* GraphQL */`
     website
     email
     emails
-    handles {
-      address
-      primary
-      verified
-      visibility
-    }
     emailAddress
     emailVerified
     twitterUsername
@@ -65,6 +53,8 @@ registerFragment(/* GraphQL */`
 registerFragment(/* GraphQL */`
   fragment UsersEditFragment on User {
     _id
+    email
+    emailAddress
     displayName
     username
     twitterUsername

@@ -69,7 +69,7 @@ class EmailNewForm extends PureComponent {
           if (!error) {
             console.info('addEmail had result', result)
             if (typeof result === 'string' && this.props.successCallback) {
-              this.props.successCallback({ handle: result })
+              this.props.successCallback({ address: result })
             }
             const freshUser = Users.findOne(userId)
             Meteor.call(
