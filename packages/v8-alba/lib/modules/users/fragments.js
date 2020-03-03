@@ -7,6 +7,7 @@ registerFragment(/* GraphQL */`
     _id
     username
     emailAddress
+    emailPrimary
     emailVerified
     createdAt
     isAdmin
@@ -44,6 +45,7 @@ registerFragment(/* GraphQL */`
     email
     emails
     emailAddress
+    emailPrimary
     emailVerified
     twitterUsername
     commentCount
@@ -65,6 +67,7 @@ registerFragment(/* GraphQL */`
     notifications_replies
     notifications_users
     isAdmin
+    slug
   }
 `)
 

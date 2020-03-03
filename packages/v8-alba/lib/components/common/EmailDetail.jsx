@@ -7,10 +7,6 @@ import { Button, ButtonGroup, Card, CardBody, Col, Row } from 'reactstrap'
 class EmailDetail extends PureComponent {
   constructor (props) {
     super(props)
-    this.state = {
-      loading: false
-    }
-
     this.emailEditSuccessCallback = this.emailEditSuccessCallback.bind(this)
     this.sendVerificationEmail = this.sendVerificationEmail.bind(this)
   }
@@ -24,7 +20,6 @@ class EmailDetail extends PureComponent {
   }
 
   sendVerificationEmail () {
-    this.setState({ loading: true })
     Meteor.call(
       'sendVerificationEmail',
       {
@@ -35,7 +30,6 @@ class EmailDetail extends PureComponent {
       if (error) {
         console.error('sendVerificationEmail error:', error)
         this.props.flash(error.reason, 'error')
-        this.setState({ loading: false })
         return
       }
       // console.info('sendVerificationEmail results:', rmapEmailsCurrentUseresults)
@@ -44,7 +38,6 @@ class EmailDetail extends PureComponent {
         properties: { address: this.props.user.emailAddress },
         type: 'primary'
       })
-      this.setState({ loading: false })
     })
   }
 
@@ -81,10 +74,9 @@ class EmailDetail extends PureComponent {
                         <strong><FormattedMessage id='users.unverified' /></strong>&nbsp;
                       </span>
                       &nbsp;
-                      <Button color='link' onClick={this.sendVerificationEmail}>
+                      <a href='#' onClick={this.sendVerificationEmail}>
                         <FormattedMessage id='users.verify_email' />
-                      </Button>
-                      {this.state.loading && <Components.Loading />}
+                      </a>
                     </>}
                 </li>
               </ul>

@@ -4,7 +4,6 @@ import { Connectors } from 'meteor/vulcan:core'
 import Users from 'meteor/vulcan:users'
 
 function mapEmailsLocalFunction ({ user }) {
-  console.log('Meteor.methods mapEmails:', user.emails)
   if (user.emails && user.emails[0]) {
     const emailAddress = user.emails[0].address
     const emailVerified = user.emails[0].verified
@@ -30,10 +29,11 @@ Meteor.methods({
   },
 
   sendVerificationEmail ({ userId, email }) {
-    console.log('sendVerificationEmail userId, email:', userId, email)
+    // console.log('sendVerificationEmail userId, email:', userId, email)
     Accounts.sendVerificationEmail(userId, email)
   },
 
+  // only used in conjunction with removeEmail to effectively editEmail
   addEmail ({ userId, newEmail }) {
     // console.log('Meteor.methods addEmail:', userId, newEmail)
     try {
@@ -45,55 +45,62 @@ Meteor.methods({
     }
   },
 
+  // only used in conjunction with addEmail to effectively editEmail
   removeEmail ({ userId, email }) {
     var removeSuccess = false
-    console.log('Meteor.methods removeEmail:', userId, email)
+    // console.log('Meteor.methods removeEmail:', userId, email)
     try {
       Meteor.wrapAsync(Accounts.removeEmail(userId, email))
       removeSuccess = true
     } catch(error) {
-      console.log('removeEmail error:', error)
+      // console.log('removeEmail error:', error)
       removeSuccess = false
       throw new Meteor.Error('remove-error', 'Meteor.methods/removeEmail error.')
+      // TODO: if there is an error, make sure to not remove the email
     }
     if (removeSuccess) {
       const user = Users.getUser(userId)
-      mapEmailsLocalFunction({ user, operator: 'set' })
+      mapEmailsLocalFunction({ user })
       return email
     } else {
       return null
     }
   },
 
-  mapEmails ({ user }) {
-    console.log('Meteor.methods mapEmails:', user.emails)
-    if (user.emails && user.emails[0]) {
-      const emailAddress = user.emails[0].address
-      const emailVerified = user.emails[0].verified
-      Meteor.wrapAsync(Connectors.update(Users, user._id, {
-        $set: {
-          emailAddress,
-          emailVerified
-        }
-      }))
+  removeThenAddEmail ({ userId, oldEmail, newEmail }) {
+    var removeSuccess = false
+    try {
+      Meteor.wrapAsync(Accounts.removeEmail(userId, oldEmail))
+      removeSuccess = true
+    } catch(error) {
+      removeSuccess = false
+      throw new Meteor.Error('remove-error', 'Meteor.methods / removeThenAddEmail remove error.')
     }
+    if (removeSuccess) {
+      var addSuccess = false
+      try {
+        Meteor.wrapAsync(Accounts.addEmail(userId, newEmail))
+        addSuccess = true
+      } catch(error) {
+        addSuccess = false
+        throw new Meteor.Error('add-error', 'Meteor.methods / removeThenAddEmail add error.')
+      }
+      if (addSuccess) {
+        const user = Users.getUser(userId)
+        mapEmailsLocalFunction({ user })
+        return newEmail
+        } else {
+          return null
+        }
+      }
+  },
+
+  mapEmails ({ user }) {
+    mapEmailsLocalFunction({ user })
   },
 
   mapEmailsCurrentUser () {
     const user = Users.getUser()
-    // console.log('Meteor.methods mapEmailsCurrentUser:', user)
-    if (user.emails && user.emails[0]) {
-      // console.log('current emails:', user.emails)
-
-      const emailAddress = user.emails[0].address
-      const emailVerified = user.emails[0].verified
-
-      Meteor.wrapAsync(Connectors.update(Users, user._id, {
-        $set: {
-          emailAddress,
-          emailVerified
-        }
-      }))
-    }
+    mapEmailsLocalFunction({ user })
   }
 })

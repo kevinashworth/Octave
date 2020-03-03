@@ -35,13 +35,16 @@ Users.addField([
     fieldName: 'emailAddress',
     fieldSchema: {
       label: 'Email Address (V8 - do not edit)',
+      optional: true,
       type: String,
       canRead: ['members'],
       canCreate: ['members'],
       canUpdate: ['admins'],
       resolveAs: {
         resolver: (user) => {
-          if (user.emails && user.emails[0]) {
+          if (user.email) {
+            return user.email
+          } else if (user.emails && user.emails[0]) {
             return user.emails[0].address
           }
           return null
@@ -66,6 +69,24 @@ Users.addField([
             return user.emails[0].verified
           }
           return null
+        }
+      }
+    }
+  },
+  // email.primary
+  {
+    fieldName: 'emailPrimary',
+    label: 'Primary Email? (V8 - do not edit)',
+    fieldSchema: {
+      type: Boolean,
+      optional: true,
+      defaultValue: true,
+      canRead: ['members'],
+      canCreate: ['members'],
+      canUpdate: ['admins'],
+      resolveAs: {
+        resolver: () => {
+          return true
         }
       }
     }
