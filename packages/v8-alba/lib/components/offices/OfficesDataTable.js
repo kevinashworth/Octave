@@ -2,9 +2,12 @@ import { Components, registerComponent, withAccess, withCurrentUser, withMulti }
 import Users from 'meteor/vulcan:users'
 import React, { Component, PureComponent } from 'react'
 import { Link } from 'react-router-dom'
-import { Button, Card, CardBody, CardFooter, CardHeader } from 'reactstrap'
-import { BootstrapTable, ClearSearchButton, SearchField, TableHeaderColumn } from 'react-bootstrap-table'
-import { SIZE_PER_PAGE_LIST_SEED } from '../../modules/constants.js'
+import { Button, Card, CardBody, CardFooter, CardHeader, Col, FormGroup, Row } from 'reactstrap'
+import BootstrapTable from 'react-bootstrap-table-next'
+import ToolkitProvider from 'react-bootstrap-table2-toolkit'
+import MyClearButton from '../common/react-bootstrap-table2/MyClearButton'
+import MySearchBar from '../common/react-bootstrap-table2/MySearchBar'
+// import { SIZE_PER_PAGE_LIST_SEED } from '../../modules/constants.js'
 import { dateFormatter, renderShowsTotal } from '../../modules/helpers.js'
 import Offices from '../../modules/offices/collection.js'
 
@@ -12,6 +15,7 @@ import Offices from '../../modules/offices/collection.js'
 // See https://github.com/amannn/react-keep-state
 let keptState = {
   searchColor: 'btn-secondary',
+  keptSearchText: '',
   options: {
     defaultSearch: '',
     page: 1,
@@ -66,22 +70,17 @@ class OfficesDataTable extends Component {
         // Retrieve the last state
         ...keptState.options
       },
-      ...keptState.searchColor
+      searchColor: keptState.searchColor,
+      keptSearchText: keptState.keptSearchText
     }
-    this.createCustomClearButton = this.createCustomClearButton.bind(this)
-    this.createCustomSearchField = this.createCustomSearchField.bind(this)
-    this.handleClearButtonClick = this.handleClearButtonClick.bind(this)
-    this.pageChangeHandler = this.pageChangeHandler.bind(this)
-    this.searchChangeHandler = this.searchChangeHandler.bind(this)
-    this.sizePerPageListHandler = this.sizePerPageListHandler.bind(this)
-    this.sortChangeHandler = this.sortChangeHandler.bind(this)
   }
 
   componentWillUnmount () {
     // Remember state for the next mount
     const { options } = this.state
     keptState = {
-      searchColor: options.searchColor,
+      searchColor: this.state.searchColor,
+      keptSearchText: this.state.keptSearchText,
       options: {
         defaultSearch: options.defaultSearch,
         page: options.page,
@@ -104,40 +103,10 @@ class OfficesDataTable extends Component {
     }))
   }
 
-  searchChangeHandler = (searchText) => {
-    this.setState((prevState) => ({
-      options: { ...prevState.options, defaultSearch: searchText }
-    }))
-  }
-
   sizePerPageListHandler = (sizePerPage) => {
     this.setState((prevState) => ({
       options: { ...prevState.options, sizePerPage }
     }))
-  }
-
-  createCustomSearchField = (props) => {
-    if (props.defaultValue.length && this.state.searchColor !== 'btn-danger') {
-      this.setState({ searchColor: 'btn-danger' })
-    } else if (props.defaultValue.length === 0 && this.state.searchColor !== 'btn-secondary') {
-      this.setState({ searchColor: 'btn-secondary' })
-    }
-    return (
-      <SearchField defaultValue={props.defaultValue} />
-    )
-  }
-
-  handleClearButtonClick = (onClick) => {
-    this.setState({ searchColor: 'btn-secondary' })
-    onClick()
-  }
-
-  createCustomClearButton = (onClick) => {
-    return (
-      <ClearSearchButton className='btn-sm'
-        btnContextual={this.state.searchColor}
-        onClick={e => this.handleClearButtonClick(onClick)} />
-    )
   }
 
   render () {
@@ -160,6 +129,50 @@ class OfficesDataTable extends Component {
 
     const hasMore = results && (totalCount > results.length)
 
+    const linkFormatter = (cell, row) => {
+      return (
+        <Link to={`/offices/${row._id}/${row.slug}`}>
+          {cell}
+        </Link>
+      )
+    }
+
+    const columns = [{
+      dataField: 'displayName',
+      text: 'Name',
+      sort: true,
+      formatter: linkFormatter,
+      headerStyle: (column, colIndex) => {
+        return { width: '30%' };
+      }
+    }, {
+      dataField: 'fullAddress',
+      text: 'Address',
+      sort: true
+    }, {
+      dataField: 'updatedAt',
+      text: 'Updated',
+      sort: true,
+      formatter: dateFormatter,
+      align: 'right',
+      headerStyle: (column, colIndex) => {
+        return { width: '94px' };
+      }
+    }, {
+      dataField: 'body',
+      hidden: true
+    }, {
+      dataField: 'allContactNames',
+      hidden: true
+    }]
+
+    const btnColor = (txt) => {
+      if (!txt) {
+        return 'btn-secondary'
+      }
+      return 'btn-danger'
+    }
+
     return (
       <div className='animated fadeIn'>
         <Components.HeadTags title='V8 Alba: Offices' />
@@ -168,28 +181,43 @@ class OfficesDataTable extends Component {
             <i className='icon-briefcase' />Offices
           </CardHeader>
           <CardBody>
-            <BootstrapTable data={results} version='4' condensed striped hover pagination search
-              options={{
-                ...this.state.options,
-                sizePerPageList: SIZE_PER_PAGE_LIST_SEED.concat([{
-                  text: 'All', value: this.props.totalCount
-                }]) }}
-              keyField='_id' bordered={false}>
-              <TableHeaderColumn dataField='displayName' dataSort dataFormat={
-                (cell, row) => {
+            <ToolkitProvider
+              keyField='_id'
+              data={results}
+              columns={columns}
+              bootstrap4
+              search
+            >
+              {
+                props => {
+                  const handleSearchBarChange = (e) => {
+                    let cachedInputValue = e.target.value
+                    props.searchProps.onSearch(cachedInputValue)
+                  }
                   return (
-                    <Link to={`/offices/${row._id}/${row.slug}`}>
-                      {cell}
-                    </Link>
-                  )
-                }
-              } width='30%'>Name</TableHeaderColumn>
-              <TableHeaderColumn dataField='fullAddress' dataSort>Address</TableHeaderColumn>
-              <TableHeaderColumn dataField='updatedAt' dataSort dataFormat={dateFormatter}
-                dataAlign='right' width='94px'>Updated</TableHeaderColumn>
-              <TableHeaderColumn dataField='body' hidden>Hidden</TableHeaderColumn>
-              <TableHeaderColumn dataField='allContactNames' hidden>Hidden</TableHeaderColumn>
-            </BootstrapTable>
+                  <div>
+                    <Row>
+                      <Col xs='4' lg='6'></Col>
+                      <Col xs='8' lg='6'>
+                        <FormGroup className='input-group input-group-sm'>
+                          <MySearchBar
+                            handleChange={handleSearchBarChange}
+                            searchText={props.searchProps.searchText}
+                          />
+                          <MyClearButton
+                            className={btnColor(props.searchProps.searchText)}
+                            onClear={props.searchProps.onClear}
+                          />
+                        </FormGroup>
+                      </Col>
+                    </Row>
+                    <BootstrapTable striped condensed hover bordered={false}
+                      { ...props.baseProps }
+                    />
+                  </div>
+                )}
+              }
+            </ToolkitProvider>
           </CardBody>
           {hasMore &&
             <CardFooter>
