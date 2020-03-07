@@ -1,4 +1,4 @@
-import { registerComponent, Components } from 'meteor/vulcan:core'
+import { registerComponent, Components, withAccess } from 'meteor/vulcan:core'
 import React, { useState } from 'react'
 import { Link, useHistory } from 'react-router-dom'
 import { Dropdown, DropdownItem, DropdownMenu, DropdownToggle } from 'reactstrap'
@@ -66,4 +66,13 @@ const Algolia = () => {
   )
 }
 
-registerComponent('Search', Algolia)
+const accessOptions = {
+  groups: ['members', 'admins'],
+  redirect: '/login'
+}
+
+registerComponent({
+  name: 'Search',
+  component: Algolia,
+  hocs: [[withAccess, accessOptions]]
+})
