@@ -2,8 +2,17 @@ import { Components, registerComponent, withAccess, withCurrentUser, withMulti }
 import Users from 'meteor/vulcan:users'
 import React, { Component, PureComponent } from 'react'
 import { Link } from 'react-router-dom'
-import { Button, Card, CardBody, CardFooter, CardHeader } from 'reactstrap'
-import { BootstrapTable, ClearSearchButton, SearchField, TableHeaderColumn } from 'react-bootstrap-table'
+import { Button, Card, CardBody, CardFooter, CardHeader, Col, FormGroup, Row } from 'reactstrap'
+import BootstrapTable from 'react-bootstrap-table-next'
+import ToolkitProvider from 'react-bootstrap-table2-toolkit'
+import paginationFactory, {
+  PaginationListStandalone,
+  PaginationProvider,
+  PaginationTotalStandalone,
+  SizePerPageDropdownStandalone } from 'react-bootstrap-table2-paginator'
+import MyClearButton from '../common/react-bootstrap-table2/MyClearButton'
+import MySearchBar from '../common/react-bootstrap-table2/MySearchBar'
+import styled from 'styled-components'
 import { SIZE_PER_PAGE_LIST_SEED } from '../../modules/constants.js'
 import { dateFormatter, renderShowsTotal } from '../../modules/helpers.js'
 import Offices from '../../modules/offices/collection.js'
@@ -11,133 +20,72 @@ import Offices from '../../modules/offices/collection.js'
 // Set initial state. Just options I want to keep.
 // See https://github.com/amannn/react-keep-state
 let keptState = {
-  searchColor: 'btn-secondary',
-  options: {
-    defaultSearch: '',
-    page: 1,
-    sizePerPage: 20,
-    sortName: 'updatedAt',
-    sortOrder: 'desc'
-  }
+  sortField: 'updatedAt',
+  sortOrder: 'desc',
+  page: 1,
+  sizePerPage: 20,
+  keptSearchText: ''
 }
 
-class AddButtonFooter extends PureComponent {
-  render () {
-    return (
-      <CardFooter>
-        <Components.ModalTrigger title='New Office' component={<Button>Add an Office</Button>}>
-          <Components.OfficesNewForm />
-        </Components.ModalTrigger>
-      </CardFooter>
-    )
-  }
+const CaretUnsorted = styled.span`
+  margin: 10px 0px 10px 5px;
+  color: rgb(204, 204, 204);
+`
+const CaretSorted = styled.span`
+  margin: 10px 5px;
+`
+
+function AddButtonFooter () {
+  return (
+    <CardFooter>
+      <Components.ModalTrigger title='New Office' component={<Button>Add an Office</Button>}>
+        <Components.OfficesNewForm />
+      </Components.ModalTrigger>
+    </CardFooter>
+  )
 }
 
 class OfficesDataTable extends Component {
   constructor (props) {
     super(props)
     this.state = {
-      options: {
-        sortIndicator: true,
-        paginationSize: 5,
-        hidePageListOnlyOnePage: true,
-        prePage: '‹',
-        nextPage: '›',
-        firstPage: '«',
-        lastPage: '»',
-        sizePerPageList: [{
-          text: '20', value: 20
-        }, {
-          text: '50', value: 50
-        }, {
-          text: '100', value: 100
-        }, {
-          text: 'All', value: this.props.totalCount
-        }],
-        paginationShowsTotal: renderShowsTotal,
-        paginationPosition: 'both',
-        onPageChange: this.pageChangeHandler,
-        onSizePerPageList: this.sizePerPageListHandler,
-        onSortChange: this.sortChangeHandler,
-        onSearchChange: this.searchChangeHandler,
-        clearSearch: true,
-        clearSearchBtn: this.createCustomClearButton,
-        searchField: this.createCustomSearchField,
-        // Retrieve the last state
-        ...keptState.options
-      },
-      ...keptState.searchColor
+      // Retrieve the last state
+      sortField: keptState.sortField,
+      sortOrder: keptState.sortOrder,
+      page: keptState.page,
+      sizePerPage: keptState.sizePerPage,
+      keptSearchText: keptState.keptSearchText
     }
-    this.createCustomClearButton = this.createCustomClearButton.bind(this)
-    this.createCustomSearchField = this.createCustomSearchField.bind(this)
-    this.handleClearButtonClick = this.handleClearButtonClick.bind(this)
-    this.pageChangeHandler = this.pageChangeHandler.bind(this)
-    this.searchChangeHandler = this.searchChangeHandler.bind(this)
-    this.sizePerPageListHandler = this.sizePerPageListHandler.bind(this)
-    this.sortChangeHandler = this.sortChangeHandler.bind(this)
   }
 
   componentWillUnmount () {
     // Remember state for the next mount
-    const { options } = this.state
     keptState = {
-      searchColor: options.searchColor,
-      options: {
-        defaultSearch: options.defaultSearch,
-        page: options.page,
-        sizePerPage: options.sizePerPage,
-        sortName: options.sortName,
-        sortOrder: options.sortOrder
-      }
+      sortField: this.state.sortField,
+      sortOrder: this.state.sortOrder,
+      page: this.state.page,
+      sizePerPage: this.state.sizePerPage,
+      keptSearchText: this.state.keptSearchText
     }
   }
 
   pageChangeHandler = (page, sizePerPage) => {
-    this.setState((prevState) => ({
-      options: { ...prevState.options, page, sizePerPage }
-    }))
+    this.setState({ page, sizePerPage })
   }
 
-  sortChangeHandler = (sortName, sortOrder) => {
-    this.setState((prevState) => ({
-      options: { ...prevState.options, sortName, sortOrder }
-    }))
+  sizePerPageChangeHandler = (sizePerPage, page) => {
+    this.setState({ sizePerPage, page })
   }
 
-  searchChangeHandler = (searchText) => {
-    this.setState((prevState) => ({
-      options: { ...prevState.options, defaultSearch: searchText }
-    }))
+  sortChangeHandler = (sortField, sortOrder) => {
+    this.setState({ sortField, sortOrder })
   }
 
-  sizePerPageListHandler = (sizePerPage) => {
-    this.setState((prevState) => ({
-      options: { ...prevState.options, sizePerPage }
-    }))
-  }
-
-  createCustomSearchField = (props) => {
-    if (props.defaultValue.length && this.state.searchColor !== 'btn-danger') {
-      this.setState({ searchColor: 'btn-danger' })
-    } else if (props.defaultValue.length === 0 && this.state.searchColor !== 'btn-secondary') {
-      this.setState({ searchColor: 'btn-secondary' })
-    }
-    return (
-      <SearchField defaultValue={props.defaultValue} />
-    )
-  }
-
-  handleClearButtonClick = (onClick) => {
-    this.setState({ searchColor: 'btn-secondary' })
-    onClick()
-  }
-
-  createCustomClearButton = (onClick) => {
-    return (
-      <ClearSearchButton className='btn-sm'
-        btnContextual={this.state.searchColor}
-        onClick={e => this.handleClearButtonClick(onClick)} />
-    )
+  sortCaretFn = (order, column) => {
+    if (!order) return (<CaretUnsorted className='fa fa-sort' />)
+    else if (order === 'asc') return (<CaretSorted className='fa fa-sort-asc' />)
+    else if (order === 'desc') return (<CaretSorted className='fa fa-sort-desc' />)
+    return null
   }
 
   render () {
@@ -160,6 +108,111 @@ class OfficesDataTable extends Component {
 
     const hasMore = results && (totalCount > results.length)
 
+    const linkFormatter = (cell, row) => {
+      return (
+        <Link to={`/offices/${row._id}/${row.slug}`}>
+          {cell}
+        </Link>
+      )
+    }
+
+    const columns = [{
+      dataField: 'displayName',
+      text: 'Name',
+      sort: true,
+      onSort: this.sortChangeHandler,
+      formatter: linkFormatter,
+      headerStyle: (column, colIndex) => {
+        return { width: '30%' };
+      }
+    }, {
+      dataField: 'fullAddress',
+      text: 'Address',
+      sort: true,
+      onSort: this.sortChangeHandler
+    }, {
+      dataField: 'updatedAt',
+      text: 'Updated',
+      sort: true,
+      onSort: this.sortChangeHandler,
+      formatter: dateFormatter,
+      align: 'right',
+      headerStyle: (column, colIndex) => {
+        return { width: '94px' };
+      }
+    }, {
+      dataField: 'body',
+      hidden: true
+    }, {
+      dataField: 'allContactNames',
+      hidden: true
+    }]
+
+    const pagination = paginationFactory({
+      custom: true,
+      totalSize: totalCount,
+      sizePerPageList: SIZE_PER_PAGE_LIST_SEED.concat([{
+        text: 'All', value: totalCount
+      }]),
+      page: this.state.page,
+      sizePerPage: this.state.sizePerPage,
+      hidePageListOnlyOnePage: true,
+      prePageText: '‹',
+      nextPageText: '›',
+      firstPageText: '«',
+      lastPageText: '»',
+      paginationTotalRenderer: renderShowsTotal,
+      onPageChange: this.pageChangeHandler,
+      onSizePerPageChange: this.sizePerPageChangeHandler
+    })
+
+    const contentTable = ({ paginationProps, paginationTableProps }) => (
+      <>
+      <ToolkitProvider
+        keyField='_id'
+        data={results}
+        columns={columns}
+        bootstrap4
+        search={ { searchFormatted: true } }
+      >{
+        (toolkitProps) => {
+          const handleSearchBarChange = (e) => toolkitProps.searchProps.onSearch(e.target.value)
+          return (
+            <>
+              <Row>
+                <Col xs='4' lg='6'></Col>
+                <Col xs='8' lg='6'>
+                  <FormGroup className='input-group input-group-sm'>
+                    <MySearchBar
+                      handleChange={handleSearchBarChange}
+                      searchText={toolkitProps.searchProps.searchText} />
+                    <MyClearButton { ...toolkitProps.searchProps } />
+                  </FormGroup>
+                </Col>
+              </Row>
+              <Row>
+                <Col xs='12'>
+                  <PaginationTotalStandalone { ...paginationProps } />
+                  <SizePerPageDropdownStandalone { ...paginationProps } />
+                  <PaginationListStandalone { ...paginationProps } />
+                </Col>
+              </Row>
+              <BootstrapTable striped condensed hover bordered={false}
+                sort={{
+                  sortCaret: this.sortCaretFn,
+                  dataField: this.state.sortField,
+                  order: this.state.sortOrder,
+                }}
+                { ...toolkitProps.baseProps } { ...paginationTableProps } />
+            </>
+          )}}
+        </ToolkitProvider>
+        <PaginationTotalStandalone { ...paginationProps } />
+        <SizePerPageDropdownStandalone { ...paginationProps } />
+        <PaginationListStandalone { ...paginationProps } />
+      </>
+    )
+
     return (
       <div className='animated fadeIn'>
         <Components.HeadTags title='V8 Alba: Offices' />
@@ -168,28 +221,9 @@ class OfficesDataTable extends Component {
             <i className='icon-briefcase' />Offices
           </CardHeader>
           <CardBody>
-            <BootstrapTable data={results} version='4' condensed striped hover pagination search
-              options={{
-                ...this.state.options,
-                sizePerPageList: SIZE_PER_PAGE_LIST_SEED.concat([{
-                  text: 'All', value: this.props.totalCount
-                }]) }}
-              keyField='_id' bordered={false}>
-              <TableHeaderColumn dataField='displayName' dataSort dataFormat={
-                (cell, row) => {
-                  return (
-                    <Link to={`/offices/${row._id}/${row.slug}`}>
-                      {cell}
-                    </Link>
-                  )
-                }
-              } width='30%'>Name</TableHeaderColumn>
-              <TableHeaderColumn dataField='fullAddress' dataSort>Address</TableHeaderColumn>
-              <TableHeaderColumn dataField='updatedAt' dataSort dataFormat={dateFormatter}
-                dataAlign='right' width='94px'>Updated</TableHeaderColumn>
-              <TableHeaderColumn dataField='body' hidden>Hidden</TableHeaderColumn>
-              <TableHeaderColumn dataField='allContactNames' hidden>Hidden</TableHeaderColumn>
-            </BootstrapTable>
+            <PaginationProvider pagination={pagination}>
+            { contentTable }
+            </PaginationProvider>
           </CardBody>
           {hasMore &&
             <CardFooter>
