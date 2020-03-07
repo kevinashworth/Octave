@@ -5,9 +5,14 @@ import { Link } from 'react-router-dom'
 import { Button, Card, CardBody, CardFooter, CardHeader, Col, FormGroup, Row } from 'reactstrap'
 import BootstrapTable from 'react-bootstrap-table-next'
 import ToolkitProvider from 'react-bootstrap-table2-toolkit'
+import paginationFactory, {
+  PaginationListStandalone,
+  PaginationProvider,
+  PaginationTotalStandalone,
+  SizePerPageDropdownStandalone } from 'react-bootstrap-table2-paginator'
 import MyClearButton from '../common/react-bootstrap-table2/MyClearButton'
 import MySearchBar from '../common/react-bootstrap-table2/MySearchBar'
-// import { SIZE_PER_PAGE_LIST_SEED } from '../../modules/constants.js'
+import { SIZE_PER_PAGE_LIST_SEED } from '../../modules/constants.js'
 import { dateFormatter, renderShowsTotal } from '../../modules/helpers.js'
 import Offices from '../../modules/offices/collection.js'
 
@@ -166,12 +171,70 @@ class OfficesDataTable extends Component {
       hidden: true
     }]
 
+    const paginationFactoryOptions = {
+      custom: true,
+      page: this.state.options.page,
+      prePageText: '‹',
+      nextPageText: '›',
+      firstPageText: '«',
+      lastPageText: '»',
+      sizePerPageList: SIZE_PER_PAGE_LIST_SEED.concat([{
+        text: 'All', value: totalCount
+      }]),
+      paginationTotalRenderer: renderShowsTotal,
+      showTotal: true
+    }
+
     const btnColor = (txt) => {
       if (!txt) {
         return 'btn-secondary'
       }
       return 'btn-danger'
     }
+
+    const contentTable = ({ paginationProps, paginationTableProps }) => (
+      <>
+      <ToolkitProvider
+        keyField='_id'
+        data={results}
+        columns={columns}
+        bootstrap4
+        search
+      >{
+        (toolkitProps) => {
+          const handleSearchBarChange = (e) => toolkitProps.searchProps.onSearch(e.target.value)
+          return (
+            <>
+              <Row>
+                <Col xs='4' lg='6'></Col>
+                <Col xs='8' lg='6'>
+                  <FormGroup className='input-group input-group-sm'>
+                    <MySearchBar
+                      handleChange={handleSearchBarChange}
+                      searchText={toolkitProps.searchProps.searchText} />
+                    <MyClearButton
+                      className={btnColor(toolkitProps.searchProps.searchText)}
+                      onClear={toolkitProps.searchProps.onClear} />
+                  </FormGroup>
+                </Col>
+              </Row>
+              <Row>
+                <Col xs='12'>
+                  <PaginationTotalStandalone { ...paginationProps } />
+                  <SizePerPageDropdownStandalone { ...paginationProps } />
+                  <PaginationListStandalone { ...paginationProps } />
+                </Col>
+              </Row>
+              <BootstrapTable striped condensed hover bordered={false}
+                { ...toolkitProps.baseProps } { ...paginationTableProps } />
+            </>
+          )}}
+        </ToolkitProvider>
+        <PaginationTotalStandalone { ...paginationProps } />
+        <SizePerPageDropdownStandalone { ...paginationProps } />
+        <PaginationListStandalone { ...paginationProps } />
+      </>
+    )
 
     return (
       <div className='animated fadeIn'>
@@ -181,43 +244,9 @@ class OfficesDataTable extends Component {
             <i className='icon-briefcase' />Offices
           </CardHeader>
           <CardBody>
-            <ToolkitProvider
-              keyField='_id'
-              data={results}
-              columns={columns}
-              bootstrap4
-              search
-            >
-              {
-                props => {
-                  const handleSearchBarChange = (e) => {
-                    let cachedInputValue = e.target.value
-                    props.searchProps.onSearch(cachedInputValue)
-                  }
-                  return (
-                  <div>
-                    <Row>
-                      <Col xs='4' lg='6'></Col>
-                      <Col xs='8' lg='6'>
-                        <FormGroup className='input-group input-group-sm'>
-                          <MySearchBar
-                            handleChange={handleSearchBarChange}
-                            searchText={props.searchProps.searchText}
-                          />
-                          <MyClearButton
-                            className={btnColor(props.searchProps.searchText)}
-                            onClear={props.searchProps.onClear}
-                          />
-                        </FormGroup>
-                      </Col>
-                    </Row>
-                    <BootstrapTable striped condensed hover bordered={false}
-                      { ...props.baseProps }
-                    />
-                  </div>
-                )}
-              }
-            </ToolkitProvider>
+            <PaginationProvider pagination={paginationFactory(paginationFactoryOptions)}>
+            { contentTable }
+            </PaginationProvider>
           </CardBody>
           {hasMore &&
             <CardFooter>
