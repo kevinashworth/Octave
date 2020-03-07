@@ -91,7 +91,6 @@ import '../components/projects/ProjectsSingle'
 import '../components/statistics/StatisticsEditForm.jsx'
 import '../components/statistics/StatisticsList.jsx'
 
-import '../components/users/EmailNewForm.jsx'
 import '../components/users/EmailEditForm.jsx'
 import '../components/users/MyVerifyEmail.jsx'
 import '../components/users/UsersAccount.jsx'

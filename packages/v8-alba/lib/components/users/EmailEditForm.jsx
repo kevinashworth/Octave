@@ -1,7 +1,7 @@
 import { Meteor } from 'meteor/meteor'
 // import { Accounts } from 'meteor/accounts-base'
 import { Components, registerComponent, withMessages } from 'meteor/vulcan:core'
-import Users from 'meteor/vulcan:users'
+// import Users from 'meteor/vulcan:users'
 import React, { PureComponent } from 'react'
 import PropTypes from 'prop-types'
 import SimpleSchema from 'simpl-schema'
@@ -11,8 +11,8 @@ class EmailEditForm extends PureComponent {
   constructor (props) {
     super(props)
     this.state = {
-      value: props.handle.address,
-      initialValue: props.handle.address,
+      value: props.user.emailAddress,
+      initialValue: props.user.emailAddress,
       isInvalid: false,
       validationErrors: {}
     }
@@ -29,7 +29,7 @@ class EmailEditForm extends PureComponent {
         regEx: SimpleSchema.RegEx.EmailWithTLD
       }
     })
-    const validationContext = singleEmailSchema.namedContext('EmailNewForm')
+    const validationContext = singleEmailSchema.namedContext('EmailEditForm')
     validationContext.validate({ email })
     const isInvalid = !validationContext.isValid()
     const validationErrors = validationContext.validationErrors()
@@ -55,55 +55,70 @@ class EmailEditForm extends PureComponent {
       const newEmail = this.state.value
 
       Meteor.call(
-        'removeEmail',
+        'removeThenAddEmail',
         {
           userId,
-          email: oldEmail
-        },
-      ),
-      (error, result) => {
-        if (error) {
-          console.log('removeEmail error:', error)
-        }
-        console.log('removeEmail result:', result)
-      }
-
-      Meteor.call(
-        'addEmail',
-        {
-          userId,
+          oldEmail,
           newEmail
         },
         (error, result) => {
-          if (error && error.error === 'already-exists') {
-            this.props.flash(error.reason, 'error');
-            // console.error('addEmail error:', error)
-            return null
+          if (error) {
+            console.log('removeThenAddEmail error:', error)
           }
-          // might there be other errors?
-          // if (error && error.error ....)
-          if (!error) {
-            // console.info('addEmail had result', result)
-            if (typeof result === 'string' && this.props.successCallback) {
-              this.props.successCallback({ handle: result })
-            }
-            const freshUser = Users.findOne(userId)
-            Meteor.call(
-              'mapEmails',
-              {
-                user: freshUser,
-                operator: 'set'
-              },
-              (error, result) => {
-                if (error) {
-                  // console.error('mapEmails error:', error.error, error.reason)
-                  return null
-                }
-              }
-            )
-          }
+          console.log('removeThenAddEmail result:', result)
         }
       )
+
+      // Meteor.call(
+      //   'removeEmail',
+      //   {
+      //     userId,
+      //     email: oldEmail
+      //   },
+      // ),
+      // (error, result) => {
+      //   if (error) {
+      //     console.log('removeEmail error:', error)
+      //   }
+      //   console.log('removeEmail result:', result)
+      // }
+
+      // Meteor.call(
+      //   'addEmail',
+      //   {
+      //     userId,
+      //     newEmail
+      //   },
+      //   (error, result) => {
+      //     if (error && error.error === 'already-exists') {
+      //       this.props.flash(error.reason, 'error');
+      //       // console.error('addEmail error:', error)
+      //       return null
+      //     }
+      //     // might there be other errors?
+      //     // if (error && error.error ....)
+      //     if (!error) {
+      //       // console.info('addEmail had result', result)
+      //       if (typeof result === 'string' && this.props.successCallback) {
+      //         this.props.successCallback({ address: result })
+      //       }
+      //       const freshUser = Users.findOne(userId)
+      //       Meteor.call(
+      //         'mapEmails',
+      //         {
+      //           user: freshUser,
+      //           operator: 'set'
+      //         },
+      //         (error, result) => {
+      //           if (error) {
+      //             // console.error('mapEmails error:', error.error, error.reason)
+      //             return null
+      //           }
+      //         }
+      //       )
+      //     }
+      //   }
+      // )
       if (this.props.toggle) {
         this.props.toggle()
       }
@@ -121,7 +136,7 @@ class EmailEditForm extends PureComponent {
               <Components.FormControl
                 id='email' type='email'
                 value={this.state.value}
-                defaultValue={this.props.handle.address}
+                defaultValue={this.props.user.emailAddress}
                 onChange={this.handleChange}
                 invalid={this.state.isInvalid}
                 messageId='errors.email_regex' />
@@ -140,10 +155,11 @@ class EmailEditForm extends PureComponent {
 
 EmailEditForm.propTypes = {
   successCallback: PropTypes.func,
-  handle: PropTypes.shape({
-    address: PropTypes.string.isRequired,
-    primary: PropTypes.bool,
-    verified: PropTypes.bool.isRequired
+  user: PropTypes.shape({
+    email: PropTypes.string.isRequired,
+    emailAddress: PropTypes.string.isRequired,
+    emailPrimary: PropTypes.bool,
+    emailVerified: PropTypes.bool
   })
 }
 
