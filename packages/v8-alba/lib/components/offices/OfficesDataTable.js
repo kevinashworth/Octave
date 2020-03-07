@@ -12,6 +12,7 @@ import paginationFactory, {
   SizePerPageDropdownStandalone } from 'react-bootstrap-table2-paginator'
 import MyClearButton from '../common/react-bootstrap-table2/MyClearButton'
 import MySearchBar from '../common/react-bootstrap-table2/MySearchBar'
+import styled from 'styled-components'
 import { SIZE_PER_PAGE_LIST_SEED } from '../../modules/constants.js'
 import { dateFormatter, renderShowsTotal } from '../../modules/helpers.js'
 import Offices from '../../modules/offices/collection.js'
@@ -19,99 +20,72 @@ import Offices from '../../modules/offices/collection.js'
 // Set initial state. Just options I want to keep.
 // See https://github.com/amannn/react-keep-state
 let keptState = {
-  searchColor: 'btn-secondary',
-  keptSearchText: '',
-  options: {
-    defaultSearch: '',
-    page: 1,
-    sizePerPage: 20,
-    sortName: 'updatedAt',
-    sortOrder: 'desc'
-  }
+  sortField: 'updatedAt',
+  sortOrder: 'desc',
+  page: 1,
+  sizePerPage: 20,
+  keptSearchText: ''
 }
 
-class AddButtonFooter extends PureComponent {
-  render () {
-    return (
-      <CardFooter>
-        <Components.ModalTrigger title='New Office' component={<Button>Add an Office</Button>}>
-          <Components.OfficesNewForm />
-        </Components.ModalTrigger>
-      </CardFooter>
-    )
-  }
+const CaretUnsorted = styled.span`
+  margin: 10px 0px 10px 5px;
+  color: rgb(204, 204, 204);
+`
+const CaretSorted = styled.span`
+  margin: 10px 5px;
+`
+
+function AddButtonFooter () {
+  return (
+    <CardFooter>
+      <Components.ModalTrigger title='New Office' component={<Button>Add an Office</Button>}>
+        <Components.OfficesNewForm />
+      </Components.ModalTrigger>
+    </CardFooter>
+  )
 }
 
 class OfficesDataTable extends Component {
   constructor (props) {
     super(props)
     this.state = {
-      options: {
-        sortIndicator: true,
-        paginationSize: 5,
-        hidePageListOnlyOnePage: true,
-        prePage: '‹',
-        nextPage: '›',
-        firstPage: '«',
-        lastPage: '»',
-        sizePerPageList: [{
-          text: '20', value: 20
-        }, {
-          text: '50', value: 50
-        }, {
-          text: '100', value: 100
-        }, {
-          text: 'All', value: this.props.totalCount
-        }],
-        paginationShowsTotal: renderShowsTotal,
-        paginationPosition: 'both',
-        onPageChange: this.pageChangeHandler,
-        onSizePerPageList: this.sizePerPageListHandler,
-        onSortChange: this.sortChangeHandler,
-        onSearchChange: this.searchChangeHandler,
-        clearSearch: true,
-        clearSearchBtn: this.createCustomClearButton,
-        searchField: this.createCustomSearchField,
-        // Retrieve the last state
-        ...keptState.options
-      },
-      searchColor: keptState.searchColor,
+      // Retrieve the last state
+      sortField: keptState.sortField,
+      sortOrder: keptState.sortOrder,
+      page: keptState.page,
+      sizePerPage: keptState.sizePerPage,
       keptSearchText: keptState.keptSearchText
     }
   }
 
   componentWillUnmount () {
     // Remember state for the next mount
-    const { options } = this.state
     keptState = {
-      searchColor: this.state.searchColor,
-      keptSearchText: this.state.keptSearchText,
-      options: {
-        defaultSearch: options.defaultSearch,
-        page: options.page,
-        sizePerPage: options.sizePerPage,
-        sortName: options.sortName,
-        sortOrder: options.sortOrder
-      }
+      sortField: this.state.sortField,
+      sortOrder: this.state.sortOrder,
+      page: this.state.page,
+      sizePerPage: this.state.sizePerPage,
+      keptSearchText: this.state.keptSearchText
     }
   }
 
   pageChangeHandler = (page, sizePerPage) => {
-    this.setState((prevState) => ({
-      options: { ...prevState.options, page, sizePerPage }
-    }))
+    this.setState({ page, sizePerPage })
   }
 
-  sortChangeHandler = (sortName, sortOrder) => {
-    this.setState((prevState) => ({
-      options: { ...prevState.options, sortName, sortOrder }
-    }))
+  sizePerPageChangeHandler = (sizePerPage, page) => {
+    this.setState({ sizePerPage, page })
   }
 
-  sizePerPageListHandler = (sizePerPage) => {
-    this.setState((prevState) => ({
-      options: { ...prevState.options, sizePerPage }
-    }))
+  sortChangeHandler = (sortField, sortOrder) => {
+    this.setState({ sortField, sortOrder })
+  }
+
+  sortCaretFn = (order, column) => {
+    if (!order) return (<CaretUnsorted className='fa fa-sort' />)
+    else if (order === 'asc') return (<CaretSorted className='fa fa-sort-asc' />)
+    else if (order === 'desc') return (<CaretSorted className='fa fa-sort-desc' />)
+    return null
   }
 
   render () {
@@ -146,6 +120,7 @@ class OfficesDataTable extends Component {
       dataField: 'displayName',
       text: 'Name',
       sort: true,
+      onSort: this.sortChangeHandler,
       formatter: linkFormatter,
       headerStyle: (column, colIndex) => {
         return { width: '30%' };
@@ -153,11 +128,13 @@ class OfficesDataTable extends Component {
     }, {
       dataField: 'fullAddress',
       text: 'Address',
-      sort: true
+      sort: true,
+      onSort: this.sortChangeHandler
     }, {
       dataField: 'updatedAt',
       text: 'Updated',
       sort: true,
+      onSort: this.sortChangeHandler,
       formatter: dateFormatter,
       align: 'right',
       headerStyle: (column, colIndex) => {
@@ -171,26 +148,23 @@ class OfficesDataTable extends Component {
       hidden: true
     }]
 
-    const paginationFactoryOptions = {
+    const pagination = paginationFactory({
       custom: true,
-      page: this.state.options.page,
+      totalSize: totalCount,
+      sizePerPageList: SIZE_PER_PAGE_LIST_SEED.concat([{
+        text: 'All', value: totalCount
+      }]),
+      page: this.state.page,
+      sizePerPage: this.state.sizePerPage,
+      hidePageListOnlyOnePage: true,
       prePageText: '‹',
       nextPageText: '›',
       firstPageText: '«',
       lastPageText: '»',
-      sizePerPageList: SIZE_PER_PAGE_LIST_SEED.concat([{
-        text: 'All', value: totalCount
-      }]),
       paginationTotalRenderer: renderShowsTotal,
-      showTotal: true
-    }
-
-    const btnColor = (txt) => {
-      if (!txt) {
-        return 'btn-secondary'
-      }
-      return 'btn-danger'
-    }
+      onPageChange: this.pageChangeHandler,
+      onSizePerPageChange: this.sizePerPageChangeHandler
+    })
 
     const contentTable = ({ paginationProps, paginationTableProps }) => (
       <>
@@ -199,7 +173,7 @@ class OfficesDataTable extends Component {
         data={results}
         columns={columns}
         bootstrap4
-        search
+        search={ { searchFormatted: true } }
       >{
         (toolkitProps) => {
           const handleSearchBarChange = (e) => toolkitProps.searchProps.onSearch(e.target.value)
@@ -212,9 +186,7 @@ class OfficesDataTable extends Component {
                     <MySearchBar
                       handleChange={handleSearchBarChange}
                       searchText={toolkitProps.searchProps.searchText} />
-                    <MyClearButton
-                      className={btnColor(toolkitProps.searchProps.searchText)}
-                      onClear={toolkitProps.searchProps.onClear} />
+                    <MyClearButton { ...toolkitProps.searchProps } />
                   </FormGroup>
                 </Col>
               </Row>
@@ -226,6 +198,11 @@ class OfficesDataTable extends Component {
                 </Col>
               </Row>
               <BootstrapTable striped condensed hover bordered={false}
+                sort={{
+                  sortCaret: this.sortCaretFn,
+                  dataField: this.state.sortField,
+                  order: this.state.sortOrder,
+                }}
                 { ...toolkitProps.baseProps } { ...paginationTableProps } />
             </>
           )}}
@@ -244,7 +221,7 @@ class OfficesDataTable extends Component {
             <i className='icon-briefcase' />Offices
           </CardHeader>
           <CardBody>
-            <PaginationProvider pagination={paginationFactory(paginationFactoryOptions)}>
+            <PaginationProvider pagination={pagination}>
             { contentTable }
             </PaginationProvider>
           </CardBody>

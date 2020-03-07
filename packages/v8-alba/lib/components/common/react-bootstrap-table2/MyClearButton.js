@@ -1,25 +1,25 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 
+const btnColor = (txt) => {
+  if (!txt) {
+    return 'btn-secondary'
+  }
+  return 'btn-danger'
+}
+
 const MyClearButton = ({
   onClear,
-  text,
-  className
+  searchText
 }) => (
   <span className='input-group-btn'>
-    <button className={ `btn btn-sm ${className}` } onClick={ onClear }>{ text }</button>
+    <button className={ `btn btn-sm ${btnColor(searchText)}` } onClick={ onClear }>Clear</button>
   </span>
 )
 
 MyClearButton.propTypes = {
   onClear: PropTypes.func.isRequired,
-  className: PropTypes.string,
-  text: PropTypes.string
-}
-
-MyClearButton.defaultProps = {
-  text: 'Clear',
-  className: 'btn-secondary'
+  searchText: PropTypes.string
 }
 
 export default MyClearButton
