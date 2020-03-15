@@ -6,9 +6,6 @@ registerFragment(/* GraphQL */`
   fragment UsersDefaultFragment on User {
     _id
     username
-    emailAddress
-    emailPrimary
-    emailVerified
     createdAt
     isAdmin
     locale
@@ -16,6 +13,7 @@ registerFragment(/* GraphQL */`
     displayName
     email
     emailHash
+    emails
     slug
     groups
   }
@@ -44,9 +42,6 @@ registerFragment(/* GraphQL */`
     website
     email
     emails
-    emailAddress
-    emailPrimary
-    emailVerified
     twitterUsername
     commentCount
   }
@@ -56,7 +51,7 @@ registerFragment(/* GraphQL */`
   fragment UsersEditFragment on User {
     _id
     email
-    emailAddress
+    emails
     displayName
     username
     twitterUsername

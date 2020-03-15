@@ -28,19 +28,6 @@ class MyAccountsVerifyEmail extends PureComponent {
           pending: false,
           error: null
         })
-        Meteor.call(
-          'mapEmailsCurrentUser',
-          {
-            operator: 'set'
-          },
-          (error, result) => {
-            if (error) {
-              console.error('mapEmailsCurrentUser error:', error.error, error.reason)
-              return null
-            }
-            // console.log('mapEmailsCurrentUser result:', result)
-          }
-        )
       }
     })
   }

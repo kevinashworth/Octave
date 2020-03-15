@@ -10,7 +10,7 @@ class EmailDetail extends PureComponent {
       'sendVerificationEmail',
       {
         userId: this.props.user._id,
-        email: this.props.user.emailAddress
+        email: this.props.user.email
       },
       (error, results) => {
       if (error) {
@@ -21,7 +21,7 @@ class EmailDetail extends PureComponent {
       // console.info('sendVerificationEmail results:', rmapEmailsCurrentUseresults)
       this.props.flash({
         id: 'users.verify_email_sent',
-        properties: { address: this.props.user.emailAddress },
+        properties: { address: this.props.user.email },
         type: 'primary'
       })
     })
@@ -38,14 +38,14 @@ class EmailDetail extends PureComponent {
         <CardBody>
           <Row>
             <Col xs>
-              <strong>{user.emailAddress}&nbsp;</strong>
-              {user.emailPrimary && <span className='text-success'>&nbsp;(<FormattedMessage id='users.primary_email' />)&nbsp;</span> }
+              <strong>{user.email}&nbsp;</strong>
+              {user.email && <span className='text-success'>&nbsp;(<FormattedMessage id='users.primary_email' />)&nbsp;</span> }
             </Col>
           </Row>
           <Row>
             <Col>
               <ul className='custom-list'>
-                <li>{user.emailVerified
+                <li>{user.emails[0].verified
                   ? <FormattedMessage id='users.verified' />
                   : <>
                       <span className='text-warning'>
@@ -69,9 +69,7 @@ class EmailDetail extends PureComponent {
 EmailDetail.propTypes = {
   user: PropTypes.shape({
     email: PropTypes.string.isRequired,
-    emailAddress: PropTypes.string.isRequired,
-    emailPrimary: PropTypes.bool,
-    emailVerified: PropTypes.bool
+    emails: PropTypes.array
   })
 }
 

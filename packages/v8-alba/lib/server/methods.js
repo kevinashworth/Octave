@@ -1,20 +1,5 @@
 import { Meteor } from 'meteor/meteor'
 import { Accounts } from 'meteor/accounts-base'
-import { Connectors } from 'meteor/vulcan:core'
-import Users from 'meteor/vulcan:users'
-
-function mapEmailsLocalFunction ({ user }) {
-  if (user.emails && user.emails[0]) {
-    const emailAddress = user.emails[0].address
-    const emailVerified = user.emails[0].verified
-    Meteor.wrapAsync(Connectors.update(Users, user._id, {
-      $set: {
-        emailAddress,
-        emailVerified
-      }
-    }))
-  }
-}
 
 Meteor.methods({
 
@@ -59,8 +44,8 @@ Meteor.methods({
       // TODO: if there is an error, make sure to not remove the email
     }
     if (removeSuccess) {
-      const user = Users.getUser(userId)
-      mapEmailsLocalFunction({ user })
+      // const user = Users.getUser(userId)
+      // mapEmailsLocalFunction({ user })
       return email
     } else {
       return null
@@ -86,21 +71,13 @@ Meteor.methods({
         throw new Meteor.Error('add-error', 'Meteor.methods / removeThenAddEmail add error.')
       }
       if (addSuccess) {
-        const user = Users.getUser(userId)
-        mapEmailsLocalFunction({ user })
+        // const user = Users.getUser(userId)
+        // mapEmailsLocalFunction({ user })
         return newEmail
         } else {
           return null
         }
       }
-  },
-
-  mapEmails ({ user }) {
-    mapEmailsLocalFunction({ user })
-  },
-
-  mapEmailsCurrentUser () {
-    const user = Users.getUser()
-    mapEmailsLocalFunction({ user })
   }
+  
 })

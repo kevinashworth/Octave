@@ -30,7 +30,6 @@ function UsersEditForm (props, context) {
             mutationFragment={getFragment('UsersEditFragment')}
             fields={[
               'email',
-              'emailAddress',
               'displayName',
               'username',
               'twitterUsername',
