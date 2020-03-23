@@ -6,14 +6,6 @@ registerFragment(/* GraphQL */`
   fragment UsersDefaultFragment on User {
     _id
     username
-    handles {
-      address
-      primary
-      verified
-      visibility
-    }
-    emailAddress
-    emailVerified
     createdAt
     isAdmin
     locale
@@ -21,6 +13,7 @@ registerFragment(/* GraphQL */`
     displayName
     email
     emailHash
+    emails
     slug
     groups
   }
@@ -49,14 +42,6 @@ registerFragment(/* GraphQL */`
     website
     email
     emails
-    handles {
-      address
-      primary
-      verified
-      visibility
-    }
-    emailAddress
-    emailVerified
     twitterUsername
     commentCount
   }
@@ -65,6 +50,8 @@ registerFragment(/* GraphQL */`
 registerFragment(/* GraphQL */`
   fragment UsersEditFragment on User {
     _id
+    email
+    emails
     displayName
     username
     twitterUsername
@@ -75,6 +62,7 @@ registerFragment(/* GraphQL */`
     notifications_replies
     notifications_users
     isAdmin
+    slug
   }
 `)
 
