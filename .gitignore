@@ -7,6 +7,8 @@ dump/
 node_modules/
 production.settings.json
 settings.json
+.deploy
+.galaxy
 
 # The rest crept in from who knows where
 .eslintcache
@@ -21,7 +23,6 @@ deploy.sh
 settings.json.not-used
 .idea
 scratch
-.deploy
 .meteor/meteorite
 mup.json
 packages_update.py
