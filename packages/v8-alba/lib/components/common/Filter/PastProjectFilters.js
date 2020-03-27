@@ -188,7 +188,6 @@ class PastProjectFilters extends PureComponent {
               )}
             </DropdownItemStatic>
             <DropdownItem onClick={this.handleClickProjectStatus} toggle={false}>All</DropdownItem>
-            <DropdownItem onClick={this.handleClickProjectStatus} toggle={false}>Active</DropdownItem>
             <DropdownItem onClick={this.handleClickProjectStatus} toggle={false}>None</DropdownItem>
             <DropdownItem onClick={this.handleClickProjectStatus} toggle={false}>Toggle</DropdownItem>
           </DropdownMenu>

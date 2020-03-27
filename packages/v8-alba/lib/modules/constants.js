@@ -232,21 +232,26 @@ export const AVOD_ENUM = [
   'Vudu'
 ]
 
+// Casting, Shooting, See Notes are the 3 actively Active
+// TODO: The number 3 appears on line 170 of ProjectFilters.js
+// Pre-Prod., Ordered, On Hiatus, On Hold are not necessarily Active
+// Suspended is new as of 2020 for COVID-19 and such
 export const ACTIVE_PROJECT_STATUSES_ENUM = [
   { value: 'Casting', label: 'Casting' },
   { value: 'Shooting', label: 'Shooting' },
   { value: 'See Notes', label: 'See Notes' },
-  { value: 'Pre-Prod.', label: 'Pre-Prod.' },
-  { value: 'Ordered', label: 'Ordered' },
   { value: 'On Hiatus', label: 'On Hiatus' },
-  { value: 'On Hold', label: 'On Hold' }
+  { value: 'On Hold', label: 'On Hold' },
+  { value: 'Ordered', label: 'Ordered' },
+  { value: 'Pre-Prod.', label: 'Pre-Prod.' },
+  { value: 'Suspended', label: 'Suspended' }
 ]
 
 export const PAST_PROJECT_STATUSES_ENUM = [
+  { value: 'Canceled', label: 'Canceled' },
   { value: 'Relocated', label: 'Relocated' },
   { value: 'Unknown', label: 'Unknown' },
-  { value: 'Wrapped', label: 'Wrapped' },
-  { value: 'Canceled', label: 'Canceled' }
+  { value: 'Wrapped', label: 'Wrapped' }
 ]
 
 export const PROJECT_STATUSES_ENUM = ACTIVE_PROJECT_STATUSES_ENUM.concat(PAST_PROJECT_STATUSES_ENUM)

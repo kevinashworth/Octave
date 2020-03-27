@@ -167,7 +167,7 @@ class ProjectFilters extends PureComponent {
       }
     } else if (active) {
       let i
-      for (i = 0; i < length - 4; i++) { // Pre-Prod., Ordered, On Hiatus, On Hold are not considered Active
+      for (i = 0; i < 3; i++) { // Casting, Shooting, See Notes, the 3 that are actively Active
         this.props.actions.setProjectStatusFilter(i)
       }
       for (; i < length; i++) {
