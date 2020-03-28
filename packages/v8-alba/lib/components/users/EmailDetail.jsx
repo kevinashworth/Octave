@@ -45,7 +45,7 @@ class EmailDetail extends PureComponent {
           <Row>
             <Col>
               <ul className='custom-list'>
-                <li>{user.emails[0].verified
+                <li>{user.emails && user.emails[0].verified
                   ? <FormattedMessage id='users.verified' />
                   : <>
                       <span className='text-warning'>

@@ -25,6 +25,16 @@ Users.addField([
     fieldSchema: {
       itemProperties: { layout: 'inputOnly' }
     }
+  },
+  {
+    fieldName: 'emails',
+    fieldSchema: {
+      canRead: ['owners', 'admins']
+    }
+  },
+  {
+    fieldName: 'emails.$',
+    fieldSchema: {}
   }
 ])
 
