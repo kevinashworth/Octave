@@ -1,6 +1,11 @@
 import { addAction, addReducer, setupRedux } from 'meteor/vulcan:redux'
 
-import { CASTING_TITLES_ENUM, PAST_PROJECT_STATUSES_ENUM, PROJECT_TYPES_ENUM, PROJECT_STATUSES_ENUM } from '../modules/constants.js'
+import {
+  CASTING_TITLES_ENUM,
+  ACTIVE_PROJECT_STATUSES_ENUM,
+  PAST_PROJECT_STATUSES_ENUM,
+  PROJECT_TYPES_ENUM,
+} from '../modules/constants.js'
 
 var contactTitleListBuilder = CASTING_TITLES_ENUM.map((option) => {
   return { contactTitle: option.label, value: true }
@@ -60,7 +65,7 @@ initialState = {
 //   return { projectType: option.label, value: true }
 // })
 
-const projectStatusListBuilder = PROJECT_STATUSES_ENUM.map((option) => {
+const projectStatusListBuilder = ACTIVE_PROJECT_STATUSES_ENUM.map((option) => {
   return { projectStatus: option.label, value: true }
 })
 
