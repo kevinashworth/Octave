@@ -54,7 +54,6 @@ import '../components/contacts/ContactsList'
 import '../components/contacts/ContactsNameOnly'
 import '../components/contacts/ContactsNewForm'
 import '../components/contacts/ContactsSingle'
-import '../components/contacts/ContactsVirtualizedList'
 
 import '../components/patches/ContactPatchesList.jsx'
 import '../components/patches/ContactPatch.jsx'
