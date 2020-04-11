@@ -36,7 +36,7 @@ class ProjectsSingle extends Component {
     } else if (project.status === 'On Hiatus' || project.status === 'Wrapped' || project.status === 'Canceled') {
       so = `Completed Season ${project.season}`
     }
-    if (project.status === 'Casting' || project.status === 'See Notes' || project.status === 'Pre-Prod.') {
+    if (project.status === 'Casting'|| project.status === 'Pre-Prod.' || project.status === 'See Notes' || project.status === 'Suspended' ) {
       so = `Season ${project.season}`
     }
     if (project.order) {
