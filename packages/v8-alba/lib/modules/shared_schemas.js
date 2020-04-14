@@ -44,9 +44,7 @@ export const addressSubSchema = new SimpleSchema({
     type: String,
     optional: true,
     input: 'MySelect',
-    options: () => {
-      return ADDRESS_TYPES_ENUM
-    },
+    options: ADDRESS_TYPES_ENUM,
     canRead: ['members'],
     canCreate: ['members', 'admins'],
     canUpdate: ['members', 'admins']
@@ -141,9 +139,7 @@ export const officeSubSchema = new SimpleSchema({
     canCreate: ['admins'],
     canUpdate: ['members', 'admins'],
     input: 'MyDatalist',
-    options: () => {
-      return GROUPED_LOCATIONS_ENUM
-    }
+    options: GROUPED_LOCATIONS_ENUM
   },
   officeName: {
     type: String,
@@ -169,9 +165,7 @@ export const phoneSubSchema = new SimpleSchema({
     label: 'Phone Type',
     optional: true,
     input: 'MySelect',
-    options: () => {
-      return PHONE_NUMBER_TYPES_ENUM
-    },
+    options: PHONE_NUMBER_TYPES_ENUM,
     canRead: ['members'],
     canCreate: ['members', 'admins'],
     canUpdate: ['members', 'admins']

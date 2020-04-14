@@ -31,7 +31,7 @@ const projectGroup = {
 }
 
 const officeGroup = {
-  name: 'officees',
+  name: 'offices',
   label: 'Offices (Preferred Over Addresses)',
   order: 20
 }
@@ -187,12 +187,10 @@ const schema = {
     type: String,
     optional: true,
     input: 'MySelect',
-    options: () => {
-      return CASTING_TITLES_ENUM
-    },
     canRead: ['members'],
     canCreate: ['members', 'admins'],
-    canUpdate: ['members', 'admins']
+    canUpdate: ['members', 'admins'],
+    options: CASTING_TITLES_ENUM
   },
   gender: {
     type: String,
@@ -338,15 +336,17 @@ const schema = {
     canRead: ['members'],
     canCreate: ['members', 'admins'],
     canUpdate: ['members', 'admins'],
-    query: `
-      offices{
-        results{
-          _id
-          displayName
+    group: officeGroup,
+    query:/* GraphQL */`
+      query OfficesNameAndId {
+        offices {
+          results {
+            _id
+            displayName
+          }
         }
       }
-    `,
-    group: officeGroup
+    `
   },
   'offices.$': {
     type: officeSubSchema
@@ -360,15 +360,17 @@ const schema = {
     canRead: ['members'],
     canCreate: ['members', 'admins'],
     canUpdate: ['members', 'admins'],
-    query: `
-      projects{
-        results{
-          _id
-          projectTitle
+    group: projectGroup,
+    query:/* GraphQL */`
+      query ProjectsTitleAndId {
+        projects {
+          results {
+            _id
+            projectTitle
+          }
         }
       }
-    `,
-    group: projectGroup
+    `
   },
   'projects.$': {
     type: projectSubSchema
@@ -382,15 +384,17 @@ const schema = {
     canRead: ['members'],
     canCreate: ['members', 'admins'],
     canUpdate: ['members', 'admins'],
-    query: `
-      pastProjects{
-        results{
-          _id
-          projectTitle
+    group: pastProjectGroup,
+    query:/* GraphQL */`
+      query PastProjectsTitleAndId {
+        pastProjects {
+          results {
+            _id
+            projectTitle
+          }
         }
       }
     `,
-    group: pastProjectGroup
   },
   'pastProjects.$': {
     type: pastProjectSubSchema

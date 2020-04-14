@@ -92,9 +92,7 @@ let schema = {
     optional: false,
     canRead: ['guests'],
     input: 'MySelect',
-    options: () => {
-      return PROJECT_TYPES_ENUM
-    },
+    options: PROJECT_TYPES_ENUM
   },
   platformType: {
     type: String,
@@ -121,9 +119,7 @@ let schema = {
     optional: false,
     canRead: ['guests'],
     input: 'MySelect',
-    options: () => {
-      return PROJECT_STATUSES_ENUM
-    },
+    options: PROJECT_STATUSES_ENUM
   },
   renewed: {
     label: 'On Hiatus but Renewed',
@@ -138,9 +134,7 @@ let schema = {
     type: String,
     canRead: ['guests'],
     input: 'MyDatalist',
-    options: () => {
-      return GROUPED_LOCATIONS_ENUM
-    },
+    options: GROUPED_LOCATIONS_ENUM
   },
   summary: {
     type: String,
@@ -232,13 +226,18 @@ let schema = {
   },
   offices: {
     type: Array,
+    optional: true,
     canRead: ['members'],
+    canCreate: ['members', 'admins'],
+    canUpdate: ['members', 'admins'],
     group: officeGroup,
-    query: `
-      offices {
-        results {
-          _id
-          displayName
+    query:/* GraphQL */`
+      query OfficesNameAndId {
+        offices {
+          results {
+            _id
+            displayName
+          }
         }
       }
     `,
@@ -248,16 +247,21 @@ let schema = {
   },
   contacts: {
     type: Array,
+    optional: true,
     canRead: ['members'],
-    query: `
-      contacts {
-        results {
-          _id
-          fullName
+    canCreate: ['members', 'admins'],
+    canUpdate: ['members', 'admins'],
+    group: contactGroup,
+    query:/* GraphQL */`
+      query ContactsNameAndId {
+        contacts {
+          results {
+            _id
+            fullName
+          }
         }
       }
-    `,
-    group: contactGroup
+    `
    },
   'contacts.$': {
     type: contactSubSchema
