@@ -92,9 +92,7 @@ const schema = {
     type: String,
     optional: false,
     input: 'MySelect',
-    options: () => {
-      return PROJECT_TYPES_ENUM
-    },
+    options: PROJECT_TYPES_ENUM,
     canRead: ['guests'],
     canCreate: ['members', 'admins'],
     canUpdate: ['members', 'admins']
@@ -133,9 +131,7 @@ const schema = {
     type: String,
     optional: false,
     input: 'MySelect',
-    options: () => {
-      return PROJECT_STATUSES_ENUM
-    },
+    options: PROJECT_STATUSES_ENUM,
     canRead: ['guests'],
     canCreate: ['members', 'admins'],
     canUpdate: ['members', 'admins']
@@ -270,11 +266,13 @@ const schema = {
     canCreate: ['admins'],
     canUpdate: ['members', 'admins'],
     group: officeGroup,
-    query: `
-      offices {
-        results {
-          _id
-          displayName
+    query:/* GraphQL */`
+      query OfficesNameAndId {
+        offices {
+          results {
+            _id
+            displayName
+          }
         }
       }
     `,
@@ -347,15 +345,17 @@ const schema = {
     canRead: ['members'],
     canCreate: ['members', 'admins'],
     canUpdate: ['members', 'admins'],
-    query: `
-      contacts{
-        results{
-          _id
-          fullName
+    group: contactGroup,
+    query:/* GraphQL */`
+      query ContactsNameAndId {
+        contacts{
+          results{
+            _id
+            fullName
+          }
         }
       }
-    `,
-    group: contactGroup
+    `
   },
   'contacts.$': {
     type: contactSubSchema

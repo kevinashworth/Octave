@@ -188,11 +188,13 @@ const schema = {
     canRead: ['members'],
     canCreate: ['members', 'admins'],
     canUpdate: ['members', 'admins'],
-    query: `
-      contacts {
-        results {
-          _id
-          fullName
+    query:/* GraphQL */`
+      query ContactsNameAndId {
+        contacts {
+          results {
+            _id
+            fullName
+          }
         }
       }
     `,
@@ -242,11 +244,13 @@ const schema = {
     canRead: ['members'],
     canCreate: ['members', 'admins'],
     canUpdate: ['members', 'admins'],
-    query: `
-      projects {
-        results {
-          _id
-          projectTitle
+    query:/* GraphQL */`
+      query ProjectsTitleAndId {
+        projects {
+          results {
+            _id
+            projectTitle
+          }
         }
       }
     `,
@@ -337,11 +341,13 @@ const schema = {
     canRead: ['members'],
     canCreate: ['members', 'admins'],
     canUpdate: ['members', 'admins'],
-    query: `
-      pastProjects {
-        results {
-          _id
-          projectTitle
+    query:/* GraphQL */`
+      query PastProjectsTitleAndId {
+        pastProjects {
+          results {
+            _id
+            projectTitle
+          }
         }
       }
     `,
