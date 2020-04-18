@@ -66,12 +66,11 @@ export async function PastProjectUpdateStatisticsAsync ({ currentUser, document 
     case 'TV Daytime':
     case 'TV Mini-Series':
     case 'TV Movie':
-    case 'TV Telefilm':
     case 'TV Talk/Variety':
     case 'TV Sketch/Improv':
     case 'New Media': {
       const othersCasting = Projects.find({
-        projectType: { $in: ['Short Film', 'TV Daytime', 'TV Mini-Series', 'TV Movie', 'TV Telefilm', 'TV Talk/Variety', 'TV Sketch/Improv', 'New Media'] },
+        projectType: { $in: ['Short Film', 'TV Daytime', 'TV Mini-Series', 'TV Movie', 'TV Talk/Variety', 'TV Sketch/Improv', 'New Media'] },
         status: 'Casting'
       }).count()
       console.debug('There are ' + newStats.others.length + ' others, ' + othersCasting + ' casting.')
