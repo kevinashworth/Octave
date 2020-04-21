@@ -49,12 +49,28 @@ class OfficesDataTable extends Component {
   constructor (props) {
     super(props)
     this.state = {
+      results: [],
+      totalCount: 0,
       // Retrieve the last state
       sortField: keptState.sortField,
       sortOrder: keptState.sortOrder,
       page: keptState.page,
       sizePerPage: keptState.sizePerPage,
       keptSearchText: keptState.keptSearchText
+    }
+  }
+
+  componentDidMount () {
+    const { results, totalCount } = this.props
+    if (results) {
+      this.setState({ results, totalCount })
+    }
+  }
+
+  componentDidUpdate (prevProps) {
+    const { results, totalCount } = this.props
+    if (results && !prevProps.results) {
+      this.setState({ results, totalCount })
     }
   }
 
@@ -89,24 +105,9 @@ class OfficesDataTable extends Component {
   }
 
   render () {
-    const { count, totalCount, results, loadingMore, loadMore, networkStatus, currentUser } = this.props
+    const { count, loadingMore, loadMore, currentUser } = this.props
 
-    if (networkStatus !== 8 && networkStatus !== 7) {
-      return (
-        <div className='animated fadeIn'>
-          <Card className='card-accent-primary'>
-            <CardHeader>
-              <i className='icon-briefcase' />Offices
-            </CardHeader>
-            <CardBody>
-              <Components.Loading />
-            </CardBody>
-          </Card>
-        </div>
-      )
-    }
-
-    const hasMore = results && (totalCount > results.length)
+    const hasMore = this.state.results && (this.state.totalCount > this.state.results.length)
 
     const linkFormatter = (cell, row) => {
       return (
@@ -150,9 +151,9 @@ class OfficesDataTable extends Component {
 
     const pagination = paginationFactory({
       custom: true,
-      totalSize: totalCount,
+      totalSize: this.state.totalCount,
       sizePerPageList: SIZE_PER_PAGE_LIST_SEED.concat([{
-        text: 'All', value: totalCount
+        text: 'All', value: this.state.totalCount
       }]),
       page: this.state.page,
       sizePerPage: this.state.sizePerPage,
@@ -170,7 +171,7 @@ class OfficesDataTable extends Component {
       <>
       <ToolkitProvider
         keyField='_id'
-        data={results}
+        data={this.state.results}
         columns={columns}
         bootstrap4
         search={ { searchFormatted: true } }
@@ -203,6 +204,7 @@ class OfficesDataTable extends Component {
                   dataField: this.state.sortField,
                   order: this.state.sortOrder,
                 }}
+                noDataIndication={ () => <Components.Loading /> }
                 { ...toolkitProps.baseProps } { ...paginationTableProps } />
             </>
           )}}
@@ -229,7 +231,7 @@ class OfficesDataTable extends Component {
             <CardFooter>
               {loadingMore
                 ? <Components.Loading />
-                : <Button onClick={e => { e.preventDefault(); loadMore() }}>Load More ({count}/{totalCount})</Button>
+                : <Button onClick={e => { e.preventDefault(); loadMore() }}>Load More ({count}/{this.state.totalCount})</Button>
               }
             </CardFooter>
           }
