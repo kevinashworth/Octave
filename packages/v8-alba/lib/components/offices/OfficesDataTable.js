@@ -107,24 +107,24 @@ class OfficesDataTable extends Component {
   }
 
   render () {
-    const { count, totalCount, results, loadingMore, loadMore, networkStatus, currentUser } = this.props
+    const { count, loadingMore, loadMore, currentUser } = this.props
 
-    if (networkStatus !== 8 && networkStatus !== 7) {
-      return (
-        <div className='animated fadeIn'>
-          <Card className='card-accent-primary'>
-            <CardHeader>
-              <i className='icon-briefcase' />Offices
-            </CardHeader>
-            <CardBody>
-              <Components.Loading />
-            </CardBody>
-          </Card>
-        </div>
-      )
-    }
+    // if (networkStatus !== 8 && networkStatus !== 7) {
+    //   return (
+    //     <div className='animated fadeIn'>
+    //       <Card className='card-accent-primary'>
+    //         <CardHeader>
+    //           <i className='icon-briefcase' />Offices
+    //         </CardHeader>
+    //         <CardBody>
+    //           <Components.Loading />
+    //         </CardBody>
+    //       </Card>
+    //     </div>
+    //   )
+    // }
 
-    const hasMore = results && (totalCount > results.length)
+    const hasMore = this.state.results && (this.state.totalCount > this.state.results.length)
 
     const linkFormatter = (cell, row) => {
       return (
@@ -221,6 +221,7 @@ class OfficesDataTable extends Component {
                   dataField: this.state.sortField,
                   order: this.state.sortOrder,
                 }}
+                noDataIndication={ () => <Components.Loading /> }
                 { ...toolkitProps.baseProps } { ...paginationTableProps } />
             </>
           )}}
