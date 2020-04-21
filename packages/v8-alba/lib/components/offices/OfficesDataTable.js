@@ -63,7 +63,6 @@ class OfficesDataTable extends Component {
   componentDidMount () {
     const { results, totalCount } = this.props
     if (results) {
-      console.log('[KA] Updating state.results and state.totalCount in componentDidMount.')
       this.setState({ results, totalCount })
     }
   }
@@ -71,7 +70,6 @@ class OfficesDataTable extends Component {
   componentDidUpdate (prevProps) {
     const { results, totalCount } = this.props
     if (results && !prevProps.results) {
-      console.log('[KA] Updating state.results and state.totalCount in componentDidUpdate.')
       this.setState({ results, totalCount })
     }
   }
@@ -108,21 +106,6 @@ class OfficesDataTable extends Component {
 
   render () {
     const { count, loadingMore, loadMore, currentUser } = this.props
-
-    // if (networkStatus !== 8 && networkStatus !== 7) {
-    //   return (
-    //     <div className='animated fadeIn'>
-    //       <Card className='card-accent-primary'>
-    //         <CardHeader>
-    //           <i className='icon-briefcase' />Offices
-    //         </CardHeader>
-    //         <CardBody>
-    //           <Components.Loading />
-    //         </CardBody>
-    //       </Card>
-    //     </div>
-    //   )
-    // }
 
     const hasMore = this.state.results && (this.state.totalCount > this.state.results.length)
 
