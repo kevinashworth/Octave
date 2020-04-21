@@ -102,6 +102,7 @@ export const SHOOTING_LOCATIONS_CANADA_ENUM = [
   { value: 'Winnipeg', label: 'Winnipeg, MB' }
 ]
 export const SHOOTING_LOCATIONS_WORLDWIDE_ENUM = [
+  { value: 'Australia', label: 'Australia' },
   { value: 'Budapest', label: 'Budapest, Hungary' },
   { value: 'Germany', label: 'Germany' },
   { value: 'Iceland', label: 'Iceland' },
