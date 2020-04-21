@@ -49,12 +49,30 @@ class OfficesDataTable extends Component {
   constructor (props) {
     super(props)
     this.state = {
+      results: [],
+      totalCount: 0,
       // Retrieve the last state
       sortField: keptState.sortField,
       sortOrder: keptState.sortOrder,
       page: keptState.page,
       sizePerPage: keptState.sizePerPage,
       keptSearchText: keptState.keptSearchText
+    }
+  }
+
+  componentDidMount () {
+    const { results, totalCount } = this.props
+    if (results) {
+      console.log('[KA] Updating state.results and state.totalCount in componentDidMount.')
+      this.setState({ results, totalCount })
+    }
+  }
+
+  componentDidUpdate (prevProps) {
+    const { results, totalCount } = this.props
+    if (results && !prevProps.results) {
+      console.log('[KA] Updating state.results and state.totalCount in componentDidUpdate.')
+      this.setState({ results, totalCount })
     }
   }
 
@@ -150,9 +168,9 @@ class OfficesDataTable extends Component {
 
     const pagination = paginationFactory({
       custom: true,
-      totalSize: totalCount,
+      totalSize: this.state.totalCount,
       sizePerPageList: SIZE_PER_PAGE_LIST_SEED.concat([{
-        text: 'All', value: totalCount
+        text: 'All', value: this.state.totalCount
       }]),
       page: this.state.page,
       sizePerPage: this.state.sizePerPage,
@@ -170,7 +188,7 @@ class OfficesDataTable extends Component {
       <>
       <ToolkitProvider
         keyField='_id'
-        data={results}
+        data={this.state.results}
         columns={columns}
         bootstrap4
         search={ { searchFormatted: true } }
@@ -229,7 +247,7 @@ class OfficesDataTable extends Component {
             <CardFooter>
               {loadingMore
                 ? <Components.Loading />
-                : <Button onClick={e => { e.preventDefault(); loadMore() }}>Load More ({count}/{totalCount})</Button>
+                : <Button onClick={e => { e.preventDefault(); loadMore() }}>Load More ({count}/{this.state.totalCount})</Button>
               }
             </CardFooter>
           }
