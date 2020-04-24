@@ -5,10 +5,14 @@
 bundle.tar.gz
 dump/
 node_modules/
+bitbucket-pipelines.yml
+development.settings.json
 production.settings.json
 settings.json
 .deploy
 .galaxy
+misc/emails/mailgun-curl-test.sh
+start-mlab.sh
 
 # The rest crept in from who knows where
 .eslintcache
