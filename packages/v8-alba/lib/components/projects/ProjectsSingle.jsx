@@ -71,7 +71,9 @@ class ProjectsSingle extends Component {
       return (
         <div>
           <FormattedMessage id='app.missing_document' />
-          <Button onClick={this.deleteAlgoliaRecord(documentId)}>Delete {documentId} from Algolia</Button>
+          {Users.isAdmin(currentUser) &&
+            <Button color='danger' onClick={this.deleteAlgoliaRecord(documentId)}>Delete {documentId} from Algolia</Button>
+          }
         </div>
       )
     }
