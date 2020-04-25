@@ -1,7 +1,7 @@
 import { Promise } from 'meteor/promise'
 import algoliasearch from 'algoliasearch'
 
-const applicationid = Meteor.settings.private.algolia.ApplicationID
+const applicationid = Meteor.settings.public.algolia.ApplicationID
 const algoliaindex = Meteor.settings.private.algolia.AlgoliaIndex
 const addupdatekey = Meteor.settings.private.algolia.AddAndUpdateAPIKey
 

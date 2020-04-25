@@ -7,7 +7,7 @@ import Offices from '../modules/offices/collection.js'
 import Projects from '../modules/projects/collection.js'
 import PastProjects from '../modules/past-projects/collection.js'
 
-const applicationid = Meteor.settings.private.algolia.ApplicationID
+const applicationid = Meteor.settings.public.algolia.ApplicationID
 const algoliaindex  = Meteor.settings.private.algolia.AlgoliaIndex
 const addupdatekey   = Meteor.settings.private.algolia.AddAndUpdateAPIKey
 

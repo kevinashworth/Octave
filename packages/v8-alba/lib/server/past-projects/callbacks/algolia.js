@@ -3,7 +3,7 @@ import algoliasearch from 'algoliasearch'
 import _ from 'lodash'
 import { PAST_PROJECT_STATUSES_ARRAY } from '../../../modules/constants.js'
 
-const applicationid = Meteor.settings.private.algolia.ApplicationID
+const applicationid = Meteor.settings.public.algolia.ApplicationID
 const algoliaindex = Meteor.settings.private.algolia.AlgoliaIndex
 const addupdatekey = Meteor.settings.private.algolia.AddAndUpdateAPIKey
 
