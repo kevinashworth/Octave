@@ -18,12 +18,23 @@ class ProjectsSingle extends Component {
       activeTab: 'Main',
       commentsTabLabel: 'Comments'
     }
-    this.commentsCallback = this.commentsCallback.bind(this)
-    this.toggleTab = this.toggleTab.bind(this)
   }
 
-  commentsCallback (labelFromCommentsThread) {
+  commentsCallback = (labelFromCommentsThread) => {
     this.setState({ commentsTabLabel: labelFromCommentsThread })
+  }
+
+  deleteAlgoliaRecord = (documentId) => {
+    if (typeof documentId === 'string') {
+      Meteor.call(
+        'deleteAlgoliaRecord',
+        documentId,
+        (error, result) => { // we expect result to be undefined
+          if (error) {
+            console.error('deleteAlgoliaRecord error:', error)
+          }
+        })
+    }
   }
 
   seasonorder (project) {
@@ -45,19 +56,26 @@ class ProjectsSingle extends Component {
     return so
   }
 
-  toggleTab (tab) {
+  toggleTab = (tab) => {
     if (this.state.activeTab !== tab) {
       this.setState({ activeTab: tab })
     }
   }
 
   render () {
-    const { currentUser, document, networkStatus } = this.props
+    const { currentUser, document, networkStatus, documentId } = this.props
     if (networkStatus !== 8 && networkStatus !== 7) {
       return (<div><Components.Loading /></div>)
     }
     if (!document) {
-      return (<div><FormattedMessage id='app.404' /></div>)
+      return (
+        <div>
+          <FormattedMessage id='app.missing_document' />
+          {Users.isAdmin(currentUser) &&
+            <Button color='danger' onClick={this.deleteAlgoliaRecord(documentId)}>Delete {documentId} from Algolia</Button>
+          }
+        </div>
+      )
     }
     const project = document
     const seasonorder = this.seasonorder(project)

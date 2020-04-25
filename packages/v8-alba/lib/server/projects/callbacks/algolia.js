@@ -3,9 +3,9 @@ import algoliasearch from 'algoliasearch'
 import _ from 'lodash'
 import { ACTIVE_PROJECT_STATUSES_ARRAY } from '../../../modules/constants.js'
 
-const applicationid = Meteor.settings.private.algolia.ApplicationID
-const adminapikey   = Meteor.settings.private.algolia.AdminAPIKey
-const algoliaindex  = Meteor.settings.private.algolia.AlgoliaIndex
+const applicationid = Meteor.settings.public.algolia.ApplicationID
+const algoliaindex = Meteor.settings.private.algolia.AlgoliaIndex
+const addupdatekey = Meteor.settings.private.algolia.AddAndUpdateAPIKey
 
 export function ProjectEditUpdateAlgoliaBefore (data, { document, originalDocument }) {
   var indexedObject = {
@@ -42,7 +42,7 @@ export function ProjectEditUpdateAlgoliaBefore (data, { document, originalDocume
   }
 
   if (dirty) {
-    const client = algoliasearch(applicationid, adminapikey)
+    const client = algoliasearch(applicationid, addupdatekey)
     const index = client.initIndex(algoliaindex)
     indexedObject['updatedAt'] = new Date()
     Promise.await(
@@ -72,7 +72,7 @@ export function ProjectCreateSaveToAlgolia (document) {
     boosted: 2
   }
 
-  const client = algoliasearch(applicationid, adminapikey)
+  const client = algoliasearch(applicationid, addupdatekey)
   const index = client.initIndex(algoliaindex)
   Promise.await(index.saveObject(indexedObject)
     .then(response => console.log('saveObject response:', response))
