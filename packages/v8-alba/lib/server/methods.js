@@ -1,7 +1,19 @@
 import { Meteor } from 'meteor/meteor'
 import { Accounts } from 'meteor/accounts-base'
+import algoliasearch from 'algoliasearch'
 
 Meteor.methods({
+
+  deleteAlgoliaRecord (objectId) {
+    const applicationid = Meteor.settings.public.algolia.ApplicationID
+    const algoliaindex = Meteor.settings.private.algolia.AlgoliaIndex
+    const deletekey = Meteor.settings.private.algolia.DeleteAPIKey
+    const client = algoliasearch(applicationid, deletekey)
+    const index = client.initIndex(algoliaindex)
+    index.deleteObject(objectId)
+      .then(response => console.log('deleteObject response:', response))
+      .catch(error => console.error('deleteObject error:', error))
+  },
 
   getProcessEnvMongoUrl () {
     var mongoURL = process.env.MONGO_URL
@@ -79,5 +91,5 @@ Meteor.methods({
         }
       }
   }
-  
+
 })
