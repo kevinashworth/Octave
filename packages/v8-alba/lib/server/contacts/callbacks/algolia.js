@@ -2,8 +2,8 @@ import { Promise } from 'meteor/promise'
 import algoliasearch from 'algoliasearch'
 
 const applicationid = Meteor.settings.private.algolia.ApplicationID
-const adminapikey   = Meteor.settings.private.algolia.AdminAPIKey
-const algoliaindex  = Meteor.settings.private.algolia.AlgoliaIndex
+const algoliaindex = Meteor.settings.private.algolia.AlgoliaIndex
+const addupdatekey = Meteor.settings.private.algolia.AddAndUpdateAPIKey
 
 export function ContactEditUpdateAlgoliaBefore (data, { document, originalDocument }) {
   var indexedObject = {
@@ -28,7 +28,7 @@ export function ContactEditUpdateAlgoliaBefore (data, { document, originalDocume
   }
 
   if (dirty) {
-    const client = algoliasearch(applicationid, adminapikey)
+    const client = algoliasearch(applicationid, addupdatekey)
     const index = client.initIndex(algoliaindex)
     indexedObject['updatedAt'] = new Date()
     Promise.await(
@@ -57,7 +57,7 @@ export function ContactCreateSaveToAlgolia (document) {
     boosted: 3
   }
 
-  const client = algoliasearch(applicationid, adminapikey)
+  const client = algoliasearch(applicationid, addupdatekey)
   const index = client.initIndex(algoliaindex)
   Promise.await(index.saveObject(indexedObject)
     .then(response => console.log('saveObject response:', response))

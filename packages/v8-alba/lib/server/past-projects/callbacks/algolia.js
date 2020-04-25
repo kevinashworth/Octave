@@ -4,8 +4,8 @@ import _ from 'lodash'
 import { PAST_PROJECT_STATUSES_ARRAY } from '../../../modules/constants.js'
 
 const applicationid = Meteor.settings.private.algolia.ApplicationID
-const adminapikey   = Meteor.settings.private.algolia.AdminAPIKey
-const algoliaindex  = Meteor.settings.private.algolia.AlgoliaIndex
+const algoliaindex = Meteor.settings.private.algolia.AlgoliaIndex
+const addupdatekey = Meteor.settings.private.algolia.AddAndUpdateAPIKey
 
 export function PastProjectEditUpdateAlgoliaBefore (data, { document, originalDocument }) {
   var indexedObject = {
@@ -42,7 +42,7 @@ export function PastProjectEditUpdateAlgoliaBefore (data, { document, originalDo
   }
 
   if (dirty) {
-    const client = algoliasearch(applicationid, adminapikey)
+    const client = algoliasearch(applicationid, addupdatekey)
     const index = client.initIndex(algoliaindex)
     indexedObject['updatedAt'] = new Date()
     Promise.await(

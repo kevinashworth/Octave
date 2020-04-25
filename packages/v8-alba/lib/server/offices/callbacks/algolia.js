@@ -3,8 +3,8 @@ import algoliasearch from 'algoliasearch'
 import { getFullAddress } from '../../../modules/helpers.js'
 
 const applicationid = Meteor.settings.private.algolia.ApplicationID
-const adminapikey   = Meteor.settings.private.algolia.AdminAPIKey
-const algoliaindex  = Meteor.settings.private.algolia.AlgoliaIndex
+const algoliaindex = Meteor.settings.private.algolia.AlgoliaIndex
+const addupdatekey = Meteor.settings.private.algolia.AddAndUpdateAPIKey
 
 const fullAddress = (office) => {
   if (office.addresses && office.addresses[0]) {
@@ -38,7 +38,7 @@ export function OfficeEditUpdateAlgoliaBefore (data, { document, originalDocumen
   }
 
   if (dirty) {
-    const client = algoliasearch(applicationid, adminapikey)
+    const client = algoliasearch(applicationid, addupdatekey)
     const index = client.initIndex(algoliaindex)
     indexedObject['updatedAt'] = new Date()
     Promise.await(
@@ -67,7 +67,7 @@ export function OfficeCreateSaveToAlgolia (document) {
     boosted: 1
   }
 
-  const client = algoliasearch(applicationid, adminapikey)
+  const client = algoliasearch(applicationid, addupdatekey)
   const index = client.initIndex(algoliaindex)
   Promise.await(index.saveObject(indexedObject)
     .then(response => console.log('saveObject response:', response))

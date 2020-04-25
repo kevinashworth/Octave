@@ -5,7 +5,9 @@ import { Dropdown, DropdownItem, DropdownMenu, DropdownToggle } from 'reactstrap
 import algoliasearch from 'algoliasearch/lite'
 import { connectHits, connectPoweredBy, connectStateResults, Highlight, InstantSearch, SearchBox, Snippet } from 'react-instantsearch-dom'
 
-const searchClient = algoliasearch('14RUP1OK0B', '2cd70a6b9a01c10aeaee6f6f11105f46')
+const applicationid = Meteor.settings.private.algolia.ApplicationID
+const searchonlyapikey = Meteor.settings.private.algolia.SearchOnlyAPIKey
+const searchClient = algoliasearch(applicationid, searchonlyapikey)
 
 const PoweredBy = ({ url }) => <a href={url} target='_blank' rel='noopener noreferrer'>Algolia</a>
 

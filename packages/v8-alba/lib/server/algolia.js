@@ -8,14 +8,14 @@ import Projects from '../modules/projects/collection.js'
 import PastProjects from '../modules/past-projects/collection.js'
 
 const applicationid = Meteor.settings.private.algolia.ApplicationID
-const adminapikey   = Meteor.settings.private.algolia.AdminAPIKey
 const algoliaindex  = Meteor.settings.private.algolia.AlgoliaIndex
-//
+const addupdatekey   = Meteor.settings.private.algolia.AddAndUpdateAPIKey
+
 const currentUser = Users.findOne() // just get the first user available
 let algoliaLog = AlgoliaLog.findOne()
 
-const createAlgoliaIndex = () => {
-  const client = algoliasearch(applicationid, adminapikey)
+const populateAlgoliaIndex = () => {
+  const client = algoliasearch(applicationid, addupdatekey)
   const index = client.initIndex(algoliaindex)
 
   index.setSettings({
@@ -124,5 +124,5 @@ const createAlgoliaIndex = () => {
 }
 
 Meteor.startup(() => {
-  createAlgoliaIndex()
+  populateAlgoliaIndex()
 })
