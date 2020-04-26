@@ -12,6 +12,7 @@ settings.json
 .deploy
 .galaxy
 misc/emails/mailgun-curl-test.sh
+start-atlas.sh
 start-mlab.sh
 
 # The rest crept in from who knows where

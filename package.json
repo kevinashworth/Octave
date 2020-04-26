@@ -12,6 +12,7 @@
     "prestart": "node .vulcan/prestart_vulcan.js",
     "start": "meteor --port 4004 --settings settings.json",
     "start-debug": "meteor debug --port 4004 --settings settings.json",
+    "start-atlas": "./start-atlas.sh",
     "start-mlab": "./start-mlab.sh",
     "start-visualizer": "meteor --extra-packages bundle-visualizer --production --port 4004 --settings settings.json",
     "lint": "standard 'packages/v8-alba/**/*.js' 'packages/v8-alba/**/*.jsx' --fix",
