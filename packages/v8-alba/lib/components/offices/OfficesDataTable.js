@@ -139,6 +139,7 @@ class OfficesDataTable extends Component {
       formatter: dateFormatter,
       align: 'right',
       headerStyle: {
+        textAlign: 'right',
         width: '6.6em'
       }
     }, {
