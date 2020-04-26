@@ -138,8 +138,8 @@ class OfficesDataTable extends Component {
       onSort: this.sortChangeHandler,
       formatter: dateFormatter,
       align: 'right',
-      headerStyle: (column, colIndex) => {
-        return { width: '94px' };
+      headerStyle: {
+        width: '6.6em'
       }
     }, {
       dataField: 'body',
