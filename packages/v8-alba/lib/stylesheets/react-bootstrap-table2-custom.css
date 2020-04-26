@@ -1,0 +1,5 @@
+.react-bootstrap-table td {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}

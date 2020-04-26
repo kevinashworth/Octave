@@ -123,8 +123,8 @@ class OfficesDataTable extends Component {
       sort: true,
       onSort: this.sortChangeHandler,
       formatter: linkFormatter,
-      headerStyle: (column, colIndex) => {
-        return { width: '30%' };
+      headerStyle: {
+        width: '30%'
       }
     }, {
       dataField: 'fullAddress',
@@ -138,8 +138,9 @@ class OfficesDataTable extends Component {
       onSort: this.sortChangeHandler,
       formatter: dateFormatter,
       align: 'right',
-      headerStyle: (column, colIndex) => {
-        return { width: '94px' };
+      headerStyle: {
+        textAlign: 'right',
+        width: '6.6em'
       }
     }, {
       dataField: 'body',
