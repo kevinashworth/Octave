@@ -74,14 +74,6 @@ class ProjectsDataTable extends Component {
       },
       ...keptState.searchColor
     }
-    this.createCustomClearButton = this.createCustomClearButton.bind(this)
-    this.createCustomSearchField = this.createCustomSearchField.bind(this)
-    this.pageChangeHandler = this.pageChangeHandler.bind(this)
-    this.rowClickHandler = this.rowClickHandler.bind(this)
-    this.searchChangeHandler = this.searchChangeHandler.bind(this)
-    this.sizePerPageListHandler = this.sizePerPageListHandler.bind(this)
-    this.sortChangeHandler = this.toggle.bind(this)
-    this.toggle = this.toggle.bind(this)
   }
 
   componentWillUnmount () {
@@ -147,15 +139,17 @@ class ProjectsDataTable extends Component {
     )
   }
 
-  toggle () {
+  toggle = () => {
     this.setState({
       modal: !this.state.modal
     })
   }
 
   rowClickHandler = (row, columnIndex, rowIndex, event) => {
-    this.setState({ contact: row })
-    this.setState({ modal: true })
+    this.setState({
+      project: row,
+      modal: true
+    })
   }
 
   render () {
