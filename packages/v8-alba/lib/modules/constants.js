@@ -232,10 +232,14 @@ export const AVOD_ENUM = [
   'Vudu'
 ]
 
-// Casting, Shooting, See Notes are the 3 actively Active
+// 'Casting', 'Shooting', 'See Notes' are 3 actively Active statuses.
 // TODO: The number 3 appears on line 170 of ProjectFilters.js
-// Pre-Prod., Ordered, On Hiatus, On Hold are not necessarily Active
-// Suspended is new as of 2020 for COVID-19 and such
+// On Hiatus is for episodics between seasons.
+// 'Pre-Prod.' means we expect 'Casting' status soon.
+// 'Ordered', 'On Hold', 'Suspended' are Projects that should cast at some point;
+// specify more than what is implied by each word?
+// 'Suspended' is new for COVID-19.
+// 'Undetermined' is for Projects. 'Unknown' is for Past Projects.
 export const ACTIVE_PROJECT_STATUSES_ENUM = [
   { value: 'Casting', label: 'Casting' },
   { value: 'Shooting', label: 'Shooting' },
@@ -244,7 +248,8 @@ export const ACTIVE_PROJECT_STATUSES_ENUM = [
   { value: 'On Hold', label: 'On Hold' },
   { value: 'Ordered', label: 'Ordered' },
   { value: 'Pre-Prod.', label: 'Pre-Prod.' },
-  { value: 'Suspended', label: 'Suspended' }
+  { value: 'Suspended', label: 'Suspended' },
+  { value: 'Undetermined', label: 'Undetermined' }
 ]
 
 export const PAST_PROJECT_STATUSES_ENUM = [
