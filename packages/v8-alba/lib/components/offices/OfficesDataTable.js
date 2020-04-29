@@ -1,20 +1,16 @@
 import { Components, registerComponent, withAccess, withCurrentUser, withMulti } from 'meteor/vulcan:core'
 import Users from 'meteor/vulcan:users'
 import React, { Component, PureComponent } from 'react'
-import { Link } from 'react-router-dom'
-import { Button, Card, CardBody, CardFooter, CardHeader, Col, FormGroup, Row } from 'reactstrap'
-import BootstrapTable from 'react-bootstrap-table-next'
-import ToolkitProvider from 'react-bootstrap-table2-toolkit'
-import paginationFactory, {
-  PaginationListStandalone,
-  PaginationProvider,
-  PaginationTotalStandalone,
-  SizePerPageDropdownStandalone } from 'react-bootstrap-table2-paginator'
-import MyClearButton from '../common/react-bootstrap-table2/MyClearButton'
-import MySearchBar from '../common/react-bootstrap-table2/MySearchBar'
+// import { Link } from 'react-router-dom'
+import { Button, Card, CardBody, CardFooter, CardHeader } from 'reactstrap'
 import styled from 'styled-components'
-import { SIZE_PER_PAGE_LIST_SEED } from '../../modules/constants.js'
-import { dateFormatter, renderShowsTotal } from '../../modules/helpers.js'
+import {
+  useTable,
+  usePagination,
+  useSortBy
+} from 'react-table'
+// import { SIZE_PER_PAGE_LIST_SEED } from '../../modules/constants.js'
+// import { dateFormatter, renderShowsTotal } from '../../modules/helpers.js'
 import Offices from '../../modules/offices/collection.js'
 
 // Set initial state. Just options I want to keep.
@@ -35,6 +31,48 @@ const CaretSorted = styled.span`
   margin: 10px 5px;
 `
 
+const Styles = styled.div`
+  padding: 1rem;
+
+  table {
+    border-spacing: 0;
+    border: 1px solid black;
+
+    tr {
+      :last-child {
+        td {
+          border-bottom: 0;
+        }
+      }
+    }
+
+    th,
+    td {
+      margin: 0;
+      padding: 0.5rem;
+      border-bottom: 1px solid black;
+      border-right: 1px solid black;
+
+      :last-child {
+        border-right: 0;
+      }
+    }
+
+    td {
+      input {
+        font-size: 1rem;
+        padding: 0;
+        margin: 0;
+        border: 0;
+      }
+    }
+  }
+
+  .pagination {
+    padding: 0.5rem;
+  }
+`
+
 function AddButtonFooter () {
   return (
     <CardFooter>
@@ -42,6 +80,120 @@ function AddButtonFooter () {
         <Components.OfficesNewForm />
       </Components.ModalTrigger>
     </CardFooter>
+  )
+}
+
+function Table({ columns, data }) {
+  const {
+    getTableProps,
+    getTableBodyProps,
+    headerGroups,
+    prepareRow,
+    page, // has only the rows for the active page
+    canPreviousPage,
+    canNextPage,
+    pageOptions,
+    pageCount,
+    gotoPage,
+    nextPage,
+    previousPage,
+    setPageSize,
+    state: { pageIndex, pageSize },
+  } = useTable(
+    {
+      columns,
+      data,
+      initialState: { pageIndex: 2 }
+    },
+    usePagination,
+    useSortBy
+  )
+
+  return (
+    <>
+      <table {...getTableProps()}>
+        <thead>
+          {headerGroups.map(headerGroup => (
+            <tr {...headerGroup.getHeaderGroupProps()}>
+              {headerGroup.headers.map(column => (
+                // Add the sorting props to control sorting. For this example
+                // we can add them into the header props
+                <th {...column.getHeaderProps(column.getSortByToggleProps())}>
+                  {column.render('Header')}
+                  {/* Add a sort direction indicator */}
+                  <span>
+                    {column.isSorted
+                      ? column.isSortedDesc
+                        ? ' 🔽'
+                        : ' 🔼'
+                      : ''}
+                  </span>
+                </th>
+              ))}
+            </tr>
+          ))}
+        </thead>
+        <tbody {...getTableBodyProps()}>
+          {page.map(
+            (row, i) => {
+              prepareRow(row);
+              return (
+                <tr {...row.getRowProps()}>
+                  {row.cells.map(cell => {
+                    return (
+                      <td {...cell.getCellProps()}>{cell.render('Cell')}</td>
+                    )
+                  })}
+                </tr>
+              )}
+          )}
+        </tbody>
+      </table>
+      <div className="pagination">
+        <button onClick={() => gotoPage(0)} disabled={!canPreviousPage}>
+          {'<<'}
+        </button>{' '}
+        <button onClick={() => previousPage()} disabled={!canPreviousPage}>
+          {'<'}
+        </button>{' '}
+        <button onClick={() => nextPage()} disabled={!canNextPage}>
+          {'>'}
+        </button>{' '}
+        <button onClick={() => gotoPage(pageCount - 1)} disabled={!canNextPage}>
+          {'>>'}
+        </button>{' '}
+        <span>
+          Page{' '}
+          <strong>
+            {pageIndex + 1} of {pageOptions.length}
+          </strong>{' '}
+        </span>
+        <span>
+          | Go to page:{' '}
+          <input
+            type="number"
+            defaultValue={pageIndex + 1}
+            onChange={e => {
+              const page = e.target.value ? Number(e.target.value) - 1 : 0
+              gotoPage(page)
+            }}
+            style={{ width: '100px' }}
+          />
+        </span>{' '}
+        <select
+          value={pageSize}
+          onChange={e => {
+            setPageSize(Number(e.target.value))
+          }}
+        >
+          {[10, 20, 30, 40, 50].map(pageSize => (
+            <option key={pageSize} value={pageSize}>
+              Show {pageSize}
+            </option>
+          ))}
+        </select>
+      </div>
+    </>
   )
 }
 
@@ -109,111 +261,30 @@ class OfficesDataTable extends Component {
 
     const hasMore = this.state.results && (this.state.totalCount > this.state.results.length)
 
-    const linkFormatter = (cell, row) => {
-      return (
-        <Link to={`/offices/${row._id}/${row.slug}`}>
-          {cell}
-        </Link>
-      )
-    }
+    // const linkFormatter = (cell, row) => {
+    //   return (
+    //     <Link to={`/offices/${row._id}/${row.slug}`}>
+    //       {cell}
+    //     </Link>
+    //   )
+    // }
 
-    const columns = [{
-      dataField: 'displayName',
-      text: 'Name',
-      sort: true,
-      onSort: this.sortChangeHandler,
-      formatter: linkFormatter,
-      headerStyle: {
-        width: '30%'
-      }
-    }, {
-      dataField: 'fullAddress',
-      text: 'Address',
-      sort: true,
-      onSort: this.sortChangeHandler
-    }, {
-      dataField: 'updatedAt',
-      text: 'Updated',
-      sort: true,
-      onSort: this.sortChangeHandler,
-      formatter: dateFormatter,
-      align: 'right',
-      headerStyle: {
-        textAlign: 'right',
-        width: '6.6em'
-      }
-    }, {
-      dataField: 'body',
-      hidden: true
-    }, {
-      dataField: 'allContactNames',
-      hidden: true
-    }]
-
-    const pagination = paginationFactory({
-      custom: true,
-      totalSize: this.state.totalCount,
-      sizePerPageList: SIZE_PER_PAGE_LIST_SEED.concat([{
-        text: 'All', value: this.state.totalCount
-      }]),
-      page: this.state.page,
-      sizePerPage: this.state.sizePerPage,
-      hidePageListOnlyOnePage: true,
-      prePageText: '‹',
-      nextPageText: '›',
-      firstPageText: '«',
-      lastPageText: '»',
-      paginationTotalRenderer: renderShowsTotal,
-      onPageChange: this.pageChangeHandler,
-      onSizePerPageChange: this.sizePerPageChangeHandler
-    })
-
-    const contentTable = ({ paginationProps, paginationTableProps }) => (
-      <>
-      <ToolkitProvider
-        keyField='_id'
-        data={this.state.results}
-        columns={columns}
-        bootstrap4
-        search={ { searchFormatted: true } }
-      >{
-        (toolkitProps) => {
-          const handleSearchBarChange = (e) => toolkitProps.searchProps.onSearch(e.target.value)
-          return (
-            <>
-              <Row>
-                <Col xs='4' lg='6'></Col>
-                <Col xs='8' lg='6'>
-                  <FormGroup className='input-group input-group-sm'>
-                    <MySearchBar
-                      handleChange={handleSearchBarChange}
-                      searchText={toolkitProps.searchProps.searchText} />
-                    <MyClearButton { ...toolkitProps.searchProps } />
-                  </FormGroup>
-                </Col>
-              </Row>
-              <Row>
-                <Col xs='12'>
-                  <PaginationTotalStandalone { ...paginationProps } />
-                  <SizePerPageDropdownStandalone { ...paginationProps } />
-                  <PaginationListStandalone { ...paginationProps } />
-                </Col>
-              </Row>
-              <BootstrapTable striped condensed hover bordered={false}
-                sort={{
-                  sortCaret: this.sortCaretFn,
-                  dataField: this.state.sortField,
-                  order: this.state.sortOrder,
-                }}
-                noDataIndication={ () => <Components.Loading /> }
-                { ...toolkitProps.baseProps } { ...paginationTableProps } />
-            </>
-          )}}
-        </ToolkitProvider>
-        <PaginationTotalStandalone { ...paginationProps } />
-        <SizePerPageDropdownStandalone { ...paginationProps } />
-        <PaginationListStandalone { ...paginationProps } />
-      </>
+    const columns = React.useMemo(
+      () => [
+        {
+          Header: 'Name',
+          accessor: 'displayName'
+        },
+        {
+          Header: 'Address',
+          accessor: 'fullAddress'
+        },
+        {
+          Header: 'Updated',
+          accessor: 'updatedAt'
+        },
+      ],
+      []
     )
 
     return (
@@ -224,9 +295,9 @@ class OfficesDataTable extends Component {
             <i className='icon-briefcase' />Offices
           </CardHeader>
           <CardBody>
-            <PaginationProvider pagination={pagination}>
-            { contentTable }
-            </PaginationProvider>
+            <Styles>
+              <Table columns={columns} data={this.state.results} />
+            </Styles>
           </CardBody>
           {hasMore &&
             <CardFooter>
