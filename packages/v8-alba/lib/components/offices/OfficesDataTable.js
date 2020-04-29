@@ -1,7 +1,7 @@
 import { Components, registerComponent, withAccess, withCurrentUser, withMulti } from 'meteor/vulcan:core'
 import Users from 'meteor/vulcan:users'
 import React, { Component, PureComponent, useEffect, useState } from 'react'
-// import { Link } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import { Button, Card, CardBody, CardFooter, CardHeader } from 'reactstrap'
 import styled from 'styled-components'
 import {
@@ -9,7 +9,8 @@ import {
   usePagination,
   useSortBy
 } from 'react-table'
-// import { SIZE_PER_PAGE_LIST_SEED } from '../../modules/constants.js'
+import { DATE_FORMAT_SHORT, SIZE_PER_PAGE_LIST_SEED } from '../../modules/constants.js'
+import moment from 'moment'
 // import { dateFormatter, renderShowsTotal } from '../../modules/helpers.js'
 import Offices from '../../modules/offices/collection.js'
 
@@ -19,48 +20,6 @@ const CaretUnsorted = styled.span`
 `
 const CaretSorted = styled.span`
   margin: 10px 5px;
-`
-
-const Styles = styled.div`
-  padding: 1rem;
-
-  table {
-    border-spacing: 0;
-    border: 1px solid black;
-
-    tr {
-      :last-child {
-        td {
-          border-bottom: 0;
-        }
-      }
-    }
-
-    th,
-    td {
-      margin: 0;
-      padding: 0.5rem;
-      border-bottom: 1px solid black;
-      border-right: 1px solid black;
-
-      :last-child {
-        border-right: 0;
-      }
-    }
-
-    td {
-      input {
-        font-size: 1rem;
-        padding: 0;
-        margin: 0;
-        border: 0;
-      }
-    }
-  }
-
-  .pagination {
-    padding: 0.5rem;
-  }
 `
 
 function AddButtonFooter () {
@@ -93,7 +52,7 @@ function Table({ columns, data }) {
     {
       columns,
       data,
-      initialState: { pageIndex: 2 }
+      initialState: { pageIndex: 1 }
     },
     useSortBy,
     usePagination
@@ -101,16 +60,14 @@ function Table({ columns, data }) {
 
   return (
     <>
-      <table {...getTableProps()}>
+      <table {...getTableProps()} className='table table-striped table-hover table-sm'>
         <thead>
-          {headerGroups.map(headerGroup => (
-            <tr {...headerGroup.getHeaderGroupProps()}>
-              {headerGroup.headers.map(column => (
-                // Add the sorting props to control sorting. For this example
-                // we can add them into the header props
-                <th {...column.getHeaderProps(column.getSortByToggleProps())}>
+          {headerGroups.map((headerGroup, index) => (
+            <tr {...headerGroup.getHeaderGroupProps()} key={index}>
+              {headerGroup.headers.map((column, index) => (
+                // Add the sorting props into the header props
+                <th {...column.getHeaderProps(column.getSortByToggleProps())} key={index}>
                   {column.render('Header')}
-                  {/* Add a sort direction indicator */}
                   <span>
                     {column.isSorted
                       ? column.isSortedDesc
@@ -125,13 +82,13 @@ function Table({ columns, data }) {
         </thead>
         <tbody {...getTableBodyProps()}>
           {page.map(
-            (row, i) => {
+            (row, index) => {
               prepareRow(row);
               return (
-                <tr {...row.getRowProps()}>
-                  {row.cells.map(cell => {
+                <tr {...row.getRowProps()} key={index}>
+                  {row.cells.map((cell, index) => {
                     return (
-                      <td {...cell.getCellProps()}>{cell.render('Cell')}</td>
+                      <td {...cell.getCellProps()} key={index}>{cell.render('Cell')}</td>
                     )
                   })}
                 </tr>
@@ -176,9 +133,9 @@ function Table({ columns, data }) {
             setPageSize(Number(e.target.value))
           }}
         >
-          {[10, 20, 30, 40, 50].map(pageSize => (
-            <option key={pageSize} value={pageSize}>
-              Show {pageSize}
+          {SIZE_PER_PAGE_LIST_SEED.map(pageSize => (
+            <option key={pageSize.text} value={pageSize.value}>
+              {pageSize.text}
             </option>
           ))}
         </select>
@@ -216,19 +173,30 @@ function OfficesDataTable (props) {
   //   this.setState({ sortField, sortOrder })
   // }
   //
-  // const linkFormatter = (cell, row) => {
-  //   return (
-  //     <Link to={`/offices/${row._id}/${row.slug}`}>
-  //       {cell}
-  //     </Link>
-  //   )
-  // }
+  const linkFormatter = ({ cell, row }) => {
+    return (
+      <Link to={`/offices/${row.original._id}/${row.original.slug}`}>
+        {cell.value}
+      </Link>
+    )
+  }
+
+  const dateFormatter = ({cell, row}) => {
+    let theDate
+    if (!cell.value) { // i.e. there is only a createdAt, not an updatedAt
+      theDate = row.original.createdAt
+    } else {
+      theDate = cell.value
+    }
+    return moment(theDate).format(DATE_FORMAT_SHORT)
+  }
 
   const columns = React.useMemo(
     () => [
       {
         Header: 'Name',
-        accessor: 'displayName'
+        accessor: 'displayName',
+        Cell: linkFormatter
       },
       {
         Header: 'Address',
@@ -236,8 +204,9 @@ function OfficesDataTable (props) {
       },
       {
         Header: 'Updated',
-        accessor: 'updatedAt'
-      },
+        accessor: 'updatedAt',
+        Cell: dateFormatter
+      }
     ],
     []
   )
@@ -250,9 +219,7 @@ function OfficesDataTable (props) {
           <i className='icon-briefcase' />Offices
         </CardHeader>
         <CardBody>
-          <Styles>
-            <Table columns={columns} data={results} />
-          </Styles>
+          <Table columns={columns} data={results} />
         </CardBody>
         {hasMore &&
           <CardFooter>
