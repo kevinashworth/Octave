@@ -125,6 +125,7 @@
     "react-sortable-hoc": "^1.11.0",
     "react-stripe-checkout": "^2.4.0",
     "react-syntax-highlighter": "^6.1.2",
+    "react-table": "^7.0.4",
     "react-virtualized": "^9.21.2",
     "react-window": "^1.8.5",
     "react-window-infinite-loader": "^1.0.5",
