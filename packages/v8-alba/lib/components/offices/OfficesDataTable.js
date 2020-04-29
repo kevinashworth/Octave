@@ -1,6 +1,6 @@
 import { Components, registerComponent, withAccess, withCurrentUser, withMulti } from 'meteor/vulcan:core'
 import Users from 'meteor/vulcan:users'
-import React, { Component, PureComponent } from 'react'
+import React, { Component, PureComponent, useEffect, useState } from 'react'
 // import { Link } from 'react-router-dom'
 import { Button, Card, CardBody, CardFooter, CardHeader } from 'reactstrap'
 import styled from 'styled-components'
@@ -12,16 +12,6 @@ import {
 // import { SIZE_PER_PAGE_LIST_SEED } from '../../modules/constants.js'
 // import { dateFormatter, renderShowsTotal } from '../../modules/helpers.js'
 import Offices from '../../modules/offices/collection.js'
-
-// Set initial state. Just options I want to keep.
-// See https://github.com/amannn/react-keep-state
-let keptState = {
-  sortField: 'updatedAt',
-  sortOrder: 'desc',
-  page: 1,
-  sizePerPage: 20,
-  keptSearchText: ''
-}
 
 const CaretUnsorted = styled.span`
   margin: 10px 0px 10px 5px;
@@ -105,8 +95,8 @@ function Table({ columns, data }) {
       data,
       initialState: { pageIndex: 2 }
     },
-    usePagination,
-    useSortBy
+    useSortBy,
+    usePagination
   )
 
   return (
@@ -124,9 +114,9 @@ function Table({ columns, data }) {
                   <span>
                     {column.isSorted
                       ? column.isSortedDesc
-                        ? ' 🔽'
-                        : ' 🔼'
-                      : ''}
+                        ? <CaretSorted className='fa fa-sort-desc' />
+                        : <CaretSorted className='fa fa-sort-asc' />
+                      : <CaretUnsorted className='fa fa-sort' />}
                   </span>
                 </th>
               ))}
@@ -197,121 +187,85 @@ function Table({ columns, data }) {
   )
 }
 
-class OfficesDataTable extends Component {
-  constructor (props) {
-    super(props)
-    this.state = {
-      results: [],
-      totalCount: 0,
-      // Retrieve the last state
-      sortField: keptState.sortField,
-      sortOrder: keptState.sortOrder,
-      page: keptState.page,
-      sizePerPage: keptState.sizePerPage,
-      keptSearchText: keptState.keptSearchText
-    }
-  }
+function OfficesDataTable (props) {
+  const [results, setResults] = useState([])
+  const [totalCount, setTotalCount] = useState(0)
+  const { count, currentUser, loadingMore, loadMore } = props
+  const hasMore = results && (totalCount > results.length)
 
-  componentDidMount () {
-    const { results, totalCount } = this.props
-    if (results) {
-      this.setState({ results, totalCount })
-    }
-  }
+  useEffect(
+    () => {
+      if (props.results) {
+        setResults(props.results)
+        setTotalCount(props.totalCount)
+      }
+    },
+    [props.results, props.totalCount]
+  )
 
-  componentDidUpdate (prevProps) {
-    const { results, totalCount } = this.props
-    if (results && !prevProps.results) {
-      this.setState({ results, totalCount })
-    }
-  }
 
-  componentWillUnmount () {
-    // Remember state for the next mount
-    keptState = {
-      sortField: this.state.sortField,
-      sortOrder: this.state.sortOrder,
-      page: this.state.page,
-      sizePerPage: this.state.sizePerPage,
-      keptSearchText: this.state.keptSearchText
-    }
-  }
+  // const pageChangeHandler = (page, sizePerPage) => {
+  //   this.setState({ page, sizePerPage })
+  // }
+  //
+  // const sizePerPageChangeHandler = (sizePerPage, page) => {
+  //   this.setState({ sizePerPage, page })
+  // }
+  //
+  // const sortChangeHandler = (sortField, sortOrder) => {
+  //   this.setState({ sortField, sortOrder })
+  // }
+  //
+  // const linkFormatter = (cell, row) => {
+  //   return (
+  //     <Link to={`/offices/${row._id}/${row.slug}`}>
+  //       {cell}
+  //     </Link>
+  //   )
+  // }
 
-  pageChangeHandler = (page, sizePerPage) => {
-    this.setState({ page, sizePerPage })
-  }
+  const columns = React.useMemo(
+    () => [
+      {
+        Header: 'Name',
+        accessor: 'displayName'
+      },
+      {
+        Header: 'Address',
+        accessor: 'fullAddress'
+      },
+      {
+        Header: 'Updated',
+        accessor: 'updatedAt'
+      },
+    ],
+    []
+  )
 
-  sizePerPageChangeHandler = (sizePerPage, page) => {
-    this.setState({ sizePerPage, page })
-  }
-
-  sortChangeHandler = (sortField, sortOrder) => {
-    this.setState({ sortField, sortOrder })
-  }
-
-  sortCaretFn = (order, column) => {
-    if (!order) return (<CaretUnsorted className='fa fa-sort' />)
-    else if (order === 'asc') return (<CaretSorted className='fa fa-sort-asc' />)
-    else if (order === 'desc') return (<CaretSorted className='fa fa-sort-desc' />)
-    return null
-  }
-
-  render () {
-    const { count, loadingMore, loadMore, currentUser } = this.props
-
-    const hasMore = this.state.results && (this.state.totalCount > this.state.results.length)
-
-    // const linkFormatter = (cell, row) => {
-    //   return (
-    //     <Link to={`/offices/${row._id}/${row.slug}`}>
-    //       {cell}
-    //     </Link>
-    //   )
-    // }
-
-    const columns = React.useMemo(
-      () => [
-        {
-          Header: 'Name',
-          accessor: 'displayName'
-        },
-        {
-          Header: 'Address',
-          accessor: 'fullAddress'
-        },
-        {
-          Header: 'Updated',
-          accessor: 'updatedAt'
-        },
-      ],
-      []
-    )
-
-    return (
-      <div className='animated fadeIn'>
-        <Components.HeadTags title='V8 Alba: Offices' />
-        <Card className='card-accent-primary'>
-          <CardHeader>
-            <i className='icon-briefcase' />Offices
-          </CardHeader>
-          <CardBody>
-            <Styles>
-              <Table columns={columns} data={this.state.results} />
-            </Styles>
-          </CardBody>
-          {hasMore &&
-            <CardFooter>
-              {loadingMore
-                ? <Components.Loading />
-                : <Button onClick={e => { e.preventDefault(); loadMore() }}>Load More ({count}/{this.state.totalCount})</Button>
-              }
-            </CardFooter>
-          }
-          {Users.canCreate({ collection: Offices, user: currentUser }) && <AddButtonFooter />}
-        </Card>
-      </div>
-    )
-  }
+  return (
+    <div className='animated fadeIn'>
+      <Components.HeadTags title='V8 Alba: Offices' />
+      <Card className='card-accent-primary'>
+        <CardHeader>
+          <i className='icon-briefcase' />Offices
+        </CardHeader>
+        <CardBody>
+          <Styles>
+            <Table columns={columns} data={results} />
+          </Styles>
+        </CardBody>
+        {hasMore &&
+          <CardFooter>
+            {loadingMore
+              ? <Components.Loading />
+              : <Button onClick={e => { e.preventDefault(); loadMore() }}>Load More ({count}/{totalCount})</Button>
+            }
+          </CardFooter>
+        }
+        {Users.canCreate({ collection: Offices, user: currentUser }) && <AddButtonFooter />}
+      </Card>
+    </div>
+  )
 }
 
 const accessOptions = {
