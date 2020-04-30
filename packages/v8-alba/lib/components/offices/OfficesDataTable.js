@@ -53,7 +53,7 @@ function MyPagination(tableProps) {
   } = getVisibles({pageCount, pageIndex, pageOptions})
 
   return (
-    <div className='row align-items-center'>
+    <div className='d-flex align-items-center'>
       <div className='mb-3'>
         Showing {pageIndex*pageSize+1} to {Math.min((pageIndex+1)*pageSize,length)} out of {length} &nbsp;&nbsp;
       </div>
@@ -74,18 +74,15 @@ function MyPagination(tableProps) {
         </Dropdown>
       </div>
       <div className='ml-auto'>
-        {pageOptionsVisible.length > 0 && pageSize !== length &&
-        <Pagination aria-label='Paginagation navigation'>
-          {firstOptionVisible > 0 &&
-          <PaginationItem>
+        <Pagination aria-label='Page-by-page navigation of the Offices table'>
+          {(pageOptionsVisible.length >= PAGINATION_SIZE) &&
+          <PaginationItem disabled={pageIndex === 0}>
             <PaginationLink first onClick={() => gotoPage(0)} />
           </PaginationItem>
           }
-          {canPreviousPage &&
-          <PaginationItem>
+          <PaginationItem disabled={!canPreviousPage} >
             <PaginationLink previous onClick={() => previousPage()} />
           </PaginationItem>
-          }
           {pageOptionsVisible.map(page => (
             <PaginationItem key={page} className={page === pageIndex ? 'active' : ''}>
               <PaginationLink onClick={() => gotoPage(page)}>
@@ -93,18 +90,15 @@ function MyPagination(tableProps) {
               </PaginationLink>
             </PaginationItem>
           ))}
-          {canNextPage &&
-          <PaginationItem>
+          <PaginationItem disabled={!canNextPage}>
             <PaginationLink next onClick={() => nextPage()} />
           </PaginationItem>
-          }
-          {lastOptionVisible < pageCount &&
-          <PaginationItem>
+          {(pageOptionsVisible.length >= PAGINATION_SIZE) &&
+          <PaginationItem disabled={pageIndex === (pageCount - 1)}>
             <PaginationLink last onClick={() => gotoPage(pageCount - 1)} />
           </PaginationItem>
           }
         </Pagination>
-      }
       </div>
     </div>
   )
