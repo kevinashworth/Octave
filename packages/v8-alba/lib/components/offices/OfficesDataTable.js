@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import { Components, registerComponent, withAccess, withCurrentUser, withMulti } from 'meteor/vulcan:core'
 import Users from 'meteor/vulcan:users'
 import React, { Component, PureComponent, useEffect, useState } from 'react'
@@ -22,6 +23,8 @@ const CaretSorted = styled.span`
   margin: 10px 5px;
 `
 
+const PAGINATION_SIZE = 5
+
 function AddButtonFooter () {
   return (
     <CardFooter>
@@ -32,9 +35,33 @@ function AddButtonFooter () {
   )
 }
 
-function MyPagination({ length, pageIndex, pageSize, setPageSize }) {
+function MyPagination(tableProps) {
+  const {
+    canPreviousPage,
+    canNextPage,
+    pageOptions,
+    pageCount,
+    gotoPage,
+    nextPage,
+    previousPage,
+    setPageSize,
+    state: { pageIndex, pageSize }
+  } = tableProps
+  const length = tableProps.length
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const toggle = () => setDropdownOpen(prevState => !prevState);
+
+  const fromEnd = (pageCount - 1) - pageIndex
+  const firstOptionVisible =
+    fromEnd < Math.trunc(PAGINATION_SIZE/2)
+      ? pageIndex - ((PAGINATION_SIZE - 1) - fromEnd)
+      : Math.max(pageIndex - Math.trunc(PAGINATION_SIZE/2), 0)
+  const lastOptionVisible = firstOptionVisible + PAGINATION_SIZE
+  const pageOptionsVisible =
+    pageCount < PAGINATION_SIZE
+      ? pageOptions
+      :  pageOptions.slice(firstOptionVisible, lastOptionVisible)
+
   return (
     <div className='row align-items-center'>
       <div className='mb-3'>
@@ -57,51 +84,55 @@ function MyPagination({ length, pageIndex, pageSize, setPageSize }) {
         </Dropdown>
       </div>
       <div className='ml-auto'>
+        {pageOptionsVisible.length > 0 && pageSize !== length &&
         <Pagination aria-label='Paginagation navigation'>
-          {/* <PaginationItem>
-            <PaginationLink first href='#' />
-          </PaginationItem>
+          {firstOptionVisible > 0 &&
           <PaginationItem>
-            <PaginationLink previous href='#' />
-          </PaginationItem> */}
-          <PaginationItem active>
-            <PaginationLink href='#'>
-              1
-            </PaginationLink>
+            <PaginationLink first onClick={() => gotoPage(0)} />
           </PaginationItem>
+          }
+          {canPreviousPage &&
           <PaginationItem>
-            <PaginationLink href='#'>
-              2
-            </PaginationLink>
+            <PaginationLink previous onClick={() => previousPage()} />
           </PaginationItem>
+          }
+          {pageOptionsVisible.map(page => (
+            <PaginationItem key={page} className={page === pageIndex ? 'active' : ''}>
+              <PaginationLink onClick={() => gotoPage(page)}>
+                {page}
+              </PaginationLink>
+            </PaginationItem>
+          ))}
+          {canNextPage &&
           <PaginationItem>
-            <PaginationLink href='#'>
-              3
-            </PaginationLink>
+            <PaginationLink next onClick={() => nextPage()} />
           </PaginationItem>
+          }
+          {lastOptionVisible < pageCount &&
           <PaginationItem>
-            <PaginationLink href='#'>
-              4
-            </PaginationLink>
+            <PaginationLink last onClick={() => gotoPage(pageCount - 1)} />
           </PaginationItem>
-          <PaginationItem>
-            <PaginationLink href='#'>
-              5
-            </PaginationLink>
-          </PaginationItem>
-          <PaginationItem>
-            <PaginationLink next href='#' />
-          </PaginationItem>
-          <PaginationItem>
-            <PaginationLink last href='#' />
-          </PaginationItem>
+          }
         </Pagination>
+      }
       </div>
     </div>
   )
 }
 
 function Table({ columns, data }) {
+  const tableProps = useTable(
+    {
+      columns,
+      data,
+      initialState: {
+        pageIndex: 0,
+        pageSize: 20
+      }
+    },
+    useSortBy,
+    usePagination
+  )
   const {
     getTableProps,
     getTableBodyProps,
@@ -116,23 +147,12 @@ function Table({ columns, data }) {
     nextPage,
     previousPage,
     setPageSize,
-    state: { pageIndex, pageSize },
-  } = useTable(
-    {
-      columns,
-      data,
-      initialState: {
-        pageIndex: 0,
-        pageSize: 20
-      }
-    },
-    useSortBy,
-    usePagination
-  )
+    state: { pageIndex, pageSize }
+  } = tableProps
 
   return (
     <>
-    <MyPagination length={data.length} pageIndex={pageIndex} pageSize={pageSize} setPageSize={setPageSize} />
+    <MyPagination length={data.length} {...tableProps}/>
       <table {...getTableProps()} className='table table-striped table-hover table-sm'>
         <thead>
           {headerGroups.map((headerGroup, index) => (
@@ -169,40 +189,7 @@ function Table({ columns, data }) {
           )}
         </tbody>
       </table>
-      <MyPagination length={data.length} pageIndex={pageIndex} pageSize={pageSize} setPageSize={setPageSize} />
-      <hr />
-      <div className="pagination">
-        <button onClick={() => gotoPage(0)} disabled={!canPreviousPage}>
-          {'<<'}
-        </button>{' '}
-        <button onClick={() => previousPage()} disabled={!canPreviousPage}>
-          {'<'}
-        </button>{' '}
-        <button onClick={() => nextPage()} disabled={!canNextPage}>
-          {'>'}
-        </button>{' '}
-        <button onClick={() => gotoPage(pageCount - 1)} disabled={!canNextPage}>
-          {'>>'}
-        </button>{' '}
-        <span>
-          Page{' '}
-          <strong>
-            {pageIndex + 1} of {pageOptions.length}
-          </strong>{' '}
-        </span>
-        <span>
-          | Go to page:{' '}
-          <input
-            type="number"
-            defaultValue={pageIndex + 1}
-            onChange={e => {
-              const page = e.target.value ? Number(e.target.value) - 1 : 0
-              gotoPage(page)
-            }}
-            style={{ width: '100px' }}
-          />
-        </span>{' '}
-      </div>
+      <MyPagination length={data.length} {...tableProps}/>
     </>
   )
 }
@@ -210,7 +197,7 @@ function Table({ columns, data }) {
 function OfficesDataTable (props) {
   const [results, setResults] = useState([])
   const [totalCount, setTotalCount] = useState(0)
-  const { count, currentUser, loadingMore, loadMore } = props
+  const { count, currentUser, loadingMore, loadMore, networkStatus } = props
   const hasMore = results && (totalCount > results.length)
 
   useEffect(
@@ -223,19 +210,6 @@ function OfficesDataTable (props) {
     [props.results, props.totalCount]
   )
 
-
-  // const pageChangeHandler = (page, sizePerPage) => {
-  //   this.setState({ page, sizePerPage })
-  // }
-  //
-  // const sizePerPageChangeHandler = (sizePerPage, page) => {
-  //   this.setState({ sizePerPage, page })
-  // }
-  //
-  // const sortChangeHandler = (sortField, sortOrder) => {
-  //   this.setState({ sortField, sortOrder })
-  // }
-  //
   const linkFormatter = ({ cell, row }) => {
     return (
       <Link to={`/offices/${row.original._id}/${row.original.slug}`}>
@@ -273,6 +247,22 @@ function OfficesDataTable (props) {
     ],
     []
   )
+
+  if (networkStatus !== 8 && networkStatus !== 7) {
+    return (
+      <div className='animated fadeIn'>
+        <Components.HeadTags title='V8 Alba: Offices' />
+        <Card className='card-accent-primary'>
+          <CardHeader>
+            <i className='icon-briefcase' />Offices
+          </CardHeader>
+          <CardBody>
+            <Components.Loading />
+          </CardBody>
+        </Card>
+      </div>
+    )
+  }
 
   return (
     <div className='animated fadeIn'>
