@@ -8,10 +8,10 @@ export const PastProjects = createCollection({
   resolvers: getDefaultResolvers('PastProjects'),
   mutations: getDefaultMutations('PastProjects'),
   permissions: {
-    canCreate: ['members'],
+    canCreate: ['admins'],
     canRead: ['guests'],
     canUpdate: ['owners', 'admins'],
-    canDelete: ['owners', 'admins']
+    canDelete: ['admins']
   }
 })
 
