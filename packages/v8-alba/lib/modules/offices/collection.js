@@ -8,10 +8,10 @@ export const Offices = createCollection({
   resolvers: getDefaultResolvers('Offices'),
   mutations: getDefaultMutations('Offices'),
   permissions: {
-    canCreate: ['members'],
+    canCreate: ['admins'],
     canRead: ['guests'],
     canUpdate: ['owners', 'admins'],
-    canDelete: ['owners', 'admins']
+    canDelete: ['admins']
   }
 })
 
