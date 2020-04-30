@@ -1,29 +1,23 @@
 /* eslint-disable no-unused-vars */
 import { Components, registerComponent, withAccess, withCurrentUser, withMulti } from 'meteor/vulcan:core'
 import Users from 'meteor/vulcan:users'
-import React, { Component, PureComponent, useEffect, useState } from 'react'
-import { Link } from 'react-router-dom'
-import { Button, Card, CardBody, CardFooter, CardHeader, Dropdown, DropdownItem, DropdownMenu, DropdownToggle, Pagination, PaginationItem, PaginationLink } from 'reactstrap'
-import styled from 'styled-components'
+import React, { useEffect, useState } from 'react'
+import {
+  Button,
+  Card, CardBody, CardFooter, CardHeader,
+  Dropdown, DropdownItem, DropdownMenu, DropdownToggle,
+  Pagination, PaginationItem, PaginationLink
+} from 'reactstrap'
+import { PAGINATION_SIZE } from '../common/react-table/constants.js'
+import { dateFormatter, linkFormatter, getVisibles } from '../common/react-table/helpers.js'
+import { CaretSorted, CaretUnsorted } from '../common/react-table/styled.js'
 import {
   useTable,
   usePagination,
   useSortBy
 } from 'react-table'
-import { DATE_FORMAT_SHORT, SIZE_PER_PAGE_LIST_SEED } from '../../modules/constants.js'
-import moment from 'moment'
-// import { dateFormatter, renderShowsTotal } from '../../modules/helpers.js'
+import { SIZE_PER_PAGE_LIST_SEED } from '../../modules/constants.js'
 import Offices from '../../modules/offices/collection.js'
-
-const CaretUnsorted = styled.span`
-  margin: 10px 0px 10px 5px;
-  color: rgb(204, 204, 204);
-`
-const CaretSorted = styled.span`
-  margin: 10px 5px;
-`
-
-const PAGINATION_SIZE = 5
 
 function AddButtonFooter () {
   return (
@@ -48,19 +42,15 @@ function MyPagination(tableProps) {
     state: { pageIndex, pageSize }
   } = tableProps
   const length = tableProps.length
-  const [dropdownOpen, setDropdownOpen] = useState(false);
-  const toggle = () => setDropdownOpen(prevState => !prevState);
 
-  const fromEnd = (pageCount - 1) - pageIndex
-  const firstOptionVisible =
-    fromEnd < Math.trunc(PAGINATION_SIZE/2)
-      ? pageIndex - ((PAGINATION_SIZE - 1) - fromEnd)
-      : Math.max(pageIndex - Math.trunc(PAGINATION_SIZE/2), 0)
-  const lastOptionVisible = firstOptionVisible + PAGINATION_SIZE
-  const pageOptionsVisible =
-    pageCount < PAGINATION_SIZE
-      ? pageOptions
-      :  pageOptions.slice(firstOptionVisible, lastOptionVisible)
+  const [dropdownOpen, setDropdownOpen] = useState(false)
+  const toggle = () => setDropdownOpen(prevState => !prevState)
+
+  const {
+    firstOptionVisible,
+    lastOptionVisible,
+    pageOptionsVisible
+  } = getVisibles({pageCount, pageIndex, pageOptions})
 
   return (
     <div className='row align-items-center'>
@@ -209,24 +199,6 @@ function OfficesDataTable (props) {
     },
     [props.results, props.totalCount]
   )
-
-  const linkFormatter = ({ cell, row }) => {
-    return (
-      <Link to={`/offices/${row.original._id}/${row.original.slug}`}>
-        {cell.value}
-      </Link>
-    )
-  }
-
-  const dateFormatter = ({cell, row}) => {
-    let theDate
-    if (!cell.value) { // i.e. there is only a createdAt, not an updatedAt
-      theDate = row.original.createdAt
-    } else {
-      theDate = cell.value
-    }
-    return moment(theDate).format(DATE_FORMAT_SHORT)
-  }
 
   const columns = React.useMemo(
     () => [
