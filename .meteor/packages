@@ -8,10 +8,10 @@ vulcan:i18n-en-us
 
 ############ Accounts Packages ############
 
-accounts-password@1.5.3
+accounts-password@1.6.0
 # accounts-twitter
-accounts-facebook
-accounts-github
+accounts-facebook@1.3.2
+accounts-github@1.4.3
 
 ############ Your Packages ############
 
@@ -26,3 +26,5 @@ jss:flag-icon
 percolate:migrations
 
 v8-alba
+apollo@3.1.0
+tmeasday:check-npm-versions
