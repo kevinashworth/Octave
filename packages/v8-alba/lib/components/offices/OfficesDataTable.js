@@ -1,39 +1,23 @@
+/* eslint-disable no-unused-vars */
 import { Components, registerComponent, withAccess, withCurrentUser, withMulti } from 'meteor/vulcan:core'
 import Users from 'meteor/vulcan:users'
-import React, { Component, PureComponent } from 'react'
-import { Link } from 'react-router-dom'
-import { Button, Card, CardBody, CardFooter, CardHeader, Col, FormGroup, Row } from 'reactstrap'
-import BootstrapTable from 'react-bootstrap-table-next'
-import ToolkitProvider from 'react-bootstrap-table2-toolkit'
-import paginationFactory, {
-  PaginationListStandalone,
-  PaginationProvider,
-  PaginationTotalStandalone,
-  SizePerPageDropdownStandalone } from 'react-bootstrap-table2-paginator'
-import MyClearButton from '../common/react-bootstrap-table2/MyClearButton'
-import MySearchBar from '../common/react-bootstrap-table2/MySearchBar'
-import styled from 'styled-components'
+import React, { useEffect, useState } from 'react'
+import {
+  Button,
+  Card, CardBody, CardFooter, CardHeader,
+  Dropdown, DropdownItem, DropdownMenu, DropdownToggle,
+  Pagination, PaginationItem, PaginationLink
+} from 'reactstrap'
+import { PAGINATION_SIZE } from '../common/react-table/constants.js'
+import { dateFormatter, linkFormatter, getVisibles } from '../common/react-table/helpers.js'
+import { CaretSorted, CaretUnsorted } from '../common/react-table/styled.js'
+import {
+  useTable,
+  usePagination,
+  useSortBy
+} from 'react-table'
 import { SIZE_PER_PAGE_LIST_SEED } from '../../modules/constants.js'
-import { dateFormatter, renderShowsTotal } from '../../modules/helpers.js'
 import Offices from '../../modules/offices/collection.js'
-
-// Set initial state. Just options I want to keep.
-// See https://github.com/amannn/react-keep-state
-let keptState = {
-  sortField: 'updatedAt',
-  sortOrder: 'desc',
-  page: 1,
-  sizePerPage: 20,
-  keptSearchText: ''
-}
-
-const CaretUnsorted = styled.span`
-  margin: 10px 0px 10px 5px;
-  color: rgb(204, 204, 204);
-`
-const CaretSorted = styled.span`
-  margin: 10px 5px;
-`
 
 function AddButtonFooter () {
   return (
@@ -45,177 +29,198 @@ function AddButtonFooter () {
   )
 }
 
-class OfficesDataTable extends Component {
-  constructor (props) {
-    super(props)
-    this.state = {
-      results: [],
-      totalCount: 0,
-      // Retrieve the last state
-      sortField: keptState.sortField,
-      sortOrder: keptState.sortOrder,
-      page: keptState.page,
-      sizePerPage: keptState.sizePerPage,
-      keptSearchText: keptState.keptSearchText
-    }
-  }
+function MyPagination(tableProps) {
+  const {
+    canPreviousPage,
+    canNextPage,
+    pageOptions,
+    pageCount,
+    gotoPage,
+    nextPage,
+    previousPage,
+    setPageSize,
+    state: { pageIndex, pageSize }
+  } = tableProps
+  const length = tableProps.length
 
-  componentDidMount () {
-    const { results, totalCount } = this.props
-    if (results) {
-      this.setState({ results, totalCount })
-    }
-  }
+  const [dropdownOpen, setDropdownOpen] = useState(false)
+  const toggle = () => setDropdownOpen(prevState => !prevState)
 
-  componentDidUpdate (prevProps) {
-    const { results, totalCount } = this.props
-    if (results && !prevProps.results) {
-      this.setState({ results, totalCount })
-    }
-  }
+  const {
+    firstOptionVisible,
+    lastOptionVisible,
+    pageOptionsVisible
+  } = getVisibles({pageCount, pageIndex, pageOptions})
 
-  componentWillUnmount () {
-    // Remember state for the next mount
-    keptState = {
-      sortField: this.state.sortField,
-      sortOrder: this.state.sortOrder,
-      page: this.state.page,
-      sizePerPage: this.state.sizePerPage,
-      keptSearchText: this.state.keptSearchText
-    }
-  }
-
-  pageChangeHandler = (page, sizePerPage) => {
-    this.setState({ page, sizePerPage })
-  }
-
-  sizePerPageChangeHandler = (sizePerPage, page) => {
-    this.setState({ sizePerPage, page })
-  }
-
-  sortChangeHandler = (sortField, sortOrder) => {
-    this.setState({ sortField, sortOrder })
-  }
-
-  sortCaretFn = (order, column) => {
-    if (!order) return (<CaretUnsorted className='fa fa-sort' />)
-    else if (order === 'asc') return (<CaretSorted className='fa fa-sort-asc' />)
-    else if (order === 'desc') return (<CaretSorted className='fa fa-sort-desc' />)
-    return null
-  }
-
-  render () {
-    const { count, loadingMore, loadMore, currentUser } = this.props
-
-    const hasMore = this.state.results && (this.state.totalCount > this.state.results.length)
-
-    const linkFormatter = (cell, row) => {
-      return (
-        <Link to={`/offices/${row._id}/${row.slug}`}>
-          {cell}
-        </Link>
-      )
-    }
-
-    const columns = [{
-      dataField: 'displayName',
-      text: 'Name',
-      sort: true,
-      onSort: this.sortChangeHandler,
-      formatter: linkFormatter,
-      headerStyle: {
-        width: '30%'
+  return (
+    <div className='row align-items-center'>
+      <div className='mb-3'>
+        Showing {pageIndex*pageSize+1} to {Math.min((pageIndex+1)*pageSize,length)} out of {length} &nbsp;&nbsp;
+      </div>
+      <div className='mb-3'>
+        <Dropdown isOpen={dropdownOpen} toggle={toggle}>
+          <DropdownToggle caret>
+            {pageSize}
+          </DropdownToggle>
+          <DropdownMenu>
+            <DropdownItem header disabled>Page Size</DropdownItem>
+            {SIZE_PER_PAGE_LIST_SEED.map(pageSize => (
+              <DropdownItem key={pageSize.text} onClick={e => setPageSize(pageSize.value)}>
+                {pageSize.text}
+              </DropdownItem>
+            ))}
+            <DropdownItem key='All' onClick={e => setPageSize(length)}>All</DropdownItem>
+          </DropdownMenu>
+        </Dropdown>
+      </div>
+      <div className='ml-auto'>
+        {pageOptionsVisible.length > 0 && pageSize !== length &&
+        <Pagination aria-label='Paginagation navigation'>
+          {firstOptionVisible > 0 &&
+          <PaginationItem>
+            <PaginationLink first onClick={() => gotoPage(0)} />
+          </PaginationItem>
+          }
+          {canPreviousPage &&
+          <PaginationItem>
+            <PaginationLink previous onClick={() => previousPage()} />
+          </PaginationItem>
+          }
+          {pageOptionsVisible.map(page => (
+            <PaginationItem key={page} className={page === pageIndex ? 'active' : ''}>
+              <PaginationLink onClick={() => gotoPage(page)}>
+                {page}
+              </PaginationLink>
+            </PaginationItem>
+          ))}
+          {canNextPage &&
+          <PaginationItem>
+            <PaginationLink next onClick={() => nextPage()} />
+          </PaginationItem>
+          }
+          {lastOptionVisible < pageCount &&
+          <PaginationItem>
+            <PaginationLink last onClick={() => gotoPage(pageCount - 1)} />
+          </PaginationItem>
+          }
+        </Pagination>
       }
-    }, {
-      dataField: 'fullAddress',
-      text: 'Address',
-      sort: true,
-      onSort: this.sortChangeHandler
-    }, {
-      dataField: 'updatedAt',
-      text: 'Updated',
-      sort: true,
-      onSort: this.sortChangeHandler,
-      formatter: dateFormatter,
-      align: 'right',
-      headerStyle: {
-        textAlign: 'right',
-        width: '6.6em'
+      </div>
+    </div>
+  )
+}
+
+function Table({ columns, data }) {
+  const tableProps = useTable(
+    {
+      columns,
+      data,
+      initialState: {
+        pageIndex: 0,
+        pageSize: 20
       }
-    }, {
-      dataField: 'body',
-      hidden: true
-    }, {
-      dataField: 'allContactNames',
-      hidden: true
-    }]
+    },
+    useSortBy,
+    usePagination
+  )
+  const {
+    getTableProps,
+    getTableBodyProps,
+    headerGroups,
+    prepareRow,
+    page, // has only the rows for the active page
+    canPreviousPage,
+    canNextPage,
+    pageOptions,
+    pageCount,
+    gotoPage,
+    nextPage,
+    previousPage,
+    setPageSize,
+    state: { pageIndex, pageSize }
+  } = tableProps
 
-    const pagination = paginationFactory({
-      custom: true,
-      totalSize: this.state.totalCount,
-      sizePerPageList: SIZE_PER_PAGE_LIST_SEED.concat([{
-        text: 'All', value: this.state.totalCount
-      }]),
-      page: this.state.page,
-      sizePerPage: this.state.sizePerPage,
-      hidePageListOnlyOnePage: true,
-      prePageText: '‹',
-      nextPageText: '›',
-      firstPageText: '«',
-      lastPageText: '»',
-      paginationTotalRenderer: renderShowsTotal,
-      onPageChange: this.pageChangeHandler,
-      onSizePerPageChange: this.sizePerPageChangeHandler
-    })
+  return (
+    <>
+    <MyPagination length={data.length} {...tableProps}/>
+      <table {...getTableProps()} className='table table-striped table-hover table-sm'>
+        <thead>
+          {headerGroups.map((headerGroup, index) => (
+            <tr {...headerGroup.getHeaderGroupProps()} key={index}>
+              {headerGroup.headers.map((column, index) => (
+                // Add the sorting props into the header props
+                <th {...column.getHeaderProps(column.getSortByToggleProps())} key={index}>
+                  {column.render('Header')}
+                  <span>
+                    {column.isSorted
+                      ? column.isSortedDesc
+                        ? <CaretSorted className='fa fa-sort-desc' />
+                        : <CaretSorted className='fa fa-sort-asc' />
+                      : <CaretUnsorted className='fa fa-sort' />}
+                  </span>
+                </th>
+              ))}
+            </tr>
+          ))}
+        </thead>
+        <tbody {...getTableBodyProps()}>
+          {page.map(
+            (row, index) => {
+              prepareRow(row);
+              return (
+                <tr {...row.getRowProps()} key={index}>
+                  {row.cells.map((cell, index) => {
+                    return (
+                      <td {...cell.getCellProps()} key={index}>{cell.render('Cell')}</td>
+                    )
+                  })}
+                </tr>
+              )}
+          )}
+        </tbody>
+      </table>
+      <MyPagination length={data.length} {...tableProps}/>
+    </>
+  )
+}
 
-    const contentTable = ({ paginationProps, paginationTableProps }) => (
-      <>
-      <ToolkitProvider
-        keyField='_id'
-        data={this.state.results}
-        columns={columns}
-        bootstrap4
-        search={ { searchFormatted: true } }
-      >{
-        (toolkitProps) => {
-          const handleSearchBarChange = (e) => toolkitProps.searchProps.onSearch(e.target.value)
-          return (
-            <>
-              <Row>
-                <Col xs='4' lg='6'></Col>
-                <Col xs='8' lg='6'>
-                  <FormGroup className='input-group input-group-sm'>
-                    <MySearchBar
-                      handleChange={handleSearchBarChange}
-                      searchText={toolkitProps.searchProps.searchText} />
-                    <MyClearButton { ...toolkitProps.searchProps } />
-                  </FormGroup>
-                </Col>
-              </Row>
-              <Row>
-                <Col xs='12'>
-                  <PaginationTotalStandalone { ...paginationProps } />
-                  <SizePerPageDropdownStandalone { ...paginationProps } />
-                  <PaginationListStandalone { ...paginationProps } />
-                </Col>
-              </Row>
-              <BootstrapTable striped condensed hover bordered={false}
-                sort={{
-                  sortCaret: this.sortCaretFn,
-                  dataField: this.state.sortField,
-                  order: this.state.sortOrder,
-                }}
-                noDataIndication={ () => <Components.Loading /> }
-                { ...toolkitProps.baseProps } { ...paginationTableProps } />
-            </>
-          )}}
-        </ToolkitProvider>
-        <PaginationTotalStandalone { ...paginationProps } />
-        <SizePerPageDropdownStandalone { ...paginationProps } />
-        <PaginationListStandalone { ...paginationProps } />
-      </>
-    )
+function OfficesDataTable (props) {
+  const [results, setResults] = useState([])
+  const [totalCount, setTotalCount] = useState(0)
+  const { count, currentUser, loadingMore, loadMore, networkStatus } = props
+  const hasMore = results && (totalCount > results.length)
 
+  useEffect(
+    () => {
+      if (props.results) {
+        setResults(props.results)
+        setTotalCount(props.totalCount)
+      }
+    },
+    [props.results, props.totalCount]
+  )
+
+  const columns = React.useMemo(
+    () => [
+      {
+        Header: 'Name',
+        accessor: 'displayName',
+        Cell: linkFormatter
+      },
+      {
+        Header: 'Address',
+        accessor: 'fullAddress'
+      },
+      {
+        Header: 'Updated',
+        accessor: 'updatedAt',
+        Cell: dateFormatter
+      }
+    ],
+    []
+  )
+
+  if (networkStatus !== 8 && networkStatus !== 7) {
     return (
       <div className='animated fadeIn'>
         <Components.HeadTags title='V8 Alba: Offices' />
@@ -224,23 +229,35 @@ class OfficesDataTable extends Component {
             <i className='icon-briefcase' />Offices
           </CardHeader>
           <CardBody>
-            <PaginationProvider pagination={pagination}>
-            { contentTable }
-            </PaginationProvider>
+            <Components.Loading />
           </CardBody>
-          {hasMore &&
-            <CardFooter>
-              {loadingMore
-                ? <Components.Loading />
-                : <Button onClick={e => { e.preventDefault(); loadMore() }}>Load More ({count}/{this.state.totalCount})</Button>
-              }
-            </CardFooter>
-          }
-          {Users.canCreate({ collection: Offices, user: currentUser }) && <AddButtonFooter />}
         </Card>
       </div>
     )
   }
+
+  return (
+    <div className='animated fadeIn'>
+      <Components.HeadTags title='V8 Alba: Offices' />
+      <Card className='card-accent-primary'>
+        <CardHeader>
+          <i className='icon-briefcase' />Offices
+        </CardHeader>
+        <CardBody>
+          <Table columns={columns} data={results} />
+        </CardBody>
+        {hasMore &&
+          <CardFooter>
+            {loadingMore
+              ? <Components.Loading />
+              : <Button onClick={e => { e.preventDefault(); loadMore() }}>Load More ({count}/{totalCount})</Button>
+            }
+          </CardFooter>
+        }
+        {Users.canCreate({ collection: Offices, user: currentUser }) && <AddButtonFooter />}
+      </Card>
+    </div>
+  )
 }
 
 const accessOptions = {
