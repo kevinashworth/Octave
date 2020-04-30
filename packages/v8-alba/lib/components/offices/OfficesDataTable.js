@@ -2,7 +2,7 @@ import { Components, registerComponent, withAccess, withCurrentUser, withMulti }
 import Users from 'meteor/vulcan:users'
 import React, { Component, PureComponent, useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
-import { Button, Card, CardBody, CardFooter, CardHeader } from 'reactstrap'
+import { Button, Card, CardBody, CardFooter, CardHeader, Dropdown, DropdownItem, DropdownMenu, DropdownToggle } from 'reactstrap'
 import styled from 'styled-components'
 import {
   useTable,
@@ -32,6 +32,32 @@ function AddButtonFooter () {
   )
 }
 
+function Pagination({ length, pageIndex, pageSize, setPageSize }) {
+  const [dropdownOpen, setDropdownOpen] = useState(false);
+  const toggle = () => setDropdownOpen(prevState => !prevState);
+  return (
+    <>
+    <span>Showing {pageIndex*pageSize+1} to {Math.min((pageIndex+1)*pageSize,length)} out of {length} &nbsp;&nbsp;</span>
+    <span className='d-inline-block'>
+      <Dropdown isOpen={dropdownOpen} toggle={toggle}>
+        <DropdownToggle caret>
+          {pageSize}
+        </DropdownToggle>
+        <DropdownMenu>
+          <DropdownItem header disabled>Page Size</DropdownItem>
+          {SIZE_PER_PAGE_LIST_SEED.map(pageSize => (
+            <DropdownItem key={pageSize.text} onClick={e => setPageSize(pageSize.value)}>
+              {pageSize.text}
+            </DropdownItem>
+          ))}
+          <DropdownItem key='All' onClick={e => setPageSize(length)}>All</DropdownItem>
+        </DropdownMenu>
+      </Dropdown>
+    </span>
+  </>
+  )
+}
+
 function Table({ columns, data }) {
   const {
     getTableProps,
@@ -52,7 +78,10 @@ function Table({ columns, data }) {
     {
       columns,
       data,
-      initialState: { pageIndex: 1 }
+      initialState: {
+        pageIndex: 0,
+        pageSize: 20
+      }
     },
     useSortBy,
     usePagination
@@ -60,6 +89,7 @@ function Table({ columns, data }) {
 
   return (
     <>
+    <Pagination length={data.length} pageIndex={pageIndex} pageSize={pageSize} setPageSize={setPageSize} />
       <table {...getTableProps()} className='table table-striped table-hover table-sm'>
         <thead>
           {headerGroups.map((headerGroup, index) => (
@@ -96,6 +126,17 @@ function Table({ columns, data }) {
           )}
         </tbody>
       </table>
+      <Pagination length={data.length} pageIndex={pageIndex} pageSize={pageSize} setPageSize={setPageSize} />
+      <ul className="pagination react-bootstrap-table-page-btns-ul">
+        <li className="active page-item" title="1"><a href="#" className="page-link">1</a></li>
+        <li className="page-item" title="2"><a href="#" className="page-link">2</a></li>
+        <li className="page-item" title="3"><a href="#" className="page-link">3</a></li>
+        <li className="page-item" title="4"><a href="#" className="page-link">4</a></li>
+        <li className="page-item" title="5"><a href="#" className="page-link">5</a></li>
+        <li className="page-item" title="next page"><a href="#" className="page-link">›</a></li>
+        <li className="page-item" title="last page"><a href="#" className="page-link">»</a></li>
+      </ul>
+      <hr />
       <div className="pagination">
         <button onClick={() => gotoPage(0)} disabled={!canPreviousPage}>
           {'<<'}
@@ -127,18 +168,6 @@ function Table({ columns, data }) {
             style={{ width: '100px' }}
           />
         </span>{' '}
-        <select
-          value={pageSize}
-          onChange={e => {
-            setPageSize(Number(e.target.value))
-          }}
-        >
-          {SIZE_PER_PAGE_LIST_SEED.map(pageSize => (
-            <option key={pageSize.text} value={pageSize.value}>
-              {pageSize.text}
-            </option>
-          ))}
-        </select>
       </div>
     </>
   )
