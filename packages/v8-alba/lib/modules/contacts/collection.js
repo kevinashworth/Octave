@@ -8,10 +8,10 @@ export const Contacts = createCollection({
   resolvers: getDefaultResolvers('Contacts'),
   mutations: getDefaultMutations('Contacts'),
   permissions: {
-    canCreate: ['members'],
+    canCreate: ['admins'],
     canRead: ['guests'],
     canUpdate: ['owners', 'admins'],
-    canDelete: ['owners', 'admins']
+    canDelete: ['admins']
   }
 })
 
