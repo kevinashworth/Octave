@@ -8,16 +8,27 @@ import {
   Dropdown, DropdownItem, DropdownMenu, DropdownToggle,
   Pagination, PaginationItem, PaginationLink
 } from 'reactstrap'
-import { PAGINATION_SIZE } from '../common/react-table/constants.js'
-import { dateFormatter, linkFormatter, getVisibles } from '../common/react-table/helpers.js'
-import { CaretSorted, CaretUnsorted } from '../common/react-table/styled.js'
 import {
   useTable,
   usePagination,
   useSortBy
 } from 'react-table'
+import { PAGINATION_SIZE } from '../common/react-table/constants.js'
+import { dateFormatter, linkFormatter, getVisibles } from '../common/react-table/helpers.js'
+import { CaretSorted, CaretUnsorted } from '../common/react-table/styled.js'
 import { SIZE_PER_PAGE_LIST_SEED } from '../../modules/constants.js'
 import Offices from '../../modules/offices/collection.js'
+
+// Set initial state. Just options I want to keep.
+// See https://github.com/amannn/react-keep-state
+let keptState = {
+  pageIndex: 0,
+  pageSize: 20,
+  sortBy: [{
+    desc: true,
+    id: 'updatedAt'
+  }]
+}
 
 function AddButtonFooter () {
   return (
@@ -86,7 +97,7 @@ function MyPagination(tableProps) {
           {pageOptionsVisible.map(page => (
             <PaginationItem key={page} className={page === pageIndex ? 'active' : ''}>
               <PaginationLink onClick={() => gotoPage(page)}>
-                {page}
+                {page + 1}
               </PaginationLink>
             </PaginationItem>
           ))}
@@ -109,9 +120,12 @@ function Table({ columns, data }) {
     {
       columns,
       data,
+      disableMultiSort: true,
+      disableSortRemove: true,
       initialState: {
-        pageIndex: 0,
-        pageSize: 20
+        pageIndex: keptState.pageIndex,
+        pageSize: keptState.pageSize,
+        sortBy: keptState.sortBy
       }
     },
     useSortBy,
@@ -131,8 +145,19 @@ function Table({ columns, data }) {
     nextPage,
     previousPage,
     setPageSize,
-    state: { pageIndex, pageSize }
+    state: { pageIndex, pageSize, sortBy }
   } = tableProps
+
+  // Remember state for the next mount. Best without array as last parameter?
+  useEffect(() => {
+    return () => {
+      keptState = {
+        pageIndex,
+        pageSize,
+        sortBy
+      }
+    }
+  })
 
   return (
     <>
