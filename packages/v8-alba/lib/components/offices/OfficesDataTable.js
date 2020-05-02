@@ -162,13 +162,16 @@ function Table({ columns, data }) {
   return (
     <>
     <MyPagination length={data.length} {...tableProps}/>
-      <table {...getTableProps()} className='table table-striped table-hover table-sm'>
+      <table {...getTableProps()} className='react-table table table-striped table-hover table-sm'>
         <thead>
           {headerGroups.map((headerGroup, index) => (
             <tr {...headerGroup.getHeaderGroupProps()} key={index}>
               {headerGroup.headers.map((column, index) => (
-                // Add the sorting props into the header props
-                <th {...column.getHeaderProps(column.getSortByToggleProps())} key={index}>
+                <th {...column.getHeaderProps([
+                  // Return an array of prop objects and react-table will merge them appropriately
+                  { style: column.style },
+                  column.getSortByToggleProps() // Add sorting props into header props
+                ])} key={index}>
                   {column.render('Header')}
                   <span>
                     {column.isSorted
@@ -224,7 +227,10 @@ function OfficesDataTable (props) {
       {
         Header: 'Name',
         accessor: 'displayName',
-        Cell: linkFormatter
+        Cell: linkFormatter,
+        style: {
+          width: '30%'
+        }
       },
       {
         Header: 'Address',
@@ -233,7 +239,11 @@ function OfficesDataTable (props) {
       {
         Header: 'Updated',
         accessor: 'updatedAt',
-        Cell: dateFormatter
+        Cell: dateFormatter,
+        style: {
+          textAlign: 'right',
+          width: '6.6em'
+        }
       }
     ],
     []

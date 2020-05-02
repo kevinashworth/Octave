@@ -18,3 +18,13 @@ div.datatable-list > table > tbody > tr:last-child {
   font-size: 1.75rem;
   font-weight: 500;
 }
+
+.react-table {
+  table-layout: fixed;
+}
+
+.react-table td, .reac-table th {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}

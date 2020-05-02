@@ -19,12 +19,12 @@ Package.onUse(function (api) {
 
   api.addFiles('lib/stylesheets/react-bootstrap-table-all.min.css', 'client');
 
-  api.addFiles([
-    'lib/stylesheets/react-bootstrap-table2.min.css',
-    'lib/stylesheets/react-bootstrap-table2-paginator.min.css',
-    'lib/stylesheets/react-bootstrap-table2-toolkit.min.css',
-    'lib/stylesheets/react-bootstrap-table2-custom.css'
-  ], ['client'])
+  // api.addFiles([
+  //   'lib/stylesheets/react-bootstrap-table2.min.css',
+  //   'lib/stylesheets/react-bootstrap-table2-paginator.min.css',
+  //   'lib/stylesheets/react-bootstrap-table2-toolkit.min.css',
+  //   'lib/stylesheets/react-bootstrap-table2-custom.css'
+  // ], ['client'])
 
   api.addFiles('lib/stylesheets/react-virtualized-styles.css', 'client');
   api.addFiles('lib/stylesheets/simple-line-icons.scss', 'client');
