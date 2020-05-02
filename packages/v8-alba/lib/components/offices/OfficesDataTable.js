@@ -5,17 +5,25 @@ import React, { useEffect, useState } from 'react'
 import {
   Button,
   Card, CardBody, CardFooter, CardHeader,
+  Col,
   Dropdown, DropdownItem, DropdownMenu, DropdownToggle,
-  Pagination, PaginationItem, PaginationLink
+  FormGroup,
+  Pagination, PaginationItem, PaginationLink,
+  Row
 } from 'reactstrap'
 import {
+  useFilters,
+  useGlobalFilter,
   useTable,
   usePagination,
   useSortBy
 } from 'react-table'
+import MyClearButton from '../common/react-table/MyClearButton'
+import MySearchBar from '../common/react-table/MySearchBar'
 import { PAGINATION_SIZE } from '../common/react-table/constants.js'
 import { dateFormatter, linkFormatter, getVisibles } from '../common/react-table/helpers.js'
 import { CaretSorted, CaretUnsorted } from '../common/react-table/styled.js'
+import matchSorter from 'match-sorter'
 import { SIZE_PER_PAGE_LIST_SEED } from '../../modules/constants.js'
 import Offices from '../../modules/offices/collection.js'
 
@@ -24,6 +32,7 @@ import Offices from '../../modules/offices/collection.js'
 let keptState = {
   pageIndex: 0,
   pageSize: 20,
+  globalFilter: '',
   sortBy: [{
     desc: true,
     id: 'updatedAt'
@@ -37,6 +46,24 @@ function AddButtonFooter () {
         <Components.OfficesNewForm />
       </Components.ModalTrigger>
     </CardFooter>
+  )
+}
+
+function fuzzyTextFilterFn(rows, id, filterValue) {
+  return matchSorter(rows, filterValue, { keys: [row => row.values[id]] })
+}
+
+const GlobalFilter = ({ globalFilter, setGlobalFilter }) => {
+  return (
+    <FormGroup className='input-group input-group-sm'>
+      <MySearchBar
+        onChange={e => {
+          const searchText = e.target.value || undefined
+          setGlobalFilter(searchText)
+        }}
+        value={globalFilter || ''} />
+      <MyClearButton globalFilter={globalFilter} onClick={() => setGlobalFilter('')} />
+    </FormGroup>
   )
 }
 
@@ -116,42 +143,69 @@ function MyPagination(tableProps) {
 }
 
 function Table({ columns, data }) {
+  const filterTypes = React.useMemo(
+    () => ({
+      // Add a new fuzzyTextFilterFn filter type.
+      fuzzyText: fuzzyTextFilterFn,
+      // Or, override the default text filter to use
+      // "startWith"
+      text: (rows, id, filterValue) => {
+        return rows.filter(row => {
+          const rowValue = row.values[id]
+          return rowValue !== undefined
+            ? String(rowValue)
+                .toLowerCase()
+                .startsWith(String(filterValue).toLowerCase())
+            : true
+        })
+      },
+    }),
+    []
+  )
+
   const tableProps = useTable(
     {
       columns,
       data,
       disableMultiSort: true,
       disableSortRemove: true,
+      filterTypes,
       initialState: {
+        globalFilter: keptState.globalFilter,
+        hiddenColumns: ['allContactNames', 'body'],
         pageIndex: keptState.pageIndex,
         pageSize: keptState.pageSize,
         sortBy: keptState.sortBy
       }
     },
+    useFilters,
+    useGlobalFilter,
     useSortBy,
     usePagination
   )
   const {
-    getTableProps,
-    getTableBodyProps,
-    headerGroups,
-    prepareRow,
-    page, // has only the rows for the active page
     canPreviousPage,
     canNextPage,
+    getTableProps,
+    getTableBodyProps,
+    gotoPage,
+    headerGroups,
+    page, // has only the rows for the active page
     pageOptions,
     pageCount,
-    gotoPage,
-    nextPage,
+    prepareRow,
     previousPage,
+    nextPage,
+    setGlobalFilter,
     setPageSize,
-    state: { pageIndex, pageSize, sortBy }
+    state: { globalFilter, pageIndex, pageSize, sortBy }
   } = tableProps
 
   // Remember state for the next mount. Best without array as last parameter?
   useEffect(() => {
     return () => {
       keptState = {
+        globalFilter,
         pageIndex,
         pageSize,
         sortBy
@@ -161,6 +215,14 @@ function Table({ columns, data }) {
 
   return (
     <>
+    <Row>
+      <Col xs='6' lg='8'></Col>
+      <Col xs='6' lg='4'>
+        <GlobalFilter
+          globalFilter={globalFilter}
+          setGlobalFilter={setGlobalFilter} />
+      </Col>
+    </Row>
     <MyPagination length={data.length} {...tableProps}/>
       <table {...getTableProps()} className='react-table table table-striped table-hover table-sm'>
         <thead>
@@ -244,6 +306,11 @@ function OfficesDataTable (props) {
           textAlign: 'right',
           width: '6.6em'
         }
+      },
+      {
+        accessor: 'body'
+      }, {
+        accessor: 'allContactNames'
       }
     ],
     []
