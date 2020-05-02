@@ -7,7 +7,7 @@ import {
   Card, CardBody, CardFooter, CardHeader,
   Col,
   Dropdown, DropdownItem, DropdownMenu, DropdownToggle,
-  FormGroup,
+  FormGroup, Input,
   Pagination, PaginationItem, PaginationLink,
   Row
 } from 'reactstrap'
@@ -50,7 +50,9 @@ function AddButtonFooter () {
 }
 
 function fuzzyTextFilterFn(rows, id, filterValue) {
-  return matchSorter(rows, filterValue, { keys: [row => row.values[id]] })
+  return matchSorter(rows, filterValue, {
+    keys: [row => row.values[id]],
+    threshold: matchSorter.rankings.ACRONYM})
 }
 
 const GlobalFilter = ({ globalFilter, setGlobalFilter }) => {
@@ -67,6 +69,21 @@ const GlobalFilter = ({ globalFilter, setGlobalFilter }) => {
   )
 }
 
+function DefaultColumnFilter({
+  column: { filterValue, preFilteredRows, setFilter }
+}) {
+  const count = preFilteredRows.length
+  return (
+    <Input
+      className='column-filter'
+      value={filterValue || ''}
+      onChange={e => setFilter(e.target.value)}
+      onClick={e => e.stopPropagation()} // Otherwise triggers sorting
+      placeholder={`Search ${count} records...`}
+    />
+  )
+}
+
 function MyPagination(tableProps) {
   const {
     canPreviousPage,
@@ -79,7 +96,7 @@ function MyPagination(tableProps) {
     setPageSize,
     state: { pageIndex, pageSize }
   } = tableProps
-  const length = tableProps.length
+  const length = tableProps.rows.length
 
   const [dropdownOpen, setDropdownOpen] = useState(false)
   const toggle = () => setDropdownOpen(prevState => !prevState)
@@ -163,10 +180,19 @@ function Table({ columns, data }) {
     []
   )
 
+  const defaultColumn = React.useMemo(
+    () => ({
+      // Let's set up our default Filter UI
+      Filter: DefaultColumnFilter,
+    }),
+    []
+  )
+
   const tableProps = useTable(
     {
       columns,
       data,
+      defaultColumn,
       disableMultiSort: true,
       disableSortRemove: true,
       filterTypes,
@@ -229,19 +255,21 @@ function Table({ columns, data }) {
           {headerGroups.map((headerGroup, index) => (
             <tr {...headerGroup.getHeaderGroupProps()} key={index}>
               {headerGroup.headers.map((column, index) => (
+                // Return an array of prop objects and react-table will merge them appropriately
                 <th {...column.getHeaderProps([
-                  // Return an array of prop objects and react-table will merge them appropriately
-                  { style: column.style },
-                  column.getSortByToggleProps() // Add sorting props into header props
-                ])} key={index}>
+                    { style: column.style },
+                    column.getSortByToggleProps()
+                  ])} key={index}>
+                <span>
                   {column.render('Header')}
-                  <span>
-                    {column.isSorted
-                      ? column.isSortedDesc
-                        ? <CaretSorted className='fa fa-sort-desc' />
-                        : <CaretSorted className='fa fa-sort-asc' />
-                      : <CaretUnsorted className='fa fa-sort' />}
+                  {column.isSorted
+                    ? column.isSortedDesc
+                      ? <CaretSorted className='fa fa-sort-desc' />
+                      : <CaretSorted className='fa fa-sort-asc' />
+                    : <CaretUnsorted className='fa fa-sort' />}
                   </span>
+                  &nbsp;
+                  <span>{column.canFilter ? column.render('Filter') : null}</span>
                 </th>
               ))}
             </tr>
@@ -290,17 +318,20 @@ function OfficesDataTable (props) {
         Header: 'Name',
         accessor: 'displayName',
         Cell: linkFormatter,
+        filter: 'fuzzyText',
         style: {
           width: '30%'
         }
       },
       {
         Header: 'Address',
-        accessor: 'fullAddress'
+        accessor: 'fullAddress',
+        filter: 'fuzzyText'
       },
       {
         Header: 'Updated',
         accessor: 'updatedAt',
+        disableFilters: true,
         Cell: dateFormatter,
         style: {
           textAlign: 'right',

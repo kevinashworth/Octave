@@ -28,3 +28,12 @@ div.datatable-list > table > tbody > tr:last-child {
   text-overflow: ellipsis;
   white-space: nowrap;
 }
+
+.column-filter {
+  display: inline-block;
+  width: auto;
+}
+
+.column-filter::placeholder {
+  font-size: smaller;
+}
