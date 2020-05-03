@@ -85,6 +85,7 @@
     "lodash": "^4.17.15",
     "mailchimp": "^1.1.6",
     "marked": "^0.7.0",
+    "match-sorter": "^4.1.0",
     "meteor-node-stubs": "^0.4.1",
     "mingo": "^0.8.1",
     "moment": "^2.13.0",
@@ -176,7 +177,7 @@
     "eslint-plugin-jsx-a11y": "^6.2.3",
     "eslint-plugin-meteor": "^6.0.0",
     "eslint-plugin-react": "^7.16.0",
-    "eslint-plugin-react-hooks": "^1.7.0",
+    "eslint-plugin-react-hooks": "^3.0.0",
     "interweave-ssr": "^1.0.0",
     "standard": "^14.3.1",
     "storybook-react-router": "^1.0.2"

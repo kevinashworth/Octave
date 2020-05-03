@@ -1,23 +1,41 @@
-/* eslint-disable no-unused-vars */
 import { Components, registerComponent, withAccess, withCurrentUser, withMulti } from 'meteor/vulcan:core'
 import Users from 'meteor/vulcan:users'
 import React, { useEffect, useState } from 'react'
 import {
   Button,
   Card, CardBody, CardFooter, CardHeader,
+  Col, Row,
   Dropdown, DropdownItem, DropdownMenu, DropdownToggle,
+  FormGroup, Input,
   Pagination, PaginationItem, PaginationLink
 } from 'reactstrap'
-import { PAGINATION_SIZE } from '../common/react-table/constants.js'
-import { dateFormatter, linkFormatter, getVisibles } from '../common/react-table/helpers.js'
-import { CaretSorted, CaretUnsorted } from '../common/react-table/styled.js'
 import {
+  useFilters,
+  useGlobalFilter,
   useTable,
   usePagination,
   useSortBy
 } from 'react-table'
+import MyClearButton from '../common/react-table/MyClearButton'
+import MySearchBar from '../common/react-table/MySearchBar'
+import { PAGINATION_SIZE } from '../common/react-table/constants.js'
+import { dateFormatter, linkFormatter, getPageOptionsVisible } from '../common/react-table/helpers.js'
+import { CaretSorted, CaretUnsorted } from '../common/react-table/styled.js'
+import matchSorter from 'match-sorter'
 import { SIZE_PER_PAGE_LIST_SEED } from '../../modules/constants.js'
 import Offices from '../../modules/offices/collection.js'
+
+// Set initial state. Just options I want to keep.
+// See https://github.com/amannn/react-keep-state
+let keptState = {
+  pageIndex: 0,
+  pageSize: 20,
+  globalFilter: '',
+  sortBy: [{
+    desc: true,
+    id: 'updatedAt'
+  }]
+}
 
 function AddButtonFooter () {
   return (
@@ -29,7 +47,44 @@ function AddButtonFooter () {
   )
 }
 
-function MyPagination(tableProps) {
+function fuzzyTextFilterFn (rows, id, filterValue) {
+  return matchSorter(rows, filterValue, {
+    keys: [row => row.values[id]],
+    threshold: matchSorter.rankings.ACRONYM
+  })
+}
+
+const GlobalFilter = ({ globalFilter, setGlobalFilter }) => {
+  return (
+    <FormGroup className='input-group input-group-sm'>
+      <MySearchBar
+        onChange={e => {
+          const searchText = e.target.value || undefined
+          setGlobalFilter(searchText)
+        }}
+        value={globalFilter || ''}
+      />
+      <MyClearButton globalFilter={globalFilter} onClick={() => setGlobalFilter('')} />
+    </FormGroup>
+  )
+}
+
+function DefaultColumnFilter ({
+  column: { filterValue, preFilteredRows, setFilter }
+}) {
+  const count = preFilteredRows.length
+  return (
+    <Input
+      className='column-filter'
+      value={filterValue || ''}
+      onChange={e => setFilter(e.target.value)}
+      onClick={e => e.stopPropagation()} // Otherwise triggers sortBy
+      placeholder={`Filter ${count} records...`}
+    />
+  )
+}
+
+function MyPagination (tableProps) {
   const {
     canPreviousPage,
     canNextPage,
@@ -41,21 +96,17 @@ function MyPagination(tableProps) {
     setPageSize,
     state: { pageIndex, pageSize }
   } = tableProps
-  const length = tableProps.length
+  const length = tableProps.rows.length
 
   const [dropdownOpen, setDropdownOpen] = useState(false)
   const toggle = () => setDropdownOpen(prevState => !prevState)
 
-  const {
-    firstOptionVisible,
-    lastOptionVisible,
-    pageOptionsVisible
-  } = getVisibles({pageCount, pageIndex, pageOptions})
+  const pageOptionsVisible = getPageOptionsVisible({ pageCount, pageIndex, pageOptions })
 
   return (
-    <div className='row align-items-center'>
+    <div className='d-flex align-items-center'>
       <div className='mb-3'>
-        Showing {pageIndex*pageSize+1} to {Math.min((pageIndex+1)*pageSize,length)} out of {length} &nbsp;&nbsp;
+        Showing {pageIndex * pageSize + 1} to {Math.min((pageIndex + 1) * pageSize, length)} out of {length} &nbsp;&nbsp;
       </div>
       <div className='mb-3'>
         <Dropdown isOpen={dropdownOpen} toggle={toggle}>
@@ -74,52 +125,81 @@ function MyPagination(tableProps) {
         </Dropdown>
       </div>
       <div className='ml-auto'>
-        {pageOptionsVisible.length > 0 && pageSize !== length &&
-        <Pagination aria-label='Paginagation navigation'>
-          {firstOptionVisible > 0 &&
-          <PaginationItem>
-            <PaginationLink first onClick={() => gotoPage(0)} />
-          </PaginationItem>
+        <Pagination aria-label='Page-by-page navigation of the Offices table'>
+          {(pageOptionsVisible.length >= PAGINATION_SIZE) &&
+            <PaginationItem disabled={pageIndex === 0}>
+              <PaginationLink first onClick={() => gotoPage(0)} />
+            </PaginationItem>
           }
-          {canPreviousPage &&
-          <PaginationItem>
+          <PaginationItem disabled={!canPreviousPage}>
             <PaginationLink previous onClick={() => previousPage()} />
           </PaginationItem>
-          }
           {pageOptionsVisible.map(page => (
             <PaginationItem key={page} className={page === pageIndex ? 'active' : ''}>
               <PaginationLink onClick={() => gotoPage(page)}>
-                {page}
+                {page + 1}
               </PaginationLink>
             </PaginationItem>
           ))}
-          {canNextPage &&
-          <PaginationItem>
+          <PaginationItem disabled={!canNextPage}>
             <PaginationLink next onClick={() => nextPage()} />
           </PaginationItem>
-          }
-          {lastOptionVisible < pageCount &&
-          <PaginationItem>
-            <PaginationLink last onClick={() => gotoPage(pageCount - 1)} />
-          </PaginationItem>
+          {(pageOptionsVisible.length >= PAGINATION_SIZE) &&
+            <PaginationItem disabled={pageIndex === (pageCount - 1)}>
+              <PaginationLink last onClick={() => gotoPage(pageCount - 1)} />
+            </PaginationItem>
           }
         </Pagination>
-      }
       </div>
     </div>
   )
 }
 
-function Table({ columns, data }) {
+function Table ({ columns, data }) {
+  const filterTypes = React.useMemo(
+    () => ({
+      // Add a fuzzyTextFilterFn filter type
+      fuzzyText: fuzzyTextFilterFn,
+      // Or override the default text filter to use "startsWith"
+      text: (rows, id, filterValue) => {
+        return rows.filter(row => {
+          const rowValue = row.values[id]
+          return rowValue !== undefined
+            ? String(rowValue)
+              .toLowerCase()
+              .startsWith(String(filterValue).toLowerCase())
+            : true
+        })
+      }
+    }),
+    []
+  )
+
+  const defaultColumn = React.useMemo(
+    () => ({
+      Filter: DefaultColumnFilter
+    }),
+    []
+  )
+
   const tableProps = useTable(
     {
       columns,
       data,
+      defaultColumn,
+      disableMultiSort: true,
+      disableSortRemove: true,
+      filterTypes,
       initialState: {
-        pageIndex: 0,
-        pageSize: 20
+        globalFilter: keptState.globalFilter,
+        hiddenColumns: ['allContactNames', 'body'],
+        pageIndex: keptState.pageIndex,
+        pageSize: keptState.pageSize,
+        sortBy: keptState.sortBy
       }
     },
+    useFilters,
+    useGlobalFilter,
     useSortBy,
     usePagination
   )
@@ -127,37 +207,56 @@ function Table({ columns, data }) {
     getTableProps,
     getTableBodyProps,
     headerGroups,
-    prepareRow,
     page, // has only the rows for the active page
-    canPreviousPage,
-    canNextPage,
-    pageOptions,
-    pageCount,
-    gotoPage,
-    nextPage,
-    previousPage,
-    setPageSize,
-    state: { pageIndex, pageSize }
+    prepareRow,
+    setGlobalFilter,
+    state: { globalFilter, pageIndex, pageSize, sortBy }
   } = tableProps
+
+  // Remember state for the next mount
+  useEffect(() => {
+    return () => {
+      keptState = {
+        globalFilter,
+        pageIndex,
+        pageSize,
+        sortBy
+      }
+    }
+  })
 
   return (
     <>
-    <MyPagination length={data.length} {...tableProps}/>
-      <table {...getTableProps()} className='table table-striped table-hover table-sm'>
+      <Row>
+        <Col xs='6' lg='8' />
+        <Col xs='6' lg='4'>
+          <GlobalFilter
+            globalFilter={globalFilter}
+            setGlobalFilter={setGlobalFilter}
+          />
+        </Col>
+      </Row>
+      <MyPagination length={data.length} {...tableProps} />
+      <table {...getTableProps()} className='react-table table table-striped table-hover table-sm'>
         <thead>
           {headerGroups.map((headerGroup, index) => (
             <tr {...headerGroup.getHeaderGroupProps()} key={index}>
               {headerGroup.headers.map((column, index) => (
-                // Add the sorting props into the header props
-                <th {...column.getHeaderProps(column.getSortByToggleProps())} key={index}>
-                  {column.render('Header')}
+                // Return an array of prop objects and react-table will merge them appropriately
+                <th {...column.getHeaderProps([
+                  { style: column.style },
+                  column.getSortByToggleProps()
+                ])} key={index}>
                   <span>
+                    {column.render('Header')}
                     {column.isSorted
                       ? column.isSortedDesc
                         ? <CaretSorted className='fa fa-sort-desc' />
                         : <CaretSorted className='fa fa-sort-asc' />
                       : <CaretUnsorted className='fa fa-sort' />}
                   </span>
+                  &nbsp;
+                  <span>{column.canFilter ? column.render('Filter') : null}</span>
                 </th>
               ))}
             </tr>
@@ -166,7 +265,7 @@ function Table({ columns, data }) {
         <tbody {...getTableBodyProps()}>
           {page.map(
             (row, index) => {
-              prepareRow(row);
+              prepareRow(row)
               return (
                 <tr {...row.getRowProps()} key={index}>
                   {row.cells.map((cell, index) => {
@@ -179,7 +278,7 @@ function Table({ columns, data }) {
           )}
         </tbody>
       </table>
-      <MyPagination length={data.length} {...tableProps}/>
+      <MyPagination length={data.length} {...tableProps} />
     </>
   )
 }
@@ -205,16 +304,31 @@ function OfficesDataTable (props) {
       {
         Header: 'Name',
         accessor: 'displayName',
-        Cell: linkFormatter
+        Cell: linkFormatter,
+        filter: 'fuzzyText',
+        style: {
+          width: '30%'
+        }
       },
       {
         Header: 'Address',
-        accessor: 'fullAddress'
+        accessor: 'fullAddress',
+        filter: 'fuzzyText'
       },
       {
         Header: 'Updated',
         accessor: 'updatedAt',
-        Cell: dateFormatter
+        disableFilters: true,
+        Cell: dateFormatter,
+        style: {
+          textAlign: 'right',
+          width: '6.6em'
+        }
+      },
+      {
+        accessor: 'body'
+      }, {
+        accessor: 'allContactNames'
       }
     ],
     []

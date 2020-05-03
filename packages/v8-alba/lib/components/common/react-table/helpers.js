@@ -4,7 +4,7 @@ import moment from 'moment'
 import { DATE_FORMAT_SHORT } from '../../../modules/constants.js'
 import { PAGINATION_SIZE } from './constants.js'
 
-export const dateFormatter = ({cell, row}) => {
+export const dateFormatter = ({ cell, row }) => {
   let theDate
   if (!cell.value) { // i.e. there is only a createdAt, not an updatedAt
     theDate = row.original.createdAt
@@ -22,24 +22,20 @@ export const linkFormatter = ({ cell, row }) => {
   )
 }
 
-export const getVisibles = ({pageCount, pageIndex, pageOptions}) => {
+export const getPageOptionsVisible = ({ pageCount, pageIndex, pageOptions }) => {
   const fromEnd = (pageCount - 1) - pageIndex
 
   const firstOptionVisible =
-    fromEnd < Math.trunc(PAGINATION_SIZE/2)
+    fromEnd < Math.trunc(PAGINATION_SIZE / 2)
       ? pageIndex - ((PAGINATION_SIZE - 1) - fromEnd)
-      : Math.max(pageIndex - Math.trunc(PAGINATION_SIZE/2), 0)
+      : Math.max(pageIndex - Math.trunc(PAGINATION_SIZE / 2), 0)
 
   const lastOptionVisible = firstOptionVisible + PAGINATION_SIZE
 
   const pageOptionsVisible =
     pageCount < PAGINATION_SIZE
       ? pageOptions
-      :  pageOptions.slice(firstOptionVisible, lastOptionVisible)
+      : pageOptions.slice(firstOptionVisible, lastOptionVisible)
 
-  return {
-    firstOptionVisible,
-    lastOptionVisible,
-    pageOptionsVisible
-  }
+  return pageOptionsVisible
 }
