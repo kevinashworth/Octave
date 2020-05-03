@@ -39,18 +39,16 @@ const xy = (stat) => {
   }
 }
 
-const getRecent = (data, radio) => {
-  return radio === 3
+const getRecent = (data, timeframe) => {
+  return timeframe === 3
     ? data
     : _.takeRightWhile(data, function(stat) {
-      const b = moment(stat.x).isSameOrAfter(moment().subtract(1, radio === 2 ? 'years' : 'months'))
-      console.log(moment(stat.x), b)
-      return b
+      return moment(stat.x).isSameOrAfter(moment().subtract(1, timeframe === 2 ? 'years' : 'months'))
     })
 }
 
 function LineChartLarge (props) {
-  const [radio, setRadio] = useState(2)
+  const [timeframe, setTimeframe] = useState(3)
   const { loading, theStats } = props
 
   const xyEpisodics = useMemo(
@@ -71,20 +69,20 @@ function LineChartLarge (props) {
   )
 
   const theEpisodics = useMemo(
-    () => getRecent(xyEpisodics, radio),
-    [xyEpisodics, radio]
+    () => getRecent(xyEpisodics, timeframe),
+    [xyEpisodics, timeframe]
   )
   const theFeatures = useMemo(
-    () => getRecent(xyFeatures, radio),
-    [xyFeatures, radio]
+    () => getRecent(xyFeatures, timeframe),
+    [xyFeatures, timeframe]
   )
   const thePilots = useMemo(
-    () => getRecent(xyPilots, radio),
-    [xyPilots, radio]
+    () => getRecent(xyPilots, timeframe),
+    [xyPilots, timeframe]
   )
   const theOthers = useMemo(
-    () => getRecent(xyOthers, radio),
-    [xyOthers, radio]
+    () => getRecent(xyOthers, timeframe),
+    [xyOthers, timeframe]
   )
 
   const datasetProps = {
@@ -138,7 +136,7 @@ function LineChartLarge (props) {
       display: false
     }
   }
-  const unitProp = radio === 1 ? { time: { unit: 'day' }} : { time: { unit: 'month' }}
+  const unitProp = timeframe === 1 ? { time: { unit: 'day' }} : { time: { unit: 'month' }}
   const mainChartOpts = {
     aspectRatio: 2.5,
     maintainAspectRatio: false,
@@ -192,11 +190,11 @@ function LineChartLarge (props) {
               <CardTitle className='mb-0'>Number of TV &amp; Film Projects Casting</CardTitle>
             </Col>
             <Col sm='7' className='d-none d-sm-inline-block'>
-              <ButtonToolbar className='float-right' aria-label='Toolbar with button groups'>
-                <ButtonGroup className='mr-3' aria-label='First group'>
-                  <Button color='outline-secondary' onClick={() => setRadio(1)} active={radio === 1}>Month</Button>
-                  <Button color='outline-secondary' onClick={() => setRadio(2)} active={radio === 2}>Year</Button>
-                  <Button color='outline-secondary' onClick={() => setRadio(3)} active={radio === 3}>All</Button>
+              <ButtonToolbar className='float-right'>
+                <ButtonGroup>
+                  <Button outline color='secondary' onClick={() => setTimeframe(1)} active={timeframe === 1}>Month</Button>
+                  <Button outline color='secondary' onClick={() => setTimeframe(2)} active={timeframe === 2}>Year</Button>
+                  <Button outline color='secondary' onClick={() => setTimeframe(3)} active={timeframe === 3}>All</Button>
                 </ButtonGroup>
               </ButtonToolbar>
             </Col>

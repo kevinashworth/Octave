@@ -15,17 +15,19 @@ class Dashboard extends PureComponent {
         <Row className='mt-4'>
           <Col xs='12' sm='6' lg='3'>
             <Components.LineChartSmall
-              bgColor='info'
-              theSmallStats={theStats.features}
-              title={'Features'}
+              bgColor='success'
+              theSmallStats={theStats.episodics}
+              title={'Episodics Casting'}
+              subtitle={'Last 12 months'}
             />
           </Col>
 
           <Col xs='12' sm='6' lg='3'>
             <Components.LineChartSmall
-              bgColor='success'
-              theSmallStats={theStats.episodics}
-              title={'Episodics'}
+              bgColor='info'
+              theSmallStats={theStats.features}
+              title={'Features Casting'}
+              subtitle={'Last 12 months'}
             />
           </Col>
 
@@ -33,7 +35,8 @@ class Dashboard extends PureComponent {
             <Components.LineChartSmall
               bgColor='warning'
               theSmallStats={theStats.pilots}
-              title={'Pilots'}
+              title={'Pilots Casting'}
+              subtitle={'Last 12 months'}
             />
           </Col>
 
@@ -41,7 +44,8 @@ class Dashboard extends PureComponent {
             <Components.LineChartSmall
               bgColor='danger'
               theSmallStats={theStats.others}
-              title={'Others'}
+              title={'Others Casting'}
+              subtitle={'Last 12 months'}
             />
           </Col>
         </Row>

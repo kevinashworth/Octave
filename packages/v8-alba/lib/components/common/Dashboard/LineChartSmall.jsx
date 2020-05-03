@@ -76,8 +76,8 @@ class LineChartSmall extends PureComponent {
           <h5 className='mb-0'>{title}</h5>
           <p>{subtitle}</p>
         </CardBody>
-        <div className='chart-wrapper px-3' style={{ height: '120px' }}>
-          <Line data={cardChartData} options={cardChartOpts} height={120} />
+        <div className='chart-wrapper px-3'>
+          <Line data={cardChartData} options={cardChartOpts} height={150} />
         </div>
       </Card>
     )
