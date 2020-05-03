@@ -1,5 +1,5 @@
 import { Components, registerComponent } from 'meteor/vulcan:core'
-import React, { PureComponent } from 'react'
+import React, { useMemo, useState } from 'react'
 import { Line } from 'react-chartjs-2'
 import {
   Button,
@@ -32,173 +32,177 @@ const Item = styled.li`
   text-align: center;
 `
 
-class LineChartLarge extends PureComponent {
-  constructor (props) {
-    super(props)
-
-    this.state = {
-      radioSelected: 3
-    }
+const xy = (stat) => {
+  return {
+    x: moment(stat.date).format('D MMM YY'),
+    y: stat.quantity
   }
+}
 
-  render () {
-    const { theStats } = this.props
-    if (this.props.loading) {
-      return (<div><Components.Loading /></div>)
-    }
+const getRecent = (data, radio) => {
+  return radio === 3
+    ? data
+    : _.takeRightWhile(data, function(stat) {
+      const b = moment(stat.x).isSameOrAfter(moment().subtract(1, radio === 2 ? 'years' : 'months'))
+      console.log(moment(stat.x), b)
+      return b
+    })
+}
 
-    var data1 = theStats.episodics.map(stat => {
-      return {
-        x: moment(stat.date).format('D MMM YY'),
-        y: stat.quantity
-      }
-    })
-    var data2 = theStats.features.map(stat => {
-      return {
-        x: moment(stat.date).format('D MMM YY'),
-        y: stat.quantity
-      }
-    })
-    var data3 = theStats.pilots.map(stat => {
-      return {
-        x: moment(stat.date).format('D MMM YY'),
-        y: stat.quantity
-      }
-    })
-    var data4 = theStats.others.map(stat => {
-      return {
-        x: moment(stat.date).format('D MMM YY'),
-        y: stat.quantity
-      }
-    })
+function LineChartLarge (props) {
+  const [radio, setRadio] = useState(2)
+  const { loading, theStats } = props
 
-    const allData = theStats.episodics.concat(theStats.features, theStats.pilots, theStats.others)
-    const sortedData = _.sortBy(allData, 'date')
-    const allDates = sortedData.map(stat => moment(stat.date).format('D MMM YY'))
-    const dateLabels = _.uniqBy(allDates) // TODO: Is there a simpler way to get this?
+  const xyEpisodics = useMemo(
+    () => theStats.episodics.map(stat => xy(stat)),
+    [theStats]
+  )
+  const xyFeatures = useMemo(
+    () => theStats.features.map(stat => xy(stat)),
+    [theStats]
+  )
+  const xyPilots = useMemo(
+    () => theStats.pilots.map(stat => xy(stat)),
+    [theStats]
+  )
+  const xyOthers = useMemo(
+    () => theStats.others.map(stat => xy(stat)),
+    [theStats]
+  )
 
-    const mainChart = {
-      // labels: dateLabels,
+  const theEpisodics = useMemo(
+    () => getRecent(xyEpisodics, radio),
+    [xyEpisodics, radio]
+  )
+  const theFeatures = useMemo(
+    () => getRecent(xyFeatures, radio),
+    [xyFeatures, radio]
+  )
+  const thePilots = useMemo(
+    () => getRecent(xyPilots, radio),
+    [xyPilots, radio]
+  )
+  const theOthers = useMemo(
+    () => getRecent(xyOthers, radio),
+    [xyOthers, radio]
+  )
+
+  const datasetProps = {
+    backgroundColor: 'transparent',
+    pointHoverBackgroundColor: '#fff',
+    borderWidth: 2
+  }
+  const mainChart = useMemo(
+    () => ({
       datasets: [
         {
           label: 'Episodics',
           xAxisID: 'x-axis-episodics',
-          backgroundColor: 'transparent',
           borderColor: brandColors['success'],
-          pointHoverBackgroundColor: '#fff',
-          borderWidth: 2,
-          data: data1
+          data: theEpisodics,
+          ...datasetProps
         },
         {
           label: 'Features',
           xAxisID: 'x-axis-features',
-          backgroundColor: 'transparent',
           borderColor: brandColors['info'],
-          pointHoverBackgroundColor: brandColors['success'],
-          borderWidth: 2,
-          data: data2
+          data: theFeatures,
+          ...datasetProps
         },
         {
           label: 'Pilots',
           xAxisID: 'x-axis-pilots',
-          backgroundColor: 'transparent',
           borderColor: brandColors['warning'],
-          pointHoverBackgroundColor: '#000',
-          borderWidth: 2,
-          data: data3
+          data: thePilots,
+          ...datasetProps
         },
         {
           label: 'Others',
           xAxisID: 'x-axis-others',
-          backgroundColor: 'transparent',
           borderColor: brandColors['danger'],
-          pointHoverBackgroundColor: '#000',
-          borderWidth: 2,
-          data: data4
+          data: theOthers,
+          ...datasetProps
         }
       ]
-    }
+    }),
+    [theEpisodics, theFeatures, thePilots, theOthers, datasetProps]
+  )
 
-    const mainChartOpts = {
-      aspectRatio: 2.5,
-      maintainAspectRatio: false,
-      legend: {
-        display: false
-      },
-      scales: {
-        xAxes: [{
-          position: 'bottom',
-          type: 'time',
-          id: 'x-axis-episodics'
-        },{
-          position: 'bottom',
-          type: 'time',
-          id: 'x-axis-features',
-          gridLines: {
-            display: false
-          },
-          ticks: {
-            display: false
-          }
-        },{
-          position: 'bottom',
-          type: 'time',
-          id: 'x-axis-pilots',
-          gridLines: {
-            display: false
-          },
-          ticks: {
-            display: false
-          }
-        },{
-          position: 'bottom',
-          type: 'time',
-          id: 'x-axis-others',
-          gridLines: {
-            display: false
-          },
-          ticks: {
-            display: false
-          }
-        }],
-        yAxes: [{
-          ticks: {
-            beginAtZero: true,
-            maxTicksLimit: 5
-          }
-        }]
-      },
-      elements: {
-        point: {
-          radius: 0,
-          hitRadius: 10,
-          hoverRadius: 4,
-          hoverBorderWidth: 3
+  const xProps = {
+    position: 'bottom',
+    type: 'time',
+    gridLines: {
+      display: false
+    },
+    ticks: {
+      display: false
+    }
+  }
+  const unitProp = radio === 1 ? { time: { unit: 'day' }} : { time: { unit: 'month' }}
+  const mainChartOpts = {
+    aspectRatio: 2.5,
+    maintainAspectRatio: false,
+    legend: {
+      display: false
+    },
+    scales: {
+      xAxes: [{
+        id: 'x-axis-episodics',
+        position: 'bottom',
+        ticks: {
+          maxRotation: 70
+        },
+        type: 'time',
+        ...unitProp
+      },{
+        id: 'x-axis-features',
+        ...xProps
+      },{
+        id: 'x-axis-pilots',
+        ...xProps
+      },{
+        id: 'x-axis-others',
+        ...xProps
+      }],
+      yAxes: [{
+        ticks: {
+          beginAtZero: true,
+          maxTicksLimit: 5
         }
+      }]
+    },
+    elements: {
+      point: {
+        radius: 0,
+        hitRadius: 10,
+        hoverRadius: 4,
+        hoverBorderWidth: 3
       }
     }
+  }
 
-    return (
+  if (loading) {
+    return <Components.Loading />
+  }
+  return (
       <Card>
         <CardBody>
           <Row>
             <Col sm='5'>
               <CardTitle className='mb-0'>Number of TV &amp; Film Projects Casting</CardTitle>
-              <div className='small text-muted'>{`${dateLabels[0]} – ${dateLabels[dateLabels.length - 1]}`}</div>
             </Col>
             <Col sm='7' className='d-none d-sm-inline-block'>
-              <Button color='primary' className='float-right'><i className='icon-cloud-download' /></Button>
               <ButtonToolbar className='float-right' aria-label='Toolbar with button groups'>
                 <ButtonGroup className='mr-3' aria-label='First group'>
-                  <Button color='outline-secondary' onClick={() => this.onRadioBtnClick(1)} active={this.state.radioSelected === 1}>Month</Button>
-                  <Button color='outline-secondary' onClick={() => this.onRadioBtnClick(2)} active={this.state.radioSelected === 2}>Year</Button>
-                  <Button color='outline-secondary' onClick={() => this.onRadioBtnClick(3)} active={this.state.radioSelected === 3}>All</Button>
+                  <Button color='outline-secondary' onClick={() => setRadio(1)} active={radio === 1}>Month</Button>
+                  <Button color='outline-secondary' onClick={() => setRadio(2)} active={radio === 2}>Year</Button>
+                  <Button color='outline-secondary' onClick={() => setRadio(3)} active={radio === 3}>All</Button>
                 </ButtonGroup>
               </ButtonToolbar>
             </Col>
           </Row>
           <div className='chart-wrapper'>
-            <Line data={mainChart} height={null} width={null} redraw={true} options={mainChartOpts} />
+            <Line data={mainChart} height={400} options={mainChartOpts} />
           </div>
         </CardBody>
         <CardFooter>
@@ -227,7 +231,6 @@ class LineChartLarge extends PureComponent {
         </CardFooter>
       </Card>
     )
-  }
 }
 
 registerComponent('LineChartLarge', LineChartLarge)
