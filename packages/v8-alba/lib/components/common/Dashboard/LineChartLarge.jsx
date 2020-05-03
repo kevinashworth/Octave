@@ -78,10 +78,11 @@ class LineChartLarge extends PureComponent {
     const dateLabels = _.uniqBy(allDates) // TODO: Is there a simpler way to get this?
 
     const mainChart = {
-      labels: dateLabels,
+      // labels: dateLabels,
       datasets: [
         {
           label: 'Episodics',
+          xAxisID: 'x-axis-episodics',
           backgroundColor: 'transparent',
           borderColor: brandColors['success'],
           pointHoverBackgroundColor: '#fff',
@@ -90,6 +91,7 @@ class LineChartLarge extends PureComponent {
         },
         {
           label: 'Features',
+          xAxisID: 'x-axis-features',
           backgroundColor: 'transparent',
           borderColor: brandColors['info'],
           pointHoverBackgroundColor: brandColors['success'],
@@ -98,6 +100,7 @@ class LineChartLarge extends PureComponent {
         },
         {
           label: 'Pilots',
+          xAxisID: 'x-axis-pilots',
           backgroundColor: 'transparent',
           borderColor: brandColors['warning'],
           pointHoverBackgroundColor: '#000',
@@ -106,6 +109,7 @@ class LineChartLarge extends PureComponent {
         },
         {
           label: 'Others',
+          xAxisID: 'x-axis-others',
           backgroundColor: 'transparent',
           borderColor: brandColors['danger'],
           pointHoverBackgroundColor: '#000',
@@ -116,22 +120,51 @@ class LineChartLarge extends PureComponent {
     }
 
     const mainChartOpts = {
+      aspectRatio: 2.5,
       maintainAspectRatio: false,
       legend: {
         display: false
       },
       scales: {
         xAxes: [{
+          position: 'bottom',
+          type: 'time',
+          id: 'x-axis-episodics'
+        },{
+          position: 'bottom',
+          type: 'time',
+          id: 'x-axis-features',
           gridLines: {
-            drawOnChartArea: false
+            display: false
+          },
+          ticks: {
+            display: false
+          }
+        },{
+          position: 'bottom',
+          type: 'time',
+          id: 'x-axis-pilots',
+          gridLines: {
+            display: false
+          },
+          ticks: {
+            display: false
+          }
+        },{
+          position: 'bottom',
+          type: 'time',
+          id: 'x-axis-others',
+          gridLines: {
+            display: false
+          },
+          ticks: {
+            display: false
           }
         }],
         yAxes: [{
           ticks: {
             beginAtZero: true,
-            maxTicksLimit: 5,
-            stepSize: Math.ceil(250 / 5),
-            max: 250
+            maxTicksLimit: 5
           }
         }]
       },
@@ -157,15 +190,15 @@ class LineChartLarge extends PureComponent {
               <Button color='primary' className='float-right'><i className='icon-cloud-download' /></Button>
               <ButtonToolbar className='float-right' aria-label='Toolbar with button groups'>
                 <ButtonGroup className='mr-3' aria-label='First group'>
-                  <Button color='outline-secondary' onClick={() => this.onRadioBtnClick(1)} active={this.state.radioSelected === 1}>Day</Button>
-                  <Button color='outline-secondary' onClick={() => this.onRadioBtnClick(2)} active={this.state.radioSelected === 2}>Month</Button>
-                  <Button color='outline-secondary' onClick={() => this.onRadioBtnClick(3)} active={this.state.radioSelected === 3}>Year</Button>
+                  <Button color='outline-secondary' onClick={() => this.onRadioBtnClick(1)} active={this.state.radioSelected === 1}>Month</Button>
+                  <Button color='outline-secondary' onClick={() => this.onRadioBtnClick(2)} active={this.state.radioSelected === 2}>Year</Button>
+                  <Button color='outline-secondary' onClick={() => this.onRadioBtnClick(3)} active={this.state.radioSelected === 3}>All</Button>
                 </ButtonGroup>
               </ButtonToolbar>
             </Col>
           </Row>
-          <div className='chart-wrapper' style={{ height: 300 + 'px', marginTop: 40 + 'px' }}>
-            <Line data={mainChart} options={mainChartOpts} height={300} />
+          <div className='chart-wrapper'>
+            <Line data={mainChart} height={null} width={null} redraw={true} options={mainChartOpts} />
           </div>
         </CardBody>
         <CardFooter>

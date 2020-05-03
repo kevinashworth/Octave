@@ -12,7 +12,7 @@ class Dashboard extends PureComponent {
     return (
       <div className='animated fadeIn'>
         <Components.HeadTags title='V8 Alba: Dashboard' />
-        <Row>
+        <Row className='mt-4'>
           <Col xs='12' sm='6' lg='3'>
             <Components.LineChartSmall
               bgColor='info'
