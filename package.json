@@ -160,7 +160,7 @@
     "@storybook/react": "^5.0.1",
     "@storybook/theming": "^5.0.1",
     "@userfrosting/merge-package-dependencies": "^1.2.1",
-    "autoprefixer": "^6.3.6",
+    "autoprefixer": "^9.7.6",
     "babel-eslint": "^10.0.3",
     "babel-loader": "^8.0.5",
     "diff": "^4.0.1",
