@@ -13,7 +13,9 @@ class LineChartSmall extends PureComponent {
       return (<div><Components.Loading /></div>)
     }
 
-    const displayStats = _.takeRight(theSmallStats, 24);
+    const displayStats = _.takeRightWhile(theSmallStats, function(stat) {
+      return moment(stat.date).isSameOrAfter(moment().subtract(1, 'years'))
+    })
 
     const cardChartData = {
       labels: displayStats.map(stat => moment(stat.date).format('D MMM YY')),
@@ -57,12 +59,13 @@ class LineChartSmall extends PureComponent {
       },
       elements: {
         line: {
-          borderWidth: 1
+          borderWidth: 2
         },
         point: {
-          radius: 4,
+          radius: 0,
           hitRadius: 10,
-          hoverRadius: 4
+          hoverRadius: 4,
+          hoverBorderWidth: 3
         }
       }
     }

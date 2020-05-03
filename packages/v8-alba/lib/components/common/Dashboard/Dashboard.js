@@ -18,7 +18,7 @@ class Dashboard extends PureComponent {
               bgColor='info'
               theSmallStats={theStats.features}
               title={'Features'}
-              subtitle={'Currently casting'} />
+            />
           </Col>
 
           <Col xs='12' sm='6' lg='3'>
@@ -26,7 +26,7 @@ class Dashboard extends PureComponent {
               bgColor='success'
               theSmallStats={theStats.episodics}
               title={'Episodics'}
-              subtitle={'Currently casting'} />
+            />
           </Col>
 
           <Col xs='12' sm='6' lg='3'>
@@ -34,7 +34,7 @@ class Dashboard extends PureComponent {
               bgColor='warning'
               theSmallStats={theStats.pilots}
               title={'Pilots'}
-              subtitle={'Currently casting'} />
+            />
           </Col>
 
           <Col xs='12' sm='6' lg='3'>
@@ -42,7 +42,7 @@ class Dashboard extends PureComponent {
               bgColor='danger'
               theSmallStats={theStats.others}
               title={'Others'}
-              subtitle={'Currently casting'} />
+            />
           </Col>
         </Row>
         <Row>
