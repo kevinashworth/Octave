@@ -1,15 +1,13 @@
-/* eslint-disable no-unused-vars */
 import { Components, registerComponent, withAccess, withCurrentUser, withMulti } from 'meteor/vulcan:core'
 import Users from 'meteor/vulcan:users'
 import React, { useEffect, useState } from 'react'
 import {
   Button,
   Card, CardBody, CardFooter, CardHeader,
-  Col,
+  Col, Row,
   Dropdown, DropdownItem, DropdownMenu, DropdownToggle,
   FormGroup, Input,
-  Pagination, PaginationItem, PaginationLink,
-  Row
+  Pagination, PaginationItem, PaginationLink
 } from 'reactstrap'
 import {
   useFilters,
@@ -21,7 +19,7 @@ import {
 import MyClearButton from '../common/react-table/MyClearButton'
 import MySearchBar from '../common/react-table/MySearchBar'
 import { PAGINATION_SIZE } from '../common/react-table/constants.js'
-import { dateFormatter, linkFormatter, getVisibles } from '../common/react-table/helpers.js'
+import { dateFormatter, linkFormatter, getPageOptionsVisible } from '../common/react-table/helpers.js'
 import { CaretSorted, CaretUnsorted } from '../common/react-table/styled.js'
 import matchSorter from 'match-sorter'
 import { SIZE_PER_PAGE_LIST_SEED } from '../../modules/constants.js'
@@ -49,10 +47,11 @@ function AddButtonFooter () {
   )
 }
 
-function fuzzyTextFilterFn(rows, id, filterValue) {
+function fuzzyTextFilterFn (rows, id, filterValue) {
   return matchSorter(rows, filterValue, {
     keys: [row => row.values[id]],
-    threshold: matchSorter.rankings.ACRONYM})
+    threshold: matchSorter.rankings.ACRONYM
+  })
 }
 
 const GlobalFilter = ({ globalFilter, setGlobalFilter }) => {
@@ -63,13 +62,14 @@ const GlobalFilter = ({ globalFilter, setGlobalFilter }) => {
           const searchText = e.target.value || undefined
           setGlobalFilter(searchText)
         }}
-        value={globalFilter || ''} />
+        value={globalFilter || ''}
+      />
       <MyClearButton globalFilter={globalFilter} onClick={() => setGlobalFilter('')} />
     </FormGroup>
   )
 }
 
-function DefaultColumnFilter({
+function DefaultColumnFilter ({
   column: { filterValue, preFilteredRows, setFilter }
 }) {
   const count = preFilteredRows.length
@@ -78,13 +78,13 @@ function DefaultColumnFilter({
       className='column-filter'
       value={filterValue || ''}
       onChange={e => setFilter(e.target.value)}
-      onClick={e => e.stopPropagation()} // Otherwise triggers sorting
-      placeholder={`Search ${count} records...`}
+      onClick={e => e.stopPropagation()} // Otherwise triggers sortBy
+      placeholder={`Filter ${count} records...`}
     />
   )
 }
 
-function MyPagination(tableProps) {
+function MyPagination (tableProps) {
   const {
     canPreviousPage,
     canNextPage,
@@ -101,16 +101,12 @@ function MyPagination(tableProps) {
   const [dropdownOpen, setDropdownOpen] = useState(false)
   const toggle = () => setDropdownOpen(prevState => !prevState)
 
-  const {
-    firstOptionVisible,
-    lastOptionVisible,
-    pageOptionsVisible
-  } = getVisibles({pageCount, pageIndex, pageOptions})
+  const pageOptionsVisible = getPageOptionsVisible({ pageCount, pageIndex, pageOptions })
 
   return (
     <div className='d-flex align-items-center'>
       <div className='mb-3'>
-        Showing {pageIndex*pageSize+1} to {Math.min((pageIndex+1)*pageSize,length)} out of {length} &nbsp;&nbsp;
+        Showing {pageIndex * pageSize + 1} to {Math.min((pageIndex + 1) * pageSize, length)} out of {length} &nbsp;&nbsp;
       </div>
       <div className='mb-3'>
         <Dropdown isOpen={dropdownOpen} toggle={toggle}>
@@ -131,11 +127,11 @@ function MyPagination(tableProps) {
       <div className='ml-auto'>
         <Pagination aria-label='Page-by-page navigation of the Offices table'>
           {(pageOptionsVisible.length >= PAGINATION_SIZE) &&
-          <PaginationItem disabled={pageIndex === 0}>
-            <PaginationLink first onClick={() => gotoPage(0)} />
-          </PaginationItem>
+            <PaginationItem disabled={pageIndex === 0}>
+              <PaginationLink first onClick={() => gotoPage(0)} />
+            </PaginationItem>
           }
-          <PaginationItem disabled={!canPreviousPage} >
+          <PaginationItem disabled={!canPreviousPage}>
             <PaginationLink previous onClick={() => previousPage()} />
           </PaginationItem>
           {pageOptionsVisible.map(page => (
@@ -149,9 +145,9 @@ function MyPagination(tableProps) {
             <PaginationLink next onClick={() => nextPage()} />
           </PaginationItem>
           {(pageOptionsVisible.length >= PAGINATION_SIZE) &&
-          <PaginationItem disabled={pageIndex === (pageCount - 1)}>
-            <PaginationLink last onClick={() => gotoPage(pageCount - 1)} />
-          </PaginationItem>
+            <PaginationItem disabled={pageIndex === (pageCount - 1)}>
+              <PaginationLink last onClick={() => gotoPage(pageCount - 1)} />
+            </PaginationItem>
           }
         </Pagination>
       </div>
@@ -159,31 +155,29 @@ function MyPagination(tableProps) {
   )
 }
 
-function Table({ columns, data }) {
+function Table ({ columns, data }) {
   const filterTypes = React.useMemo(
     () => ({
-      // Add a new fuzzyTextFilterFn filter type.
+      // Add a fuzzyTextFilterFn filter type
       fuzzyText: fuzzyTextFilterFn,
-      // Or, override the default text filter to use
-      // "startWith"
+      // Or override the default text filter to use "startsWith"
       text: (rows, id, filterValue) => {
         return rows.filter(row => {
           const rowValue = row.values[id]
           return rowValue !== undefined
             ? String(rowValue)
-                .toLowerCase()
-                .startsWith(String(filterValue).toLowerCase())
+              .toLowerCase()
+              .startsWith(String(filterValue).toLowerCase())
             : true
         })
-      },
+      }
     }),
     []
   )
 
   const defaultColumn = React.useMemo(
     () => ({
-      // Let's set up our default Filter UI
-      Filter: DefaultColumnFilter,
+      Filter: DefaultColumnFilter
     }),
     []
   )
@@ -210,24 +204,16 @@ function Table({ columns, data }) {
     usePagination
   )
   const {
-    canPreviousPage,
-    canNextPage,
     getTableProps,
     getTableBodyProps,
-    gotoPage,
     headerGroups,
     page, // has only the rows for the active page
-    pageOptions,
-    pageCount,
     prepareRow,
-    previousPage,
-    nextPage,
     setGlobalFilter,
-    setPageSize,
     state: { globalFilter, pageIndex, pageSize, sortBy }
   } = tableProps
 
-  // Remember state for the next mount. Best without array as last parameter?
+  // Remember state for the next mount
   useEffect(() => {
     return () => {
       keptState = {
@@ -241,15 +227,16 @@ function Table({ columns, data }) {
 
   return (
     <>
-    <Row>
-      <Col xs='6' lg='8'></Col>
-      <Col xs='6' lg='4'>
-        <GlobalFilter
-          globalFilter={globalFilter}
-          setGlobalFilter={setGlobalFilter} />
-      </Col>
-    </Row>
-    <MyPagination length={data.length} {...tableProps}/>
+      <Row>
+        <Col xs='6' lg='8' />
+        <Col xs='6' lg='4'>
+          <GlobalFilter
+            globalFilter={globalFilter}
+            setGlobalFilter={setGlobalFilter}
+          />
+        </Col>
+      </Row>
+      <MyPagination length={data.length} {...tableProps} />
       <table {...getTableProps()} className='react-table table table-striped table-hover table-sm'>
         <thead>
           {headerGroups.map((headerGroup, index) => (
@@ -257,16 +244,16 @@ function Table({ columns, data }) {
               {headerGroup.headers.map((column, index) => (
                 // Return an array of prop objects and react-table will merge them appropriately
                 <th {...column.getHeaderProps([
-                    { style: column.style },
-                    column.getSortByToggleProps()
-                  ])} key={index}>
-                <span>
-                  {column.render('Header')}
-                  {column.isSorted
-                    ? column.isSortedDesc
-                      ? <CaretSorted className='fa fa-sort-desc' />
-                      : <CaretSorted className='fa fa-sort-asc' />
-                    : <CaretUnsorted className='fa fa-sort' />}
+                  { style: column.style },
+                  column.getSortByToggleProps()
+                ])} key={index}>
+                  <span>
+                    {column.render('Header')}
+                    {column.isSorted
+                      ? column.isSortedDesc
+                        ? <CaretSorted className='fa fa-sort-desc' />
+                        : <CaretSorted className='fa fa-sort-asc' />
+                      : <CaretUnsorted className='fa fa-sort' />}
                   </span>
                   &nbsp;
                   <span>{column.canFilter ? column.render('Filter') : null}</span>
@@ -278,7 +265,7 @@ function Table({ columns, data }) {
         <tbody {...getTableBodyProps()}>
           {page.map(
             (row, index) => {
-              prepareRow(row);
+              prepareRow(row)
               return (
                 <tr {...row.getRowProps()} key={index}>
                   {row.cells.map((cell, index) => {
@@ -291,7 +278,7 @@ function Table({ columns, data }) {
           )}
         </tbody>
       </table>
-      <MyPagination length={data.length} {...tableProps}/>
+      <MyPagination length={data.length} {...tableProps} />
     </>
   )
 }
