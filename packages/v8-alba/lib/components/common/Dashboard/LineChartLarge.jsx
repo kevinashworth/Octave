@@ -1,5 +1,5 @@
 import { Components, registerComponent } from 'meteor/vulcan:core'
-import React, { PureComponent } from 'react'
+import React, { useMemo, useState } from 'react'
 import { Line } from 'react-chartjs-2'
 import {
   Button,
@@ -32,140 +32,175 @@ const Item = styled.li`
   text-align: center;
 `
 
-class LineChartLarge extends PureComponent {
-  constructor (props) {
-    super(props)
-
-    this.state = {
-      radioSelected: 3
-    }
+const xy = (stat) => {
+  return {
+    x: moment(stat.date).format('D MMM YY'),
+    y: stat.quantity
   }
+}
 
-  render () {
-    const { theStats } = this.props
-    if (this.props.loading) {
-      return (<div><Components.Loading /></div>)
-    }
+const getRecent = (data, timeframe) => {
+  return timeframe === 3
+    ? data
+    : _.takeRightWhile(data, function(stat) {
+      return moment(stat.x).isSameOrAfter(moment().subtract(1, timeframe === 2 ? 'years' : 'months'))
+    })
+}
 
-    var data1 = theStats.episodics.map(stat => {
-      return {
-        x: moment(stat.date).format('D MMM YY'),
-        y: stat.quantity
-      }
-    })
-    var data2 = theStats.features.map(stat => {
-      return {
-        x: moment(stat.date).format('D MMM YY'),
-        y: stat.quantity
-      }
-    })
-    var data3 = theStats.pilots.map(stat => {
-      return {
-        x: moment(stat.date).format('D MMM YY'),
-        y: stat.quantity
-      }
-    })
-    var data4 = theStats.others.map(stat => {
-      return {
-        x: moment(stat.date).format('D MMM YY'),
-        y: stat.quantity
-      }
-    })
+function LineChartLarge (props) {
+  const [timeframe, setTimeframe] = useState(3)
+  const { loading, theStats } = props
 
-    const allData = theStats.episodics.concat(theStats.features, theStats.pilots, theStats.others)
-    const sortedData = _.sortBy(allData, 'date')
-    const allDates = sortedData.map(stat => moment(stat.date).format('D MMM YY'))
-    const dateLabels = _.uniqBy(allDates) // TODO: Is there a simpler way to get this?
+  const xyEpisodics = useMemo(
+    () => theStats.episodics.map(stat => xy(stat)),
+    [theStats]
+  )
+  const xyFeatures = useMemo(
+    () => theStats.features.map(stat => xy(stat)),
+    [theStats]
+  )
+  const xyPilots = useMemo(
+    () => theStats.pilots.map(stat => xy(stat)),
+    [theStats]
+  )
+  const xyOthers = useMemo(
+    () => theStats.others.map(stat => xy(stat)),
+    [theStats]
+  )
 
-    const mainChart = {
-      labels: dateLabels,
+  const theEpisodics = useMemo(
+    () => getRecent(xyEpisodics, timeframe),
+    [xyEpisodics, timeframe]
+  )
+  const theFeatures = useMemo(
+    () => getRecent(xyFeatures, timeframe),
+    [xyFeatures, timeframe]
+  )
+  const thePilots = useMemo(
+    () => getRecent(xyPilots, timeframe),
+    [xyPilots, timeframe]
+  )
+  const theOthers = useMemo(
+    () => getRecent(xyOthers, timeframe),
+    [xyOthers, timeframe]
+  )
+
+  const datasetProps = {
+    backgroundColor: 'transparent',
+    pointHoverBackgroundColor: '#fff',
+    borderWidth: 2
+  }
+  const mainChart = useMemo(
+    () => ({
       datasets: [
         {
           label: 'Episodics',
-          backgroundColor: 'transparent',
+          xAxisID: 'x-axis-episodics',
           borderColor: brandColors['success'],
-          pointHoverBackgroundColor: '#fff',
-          borderWidth: 2,
-          data: data1
+          data: theEpisodics,
+          ...datasetProps
         },
         {
           label: 'Features',
-          backgroundColor: 'transparent',
+          xAxisID: 'x-axis-features',
           borderColor: brandColors['info'],
-          pointHoverBackgroundColor: brandColors['success'],
-          borderWidth: 2,
-          data: data2
+          data: theFeatures,
+          ...datasetProps
         },
         {
           label: 'Pilots',
-          backgroundColor: 'transparent',
+          xAxisID: 'x-axis-pilots',
           borderColor: brandColors['warning'],
-          pointHoverBackgroundColor: '#000',
-          borderWidth: 2,
-          data: data3
+          data: thePilots,
+          ...datasetProps
         },
         {
           label: 'Others',
-          backgroundColor: 'transparent',
+          xAxisID: 'x-axis-others',
           borderColor: brandColors['danger'],
-          pointHoverBackgroundColor: '#000',
-          borderWidth: 2,
-          data: data4
+          data: theOthers,
+          ...datasetProps
         }
       ]
-    }
+    }),
+    [theEpisodics, theFeatures, thePilots, theOthers, datasetProps]
+  )
 
-    const mainChartOpts = {
-      maintainAspectRatio: false,
-      legend: {
-        display: false
-      },
-      scales: {
-        xAxes: [{
-          gridLines: {
-            drawOnChartArea: false
-          }
-        }],
-        yAxes: [{
-          ticks: {
-            beginAtZero: true,
-            maxTicksLimit: 5,
-            stepSize: Math.ceil(250 / 5),
-            max: 250
-          }
-        }]
-      },
-      elements: {
-        point: {
-          radius: 0,
-          hitRadius: 10,
-          hoverRadius: 4,
-          hoverBorderWidth: 3
+  const xProps = {
+    position: 'bottom',
+    type: 'time',
+    gridLines: {
+      display: false
+    },
+    ticks: {
+      display: false
+    }
+  }
+  const unitProp = timeframe === 1 ? { time: { unit: 'day' }} : { time: { unit: 'month' }}
+  const mainChartOpts = {
+    aspectRatio: 2.5,
+    maintainAspectRatio: false,
+    legend: {
+      display: false
+    },
+    scales: {
+      xAxes: [{
+        id: 'x-axis-episodics',
+        position: 'bottom',
+        ticks: {
+          maxRotation: 70
+        },
+        type: 'time',
+        ...unitProp
+      },{
+        id: 'x-axis-features',
+        ...xProps
+      },{
+        id: 'x-axis-pilots',
+        ...xProps
+      },{
+        id: 'x-axis-others',
+        ...xProps
+      }],
+      yAxes: [{
+        ticks: {
+          beginAtZero: true,
+          maxTicksLimit: 5
         }
+      }]
+    },
+    elements: {
+      point: {
+        radius: 0,
+        hitRadius: 10,
+        hoverRadius: 4,
+        hoverBorderWidth: 3
       }
     }
+  }
 
-    return (
+  if (loading) {
+    return <Components.Loading />
+  }
+  return (
       <Card>
         <CardBody>
           <Row>
             <Col sm='5'>
               <CardTitle className='mb-0'>Number of TV &amp; Film Projects Casting</CardTitle>
-              <div className='small text-muted'>{`${dateLabels[0]} – ${dateLabels[dateLabels.length - 1]}`}</div>
             </Col>
             <Col sm='7' className='d-none d-sm-inline-block'>
-              <Button color='primary' className='float-right'><i className='icon-cloud-download' /></Button>
-              <ButtonToolbar className='float-right' aria-label='Toolbar with button groups'>
-                <ButtonGroup className='mr-3' aria-label='First group'>
-                  <Button color='outline-secondary' onClick={() => this.onRadioBtnClick(1)} active={this.state.radioSelected === 1}>Day</Button>
-                  <Button color='outline-secondary' onClick={() => this.onRadioBtnClick(2)} active={this.state.radioSelected === 2}>Month</Button>
-                  <Button color='outline-secondary' onClick={() => this.onRadioBtnClick(3)} active={this.state.radioSelected === 3}>Year</Button>
+              <ButtonToolbar className='float-right'>
+                <ButtonGroup>
+                  <Button outline color='secondary' onClick={() => setTimeframe(1)} active={timeframe === 1}>Month</Button>
+                  <Button outline color='secondary' onClick={() => setTimeframe(2)} active={timeframe === 2}>Year</Button>
+                  <Button outline color='secondary' onClick={() => setTimeframe(3)} active={timeframe === 3}>All</Button>
                 </ButtonGroup>
               </ButtonToolbar>
             </Col>
           </Row>
-          <div className='chart-wrapper' style={{ height: 300 + 'px', marginTop: 40 + 'px' }}>
-            <Line data={mainChart} options={mainChartOpts} height={300} />
+          <div className='chart-wrapper'>
+            <Line data={mainChart} height={400} options={mainChartOpts} />
           </div>
         </CardBody>
         <CardFooter>
@@ -194,7 +229,6 @@ class LineChartLarge extends PureComponent {
         </CardFooter>
       </Card>
     )
-  }
 }
 
 registerComponent('LineChartLarge', LineChartLarge)

@@ -12,37 +12,41 @@ class Dashboard extends PureComponent {
     return (
       <div className='animated fadeIn'>
         <Components.HeadTags title='V8 Alba: Dashboard' />
-        <Row>
-          <Col xs='12' sm='6' lg='3'>
-            <Components.LineChartSmall
-              bgColor='info'
-              theSmallStats={theStats.features}
-              title={'Features'}
-              subtitle={'Currently casting'} />
-          </Col>
-
+        <Row className='mt-4'>
           <Col xs='12' sm='6' lg='3'>
             <Components.LineChartSmall
               bgColor='success'
               theSmallStats={theStats.episodics}
-              title={'Episodics'}
-              subtitle={'Currently casting'} />
+              title={'Episodics Casting'}
+              subtitle={'Last 12 months'}
+            />
+          </Col>
+
+          <Col xs='12' sm='6' lg='3'>
+            <Components.LineChartSmall
+              bgColor='info'
+              theSmallStats={theStats.features}
+              title={'Features Casting'}
+              subtitle={'Last 12 months'}
+            />
           </Col>
 
           <Col xs='12' sm='6' lg='3'>
             <Components.LineChartSmall
               bgColor='warning'
               theSmallStats={theStats.pilots}
-              title={'Pilots'}
-              subtitle={'Currently casting'} />
+              title={'Pilots Casting'}
+              subtitle={'Last 12 months'}
+            />
           </Col>
 
           <Col xs='12' sm='6' lg='3'>
             <Components.LineChartSmall
               bgColor='danger'
               theSmallStats={theStats.others}
-              title={'Others'}
-              subtitle={'Currently casting'} />
+              title={'Others Casting'}
+              subtitle={'Last 12 months'}
+            />
           </Col>
         </Row>
         <Row>
