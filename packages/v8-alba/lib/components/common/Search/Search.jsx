@@ -57,6 +57,7 @@ const Algolia = () => {
   const toggle = () => setDropdownOpen(!isDropdownOpen)
 
   return (
+    <Components.ErrorBoundary>
     <InstantSearch
       searchClient={searchClient} indexName='dev_v8-alba-mlab'
       onSearchStateChange={onSearchStateChange}>
@@ -65,6 +66,7 @@ const Algolia = () => {
         <Content />
       </Dropdown>
     </InstantSearch>
+    </Components.ErrorBoundary>
   )
 }
 
