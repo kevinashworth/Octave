@@ -73,7 +73,7 @@ class LineChartSmall extends PureComponent {
     return (
       <Card className={`text-white bg-${bgColor}`}>
         <CardBody className='pb-0 pt-1'>
-          <h5 className='mb-0'>{title}</h5>
+          <h5 className='mb-0 text-truncate'>{title}</h5>
           <p>{subtitle}</p>
         </CardBody>
         <div className='chart-wrapper px-3'>
