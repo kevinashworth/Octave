@@ -15,7 +15,7 @@ import {
 } from 'reactstrap'
 import styled from 'styled-components'
 import moment from 'moment'
-import _ from 'lodash'
+import takeRightWhile from 'lodash/takeRightWhile'
 import { brandColors } from './brandColors.js'
 
 // styles copied from Alba 1.8.4 to 2.0.9
@@ -42,9 +42,17 @@ const xy = (stat) => {
 const getRecent = (data, timeframe) => {
   return timeframe === 3
     ? data
-    : _.takeRightWhile(data, function(stat) {
+    : takeRightWhile(data, function(stat) {
       return moment(stat.x).isSameOrAfter(moment().subtract(1, timeframe === 2 ? 'years' : 'months'))
     })
+}
+
+function onResize () {
+  console.log('onResize')
+  console.log('window.screen.availHeight:', window.screen.availHeight)
+  console.log('aspectRatio:', arguments[0].aspectRatio)
+  console.log('h & w:', arguments[1])
+  console.dir(arguments)
 }
 
 function LineChartLarge (props) {
@@ -111,8 +119,8 @@ function LineChartLarge (props) {
   }
   const unitProp = timeframe === 1 ? { time: { unit: 'day' }} : { time: { unit: 'month' }}
   const mainChartOpts = {
+    onResize,
     aspectRatio: 2.5,
-    maintainAspectRatio: false,
     legend: {
       display: false
     },
@@ -158,11 +166,11 @@ function LineChartLarge (props) {
   return (
     <Card>
       <CardBody>
-        <Row>
-          <Col sm='5'>
-            <CardTitle className='mb-0'>Number of TV &amp; Film Projects Casting</CardTitle>
+        <Row className='align-items-center'>
+          <Col xs='8'>
+            <CardTitle>Number of TV &amp; Film Projects Casting</CardTitle>
           </Col>
-          <Col sm='7' className='d-none d-sm-inline-block'>
+          <Col xs='4'>
             <ButtonToolbar className='float-right'>
               <ButtonGroup>
                 <Button outline color='secondary' onClick={() => setTimeframe(1)} active={timeframe === 1}>Month</Button>
@@ -173,7 +181,7 @@ function LineChartLarge (props) {
           </Col>
         </Row>
         <div className='chart-wrapper'>
-          <Line data={mainChart} height={400} options={mainChartOpts} />
+          <Line data={mainChart} options={mainChartOpts} />
         </div>
       </CardBody>
       <CardFooter>
