@@ -2,7 +2,7 @@ import SimpleSchema from 'simpl-schema'
 
 const dataSchema = new SimpleSchema({
   date: {
-    type: String, // YYYY-MM-DD HH:mm:ss
+    type: Date,
     optional: true,
     canRead: ['members'],
     canCreate: ['members', 'admins'],

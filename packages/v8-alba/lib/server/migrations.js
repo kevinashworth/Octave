@@ -690,6 +690,75 @@ Migrations.add({
   down: function () { /* There is no undoing this one. */ }
 })
 
+Migrations.add({
+  version: 21,
+  name: 'Changes Statistics date’s back to Date (reverses Migration 7)',
+  up () {
+    const theStats = Statistics.findOne()
+    let newStats = {}
+    newStats.episodics = theStats.episodics.map((stat) => {
+      return {
+        date: new Date(stat.date),
+        quantity: stat.quantity
+      }
+    })
+    newStats.features = theStats.features.map((stat) => {
+      return {
+        date: new Date(stat.date),
+        quantity: stat.quantity
+      }
+    })
+    newStats.pilots = theStats.pilots.map((stat) => {
+      return {
+        date: new Date(stat.date),
+        quantity: stat.quantity
+      }
+    })
+    newStats.others = theStats.others.map((stat) => {
+      return {
+        date: new Date(stat.date),
+        quantity: stat.quantity
+      }
+    })
+    Statistics.update(theStats._id, {
+      $set: newStats
+    })
+  },
+  down () {
+    const theStats = Statistics.findOne()
+    if (theStats) {
+      let newStats = {}
+      newStats.episodics = theStats.episodics.map((stat) => {
+        return {
+          date: moment(stat.date).format('YYYY-MM-DD HH:mm:ss'),
+          quantity: stat.quantity
+        }
+      })
+      newStats.features = theStats.features.map((stat) => {
+        return {
+          date: moment(stat.date).format('YYYY-MM-DD HH:mm:ss'),
+          quantity: stat.quantity
+        }
+      })
+      newStats.pilots = theStats.pilots.map((stat) => {
+        return {
+          date: moment(stat.date).format('YYYY-MM-DD HH:mm:ss'),
+          quantity: stat.quantity
+        }
+      })
+      newStats.others = theStats.others.map((stat) => {
+        return {
+          date: moment(stat.date).format('YYYY-MM-DD HH:mm:ss'),
+          quantity: stat.quantity
+        }
+      })
+      Statistics.update(theStats._id, {
+        $set: newStats
+      })
+    }
+  }
+})
+
 Meteor.startup(() => {
   Migrations.migrateTo('latest')
 })
