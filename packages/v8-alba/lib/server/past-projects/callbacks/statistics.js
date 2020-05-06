@@ -28,7 +28,7 @@ export async function PastProjectUpdateStatisticsAsync ({ currentUser, document 
       if (latestStatIsFromToday(newStats.episodics)) { // this is the same day, replace the last stat with the new stat
         console.debug('This is today, so replacing the following popped stat:', newStats.episodics.pop())
       }
-      newStats.episodics.push({ date: moment().format('YYYY-MM-DD HH:mm:ss'), quantity: episodicsCasting })
+      newStats.episodics.push({ date: new Date(), quantity: episodicsCasting })
       break
     }
     case 'Feature Film':
@@ -44,7 +44,7 @@ export async function PastProjectUpdateStatisticsAsync ({ currentUser, document 
       if (latestStatIsFromToday(newStats.features)) { // this is the same day, replace the last stat with the new stat
         console.debug('This is today, so replacing the following popped stat:', newStats.features.pop())
       }
-      newStats.features.push({ date: moment().format('YYYY-MM-DD HH:mm:ss'), quantity: featuresCasting })
+      newStats.features.push({ date: new Date(), quantity: featuresCasting })
       break
     }
     case 'Pilot One Hour':
@@ -59,7 +59,7 @@ export async function PastProjectUpdateStatisticsAsync ({ currentUser, document 
       if (latestStatIsFromToday(newStats.pilots)) { // this is the same day, replace the last stat with the new stat
         console.debug('This is today, so replacing the following popped stat:', newStats.pilots.pop())
       }
-      newStats.pilots.push({ date: moment().format('YYYY-MM-DD HH:mm:ss'), quantity: pilotsCasting })
+      newStats.pilots.push({ date: new Date(), quantity: pilotsCasting })
       break
     }
     case 'Short Film':
@@ -78,7 +78,7 @@ export async function PastProjectUpdateStatisticsAsync ({ currentUser, document 
       if (latestStatIsFromToday(newStats.others)) { // this is the same day, replace the last stat with the new stat
         console.debug('This is today, so replacing the following popped stat:', newStats.others.pop())
       }
-      newStats.others.push({ date: moment().format('YYYY-MM-DD HH:mm:ss'), quantity: othersCasting })
+      newStats.others.push({ date: new Date(), quantity: othersCasting })
       break
     }
     // default:
