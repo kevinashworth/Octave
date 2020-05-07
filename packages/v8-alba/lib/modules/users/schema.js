@@ -35,11 +35,49 @@ Users.addField([
   {
     fieldName: 'emails.$',
     fieldSchema: {}
+  },
+  {
+    fieldName: 'groups',
+    fieldSchema: {
+      canRead: ['admins'],
+      defaultValue: ['pending'],
+      form: {
+        options: function () {
+          const groups = _.without(
+            _.keys(Users.groups),
+            'guests',
+            'members',
+            'owners',
+            'admins'
+          );
+          return groups.map(group => {
+            return { value: group, label: group };
+          });
+        },
+      },
+    }
+  },
+  {
+    fieldName: 'groups.$',
+    fieldSchema: {}
   }
 ])
 
 // fields we are ADDING
 Users.addField([
+  // Users must be approved, else is in group 'pending' only
+  {
+    fieldName: 'isApproved',
+    fieldSchema: {
+      type: Boolean,
+      optional: false,
+      defaultValue: false,
+      input: 'checkbox',
+      canRead: ['admins'],
+      canCreate: ['admins'],
+      canUpdate: ['admins']
+    }
+  },
   // Count of user's comments
   {
     fieldName: 'commentCount',
