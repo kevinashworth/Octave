@@ -9,7 +9,7 @@ class AdminComments extends Component {
   render () {
     return (
       <div className='animated fadeIn'>
-        <Components.HeadTags title='Comments Admin' />
+        <Components.HeadTags title='V8: Comments Admin' />
         <Components.Datatable
           collection={Comments}
           options={{

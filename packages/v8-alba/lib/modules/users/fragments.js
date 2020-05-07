@@ -50,9 +50,8 @@ registerFragment(/* GraphQL */`
 registerFragment(/* GraphQL */`
   fragment UsersEditFragment on User {
     _id
-    email
-    emails
     displayName
+    email
     username
     twitterUsername
     bio
@@ -62,6 +61,7 @@ registerFragment(/* GraphQL */`
     notifications_replies
     notifications_users
     isAdmin
+    groups
     slug
   }
 `)

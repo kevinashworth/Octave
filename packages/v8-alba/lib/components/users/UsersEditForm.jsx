@@ -29,8 +29,8 @@ function UsersEditForm (props, context) {
             queryFragment={getFragment('UsersEditFragment')}
             mutationFragment={getFragment('UsersEditFragment')}
             fields={[
-              'email',
               'displayName',
+              'email',
               'username',
               'twitterUsername',
               'bio',
@@ -39,7 +39,9 @@ function UsersEditForm (props, context) {
               'notifications_posts',
               'notifications_replies',
               'notifications_users',
-              'isAdmin'
+              'isAdmin',
+              'groups',
+              'slug'
             ]}
             successCallback={user => {
               if (toggle) {
