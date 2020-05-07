@@ -171,7 +171,7 @@ function LineChartLarge (props) {
             <CardTitle>Number of TV &amp; Film Projects Casting</CardTitle>
           </Col>
           <Col xs='4'>
-            <ButtonToolbar className='float-right'>
+            <ButtonToolbar className='mb-1 float-right'>
               <ButtonGroup>
                 <Button outline color='secondary' onClick={() => setTimeframe(1)} active={timeframe === 1}>Month</Button>
                 <Button outline color='secondary' onClick={() => setTimeframe(2)} active={timeframe === 2}>Year</Button>
