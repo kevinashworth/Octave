@@ -90,6 +90,7 @@ export const SHOOTING_LOCATIONS_US_ENUM = [
   { value: 'Santa Fe', label: 'Santa Fe, NM' },
   { value: 'Savannah', label: 'Savannah, GA' },
   { value: 'Seattle', label: 'Seattle, WA' },
+  { value: 'Virginia', label: 'Virginia' },
   { value: 'Washington', label: 'Washington, DC' },
   { value: 'Wilmington', label: 'Wilmington, NC' }
 ]
