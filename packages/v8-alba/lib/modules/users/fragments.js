@@ -19,6 +19,25 @@ registerFragment(/* GraphQL */`
   }
 `)
 
+// replace UsersCurrent fragment
+registerFragment(/* GraphQL */`
+  fragment UsersCurrent on User {
+    _id
+    username
+    createdAt
+    isAdmin
+    displayName
+    email
+    emailHash
+    slug
+    groups
+    services
+    avatarUrl
+    pageUrl
+    locale
+  }
+`)
+
 registerFragment(/* GraphQL */`
   fragment UsersMinimumInfo on User {
     _id
@@ -61,6 +80,7 @@ registerFragment(/* GraphQL */`
     notifications_replies
     notifications_users
     isAdmin
+    isApproved
     groups
     slug
   }
