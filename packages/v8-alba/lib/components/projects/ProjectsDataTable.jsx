@@ -271,7 +271,7 @@ class ProjectsDataTable extends Component {
 }
 
 const accessOptions = {
-  groups: ['members', 'admins'],
+  groups: ['participants', 'admins'],
   redirect: '/login'
 }
 

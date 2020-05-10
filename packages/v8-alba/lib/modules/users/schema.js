@@ -72,18 +72,21 @@ Users.addField([
 // fields we are ADDING
 Users.addField([
   // Users must be approved, else is in group 'pending' only
-  {
-    fieldName: 'isApproved',
-    fieldSchema: {
-      type: Boolean,
-      optional: false,
-      defaultValue: false,
-      input: 'checkbox',
-      canRead: ['admins'],
-      canCreate: ['admins'],
-      canUpdate: ['admins']
-    }
-  },
+  // {
+  //   fieldName: 'isApproved',
+  //   fieldSchema: {
+  //     label: 'Approved',
+  //     type: Boolean,
+  //     optional: false,
+  //     defaultValue: false,
+  //     input: 'checkbox',
+  //     itemProperties: { layout: 'inputOnly' },
+  //     group: adminGroup,
+  //     canRead: ['admins'],
+  //     canCreate: ['admins'],
+  //     canUpdate: ['admins']
+  //   }
+  // },
   // Count of user's comments
   {
     fieldName: 'commentCount',

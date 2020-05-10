@@ -32,7 +32,6 @@ registerFragment(/* GraphQL */`
     slug
     groups
     services
-    avatarUrl
     pageUrl
     locale
   }
