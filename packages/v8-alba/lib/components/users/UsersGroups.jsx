@@ -1,23 +1,20 @@
-import { registerComponent } from 'meteor/vulcan:core'
+import { getSetting, registerComponent } from 'meteor/vulcan:core'
 import React from 'react'
 import PropTypes from 'prop-types'
 import MyCode from '../common/MyCode'
 
 function UsersGroups ({ user }) {
-  return (
-    <MyCode code={JSON.stringify(user)} language='json' />
-  )
+  if (getSetting('myDebug', true)) {
+    return user
+      ? <MyCode code={JSON.stringify(user)} language='json' />
+      : <div>There is no current user</div>
+  } else {
+    return null
+  }
 }
 
 UsersGroups.propTypes = {
-  user: PropTypes.object.isRequired
-}
-
-UsersGroups.defaultProps = {
-  user: {
-    displayName: 'No User Passed to UsersGroups',
-    groups: ['guests']
-  }
+  user: PropTypes.object
 }
 
 registerComponent({

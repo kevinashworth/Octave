@@ -68,10 +68,12 @@ class DefaultLayout extends Component {
           <main className="main">
             {/*<AppBreadcrumb appRoutes={routes}/>*/}
             <Components.FlashMessages />
-            <Components.UsersGroups user={currentUser} />
+            {currentUser &&
+              <Components.UsersProfileCheck currentUser={currentUser} documentId={currentUser._id} />}
             <Container fluid>
               {children}
             </Container>
+            <Components.UsersGroups user={currentUser} />
           </main>
           {/* <AppAside fixed hidden>
             <DefaultAside />
@@ -90,6 +92,3 @@ replaceComponent({
   component: DefaultLayout,
   hocs: [withCurrentUser]
 });
-
-// {currentUser &&
-//   <Components.UsersProfileCheck currentUser={currentUser} documentId={currentUser._id} />}
