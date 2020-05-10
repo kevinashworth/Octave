@@ -1,27 +1,26 @@
-  import { registerComponent, withCurrentUser } from 'meteor/vulcan:core'
-  import Users from 'meteor/vulcan:users'
-  import React from 'react'
+import { registerComponent } from 'meteor/vulcan:core'
+import React from 'react'
+import PropTypes from 'prop-types'
+import MyCode from '../common/MyCode'
 
-  function UsersGroups ({ currentUser }) {
-    const getGroups = (currentUser && Users.getGroups && Users.getGroups(currentUser)) || ['admins']
-    // const groups = (currentUser && currentUser.groups) || []
-    // const isParticipant = Users.isMemberOf(currentUser, ['participants'])
-    return (
-      <div className='flash-messages info'>
-        {currentUser &&
-          <pre>
-            {/* <code>{currentUser.displayName} </code> */}
-            <code>{JSON.stringify({ getGroups }, null, 2)}</code>
-            {/* <code>{JSON.stringify({ groups }, null, 2)}</code> */}
-            {/* <code>{JSON.stringify({ isParticipant }, null, 2)}</code> */}
-          </pre>
-        }
-      </div>
-    )
+function UsersGroups ({ user }) {
+  return (
+    <MyCode code={JSON.stringify(user)} language='json' />
+  )
+}
+
+UsersGroups.propTypes = {
+  user: PropTypes.object.isRequired
+}
+
+UsersGroups.defaultProps = {
+  user: {
+    displayName: 'No User Passed to UsersGroups',
+    groups: ['guests']
   }
+}
 
-  registerComponent({
-    name: 'UsersGroups',
-    component: UsersGroups,
-    hocs: [withCurrentUser]
-  })
+registerComponent({
+  name: 'UsersGroups',
+  component: UsersGroups
+})
