@@ -105,6 +105,18 @@ const navItems = {
       icon: 'fa fa-files-o'
     },
     {
+      name: 'QraphQL',
+      url: '/graphql',
+      icon: 'fa fa-first-order',
+      attributes: { target: '_blank', rel: 'noopener' }
+    },
+    {
+      name: 'QraphiQL',
+      url: '/graphiql',
+      icon: 'fa fa-info',
+      attributes: { target: '_blank', rel: 'noopener' }
+    },
+    {
       name: 'Modals',
       url: '/modals',
       icon: 'fa fa-external-link'
