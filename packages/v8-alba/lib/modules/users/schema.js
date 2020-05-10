@@ -45,7 +45,7 @@ Users.addField([
   {
     fieldName: 'groups',
     fieldSchema: {
-      canRead: ['admins'],
+      canRead: ['owners', 'admins'],
       defaultValue: ['pending'],
       form: {
         options: function () {
