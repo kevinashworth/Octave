@@ -71,8 +71,7 @@ const Algolia = () => {
 }
 
 const accessOptions = {
-  groups: ['members', 'admins'],
-  redirect: '/login'
+  groups: ['participants', 'admins']
 }
 
 registerComponent({

@@ -375,7 +375,8 @@ function OfficesDataTable (props) {
 }
 
 const accessOptions = {
-  groups: ['participants', 'admins']
+  groups: ['participants', 'admins'],
+  redirect: '/welcome/new'
 }
 
 const multiOptions = {

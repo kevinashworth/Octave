@@ -22,6 +22,8 @@ import '../components/common/Forms/SelectContactIdNameTitle'
 import '../components/common/Forms/SelectProjectIdNameTitle'
 import '../components/common/Forms/SelectPastProjectIdNameTitle'
 
+import '../components/common/Message/'
+import '../components/common/Message/NewRegistration'
 import '../components/common/Search/'
 
 import '../components/common/Fragments'

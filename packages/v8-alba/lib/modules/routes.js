@@ -1,9 +1,16 @@
 import { addRoute } from 'meteor/vulcan:core'
 
-addRoute({ path: '/', name: 'Home', componentName: 'Dashboard' })
-addRoute({ path: '/dashboard', name: 'Dashboard', componentName: 'Dashboard' })
-addRoute({ path: '/latest', name: 'Latest Updates', componentName: 'LatestUpdates' })
-addRoute({ path: '/login', name: 'Login', componentName: 'Login' })
+addRoute([
+  { name: 'Home', path: '/', componentName: 'Dashboard' },
+  { name: 'Dashboard', path: '/dashboard', componentName: 'Dashboard' },
+  { name: 'Latest Updates', path: '/latest', componentName: 'LatestUpdates' }
+])
+
+addRoute([
+  { name: 'Login', path: '/login', componentName: 'Login' },
+  { name: 'NewRegistration', path: '/welcome/new', componentName: 'NewRegistration' }
+])
+
 addRoute({ path: '/fragments', name: 'fragments', componentName: 'Fragments', layoutName: 'LayoutAdmin' })
 addRoute({ path: '/modals', name: 'modals', componentName: 'Modals', layoutName: 'LayoutAdmin' })
 
@@ -38,7 +45,6 @@ addRoute([
 
 addRoute({ path: '/statistics/list', name: 'StatisticsList', componentName: 'StatisticsList' })
 addRoute({ path: '/statistics/:_id/edit', name: 'StatisticsEditForm', componentName: 'StatisticsEditForm' })
-// addRoute({ path: '/algolia/log', name: 'AlgoliaLog', componentName: 'AlgoliaLog' })
 
 addRoute([
   { name: 'users.profile', path: '/users/:slug', componentName: 'UsersProfile' },
@@ -50,5 +56,4 @@ addRoute([
 addRoute([
   {name: 'admin.comments', path: '/admin/comments', componentName: 'AdminComments'},
   {name: 'admin.users', path: '/admin/users', componentName: 'AdminUsers'}
-  // {name: 'admin.posts',    path: '/admin/posts',      componentName: 'AdminPosts'},
 ])
