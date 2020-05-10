@@ -87,7 +87,9 @@ const navItems = {
       name: 'Statistics',
       url: '/statistics/list',
       icon: 'fa fa-bar-chart'
-    },
+    }
+  ],
+  develItems: [
     {
       title: true,
       name: 'Development'
@@ -126,12 +128,7 @@ const navItems = {
       name: 'Contacts (L)',
       url: '/contacts/list',
       icon: 'icon-people'
-    },
-    // {
-    //   name: 'Contacts (VL)',
-    //   url: '/contacts/vlist',
-    //   icon: 'icon-people'
-    // },
+    }
   ]
 };
 
@@ -140,7 +137,8 @@ export default {
   topItems: navItems.topItems.map(item => ({ ...item, id: keyCounter++ })),
   smItems: navItems.smItems.map(item => ({ ...item, id: keyCounter++ })),
   xsItems: navItems.xsItems.map(item => ({ ...item, id: keyCounter++ })),
-  adminItems: navItems.adminItems.map(item => ({ ...item, id: keyCounter++ }))
+  adminItems: navItems.adminItems.map(item => ({ ...item, id: keyCounter++ })),
+  develItems: navItems.develItems.map(item => ({ ...item, id: keyCounter++ }))
 };
 
 

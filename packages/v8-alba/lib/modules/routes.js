@@ -4,8 +4,8 @@ addRoute({ path: '/', name: 'Home', componentName: 'Dashboard' })
 addRoute({ path: '/dashboard', name: 'Dashboard', componentName: 'Dashboard' })
 addRoute({ path: '/latest', name: 'Latest Updates', componentName: 'LatestUpdates' })
 addRoute({ path: '/login', name: 'Login', componentName: 'Login' })
-addRoute({ path: '/fragments', name: 'fragments', componentName: 'Fragments', layoutName: 'AdminLayout' })
-addRoute({ path: '/modals', name: 'modals', componentName: 'Modals', layoutName: 'AdminLayout' })
+addRoute({ path: '/fragments', name: 'fragments', componentName: 'Fragments', layoutName: 'LayoutAdmin' })
+addRoute({ path: '/modals', name: 'modals', componentName: 'Modals', layoutName: 'LayoutAdmin' })
 
 addRoute([
   { name: 'contacts.table', path: '/contacts', componentName: 'ContactsDataTable' },
