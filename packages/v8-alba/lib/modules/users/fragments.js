@@ -1,67 +1,26 @@
 import { registerFragment } from 'meteor/vulcan:core'
 import Users from 'meteor/vulcan:users'
 
-// replace UsersDefaultFragment
 registerFragment(/* GraphQL */`
-  fragment UsersDefaultFragment on User {
+  fragment UsersProfile on User {
     _id
-    username
-    createdAt
-    isAdmin
-    locale
-    services
     displayName
+    username
     email
     emailHash
-    emails
-    slug
     groups
-  }
-`)
-
-// replace UsersCurrent fragment
-registerFragment(/* GraphQL */`
-  fragment UsersCurrent on User {
-    _id
-    username
-    createdAt
-    isAdmin
-    displayName
-    email
-    emailHash
-    slug
-    groups
-    services
-    pageUrl
-    locale
-  }
-`)
-
-registerFragment(/* GraphQL */`
-  fragment UsersMinimumInfo on User {
-    _id
     createdAt
     updatedAt
     slug
-    username
-    displayName
-    emailHash
     avatarUrl
     pageUrl
-  }
-`)
-
-registerFragment(/* GraphQL */`
-  fragment UsersProfile on User {
-    ...UsersMinimumInfo
     isAdmin
     bio
     htmlBio
     website
-    email
-    emails
     twitterUsername
     commentCount
+    slug
   }
 `)
 
