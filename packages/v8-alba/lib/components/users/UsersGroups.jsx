@@ -4,7 +4,7 @@ import PropTypes from 'prop-types'
 import MyCode from '../common/MyCode'
 
 function UsersGroups ({ user }) {
-  if (getSetting('myDebug', true)) {
+  if (getSetting('myDebug')) {
     return user
       ? <MyCode code={JSON.stringify(user)} language='json' />
       : <div>There is no current user</div>

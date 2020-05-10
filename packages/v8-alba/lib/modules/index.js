@@ -34,4 +34,4 @@ import './patches'
 // }
 
 // `true`/ `false` to show / hide UsersGroups
-registerSetting('myDebug', true, 'Show UsersGroups')
+registerSetting('myDebug', false, 'Show UsersGroups')
