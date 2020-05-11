@@ -1045,9 +1045,21 @@
     .btn-imdb:hover::before {
       background: #f2d520; }
 
+.btn-imdb.pro {
+  background: #333; }
+  .btn-imdb.pro::before {
+    color: #00799e;
+    content: "\f2d8";
+    background: #262626; }
+  .btn-imdb.pro:hover {
+    background: #262626; }
+    .btn-imdb.pro:hover::before {
+      background: #1a1919; }
+
 .btn-imdbpro {
   background: #333; }
   .btn-imdbpro::before {
+    color: #00799e;
     content: "\f2d8";
     background: #262626; }
   .btn-imdbpro:hover {
