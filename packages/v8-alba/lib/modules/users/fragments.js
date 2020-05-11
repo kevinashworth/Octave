@@ -38,7 +38,6 @@ registerFragment(/* GraphQL */`
     notifications_replies
     notifications_users
     isAdmin
-    isApproved
     groups
     slug
   }

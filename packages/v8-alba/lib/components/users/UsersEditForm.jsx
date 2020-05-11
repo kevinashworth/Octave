@@ -58,7 +58,6 @@ function UsersEditForm (props, context) {
               'notifications_replies',
               'notifications_users',
               'isAdmin',
-              'isApproved',
               'groups',
               'slug'
             ]}
