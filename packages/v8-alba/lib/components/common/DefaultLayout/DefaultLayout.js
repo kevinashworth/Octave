@@ -1,4 +1,4 @@
-import { Components, replaceComponent, withCurrentUser } from 'meteor/vulcan:core';
+import { Components, getSetting, replaceComponent, withCurrentUser } from 'meteor/vulcan:core';
 import Users from 'meteor/vulcan:users';
 import React, { Component } from 'react';
 import { Helmet } from 'react-helmet';
@@ -26,12 +26,19 @@ class DefaultLayout extends Component {
     var xsNav = { items: [] };
     xsNav.items.push(...nav.topItems);
     xsNav.items.push(...nav.xsItems);
+    if (getSetting('myDebug') || Users.isAdmin(currentUser)) {
+      xsNav.items.push(...nav.develItems);
+    }
     if (Users.isAdmin(currentUser)) {
       xsNav.items.push(...nav.adminItems);
     }
+
     var smNav = { items: [] };
     smNav.items.push(...nav.topItems);
     smNav.items.push(...nav.smItems);
+    if (getSetting('myDebug') || Users.isAdmin(currentUser)) {
+      smNav.items.push(...nav.develItems);
+    }
     if (Users.isAdmin(currentUser)) {
       smNav.items.push(...nav.adminItems);
     }
@@ -66,9 +73,12 @@ class DefaultLayout extends Component {
           <main className="main">
             {/*<AppBreadcrumb appRoutes={routes}/>*/}
             <Components.FlashMessages />
+            {currentUser &&
+              <Components.UsersProfileCheck currentUser={currentUser} documentId={currentUser._id} />}
             <Container fluid>
               {children}
             </Container>
+            <Components.UsersGroups user={currentUser} />
           </main>
           {/* <AppAside fixed hidden>
             <DefaultAside />
@@ -87,6 +97,3 @@ replaceComponent({
   component: DefaultLayout,
   hocs: [withCurrentUser]
 });
-
-// {currentUser &&
-//   <Components.UsersProfileCheck currentUser={currentUser} documentId={currentUser._id} />}

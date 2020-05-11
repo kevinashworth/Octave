@@ -1,4 +1,4 @@
-import { Components, registerComponent, withMulti } from 'meteor/vulcan:core'
+import { Components, registerComponent, withAccess, withMulti } from 'meteor/vulcan:core'
 import React, { PureComponent } from 'react'
 import { Link } from 'react-router-dom'
 import { Button, Card, CardBody, CardFooter, CardHeader, Modal, ModalBody, ModalHeader } from 'reactstrap'
@@ -268,7 +268,12 @@ class ContactsNameOnly extends PureComponent {
   }
 }
 
-const options = {
+const accessOptions = {
+  groups: ['participants', 'admins'],
+  redirect: '/welcome/new'
+}
+
+const multiOptions = {
   collection: Contacts,
   fragmentName: 'ContactsDataTableFragment',
   limit: 1000,
@@ -278,5 +283,9 @@ const options = {
 registerComponent({
   name: 'ContactsNameOnly',
   component: ContactsNameOnly,
-  hocs: [withFilters, [withMulti, options]]
-} )
+  hocs: [
+    [withAccess, accessOptions],
+    withFilters,
+    [withMulti, multiOptions]
+  ]
+})

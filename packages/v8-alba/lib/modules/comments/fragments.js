@@ -1,7 +1,5 @@
 import { registerFragment } from 'meteor/vulcan:core'
 
-// ----------------------------- Comments ------------------------------ //
-
 registerFragment(/* GraphQL */`
   fragment CommentsList on Comment {
     _id
@@ -14,7 +12,10 @@ registerFragment(/* GraphQL */`
     postedAt
     userId
     user {
-      ...UsersMinimumInfo
+      _id
+      displayName
+      avatarUrl
+      slug
     }
   }
 `)

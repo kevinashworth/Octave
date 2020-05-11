@@ -7,6 +7,25 @@ import { withRouter } from 'react-router-dom'
 import PropTypes from 'prop-types'
 import { Button, Card, CardBody, CardTitle, Col, Row } from 'reactstrap'
 
+const theFragment = `
+  fragment UsersEditFragment on User {
+    _id
+    displayName
+    email
+    username
+    twitterUsername
+    bio
+    website
+    notifications_comments
+    notifications_posts
+    notifications_replies
+    notifications_users
+    isAdmin
+    groups
+    slug
+  }
+`
+
 function UsersEditForm (props, context) {
   const { document: user, currentUser, flash, history, loading, toggle } = props
   if (loading) {
@@ -21,16 +40,15 @@ function UsersEditForm (props, context) {
       <Components.HeadTags title={`V8: ${context.intl.formatMessage({ id: 'users.edit_account' })}`} />
       <Card className='card-accent-success'>
         <CardBody>
-          <CardTitle>{user.displayName}</CardTitle>
+          <CardTitle>{`${context.intl.formatMessage({ id: 'cards.edit' })} “${user.displayName}”`}</CardTitle>
           <hr />
           <Components.SmartForm
             documentId={user._id}
             collection={Users}
-            queryFragment={getFragment('UsersEditFragment')}
-            mutationFragment={getFragment('UsersEditFragment')}
+            queryFragment={theFragment}
             fields={[
-              'email',
               'displayName',
+              'email',
               'username',
               'twitterUsername',
               'bio',
@@ -39,7 +57,10 @@ function UsersEditForm (props, context) {
               'notifications_posts',
               'notifications_replies',
               'notifications_users',
-              'isAdmin'
+              'isAdmin',
+              'isApproved',
+              'groups',
+              'slug'
             ]}
             successCallback={user => {
               if (toggle) {

@@ -277,8 +277,8 @@ class ContactsDataTable extends Component {
 }
 
 const accessOptions = {
-  groups: ['members', 'admins'],
-  redirect: '/login'
+  groups: ['participants', 'admins'],
+  redirect: '/welcome/new'
 }
 
 const multiOptions = {

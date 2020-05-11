@@ -1,3 +1,5 @@
+import { registerSetting } from 'meteor/vulcan:lib'
+
 import '../redux/redux.js'
 
 import './components.js'
@@ -30,3 +32,6 @@ import './patches'
 //     }
 //   })
 // }
+
+// `true`/ `false` to show / hide UsersGroups
+registerSetting('myDebug', false, 'Show UsersGroups')
