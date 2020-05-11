@@ -107,14 +107,15 @@ const navItems = {
     {
       name: 'QraphQL',
       url: '/graphql',
-      icon: 'fa fa-first-order',
-      attributes: { target: '_blank', rel: 'noopener' }
+      icon: 'fa fa-first-order'
     },
     {
       name: 'QraphiQL',
       url: '/graphiql',
       icon: 'fa fa-info',
-      attributes: { target: '_blank', rel: 'noopener' }
+      wrapper: {
+        attributes: { target: '_blank', rel: 'noopener' }
+      }
     },
     {
       name: 'Modals',

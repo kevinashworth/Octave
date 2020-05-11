@@ -1,4 +1,4 @@
-import { Components, replaceComponent, withCurrentUser } from 'meteor/vulcan:core';
+import { Components, getSetting, replaceComponent, withCurrentUser } from 'meteor/vulcan:core';
 import Users from 'meteor/vulcan:users';
 import React, { Component } from 'react';
 import { Helmet } from 'react-helmet';
@@ -26,14 +26,19 @@ class DefaultLayout extends Component {
     var xsNav = { items: [] };
     xsNav.items.push(...nav.topItems);
     xsNav.items.push(...nav.xsItems);
-    xsNav.items.push(...nav.develItems);
+    if (getSetting('myDebug') || Users.isAdmin(currentUser)) {
+      xsNav.items.push(...nav.develItems);
+    }
     if (Users.isAdmin(currentUser)) {
       xsNav.items.push(...nav.adminItems);
     }
+
     var smNav = { items: [] };
     smNav.items.push(...nav.topItems);
     smNav.items.push(...nav.smItems);
-    smNav.items.push(...nav.develItems);
+    if (getSetting('myDebug') || Users.isAdmin(currentUser)) {
+      smNav.items.push(...nav.develItems);
+    }
     if (Users.isAdmin(currentUser)) {
       smNav.items.push(...nav.adminItems);
     }
