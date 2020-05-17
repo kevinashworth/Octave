@@ -64,16 +64,18 @@ class SelectContactIdNameTitle extends Component {
 
   componentDidMount () {
     const contacts = this.props.document.contacts
-    const contactName = contacts[this.props.itemIndex] ? contacts[this.props.itemIndex].contactName : ''
-    const contactTitle = contacts[this.props.itemIndex] ? contacts[this.props.itemIndex].contactTitle : ''
-    const selectedIdOption = _.find(this.props.options, { value: this.props.value }) || nullOption
-    const selectedTitleOption = _.find(CASTING_TITLES_ENUM, { value: contactTitle }) || nullOption
+    if (contacts) {
+      const contactName = contacts[this.props.itemIndex] ? contacts[this.props.itemIndex].contactName : ''
+      const contactTitle = contacts[this.props.itemIndex] ? contacts[this.props.itemIndex].contactTitle : ''
+      const selectedIdOption = _.find(this.props.options, { value: this.props.value }) || nullOption
+      const selectedTitleOption = _.find(CASTING_TITLES_ENUM, { value: contactTitle }) || nullOption
 
-    this.setState({
-      contactName,
-      selectedIdOption,
-      selectedTitleOption
-    })
+      this.setState({
+        contactName,
+        selectedIdOption,
+        selectedTitleOption
+      })
+    }
   }
 
   render () {
