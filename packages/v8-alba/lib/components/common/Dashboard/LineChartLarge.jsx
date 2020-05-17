@@ -1,5 +1,5 @@
 import { Components, registerComponent } from 'meteor/vulcan:core'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Line } from 'react-chartjs-2'
 import {
   Button,
@@ -18,6 +18,11 @@ import moment from 'moment'
 import takeRightWhile from 'lodash/takeRightWhile'
 import { brandColors } from './brandColors.js'
 
+// Set initial state. Just options I want to keep.
+// See https://github.com/amannn/react-keep-state
+let keptState = {
+  timeframe: 3
+}
 // styles copied from Alba 1.8.4 to 2.0.9
 const List = styled.ul`
   display: table;
@@ -56,7 +61,7 @@ function onResize () {
 }
 
 function LineChartLarge (props) {
-  const [timeframe, setTimeframe] = useState(3)
+  const [timeframe, setTimeframe] = useState(keptState.timeframe)
   const { loading, theStats } = props
 
   const xyEpisodics = theStats.episodics.map(stat => xy(stat))
@@ -159,6 +164,15 @@ function LineChartLarge (props) {
       }
     }
   }
+
+  // Remember state for the next mount
+  useEffect(() => {
+    return () => {
+      keptState = {
+        timeframe
+      }
+    }
+  })
 
   if (loading) {
     return <Components.Loading />

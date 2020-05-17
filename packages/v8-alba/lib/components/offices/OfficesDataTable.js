@@ -28,9 +28,16 @@ import Offices from '../../modules/offices/collection.js'
 // Set initial state. Just options I want to keep.
 // See https://github.com/amannn/react-keep-state
 let keptState = {
+  filters: [{
+    id: 'displayName',
+    value: ''
+  }, {
+    id: 'fullAddress',
+    value: ''
+  }],
+  globalFilter: '',
   pageIndex: 0,
   pageSize: 20,
-  globalFilter: '',
   sortBy: [{
     desc: true,
     id: 'updatedAt'
@@ -73,13 +80,17 @@ function DefaultColumnFilter ({
   column: { filterValue, preFilteredRows, setFilter }
 }) {
   const count = preFilteredRows.length
+  const value = filterValue || ''
+  const invalid = value.length ? true : false
   return (
     <Input
+      bsSize='sm'
       className='column-filter'
-      value={filterValue || ''}
+      invalid={invalid}
       onChange={e => setFilter(e.target.value)}
       onClick={e => e.stopPropagation()} // Otherwise triggers sortBy
       placeholder={`Filter ${count} records...`}
+      value={value}
     />
   )
 }
@@ -191,6 +202,7 @@ function Table ({ columns, data }) {
       disableSortRemove: true,
       filterTypes,
       initialState: {
+        filters: keptState.filters,
         globalFilter: keptState.globalFilter,
         hiddenColumns: ['allContactNames', 'body'],
         pageIndex: keptState.pageIndex,
@@ -210,13 +222,14 @@ function Table ({ columns, data }) {
     page, // has only the rows for the active page
     prepareRow,
     setGlobalFilter,
-    state: { globalFilter, pageIndex, pageSize, sortBy }
+    state: { filters, globalFilter, pageIndex, pageSize, sortBy }
   } = tableProps
 
   // Remember state for the next mount
   useEffect(() => {
     return () => {
       keptState = {
+        filters,
         globalFilter,
         pageIndex,
         pageSize,
