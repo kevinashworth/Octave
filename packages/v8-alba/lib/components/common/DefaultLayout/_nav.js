@@ -106,12 +106,12 @@ const navItems = {
     },
     {
       name: 'QraphQL',
-      url: '/graphql',
+      url: 'http://localhost:4004/graphql',
       icon: 'fa fa-first-order'
     },
     {
       name: 'QraphiQL',
-      url: '/graphiql',
+      url: 'http://localhost:4004/graphiql',
       icon: 'fa fa-info',
       wrapper: {
         attributes: { target: '_blank', rel: 'noopener' }
