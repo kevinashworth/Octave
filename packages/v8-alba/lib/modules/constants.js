@@ -227,6 +227,7 @@ export const AVOD_ENUM = [
   'Crackle',
   'HBO Max',
   'Hulu',
+  'FX on Hulu',
   'NBCUniversal streaming', // before it was named Peacock
   'Peacock',
   'Sony Crackle',
