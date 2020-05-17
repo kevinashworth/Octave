@@ -21,7 +21,8 @@ import DefaultHeader from './DefaultHeader';
 
 class DefaultLayout extends Component {
   render() {
-    const { children, currentUser, ...rest } = this.props;
+    // currentRoute, currentUserLoading, currentUserData not used by AppSidebarNav, just cause warnings
+    const { children, currentUser, currentRoute, currentUserLoading, currentUserData, ...rest } = this.props;
 
     var xsNav = { items: [] };
     xsNav.items.push(...nav.topItems);
