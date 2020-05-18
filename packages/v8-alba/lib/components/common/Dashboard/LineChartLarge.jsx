@@ -39,13 +39,13 @@ const getRecent = (data, timeframe) => {
     })
 }
 
-function onResize () {
-  console.log('onResize')
-  console.log('window.screen.availHeight:', window.screen.availHeight)
-  console.log('aspectRatio:', arguments[0].aspectRatio)
-  console.log('h & w:', arguments[1])
-  console.dir(arguments)
-}
+// function onResize () {
+//   console.log('onResize')
+//   console.log('window.screen.availHeight:', window.screen.availHeight)
+//   console.log('aspectRatio:', arguments[0].aspectRatio)
+//   console.log('h & w:', arguments[1])
+//   console.dir(arguments)
+// }
 
 function LineChartLarge (props) {
   const [timeframe, setTimeframe] = useState(keptState.timeframe)
@@ -111,7 +111,7 @@ function LineChartLarge (props) {
   }
   const unitProp = timeframe === 1 ? { time: { unit: 'day' }} : { time: { unit: 'month' }}
   const mainChartOpts = {
-    onResize,
+    // onResize,
     maintainAspectRatio: false,
     legend: {
       display: false
@@ -155,7 +155,7 @@ function LineChartLarge (props) {
   const { height } = useWindowDimensions()
   const chartHeight = Math.max(200, Math.floor(height * .4))
   // I think 40% looks good, with a minimum height of 200. But it's subjective!
-  console.log('window height:', height, 'chart height:', chartHeight)
+  // console.log('window height:', height, 'chart height:', chartHeight)
 
   // Remember state for the next mount
   useEffect(() => {
