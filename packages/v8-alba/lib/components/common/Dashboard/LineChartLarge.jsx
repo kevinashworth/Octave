@@ -17,6 +17,7 @@ import styled from 'styled-components'
 import moment from 'moment'
 import takeRightWhile from 'lodash/takeRightWhile'
 import { brandColors } from './brandColors.js'
+import useWindowDimensions from './helpers.js'
 
 // Set initial state. Just options I want to keep.
 // See https://github.com/amannn/react-keep-state
@@ -125,7 +126,7 @@ function LineChartLarge (props) {
   const unitProp = timeframe === 1 ? { time: { unit: 'day' }} : { time: { unit: 'month' }}
   const mainChartOpts = {
     onResize,
-    aspectRatio: 2.5,
+    maintainAspectRatio: false,
     legend: {
       display: false
     },
@@ -165,6 +166,11 @@ function LineChartLarge (props) {
     }
   }
 
+  const { height } = useWindowDimensions()
+  const chartHeight = Math.max(200, Math.floor(height * .4))
+  // I think 40% looks good, with a minimum height of 200. But it's subjective!
+  console.log('window height:', height, 'chart height:', chartHeight)
+
   // Remember state for the next mount
   useEffect(() => {
     return () => {
@@ -194,7 +200,7 @@ function LineChartLarge (props) {
             </ButtonToolbar>
           </Col>
         </Row>
-        <div className='chart-wrapper'>
+        <div className='chart-wrapper' style={{height: `${chartHeight}px`}}>
           <Line data={mainChart} options={mainChartOpts} />
         </div>
       </CardBody>
