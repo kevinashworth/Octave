@@ -13,7 +13,6 @@ import {
   Progress,
   Row
 } from 'reactstrap'
-import styled from 'styled-components'
 import moment from 'moment'
 import takeRightWhile from 'lodash/takeRightWhile'
 import { brandColors } from './brandColors.js'
@@ -24,19 +23,6 @@ import useWindowDimensions from './helpers.js'
 let keptState = {
   timeframe: 3
 }
-// styles copied from Alba 1.8.4 to 2.0.9
-const List = styled.ul`
-  display: table;
-  width: 100%;
-  padding: 0;
-  margin: 0;
-  table-layout: fixed;
-`
-const Item = styled.li`
-  display: table-cell;
-  padding: 0 1.25rem;
-  text-align: center;
-`
 
 const xy = (stat) => {
   return {
@@ -183,6 +169,7 @@ function LineChartLarge (props) {
   if (loading) {
     return <Components.Loading />
   }
+
   return (
     <Card>
       <CardBody>
@@ -205,28 +192,28 @@ function LineChartLarge (props) {
         </div>
       </CardBody>
       <CardFooter>
-        <List>
-          <Item>
+        <Row>
+          <Col xs='12' sm='6' md='3' className='mb-2'>
             <strong>Episodics</strong>
             <div className='text-muted'>{theStats.episodics[theStats.episodics.length - 1].quantity} Currently Casting</div>
-            <Progress className='progress-xs mt-2' color='success' value='100' />
-          </Item>
-          <Item>
+            <Progress className='progress-xs mt-1' color='success' value='100' />
+          </Col>
+          <Col xs='12' sm='6' md='3' className='mb-2'>
             <strong>Features</strong>
             <div className='text-muted'>{theStats.features[theStats.features.length - 1].quantity} Currently Casting</div>
-            <Progress className='progress-xs mt-2' color='info' value='100' />
-          </Item>
-          <Item>
+            <Progress className='progress-xs mt-1' color='info' value='100' />
+          </Col>
+          <Col xs='12' sm='6' md='3' className='mb-2'>
             <strong>Pilots</strong>
             <div className='text-muted'>{theStats.pilots[theStats.pilots.length - 1].quantity} Currently Casting</div>
-            <Progress className='progress-xs mt-2' color='warning' value='100' />
-          </Item>
-          <Item>
+            <Progress className='progress-xs mt-1' color='warning' value='100' />
+          </Col>
+          <Col xs='12' sm='6' md='3' className='mb-2'>
             <strong>Others</strong>
             <div className='text-muted'>{theStats.others[theStats.others.length - 1].quantity} Currently Casting</div>
-            <Progress className='progress-xs mt-2' color='danger' value='100' />
-          </Item>
-        </List>
+            <Progress className='progress-xs mt-1' color='danger' value='100' />
+          </Col>
+        </Row>
       </CardFooter>
     </Card>
   )
