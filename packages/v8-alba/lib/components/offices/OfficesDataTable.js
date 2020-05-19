@@ -1,3 +1,4 @@
+/* eslint-disable react/jsx-curly-newline */
 import { Components, registerComponent, withAccess, withCurrentUser, withMulti } from 'meteor/vulcan:core'
 import Users from 'meteor/vulcan:users'
 import React, { useEffect, useState } from 'react'
@@ -81,7 +82,7 @@ function DefaultColumnFilter ({
 }) {
   const count = preFilteredRows.length
   const value = filterValue || ''
-  const invalid = value.length ? true : false
+  const invalid = value.length
   return (
     <Input
       bsSize='sm'
@@ -256,10 +257,13 @@ function Table ({ columns, data }) {
             <tr {...headerGroup.getHeaderGroupProps()} key={index}>
               {headerGroup.headers.map((column, index) => (
                 // Return an array of prop objects and react-table will merge them appropriately
-                <th {...column.getHeaderProps([
-                  { style: column.style },
-                  column.getSortByToggleProps()
-                ])} key={index}>
+                <th
+                  {...column.getHeaderProps([
+                    { style: column.style },
+                    column.getSortByToggleProps()
+                  ])}
+                  key={index}
+                >
                   <span>
                     {column.render('Header')}
                     {column.isSorted
@@ -287,7 +291,8 @@ function Table ({ columns, data }) {
                     )
                   })}
                 </tr>
-              )}
+              )
+            }
           )}
         </tbody>
       </table>
@@ -405,5 +410,5 @@ registerComponent({
     [withAccess, accessOptions],
     withCurrentUser,
     [withMulti, multiOptions]
-  ]}
-)
+  ]
+})

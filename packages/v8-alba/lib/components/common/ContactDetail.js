@@ -9,7 +9,7 @@ class ContactDetail extends PureComponent {
     const contact = this.props.contact
     return (
       <CardText className='mb-0'>
-        { contact.contactTitle } <b><Link to={`/contacts/${contact.contactId}`}>{contact.contactName}</Link></b>
+        {contact.contactTitle} <b><Link to={`/contacts/${contact.contactId}`}>{contact.contactName}</Link></b>
       </CardText>
     )
   }

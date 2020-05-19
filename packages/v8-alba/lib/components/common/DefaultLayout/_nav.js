@@ -17,7 +17,7 @@ const navItems = {
     {
       title: true,
       name: 'The Info'
-    },
+    }
   ],
   smItems: [
     {
@@ -143,17 +143,16 @@ const navItems = {
       icon: 'icon-people'
     }
   ]
-};
+}
 
-let keyCounter = 0;
+let keyCounter = 0
 export default {
   topItems: navItems.topItems.map(item => ({ ...item, id: keyCounter++ })),
   smItems: navItems.smItems.map(item => ({ ...item, id: keyCounter++ })),
   xsItems: navItems.xsItems.map(item => ({ ...item, id: keyCounter++ })),
   adminItems: navItems.adminItems.map(item => ({ ...item, id: keyCounter++ })),
   develItems: navItems.develItems.map(item => ({ ...item, id: keyCounter++ }))
-};
-
+}
 
 // export default {
 //   items: [

@@ -1,3 +1,4 @@
+/* eslint-disable react/jsx-curly-newline */
 import { registerComponent } from 'meteor/vulcan:core'
 import React, { PureComponent } from 'react'
 import PropTypes from 'prop-types'
@@ -23,16 +24,16 @@ class AddressDetail extends PureComponent {
     return (
       <CardText>
         {addressLabel &&
-          <span><b>{ addressLabel }</b><br /></span>
+          <span><b>{addressLabel}</b><br /></span>
         }
         {address.street1 &&
-          <span>{ address.street1 }<br /></span>
+          <span>{address.street1}<br /></span>
         }
         {address.street2 &&
-          <span>{ address.street2 }<br /></span>
+          <span>{address.street2}<br /></span>
         }
         {(address.city || address.state || address.zip) &&
-          <span>{ address.city } { address.state } { address.zip }<br /></span>
+          <span>{address.city} {address.state} {address.zip}<br /></span>
         }
         {showMap &&
           <small><a href={mapSearchString} target='googlemaps'>Open in Google Maps</a></small>
@@ -49,8 +50,8 @@ AddressDetail.propTypes = {
     city: PropTypes.string,
     state: PropTypes.string,
     zip: PropTypes.string,
-    location: PropTypes. string,
-    addressType: PropTypes. string
+    location: PropTypes.string,
+    addressType: PropTypes.string
   }).isRequired
 }
 

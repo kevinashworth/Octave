@@ -34,7 +34,7 @@ const xy = (stat) => {
 const getRecent = (data, timeframe) => {
   return timeframe === 3
     ? data
-    : takeRightWhile(data, function(stat) {
+    : takeRightWhile(data, function (stat) {
       return moment(stat.x).isSameOrAfter(moment().subtract(1, timeframe === 2 ? 'years' : 'months'))
     })
 }
@@ -109,7 +109,7 @@ function LineChartLarge (props) {
       display: false
     }
   }
-  const unitProp = timeframe === 1 ? { time: { unit: 'day' }} : { time: { unit: 'month' }}
+  const unitProp = timeframe === 1 ? { time: { unit: 'day' } } : { time: { unit: 'month' } }
   const mainChartOpts = {
     // onResize,
     maintainAspectRatio: false,
@@ -125,13 +125,13 @@ function LineChartLarge (props) {
         },
         type: 'time',
         ...unitProp
-      },{
+      }, {
         id: 'x-axis-features',
         ...xProps
-      },{
+      }, {
         id: 'x-axis-pilots',
         ...xProps
-      },{
+      }, {
         id: 'x-axis-others',
         ...xProps
       }],
@@ -153,7 +153,7 @@ function LineChartLarge (props) {
   }
 
   const { height } = useWindowDimensions()
-  const chartHeight = Math.max(200, Math.floor(height * .4))
+  const chartHeight = Math.max(200, Math.floor(height * 0.4))
   // I think 40% looks good, with a minimum height of 200. But it's subjective!
   // console.log('window height:', height, 'chart height:', chartHeight)
 
@@ -187,7 +187,7 @@ function LineChartLarge (props) {
             </ButtonToolbar>
           </Col>
         </Row>
-        <div className='chart-wrapper' style={{height: `${chartHeight}px`}}>
+        <div className='chart-wrapper' style={{ height: `${chartHeight}px` }}>
           <Line data={mainChart} options={mainChartOpts} />
         </div>
       </CardBody>

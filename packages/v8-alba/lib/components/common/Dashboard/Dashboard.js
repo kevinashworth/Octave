@@ -17,8 +17,8 @@ class Dashboard extends PureComponent {
             <Components.LineChartSmall
               bgColor='success'
               theSmallStats={theStats.episodics}
-              title={'Episodics Casting'}
-              subtitle={'Last 12 months'}
+              title='Episodics Casting'
+              subtitle='Last 12 months'
             />
           </Col>
 
@@ -26,8 +26,8 @@ class Dashboard extends PureComponent {
             <Components.LineChartSmall
               bgColor='info'
               theSmallStats={theStats.features}
-              title={'Features Casting'}
-              subtitle={'Last 12 months'}
+              title='Features Casting'
+              subtitle='Last 12 months'
             />
           </Col>
 
@@ -35,8 +35,8 @@ class Dashboard extends PureComponent {
             <Components.LineChartSmall
               bgColor='warning'
               theSmallStats={theStats.pilots}
-              title={'Pilots Casting'}
-              subtitle={'Last 12 months'}
+              title='Pilots Casting'
+              subtitle='Last 12 months'
             />
           </Col>
 
@@ -44,8 +44,8 @@ class Dashboard extends PureComponent {
             <Components.LineChartSmall
               bgColor='danger'
               theSmallStats={theStats.others}
-              title={'Others Casting'}
-              subtitle={'Last 12 months'}
+              title='Others Casting'
+              subtitle='Last 12 months'
             />
           </Col>
 
@@ -69,7 +69,7 @@ const multiOptions = {
   limit: 1
 }
 
-registerComponent( {
+registerComponent({
   name: 'Dashboard',
   component: Dashboard,
   hocs: [

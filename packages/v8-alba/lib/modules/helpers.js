@@ -9,10 +9,10 @@ import {
   CABLE_ENUM,
   PAYTV_ENUM,
   SVOD_ENUM,
-  AVOD_ENUM
+  AVOD_ENUM,
+  DATE_FORMAT_SHORT
 } from './constants.js'
 import moment from 'moment'
-import { DATE_FORMAT_SHORT } from './constants.js'
 
 export function getFullNameFromContact ({ firstName, middleName, lastName }) {
   let tempName = ''
@@ -130,7 +130,7 @@ export const getLocation = (address) => { // have to repeat theState code, not a
   if (state === 'ny' || state === 'n.y.' || state === 'new york') {
     return 'NY'
   }
-  if (state === 'ab' || state === 'bc' || state === 'mb' || state === 'ns'|| state === 'on' || state === 'qc') {
+  if (state === 'ab' || state === 'bc' || state === 'mb' || state === 'ns' || state === 'on' || state === 'qc') {
     return 'Canada'
   }
   return 'Other'
@@ -232,12 +232,11 @@ export const getAddress = ({ project, office, contact }) => {
   }
 
   if (!_.isEqual(address, blankAddress)) {
-      address.location = getLocation(address)
-      return address
+    address.location = getLocation(address)
+    return address
   } else {
     return blankAddress
   }
-
 }
 
 const findProjectAddress = (project) => {
@@ -407,7 +406,7 @@ export function dateFormatter (cell, row) {
 export function renderShowsTotal (start, to, total) {
   return (
     <span>
-      Showing { start } to { to } out of { total } &nbsp;&nbsp;
+      Showing {start} to {to} out of {total} &nbsp;&nbsp;
     </span>
   )
 }
