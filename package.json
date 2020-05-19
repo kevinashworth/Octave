@@ -1,6 +1,6 @@
 {
   "name": "Vulcan",
-  "version": "1.14.1",
+  "version": "1.15.0",
   "engines": {
     "npm": "^3.0"
   },
@@ -24,7 +24,7 @@
     "@babel/runtime": "^7.1.2",
     "@coreui/coreui-pro": "2.0.6",
     "@coreui/icons": "1.0.1",
-    "@coreui/react": "github:kevinashworth/coreui-react#semver:2.0.8-v8-alba",
+    "@coreui/react": "github:kevinashworth/coreui-react#semver:2.5.8-v8-alba",
     "@welldone-software/why-did-you-render": "^4.0.4",
     "algoliasearch": "^4.0.3",
     "analytics-node": "^2.1.1",
