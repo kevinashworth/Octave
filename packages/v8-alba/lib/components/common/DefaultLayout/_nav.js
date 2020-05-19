@@ -105,19 +105,6 @@ const navItems = {
       icon: 'fa fa-files-o'
     },
     {
-      name: 'QraphQL',
-      url: 'http://localhost:4004/graphql',
-      icon: 'fa fa-first-order'
-    },
-    {
-      name: 'QraphiQL',
-      url: 'http://localhost:4004/graphiql',
-      icon: 'fa fa-info',
-      wrapper: {
-        attributes: { target: '_blank', rel: 'noopener' }
-      }
-    },
-    {
       name: 'Modals',
       url: '/modals',
       icon: 'fa fa-external-link'
@@ -141,6 +128,18 @@ const navItems = {
       name: 'Contacts (L)',
       url: '/contacts/list',
       icon: 'icon-people'
+    },
+    {
+      name: 'QraphQL',
+      url: 'http://localhost:4004/graphql',
+      icon: 'fa fa-first-order',
+      attributes: { target: 'graphql', rel: 'noreferrer noopener' }
+    },
+    {
+      name: 'QraphiQL',
+      url: 'http://localhost:4004/graphiql',
+      icon: 'fa fa-info',
+      attributes: { target: 'graphql', rel: 'noreferrer noopener' }
     }
   ]
 }
