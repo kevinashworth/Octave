@@ -46,7 +46,9 @@ export const PROJECT_TYPES_ENUM = [
   { value: 'Feature Film', label: 'Feature Film' },
   { value: 'Feature Film (LB)', label: 'Feature Film (LB)' },
   { value: 'Feature Film (MLB)', label: 'Feature Film (MLB)' },
+  { value: 'Feature Film (MPA)', label: 'Feature Film (MPA)' },
   { value: 'Feature Film (ULB)', label: 'Feature Film (ULB)' },
+  { value: 'Feature Film (UPA)', label: 'Feature Film (UPA)' },
   { value: 'Short Film', label: 'Short Film' },
   { value: 'Pilot One Hour', label: 'Pilot One Hour' },
   { value: 'Pilot 1/2 Hour', label: 'Pilot 1/2 Hour' },
@@ -58,8 +60,10 @@ export const PROJECT_TYPES_ENUM = [
   { value: 'TV Movie', label: 'TV Movie' },
   { value: 'TV Talk/Variety', label: 'TV Talk/Variety' },
   { value: 'TV Sketch/Improv', label: 'TV Sketch/Improv' },
+  { value: 'New Media', label: 'New Media' },
   { value: 'TV Animation', label: 'TV Animation' },
-  { value: 'New Media', label: 'New Media' }
+  { value: 'Interactive', label: 'Interactive' },
+  { value: 'Podcast', label: 'Podcast' }
 ]
 
 export const SHOOTING_LOCATIONS_US_ENUM = [
