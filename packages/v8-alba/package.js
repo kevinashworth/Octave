@@ -17,21 +17,23 @@ Package.onUse(function (api) {
     'percolate:migrations'
   ]);
 
-  api.addFiles('lib/stylesheets/react-bootstrap-table-all.min.css', 'client');
-  api.addFiles('lib/stylesheets/react-virtualized-styles.css', 'client');
-  api.addFiles('lib/stylesheets/simple-line-icons.scss', 'client');
-  api.addFiles('lib/stylesheets/spinner.scss', 'client');
+  api.addFiles('lib/stylesheets/coreui-pro-2.1.6/scss/style.scss', 'client');
 
   api.addFiles([
-    'lib/stylesheets/alba-2.0.9/react-perfect-scrollbar-styles.css',
-    'lib/stylesheets/alba-2.0.9/style.css',
-    'lib/stylesheets/alba-2.0.9/custom-algolia.css',
-    'lib/stylesheets/alba-2.0.9/custom-btn.css',
-    'lib/stylesheets/alba-2.0.9/custom-comments.scss',
-    // 'lib/stylesheets/alba-2.0.9/custom-containers.css',
-    'lib/stylesheets/alba-2.0.9/custom-datatable.css',
-    'lib/stylesheets/alba-2.0.9/custom-misc.css'
-  ], ['client']);
+    'lib/stylesheets/react-bootstrap-table-all.min.css',
+    'lib/stylesheets/react-virtualized-styles.css',
+    'lib/stylesheets/simple-line-icons.scss',
+    'lib/stylesheets/spinner.scss'
+  ], 'client');
+
+  api.addFiles([
+    'lib/stylesheets/coreui-pro-2.1.6/react-perfect-scrollbar-styles.css',
+    'lib/stylesheets/custom/algolia.css',
+    'lib/stylesheets/custom/custom-btn.css',
+    'lib/stylesheets/custom/custom-comments.scss',
+    'lib/stylesheets/custom/custom-datatable.css',
+    'lib/stylesheets/custom/custom-misc.css'
+  ], 'client');
 
   api.addAssets([
     'lib/server/emails/templates/common/test.handlebars',
@@ -42,8 +44,8 @@ Package.onUse(function (api) {
     // 'lib/server/emails/templates/posts/newPost.handlebars',
     // 'lib/server/emails/templates/posts/postApproved.handlebars',
     'lib/server/emails/templates/users/accountApproved.handlebars',
-    'lib/server/emails/templates/users/newUser.handlebars',
-  ], ['server'])
+    'lib/server/emails/templates/users/newUser.handlebars'
+  ], ['server']);
 
   api.mainModule('lib/server/main.js', 'server');
   api.mainModule('lib/client/main.js', 'client');

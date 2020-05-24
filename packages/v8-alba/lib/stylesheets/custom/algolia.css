@@ -1,0 +1,28 @@
+button.ais-SearchBox-reset, button.ais-SearchBox-reset img {
+  background: #181b1e;
+  border: 0;
+  display: inline;
+  outline: 0;
+}
+
+.ais-SearchBox-submit {
+  display: none;
+}
+
+em.ais-Highlight-highlighted, strong.ais-Highlight-highlighted,
+em.ais-Snippet-highlighted, strong.ais-Snippet-highlighted {
+  font-style: normal;
+  font-weight: bolder;
+}
+
+.ais-SearchBox-form {
+  background: #181b1e;
+}
+
+.ais-SearchBox-input {
+  background: #181b1e;
+  border: 0;
+  color: #fff;
+  outline: 0;
+  padding: 0.375rem 0.75rem;
+}

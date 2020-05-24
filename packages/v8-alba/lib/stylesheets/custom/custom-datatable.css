@@ -1,0 +1,39 @@
+tr.datatable-item td, .datatable-list > table > thead > tr > th {
+  padding: 0.25rem;
+}
+
+.datatable-list table {
+  width: auto;
+}
+
+div.datatable-list > table > thead > tr {
+  border-top: 2px solid #c8ced3;
+}
+
+div.datatable-list > table > tbody > tr:last-child {
+  border-bottom: 2px solid #c8ced3;
+}
+
+.datatable-title {
+  font-size: 1.75rem;
+  font-weight: 500;
+}
+
+.react-table {
+  table-layout: fixed;
+}
+
+.react-table td, .reac-table th {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.column-filter {
+  display: inline-block;
+  width: auto;
+}
+
+.column-filter::placeholder {
+  font-size: smaller;
+}
