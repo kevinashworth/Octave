@@ -276,3 +276,23 @@ export const SIZE_PER_PAGE_LIST_SEED = [{
 }]
 
 export const nullOption = { value: null, label: '' }
+
+export const COREUI_BRANDS_LIST = [
+  'behance', 'css3', 'dribbble', 'dropbox', 'facebook', 'flickr', 'foursquare',
+  'github', 'google-plus', 'html5', 'instagram', 'linkedin', 'openid', 'pinterest',
+  'reddit', 'spotify', 'stack-overflow', 'tumblr', 'twitter', 'vimeo', 'vine', 'vk',
+  'xing', 'yahoo', 'youtube'
+]
+
+export const BRANDS_ENUM = [
+  { brand: 'cbs', fa: 'fa-television' },
+  { brand: 'csa', fa: 'fa-desktop' },
+  { brand: 'freeform', fa: 'fa-television' },
+  { brand: 'hulu', fa: 'fa-television'},
+  { brand: 'imdb', fa: 'fa-imdb' },
+  { brand: 'imdbpro', fa: 'fa-imdb' },
+  { brand: 'netflix', fa: 'fa-television' },
+  { brand: 'vudu', fa: 'fa-television' },
+  { brand: 'website', fa: 'fa-desktop' },
+  { brand: 'wikipedia', fa: 'fa-wikipedia-w' }
+]

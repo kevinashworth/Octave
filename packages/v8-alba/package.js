@@ -20,15 +20,15 @@ Package.onUse(function (api) {
 
   api.addFiles([
     'lib/stylesheets/vendors/react-bootstrap-table-all.min.css',
-    'lib/stylesheets/vendors/react-perfect-scrollbar-styles.css',
-    'lib/stylesheets/vendors/react-virtualized-styles.css'
+    'lib/stylesheets/vendors/react-perfect-scrollbar.css',
+    'lib/stylesheets/vendors/react-virtualized.css'
   ], 'client');
 
   api.addFiles([
     'lib/stylesheets/custom/algolia.css',
     'lib/stylesheets/custom/btn.css',
-    'lib/stylesheets/custom/custom-datatable.css',
-    'lib/stylesheets/custom/custom-misc.css'
+    'lib/stylesheets/custom/datatable.css',
+    'lib/stylesheets/custom/misc.css'
   ], 'client');
 
   api.addAssets([
