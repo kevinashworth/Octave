@@ -22,6 +22,7 @@ import DefaultHeader from './DefaultHeader';
 class DefaultLayout extends Component {
   render() {
     // currentRoute, currentUserLoading, currentUserData not used by AppSidebarNav, just cause warnings
+    // eslint-disable-next-line no-unused-vars
     const { children, currentUser, currentRoute, currentUserLoading, currentUserData, ...rest } = this.props;
 
     var xsNav = { items: [] };
