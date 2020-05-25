@@ -2,7 +2,7 @@ import { Components, registerComponent, withAccess, withMulti } from 'meteor/vul
 import React, { Component } from 'react'
 import { Link } from 'react-router-dom'
 import PropTypes from 'prop-types'
-import { Card, CardBody, CardFooter, CardHeader, CardTitle, Col, Row } from 'reactstrap'
+import { Card, CardBody, CardFooter, CardHeader, CardText, CardTitle, Col, Row } from 'reactstrap'
 import Markup from 'interweave'
 import pluralize from 'pluralize'
 import Contacts from '../../../modules/contacts/collection.js'
@@ -30,14 +30,16 @@ class LatestContactUpdates extends Component {
           displayHtml += moment(contact.updatedAt).format(DATE_FORMAT_SHORT_FRIENDLY)
           return (
             <Col xs='12' sm='6' md='4' xx='2' widths={['xs', 'sm', 'md', 'xx']} key={contact._id}>
-              <Card className='card-accent-warning text-truncate d-block'>
-                  <CardHeader className='text-truncate d-block'>
+              <Card className='card-accent-warning'>
+                <CardHeader className='text-truncate'>
                   <b><Link to={`/contacts/${contact._id}/${contact.slug}`}>{contact.displayName}</Link></b>
                   <small className='float-right d-xx-none'>{contact.theAddress.location}</small>
                 </CardHeader>
-                <CardBody className='text-truncate d-block'>
-                  {contact.title}<br />
-                  {pluralize('Project', contact.projects ? contact.projects.length : 0, true)}
+                <CardBody className='text-truncate'>
+                  <CardText>
+                    {contact.title}<br />
+                    {pluralize('Project', contact.projects ? contact.projects.length : 0, true)}
+                  </CardText>
                 </CardBody>
                 <CardFooter>
                   <small className='text-muted'><Markup content={displayHtml} /></small>
@@ -140,16 +142,18 @@ class LatestProjectUpdates extends Component {
           displayHtml += moment(project.updatedAt).format(DATE_FORMAT_SHORT_FRIENDLY)
           return (
             <Col xs='12' sm='6' md='4' xx='2' widths={['xs', 'sm', 'md', 'xx']} key={project._id}>
-              <Card className='card-accent-danger text-truncate d-block'>
-                <CardHeader className='text-truncate d-block'>
+              <Card className='card-accent-danger'>
+                <CardHeader className='text-truncate'>
                   <b><Link to={`/projects/${project._id}/${project.slug}`}>{project.projectTitle}</Link></b>
                 </CardHeader>
-                <CardBody className='text-truncate d-block'>
-                  {project.network && (project.projectType.indexOf('TV') === 0 || project.projectType.indexOf('Pilot') === 0)
-                    ? `${project.projectType} • ${project.network}`
-                    : `${project.projectType}`}<br />
-                  {project.status}<br />
-                  {project.casting}
+                <CardBody className='text-truncate'>
+                  <CardText>
+                    {project.network && (project.projectType.indexOf('TV') === 0 || project.projectType.indexOf('Pilot') === 0)
+                      ? `${project.projectType} • ${project.network}`
+                      : `${project.projectType}`}<br />
+                    {project.status}<br />
+                    {project.casting}
+                  </CardText>
                 </CardBody>
                 <CardFooter>
                   <small className='text-muted'><Markup content={displayHtml} /></small>

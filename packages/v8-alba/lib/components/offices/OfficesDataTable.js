@@ -82,7 +82,7 @@ function DefaultColumnFilter ({
 }) {
   const count = preFilteredRows.length
   const value = filterValue || ''
-  const invalid = value.length
+  const invalid = value.length > 0
   return (
     <Input
       bsSize='sm'
