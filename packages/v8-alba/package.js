@@ -17,20 +17,18 @@ Package.onUse(function (api) {
     'percolate:migrations'
   ]);
 
-  api.addFiles('lib/stylesheets/coreui-pro-2.1.6/scss/style.scss', 'client');
+  api.addFiles('lib/stylesheets/compiled/main.css', 'client');
 
   api.addFiles([
-    'lib/stylesheets/react-bootstrap-table-all.min.css',
-    'lib/stylesheets/react-virtualized-styles.css',
-    'lib/stylesheets/simple-line-icons.scss',
-    'lib/stylesheets/spinner.scss'
+    'lib/stylesheets/vendors/react-bootstrap-table-all.min.css',
+    'lib/stylesheets/vendors/react-perfect-scrollbar-styles.css',
+    'lib/stylesheets/vendors/react-virtualized-styles.css'
   ], 'client');
 
   api.addFiles([
-    'lib/stylesheets/coreui-pro-2.1.6/react-perfect-scrollbar-styles.css',
     'lib/stylesheets/custom/algolia.css',
     'lib/stylesheets/custom/btn.css',
-    'lib/stylesheets/custom/custom-comments.scss',
+    'lib/stylesheets/custom/comments.scss',
     'lib/stylesheets/custom/custom-datatable.css',
     'lib/stylesheets/custom/custom-misc.css'
   ], 'client');
