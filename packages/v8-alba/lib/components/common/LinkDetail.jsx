@@ -1,19 +1,44 @@
 import { registerComponent } from 'meteor/vulcan:core'
-import React, { PureComponent } from 'react'
+import React from 'react'
+import { Button } from 'react-bootstrap'
 import PropTypes from 'prop-types'
-import { Button, CardLink } from 'reactstrap'
+import find from 'lodash/find'
+import { COREUI_BRANDS_LIST, BRANDS_ENUM } from '../../modules/constants.js'
 
-class LinkDetail extends PureComponent {
-  render () {
-    const { link } = this.props
-    return (
+const buttonClass = (platform) => {
+  return `btn-${platform} btn-brand mr-1 mb-1`
+}
 
-      <Button className={`btn-${link.platformName.toLowerCase()} text-white`} key={link.profileLink}>
-        <span><CardLink href={link.profileLink} target='profilelinks'>{link.profileName}</CardLink></span>
-      </Button>
-
-    )
+const iconClass = (platform) => {
+  const theirBrand = COREUI_BRANDS_LIST.indexOf(platform)
+  if (theirBrand > -1) {
+    return 'fa fa-' + platform
   }
+  const brand = find(BRANDS_ENUM, {brand: platform})
+  if (brand) {
+    return 'fa ' + brand.fa
+  } else {
+    return 'fa fa-external-link'
+  }
+}
+
+const LinkDetail = (props) => {
+  const { link } = props
+  let platform = link.platformName.toLowerCase()
+  platform = platform.replace(/\s+/g, '')
+  const btn = buttonClass(platform)
+  const icon = iconClass(platform)
+
+  return (
+    <Button className={btn}>
+      <i className={icon} />
+      <span>
+        <a href={link.profileLink} target='profilelinks'>
+          {link.profileName}
+        </a>
+      </span>
+    </Button>
+  )
 }
 
 LinkDetail.propTypes = {
