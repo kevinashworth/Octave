@@ -89,6 +89,16 @@ $theme-colors: map-merge(
 
 // Brand Colors
 
+$cbs:            #0092f3 !default;
+$csa:            #b6b294 !default;
+$freeform:       #0066ff !default;
+$hulu:           #63c696 !default;
+$imdb:           #f5de50 !default;
+$imdbpro:        #333  !default;
+$netflix:        #e50914 !default;
+$vudu:           #2d6dbe !default;
+$wikipedia:      #000 !default;
+$website:        #551a8b !default;
 $facebook:       #3b5998 !default;
 $twitter:        #00aced !default;
 $linkedin:       #4875b4 !default;
@@ -118,6 +128,16 @@ $vimeo:          #aad450 !default;
 
 $brands-colors: () !default;
 $brands-colors: map-merge((
+  "cbs":            $cbs,
+  "csa":            $csa,
+  "freeform":       $freeform,
+  "hulu":           $hulu,
+  "imdb":           $imdb,
+  "imdbpro":        $imdbpro,
+  "netflix":        $netflix,
+  "vudu":           $vudu,
+  "website":        $website,
+  "wikipedia":      $wikipedia,
   "facebook":       $facebook,
   "twitter":        $twitter,
   "linkedin":       $linkedin,
