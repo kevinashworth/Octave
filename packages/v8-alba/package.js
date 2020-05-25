@@ -13,11 +13,10 @@ Package.onUse(function (api) {
     'vulcan:email',
     'vulcan:forms',
     'vulcan:redux',
-    'fourseven:scss',
     'percolate:migrations'
   ]);
 
-  api.addFiles('lib/stylesheets/compiled/main.css', 'client');
+  api.addFiles('lib/stylesheets/compiled/main-min.css', 'client');
 
   api.addFiles([
     'lib/stylesheets/vendors/react-bootstrap-table-all.min.css',
@@ -28,7 +27,6 @@ Package.onUse(function (api) {
   api.addFiles([
     'lib/stylesheets/custom/algolia.css',
     'lib/stylesheets/custom/btn.css',
-    'lib/stylesheets/custom/comments.scss',
     'lib/stylesheets/custom/custom-datatable.css',
     'lib/stylesheets/custom/custom-misc.css'
   ], 'client');
