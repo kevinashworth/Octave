@@ -1,0 +1,10 @@
+.btn-imdb.pro {
+  background: #333; }
+  .btn-imdb.pro::before {
+    color: #00799e;
+    content: "\f2d8";
+    background: #262626; }
+  .btn-imdb.pro:hover {
+    background: #262626; }
+    .btn-imdb.pro:hover::before {
+      background: #1a1919; }

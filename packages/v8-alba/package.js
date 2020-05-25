@@ -29,7 +29,7 @@ Package.onUse(function (api) {
   api.addFiles([
     'lib/stylesheets/coreui-pro-2.1.6/react-perfect-scrollbar-styles.css',
     'lib/stylesheets/custom/algolia.css',
-    'lib/stylesheets/custom/custom-btn.css',
+    'lib/stylesheets/custom/btn.css',
     'lib/stylesheets/custom/custom-comments.scss',
     'lib/stylesheets/custom/custom-datatable.css',
     'lib/stylesheets/custom/custom-misc.css'
