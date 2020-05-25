@@ -1,0 +1,13 @@
+/* Customize some icon colors */
+.btn-imdb i {
+  color: white;
+}
+
+.btn-imdbpro i {
+  color: #00799e;
+}
+
+/* All link text white (for now) */
+.btn-brand a {
+  color: white;
+}

@@ -13,25 +13,23 @@ Package.onUse(function (api) {
     'vulcan:email',
     'vulcan:forms',
     'vulcan:redux',
-    'fourseven:scss',
     'percolate:migrations'
   ]);
 
-  api.addFiles('lib/stylesheets/react-bootstrap-table-all.min.css', 'client');
-  api.addFiles('lib/stylesheets/react-virtualized-styles.css', 'client');
-  api.addFiles('lib/stylesheets/simple-line-icons.scss', 'client');
-  api.addFiles('lib/stylesheets/spinner.scss', 'client');
+  api.addFiles('lib/stylesheets/compiled/main-min.css', 'client');
 
   api.addFiles([
-    'lib/stylesheets/alba-2.0.9/react-perfect-scrollbar-styles.css',
-    'lib/stylesheets/alba-2.0.9/style.css',
-    'lib/stylesheets/alba-2.0.9/custom-algolia.css',
-    'lib/stylesheets/alba-2.0.9/custom-btn.css',
-    'lib/stylesheets/alba-2.0.9/custom-comments.scss',
-    // 'lib/stylesheets/alba-2.0.9/custom-containers.css',
-    'lib/stylesheets/alba-2.0.9/custom-datatable.css',
-    'lib/stylesheets/alba-2.0.9/custom-misc.css',
-  ], ['client']);
+    'lib/stylesheets/vendors/react-bootstrap-table-all.min.css',
+    'lib/stylesheets/vendors/react-perfect-scrollbar.css',
+    'lib/stylesheets/vendors/react-virtualized.css'
+  ], 'client');
+
+  api.addFiles([
+    'lib/stylesheets/custom/algolia.css',
+    'lib/stylesheets/custom/btn.css',
+    'lib/stylesheets/custom/datatable.css',
+    'lib/stylesheets/custom/misc.css'
+  ], 'client');
 
   api.addAssets([
     'lib/server/emails/templates/common/test.handlebars',
@@ -42,8 +40,8 @@ Package.onUse(function (api) {
     // 'lib/server/emails/templates/posts/newPost.handlebars',
     // 'lib/server/emails/templates/posts/postApproved.handlebars',
     'lib/server/emails/templates/users/accountApproved.handlebars',
-    'lib/server/emails/templates/users/newUser.handlebars',
-  ], ['server'])
+    'lib/server/emails/templates/users/newUser.handlebars'
+  ], ['server']);
 
   api.mainModule('lib/server/main.js', 'server');
   api.mainModule('lib/client/main.js', 'client');
