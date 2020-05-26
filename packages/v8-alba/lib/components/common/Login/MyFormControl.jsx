@@ -1,7 +1,9 @@
 import { replaceComponent } from 'meteor/vulcan:lib'
 import { FormattedMessage } from 'meteor/vulcan:i18n'
 import React from 'react'
-import { FormFeedback, Input, InputGroup, InputGroupAddon, InputGroupText } from 'reactstrap'
+// import { FormFeedback, Input, InputGroup, InputGroupAddon, InputGroupText } from 'reactstrap'
+import FormControl from 'react-bootstrap/FormControl'
+import InputGroup from 'react-bootstrap/InputGroup'
 
 const MyFormControl = (props) => {
   const {
@@ -32,24 +34,23 @@ const MyFormControl = (props) => {
 
   return (
     <InputGroup className='mb-3'>
-      <InputGroupAddon addonType='prepend'>
-        <InputGroupText>
+      <InputGroup.Prepend>
+        <InputGroup.Text>
           {icon}
-        </InputGroupText>
-      </InputGroupAddon>
-      <Input
+        </InputGroup.Text>
+      </InputGroup.Prepend>
+      <FormControl
         id={id}
         type={type}
-        innerRef={inputRef}
+        ref={inputRef}
         onChange={onChange}
         placeholder={placeholder}
         defaultValue={defaultValue}
         autoComplete={autoComplete}
-        invalid={invalid}
+        isInvalid={invalid}
       />
       {invalid &&
-        <FormFeedback><FormattedMessage id={messageId} /></FormFeedback>
-      }
+        <FormControl.Feedback type='invalid'><FormattedMessage id={messageId} /></FormControl.Feedback>}
     </InputGroup>
   )
 }

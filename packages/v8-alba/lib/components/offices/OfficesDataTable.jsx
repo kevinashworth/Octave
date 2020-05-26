@@ -2,14 +2,22 @@
 import { Components, registerComponent, withAccess, withCurrentUser, withMulti } from 'meteor/vulcan:core'
 import Users from 'meteor/vulcan:users'
 import React, { useEffect, useState } from 'react'
-import {
-  Button,
-  Card, CardBody, CardFooter, CardHeader,
-  Col, Row,
-  Dropdown, DropdownItem, DropdownMenu, DropdownToggle,
-  FormGroup, Input,
-  Pagination, PaginationItem, PaginationLink
-} from 'reactstrap'
+// import {
+//   Button,
+//   Card, CardBody, CardFooter, CardHeader,
+//   Col, Row,
+//   Dropdown, DropdownItem, DropdownMenu, DropdownToggle,
+//   FormGroup, Input,
+//   Pagination, PaginationItem, PaginationLink
+// } from 'reactstrap'
+import Button from 'react-bootstrap/Button'
+import Card from 'react-bootstrap/Card'
+import Col from 'react-bootstrap/Col'
+import Dropdown from 'react-bootstrap/Dropdown'
+import FormControl from 'react-bootstrap/FormControl'
+import FormGroup from 'react-bootstrap/FormGroup'
+import Pagination from 'react-bootstrap/Pagination'
+import Row from 'react-bootstrap/Row'
 import {
   useFilters,
   useGlobalFilter,
@@ -47,11 +55,11 @@ let keptState = {
 
 function AddButtonFooter () {
   return (
-    <CardFooter>
+    <Card.Footer>
       <Components.ModalTrigger title='New Office' component={<Button>Add an Office</Button>}>
         <Components.OfficesNewForm />
       </Components.ModalTrigger>
-    </CardFooter>
+    </Card.Footer>
   )
 }
 
@@ -84,13 +92,13 @@ function DefaultColumnFilter ({
   const value = filterValue || ''
   const invalid = value.length > 0
   return (
-    <Input
-      bsSize='sm'
+    <FormControl
       className='column-filter'
-      invalid={invalid}
+      isInvalid={invalid}
       onChange={e => setFilter(e.target.value)}
       onClick={e => e.stopPropagation()} // Otherwise triggers sortBy
       placeholder={`Filter ${count} records...`}
+      size='sm'
       value={value}
     />
   )
@@ -121,45 +129,35 @@ function MyPagination (tableProps) {
         Showing {pageIndex * pageSize + 1} to {Math.min((pageIndex + 1) * pageSize, length)} out of {length} &nbsp;&nbsp;
       </div>
       <div className='mb-3'>
-        <Dropdown isOpen={dropdownOpen} toggle={toggle}>
-          <DropdownToggle caret>
+        <Dropdown show={dropdownOpen} onToggle={toggle}>
+          <Dropdown.Toggle>
             {pageSize}
-          </DropdownToggle>
-          <DropdownMenu>
-            <DropdownItem header disabled>Page Size</DropdownItem>
+          </Dropdown.Toggle>
+          <Dropdown.Menu>
+            <Dropdown.Header disabled>Page Size</Dropdown.Header>
             {SIZE_PER_PAGE_LIST_SEED.map(pageSize => (
-              <DropdownItem key={pageSize.text} onClick={e => setPageSize(pageSize.value)}>
+              <Dropdown.Item key={pageSize.text} onClick={e => setPageSize(pageSize.value)}>
                 {pageSize.text}
-              </DropdownItem>
+              </Dropdown.Item>
             ))}
-            <DropdownItem key='All' onClick={e => setPageSize(length)}>All</DropdownItem>
-          </DropdownMenu>
+            <Dropdown.Item key='All' onClick={e => setPageSize(length)}>All</Dropdown.Item>
+          </Dropdown.Menu>
         </Dropdown>
       </div>
       <div className='ml-auto'>
         <Pagination aria-label='Page-by-page navigation of the Offices table'>
           {(pageOptionsVisible.length >= PAGINATION_SIZE) &&
-            <PaginationItem disabled={pageIndex === 0}>
-              <PaginationLink first onClick={() => gotoPage(0)} />
-            </PaginationItem>
+            <Pagination.First disabled={pageIndex === 0} onClick={() => gotoPage(0)} />
           }
-          <PaginationItem disabled={!canPreviousPage}>
-            <PaginationLink previous onClick={() => previousPage()} />
-          </PaginationItem>
+          <Pagination.Prev disabled={!canPreviousPage} onClick={() => previousPage()} />
           {pageOptionsVisible.map(page => (
-            <PaginationItem key={page} className={page === pageIndex ? 'active' : ''}>
-              <PaginationLink onClick={() => gotoPage(page)}>
-                {page + 1}
-              </PaginationLink>
-            </PaginationItem>
+            <Pagination.Item key={page} className={page === pageIndex ? 'active' : ''} onClick={() => gotoPage(page)}>
+              {page + 1}
+            </Pagination.Item>
           ))}
-          <PaginationItem disabled={!canNextPage}>
-            <PaginationLink next onClick={() => nextPage()} />
-          </PaginationItem>
+          <Pagination.Next disabled={!canNextPage} onClick={() => nextPage()} />
           {(pageOptionsVisible.length >= PAGINATION_SIZE) &&
-            <PaginationItem disabled={pageIndex === (pageCount - 1)}>
-              <PaginationLink last onClick={() => gotoPage(pageCount - 1)} />
-            </PaginationItem>
+            <Pagination.Last disabled={pageIndex === (pageCount - 1)} onClick={() => gotoPage(pageCount - 1)} />
           }
         </Pagination>
       </div>
@@ -357,12 +355,12 @@ function OfficesDataTable (props) {
       <div className='animated fadeIn'>
         <Components.HeadTags title='V8 Alba: Offices' />
         <Card className='card-accent-primary'>
-          <CardHeader>
+          <Card.Header>
             <i className='icon-briefcase' />Offices
-          </CardHeader>
-          <CardBody>
+          </Card.Header>
+          <Card.Body>
             <Components.Loading />
-          </CardBody>
+          </Card.Body>
         </Card>
       </div>
     )
@@ -372,19 +370,19 @@ function OfficesDataTable (props) {
     <div className='animated fadeIn'>
       <Components.HeadTags title='V8 Alba: Offices' />
       <Card className='card-accent-primary'>
-        <CardHeader>
+        <Card.Header>
           <i className='icon-briefcase' />Offices
-        </CardHeader>
-        <CardBody>
+        </Card.Header>
+        <Card.Body>
           <Table columns={columns} data={results} />
-        </CardBody>
+        </Card.Body>
         {hasMore &&
-          <CardFooter>
+          <Card.Footer>
             {loadingMore
               ? <Components.Loading />
               : <Button onClick={e => { e.preventDefault(); loadMore() }}>Load More ({count}/{totalCount})</Button>
             }
-          </CardFooter>
+          </Card.Footer>
         }
         {Users.canCreate({ collection: Offices, user: currentUser }) && <AddButtonFooter />}
       </Card>

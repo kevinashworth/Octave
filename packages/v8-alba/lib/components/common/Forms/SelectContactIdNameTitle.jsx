@@ -1,7 +1,8 @@
 import { registerComponent } from 'meteor/vulcan:lib'
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
-import { FormGroup, Input, Label } from 'reactstrap'
+// import { FormGroup, Input, Label } from 'reactstrap'
+import Form from 'react-bootstrap/Form'
 import Select from 'react-select-virtualized'
 import _ from 'lodash'
 import { customStyles, theme } from './react-select-settings'
@@ -81,8 +82,8 @@ class SelectContactIdNameTitle extends Component {
   render () {
     return (
       <>
-        <FormGroup>
-          <Label for={`contactId${this.props.itemIndex}`}>Name from Database</Label>
+        <Form.Group>
+          <Form.Label htmlFor={`contactId${this.props.itemIndex}`}>Name from Database</Form.Label>
           <OptimizedSelect
             styles={customStyles}
             maxMenuHeight={400}
@@ -94,18 +95,18 @@ class SelectContactIdNameTitle extends Component {
             isClearable
             resetValue={nullOption}
           />
-        </FormGroup>
-        <FormGroup>
-          <Label for={`contactName${this.props.itemIndex}`}>Editable Name</Label>
-          <Input
+        </Form.Group>
+        <Form.Group>
+          <Form.Label htmlFor={`contactName${this.props.itemIndex}`}>Editable Name</Form.Label>
+          <Form.Control
             type='text'
             id={`contactName${this.props.itemIndex}`}
             value={this.state.contactName}
             onChange={this.handleNameChange}
           />
-        </FormGroup>
-        <FormGroup>
-          <Label for={`contactTitle${this.props.itemIndex}`}>Title for This</Label>
+        </Form.Group>
+        <Form.Group>
+          <Form.Label htmlFor={`contactTitle${this.props.itemIndex}`}>Title for This</Form.Label>
           <OptimizedSelect
             styles={customStyles}
             maxMenuHeight={400}
@@ -117,7 +118,7 @@ class SelectContactIdNameTitle extends Component {
             isClearable
             resetValue={nullOption}
           />
-        </FormGroup>
+        </Form.Group>
       </>
     )
   }
