@@ -1,7 +1,12 @@
 import { Components, registerComponent, withAccess, withMulti } from 'meteor/vulcan:core'
-import React, { PureComponent } from 'react'
+import React, { Component } from 'react'
 import { Link } from 'react-router-dom'
-import { Button, Card, CardBody, CardFooter, CardHeader, Modal, ModalBody, ModalHeader } from 'reactstrap'
+// import { Button, Card, CardBody, CardFooter, CardHeader, Modal, ModalBody, ModalHeader } from 'reactstrap'
+import Button from 'react-bootstrap/Button'
+import Card from 'react-bootstrap/Card'
+import Modal from 'react-bootstrap/Modal'
+import ModalBody from 'react-bootstrap/ModalBody'
+import ModalHeader from 'react-bootstrap/ModalHeader'
 import { BootstrapTable, ClearSearchButton, SearchField, SizePerPageDropDown, TableHeaderColumn } from 'react-bootstrap-table'
 import _ from 'lodash'
 import moment from 'moment'
@@ -12,7 +17,8 @@ import withFilters from '../../modules/hocs/withFilters.js'
 // Set initial state. Just options I want to keep.
 // See https://github.com/amannn/react-keep-state
 let keptState = {
-  filtersColor: 'primary',
+  filtersVariant: 'outline-primary',
+  searchColor: 'btn-secondary',
   options: {
     defaultSearch: '',
     page: 1,
@@ -21,71 +27,13 @@ let keptState = {
   }
 }
 
-class ContactsNameOnly extends PureComponent {
+class ContactsNameOnly extends Component {
   constructor (props) {
     super(props)
-
-    const pageChangeHandler = (page, sizePerPage) => {
-      this.setState((prevState) => ({
-        options: { ...prevState.options, page, sizePerPage }
-      }))
-    }
-
-    function renderShowsTotal (start, to, total) {
-      return (
-        <span className='mr-2'>
-          Showing { start } to { to } out of { total }
-        </span>
-      )
-    }
-
-    const searchChangeHandler = (searchText) => {
-      this.setState((prevState) => ({
-        options: { ...prevState.options, defaultSearch: searchText }
-      }))
-    }
-
-    const sizePerPageListHandler = (sizePerPage) => {
-      this.setState((prevState) => ({
-        options: { ...prevState.options, sizePerPage }
-      }))
-      keptState.options.sizePerPage = sizePerPage
-    }
-
-    const renderSizePerPageDropDown = (props) => {
-      return (
-        <SizePerPageDropDown btnContextual='btn-secondary btn-sm' {...props} />
-      )
-    }
-
-    const createCustomSearchField = (props) => {
-      if (props.defaultValue.length) {
-        this.setState({ searchColor: 'btn-danger' })
-      } else {
-        this.setState({ searchColor: 'btn-secondary' })
-      }
-      return (
-        <SearchField defaultValue={props.defaultValue} />
-      )
-    }
-
-    const handleClearButtonClick = (onClick) => {
-      this.setState({ searchColor: 'btn-secondary' })
-      onClick()
-    }
-
-    const createCustomClearButton = (onClick) => {
-      return (
-        <ClearSearchButton className='btn-sm'
-          btnContextual={this.state.searchColor}
-          onClick={e => handleClearButtonClick(onClick)} />
-      )
-    }
-
     this.state = {
-      searchColor: 'btn-secondary',
-      filtersColor: keptState.filtersColor,
-      modalIsOpen: false,
+      filtersVariant: keptState.filtersVariant,
+      searchColor: keptState.searchColor,
+      show: false,
       options: {
         sortIndicator: true,
         paginationSize: 4,
@@ -94,15 +42,15 @@ class ContactsNameOnly extends PureComponent {
         nextPage: '›',
         firstPage: '«',
         lastPage: '»',
-        paginationShowsTotal: renderShowsTotal,
+        paginationShowsTotal: this.renderShowsTotal,
         paginationPosition: 'bottom',
-        onPageChange: pageChangeHandler,
-        onSizePerPageList: sizePerPageListHandler,
-        sizePerPageDropDown: renderSizePerPageDropDown,
-        onSearchChange: searchChangeHandler,
+        onPageChange: this.pageChangeHandler,
+        onSizePerPageList: this.sizePerPageListHandler,
+        sizePerPageDropDown: this.renderSizePerPageDropDown,
+        onSearchChange: this.searchChangeHandler,
         clearSearch: true,
-        clearSearchBtn: createCustomClearButton,
-        searchField: createCustomSearchField,
+        clearSearchBtn: this.createCustomClearButton,
+        searchField: this.createCustomSearchField,
         btnGroup: () => { return null }, // hides area above search field
         ...keptState.options
       }
@@ -111,14 +59,11 @@ class ContactsNameOnly extends PureComponent {
     this.setContactFiltersRef = this.setContactFiltersRef.bind(this)
   }
 
-  setContactFiltersRef (node) {
-    this.contactFiltersRef = node
-  }
-
   componentWillUnmount () {
-    const { filtersColor, options } = this.state
+    const { filtersVariant, options, searchColor } = this.state
     keptState = {
-      filtersColor,
+      filtersVariant,
+      searchColor,
       options: {
         defaultSearch: options.defaultSearch,
         page: options.page,
@@ -128,47 +73,121 @@ class ContactsNameOnly extends PureComponent {
     }
   }
 
+  createCustomClearButton = (onClick) => {
+    return (
+      <ClearSearchButton
+        className='btn-sm'
+        btnContextual={this.state.searchColor}
+        onClick={e => this.handleClearButtonClick(onClick)}
+      />
+    )
+  }
+
+  createCustomSearchField = (props) => {
+    if (props.defaultValue.length && this.state.searchColor !== 'btn-danger') {
+      this.setState({ searchColor: 'btn-danger' })
+    } else if (props.defaultValue.length === 0 && this.state.searchColor !== 'btn-secondary') {
+      this.setState({ searchColor: 'btn-secondary' })
+    }
+    return (
+      <SearchField defaultValue={props.defaultValue} />
+    )
+  }
+
+  handleClearButtonClick = (onClick) => {
+    this.setState({ searchColor: 'btn-secondary' })
+    onClick()
+  }
+
+  handleHide = () => {
+    if (this.state.show) {
+      this.toggle()
+    }
+  }
+
+  handleShow = () => {
+    if (!this.state.show) {
+      this.toggle()
+    }
+  }
+
+  pageChangeHandler = (page, sizePerPage) => {
+    this.setState((prevState) => ({
+      options: { ...prevState.options, page, sizePerPage }
+    }))
+  }
+
+  renderShowsTotal = (start, to, total) => {
+    return (
+      <span className='mr-2'>
+        Showing {start} to {to} out of {total}
+      </span>
+    )
+  }
+
+  renderSizePerPageDropDown = (props) => {
+    return (
+      <SizePerPageDropDown btnContextual='btn-secondary btn-sm' {...props} />
+    )
+  }
+
+  searchChangeHandler = (searchText) => {
+    this.setState((prevState) => ({
+      options: { ...prevState.options, defaultSearch: searchText }
+    }))
+  }
+
+  sizePerPageListHandler = (sizePerPage) => {
+    this.setState((prevState) => ({
+      options: { ...prevState.options, sizePerPage }
+    }))
+    keptState.options.sizePerPage = sizePerPage
+  }
+
+  setContactFiltersRef (node) {
+    this.contactFiltersRef = node
+  }
+
   toggle () {
     this.setState({
-      modalIsOpen: !this.state.modalIsOpen
+      show: !this.state.show
     })
     const cfr = this.contactFiltersRef
     if (!cfr) { return } // is null when modal opens, has value when closes
     const colors = Object.values(cfr.state) // includes unwanted state values, but no big deal to include them
     if (colors.includes('danger')) {
-      this.setState({ filtersColor: 'danger' })
+      this.setState({ filtersVariant: 'outline-danger' })
     } else {
-      this.setState({ filtersColor: 'primary' })
+      this.setState({ filtersVariant: 'outline-primary' })
     }
   }
 
   render () {
-    const { count, totalCount, results, loadingMore, loadMore, networkStatus,
-            contactTitleFilters, contactLocationFilters, contactUpdatedFilters } = this.props
+    const { count, totalCount, results, loadingMore, loadMore, networkStatus, contactTitleFilters, contactLocationFilters, contactUpdatedFilters } = this.props
     if (networkStatus !== 8 && networkStatus !== 7) {
       return (
         <div className='animated fadeIn'>
           <Components.HeadTags title='V8 Alba: Contacts' />
           <Card>
-            <CardHeader>
+            <Card.Header>
               <i className='icon-people' />Contacts
-            </CardHeader>
-            <CardBody>
+            </Card.Header>
+            <Card.Body>
               <Components.Loading />
-            </CardBody>
+            </Card.Body>
           </Card>
         </div>
       )
     }
-    let titleFilters = []
+    var titleFilters = []
     contactTitleFilters.forEach(filter => {
       if (filter.value) { titleFilters.push(filter.contactTitle) }
     })
-    let otherFilters = []
+    var otherFilters = []
     contactTitleFilters.forEach(filter => {
       if (!filter.value) { otherFilters.push(filter.contactTitle) }
     })
-    let locationFilters = []
+    var locationFilters = []
     contactLocationFilters.forEach(filter => {
       if (filter.value) { locationFilters.push(filter.contactLocation) }
     })
@@ -219,49 +238,60 @@ class ContactsNameOnly extends PureComponent {
       <div className='animated fadeIn'>
         <Components.HeadTags title='V8 Alba: Contacts' />
         <Card>
-          <CardHeader>
+          <Card.Header>
             <i className='icon-people' />Contacts
-            <Button outline size='sm' color={this.state.filtersColor} className='ml-2' onClick={this.toggle}>Filters</Button>
-            <Modal isOpen={this.state.modalIsOpen} toggle={this.toggle} modalTransition={{ timeout: 100 }}>
-              <ModalHeader toggle={this.toggle}>Contact Filters</ModalHeader>
+            <Button size='sm' variant={this.state.filtersVariant} className='ml-2' onClick={this.handleShow}>Filters</Button>
+            <Modal show={this.state.show} onHide={this.handleHide}>
+              <ModalHeader closeButton>Contact Filters</ModalHeader>
               <ModalBody>
                 <Components.ContactFilters vertical ref={this.setContactFiltersRef} />
               </ModalBody>
             </Modal>
-          </CardHeader>
-          <CardBody>
-            <BootstrapTable data={filteredResults} version='4' condensed striped hover pagination search
+          </Card.Header>
+          <Card.Body>
+            <BootstrapTable
+              bordered={false}
+              condensed
+              data={filteredResults}
+              hover
+              keyField='_id'
               options={{
                 ...this.state.options,
                 sizePerPageList: SIZE_PER_PAGE_LIST_SEED.concat([{
                   text: 'All', value: this.props.totalCount
                 }]),
-                sizePerPage: this.state.options.sizePerPage ? this.state.options.sizePerPage : totalCount
+                sizePerPage: this.state.options.sizePerPage
+                  ? this.state.options.sizePerPage
+                  : totalCount
               }}
-              keyField='_id' bordered={false} tableHeaderClass='d-none'>
-              <TableHeaderColumn dataField='displayName' dataFormat={
-                (cell, row) => {
-                  return (
-                    <Link to={`/contacts/${row._id}/${row.slug}`}>
-                      {row.firstName} {row.middleName ? row.middleName : null} <strong>{row.lastName}</strong>
-                    </Link>
-                  )
-                }
-              }>Name</TableHeaderColumn>
+              pagination
+              search
+              striped
+              tableHeaderClass='d-none'
+              version='4'
+            >
+              <TableHeaderColumn
+                dataField='displayName'
+                dataFormat={(cell, row) => (
+                  <Link to={`/contacts/${row._id}/${row.slug}`}>
+                    {row.firstName} {row.middleName ? row.middleName : null} <strong>{row.lastName}</strong>
+                  </Link>
+                )}
+              >
+                Name
+              </TableHeaderColumn>
               <TableHeaderColumn dataField='title' hidden>Title</TableHeaderColumn>
               <TableHeaderColumn dataField='addressString' hidden>Address</TableHeaderColumn>
               <TableHeaderColumn dataField='allLinks' hidden>Hidden</TableHeaderColumn>
               <TableHeaderColumn dataField='body' hidden>Hidden</TableHeaderColumn>
             </BootstrapTable>
-          </CardBody>
+          </Card.Body>
           {hasMore &&
-          <CardFooter>
-            {loadingMore
-              ? <Components.Loading />
-              : <Button onClick={e => { e.preventDefault(); loadMore() }}>Load More ({count}/{totalCount})</Button>
-            }
-          </CardFooter>
-          }
+            <Card.Footer>
+              {loadingMore
+                ? <Components.Loading />
+                : <Button onClick={e => { e.preventDefault(); loadMore() }}>Load More ({count}/{totalCount})</Button>}
+            </Card.Footer>}
         </Card>
       </div>
     )

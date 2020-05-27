@@ -14,3 +14,16 @@ ul.custom-list li::before {
   padding-right: 8px;
   color: #73818f;
 }
+
+/*
+ * To overcome a react-bootstrap bug in Tabs/Tab inside Card.Body
+ * See https://github.com/react-bootstrap/react-bootstrap/issues/4771
+ */
+nav.card-header-tabs {
+  margin-right: 0;
+  margin-bottom: 0;
+  margin-left: 0;
+  border-bottom-color: rgb(200, 206, 211);
+  border-bottom-style: solid;
+  border-bottom-width: 1px;
+}

@@ -1,6 +1,7 @@
 import { Components, Fragments, getFragmentText, registerComponent } from 'meteor/vulcan:lib'
 import React, { useState } from 'react'
-import { Button } from 'reactstrap'
+// import { Button } from 'reactstrap'
+import Button from 'react-bootstrap/Button'
 import _ from 'lodash'
 import MyCode from './MyCode'
 
