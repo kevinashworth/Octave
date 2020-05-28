@@ -10,7 +10,6 @@ import '../components/common/Login/'
 import '../components/common/Login/MyAccountsLoginForm.jsx' // replaceComponent
 import '../components/common/Login/MyAccountsStateSwitcher.jsx' // replaceComponent
 import '../components/common/Login/MyFormControl.jsx' // replaceComponent
-import '../components/common/MyAlert.jsx' // replaceComponent
 import '../components/common/MyDropdown.jsx' // replaceComponent
 import '../components/common/MyModalTrigger.jsx' // replaceComponent
 
