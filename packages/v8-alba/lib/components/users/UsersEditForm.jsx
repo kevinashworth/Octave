@@ -1,32 +1,37 @@
-import { Components, getFragment, registerComponent, withCurrentUser, withMessages, withSingle2 } from 'meteor/vulcan:core'
+import { Components, registerComponent, withCurrentUser, withMessages, withSingle2 } from 'meteor/vulcan:core'
 import { FormattedMessage, intlShape } from 'meteor/vulcan:i18n'
 import Users from 'meteor/vulcan:users'
 import { STATES } from 'meteor/vulcan:accounts'
 import React from 'react'
 import { withRouter } from 'react-router-dom'
 import PropTypes from 'prop-types'
-import { Button, Card, CardBody, CardTitle, Col, Row } from 'reactstrap'
+// import gql from 'graphql-tag'
+// import { Button, Card, CardBody, CardTitle, Col, Row } from 'reactstrap'
+import Button from 'react-bootstrap/Button'
+import Card from 'react-bootstrap/Card'
+import Col from 'react-bootstrap/Col'
+import Row from 'react-bootstrap/Row'
 
-const theFragment = `
-  fragment UsersEditFragment on User {
-    _id
-    displayName
-    email
-    username
-    twitterUsername
-    bio
-    website
-    notifications_comments
-    notifications_posts
-    notifications_replies
-    notifications_users
-    isAdmin
-    groups
-    slug
-  }
-`
+// const theFragment = gql`
+//   fragment MyUsersEditFragment on User {
+//     _id
+//     displayName
+//     email
+//     username
+//     twitterUsername
+//     bio
+//     website
+//     notifications_comments
+//     notifications_posts
+//     notifications_replies
+//     notifications_users
+//     isAdmin
+//     groups
+//     slug
+//   }
+// `
 
-function UsersEditForm (props, context) {
+const UsersEditForm = (props, context) => {
   const { document: user, currentUser, flash, history, loading, toggle } = props
   if (loading) {
     return <Components.Loading />
@@ -34,18 +39,16 @@ function UsersEditForm (props, context) {
   if (!Users.canUpdate({ collection: Users, document: user, user: currentUser })) {
     return <FormattedMessage id='app.noPermission' />
   }
-
   return (
     <div className='animated fadeIn page users-edit-form'>
       <Components.HeadTags title={`V8: ${context.intl.formatMessage({ id: 'users.edit_account' })}`} />
       <Card className='card-accent-success'>
-        <CardBody>
-          <CardTitle>{`${context.intl.formatMessage({ id: 'cards.edit' })} “${user.displayName}”`}</CardTitle>
+        <Card.Body>
+          <Card.Title>{`${context.intl.formatMessage({ id: 'cards.edit' })} “${user.displayName}”`}</Card.Title>
           <hr />
           <Components.SmartForm
             documentId={user._id}
             collection={Users}
-            queryFragment={theFragment}
             fields={[
               'displayName',
               'email',
@@ -90,7 +93,7 @@ function UsersEditForm (props, context) {
               <Components.ModalTrigger
                 title={<FormattedMessage id='accounts.change_password' />}
                 component={
-                  <Button className='btn-warning'>
+                  <Button variant='warning'>
                     <FormattedMessage id='accounts.change_password' />
                   </Button>
                 }
@@ -99,7 +102,7 @@ function UsersEditForm (props, context) {
               </Components.ModalTrigger>
             </Col>
           </Row>
-        </CardBody>
+        </Card.Body>
       </Card>
     </div>
   )
