@@ -35,7 +35,7 @@ const MyModalTrigger = (props) => {
         show={show}
         size={props.size}
         onHide={handleClose}
-        wrapClassName={props.dialogClassName}
+        dialogClassName={props.dialogClassName}
       >
         {props.title ? renderHeader() : null}
         <ModalBody>

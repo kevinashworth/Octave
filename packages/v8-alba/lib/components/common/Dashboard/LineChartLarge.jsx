@@ -187,9 +187,9 @@ function LineChartLarge (props) {
           <Col xs={12} sm={4}>
             <ButtonToolbar className='mb-1 float-right'>
               <ButtonGroup>
-                <Button outline variant='secondary' onClick={() => setTimeframe(1)} active={timeframe === 1}>Month</Button>
-                <Button outline variant='secondary' onClick={() => setTimeframe(2)} active={timeframe === 2}>Year</Button>
-                <Button outline variant='secondary' onClick={() => setTimeframe(3)} active={timeframe === 3}>All</Button>
+                <Button variant='outline-secondary' onClick={() => setTimeframe(1)} active={timeframe === 1}>Month</Button>
+                <Button variant='outline-secondary' onClick={() => setTimeframe(2)} active={timeframe === 2}>Year</Button>
+                <Button variant='outline-secondary' onClick={() => setTimeframe(3)} active={timeframe === 3}>All</Button>
               </ButtonGroup>
             </ButtonToolbar>
           </Col>

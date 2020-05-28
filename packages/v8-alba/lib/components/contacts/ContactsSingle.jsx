@@ -3,7 +3,6 @@ import Users from 'meteor/vulcan:users'
 import { FormattedMessage } from 'meteor/vulcan:i18n'
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
-import { Link } from 'react-router-dom'
 import mapProps from 'recompose/mapProps'
 // import { Button, Card, CardBody, CardFooter, CardHeader, CardText, CardTitle, Collapse, Nav, NavItem, NavLink, TabContent, TabPane } from 'reactstrap'
 import Button from 'react-bootstrap/Button'
@@ -73,7 +72,7 @@ class ContactsSingle extends Component {
               {contact.fullName}
               {Users.canUpdate({ collection: Contacts, user: currentUser, document }) &&
                 <div className='float-right'>
-                  <Button tag={Link} to={`/contacts/${contact._id}/edit`}>Edit</Button>
+                  <Button variant='secondary' href={`/contacts/${contact._id}/edit`}>Edit</Button>
                 </div>}
             </Card.Header>
             <Card.Body>
