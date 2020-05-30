@@ -19,7 +19,7 @@
     "lintnofix": "standard 'packages/v8-alba/**/*.js' 'packages/v8-alba/**/*.jsx'",
     "lintnofixv": "standard --verbose 'packages/v8-alba/**/*.js' 'packages/v8-alba/**/*.jsx'",
     "build:sass": "node-sass -r 'packages/v8-alba/lib/stylesheets/main.scss' -o 'packages/v8-alba/lib/stylesheets/compiled'",
-    "watch:sass": "npm run build:sass && npm run build:sass -- -w"
+    "watch:sass": "npm run build:sass && npm run build:sass -w"
   },
   "dependencies": {
     "@apollo/react-hooks": "^3.1.1",
