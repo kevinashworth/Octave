@@ -1,61 +1,51 @@
-import { Components } from 'meteor/vulcan:core';
-import React, { Component } from 'react';
-import { Dropdown, DropdownMenu, DropdownToggle, Nav } from 'reactstrap';
-import PropTypes from 'prop-types';
+import { Components } from 'meteor/vulcan:core'
+import React, { Component } from 'react'
+// import { Dropdown, DropdownMenu, DropdownToggle, Nav } from 'reactstrap';
+import Dropdown from 'react-bootstrap/Dropdown'
+import Nav from 'react-bootstrap/Nav'
+import NavItem from 'react-bootstrap/NavItem'
+import NavLink from 'react-bootstrap/NavLink'
+import PropTypes from 'prop-types'
 
-import { AppNavbarBrand, AppSidebarToggler } from '@coreui/react';
+import { AppNavbarBrand, AppSidebarToggler } from '@coreui/react'
 
 const propTypes = {
-  children: PropTypes.node,
-};
+  children: PropTypes.node
+}
 
-const defaultProps = {};
+const defaultProps = {}
 
 class DefaultHeader extends Component {
-  constructor (props) {
-    super(props)
-    this.state = {
-      dropdownOpen: false
-    }
-    this.toggle = this.toggle.bind(this)
-  }
-
-  toggle () {
-    this.setState({
-      dropdownOpen: !this.state.dropdownOpen
-    })
-  }
-
-  render() {
+  render () {
     // eslint-disable-next-line
     const { children, ...attributes } = this.props;
 
     return (
-      <React.Fragment>
-        <AppSidebarToggler className="d-lg-none" display="md" mobile />
+      <>
+        <AppSidebarToggler className='d-lg-none' display='md' mobile />
         <AppNavbarBrand
           full={{ src: '/img/V8.png', width: 60, height: 30, alt: 'Horiz' }}
           minimized={{ src: '/favicon/favicon-32x32.png', width: 32, height: 32, alt: 'Square' }}
         />
-        <AppSidebarToggler className="d-md-down-none" display="lg" />
-        <Nav className="ml-auto" navbar>
-          <Dropdown isOpen={this.state.dropdownOpen} toggle={this.toggle} nav>
-            <DropdownToggle nav>
-              <i className  ='icon-user font-2xl' />
-            </DropdownToggle>
-            <DropdownMenu right>
+        <AppSidebarToggler className='d-md-down-none' display='lg' />
+        <Nav className='ml-auto' navbar>
+          <Dropdown as={NavItem}>
+            <Dropdown.Toggle as={NavLink}>
+              <i className='icon-user font-2xl' />
+            </Dropdown.Toggle>
+            <Dropdown.Menu right>
               <Components.UsersMenu />
-            </DropdownMenu>
+            </Dropdown.Menu>
           </Dropdown>
         </Nav>
-        {/*<AppAsideToggler className="d-md-down-none" />
-        <AppAsideToggler className="d-lg-none" mobile />*/}
-      </React.Fragment>
-    );
+        {/* <AppAsideToggler className="d-md-down-none" />
+        <AppAsideToggler className="d-lg-none" mobile /> */}
+      </>
+    )
   }
 }
 
-DefaultHeader.propTypes = propTypes;
-DefaultHeader.defaultProps = defaultProps;
+DefaultHeader.propTypes = propTypes
+DefaultHeader.defaultProps = defaultProps
 
-export default DefaultHeader;
+export default DefaultHeader

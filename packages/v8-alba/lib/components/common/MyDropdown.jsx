@@ -1,9 +1,12 @@
 import { replaceComponent } from 'meteor/vulcan:lib'
 import { FormattedMessage } from 'meteor/vulcan:i18n'
 import React, { useState } from 'react'
-import { NavLink as RRNavLink } from 'react-router-dom'
+// import { NavLink } from 'react-router-dom'
+import { LinkContainer } from 'react-router-bootstrap'
 import PropTypes from 'prop-types'
-import { Dropdown, ButtonDropdown, DropdownItem, DropdownMenu, DropdownToggle, NavLink } from 'reactstrap'
+// import { Dropdown, ButtonDropdown, DropdownItem, DropdownMenu, DropdownToggle, NavLink } from 'reactstrap'
+import Dropdown from 'react-bootstrap/Dropdown'
+import DropdownButton from 'react-bootstrap/DropdownButton'
 
 /*
 A node contains a menu item, and optionally a list of child items
@@ -14,8 +17,9 @@ const Node = ({ childrenItems, ...rest }) => {
       <Item {...rest} />
       {childrenItems &&
         !!childrenItems.length && (
-          <div className="menu-node-children">{childrenItems.map((item, index) => <Item key={index} {...item} />)}</div>
-      )}
+          <div className='menu-node-children'>
+            {childrenItems.map((item, index) => <Item key={index} {...item} />)}
+          </div>)}
     </>
   )
 }
@@ -28,9 +32,8 @@ Node.propTypes = {
 Note: `rest` is used to ensure auto-generated props from parent dropdown
 components are properly passed down to MenuItem
 */
-const Item = ({ index, to, labelId, label, component, componentProps = {}, itemProps, linkProps, ...rest }) => {
+const Item = ({ component, componentProps = {}, index, isHeader, itemProps, label, labelId, to, ...rest }) => {
   let menuComponent
-
   if (component) {
     menuComponent = React.cloneElement(component, componentProps)
   } else if (labelId) {
@@ -39,13 +42,19 @@ const Item = ({ index, to, labelId, label, component, componentProps = {}, itemP
     menuComponent = <span>{label}</span>
   }
 
-  const item = (
-    <DropdownItem {...itemProps} {...rest}>
-      {menuComponent}
-    </DropdownItem>
-  )
+  const dropdownItem = <Dropdown.Item {...itemProps} {...rest}>{menuComponent}</Dropdown.Item>
 
-  return to ? <NavLink to={to} tag={RRNavLink} activeClassName="active" {...linkProps}>{item}</NavLink> : item
+  const item = isHeader
+    ? <Dropdown.Header as='h6' {...itemProps} {...rest}>{menuComponent}</Dropdown.Header>
+    : to
+      ? (
+          <LinkContainer to={to}>
+            {dropdownItem}
+          </LinkContainer>
+        )
+      : dropdownItem
+
+  return item
 }
 
 Item.propTypes = {
@@ -59,9 +68,11 @@ Item.propTypes = {
 }
 
 const MyDropdown = ({ label, labelId, trigger, menuItems, menuContents, variant = 'dropdown', buttonProps, ...dropdownProps }) => {
-  const menuBody = menuContents ? menuContents : menuItems.map((item, index) => {
+  const [dropdownOpen, setDropdownOpen] = useState(false)
+  const toggle = () => setDropdownOpen(prevState => !prevState)
+  const menuBody = menuContents || menuItems.map((item, index) => {
     if (item === 'divider') {
-      return <DropdownItem divider key={index} />
+      return <Dropdown.Divider key={index} />
     } else {
       return <Node {...item} key={index} index={index} />
     }
@@ -72,20 +83,18 @@ const MyDropdown = ({ label, labelId, trigger, menuItems, menuContents, variant 
   } else {
     if (trigger) {
       // if a trigger component has been provided, use it
-      const [dropdownOpen, setDropdownOpen] = useState(false)
-      const toggle = () => setDropdownOpen(prevState => !prevState)
       return (
         <Dropdown isOpen={dropdownOpen} toggle={toggle} {...dropdownProps}>
-          <DropdownToggle caret>{trigger}</DropdownToggle>
-          <DropdownMenu>{menuBody}</DropdownMenu>
+          <Dropdown.Toggle>{trigger}</Dropdown.Toggle>
+          <Dropdown.Menu>{menuBody}</Dropdown.Menu>
         </Dropdown>
       )
     } else {
-      // else default to ButtonDropdown
+      // else default to DropdownButton
       return (
-        <ButtonDropdown {...buttonProps} title={labelId ? <FormattedMessage id={labelId} /> : label} {...dropdownProps}>
+        <DropdownButton {...buttonProps} title={labelId ? <FormattedMessage id={labelId} /> : label} {...dropdownProps}>
           {menuBody}
-        </ButtonDropdown>
+        </DropdownButton>
       )
     }
   }
