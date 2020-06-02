@@ -3,7 +3,8 @@ import { FormattedMessage } from 'meteor/vulcan:i18n'
 import React from 'react'
 import { Link } from 'react-router-dom'
 import PropTypes from 'prop-types'
-import { Card, CardBody, CardFooter, CardText, CardTitle } from 'reactstrap'
+// import { Card, CardBody, CardFooter, CardText, CardTitle } from 'reactstrap'
+import Card from 'react-bootstrap/Card'
 import Markup from 'interweave'
 import moment from 'moment'
 import { DATE_FORMAT_LONG, DATE_FORMAT_SHORT } from '../../modules/constants.js'
@@ -24,43 +25,38 @@ const ContactModal = (props) => {
       'Last modified ' + moment(contact.updatedAt).format(DATE_FORMAT_LONG)
 
   return (
-    <div>
-      <Card className='card-accent-warning'>
-        <CardBody>
-          <CardText tag='div'>
-            { contact.title && <div>{contact.title}</div> }
-            { contact.gender && <div>{contact.gender}</div> }
-            <hr />
-            {contact.htmlBody
-              ? <Markup content={contact.htmlBody} />
-              : <div>{ contact.body }</div>
-            }
-          </CardText>
-        </CardBody>
+    <Card className='card-accent-warning'>
+      <Card.Body>
+        <Card.Text as='div'>
+          {contact.title && <div>{contact.title}</div>}
+          {contact.gender && <div>{contact.gender}</div>}
+          <hr />
+          {contact.htmlBody
+            ? <Markup content={contact.htmlBody} />
+            : <div>{contact.body}</div>}
+        </Card.Text>
+        {contact.addresses && contact.addresses[0] && <Card.Title>Addresses</Card.Title>}
         {contact.addresses &&
-        <CardBody>
-          { contact.addresses[0] && <CardTitle>Addresses</CardTitle>}
-          {contact.addresses.map((address, index) =>
-            <Markup key={`address${index}`} content={createdFormattedAddress(address)} />
-          )}
-        </CardBody>
-        }
+          contact.addresses.map((address, index) => (
+            <Card.Text key={`address${index}`}>
+              <Markup content={createdFormattedAddress(address)} />
+            </Card.Text>
+          ))}
+        {contact.projects && contact.projects[0] && <Card.Title>Projects</Card.Title>}
         {contact.projects &&
-        <CardBody>
-          <CardTitle>Projects</CardTitle>
-          {contact.projects.map(project =>
-            <CardText key={project.projectId}>
-              <b><Link to={`/projects/${project.projectId}`}>{project.projectTitle}</Link></b>
+          contact.projects.map(project => (
+            <Card.Text key={project.projectId}>
+              <b key={project.projectId}>
+                <Link to={`/projects/${project.projectId}`}>{project.projectTitle}</Link>
+              </b>
               {project.titleForProject && ` (${project.titleForProject})`}
-            </CardText>
-          )}
-        </CardBody>
-        }
-        <CardFooter>
-          <small className='text-muted'>{displayDate}</small>
-        </CardFooter>
-      </Card>
-    </div>
+            </Card.Text>
+          ))}
+      </Card.Body>
+      <Card.Footer>
+        <small className='text-muted'>{displayDate}</small>
+      </Card.Footer>
+    </Card>
   )
 }
 
