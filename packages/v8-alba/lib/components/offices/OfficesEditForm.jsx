@@ -1,7 +1,7 @@
 import { Components, getFragment, registerComponent } from 'meteor/vulcan:core'
 import React from 'react'
 import { withRouter } from 'react-router-dom'
-import { Card, CardBody } from 'reactstrap'
+import Card from 'react-bootstrap/Card'
 import Offices from '../../modules/offices/collection.js'
 
 const OfficesEditForm = ({ documentId, match, history, toggle }) => {
@@ -10,7 +10,7 @@ const OfficesEditForm = ({ documentId, match, history, toggle }) => {
     <div className='animated fadeIn'>
       <Components.HeadTags title='V8 Alba: Edit Office' />
       <Card className='card-accent-primary'>
-        <CardBody>
+        <Card.Body>
           <Components.SmartForm
             collection={Offices}
             documentId={theDocumentId}
@@ -38,7 +38,7 @@ const OfficesEditForm = ({ documentId, match, history, toggle }) => {
               }
             }}
           />
-        </CardBody>
+        </Card.Body>
       </Card>
     </div>
   )

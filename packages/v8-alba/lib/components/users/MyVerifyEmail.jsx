@@ -4,7 +4,7 @@ import { intlShape } from 'meteor/vulcan:i18n'
 import React, { PureComponent } from 'react'
 import { withRouter } from 'react-router'
 import PropTypes from 'prop-types'
-import { Card, CardBody } from 'reactstrap'
+import Card from 'react-bootstrap/Card'
 
 class MyAccountsVerifyEmail extends PureComponent {
   constructor (props) {
@@ -36,35 +36,34 @@ class MyAccountsVerifyEmail extends PureComponent {
     if (this.state.pending) {
       return (
         <div className='animated fadeIn'>
-          <Components.HeadTags title={'V8: Verification Pending'} />
+          <Components.HeadTags title='V8: Verification Pending' />
           <Card className='card-accent-success'>
-            <CardBody>
+            <Card.Body>
               <Components.Loading />
-            </CardBody>
+            </Card.Body>
           </Card>
         </div>
       )
     } else if (this.state.error) {
       return (
         <div className='animated fadeIn'>
-          <Components.HeadTags title={'V8: Verification Error'} />
+          <Components.HeadTags title='V8: Verification Error' />
           <Card className='card-accent-success'>
-            <CardBody>
+            <Card.Body>
               {this.state.error}
-            </CardBody>
+            </Card.Body>
           </Card>
         </div>
       )
     } else {
       return (
         <div className='animated fadeIn'>
-          <Components.HeadTags
-            title={`V8: ${this.context.intl.formatMessage({ id: 'accounts.email_verified' })}`} />
+          <Components.HeadTags title={`V8: ${this.context.intl.formatMessage({ id: 'accounts.email_verified' })}`} />
           <Card className='card-accent-success'>
-            <CardBody>
+            <Card.Body>
               {this.context.intl.formatMessage({ id: 'accounts.email_verified' })}
               <Components.UsersMenu />
-            </CardBody>
+            </Card.Body>
           </Card>
         </div>
       )
@@ -81,7 +80,6 @@ MyAccountsVerifyEmail.propsTypes = {
 }
 
 MyAccountsVerifyEmail.displayName = 'AccountsEnrollAccount'
-
 
 replaceComponent({
   name: 'AccountsVerifyEmail',

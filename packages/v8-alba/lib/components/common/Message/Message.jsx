@@ -1,20 +1,18 @@
-import { Components, registerComponent } from 'meteor/vulcan:lib'
+import { registerComponent } from 'meteor/vulcan:lib'
 import React from 'react'
 import PropTypes from 'prop-types'
-import { Card, CardBody, CardHeader } from 'reactstrap'
+import Card from 'react-bootstrap/Card'
 import marked from 'marked'
-
 
 const Message = (props) => {
   const { body, header } = props
-  const markedBody = {__html: marked(body)}
+  const markedBody = { __html: marked(body) }
   return (
-    <div className="animated fadeIn">
+    <div className='animated fadeIn'>
       <Card className='mt-4'>
         {header &&
-          <CardHeader><b>{header}</b></CardHeader>
-        }
-        <CardBody dangerouslySetInnerHTML={markedBody} />
+          <Card.Header><b>{header}</b></Card.Header>}
+        <Card.Body dangerouslySetInnerHTML={markedBody} />
       </Card>
     </div>
   )
