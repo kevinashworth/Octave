@@ -125,11 +125,6 @@ const navItems = {
       icon: 'fa fa-camera'
     },
     {
-      name: 'Contacts (L)',
-      url: '/contacts/list',
-      icon: 'icon-people'
-    },
-    {
       name: 'QraphQL',
       url: 'http://localhost:4004/graphql',
       icon: 'fa fa-first-order',
