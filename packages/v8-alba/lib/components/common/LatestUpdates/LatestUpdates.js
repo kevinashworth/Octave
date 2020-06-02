@@ -2,7 +2,6 @@ import { Components, registerComponent, withAccess, withMulti } from 'meteor/vul
 import React, { Component } from 'react'
 import { Link } from 'react-router-dom'
 import PropTypes from 'prop-types'
-// import { Card, CardBody, CardFooter, CardHeader, CardText, CardTitle, Col, Row } from 'reactstrap'
 import Card from 'react-bootstrap/Card'
 import Col from 'react-bootstrap/Col'
 import Row from 'react-bootstrap/Row'

@@ -2,7 +2,6 @@ import { Components, registerComponent, withCurrentUser } from 'meteor/vulcan:co
 import { FormattedMessage } from 'meteor/vulcan:i18n'
 import React, { PureComponent } from 'react'
 import PropTypes from 'prop-types'
-// import { Card, Card.Body, CardFooter, CardLink, CardText, CardTitle } from 'reactstrap'
 import Card from 'react-bootstrap/Card'
 import Markup from 'interweave'
 import moment from 'moment'

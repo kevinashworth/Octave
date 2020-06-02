@@ -1,7 +1,6 @@
 import { Components, registerComponent, withAccess, withMulti } from 'meteor/vulcan:core'
 import React, { PureComponent } from 'react'
 import { Link } from 'react-router-dom'
-// import { Button, Card, CardBody, CardFooter, CardHeader, Modal, Modal.Body, Modal.Header } from 'reactstrap'
 import Button from 'react-bootstrap/Button'
 import Card from 'react-bootstrap/Card'
 import Modal from 'react-bootstrap/Modal'

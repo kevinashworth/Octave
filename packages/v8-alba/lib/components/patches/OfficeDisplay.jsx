@@ -1,6 +1,5 @@
 import { Components } from 'meteor/vulcan:core'
 import React from 'react'
-// import { Card, CardBody, CardFooter, CardHeader, CardLink, CardText, CardTitle } from 'reactstrap'
 import Card from 'react-bootstrap/Card'
 import Interweave from 'interweave'
 import moment from 'moment'

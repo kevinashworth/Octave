@@ -2,7 +2,6 @@ import { registerComponent } from 'meteor/vulcan:core'
 import React from 'react'
 import { Link } from 'react-router-dom'
 // import PropTypes from 'prop-types'
-// import { CardText } from 'reactstrap'
 import Card from 'react-bootstrap/Card'
 
 const OfficesPersonDetail = (props) => {

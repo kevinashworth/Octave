@@ -1,7 +1,6 @@
 import { replaceComponent } from 'meteor/vulcan:lib'
 import React, { useState } from 'react'
 import PropTypes from 'prop-types'
-// import { Button, Modal, ModalBody, ModalFooter, ModalHeader } from 'reactstrap'
 import Button from 'react-bootstrap/Button'
 import Modal from 'react-bootstrap/Modal'
 

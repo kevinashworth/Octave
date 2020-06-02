@@ -1,6 +1,5 @@
 import { Components } from 'meteor/vulcan:core'
 import React from 'react'
-// import { Dropdown, DropdownMenu, DropdownToggle, Nav } from 'reactstrap';
 import Dropdown from 'react-bootstrap/Dropdown'
 import Nav from 'react-bootstrap/Nav'
 import NavItem from 'react-bootstrap/NavItem'

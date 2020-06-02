@@ -3,7 +3,6 @@ import Users from 'meteor/vulcan:users'
 import React, { Component } from 'react'
 import { Helmet } from 'react-helmet'
 import Media from 'react-media'
-// import { Container } from 'reactstrap'
 import Container from 'react-bootstrap/Container'
 import {
   AppFooter,

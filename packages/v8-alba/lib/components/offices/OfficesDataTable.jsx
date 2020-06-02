@@ -2,14 +2,6 @@
 import { Components, registerComponent, withAccess, withCurrentUser, withMulti } from 'meteor/vulcan:core'
 import Users from 'meteor/vulcan:users'
 import React, { useEffect, useState } from 'react'
-// import {
-//   Button,
-//   Card, CardBody, CardFooter, CardHeader,
-//   Col, Row,
-//   Dropdown, DropdownItem, DropdownMenu, DropdownToggle,
-//   FormGroup, Input,
-//   Pagination, PaginationItem, PaginationLink
-// } from 'reactstrap'
 import Button from 'react-bootstrap/Button'
 import Card from 'react-bootstrap/Card'
 import Col from 'react-bootstrap/Col'

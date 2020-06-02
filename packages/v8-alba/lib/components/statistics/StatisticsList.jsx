@@ -1,6 +1,5 @@
 import { Components, registerComponent, withCurrentUser, withMulti } from 'meteor/vulcan:core'
 import React from 'react'
-// import { Button, Card, CardBody, CardFooter, CardHeader, ListGroup } from 'reactstrap'
 import Button from 'react-bootstrap/Button'
 import Card from 'react-bootstrap/Card'
 import ListGroup from 'react-bootstrap/ListGroup'

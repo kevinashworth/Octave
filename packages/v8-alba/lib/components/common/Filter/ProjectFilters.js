@@ -1,13 +1,5 @@
 import { registerComponent } from 'meteor/vulcan:core'
 import React, { PureComponent } from 'react'
-// import {
-//   ButtonDropdown,
-//   ButtonGroup,
-//   CustomInput,
-//   DropdownItem,
-//   DropdownMenu,
-//   DropdownToggle
-// } from 'reactstrap'
 import Button from 'react-bootstrap/Button'
 import ButtonGroup from 'react-bootstrap/ButtonGroup'
 import Dropdown from 'react-bootstrap/Dropdown'

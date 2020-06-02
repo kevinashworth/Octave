@@ -1,6 +1,5 @@
 import { replaceComponent } from 'meteor/vulcan:core'
 import React from 'react'
-// import { Container, Row, Col, Button, Input, InputGroup } from 'reactstrap'
 import Button from 'react-bootstrap/Button'
 import Col from 'react-bootstrap/Col'
 import Container from 'react-bootstrap/Container'

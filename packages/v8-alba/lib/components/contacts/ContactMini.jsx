@@ -3,7 +3,6 @@ import { FormattedMessage } from 'meteor/vulcan:i18n'
 import React from 'react'
 import { Link } from 'react-router-dom'
 import PropTypes from 'prop-types'
-// import { CardText } from 'reactstrap'
 import Card from 'react-bootstrap/Card'
 
 import Contacts from '../../modules/contacts/collection.js'

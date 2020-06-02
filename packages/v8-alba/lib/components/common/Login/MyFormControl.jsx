@@ -1,7 +1,6 @@
 import { replaceComponent } from 'meteor/vulcan:lib'
 import { FormattedMessage } from 'meteor/vulcan:i18n'
 import React from 'react'
-// import { FormFeedback, Input, InputGroup, InputGroupAddon, InputGroupText } from 'reactstrap'
 import FormControl from 'react-bootstrap/FormControl'
 import InputGroup from 'react-bootstrap/InputGroup'
 

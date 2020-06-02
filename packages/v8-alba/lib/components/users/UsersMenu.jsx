@@ -6,7 +6,6 @@ import { withApollo } from 'react-apollo'
 import React from 'react'
 import { Link } from 'react-router-dom'
 import PropTypes from 'prop-types'
-// import { DropdownItem } from 'reactstrap'
 import Dropdown from 'react-bootstrap/Dropdown'
 
 const UsersMenu = ({ currentUser, currentUserLoading, client, state }) => {

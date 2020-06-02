@@ -2,7 +2,6 @@ import { Components, registerComponent, withAccess, withCurrentUser, withMulti }
 import Users from 'meteor/vulcan:users'
 import React, { Component } from 'react'
 import { Link } from 'react-router-dom'
-// import { Button, Card, CardBody, CardFooter, CardHeader, Modal, ModalBody, ModalHeader } from 'reactstrap'
 import Button from 'react-bootstrap/Button'
 import Card from 'react-bootstrap/Card'
 import Modal from 'react-bootstrap/Modal'

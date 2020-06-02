@@ -1,7 +1,6 @@
 import { registerComponent, Components, withAccess } from 'meteor/vulcan:core'
 import React, { forwardRef, useState } from 'react'
 import { useHistory } from 'react-router-dom'
-// import { Dropdown, DropdownItem, DropdownMenu, DropdownToggle } from 'reactstrap'
 import Button from 'react-bootstrap/Button'
 import Dropdown from 'react-bootstrap/Dropdown'
 import FormControl from 'react-bootstrap/FormControl'

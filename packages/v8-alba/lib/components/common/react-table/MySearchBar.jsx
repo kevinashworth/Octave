@@ -1,6 +1,5 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-// import { Input } from 'reactstrap'
 import FormControl from 'react-bootstrap/FormControl'
 
 function MySearchBar (props) {

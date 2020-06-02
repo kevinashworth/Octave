@@ -1,6 +1,5 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-// import { Button } from 'reactstrap'
 import Button from 'react-bootstrap/Button'
 
 const btnColor = (txt) => {

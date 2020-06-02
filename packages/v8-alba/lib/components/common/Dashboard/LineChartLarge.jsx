@@ -1,18 +1,6 @@
 import { Components, registerComponent } from 'meteor/vulcan:core'
 import React, { useEffect, useState } from 'react'
 import { Line } from 'react-chartjs-2'
-// import {
-//   Button,
-//   ButtonGroup,
-//   ButtonToolbar,
-//   Card,
-//   CardBody,
-//   CardFooter,
-//   CardTitle,
-//   Col,
-//   Progress,
-//   Row
-// } from 'reactstrap'
 import Button from 'react-bootstrap/Button'
 import ButtonGroup from 'react-bootstrap/ButtonGroup'
 import ButtonToolbar from 'react-bootstrap/ButtonToolbar'

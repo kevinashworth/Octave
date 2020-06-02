@@ -1,7 +1,6 @@
 import { registerComponent } from 'meteor/vulcan:lib'
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
-// import { FormGroup, Input, Label } from 'reactstrap'
 import Form from 'react-bootstrap/Form'
 import Select from 'react-select-virtualized'
 import _ from 'lodash'

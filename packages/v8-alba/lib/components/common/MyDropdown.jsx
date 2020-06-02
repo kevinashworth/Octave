@@ -1,10 +1,8 @@
 import { replaceComponent } from 'meteor/vulcan:lib'
 import { FormattedMessage } from 'meteor/vulcan:i18n'
 import React, { useState } from 'react'
-// import { NavLink } from 'react-router-dom'
 import { LinkContainer } from 'react-router-bootstrap'
 import PropTypes from 'prop-types'
-// import { Dropdown, ButtonDropdown, DropdownItem, DropdownMenu, DropdownToggle, NavLink } from 'reactstrap'
 import Dropdown from 'react-bootstrap/Dropdown'
 import DropdownButton from 'react-bootstrap/DropdownButton'
 

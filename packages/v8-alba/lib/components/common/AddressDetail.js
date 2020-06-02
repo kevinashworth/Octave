@@ -1,7 +1,6 @@
 import { registerComponent } from 'meteor/vulcan:core'
 import React from 'react'
 import PropTypes from 'prop-types'
-// import { CardText } from 'reactstrap'
 import Card from 'react-bootstrap/Card'
 
 const AddressDetail = (props) => {

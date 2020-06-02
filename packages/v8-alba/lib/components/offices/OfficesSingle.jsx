@@ -2,7 +2,6 @@ import { Components, registerComponent, withCurrentUser, withSingle } from 'mete
 import Users from 'meteor/vulcan:users'
 import { FormattedMessage } from 'meteor/vulcan:i18n'
 import React, { Component } from 'react'
-// import { Button, Card, CardBody, CardFooter, CardHeader, CardText, CardTitle, Collapse, Nav, NavItem, NavLink, TabContent, TabPane } from 'reactstrap'
 import Button from 'react-bootstrap/Button'
 import Card from 'react-bootstrap/Card'
 import Collapse from 'react-bootstrap/Collapse'
