@@ -1,12 +1,10 @@
 import { Components, registerComponent, withAccess, withMulti } from 'meteor/vulcan:core'
 import React, { PureComponent } from 'react'
 import { Link } from 'react-router-dom'
-// import { Button, Card, CardBody, CardFooter, CardHeader, Modal, ModalBody, ModalHeader } from 'reactstrap'
+// import { Button, Card, CardBody, CardFooter, CardHeader, Modal, Modal.Body, Modal.Header } from 'reactstrap'
 import Button from 'react-bootstrap/Button'
 import Card from 'react-bootstrap/Card'
 import Modal from 'react-bootstrap/Modal'
-import ModalBody from 'react-bootstrap/ModalBody'
-import ModalHeader from 'react-bootstrap/ModalHeader'
 import { BootstrapTable, ClearSearchButton, SearchField, SizePerPageDropDown, TableHeaderColumn } from 'react-bootstrap-table'
 import _ from 'lodash'
 import moment from 'moment'
@@ -33,7 +31,7 @@ class ProjectsNameOnly extends PureComponent {
     this.state = {
       filtersVariant: keptState.filtersVariant,
       searchColor: keptState.searchColor,
-      modalIsOpen: false,
+      show: false,
       options: {
         sortIndicator: true,
         paginationSize: 4,
@@ -150,7 +148,7 @@ class ProjectsNameOnly extends PureComponent {
 
   toggle () {
     this.setState({
-      modalIsOpen: !this.state.modalIsOpen
+      show: !this.state.show
     })
     const pfr = this.projectFiltersRef
     if (!pfr) { return }
@@ -222,10 +220,10 @@ class ProjectsNameOnly extends PureComponent {
             <i className='fa fa-camera' />Projects
             <Button size='sm' variant={this.state.filtersVariant} className='ml-2' onClick={this.handleShow}>Filters</Button>
             <Modal show={this.state.show} onHide={this.handleHide}>
-              <ModalHeader closeButton>Project Filters</ModalHeader>
-              <ModalBody>
-                <Components.ProjectFilters vertical ref={this.setProjectFiltersRef} />
-              </ModalBody>
+              <Modal.Header closeButton>Project Filters</Modal.Header>
+              <Modal.Body>
+                <Components.ProjectFilters ref={this.setProjectFiltersRef} />
+              </Modal.Body>
             </Modal>
           </Card.Header>
           <Card.Body>

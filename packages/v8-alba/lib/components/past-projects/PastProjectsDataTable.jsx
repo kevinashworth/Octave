@@ -1,7 +1,10 @@
 import { Components, registerComponent, withAccess, withMulti } from 'meteor/vulcan:core'
 import React, { Component } from 'react'
 import { Link } from 'react-router-dom'
-import { Button, Card, CardBody, CardFooter, CardHeader, Modal, ModalBody, ModalHeader } from 'reactstrap'
+// import { Button, Card, CardBody, CardFooter, CardHeader, Modal, ModalBody, ModalHeader } from 'reactstrap'
+import Button from 'react-bootstrap/Button'
+import Card from 'react-bootstrap/Card'
+import Modal from 'react-bootstrap/Modal'
 import { BootstrapTable, ClearSearchButton, SearchField, TableHeaderColumn } from 'react-bootstrap-table'
 import _ from 'lodash'
 import moment from 'moment'
@@ -27,7 +30,7 @@ class PastProjectsDataTable extends Component {
   constructor (props) {
     super(props)
     this.state = {
-      modal: false,
+      show: false,
       project: null,
       options: {
         sortIndicator: true,
@@ -37,7 +40,7 @@ class PastProjectsDataTable extends Component {
         nextPage: '›',
         firstPage: '«',
         lastPage: '»',
-        sizePerPageList: [ {
+        sizePerPageList: [{
           text: '20', value: 20
         }, {
           text: '50', value: 50
@@ -45,7 +48,7 @@ class PastProjectsDataTable extends Component {
           text: '100', value: 100
         }, {
           text: 'All', value: this.props.totalCount
-        } ],
+        }],
         paginationShowsTotal: renderShowsTotal,
         paginationPosition: 'both',
         onPageChange: this.pageChangeHandler,
@@ -61,14 +64,6 @@ class PastProjectsDataTable extends Component {
       },
       ...keptState.searchColor
     }
-    this.createCustomClearButton = this.createCustomClearButton.bind(this)
-    this.createCustomSearchField = this.createCustomSearchField.bind(this)
-    this.pageChangeHandler = this.pageChangeHandler.bind(this)
-    this.rowClickHandler = this.rowClickHandler.bind(this)
-    this.searchChangeHandler = this.searchChangeHandler.bind(this)
-    this.sizePerPageListHandler = this.sizePerPageListHandler.bind(this)
-    this.sortChangeHandler = this.toggle.bind(this)
-    this.toggle = this.toggle.bind(this)
   }
 
   componentWillUnmount () {
@@ -86,10 +81,51 @@ class PastProjectsDataTable extends Component {
     }
   }
 
+  createCustomClearButton = (onClick) => {
+    return (
+      <ClearSearchButton
+        btnContextual={this.state.searchColor}
+        className='btn-sm'
+        onClick={e => this.handleClearButtonClick(onClick)}
+      />
+    )
+  }
+
+  createCustomSearchField = (props) => {
+    if (props.defaultValue.length && this.state.searchColor !== 'btn-danger') {
+      this.setState({ searchColor: 'btn-danger' })
+    } else if (props.defaultValue.length === 0 && this.state.searchColor !== 'btn-secondary') {
+      this.setState({ searchColor: 'btn-secondary' })
+    }
+    return (
+      <SearchField defaultValue={props.defaultValue} />
+    )
+  }
+
+  handleClearButtonClick = (onClick) => {
+    this.setState({ searchColor: 'btn-secondary' })
+    onClick()
+  }
+
+  handleHide = () => {
+    if (this.state.show) {
+      this.setState({
+        show: !this.state.show
+      })
+    }
+  }
+
   pageChangeHandler = (page, sizePerPage) => {
     this.setState((prevState) => ({
       options: { ...prevState.options, page, sizePerPage }
     }))
+  }
+
+  rowClickHandler = (row, columnIndex, rowIndex, event) => {
+    this.setState({
+      project: row,
+      show: true
+    })
   }
 
   sortChangeHandler = (sortName, sortOrder) => {
@@ -110,66 +146,33 @@ class PastProjectsDataTable extends Component {
     }))
   }
 
-  createCustomSearchField = (props) => {
-    if (props.defaultValue.length && this.state.searchColor !== 'btn-danger') {
-      this.setState({ searchColor: 'btn-danger' })
-    } else if (props.defaultValue.length === 0 && this.state.searchColor !== 'btn-secondary') {
-      this.setState({ searchColor: 'btn-secondary' })
-    }
-    return (
-      <SearchField defaultValue={props.defaultValue} />
-    )
-  }
-
-  handleClearButtonClick = (onClick) => {
-    this.setState({ searchColor: 'btn-secondary' })
-    onClick()
-  }
-
-  createCustomClearButton = (onClick) => {
-    return (
-      <ClearSearchButton className='btn-sm'
-        btnContextual={this.state.searchColor}
-        onClick={e => this.handleClearButtonClick(onClick)} />
-    )
-  }
-
-  toggle () {
-    this.setState({
-      modal: !this.state.modal
-    })
-  }
-
-  rowClickHandler = (row, columnIndex, rowIndex, event) => {
-    this.setState({ project: row })
-    this.setState({ modal: true })
-  }
-
   render () {
-    const { count, totalCount, results, loadingMore, loadMore, networkStatus,
-            pastProjectTypeFilters, pastProjectStatusFilters, pastProjectUpdatedFilters } = this.props
+    const {
+      count, loadingMore, loadMore, networkStatus, results, totalCount,
+      pastProjectTypeFilters, pastProjectStatusFilters, pastProjectUpdatedFilters
+    } = this.props
 
     if (networkStatus !== 8 && networkStatus !== 7) {
       return (
         <div className='animated fadeIn'>
           <Card className='card-accent-secondary'>
-            <CardHeader>
+            <Card.Header>
               <i className='fa fa-camera-retro' />Past Projects
-            </CardHeader>
-            <CardBody>
+            </Card.Header>
+            <Card.Body>
               <Components.Loading />
-            </CardBody>
+            </Card.Body>
           </Card>
         </div>
       )
     }
 
     const hasMore = results && (totalCount > results.length)
-    let typeFilters = []
+    var typeFilters = []
     pastProjectTypeFilters.forEach(filter => {
       if (filter.value) { typeFilters.push(filter.projectType) }
     })
-    let statusFilters = []
+    var statusFilters = []
     pastProjectStatusFilters.forEach(filter => {
       if (filter.value) { statusFilters.push(filter.pastProjectStatus) }
     })
@@ -195,61 +198,72 @@ class PastProjectsDataTable extends Component {
     return (
       <div className='animated fadeIn'>
         <Components.HeadTags title='V8 Alba: Past Projects' />
-        <Modal isOpen={this.state.modal} toggle={this.toggle} modalTransition={{ timeout: 100 }}>
-          {this.state.project
-            ? <ModalHeader toggle={this.toggle}>
-              <Link to={`/past-projects/${this.state.project._id}/${this.state.project.slug}`}>{this.state.project.projectTitle}</Link>
-            </ModalHeader>
-            : null
-          }
-          <ModalBody>
-            <Components.ProjectModal document={this.state.project} />
-          </ModalBody>
-        </Modal>
+        {this.state.project &&
+          <Modal show={this.state.show} onHide={this.handleHide}>
+            <Modal.Header closeButton>
+              <Modal.Title>
+                <Link to={`/past-projects/${this.state.project._id}/${this.state.project.slug}`}>{this.state.project.projectTitle}</Link>
+              </Modal.Title>
+            </Modal.Header>
+            <Modal.Body>
+              <Components.ProjectModal document={this.state.project} />
+            </Modal.Body>
+          </Modal>}
         <Card className='card-accent-secondary'>
-          <CardHeader>
+          <Card.Header>
             <i className='fa fa-camera-retro' />Past Projects
             <Components.PastProjectFilters />
-          </CardHeader>
-          <CardBody>
-            <BootstrapTable condensed hover pagination search striped
+          </Card.Header>
+          <Card.Body>
+            <BootstrapTable
+              bordered={false}
+              condensed
               data={filteredResults}
-              bordered={false} keyField='_id'
+              hover
+              keyField='_id'
               options={{
                 ...this.state.options,
                 sizePerPageList: SIZE_PER_PAGE_LIST_SEED.concat([{
                   text: 'All', value: this.props.totalCount
-                }])}}
-              version='4'>
-              <TableHeaderColumn dataField='projectTitle' dataSort sortFunc={titleSortFunc} dataFormat={
-                (cell, row) => {
+                }])
+              }}
+              pagination
+              search
+              striped
+              version='4'
+            >
+              <TableHeaderColumn
+                dataField='projectTitle'
+                dataFormat={(cell, row) => {
                   return (
                     <Link to={`/past-projects/${row._id}/${row.slug}`}>
                       {cell}
                     </Link>
                   )
-                }
-              } width='25%'>Name</TableHeaderColumn>
+                }}
+                dataSort
+                sortFunc={titleSortFunc}
+                width='25%'
+              >
+                Name
+              </TableHeaderColumn>
               <TableHeaderColumn dataField='casting' dataSort>Casting</TableHeaderColumn>
               <TableHeaderColumn dataField='projectType' dataSort>Type</TableHeaderColumn>
               <TableHeaderColumn dataField='status' dataSort width='94px'>Status</TableHeaderColumn>
-                <TableHeaderColumn dataField='updatedAt' dataSort dataFormat={dateFormatter}
-                  dataAlign='right' width='94px'>Updated</TableHeaderColumn>
+              <TableHeaderColumn dataField='updatedAt' dataSort dataFormat={dateFormatter} dataAlign='right' width='94px'>Updated</TableHeaderColumn>
               <TableHeaderColumn dataField='summary' hidden>Hidden</TableHeaderColumn>
               <TableHeaderColumn dataField='notes' hidden>Hidden</TableHeaderColumn>
               <TableHeaderColumn dataField='allContactNames' hidden>Hidden</TableHeaderColumn>
               <TableHeaderColumn dataField='allAddresses' hidden>Hidden</TableHeaderColumn>
               <TableHeaderColumn dataField='network' hidden>Hidden</TableHeaderColumn>
             </BootstrapTable>
-          </CardBody>
+          </Card.Body>
           {hasMore &&
-          <CardFooter>
-            {loadingMore
-              ? <Components.Loading />
-              : <Button onClick={e => { e.preventDefault(); loadMore() }}>Load More ({count}/{totalCount})</Button>
-            }
-          </CardFooter>
-          }
+            <Card.Footer>
+              {loadingMore
+                ? <Components.Loading />
+                : <Button onClick={e => { e.preventDefault(); loadMore() }}>Load More ({count}/{totalCount})</Button>}
+            </Card.Footer>}
         </Card>
       </div>
     )
@@ -267,7 +281,7 @@ const multiOptions = {
   limit: 500
 }
 
-registerComponent( {
+registerComponent({
   name: 'PastProjectsDataTable',
   component: PastProjectsDataTable,
   hocs: [

@@ -6,8 +6,6 @@ import { Link } from 'react-router-dom'
 import Button from 'react-bootstrap/Button'
 import Card from 'react-bootstrap/Card'
 import Modal from 'react-bootstrap/Modal'
-import ModalBody from 'react-bootstrap/ModalBody'
-import ModalHeader from 'react-bootstrap/ModalHeader'
 import { BootstrapTable, ClearSearchButton, SearchField, TableHeaderColumn } from 'react-bootstrap-table'
 import _ from 'lodash'
 import moment from 'moment'
@@ -218,15 +216,17 @@ class ContactsDataTable extends Component {
     return (
       <div className='animated fadeIn'>
         <Components.HeadTags title='V8 Alba: Contacts' />
-        <Modal show={this.state.show} onHide={this.handleHide}>
-          {this.state.contact &&
-            <ModalHeader closeButton>
-              <Link to={`/contacts/${this.state.contact._id}/${this.state.contact.slug}`}>{this.state.contact.displayName}</Link>
-            </ModalHeader>}
-          <ModalBody>
-            <Components.ContactModal document={this.state.contact} />
-          </ModalBody>
-        </Modal>
+        {this.state.contact &&
+          <Modal show={this.state.show} onHide={this.handleHide}>
+            <Modal.Header closeButton>
+              <Modal.Title>
+                <Link to={`/contacts/${this.state.contact._id}/${this.state.contact.slug}`}>{this.state.contact.displayName}</Link>
+              </Modal.Title>
+            </Modal.Header>
+            <Modal.Body>
+              <Components.ContactModal document={this.state.contact} />
+            </Modal.Body>
+          </Modal>}
         <Card className='card-accent-warning'>
           <Card.Header>
             <i className='icon-people' />Contacts
@@ -234,14 +234,21 @@ class ContactsDataTable extends Component {
           </Card.Header>
           <Card.Body>
             <BootstrapTable
-              data={filteredResults} version='4' condensed striped hover pagination search
+              bordered={false}
+              condensed
+              data={filteredResults}
+              hover
+              keyField='_id'
               options={{
                 ...this.state.options,
                 sizePerPageList: SIZE_PER_PAGE_LIST_SEED.concat([{
                   text: 'All', value: this.props.totalCount
                 }])
               }}
-              keyField='_id' bordered={false}
+              pagination
+              search
+              striped
+              version='4'
             >
               <TableHeaderColumn
                 dataField='displayName'

@@ -5,8 +5,6 @@ import { Link } from 'react-router-dom'
 import Button from 'react-bootstrap/Button'
 import Card from 'react-bootstrap/Card'
 import Modal from 'react-bootstrap/Modal'
-import ModalBody from 'react-bootstrap/ModalBody'
-import ModalHeader from 'react-bootstrap/ModalHeader'
 import { BootstrapTable, ClearSearchButton, SearchField, SizePerPageDropDown, TableHeaderColumn } from 'react-bootstrap-table'
 import _ from 'lodash'
 import moment from 'moment'
@@ -242,10 +240,10 @@ class ContactsNameOnly extends Component {
             <i className='icon-people' />Contacts
             <Button size='sm' variant={this.state.filtersVariant} className='ml-2' onClick={this.handleShow}>Filters</Button>
             <Modal show={this.state.show} onHide={this.handleHide}>
-              <ModalHeader closeButton>Contact Filters</ModalHeader>
-              <ModalBody>
-                <Components.ContactFilters vertical ref={this.setContactFiltersRef} />
-              </ModalBody>
+              <Modal.Header closeButton>Contact Filters</Modal.Header>
+              <Modal.Body>
+                <Components.ContactFilters ref={this.setContactFiltersRef} />
+              </Modal.Body>
             </Modal>
           </Card.Header>
           <Card.Body>

@@ -4,9 +4,6 @@ import PropTypes from 'prop-types'
 // import { Button, Modal, ModalBody, ModalFooter, ModalHeader } from 'reactstrap'
 import Button from 'react-bootstrap/Button'
 import Modal from 'react-bootstrap/Modal'
-import ModalBody from 'react-bootstrap/ModalBody'
-import ModalFooter from 'react-bootstrap/ModalFooter'
-import ModalHeader from 'react-bootstrap/ModalHeader'
 
 const MyModalTrigger = (props) => {
   const [show, setShow] = useState(false)
@@ -15,9 +12,9 @@ const MyModalTrigger = (props) => {
 
   const renderHeader = () => {
     return (
-      <ModalHeader closeButton>
+      <Modal.Header closeButton>
         {props.title}
-      </ModalHeader>
+      </Modal.Header>
     )
   }
 
@@ -38,12 +35,12 @@ const MyModalTrigger = (props) => {
         dialogClassName={props.dialogClassName}
       >
         {props.title ? renderHeader() : null}
-        <ModalBody>
+        <Modal.Body>
           {childrenComponent}
-        </ModalBody>
-        <ModalFooter>
+        </Modal.Body>
+        <Modal.Footer>
           <Button variant='secondary' onClick={handleClose}>Cancel</Button>
-        </ModalFooter>
+        </Modal.Footer>
       </Modal>
     </div>
   )
