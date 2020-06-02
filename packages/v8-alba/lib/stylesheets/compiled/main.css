@@ -8123,29 +8123,29 @@ a.text-dark:hover, a.text-dark:focus {
 
 .btn-instagram {
   color: #fff;
-  background-color: #517fa4;
-  border-color: #517fa4; }
+  background-color: #e95950;
+  border-color: #e95950; }
   .btn-instagram:hover {
     color: #fff;
-    background-color: #446b8a;
-    border-color: #406582; }
+    background-color: #e5392e;
+    border-color: #e32e23; }
   .btn-instagram:focus, .btn-instagram.focus {
     color: #fff;
-    background-color: #446b8a;
-    border-color: #406582;
-    box-shadow: 0 0 0 0.2rem rgba(107, 146, 178, 0.5); }
+    background-color: #e5392e;
+    border-color: #e32e23;
+    box-shadow: 0 0 0 0.2rem rgba(236, 114, 106, 0.5); }
   .btn-instagram.disabled, .btn-instagram:disabled {
     color: #fff;
-    background-color: #517fa4;
-    border-color: #517fa4; }
+    background-color: #e95950;
+    border-color: #e95950; }
   .btn-instagram:not(:disabled):not(.disabled):active, .btn-instagram:not(:disabled):not(.disabled).active,
   .show > .btn-instagram.dropdown-toggle {
     color: #fff;
-    background-color: #406582;
-    border-color: #3c5e79; }
+    background-color: #e32e23;
+    border-color: #dd271c; }
     .btn-instagram:not(:disabled):not(.disabled):active:focus, .btn-instagram:not(:disabled):not(.disabled).active:focus,
     .show > .btn-instagram.dropdown-toggle:focus {
-      box-shadow: 0 0 0 0.2rem rgba(107, 146, 178, 0.5); }
+      box-shadow: 0 0 0 0.2rem rgba(236, 114, 106, 0.5); }
 
 .btn-pinterest {
   color: #fff;
@@ -10894,12 +10894,12 @@ button.bg-dribbble:focus {
   background-color: #e51e6b !important; }
 
 .bg-instagram {
-  background-color: #517fa4 !important; }
+  background-color: #e95950 !important; }
 
 a.bg-instagram:hover, a.bg-instagram:focus,
 button.bg-instagram:hover,
 button.bg-instagram:focus {
-  background-color: #406582 !important; }
+  background-color: #e32e23 !important; }
 
 .bg-pinterest {
   background-color: #cb2027 !important; }
