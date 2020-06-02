@@ -60,9 +60,10 @@ class ProjectsNameOnly extends PureComponent {
   }
 
   componentWillUnmount () {
-    const { filtersColor, options } = this.state
+    const { filtersVariant, options, searchColor } = this.state
     keptState = {
-      filtersColor,
+      filtersVariant,
+      searchColor,
       options: {
         defaultSearch: options.defaultSearch,
         page: options.page,
@@ -155,9 +156,9 @@ class ProjectsNameOnly extends PureComponent {
     if (!pfr) { return }
     const colors = Object.values(pfr.state)
     if (colors.includes('danger')) {
-      this.setState({ filtersColor: 'danger' })
+      this.setState({ filtersVariant: 'outline-danger' })
     } else {
-      this.setState({ filtersColor: 'primary' })
+      this.setState({ filtersVariant: 'outline-primary' })
     }
   }
 
