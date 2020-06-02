@@ -49,12 +49,12 @@ class OfficesSingle extends Component {
 
     this.state = {
       collapseIsOpen: false,
-      commentsTabLabel: 'Comments'
+      commentsTabTitle: 'Comments'
     }
   }
 
   commentsCallback (labelFromCommentsThread) {
-    this.setState({ commentsTabLabel: labelFromCommentsThread })
+    this.setState({ commentsTabTitle: labelFromCommentsThread })
   }
 
   handleCollapseClick = () => {
@@ -119,7 +119,7 @@ class OfficesSingle extends Component {
                     )}
                   </Card.Text>}
               </Tab>
-              <Tab eventKey='comments' title='Comments'>
+              <Tab eventKey='comments' title={this.state.commentsTabTitle}>
                 <Components.CommentsThread
                   callbackFromSingle={this.commentsCallback}
                   terms={{ objectId: document._id, collectionName: 'Offices', view: 'Comments' }}

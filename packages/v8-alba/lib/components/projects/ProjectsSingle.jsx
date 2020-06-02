@@ -19,12 +19,12 @@ class ProjectsSingle extends Component {
     super(props)
 
     this.state = {
-      commentsTabLabel: 'Comments'
+      commentsTabTitle: 'Comments'
     }
   }
 
   commentsCallback = (labelFromCommentsThread) => {
-    this.setState({ commentsTabLabel: labelFromCommentsThread })
+    this.setState({ commentsTabTitle: labelFromCommentsThread })
   }
 
   deleteAlgoliaRecord = (documentId) => {
@@ -142,7 +142,7 @@ class ProjectsSingle extends Component {
                     )}
                   </Card.Text>}
               </Tab>
-              <Tab eventKey='comments' title='Comments'>
+              <Tab eventKey='comments' title={this.state.commentsTabTitle}>
                 <Components.CommentsThread
                   callbackFromSingle={this.commentsCallback}
                   terms={{ objectId: document._id, collectionName: 'Projects', view: 'Comments' }}
