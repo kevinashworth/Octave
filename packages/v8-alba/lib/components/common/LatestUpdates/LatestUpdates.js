@@ -2,7 +2,10 @@ import { Components, registerComponent, withAccess, withMulti } from 'meteor/vul
 import React, { Component } from 'react'
 import { Link } from 'react-router-dom'
 import PropTypes from 'prop-types'
-import { Card, CardBody, CardFooter, CardHeader, CardText, CardTitle, Col, Row } from 'reactstrap'
+// import { Card, CardBody, CardFooter, CardHeader, CardText, CardTitle, Col, Row } from 'reactstrap'
+import Card from 'react-bootstrap/Card'
+import Col from 'react-bootstrap/Col'
+import Row from 'react-bootstrap/Row'
 import Markup from 'interweave'
 import pluralize from 'pluralize'
 import Contacts from '../../../modules/contacts/collection.js'
@@ -31,19 +34,19 @@ class LatestContactUpdates extends Component {
           return (
             <Col xs='12' sm='6' md='4' xx='2' widths={['xs', 'sm', 'md', 'xx']} key={contact._id}>
               <Card className='card-accent-warning'>
-                <CardHeader className='text-truncate'>
+                <Card.Header className='text-truncate'>
                   <b><Link to={`/contacts/${contact._id}/${contact.slug}`}>{contact.displayName}</Link></b>
                   <small className='float-right d-xx-none'>{contact.theAddress.location}</small>
-                </CardHeader>
-                <CardBody className='text-truncate'>
-                  <CardText>
+                </Card.Header>
+                <Card.Body className='text-truncate'>
+                  <Card.Text>
                     {contact.title}<br />
                     {pluralize('Project', contact.projects ? contact.projects.length : 0, true)}
-                  </CardText>
-                </CardBody>
-                <CardFooter>
+                  </Card.Text>
+                </Card.Body>
+                <Card.Footer>
                   <small className='text-muted'><Markup content={displayHtml} /></small>
-                </CardFooter>
+                </Card.Footer>
               </Card>
             </Col>
           )
@@ -88,16 +91,16 @@ class LatestOfficeUpdates extends Component {
           return (
             <Col xs='12' sm='6' md='4' xx='2' widths={['xs', 'sm', 'md', 'xx']} key={office._id}>
               <Card className='card-accent-primary text-truncate d-block'>
-                <CardHeader className='text-truncate d-block'>
+                <Card.Header className='text-truncate d-block'>
                   <b><Link to={`/offices/${office._id}/${office.slug}`}>{office.displayName}</Link></b>
-                </CardHeader>
-                <CardBody className='text-truncate d-block'>
+                </Card.Header>
+                <Card.Body className='text-truncate d-block'>
                   {office.theCity} {office.theState}<br />
                   {pluralize('Project', office.projects ? office.projects.length : 0, true)}
-                </CardBody>
-                <CardFooter>
+                </Card.Body>
+                <Card.Footer>
                   <small className='text-muted'><Markup content={displayHtml} /></small>
-                </CardFooter>
+                </Card.Footer>
               </Card>
             </Col>
           )
@@ -143,21 +146,21 @@ class LatestProjectUpdates extends Component {
           return (
             <Col xs='12' sm='6' md='4' xx='2' widths={['xs', 'sm', 'md', 'xx']} key={project._id}>
               <Card className='card-accent-danger'>
-                <CardHeader className='text-truncate'>
+                <Card.Header className='text-truncate'>
                   <b><Link to={`/projects/${project._id}/${project.slug}`}>{project.projectTitle}</Link></b>
-                </CardHeader>
-                <CardBody className='text-truncate'>
-                  <CardText>
+                </Card.Header>
+                <Card.Body className='text-truncate'>
+                  <Card.Text>
                     {project.network && (project.projectType.indexOf('TV') === 0 || project.projectType.indexOf('Pilot') === 0)
                       ? `${project.projectType} • ${project.network}`
                       : `${project.projectType}`}<br />
                     {project.status}<br />
                     {project.casting}
-                  </CardText>
-                </CardBody>
-                <CardFooter>
+                  </Card.Text>
+                </Card.Body>
+                <Card.Footer>
                   <small className='text-muted'><Markup content={displayHtml} /></small>
-                </CardFooter>
+                </Card.Footer>
               </Card>
             </Col>
           )
@@ -209,10 +212,10 @@ class LatestPastProjectUpdates extends Component {
         {pastProjects.map(project =>
           <Col xs='12' sm='6' md='4' xx='2' widths={['xs', 'sm', 'md', 'xx']} key={project._id}>
             <Card className='card-accent-secondary text-truncate d-block'>
-              <CardHeader className='text-truncate d-block'>
+              <Card.Header className='text-truncate d-block'>
                 <b><Link to={`/past-projects/${project._id}/${project.slug}`}>{project.projectTitle}</Link></b>
-              </CardHeader>
-              <CardBody className='text-truncate d-block'>
+              </Card.Header>
+              <Card.Body className='text-truncate d-block'>
                 {project.network && (project.projectType.indexOf('TV') === 0 || project.projectType.indexOf('Pilot') === 0)
                   ? `${project.projectType} • ${project.network}`
                   : `${project.projectType}`}<br />
@@ -221,11 +224,11 @@ class LatestPastProjectUpdates extends Component {
                   ? project.castingCompany
                   : project.castingOffice
                     ? project.castingOffice.displayName
-                    : null }
-              </CardBody>
-              <CardFooter>
+                    : null}
+              </Card.Body>
+              <Card.Footer>
                 <small className='text-muted'>Past Project as of {moment(project.updatedAt).format(DATE_FORMAT_SHORT_FRIENDLY)}</small>
-              </CardFooter>
+              </Card.Footer>
             </Card>
           </Col>
         )}
@@ -258,39 +261,39 @@ class LatestUpdates extends Component {
         <Components.HeadTags title='V8 Alba: Latest Updates' />
 
         <Card>
-          <CardBody>
-            <CardTitle>Newest Projects Casting</CardTitle>
+          <Card.Body>
+            <Card.Title>Newest Projects Casting</Card.Title>
             <Components.NewestProjectsAdded />
-          </CardBody>
+          </Card.Body>
         </Card>
 
         <Card>
-          <CardBody>
-            <CardTitle>Recently Updated Contacts</CardTitle>
+          <Card.Body>
+            <Card.Title>Recently Updated Contacts</Card.Title>
             <Components.LatestContactUpdates />
-          </CardBody>
+          </Card.Body>
         </Card>
 
         <Card>
-          <CardBody>
-            <CardTitle>Recently Updated Offices</CardTitle>
+          <Card.Body>
+            <Card.Title>Recently Updated Offices</Card.Title>
             <Components.LatestOfficeUpdates />
-          </CardBody>
+          </Card.Body>
         </Card>
 
-          <Card>
-            <CardBody>
-              <CardTitle>Recently Updated Projects</CardTitle>
-              <Components.LatestProjectUpdates />
-            </CardBody>
-          </Card>
+        <Card>
+          <Card.Body>
+            <Card.Title>Recently Updated Projects</Card.Title>
+            <Components.LatestProjectUpdates />
+          </Card.Body>
+        </Card>
 
-          <Card>
-            <CardBody>
-              <CardTitle>Newest Past Projects</CardTitle>
-              <Components.LatestPastProjectUpdates />
-            </CardBody>
-          </Card>
+        <Card>
+          <Card.Body>
+            <Card.Title>Newest Past Projects</Card.Title>
+            <Components.LatestPastProjectUpdates />
+          </Card.Body>
+        </Card>
       </div>
     )
   }

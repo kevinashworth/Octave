@@ -1,19 +1,18 @@
 import { registerComponent } from 'meteor/vulcan:core'
-import React, { PureComponent } from 'react'
+import React from 'react'
 import PropTypes from 'prop-types'
-import { CardText } from 'reactstrap'
+// import { CardText } from 'reactstrap'
+import Card from 'react-bootstrap/Card'
 
-class PhoneDetail extends PureComponent {
-  render () {
-    const { phone } = this.props
-    let displayText = phone.phoneNumberType ? phone.phoneNumberType + ': ' : ''
-    displayText += phone.nationalFormat ? phone.nationalFormat : phone.phoneNumberAsInput
-    return (
-      <CardText>
-        {displayText}
-      </CardText>
-    )
-  }
+const PhoneDetail = (props) => {
+  const { phone } = props
+  let displayText = phone.phoneNumberType ? phone.phoneNumberType + ': ' : ''
+  displayText += phone.nationalFormat ? phone.nationalFormat : phone.phoneNumberAsInput
+  return (
+    <Card.Text>
+      {displayText}
+    </Card.Text>
+  )
 }
 
 PhoneDetail.propTypes = {
@@ -21,7 +20,7 @@ PhoneDetail.propTypes = {
     phoneNumberAsInput: PropTypes.string,
     phoneNumberType: PropTypes.string,
     phoneNumber: PropTypes.string,
-    nationalFormat: PropTypes.string,
+    nationalFormat: PropTypes.string
   }).isRequired
 }
 

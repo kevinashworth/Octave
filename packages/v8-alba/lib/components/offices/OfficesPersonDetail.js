@@ -1,21 +1,20 @@
 import { registerComponent } from 'meteor/vulcan:core'
-import React, { PureComponent } from 'react'
+import React from 'react'
 import { Link } from 'react-router-dom'
 // import PropTypes from 'prop-types'
-import { CardText } from 'reactstrap'
+// import { CardText } from 'reactstrap'
+import Card from 'react-bootstrap/Card'
 
-class OfficesPersonDetail extends PureComponent {
-  render () {
-    const person = this.props.person
-    return (
-      <CardText>
-        { person.personnelTitle} <b>{ person.name }</b> ({person.contactId})
-        <Link to={`/contacts/${person._id}`}>
-          {person.name}
-        </Link>
-      </CardText>
-    )
-  }
+const OfficesPersonDetail = (props) => {
+  const person = props.person
+  return (
+    <Card.Text>
+      {person.personnelTitle} <b>{person.name}</b> ({person.contactId})
+      <Link to={`/contacts/${person._id}`}>
+        {person.name}
+      </Link>
+    </Card.Text>
+  )
 }
 
 // OfficesPersonDetail.propTypes = {

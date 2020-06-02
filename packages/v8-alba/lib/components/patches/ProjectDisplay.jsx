@@ -1,6 +1,7 @@
 import { Components } from 'meteor/vulcan:core'
 import React from 'react'
-import { Card, CardBody, CardFooter, CardHeader, CardLink, CardText, CardTitle } from 'reactstrap'
+// import { Card, CardBody, CardFooter, CardHeader, CardLink, CardText, CardTitle } from 'reactstrap'
+import Card from 'react-bootstrap/Card'
 import Interweave from 'interweave'
 import moment from 'moment'
 import { DATE_FORMAT_LONG } from '../../modules/constants.js'
@@ -29,66 +30,58 @@ const ProjectDisplay = ({ project }) => {
     'Project as it was in the database before it was edited ' + moment(project.updatedAt).format(DATE_FORMAT_LONG)
   return (
     <Card className='card-accent-danger'>
-      <CardHeader tag='h2'>{project.projectTitle}</CardHeader>
-      <CardBody>
-        <CardTitle><b>Project Information</b></CardTitle>
-        <CardText tag='div'>
+      <Card.Header as='h2'>{project.projectTitle}</Card.Header>
+      <Card.Body>
+        <Card.Title><b>Project Information</b></Card.Title>
+        <Card.Text as='div'>
           <b>{project.projectTitle}</b><br />
           {project.projectType}{project.network && ` – ${project.network}`}<br />
           {project.union}{project.platformType && ` (${project.platformType})`}<br />
           {seasonorder(project)}
           {project.status}
-        </CardText>
+        </Card.Text>
         <hr />
         {project.htmlSummary
           ? <Interweave content={project.htmlSummary} transform={transform} />
-          : <CardText>{project.summary}</CardText>
-        }
+          : <Card.Text>{project.summary}</Card.Text>}
         {project.htmlNotes
           ? <Interweave content={project.htmlNotes} transform={transform} />
-          : <CardText>{project.notes}</CardText>
-        }
+          : <Card.Text>{project.notes}</Card.Text>}
         {project.shootingLocation &&
-          <CardText><b>Shooting Location</b>: {project.shootingLocation}</CardText>
-        }
+          <Card.Text><b>Shooting Location</b>: {project.shootingLocation}</Card.Text>}
         <hr />
         {project.website &&
-        <CardText>
-          <CardLink href={project.website} target='_websites'>Open official website <i className='fa fa-external-link' /></CardLink>
-        </CardText>
-        }
-        <CardTitle className='mt-5'><b>Casting Information</b></CardTitle>
-        <CardText className='mb-0'>
-          <b>{ project.castingCompany }</b>
-        </CardText>
+          <Card.Text>
+            <Card.Link href={project.website} target='_websites'>Open official website <i className='fa fa-external-link' /></Card.Link>
+          </Card.Text>}
+        <Card.Title className='mt-5'><b>Casting Information</b></Card.Title>
+        <Card.Text className='mb-0'>
+          <b>{project.castingCompany}</b>
+        </Card.Text>
         {project.offices &&
           project.offices.map(office =>
             <div key={office.officeId}>
               <b>{office.officeLocation}</b>
               <Components.OfficeMini documentId={office.officeId} />
             </div>
-          )
-        }
-        {project.contacts
-          ? project.contacts.map(contact => <Components.ContactDetail key={contact.contactId} contact={contact} />)
-          : null }
-        {project.addresses && project.addresses[0]
-          ? project.addresses.map((address, index) => <Components.AddressDetail key={getFullAddress(address)+index} address={address} />)
-          : null }
+          )}
+        {project.contacts &&
+          project.contacts.map(contact => <Components.ContactDetail key={contact.contactId} contact={contact} />)}
+        {project.addresses && project.addresses[0] &&
+          project.addresses.map((address, index) => <Components.AddressDetail key={getFullAddress(address) + index} address={address} />)}
         {project.contactId}
         {project.links &&
-          <CardTitle className='mt-5'><b>Links</b></CardTitle>}
+          <Card.Title className='mt-5'><b>Links</b></Card.Title>}
         {project.links &&
-          <CardText>
+          <Card.Text>
             {project.links.map((link, index) =>
               <Components.LinkDetail key={`link-detail-${index}`} link={link} />
             )}
-          </CardText>
-        }
-      </CardBody>
-      <CardFooter>
+          </Card.Text>}
+      </Card.Body>
+      <Card.Footer>
         <span className='text-muted'>{displayDate}</span>
-      </CardFooter>
+      </Card.Footer>
     </Card>
   )
 }

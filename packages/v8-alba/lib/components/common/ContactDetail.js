@@ -1,18 +1,17 @@
 import { registerComponent } from 'meteor/vulcan:core'
-import React, { PureComponent } from 'react'
+import React from 'react'
 import { Link } from 'react-router-dom'
 import PropTypes from 'prop-types'
-import { CardText } from 'reactstrap'
+// import { CardText } from 'reactstrap'
+import Card from 'react-bootstrap/Card'
 
-class ContactDetail extends PureComponent {
-  render () {
-    const contact = this.props.contact
-    return (
-      <CardText className='mb-0'>
-        {contact.contactTitle} <b><Link to={`/contacts/${contact.contactId}`}>{contact.contactName}</Link></b>
-      </CardText>
-    )
-  }
+const ContactDetail = (props) => {
+  const contact = props.contact
+  return (
+    <Card.Text className='mb-0'>
+      {contact.contactTitle} <b><Link to={`/contacts/${contact.contactId}`}>{contact.contactName}</Link></b>
+    </Card.Text>
+  )
 }
 
 ContactDetail.propTypes = {
