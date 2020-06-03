@@ -14,7 +14,7 @@ const iconClass = (platform) => {
   if (theirBrand > -1) {
     return 'fa fa-' + platform
   }
-  const brand = find(BRANDS_ENUM, {brand: platform})
+  const brand = find(BRANDS_ENUM, { brand: platform })
   if (brand) {
     return 'fa ' + brand.fa
   } else {

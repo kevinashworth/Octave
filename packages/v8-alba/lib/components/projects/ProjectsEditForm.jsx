@@ -2,7 +2,7 @@ import { Components, registerComponent, withCurrentUser } from 'meteor/vulcan:co
 import Users from 'meteor/vulcan:users'
 import React from 'react'
 import { withRouter } from 'react-router-dom'
-import { Card, CardBody } from 'reactstrap'
+import Card from 'react-bootstrap/Card'
 import Projects from '../../modules/projects/collection.js'
 import { PAST_PROJECT_STATUSES_ARRAY } from '../../modules/constants.js'
 import _ from 'lodash'
@@ -13,7 +13,7 @@ const ProjectsEditForm = ({ documentId, match, history, toggle, currentUser }) =
     <div className='animated fadeIn'>
       <Components.HeadTags title='V8 Alba: Edit Project' />
       <Card className='card-accent-danger'>
-        <CardBody>
+        <Card.Body>
           <Components.SmartForm
             collection={Projects}
             documentId={theDocumentId}
@@ -42,14 +42,14 @@ const ProjectsEditForm = ({ documentId, match, history, toggle, currentUser }) =
               }
             }}
           />
-        </CardBody>
+        </Card.Body>
       </Card>
     </div>
   )
 }
 
 registerComponent('ProjectsEditForm', ProjectsEditForm, withCurrentUser, withRouter)
-//
+
 // submitCallback={data => {
 //   console.log('[KA] submitCallback data:', data)
 //   if (_.includes(PAST_PROJECT_STATUSES_ARRAY, data.status)) {

@@ -1,12 +1,12 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import { Button } from 'reactstrap'
+import Button from 'react-bootstrap/Button'
 
 const btnColor = (txt) => {
   if (!txt) {
-    return 'btn-secondary'
+    return 'secondary'
   }
-  return 'btn-danger'
+  return 'danger'
 }
 
 const MyClearButton = ({
@@ -14,7 +14,7 @@ const MyClearButton = ({
   globalFilter
 }) => (
   <span className='input-group-btn'>
-    <Button className={`btn btn-sm ${btnColor(globalFilter)}`} onClick={onClick}>Clear</Button>
+    <Button size='sm' variant={btnColor(globalFilter)} onClick={onClick}>Clear</Button>
   </span>
 )
 

@@ -16,7 +16,7 @@ Package.onUse(function (api) {
     'percolate:migrations'
   ]);
 
-  api.addFiles('lib/stylesheets/compiled/main-min.css', 'client');
+  api.addFiles('lib/stylesheets/compiled/main.css', 'client');
 
   api.addFiles([
     'lib/stylesheets/vendors/react-bootstrap-table-all.min.css',

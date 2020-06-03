@@ -1,7 +1,7 @@
 import { registerComponent } from 'meteor/vulcan:lib'
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
-import { FormGroup, Input, Label } from 'reactstrap'
+import Form from 'react-bootstrap/Form'
 import Select from 'react-select-virtualized'
 import _ from 'lodash'
 import { customStyles, theme } from './react-select-settings'
@@ -17,14 +17,14 @@ import { CASTING_TITLES_ENUM, nullOption } from '../../../modules/constants.js'
 * TODO: a DRY component of this to not repeat all this code in SelectProjectIdNameTitle.jsx
 */
 
-const OptionsSelect = (({ options, ...otherProps }) => {
+const OptionsSelect = ({ options, ...otherProps }) => {
   return (
     <Select
       options={options}
       {...otherProps}
     />
   )
-})
+}
 
 class SelectPastProjectIdNameTitle extends Component {
   constructor (props) {
@@ -91,8 +91,8 @@ class SelectPastProjectIdNameTitle extends Component {
   render () {
     return (
       <>
-        <FormGroup>
-          <Label for={`pastProjectId${this.props.itemIndex}`}>Past Project from Database</Label>
+        <Form.Group>
+          <Form.Label htmlFor={`pastProjectId${this.props.itemIndex}`}>Past Project from Database</Form.Label>
           <OptionsSelect
             styles={customStyles}
             maxMenuHeight={400}
@@ -104,18 +104,18 @@ class SelectPastProjectIdNameTitle extends Component {
             isClearable
             resetValue={nullOption}
           />
-        </FormGroup>
-        <FormGroup>
-          <Label for={`pastProjectTitle${this.props.itemIndex}`}>Editable Past Project Name</Label>
-          <Input
+        </Form.Group>
+        <Form.Group>
+          <Form.Label htmlFor={`pastProjectTitle${this.props.itemIndex}`}>Editable Past Project Name</Form.Label>
+          <Form.Control
             type='text'
             id={`pastProjectTitle${this.props.itemIndex}`}
             value={this.state.projectTitle}
             onChange={this.handleNameChange}
           />
-        </FormGroup>
-        <FormGroup>
-          <Label for={`titleForPastProject${this.props.itemIndex}`}>Title for Past Project</Label>
+        </Form.Group>
+        <Form.Group>
+          <Form.Label htmlFor={`titleForPastProject${this.props.itemIndex}`}>Title for Past Project</Form.Label>
           <Select
             styles={customStyles}
             maxMenuHeight={400}
@@ -127,7 +127,7 @@ class SelectPastProjectIdNameTitle extends Component {
             isClearable
             resetValue={nullOption}
           />
-        </FormGroup>
+        </Form.Group>
       </>
     )
   }

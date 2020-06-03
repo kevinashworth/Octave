@@ -1,11 +1,14 @@
-import { Components, registerComponent, withMessages } from 'meteor/vulcan:core'
+import { registerComponent, withMessages } from 'meteor/vulcan:core'
 import { FormattedMessage } from 'meteor/vulcan:i18n'
 import React, { PureComponent } from 'react'
 import PropTypes from 'prop-types'
-import { Card, CardBody, Col, Row } from 'reactstrap'
+import Card from 'react-bootstrap/Card'
+import Col from 'react-bootstrap/Col'
+import Row from 'react-bootstrap/Row'
 
 class EmailDetail extends PureComponent {
   sendVerificationEmail = () => {
+    // eslint-disable-next-line no-undef
     Meteor.call(
       'sendVerificationEmail',
       {
@@ -13,20 +16,20 @@ class EmailDetail extends PureComponent {
         email: this.props.user.email
       },
       (error, results) => {
-      if (error) {
-        console.error('sendVerificationEmail error:', error)
-        this.props.flash(error.reason, 'error')
-        return
+        if (error) {
+          console.error('sendVerificationEmail error:', error)
+          this.props.flash(error.reason, 'error')
+          return
+        }
+        // console.info('sendVerificationEmail results:', rmapEmailsCurrentUseresults)
+        this.props.flash({
+          id: 'users.verify_email_sent',
+          properties: { address: this.props.user.email },
+          type: 'primary'
+        })
       }
-      // console.info('sendVerificationEmail results:', rmapEmailsCurrentUseresults)
-      this.props.flash({
-        id: 'users.verify_email_sent',
-        properties: { address: this.props.user.email },
-        type: 'primary'
-      })
-    })
+    )
   }
-
 
   render () {
     const { user } = this.props
@@ -35,11 +38,11 @@ class EmailDetail extends PureComponent {
     }
     return (
       <Card>
-        <CardBody>
+        <Card.Body>
           <Row>
             <Col xs>
               <strong>{user.email}&nbsp;</strong>
-              {user.email && <span className='text-success'>&nbsp;(<FormattedMessage id='users.primary_email' />)&nbsp;</span> }
+              {user.email && <span className='text-success'>&nbsp;(<FormattedMessage id='users.primary_email' />)&nbsp;</span>}
             </Col>
           </Row>
           <Row>
@@ -60,7 +63,7 @@ class EmailDetail extends PureComponent {
               </ul>
             </Col>
           </Row>
-        </CardBody>
+        </Card.Body>
       </Card>
     )
   }

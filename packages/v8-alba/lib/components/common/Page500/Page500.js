@@ -1,5 +1,10 @@
 import React, { Component } from 'react'
-import { Container, Row, Col, Button, Input, InputGroup } from 'reactstrap'
+import Button from 'react-bootstrap/Button'
+import Col from 'react-bootstrap/Col'
+import Container from 'react-bootstrap/Container'
+import FormControl from 'react-bootstrap/FormControl'
+import InputGroup from 'react-bootstrap/InputGroup'
+import Row from 'react-bootstrap/Row'
 
 class Page500 extends Component {
   render () {
@@ -19,7 +24,7 @@ class Page500 extends Component {
                     <i className='fa fa-search' />
                   </span>
                 </div>
-                <Input size='16' type='text' placeholder='What are you looking for?' />
+                <FormControl size='16' type='text' placeholder='What are you looking for?' />
                 <div className='input-group-append'>
                   <Button color='info'>Search</Button>
                 </div>

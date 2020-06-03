@@ -2,8 +2,11 @@ import { Components, registerComponent, withCurrentUser, withSingle } from 'mete
 import Users from 'meteor/vulcan:users'
 import { FormattedMessage } from 'meteor/vulcan:i18n'
 import React, { Component } from 'react'
-import { Link } from 'react-router-dom'
-import { Button, Card, CardBody, CardFooter, CardHeader, CardText, CardTitle, Collapse, Nav, NavItem, NavLink, TabContent, TabPane } from 'reactstrap'
+import Button from 'react-bootstrap/Button'
+import Card from 'react-bootstrap/Card'
+import Collapse from 'react-bootstrap/Collapse'
+import Tab from 'react-bootstrap/Tab'
+import Tabs from 'react-bootstrap/Tabs'
 import Interweave from 'interweave'
 import mapProps from 'recompose/mapProps'
 import moment from 'moment'
@@ -15,11 +18,11 @@ import Offices from '../../modules/offices/collection.js'
 
 const Flextest = styled.div`
   display: flex;
-	flex-direction: column;
-	flex-wrap: wrap;
-	justify-content: flex-start;
-	align-items: stretch;
-	align-content: flex-start;
+  flex-direction: column;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+  align-items: stretch;
+align-content: flex-start;
 `
 
 // Don't fetch and render PastProjects unless user clicks to see them
@@ -31,10 +34,10 @@ function PastProjects (props) {
 
   return (
     <Card>
-      <CardBody>
-        <CardTitle>Past Projects</CardTitle>
+      <Card.Body>
+        <Card.Title>Past Projects</Card.Title>
         {props.pastProjects.map((o, index) => <Components.PastProjectMini key={`PastProjectMini${index}`} documentId={o.projectId} />)}
-      </CardBody>
+      </Card.Body>
     </Card>
   )
 }
@@ -44,30 +47,17 @@ class OfficesSingle extends Component {
     super(props)
 
     this.state = {
-      activeTab: 'Main',
       collapseIsOpen: false,
-      commentsTabLabel: 'Comments'
+      commentsTabTitle: 'Comments'
     }
-
-    this.commentsCallback = this.commentsCallback.bind(this)
-    this.toggleCollapse = this.toggleCollapse.bind(this)
-    this.toggleTab = this.toggleTab.bind(this)
   }
 
-  commentsCallback (labelFromCommentsThread) {
-    this.setState({ commentsTabLabel: labelFromCommentsThread })
+  commentsCallback = (labelFromCommentsThread) => {
+    this.setState({ commentsTabTitle: labelFromCommentsThread })
   }
 
-  toggleCollapse () {
+  handleCollapseClick = () => {
     this.setState({ collapseIsOpen: !this.state.collapseIsOpen })
-  }
-
-  toggleTab (tab) {
-    if (this.state.activeTab !== tab) {
-      this.setState({
-        activeTab: tab
-      })
-    }
   }
 
   render () {
@@ -87,87 +77,75 @@ class OfficesSingle extends Component {
       <div className='animated fadeIn'>
         <Components.HeadTags title={`V8 Alba: ${office.displayName}`} />
         <Card className='card-accent-primary'>
-          <CardHeader tag='h2'>{ office.displayName }{ Users.canUpdate({ collection: Offices, user: currentUser, document })
-            ? <div className='float-right'>
-              <Button tag={Link} to={`/offices/${office._id}/edit`}>Edit</Button>
-            </div> : null}
-          </CardHeader>
-          <CardBody>
-            <Nav tabs>
-              <NavItem>
-                <NavLink active={this.state.activeTab === 'Main'}
-                  onClick={() => { this.toggleTab('Main') }}
-                >Main</NavLink>
-              </NavItem>
-              <NavItem>
-                <NavLink active={this.state.activeTab === 'Comments'}
-                  onClick={() => { this.toggleTab('Comments') }}
-                >{ this.state.commentsTabLabel }</NavLink>
-              </NavItem>
-              <NavItem>
-                <NavLink active={this.state.activeTab === 'History'}
-                  onClick={() => { this.toggleTab('History') }}
-                >History</NavLink>
-              </NavItem>
-            </Nav>
-            <TabContent activeTab={this.state.activeTab}>
-              <TabPane tabId='Main'>
+          <Card.Header as='h2'>
+            {office.displayName}
+            {Users.canUpdate({ collection: Offices, user: currentUser, document }) &&
+              <div className='float-right'>
+                <Button variant='secondary' href={`/offices/${office._id}/edit`}>Edit</Button>
+              </div>}
+          </Card.Header>
+          <Card.Body>
+            <Tabs defaultActiveKey='main' id='offices_single_tabs'>
+              <Tab eventKey='main' title='Main'>
                 {office.addresses &&
-                  <CardTitle><b>{pluralize('Address', office.addresses.length)}</b></CardTitle>}
+                  <Card.Title><b>{pluralize('Address', office.addresses.length)}</b></Card.Title>}
                 {office.addresses &&
                   office.addresses.map((o, index) => <Components.AddressDetail key={index} address={o} />)}
                 {office.phones &&
                   office.phones.map((o, index) => <Components.PhoneDetail key={index} phone={o} />)}
                 {office.htmlBody &&
-                  <CardTitle className='mt-5'><b>Notes</b></CardTitle>}
+                  <Card.Title className='mt-5'><b>Notes</b></Card.Title>}
                 {office.htmlBody &&
                   <Interweave content={office.htmlBody} transform={transform} />}
                 {office.theContacts &&
                   office.theContacts.length > 0 &&
-                  <CardTitle className='mt-5'><b>Contacts</b></CardTitle>}
-                    {office.theContacts &&
-                      office.theContacts.length > 0 &&
-                      office.theContacts.map((o, index) => <Components.ContactMini key={`ContactMini${index}`} documentId={o._id} />)}
+                    <Card.Title className='mt-5'><b>Contacts</b></Card.Title>}
+                {office.theContacts &&
+                  office.theContacts.length > 0 &&
+                  office.theContacts.map((o, index) => <Components.ContactMini key={`ContactMini${index}`} documentId={o._id} />)}
                 <Components.ErrorBoundary>
                   {office.theProjects &&
-                    <CardTitle className='mt-5'><b>Projects</b></CardTitle>}
+                    <Card.Title className='mt-5'><b>Projects</b></Card.Title>}
                   {office.theProjects &&
                     <Flextest>
-                    {office.theProjects.map((o, index) => <Components.ProjectMini key={`ProjectMini-${index}`} documentId={o._id} />)}
-                    </Flextest>
-                  }
+                      {office.theProjects.map((o, index) => <Components.ProjectMini key={`ProjectMini-${index}`} documentId={o._id} />)}
+                    </Flextest>}
                 </Components.ErrorBoundary>
                 {office.links &&
-                  <CardText className='mt-5'>
+                  <Card.Text className='mt-5'>
                     {office.links.map((link, index) =>
                       <Components.LinkDetail key={`link-detail-${index}`} link={link} />
                     )}
-                  </CardText>
-                }
-              </TabPane>
-              <TabPane tabId='Comments'>
-                <Components.CommentsThread callbackFromSingle={this.commentsCallback}
+                  </Card.Text>}
+              </Tab>
+              <Tab eventKey='comments' title={this.state.commentsTabTitle}>
+                <Components.CommentsThread
+                  callbackFromSingle={this.commentsCallback}
                   terms={{ objectId: document._id, collectionName: 'Offices', view: 'Comments' }}
                 />
-              </TabPane>
-              <TabPane tabId='History'>
+              </Tab>
+              <Tab eventKey='history' title='History'>
                 <Components.OfficePatchesList documentId={document._id} />
-              </TabPane>
-            </TabContent>
-          </CardBody>
-          <CardFooter>
+              </Tab>
+            </Tabs>
+          </Card.Body>
+          <Card.Footer>
             <small className='text-muted'>{displayDate}</small>
-          </CardFooter>
+          </Card.Footer>
         </Card>
         {office.pastProjects &&
-        <div>
-          <Button color='link' onClick={this.toggleCollapse}
-            className='mb-3'>{`${this.state.collapseIsOpen ? 'Hide' : 'Show'} Past Projects`}</Button>
-          <Collapse isOpen={this.state.collapseIsOpen}>
-            <PastProjects collapseIsOpen={this.state.collapseIsOpen} pastProjects={office.pastProjects} />
-          </Collapse>
-        </div>
-        }
+          <div>
+            <Button
+              className='mb-3'
+              onClick={this.handleCollapseClick}
+              variant='link'
+            >
+              {`${this.state.collapseIsOpen ? 'Hide' : 'Show'} Past Projects`}
+            </Button>
+            <Collapse isOpen={this.state.collapseIsOpen}>
+              <PastProjects collapseIsOpen={this.state.collapseIsOpen} pastProjects={office.pastProjects} />
+            </Collapse>
+          </div>}
       </div>
     )
   }

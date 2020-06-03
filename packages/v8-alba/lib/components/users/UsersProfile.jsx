@@ -1,82 +1,83 @@
 import { Components, registerComponent, withCurrentUser, withSingle2 } from 'meteor/vulcan:core'
 import Users from 'meteor/vulcan:users'
 import { FormattedMessage } from 'meteor/vulcan:i18n'
-import React, { PureComponent } from 'react'
-import { Link } from 'react-router-dom'
+import React from 'react'
 import mapProps from 'recompose/mapProps'
-import { Button, Card, CardBody, CardFooter, CardHeader, CardLink, CardText, CardTitle } from 'reactstrap'
+import Button from 'react-bootstrap/Button'
+import Card from 'react-bootstrap/Card'
 import Markup from 'interweave'
 import _ from 'lodash'
 import moment from 'moment'
 import { DATE_FORMAT_LONG, DATE_FORMAT_SHORT } from '../../modules/constants.js'
 
-class UsersProfile extends PureComponent {
-  render() {
-    const { currentUser, document, loading } = this.props
-    if (loading) {
-      return <Components.Loading />
-    } else if (!document) {
-      return <FormattedMessage id='app.404' />
-    } else {
-      const user = document
-      let displayDate =
-        'User added ' + moment(user.createdAt).format(DATE_FORMAT_SHORT)
-      if (user.updatedAt) {
-        displayDate += ' / ' +   'Last modified ' + moment(user.updatedAt).format(DATE_FORMAT_LONG)
-      }
-      return (
-        <div className='animated fadeIn'>
-          <Components.HeadTags
-            url={Users.getProfileUrl(user, true)}
-            title={`V8: ${Users.getDisplayName(user)}`}
-          />
-          <Card className='card-accent-success'>
-            <CardHeader tag='h2'>{Users.getDisplayName(user)}{ Users.canUpdate({ collection: Users, user: currentUser, document: user })
-              ? <div className='float-right'>
-                  <Button tag={Link} to={`/users/${user.slug}/edit`}>Edit</Button>
-                </div>
-              : null}
-            </CardHeader>
-            <CardBody>
-              <CardTitle><b>Email</b></CardTitle>
-              <Components.EmailDetail user={user} />
-              <CardTitle><b>Bio</b></CardTitle>
-              {user.htmlBio
-               ? <Markup content={user.htmlBio} />
-               : <CardText>{ user.bio }</CardText>
-              }
-              <CardTitle><b>Links</b></CardTitle>
-              {user.website ? (
-                <CardText>
-                <a href={user.website} target='profilelinks'>{user.website} </a>
-                </CardText>
-              ) : null}
-            </CardBody>
-            {user.twitterUsername ? (
-              <CardBody>
-                <CardText>
-                  <Button className='btn-twitter'>
-                    <span><CardLink href={'https://twitter.com/' + user.twitterUsername}>{user.twitterUsername}</CardLink></span>
-                  </Button>
-                </CardText>
-              </CardBody>
-            ) : null}
-            <CardFooter>
-              <small className='text-muted'>{displayDate}</small>
-            </CardFooter>
-          </Card>
-        </div>
-      )
-    }
+const UsersProfile = (props) => {
+  const { currentUser, document, loading } = props
+  if (loading) {
+    return <Components.Loading />
   }
+  if (!document) {
+    return <FormattedMessage id='app.404' />
+  }
+  const user = document
+  let displayDate =
+    'User added ' + moment(user.createdAt).format(DATE_FORMAT_SHORT)
+  if (user.updatedAt) {
+    displayDate += ' / ' + 'Last modified ' + moment(user.updatedAt).format(DATE_FORMAT_LONG)
+  }
+  return (
+    <div className='animated fadeIn'>
+      <Components.HeadTags
+        url={Users.getProfileUrl(user, true)}
+        title={`V8: ${Users.getDisplayName(user)}`}
+      />
+      <Card className='card-accent-success'>
+        <Card.Header as='h2'>
+          {Users.getDisplayName(user)}
+          {Users.canUpdate({ collection: Users, user: currentUser, document }) &&
+            <div className='float-right'>
+              <Button variant='secondary' href={`/users/${user.slug}/edit`}>Edit</Button>
+            </div>}
+        </Card.Header>
+        <Card.Body>
+          <Card.Title><b>Email</b></Card.Title>
+          <Components.EmailDetail user={user} />
+          <Card.Title><b>Bio</b></Card.Title>
+          {user.htmlBio
+            ? <Markup content={user.htmlBio} />
+            : <Card.Text>{user.bio}</Card.Text>}
+          <Card.Title><b>Links</b></Card.Title>
+          {user.website &&
+            <Card.Text>
+              <a href={user.website} target='profilelinks'>{user.website} </a>
+            </Card.Text>}
+        </Card.Body>
+        {user.twitterUsername &&
+          <Card.Body>
+            <Card.Text>
+              <Button className='btn-twitter btn-brand'>
+                <i className='fa fa-twitter' />
+                <span>
+                  <a href={'https://twitter.com/' + user.twitterUsername} target='profilelinks'>
+                    {user.twitterUsername}
+                  </a>
+                </span>
+              </Button>
+            </Card.Text>
+          </Card.Body>}
+        <Card.Footer>
+          <small className='text-muted'>{displayDate}</small>
+        </Card.Footer>
+      </Card>
+    </div>
+  )
 }
 
-UsersProfile.displayName = 'UsersProfile';
+UsersProfile.displayName = 'UsersProfile'
 
 const options = {
   collection: Users,
   fragmentName: 'UsersProfile'
-};
+}
 
 // const mapPropsFunction = props => ({
 //   ...props,
@@ -85,7 +86,8 @@ const options = {
 // })
 
 // make router slug param available as `slug` prop
-const mapPropsFunction = props => ({ ...props,
+const mapPropsFunction = props => ({
+  ...props,
   input: {
     filter: {
       slug: {
@@ -93,7 +95,7 @@ const mapPropsFunction = props => ({ ...props,
       }
     }
   }
-});
+})
 
 registerComponent({
   name: 'UsersProfile',
@@ -103,4 +105,4 @@ registerComponent({
     withCurrentUser,
     [withSingle2, options]
   ]
-});
+})

@@ -1,10 +1,12 @@
 import { registerComponent, Components } from 'meteor/vulcan:core'
 import React, { Component } from 'react'
-import { Card, CardBody, Col, Row } from 'reactstrap'
+import Card from 'react-bootstrap/Card'
+import Col from 'react-bootstrap/Col'
+import Row from 'react-bootstrap/Row'
 import { MyAccountsLoginForm } from './MyAccountsLoginForm.jsx'
 
 class Login extends Component {
-  constructor(props) {
+  constructor (props) {
     super(props)
     // lifting state up from AccountsStateSwitcher
     this.state = {
@@ -12,12 +14,11 @@ class Login extends Component {
       formHeading: 'Sign In',
       formSubheading: 'Access your V8 account'
     }
-    this.onFormStateChange = this.onFormStateChange.bind(this)
   }
 
-  onFormStateChange = (state) => {
+  handleFormStateChange = (state) => {
     var formHeading, formSubheading
-    switch(state) {
+    switch (state) {
       case Symbol.for('SIGN_IN'):
         formHeading = 'Sign In'
         break
@@ -56,15 +57,15 @@ class Login extends Component {
         <Row className='justify-content-center'>
           <Col md='6'>
             <Card className='p-4'>
-              <CardBody>
+              <Card.Body>
                 <h1>{this.state.formHeading}</h1>
                 <p className='text-muted'>{this.state.formSubheading}</p>
                 <MyAccountsLoginForm
                   formState={this.state.formState}
-                  onFormStateChange={this.onFormStateChange}
+                  onFormStateChange={this.handleFormStateChange}
                   onSignedInHook={() => window.location.assign('/dashboard')}
                 />
-              </CardBody>
+              </Card.Body>
             </Card>
           </Col>
         </Row>

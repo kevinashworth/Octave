@@ -115,7 +115,10 @@ registerFragment(/* GraphQL */ `
     firstName
     middleName
     lastName
+    gender
     title
+    body
+    htmlBody
     addressString
     theAddress {
       street1
@@ -132,6 +135,11 @@ registerFragment(/* GraphQL */ `
       state
       zip
       location
+    }
+    projects {
+      projectId
+      projectTitle
+      titleForProject
     }
     allAddresses
     createdAt

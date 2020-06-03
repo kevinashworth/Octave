@@ -1,7 +1,7 @@
 import { Components, registerComponent } from 'meteor/vulcan:core'
 import React, { PureComponent } from 'react'
 import { Line } from 'react-chartjs-2'
-import { Card, CardBody } from 'reactstrap'
+import Card from 'react-bootstrap/Card'
 import _ from 'lodash'
 import moment from 'moment'
 import { brandColors } from './brandColors.js'
@@ -13,7 +13,7 @@ class LineChartSmall extends PureComponent {
       return (<div><Components.Loading /></div>)
     }
 
-    const displayStats = _.takeRightWhile(theSmallStats, function(stat) {
+    const displayStats = _.takeRightWhile(theSmallStats, function (stat) {
       return moment(stat.date).isSameOrAfter(moment().subtract(1, 'years'))
     })
 
@@ -72,10 +72,10 @@ class LineChartSmall extends PureComponent {
 
     return (
       <Card className={`text-white bg-${bgColor}`}>
-        <CardBody className='pb-0 pt-1'>
+        <Card.Body className='pb-0 pt-1'>
           <h5 className='mb-0 text-truncate'>{title}</h5>
           <p>{subtitle}</p>
-        </CardBody>
+        </Card.Body>
         <div className='chart-wrapper px-3'>
           <Line data={cardChartData} options={cardChartOpts} height={150} />
         </div>

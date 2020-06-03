@@ -1,6 +1,7 @@
 import { Components, registerComponent, withAccess, withMulti } from 'meteor/vulcan:core'
 import React, { PureComponent } from 'react'
-import { Col, Row } from 'reactstrap'
+import Col from 'react-bootstrap/Col'
+import Row from 'react-bootstrap/Row'
 
 class Dashboard extends PureComponent {
   render () {

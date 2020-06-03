@@ -1,3 +1,30 @@
+/* OfficesDataTable (react-table, not react-bootstrap-table) */
+
+.react-table {
+  table-layout: fixed;
+}
+
+.react-table td, .reac-table th {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.column-filter {
+  display: inline-block;
+  width: auto;
+}
+
+.column-filter::placeholder {
+  font-size: smaller;
+}
+
+.column-filter.form-control.is-invalid {
+  background-image: none; /* Hide the red exclamation point in a circle */
+}
+
+/* Now-unused experimental datatable */
+/*
 tr.datatable-item td, .datatable-list > table > thead > tr > th {
   padding: 0.25rem;
 }
@@ -18,22 +45,4 @@ div.datatable-list > table > tbody > tr:last-child {
   font-size: 1.75rem;
   font-weight: 500;
 }
-
-.react-table {
-  table-layout: fixed;
-}
-
-.react-table td, .reac-table th {
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-
-.column-filter {
-  display: inline-block;
-  width: auto;
-}
-
-.column-filter::placeholder {
-  font-size: smaller;
-}
+*/

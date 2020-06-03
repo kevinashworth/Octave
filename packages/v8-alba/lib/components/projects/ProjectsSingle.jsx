@@ -2,9 +2,11 @@ import { Components, registerComponent, withCurrentUser, withSingle } from 'mete
 import Users from 'meteor/vulcan:users'
 import { FormattedMessage } from 'meteor/vulcan:i18n'
 import React, { Component } from 'react'
-import { Link } from 'react-router-dom'
 import mapProps from 'recompose/mapProps'
-import { Button, Card, CardBody, CardFooter, CardHeader, CardLink, CardText, CardTitle, Nav, NavItem, NavLink, TabContent, TabPane } from 'reactstrap'
+import Button from 'react-bootstrap/Button'
+import Card from 'react-bootstrap/Card'
+import Tab from 'react-bootstrap/Tab'
+import Tabs from 'react-bootstrap/Tabs'
 import Interweave from 'interweave'
 import moment from 'moment'
 import { DATE_FORMAT_LONG, DATE_FORMAT_SHORT } from '../../modules/constants.js'
@@ -14,18 +16,19 @@ import Projects from '../../modules/projects/collection.js'
 class ProjectsSingle extends Component {
   constructor (props) {
     super(props)
+
     this.state = {
-      activeTab: 'Main',
-      commentsTabLabel: 'Comments'
+      commentsTabTitle: 'Comments'
     }
   }
 
   commentsCallback = (labelFromCommentsThread) => {
-    this.setState({ commentsTabLabel: labelFromCommentsThread })
+    this.setState({ commentsTabTitle: labelFromCommentsThread })
   }
 
   deleteAlgoliaRecord = (documentId) => {
     if (typeof documentId === 'string') {
+      // eslint-disable-next-line no-undef
       Meteor.call(
         'deleteAlgoliaRecord',
         documentId,
@@ -47,19 +50,13 @@ class ProjectsSingle extends Component {
     } else if (project.status === 'On Hiatus' || project.status === 'Wrapped' || project.status === 'Canceled') {
       so = `Completed Season ${project.season}`
     }
-    if (project.status === 'Casting'|| project.status === 'Pre-Prod.' || project.status === 'See Notes' || project.status === 'Suspended' ) {
+    if (project.status === 'Casting' || project.status === 'Pre-Prod.' || project.status === 'See Notes' || project.status === 'Suspended') {
       so = `Season ${project.season}`
     }
     if (project.order) {
       so += ` (${project.order}-episode order)`
     }
     return so
-  }
-
-  toggleTab = (tab) => {
-    if (this.state.activeTab !== tab) {
-      this.setState({ activeTab: tab })
-    }
   }
 
   render () {
@@ -72,8 +69,7 @@ class ProjectsSingle extends Component {
         <div>
           <FormattedMessage id='app.missing_document' />
           {Users.isAdmin(currentUser) &&
-            <Button color='danger' onClick={this.deleteAlgoliaRecord(documentId)}>Delete {documentId} from Algolia</Button>
-          }
+            <Button color='danger' onClick={this.deleteAlgoliaRecord(documentId)}>Delete {documentId} from Algolia</Button>}
         </div>
       )
     }
@@ -87,111 +83,79 @@ class ProjectsSingle extends Component {
       <div className='animated fadeIn'>
         <Components.HeadTags title={`V8 Alba: ${project.projectTitle}`} />
         <Card className='card-accent-danger'>
-          <CardHeader tag='h2'>
+          <Card.Header as='h2'>
             {project.projectTitle}
-            {Users.canUpdate({ collection: Projects, user: currentUser, document })
-              ? <div className='float-right'>
-                  <Button tag={Link} to={`/projects/${project._id}/edit`}>Edit</Button>
-                </div>
-              : null
-            }
-          </CardHeader>
-          <CardBody>
-            <Nav tabs>
-              <NavItem>
-                <NavLink
-                  active={this.state.activeTab === 'Main'}
-                  onClick={() => { this.toggleTab('Main') }}
-                >Main</NavLink>
-              </NavItem>
-              <NavItem>
-                <NavLink
-                  active={this.state.activeTab === 'Comments'}
-                  onClick={() => { this.toggleTab('Comments') }}
-                >{ this.state.commentsTabLabel }</NavLink>
-              </NavItem>
-              <NavItem>
-                <NavLink
-                  active={this.state.activeTab === 'History'}
-                  onClick={() => { this.toggleTab('History') }}
-                >History</NavLink>
-              </NavItem>
-            </Nav>
-            <TabContent activeTab={this.state.activeTab}>
-              <TabPane tabId='Main'>
-                <CardTitle><b>Project Information</b></CardTitle>
-                <CardText tag='div'>
+            {Users.canUpdate({ collection: Projects, user: currentUser, document }) &&
+              <div className='float-right'>
+                <Button variant='secondary' href={`/projects/${project._id}/edit`}>Edit</Button>
+              </div>}
+          </Card.Header>
+          <Card.Body>
+            <Tabs defaultActiveKey='main' id='projects_single_tabs'>
+              <Tab eventKey='main' title='Main'>
+                <Card.Title><b>Project Information</b></Card.Title>
+                <Card.Text as='div'>
                   <b>{project.projectTitle}</b><br />
                   {project.projectType}{project.network && ` – ${project.network}`}<br />
-                  {project.union }{project.platformType && ` (${project.platformType})`}<br />
+                  {project.union}{project.platformType && ` (${project.platformType})`}<br />
                   {seasonorder}{seasonorder ? <br /> : null}
                   {project.status}
                   <hr />
                   {project.htmlSummary
                     ? <Interweave content={project.htmlSummary} transform={transform} />
-                    : <CardText>{project.summary}</CardText>
-                  }
+                    : <Card.Text>{project.summary}</Card.Text>}
                   {project.htmlNotes
                     ? <Interweave content={project.htmlNotes} transform={transform} />
-                    : <CardText>{project.notes}</CardText>
-                  }
+                    : <Card.Text>{project.notes}</Card.Text>}
                   {project.shootingLocation &&
-                    <CardText><b>Shooting Location</b>: {project.shootingLocation}</CardText>
-                  }
-                  <hr />
-                </CardText>
-              {project.website &&
-              <CardText>
-                <CardLink href={project.website} target='_websites'>Open official website <i className='fa fa-external-link' /></CardLink>
-              </CardText>
-              }
-              <CardTitle className='mt-5'><b>Casting Information</b></CardTitle>
-              <CardText className='mb-0'>
-                <b>{project.castingCompany}</b>
-              </CardText>
-              {project.offices &&
-                project.offices.map(office =>
-                  <div key={office.officeId}>
-                    <b>{office.officeLocation}</b>
-                    <Components.OfficeMini documentId={office.officeId} />
-                  </div>
-                )
-              }
-              {project.contacts &&
-                project.contacts.map(contact => <Components.ContactDetail key={contact.contactId} contact={contact} />)
-              }
-              {project.addresses &&
-                <br />
-              }
-              {project.addresses && project.addresses[0] &&
-                project.addresses.map((address, index) =>
-                  <Components.AddressDetail key={getFullAddress(address) + index} address={address} />
-              )}
-              {project.links &&
-                <CardTitle className='mt-5'><b>Links</b></CardTitle>
-              }
-              {project.links &&
-                <CardText>
-                  {project.links.map((link, index) =>
-                    <Components.LinkDetail key={`link-detail-${index}`} link={link} />
+                    <Card.Text><b>Shooting Location</b>: {project.shootingLocation}</Card.Text>}
+                </Card.Text>
+                <hr />
+                {project.website &&
+                  <Card.Text>
+                    <Card.Link href={project.website} target='_websites'>Open official website <i className='fa fa-external-link' /></Card.Link>
+                  </Card.Text>}
+                <Card.Title className='mt-5'><b>Casting Information</b></Card.Title>
+                <Card.Text className='mb-0'>
+                  <b>{project.castingCompany}</b>
+                </Card.Text>
+                {project.offices &&
+                  project.offices.map(office =>
+                    <div key={office.officeId}>
+                      <b>{office.officeLocation}</b>
+                      <Components.OfficeMini documentId={office.officeId} />
+                    </div>
                   )}
-                </CardText>
-              }
-              </TabPane>
-              <TabPane tabId='Comments'>
+                {project.contacts &&
+                  project.contacts.map(contact => <Components.ContactDetail key={contact.contactId} contact={contact} />)}
+                {project.addresses &&
+                  <br />}
+                {project.addresses && project.addresses[0] &&
+                  project.addresses.map((address, index) =>
+                    <Components.AddressDetail key={getFullAddress(address) + index} address={address} />)}
+                {project.links && project.links[0] &&
+                  <Card.Title className='mt-5'><b>Links</b></Card.Title>}
+                {project.links &&
+                  <Card.Text>
+                    {project.links.map((link, index) =>
+                      <Components.LinkDetail key={`link-detail-${index}`} link={link} />
+                    )}
+                  </Card.Text>}
+              </Tab>
+              <Tab eventKey='comments' title={this.state.commentsTabTitle}>
                 <Components.CommentsThread
                   callbackFromSingle={this.commentsCallback}
                   terms={{ objectId: document._id, collectionName: 'Projects', view: 'Comments' }}
                 />
-              </TabPane>
-              <TabPane tabId='History'>
+              </Tab>
+              <Tab eventKey='history' title='History'>
                 <Components.ProjectPatchesList documentId={document._id} />
-              </TabPane>
-            </TabContent>
-          </CardBody>
-          <CardFooter>
+              </Tab>
+            </Tabs>
+          </Card.Body>
+          <Card.Footer>
             <small className='text-muted'>{displayDate}</small>
-          </CardFooter>
+          </Card.Footer>
         </Card>
       </div>
     )

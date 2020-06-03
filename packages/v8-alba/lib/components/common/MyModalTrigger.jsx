@@ -1,56 +1,48 @@
 import { replaceComponent } from 'meteor/vulcan:lib'
-import React, { PureComponent } from 'react'
+import React, { useState } from 'react'
 import PropTypes from 'prop-types'
-import { Button, Modal, ModalBody, ModalFooter, ModalHeader } from 'reactstrap'
+import Button from 'react-bootstrap/Button'
+import Modal from 'react-bootstrap/Modal'
 
-class MyModalTrigger extends PureComponent {
-  constructor () {
-    super()
-    this.state = {
-      modalIsOpen: false
-    }
-    this.toggle = this.toggle.bind(this)
-  }
+const MyModalTrigger = (props) => {
+  const [show, setShow] = useState(false)
+  const handleClose = () => setShow(false)
+  const handleShow = () => setShow(true)
 
-  toggle () {
-    this.setState({
-      modalIsOpen: !this.state.modalIsOpen
-    })
-  }
-
-  renderHeader () {
+  const renderHeader = () => {
     return (
-      <ModalHeader toggle={this.toggle}>
-        {this.props.title}
-      </ModalHeader>
+      <Modal.Header closeButton>
+        {props.title}
+      </Modal.Header>
     )
   }
 
-  render () {
-    const triggerComponent = this.props.component ? React.cloneElement(this.props.component, { onClick: this.toggle }) : <a href='#' onClick={this.toggle}>{this.props.label}</a>
-    const childrenComponent = React.cloneElement(this.props.children, { toggle: this.toggle })
+  const triggerComponent = props.component
+    ? React.cloneElement(props.component, { onClick: handleShow })
+    : <Button variant='secondary' onClick={handleShow}>{props.label}</Button>
 
-    return (
-      <div className='modal-trigger'>
-        {triggerComponent}
-        <Modal
-          className={this.props.className}
-          size={this.props.size}
-          isOpen={this.state.modalIsOpen}
-          toggle={this.toggle}
-          wrapClassName={this.props.dialogClassName}
-        >
-          {this.props.title ? this.renderHeader() : null}
-          <ModalBody>
-            {childrenComponent}
-          </ModalBody>
-          <ModalFooter>
-            <Button color='secondary' onClick={this.toggle}>Cancel</Button>
-          </ModalFooter>
-        </Modal>
-      </div>
-    )
-  }
+  const childrenComponent = React.cloneElement(props.children, { toggle: this.toggle })
+
+  return (
+    <div className='modal-trigger'>
+      {triggerComponent}
+      <Modal
+        className={props.className}
+        show={show}
+        size={props.size}
+        onHide={handleClose}
+        dialogClassName={props.dialogClassName}
+      >
+        {props.title ? renderHeader() : null}
+        <Modal.Body>
+          {childrenComponent}
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant='secondary' onClick={handleClose}>Cancel</Button>
+        </Modal.Footer>
+      </Modal>
+    </div>
+  )
 }
 
 MyModalTrigger.propTypes = {

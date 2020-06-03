@@ -2,16 +2,16 @@ import { Components, getFragment, registerComponent, withCurrentUser } from 'met
 import Users from 'meteor/vulcan:users'
 import React from 'react'
 import { withRouter } from 'react-router-dom'
-import { Card, CardBody } from 'reactstrap'
+import Card from 'react-bootstrap/Card'
 import Contacts from '../../modules/contacts/collection.js'
 
 const ContactsEditForm = ({ documentId, match, history, toggle, currentUser }) => {
-  const theDocumentId = documentId || match && match.params._id
+  const theDocumentId = documentId || (match && match.params._id)
   return (
     <div className='animated fadeIn'>
       <Components.HeadTags title='V8 Alba: Edit Contact' />
       <Card className='card-accent-warning'>
-        <CardBody>
+        <Card.Body>
           <Components.SmartForm
             collection={Contacts}
             documentId={theDocumentId}
@@ -39,7 +39,7 @@ const ContactsEditForm = ({ documentId, match, history, toggle, currentUser }) =
               }
             }}
           />
-        </CardBody>
+        </Card.Body>
       </Card>
     </div>
   )

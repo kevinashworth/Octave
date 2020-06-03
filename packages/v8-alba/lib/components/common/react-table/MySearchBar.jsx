@@ -1,36 +1,38 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import { Input } from 'reactstrap'
+import FormControl from 'react-bootstrap/FormControl'
 
 function MySearchBar (props) {
   const {
     className,
+    onChange,
     placeholder,
     style,
-    tableId
+    tableId,
+    value
   } = props
 
   return (
-    <Input
+    <FormControl
       id={`search-bar-${tableId}`}
       type='text'
       style={style}
-      className={`form-control ${className}`}
+      className={className}
       aria-label='Enter search text'
       placeholder={placeholder || MySearchBar.defaultProps.placeholder}
-      onChange={props.onChange}
-      value={props.value}
+      onChange={onChange}
+      value={value}
     />
   )
 }
 
 MySearchBar.propTypes = {
-  onChange: PropTypes.func.isRequired,
-  value: PropTypes.string,
   className: PropTypes.string,
+  onChange: PropTypes.func.isRequired,
   placeholder: PropTypes.string,
   style: PropTypes.object,
-  tableId: PropTypes.string
+  tableId: PropTypes.string,
+  value: PropTypes.string
 }
 
 MySearchBar.defaultProps = {

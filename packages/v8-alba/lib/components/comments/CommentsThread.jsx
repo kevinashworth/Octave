@@ -1,7 +1,7 @@
 import { Components, registerComponent, Utils, withCurrentUser, withMulti } from 'meteor/vulcan:core'
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
-import { Card, CardBody, CardHeader } from 'reactstrap'
+import Card from 'react-bootstrap/Card'
 import _ from 'lodash'
 import pluralize from 'pluralize'
 import Comments from '../../modules/comments/collection.js'
@@ -35,31 +35,28 @@ class CommentsThread extends Component {
 
   render () {
     const { loading, terms: { collectionName, objectId }, results, totalCount, currentUser } = this.props
-
     if (loading) {
       return <Components.Loading />
-    } else {
-      const resultsClone = _.map(results, _.clone) // we don't want to modify the objects we got from props
-      const nestedComments = Utils.unflatten(resultsClone, { idProperty: '_id', parentIdProperty: 'parentCommentId' })
-
-      return (
-        <Card>
-          <CardHeader className='class-accent-list'>{this.state.commentsHeader}</CardHeader>
-          <CardBody>
-            <Components.CommentsList currentUser={currentUser} comments={nestedComments} commentCount={totalCount} />
-          </CardBody>
-          <CardBody>
-            {currentUser
-              ? <Components.CommentsNewForm
-                  collectionName={collectionName}
-                  objectId={objectId}
-                  type='comment'
-                />
-              : null}
-          </CardBody>
-        </Card>
-      )
     }
+    const resultsClone = _.map(results, _.clone) // we don't want to modify the objects we got from props
+    const nestedComments = Utils.unflatten(resultsClone, { idProperty: '_id', parentIdProperty: 'parentCommentId' })
+
+    return (
+      <Card>
+        <Card.Header className='class-accent-list'>{this.state.commentsHeader}</Card.Header>
+        <Card.Body>
+          <Components.CommentsList currentUser={currentUser} comments={nestedComments} commentCount={totalCount} />
+        </Card.Body>
+        <Card.Body>
+          {currentUser &&
+            <Components.CommentsNewForm
+              collectionName={collectionName}
+              objectId={objectId}
+              type='comment'
+            />}
+        </Card.Body>
+      </Card>
+    )
   }
 }
 

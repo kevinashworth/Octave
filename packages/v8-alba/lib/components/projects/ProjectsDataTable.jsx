@@ -1,8 +1,10 @@
 import { Components, registerComponent, withAccess, withCurrentUser, withMulti } from 'meteor/vulcan:core'
 import Users from 'meteor/vulcan:users'
-import React, { Component, PureComponent } from 'react'
+import React, { Component } from 'react'
 import { Link } from 'react-router-dom'
-import { Button, Card, CardBody, CardFooter, CardHeader, Modal, ModalBody, ModalHeader } from 'reactstrap'
+import Button from 'react-bootstrap/Button'
+import Card from 'react-bootstrap/Card'
+import Modal from 'react-bootstrap/Modal'
 import { BootstrapTable, ClearSearchButton, SearchField, TableHeaderColumn } from 'react-bootstrap-table'
 import _ from 'lodash'
 import moment from 'moment'
@@ -24,23 +26,21 @@ let keptState = {
   }
 }
 
-class AddButtonFooter extends PureComponent {
-  render () {
-    return (
-      <CardFooter>
-        <Components.ModalTrigger title='New Project' component={<Button>Add a Project</Button>}>
-          <Components.ProjectsNewForm />
-        </Components.ModalTrigger>
-      </CardFooter>
-    )
-  }
+const AddButtonFooter = () => {
+  return (
+    <Card.Footer>
+      <Components.ModalTrigger title='New Project' component={<Button>Add a Project</Button>}>
+        <Components.ProjectsNewForm />
+      </Components.ModalTrigger>
+    </Card.Footer>
+  )
 }
 
 class ProjectsDataTable extends Component {
   constructor (props) {
     super(props)
     this.state = {
-      modal: false,
+      show: false,
       project: null,
       options: {
         sortIndicator: true,
@@ -91,10 +91,51 @@ class ProjectsDataTable extends Component {
     }
   }
 
+  createCustomClearButton = (onClick) => {
+    return (
+      <ClearSearchButton
+        btnContextual={this.state.searchColor}
+        className='btn-sm'
+        onClick={e => this.handleClearButtonClick(onClick)}
+      />
+    )
+  }
+
+  createCustomSearchField = (props) => {
+    if (props.defaultValue.length && this.state.searchColor !== 'btn-danger') {
+      this.setState({ searchColor: 'btn-danger' })
+    } else if (props.defaultValue.length === 0 && this.state.searchColor !== 'btn-secondary') {
+      this.setState({ searchColor: 'btn-secondary' })
+    }
+    return (
+      <SearchField defaultValue={props.defaultValue} />
+    )
+  }
+
+  handleClearButtonClick = (onClick) => {
+    this.setState({ searchColor: 'btn-secondary' })
+    onClick()
+  }
+
+  handleHide = () => {
+    if (this.state.show) {
+      this.setState({
+        show: !this.state.show
+      })
+    }
+  }
+
   pageChangeHandler = (page, sizePerPage) => {
     this.setState((prevState) => ({
       options: { ...prevState.options, page, sizePerPage }
     }))
+  }
+
+  rowClickHandler = (row, columnIndex, rowIndex, event) => {
+    this.setState({
+      project: row,
+      show: true
+    })
   }
 
   sortChangeHandler = (sortName, sortOrder) => {
@@ -115,68 +156,33 @@ class ProjectsDataTable extends Component {
     }))
   }
 
-  createCustomSearchField = (props) => {
-    if (props.defaultValue.length && this.state.searchColor !== 'btn-danger') {
-      this.setState({ searchColor: 'btn-danger' })
-    } else if (props.defaultValue.length === 0 && this.state.searchColor !== 'btn-secondary') {
-      this.setState({ searchColor: 'btn-secondary' })
-    }
-    return (
-      <SearchField defaultValue={props.defaultValue} />
-    )
-  }
-
-  handleClearButtonClick = (onClick) => {
-    this.setState({ searchColor: 'btn-secondary' })
-    onClick()
-  }
-
-  createCustomClearButton = (onClick) => {
-    return (
-      <ClearSearchButton className='btn-sm'
-        btnContextual={this.state.searchColor}
-        onClick={e => this.handleClearButtonClick(onClick)} />
-    )
-  }
-
-  toggle = () => {
-    this.setState({
-      modal: !this.state.modal
-    })
-  }
-
-  rowClickHandler = (row, columnIndex, rowIndex, event) => {
-    this.setState({
-      project: row,
-      modal: true
-    })
-  }
-
   render () {
-    const { count, totalCount, results, loadingMore, loadMore, networkStatus, currentUser,
-            projectTypeFilters, projectStatusFilters, projectUpdatedFilters, projectPlatformFilters } = this.props
+    const {
+      count, currentUser, loadingMore, loadMore, networkStatus, results, totalCount,
+      projectTypeFilters, projectStatusFilters, projectUpdatedFilters, projectPlatformFilters
+    } = this.props
 
     if (networkStatus !== 8 && networkStatus !== 7) {
       return (
         <div className='animated fadeIn'>
           <Card className='card-accent-danger'>
-            <CardHeader>
+            <Card.Header>
               <i className='fa fa-camera' />Projects
-            </CardHeader>
-            <CardBody>
+            </Card.Header>
+            <Card.Body>
               <Components.Loading />
-            </CardBody>
+            </Card.Body>
           </Card>
         </div>
       )
     }
 
     const hasMore = results && (totalCount > results.length)
-    let typeFilters = []
+    var typeFilters = []
     projectTypeFilters.forEach(filter => {
       if (filter.value) { typeFilters.push(filter.projectType) }
     })
-    let statusFilters = []
+    var statusFilters = []
     projectStatusFilters.forEach(filter => {
       if (filter.value) { statusFilters.push(filter.projectStatus) }
     })
@@ -188,7 +194,7 @@ class ProjectsDataTable extends Component {
         moment2 = filter.moment2
       }
     })
-    let platformFilters = []
+    var platformFilters = []
     projectPlatformFilters.forEach(filter => {
       if (filter.value) { platformFilters.push(filter.projectPlatform) }
     })
@@ -207,62 +213,72 @@ class ProjectsDataTable extends Component {
     return (
       <div className='animated fadeIn'>
         <Components.HeadTags title='V8 Alba: Projects' />
-        <Modal isOpen={this.state.modal} toggle={this.toggle} modalTransition={{ timeout: 100 }}>
-          {this.state.project
-            ? <ModalHeader toggle={this.toggle}>
-              <Link to={`/projects/${this.state.project._id}/${this.state.project.slug}`}>{this.state.project.projectTitle}</Link>
-            </ModalHeader>
-            : null
-          }
-          <ModalBody>
-            <Components.ProjectModal document={this.state.project} />
-          </ModalBody>
-        </Modal>
+        {this.state.project &&
+          <Modal show={this.state.show} onHide={this.handleHide}>
+            <Modal.Header closeButton>
+              <Modal.Title>
+                <Link to={`/projects/${this.state.project._id}/${this.state.project.slug}`}>{this.state.project.projectTitle}</Link>
+              </Modal.Title>
+            </Modal.Header>
+            <Modal.Body>
+              <Components.ProjectModal document={this.state.project} />
+            </Modal.Body>
+          </Modal>}
         <Card className='card-accent-danger'>
-          <CardHeader>
+          <Card.Header>
             <i className='fa fa-camera' />Projects
             <Components.ProjectFilters />
-          </CardHeader>
-          <CardBody>
-            <BootstrapTable condensed hover pagination search striped
+          </Card.Header>
+          <Card.Body>
+            <BootstrapTable
+              bordered={false}
+              condensed
               data={filteredResults}
-              bordered={false} keyField='_id'
+              hover
+              keyField='_id'
               options={{
                 ...this.state.options,
                 sizePerPageList: SIZE_PER_PAGE_LIST_SEED.concat([{
                   text: 'All', value: this.props.totalCount
                 }])
               }}
-              version='4'>
-              <TableHeaderColumn dataField='projectTitle' dataSort sortFunc={titleSortFunc} dataFormat={
-                (cell, row) => {
+              pagination
+              search
+              striped
+              version='4'
+            >
+              <TableHeaderColumn
+                dataField='projectTitle'
+                dataSort
+                dataFormat={(cell, row) => {
                   return (
                     <Link to={`/projects/${row._id}/${row.slug}`}>
                       {cell}
                     </Link>
                   )
-                }
-              } width='25%'>Name</TableHeaderColumn>
+                }}
+                sortFunc={titleSortFunc}
+                width='25%'
+              >
+                Name
+              </TableHeaderColumn>
               <TableHeaderColumn dataField='casting' dataSort>Casting</TableHeaderColumn>
               <TableHeaderColumn dataField='network' dataSort>Network</TableHeaderColumn>
               <TableHeaderColumn dataField='projectType' dataSort>Type</TableHeaderColumn>
               <TableHeaderColumn dataField='status' dataSort width='94px'>Status</TableHeaderColumn>
-                <TableHeaderColumn dataField='updatedAt' dataSort dataFormat={dateFormatter}
-                  dataAlign='right' width='94px'>Updated</TableHeaderColumn>
+              <TableHeaderColumn dataField='updatedAt' dataSort dataFormat={dateFormatter} dataAlign='right' width='94px'>Updated</TableHeaderColumn>
               <TableHeaderColumn dataField='summary' hidden>Hidden</TableHeaderColumn>
               <TableHeaderColumn dataField='notes' hidden>Hidden</TableHeaderColumn>
               <TableHeaderColumn dataField='allContactNames' hidden>Hidden</TableHeaderColumn>
               <TableHeaderColumn dataField='allAddresses' hidden>Hidden</TableHeaderColumn>
             </BootstrapTable>
-          </CardBody>
+          </Card.Body>
           {hasMore &&
-          <CardFooter>
-            {loadingMore
-              ? <Components.Loading />
-              : <Button onClick={e => { e.preventDefault(); loadMore() }}>Load More ({count}/{totalCount})</Button>
-            }
-          </CardFooter>
-          }
+            <Card.Footer>
+              {loadingMore
+                ? <Components.Loading />
+                : <Button onClick={e => { e.preventDefault(); loadMore() }}>Load More ({count}/{totalCount})</Button>}
+            </Card.Footer>}
           {Users.canCreate({ collection: Projects, user: currentUser }) && <AddButtonFooter />}
         </Card>
       </div>

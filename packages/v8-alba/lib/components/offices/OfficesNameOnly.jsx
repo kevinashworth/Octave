@@ -1,7 +1,8 @@
 import { Components, registerComponent, withAccess, withMulti } from 'meteor/vulcan:core'
 import React, { PureComponent } from 'react'
 import { Link } from 'react-router-dom'
-import { Button, Card, CardBody, CardFooter, CardHeader } from 'reactstrap'
+import Button from 'react-bootstrap/Button'
+import Card from 'react-bootstrap/Card'
 import { BootstrapTable, ClearSearchButton, SearchField, SizePerPageDropDown, TableHeaderColumn } from 'react-bootstrap-table'
 import { SIZE_PER_PAGE_LIST_SEED } from '../../modules/constants.js'
 import Offices from '../../modules/offices/collection.js'
@@ -21,63 +22,6 @@ class OfficesNameOnly extends PureComponent {
   constructor (props) {
     super(props)
 
-    const pageChangeHandler = (page, sizePerPage) => {
-      this.setState((prevState) => ({
-        options: { ...prevState.options, page, sizePerPage }
-      }))
-    }
-
-    function renderShowsTotal (start, to, total) {
-      return (
-        <span className='mr-2'>
-          Showing { start } to { to } out of { total }
-        </span>
-      )
-    }
-
-    const searchChangeHandler = (searchText) => {
-      this.setState((prevState) => ({
-        options: { ...prevState.options, defaultSearch: searchText }
-      }))
-    }
-
-    const sizePerPageListHandler = (sizePerPage) => {
-      this.setState((prevState) => ({
-        options: { ...prevState.options, sizePerPage }
-      }))
-      keptState.options.sizePerPage = sizePerPage
-    }
-
-    const renderSizePerPageDropDown = (props) => {
-      return (
-        <SizePerPageDropDown btnContextual='btn-secondary btn-sm' {...props} />
-      )
-    }
-
-    const createCustomSearchField = (props) => {
-      if (props.defaultValue.length) {
-        this.setState({ searchColor: 'btn-danger' })
-      } else {
-        this.setState({ searchColor: 'btn-secondary' })
-      }
-      return (
-        <SearchField defaultValue={props.defaultValue} />
-      )
-    }
-
-    const handleClearButtonClick = (onClick) => {
-      this.setState({ searchColor: 'btn-secondary' })
-      onClick()
-    }
-
-    const createCustomClearButton = (onClick) => {
-      return (
-        <ClearSearchButton className='btn-sm'
-          btnContextual={this.state.searchColor}
-          onClick={e => handleClearButtonClick(onClick)} />
-      )
-    }
-
     this.state = {
       searchColor: 'btn-secondary',
       options: {
@@ -88,15 +32,15 @@ class OfficesNameOnly extends PureComponent {
         nextPage: '›',
         firstPage: '«',
         lastPage: '»',
-        paginationShowsTotal: renderShowsTotal,
+        paginationShowsTotal: this.renderShowsTotal,
         paginationPosition: 'bottom',
-        onPageChange: pageChangeHandler,
-        onSizePerPageList: sizePerPageListHandler,
-        sizePerPageDropDown: renderSizePerPageDropDown,
-        onSearchChange: searchChangeHandler,
+        onPageChange: this.pageChangeHandler,
+        onSizePerPageList: this.sizePerPageListHandler,
+        sizePerPageDropDown: this.renderSizePerPageDropDown,
+        onSearchChange: this.searchChangeHandler,
         clearSearch: true,
-        clearSearchBtn: createCustomClearButton,
-        searchField: createCustomSearchField,
+        clearSearchBtn: this.createCustomClearButton,
+        searchField: this.createCustomSearchField,
         btnGroup: () => { return null }, // hides area above search field
         ...keptState.options
       }
@@ -115,6 +59,65 @@ class OfficesNameOnly extends PureComponent {
     }
   }
 
+  createCustomClearButton = (onClick) => {
+    return (
+      <ClearSearchButton
+        className='btn-sm'
+        btnContextual={this.state.searchColor}
+        onClick={e => this.handleClearButtonClick(onClick)}
+      />
+    )
+  }
+
+  createCustomSearchField = (props) => {
+    if (props.defaultValue.length) {
+      this.setState({ searchColor: 'btn-danger' })
+    } else {
+      this.setState({ searchColor: 'btn-secondary' })
+    }
+    return (
+      <SearchField defaultValue={props.defaultValue} />
+    )
+  }
+
+  handleClearButtonClick = (onClick) => {
+    this.setState({ searchColor: 'btn-secondary' })
+    onClick()
+  }
+
+  pageChangeHandler = (page, sizePerPage) => {
+    this.setState((prevState) => ({
+      options: { ...prevState.options, page, sizePerPage }
+    }))
+  }
+
+  renderShowsTotal = (start, to, total) => {
+    return (
+      <span className='mr-2'>
+        Showing {start} to {to} out of {total}
+      </span>
+    )
+  }
+
+  renderSizePerPageDropDown = (props) => {
+    return (
+      <SizePerPageDropDown btnContextual='btn-secondary btn-sm' {...props} />
+    )
+  }
+
+  searchChangeHandler = (searchText) => {
+    this.setState((prevState) => ({
+      options: { ...prevState.options, defaultSearch: searchText }
+    }))
+  }
+
+  sizePerPageListHandler = (sizePerPage) => {
+    this.setState((prevState) => ({
+      options: { ...prevState.options, sizePerPage }
+    }))
+    keptState.options.sizePerPage = sizePerPage
+  }
+
   render () {
     const { count, totalCount, results, loadingMore, loadMore, networkStatus } = this.props
     if (networkStatus !== 8 && networkStatus !== 7) {
@@ -122,12 +125,12 @@ class OfficesNameOnly extends PureComponent {
         <div className='animated fadeIn'>
           <Components.HeadTags title='V8 Alba: Offices' />
           <Card>
-            <CardHeader>
+            <Card.Header>
               <i className='icon-briefcase' />Offices
-            </CardHeader>
-            <CardBody>
+            </Card.Header>
+            <Card.Body>
               <Components.Loading />
-            </CardBody>
+            </Card.Body>
           </Card>
         </div>
       )
@@ -137,40 +140,52 @@ class OfficesNameOnly extends PureComponent {
       <div className='animated fadeIn'>
         <Components.HeadTags title='V8 Alba: Offices' />
         <Card>
-          <CardHeader>
+          <Card.Header>
             <i className='icon-briefcase' />Offices
-          </CardHeader>
-          <CardBody>
-            <BootstrapTable data={results} version='4' condensed striped hover pagination search
+          </Card.Header>
+          <Card.Body>
+            <BootstrapTable
+              bordered={false}
+              condensed
+              data={results}
+              hover
+              keyField='_id'
               options={{
                 ...this.state.options,
                 sizePerPageList: SIZE_PER_PAGE_LIST_SEED.concat([{
                   text: 'All', value: totalCount
                 }]),
-                sizePerPage: this.state.options.sizePerPage ? this.state.options.sizePerPage : totalCount
+                sizePerPage: this.state.options.sizePerPage
+                  ? this.state.options.sizePerPage
+                  : totalCount
               }}
-              keyField='_id' bordered={false} tableHeaderClass='d-none'>
-              <TableHeaderColumn dataField='displayName' dataSort dataFormat={
-                (cell, row) => {
-                  return (
-                    <Link to={`/offices/${row._id}/${row.slug}`}>
-                      {cell}
-                    </Link>
-                  )
-                }
-              }>Name</TableHeaderColumn>
+              pagination
+              search
+              striped
+              tableHeaderClass='d-none'
+              version='4'
+            >
+              <TableHeaderColumn
+                dataField='displayName'
+                dataFormat={(cell, row) => (
+                  <Link to={`/offices/${row._id}/${row.slug}`}>
+                    {cell}
+                  </Link>
+                )}
+                dataSort
+              >
+                Name
+              </TableHeaderColumn>
               <TableHeaderColumn dataField='fullAddress' hidden>Address</TableHeaderColumn>
               <TableHeaderColumn dataField='body' hidden>Hidden</TableHeaderColumn>
             </BootstrapTable>
-          </CardBody>
+          </Card.Body>
           {hasMore &&
-            <CardFooter>
+            <Card.Footer>
               {loadingMore
                 ? <Components.Loading />
-                : <Button onClick={e => { e.preventDefault(); loadMore() }}>Load More ({count}/{totalCount})</Button>
-              }
-            </CardFooter>
-          }
+                : <Button onClick={e => { e.preventDefault(); loadMore() }}>Load More ({count}/{totalCount})</Button>}
+            </Card.Footer>}
         </Card>
       </div>
     )

@@ -6,7 +6,7 @@ import { withApollo } from 'react-apollo'
 import React from 'react'
 import { Link } from 'react-router-dom'
 import PropTypes from 'prop-types'
-import { DropdownItem } from 'reactstrap'
+import Dropdown from 'react-bootstrap/Dropdown'
 
 const UsersMenu = ({ currentUser, currentUserLoading, client, state }) => {
   return (
@@ -25,7 +25,7 @@ const UsersMenu = ({ currentUser, currentUserLoading, client, state }) => {
 const UserLoggedInMenu = ({ currentUser, client }) => {
   const menuItems = [
     {
-      itemProps: { header: true },
+      isHeader: true,
       label: Users.getDisplayName(currentUser)
     },
     {
@@ -73,7 +73,7 @@ const UserLoggedInMenu = ({ currentUser, client }) => {
 
 const UserLoggedOutMenu = ({ state }) => {
   return (
-    <DropdownItem tag={Link} to='/login'><FormattedMessage id='users.sign_up_log_in' /></DropdownItem>
+    <Dropdown.Item tag={Link} to='/login'><FormattedMessage id='users.sign_up_log_in' /></Dropdown.Item>
   )
 }
 

@@ -1,53 +1,50 @@
 import { Components, registerComponent, withCurrentUser, withSingle } from 'meteor/vulcan:core'
 import { FormattedMessage } from 'meteor/vulcan:i18n'
-import React, { Component } from 'react'
+import React from 'react'
 import PropTypes from 'prop-types'
-import { Card, CardBody, CardFooter, CardHeader } from 'reactstrap'
+import Card from 'react-bootstrap/Card'
 import PastProjects from '../../modules/past-projects/collection.js'
 import Patches from '../../modules/patches/collection.js'
 
-class PastProjectPatchesList extends Component {
-  render () {
-    const { pastProjectDocument, patchesDocument, networkStatus } = this.props
-    if (networkStatus !== 8 && networkStatus !== 7) {
-      return <Components.Loading />
-    } else if (!patchesDocument || !pastProjectDocument) {
-      return <FormattedMessage id='patches.missing_document' />
-    } else {
-      const reversedPatches = [...patchesDocument.patches].reverse()
-      let accumulatedPatches = []
-      accumulatedPatches[0] = {
-        date: reversedPatches[0].date,
-        patch: reversedPatches[0].patch
+const PastProjectPatchesList = (props) => {
+  const { pastProjectDocument, patchesDocument, networkStatus } = props
+  var accumulatedPatches = []
+  if (networkStatus !== 8 && networkStatus !== 7) {
+    return <Components.Loading />
+  } else if (!patchesDocument || !pastProjectDocument) {
+    return <FormattedMessage id='patches.missing_document' />
+  } else {
+    const reversedPatches = [...patchesDocument.patches].reverse()
+    accumulatedPatches[0] = {
+      date: reversedPatches[0].date,
+      patch: reversedPatches[0].patch
+    }
+    for (var i = 1; i < patchesDocument.patches.length; i++) {
+      accumulatedPatches[i] = {
+        date: reversedPatches[i].date,
+        patch: [...accumulatedPatches[i - 1].patch, ...reversedPatches[i].patch]
       }
-      for (var i = 1; i < patchesDocument.patches.length; i++) {
-        accumulatedPatches[i] = {
-          date: reversedPatches[i].date,
-          patch: [...accumulatedPatches[i - 1].patch, ...reversedPatches[i].patch]
-        }
-      }
-
-      return (
-        <Card>
-          <CardHeader>
-            <i className='fa fa-history' />History
-          </CardHeader>
-          <CardBody>
-            {accumulatedPatches.map((patch) =>
-              <Components.ProjectPatch
-                project={pastProjectDocument}
-                key={patch.date}
-                patch={patch}
-              />
-            )}
-          </CardBody>
-          <CardFooter>
-            <small className='text-muted'>This is the unused footer of PastProjectPatchesList</small>
-          </CardFooter>
-        </Card>
-      )
     }
   }
+  return (
+    <Card>
+      <Card.Header>
+        <i className='fa fa-history' />History
+      </Card.Header>
+      <Card.Body>
+        {accumulatedPatches.map((patch) =>
+          <Components.ProjectPatch
+            key={patch.date}
+            patch={patch}
+            project={pastProjectDocument}
+          />
+        )}
+      </Card.Body>
+      <Card.Footer>
+        <small className='text-muted'>This is the unused footer of PastProjectPatchesList</small>
+      </Card.Footer>
+    </Card>
+  )
 }
 
 const patchOptions = {

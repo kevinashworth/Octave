@@ -1,18 +1,13 @@
 import { Components, registerComponent } from 'meteor/vulcan:core'
 import React, { useEffect, useState } from 'react'
 import { Line } from 'react-chartjs-2'
-import {
-  Button,
-  ButtonGroup,
-  ButtonToolbar,
-  Card,
-  CardBody,
-  CardFooter,
-  CardTitle,
-  Col,
-  Progress,
-  Row
-} from 'reactstrap'
+import Button from 'react-bootstrap/Button'
+import ButtonGroup from 'react-bootstrap/ButtonGroup'
+import ButtonToolbar from 'react-bootstrap/ButtonToolbar'
+import Card from 'react-bootstrap/Card'
+import Col from 'react-bootstrap/Col'
+import ProgressBar from 'react-bootstrap/ProgressBar'
+import Row from 'react-bootstrap/Row'
 import moment from 'moment'
 import takeRightWhile from 'lodash/takeRightWhile'
 import { brandColors } from './brandColors.js'
@@ -71,28 +66,28 @@ function LineChartLarge (props) {
       {
         label: 'Episodics',
         xAxisID: 'x-axis-episodics',
-        borderColor: brandColors['success'],
+        borderColor: brandColors.success,
         data: theEpisodics,
         ...datasetProps
       },
       {
         label: 'Features',
         xAxisID: 'x-axis-features',
-        borderColor: brandColors['info'],
+        borderColor: brandColors.info,
         data: theFeatures,
         ...datasetProps
       },
       {
         label: 'Pilots',
         xAxisID: 'x-axis-pilots',
-        borderColor: brandColors['warning'],
+        borderColor: brandColors.warning,
         data: thePilots,
         ...datasetProps
       },
       {
         label: 'Others',
         xAxisID: 'x-axis-others',
-        borderColor: brandColors['danger'],
+        borderColor: brandColors.danger,
         data: theOthers,
         ...datasetProps
       }
@@ -172,17 +167,17 @@ function LineChartLarge (props) {
 
   return (
     <Card>
-      <CardBody>
+      <Card.Body>
         <Row className='align-items-center'>
-          <Col xs='8'>
-            <CardTitle>Number of TV &amp; Film Projects Casting</CardTitle>
+          <Col xs={12} sm={8}>
+            <Card.Title>Number of TV &amp; Film Projects Casting</Card.Title>
           </Col>
-          <Col xs='4'>
+          <Col xs={12} sm={4}>
             <ButtonToolbar className='mb-1 float-right'>
               <ButtonGroup>
-                <Button outline color='secondary' onClick={() => setTimeframe(1)} active={timeframe === 1}>Month</Button>
-                <Button outline color='secondary' onClick={() => setTimeframe(2)} active={timeframe === 2}>Year</Button>
-                <Button outline color='secondary' onClick={() => setTimeframe(3)} active={timeframe === 3}>All</Button>
+                <Button variant='outline-secondary' onClick={() => setTimeframe(1)} active={timeframe === 1}>Month</Button>
+                <Button variant='outline-secondary' onClick={() => setTimeframe(2)} active={timeframe === 2}>Year</Button>
+                <Button variant='outline-secondary' onClick={() => setTimeframe(3)} active={timeframe === 3}>All</Button>
               </ButtonGroup>
             </ButtonToolbar>
           </Col>
@@ -190,31 +185,31 @@ function LineChartLarge (props) {
         <div className='chart-wrapper' style={{ height: `${chartHeight}px` }}>
           <Line data={mainChart} options={mainChartOpts} />
         </div>
-      </CardBody>
-      <CardFooter>
+      </Card.Body>
+      <Card.Footer>
         <Row>
           <Col xs='12' sm='6' md='3' className='mb-2'>
             <strong>Episodics</strong>
             <div className='text-muted'>{theStats.episodics[theStats.episodics.length - 1].quantity} Currently Casting</div>
-            <Progress className='progress-xs mt-1' color='success' value='100' />
+            <ProgressBar className='progress-xs mt-1' variant='success' now='100' />
           </Col>
           <Col xs='12' sm='6' md='3' className='mb-2'>
             <strong>Features</strong>
             <div className='text-muted'>{theStats.features[theStats.features.length - 1].quantity} Currently Casting</div>
-            <Progress className='progress-xs mt-1' color='info' value='100' />
+            <ProgressBar className='progress-xs mt-1' variant='info' now='100' />
           </Col>
           <Col xs='12' sm='6' md='3' className='mb-2'>
             <strong>Pilots</strong>
             <div className='text-muted'>{theStats.pilots[theStats.pilots.length - 1].quantity} Currently Casting</div>
-            <Progress className='progress-xs mt-1' color='warning' value='100' />
+            <ProgressBar className='progress-xs mt-1' variant='warning' now='100' />
           </Col>
           <Col xs='12' sm='6' md='3' className='mb-2'>
             <strong>Others</strong>
             <div className='text-muted'>{theStats.others[theStats.others.length - 1].quantity} Currently Casting</div>
-            <Progress className='progress-xs mt-1' color='danger' value='100' />
+            <ProgressBar className='progress-xs mt-1' variant='danger' now='100' />
           </Col>
         </Row>
-      </CardFooter>
+      </Card.Footer>
     </Card>
   )
 }

@@ -81,15 +81,36 @@ registerFragment(/* GraphQL */ `
     projectType
     platformType
     casting
+    castingCompany
+    offices {
+      officeId
+      officeLocation
+      officeName
+    }
     status
     network
     union
     summary
+    website
     notes
     htmlSummary
     htmlNotes
     allContactNames
     allAddresses
+    addresses {
+      street1
+      street2
+      city
+      state
+      zip
+      location
+      addressType
+    }
+    contacts {
+      contactId
+      contactName
+      contactTitle
+    }
     slug
   }
 `)

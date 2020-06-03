@@ -1,3 +1,4 @@
+/* Used in EmailDetail.jsx */
 ul.custom-list {
   list-style: none; /* Remove HTML bullets */
   padding: 0;
@@ -12,4 +13,42 @@ ul.custom-list li::before {
   content: "•"; /* Insert content that looks like bullets */
   padding-right: 8px;
   color: #73818f;
+}
+
+/*
+ * To overcome a react-bootstrap bug in Tabs/Tab inside Card.Body
+ * See https://github.com/react-bootstrap/react-bootstrap/issues/4771
+ */
+nav.card-header-tabs {
+  margin-right: 0;
+  margin-bottom: 0;
+  margin-left: 0;
+  border-bottom-color: rgb(200, 206, 211);
+  border-bottom-style: solid;
+  border-bottom-width: 1px;
+}
+
+/* To make user dropdown 'grey-500' */
+.ml-auto .dropleft a.dropdown-toggle {
+  color: #8f9ba6;
+}
+/* To hide caret next to UsersMenu dropdown, drop = left or right */
+#dropdown-users-menu::before, #dropdown-example::before, #dropdown-users-menu::after, #dropdown-example::after {
+  border: none;
+}
+
+
+/*
+ * To make bigger titles throughout
+ */
+.card-title {
+  font-weight: 500;
+  font-size: 1.09375rem;
+  margin-top: 0;
+  margin-bottom: 0.5rem;
+  line-height: 1.2;
+}
+
+a.dropdown-item {
+  color: #20a8d8;
 }

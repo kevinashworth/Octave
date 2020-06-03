@@ -1,11 +1,23 @@
 import { registerComponent, Components, withAccess } from 'meteor/vulcan:core'
-import React, { useState } from 'react'
-import { Link, useHistory } from 'react-router-dom'
-import { Dropdown, DropdownItem, DropdownMenu, DropdownToggle } from 'reactstrap'
+import React, { forwardRef, useState } from 'react'
+import { useHistory } from 'react-router-dom'
+import Button from 'react-bootstrap/Button'
+import Dropdown from 'react-bootstrap/Dropdown'
+import FormControl from 'react-bootstrap/FormControl'
+import InputGroup from 'react-bootstrap/InputGroup'
 import algoliasearch from 'algoliasearch/lite'
-import { connectHits, connectPoweredBy, connectStateResults, Highlight, InstantSearch, SearchBox, Snippet } from 'react-instantsearch-dom'
+import { connectHits, connectPoweredBy, connectSearchBox, connectStateResults, Highlight, InstantSearch, Snippet } from 'react-instantsearch-dom'
 
+// eslint-disable-next-line react/display-name
+const CustomToggle = forwardRef(({ children }, ref) => (
+  <span ref={ref}>
+    {children} &nbsp;
+  </span>
+))
+
+// eslint-disable-next-line no-undef
 const applicationid = Meteor.settings.public.algolia.ApplicationID
+// eslint-disable-next-line no-undef
 const searchonlyapikey = Meteor.settings.public.algolia.SearchOnlyAPIKey
 const searchClient = algoliasearch(applicationid, searchonlyapikey)
 
@@ -14,59 +26,80 @@ const PoweredBy = ({ url }) => <a href={url} target='_blank' rel='noopener noref
 const CustomPoweredBy = connectPoweredBy(PoweredBy)
 
 const Hits = ({ hits }) => {
+  const history = useHistory()
   return (
     <>
-      <DropdownToggle nav></DropdownToggle>
-      <DropdownMenu>
-        <DropdownItem header>Search powered by <CustomPoweredBy /></DropdownItem>
+      <Dropdown.Toggle as={CustomToggle} id='algolia-dropdown' />
+      <Dropdown.Menu>
+        <Dropdown.Header>Search powered by <CustomPoweredBy /></Dropdown.Header>
         {hits.length === 0
-          ? <DropdownItem>No search results</DropdownItem>
+          ? <Dropdown.Item disabled>No search results</Dropdown.Item>
           : hits.map((hit) => {
-              let history = useHistory()
-              return (
-                <DropdownItem key={hit.objectID} onClick={() => history.push(`${hit.url}`)}>
-                  <Components.ErrorBoundary>
-                    <Link to={hit.url}><Highlight attribute='name' hit={hit} /></Link><br />
-                    <small className='text-muted'><Snippet attribute='body' hit={hit} /></small>
-                  </Components.ErrorBoundary>
-                </DropdownItem>
-              )
+            const handleClick = (event) => {
+              event.preventDefault()
+              history.push(`${hit.url}`)
             }
-          )}
-        </DropdownMenu>
+            return (
+              <Dropdown.Item key={hit.objectID} onClick={handleClick} href={hit.url} className='primary'>
+                <Components.ErrorBoundary>
+                  <Highlight attribute='name' hit={hit} /><br />
+                  <small className='text-muted'><Snippet attribute='body' hit={hit} /></small>
+                </Components.ErrorBoundary>
+              </Dropdown.Item>
+            )
+          })}
+      </Dropdown.Menu>
     </>
   )
 }
 
 const CustomHits = connectHits(Hits)
 
-const Content = connectStateResults(
-  ({ searchResults, searchState }) =>
+const CustomSearchResults = connectStateResults(
+  ({ searchState }) =>
     searchState && searchState.query
-    ? <CustomHits />
-    : null
+      ? <CustomHits />
+      : null
 )
 
+const SearchBox = ({ currentRefinement, refine }) => {
+  return (
+    <InputGroup>
+      <FormControl
+        onChange={event => refine(event.currentTarget.value)}
+        placeholder='Search all of V8…'
+        value={currentRefinement}
+      />
+      {currentRefinement &&
+        <InputGroup.Append>
+          <Button onClick={() => refine('')}><i className='fa fa-times' /></Button>
+        </InputGroup.Append>}
+    </InputGroup>
+  )
+}
+
+const CustomSearchBox = connectSearchBox(SearchBox)
+
 const Algolia = () => {
-  const [isDropdownOpen, setDropdownOpen] = useState(false)
-  const onSearchStateChange = searchState => {
+  const [show, setShow] = useState(false)
+  const handleSearchStateChange = searchState => {
     if (searchState.query.length) {
-      setDropdownOpen(true)
+      setShow(true)
     }
   }
-  const toggle = () => setDropdownOpen(!isDropdownOpen)
+  const toggle = () => setShow(!show)
 
   return (
-    <Components.ErrorBoundary>
     <InstantSearch
-      searchClient={searchClient} indexName='dev_v8-alba-mlab'
-      onSearchStateChange={onSearchStateChange}>
-      <Dropdown isOpen={isDropdownOpen} direction='right' toggle={toggle} inNavbar>
-        <SearchBox translations={{ placeholder: 'Search all of V8…' }} reset={<img src='/img/white-times-11x11.gif'></img>} />
-        <Content />
+      indexName='dev_v8-alba-mlab'
+      onSearchStateChange={handleSearchStateChange}
+      searchClient={searchClient}
+    >
+      <Dropdown show={show} drop='right' onToggle={toggle}>
+        <CustomSearchBox />
+        <CustomSearchResults />
       </Dropdown>
     </InstantSearch>
-    </Components.ErrorBoundary>
   )
 }
 

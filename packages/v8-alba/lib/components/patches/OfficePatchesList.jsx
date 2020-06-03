@@ -1,53 +1,50 @@
 import { Components, registerComponent, withCurrentUser, withSingle } from 'meteor/vulcan:core'
 import { FormattedMessage } from 'meteor/vulcan:i18n'
-import React, { Component } from 'react'
+import React from 'react'
 import PropTypes from 'prop-types'
-import { Card, CardBody, CardFooter, CardHeader } from 'reactstrap'
+import Card from 'react-bootstrap/Card'
 import Offices from '../../modules/offices/collection.js'
 import Patches from '../../modules/patches/collection.js'
 
-class OfficePatchesList extends Component {
-  render () {
-    const { officeDocument, patchesDocument, networkStatus } = this.props
-    if (networkStatus !== 8 && networkStatus !== 7) {
-      return <Components.Loading />
-    } else if (!patchesDocument || !officeDocument) {
-      return <FormattedMessage id='patches.missing_document' />
-    } else {
-      const reversedPatches = [...patchesDocument.patches].reverse()
-      let accumulatedPatches = []
-      accumulatedPatches[0] = {
-        date: reversedPatches[0].date,
-        patch: reversedPatches[0].patch
+const OfficePatchesList = (props) => {
+  const { officeDocument, patchesDocument, networkStatus } = props
+  var accumulatedPatches = []
+  if (networkStatus !== 8 && networkStatus !== 7) {
+    return <Components.Loading />
+  } else if (!patchesDocument || !officeDocument) {
+    return <FormattedMessage id='patches.missing_document' />
+  } else {
+    const reversedPatches = [...patchesDocument.patches].reverse()
+    accumulatedPatches[0] = {
+      date: reversedPatches[0].date,
+      patch: reversedPatches[0].patch
+    }
+    for (var i = 1; i < patchesDocument.patches.length; i++) {
+      accumulatedPatches[i] = {
+        date: reversedPatches[i].date,
+        patch: [...accumulatedPatches[i - 1].patch, ...reversedPatches[i].patch]
       }
-      for (var i = 1; i < patchesDocument.patches.length; i++) {
-        accumulatedPatches[i] = {
-          date: reversedPatches[i].date,
-          patch: [...accumulatedPatches[i - 1].patch, ...reversedPatches[i].patch]
-        }
-      }
-
-      return (
-        <Card>
-          <CardHeader>
-            <i className='fa fa-history' />History
-          </CardHeader>
-          <CardBody>
-            {accumulatedPatches.map((patch) =>
-              <Components.OfficePatch
-                office={officeDocument}
-                key={patch.date}
-                patch={patch}
-              />
-            )}
-          </CardBody>
-          <CardFooter>
-            <small className='text-muted'>This is the unused footer of OfficePatchesList</small>
-          </CardFooter>
-        </Card>
-      )
     }
   }
+  return (
+    <Card>
+      <Card.Header>
+        <i className='fa fa-history' />History
+      </Card.Header>
+      <Card.Body>
+        {accumulatedPatches.map((patch) =>
+          <Components.OfficePatch
+            office={officeDocument}
+            key={patch.date}
+            patch={patch}
+          />
+        )}
+      </Card.Body>
+      <Card.Footer>
+        <small className='text-muted'>This is the unused footer of OfficePatchesList</small>
+      </Card.Footer>
+    </Card>
+  )
 }
 
 const patchOptions = {
@@ -71,5 +68,9 @@ OfficePatchesList.propTypes = {
 registerComponent({
   name: 'OfficePatchesList',
   component: OfficePatchesList,
-  hocs: [withCurrentUser, [withSingle, patchOptions], [withSingle, officeOptions]]
+  hocs: [
+    withCurrentUser,
+    [withSingle, patchOptions],
+    [withSingle, officeOptions]
+  ]
 })

@@ -126,6 +126,18 @@ addAction({
       i
     }
   },
+  setPastProjectTypeFilter (i) {
+    return {
+      type: 'SET_PAST_PROJECT_TYPE_FILTER',
+      i
+    }
+  },
+  clearPastProjectTypeFilter (i) {
+    return {
+      type: 'CLEAR_PAST_PROJECT_TYPE_FILTER',
+      i
+    }
+  },
   togglePastProjectStatusFilter (i) {
     return {
       type: 'TOGGLE_PAST_PROJECT_STATUS_FILTER',
@@ -265,6 +277,20 @@ addReducer({
         return state.map((filter, index) => {
           if (index === Number(action.i)) {
             return { ...filter, value: !filter.value }
+          }
+          return filter
+        })
+      case 'SET_PAST_PROJECT_TYPE_FILTER':
+        return state.map((filter, index) => {
+          if (index === Number(action.i)) {
+            return { ...filter, value: true }
+          }
+          return filter
+        })
+      case 'CLEAR_PAST_PROJECT_TYPE_FILTER':
+        return state.map((filter, index) => {
+          if (index === Number(action.i)) {
+            return { ...filter, value: false }
           }
           return filter
         })
