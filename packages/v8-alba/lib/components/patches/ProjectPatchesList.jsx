@@ -7,7 +7,7 @@ import Projects from '../../modules/projects/collection.js'
 import Patches from '../../modules/patches/collection.js'
 
 const ProjectPatchesList = (props) => {
-  const { projectDocument, patchesDocument, networkStatus } = this.props
+  const { projectDocument, patchesDocument, networkStatus } = props
   var accumulatedPatches = []
   if (networkStatus !== 8 && networkStatus !== 7) {
     return <Components.Loading />

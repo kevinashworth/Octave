@@ -7,7 +7,7 @@ import Contacts from '../../modules/contacts/collection.js'
 import Patches from '../../modules/patches/collection.js'
 
 const ContactPatchesList = (props) => {
-  const { contactDocument, patchesDocument, networkStatus } = this.props
+  const { contactDocument, patchesDocument, networkStatus } = props
   var accumulatedPatches = []
   if (networkStatus !== 8 && networkStatus !== 7) {
     return <Components.Loading />
