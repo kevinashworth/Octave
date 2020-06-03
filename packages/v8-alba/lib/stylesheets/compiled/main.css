@@ -12183,9 +12183,6 @@ body {
 .was-validated .form-control:invalid, .form-control.is-invalid {
   background-position: right calc(0.375em + 0.1875rem) center; }
 
-.app-header .navbar-nav .dropdown-menu-right {
-  right: auto; }
-
 html body .app.flex-row.align-items-center {
   height: 100vh; }
 

@@ -19,6 +19,7 @@
     "lintnofix": "standard 'packages/v8-alba/**/*.js' 'packages/v8-alba/**/*.jsx'",
     "lintnofixv": "standard --verbose 'packages/v8-alba/**/*.js' 'packages/v8-alba/**/*.jsx'",
     "build:sass": "node-sass -r 'packages/v8-alba/lib/stylesheets/main.scss' -o 'packages/v8-alba/lib/stylesheets/compiled'",
+    "build:sass:min": "node-sass -r 'packages/v8-alba/lib/stylesheets/main.scss' -o 'packages/v8-alba/lib/stylesheets/compiled' --output-style compact",
     "watch:sass": "npm run build:sass && npm run build:sass -w"
   },
   "dependencies": {
@@ -132,7 +133,6 @@
     "react-virtualized": "^9.21.2",
     "react-window": "^1.8.5",
     "react-window-infinite-loader": "^1.0.5",
-    "reactstrap": "^8.4.1",
     "recompose": "^0.30.0",
     "redux": "^3.6.0",
     "rss": "^1.2.1",
