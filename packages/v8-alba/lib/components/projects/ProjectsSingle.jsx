@@ -28,6 +28,7 @@ class ProjectsSingle extends Component {
 
   deleteAlgoliaRecord = (documentId) => {
     if (typeof documentId === 'string') {
+      // eslint-disable-next-line no-undef
       Meteor.call(
         'deleteAlgoliaRecord',
         documentId,
@@ -132,7 +133,7 @@ class ProjectsSingle extends Component {
                 {project.addresses && project.addresses[0] &&
                   project.addresses.map((address, index) =>
                     <Components.AddressDetail key={getFullAddress(address) + index} address={address} />)}
-                {project.links &&
+                {project.links && project.links[0] &&
                   <Card.Title className='mt-5'><b>Links</b></Card.Title>}
                 {project.links &&
                   <Card.Text>
