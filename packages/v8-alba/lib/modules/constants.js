@@ -204,9 +204,12 @@ export const CABLE_ENUM = [
 export const PAYTV_ENUM = [
   'Cinemax',
   'Epix',
+  'EPIX',
   'HBO',
   'Showtime',
-  'Starz'
+  'SHO',
+  'Starz',
+  'STARZ'
 ]
 
 export const SVOD_ENUM = [
@@ -292,7 +295,7 @@ export const BRANDS_ENUM = [
   { brand: 'cbs', fa: 'fa-television' },
   { brand: 'csa', fa: 'fa-desktop' },
   { brand: 'freeform', fa: 'fa-television' },
-  { brand: 'hulu', fa: 'fa-television'},
+  { brand: 'hulu', fa: 'fa-television' },
   { brand: 'imdb', fa: 'fa-imdb' },
   { brand: 'imdbpro', fa: 'fa-imdb' },
   { brand: 'netflix', fa: 'fa-television' },
