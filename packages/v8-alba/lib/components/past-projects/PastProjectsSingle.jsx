@@ -22,7 +22,7 @@ class PastProjectsSingle extends Component {
     }
   }
 
-  commentsCallback (labelFromCommentsThread) {
+  commentsCallback = (labelFromCommentsThread) => {
     this.setState({ commentsTabTitle: labelFromCommentsThread })
   }
 
