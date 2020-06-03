@@ -27,7 +27,7 @@
     "@babel/runtime": "^7.1.2",
     "@coreui/coreui-pro": "^2.1.16",
     "@coreui/icons": "1.0.1",
-    "@coreui/react": "github:kevinashworth/coreui-react#semver:2.5.8-v8-alba-beta.8",
+    "@coreui/react": "github:kevinashworth/coreui-react#semver:2.5.8-v8-alba",
     "@welldone-software/why-did-you-render": "^4.0.4",
     "algoliasearch": "^4.0.3",
     "analytics-node": "^2.1.1",
