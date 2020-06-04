@@ -71,7 +71,7 @@ class DefaultLayout extends Component {
               render={() => (<AppSidebarNav navConfig={xsNav} {...rest} />)}
             />
             <Media
-              defaultMatches={true}
+              defaultMatches
               query='(min-width: 576px)'
               render={() => (<AppSidebarNav navConfig={smNav} {...rest} />)}
             />
