@@ -15,6 +15,15 @@ const CustomToggle = forwardRef(({ children }, ref) => (
   </span>
 ))
 
+const popperConfig = {
+  modifiers: [{
+    name: 'offset',
+    options: {
+      offset: [0, 120]
+    }
+  }]
+}
+
 // eslint-disable-next-line no-undef
 const applicationid = Meteor.settings.public.algolia.ApplicationID
 // eslint-disable-next-line no-undef
@@ -30,7 +39,7 @@ const Hits = ({ hits }) => {
   return (
     <>
       <Dropdown.Toggle as={CustomToggle} id='algolia-dropdown' />
-      <Dropdown.Menu>
+      <Dropdown.Menu popperConfig={popperConfig}>
         <Dropdown.Header>Search powered by <CustomPoweredBy /></Dropdown.Header>
         {hits.length === 0
           ? <Dropdown.Item disabled>No search results</Dropdown.Item>
@@ -40,7 +49,7 @@ const Hits = ({ hits }) => {
               history.push(`${hit.url}`)
             }
             return (
-              <Dropdown.Item key={hit.objectID} onClick={handleClick} href={hit.url} className='primary'>
+              <Dropdown.Item key={hit.objectID} onClick={handleClick} href={hit.url}>
                 <Components.ErrorBoundary>
                   <Highlight attribute='name' hit={hit} /><br />
                   <small className='text-muted'><Snippet attribute='body' hit={hit} /></small>
