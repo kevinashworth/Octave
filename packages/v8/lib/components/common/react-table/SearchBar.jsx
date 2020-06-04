@@ -2,7 +2,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import FormControl from 'react-bootstrap/FormControl'
 
-function MySearchBar (props) {
+const SearchBar = (props) => {
   const {
     className,
     onChange,
@@ -19,14 +19,14 @@ function MySearchBar (props) {
       style={style}
       className={className}
       aria-label='Enter search text'
-      placeholder={placeholder || MySearchBar.defaultProps.placeholder}
-      onChange={onChange}
+      placeholder={placeholder || SearchBar.defaultProps.placeholder}
+      onChange={e => onChange(e)}
       value={value}
     />
   )
 }
 
-MySearchBar.propTypes = {
+SearchBar.propTypes = {
   className: PropTypes.string,
   onChange: PropTypes.func.isRequired,
   placeholder: PropTypes.string,
@@ -35,11 +35,11 @@ MySearchBar.propTypes = {
   value: PropTypes.string
 }
 
-MySearchBar.defaultProps = {
+SearchBar.defaultProps = {
   className: '',
   placeholder: 'Search...',
   style: {},
   tableId: '0'
 }
 
-export default MySearchBar
+export default SearchBar

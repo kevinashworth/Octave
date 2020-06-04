@@ -5,11 +5,6 @@ import React, { useEffect, useState } from 'react'
 import Button from 'react-bootstrap/Button'
 import Card from 'react-bootstrap/Card'
 import Col from 'react-bootstrap/Col'
-import Dropdown from 'react-bootstrap/Dropdown'
-import FormControl from 'react-bootstrap/FormControl'
-import FormGroup from 'react-bootstrap/FormGroup'
-import InputGroup from 'react-bootstrap/InputGroup'
-import Pagination from 'react-bootstrap/Pagination'
 import Row from 'react-bootstrap/Row'
 import {
   useFilters,
@@ -18,13 +13,12 @@ import {
   usePagination,
   useSortBy
 } from 'react-table'
-import MyClearButton from '../common/react-table/MyClearButton'
-import MySearchBar from '../common/react-table/MySearchBar'
-import { PAGINATION_SIZE } from '../common/react-table/constants.js'
-import { dateFormatter, linkFormatter, getPageOptionsVisible } from '../common/react-table/helpers.js'
-import { CaretSorted, CaretUnsorted } from '../common/react-table/styled.js'
 import matchSorter from 'match-sorter'
-import { SIZE_PER_PAGE_LIST_SEED } from '../../modules/constants.js'
+import DefaultColumnFilter from '../common/react-table/DefaultColumnFilter'
+import GlobalFilter from '../common/react-table/GlobalFilter'
+import Pagination from '../common/react-table/Pagination'
+import { dateFormatter, linkFormatter } from '../common/react-table/helpers.js'
+import { CaretSorted, CaretUnsorted } from '../common/react-table/styled.js'
 import Offices from '../../modules/offices/collection.js'
 
 // Set initial state. Just options I want to keep.
@@ -63,104 +57,6 @@ function fuzzyTextFilterFn (rows, id, filterValue) {
   })
 }
 
-const GlobalFilter = ({ globalFilter, setGlobalFilter }) => {
-  return (
-    <FormGroup className='input-group input-group-sm'>
-      <MySearchBar
-        onChange={e => {
-          const searchText = e.target.value || undefined
-          setGlobalFilter(searchText)
-        }}
-        value={globalFilter || ''}
-      />
-      <MyClearButton globalFilter={globalFilter} onClick={() => setGlobalFilter('')} />
-    </FormGroup>
-  )
-}
-
-function DefaultColumnFilter ({
-  column: { filterValue, preFilteredRows, setFilter }
-}) {
-  const count = preFilteredRows.length
-  return (
-    <InputGroup size='sm'>
-      <FormControl
-        className='column-filter'
-        onChange={e => setFilter(e.target.value)}
-        onClick={e => e.stopPropagation()} // Otherwise triggers sortBy
-        placeholder={`Filter ${count} records...`}
-        value={filterValue}
-      />
-      {filterValue &&
-        <InputGroup.Append>
-          <Button variant='danger' onClick={() => setFilter('')}><i className='fa fa-times' /></Button>
-        </InputGroup.Append>}
-    </InputGroup>
-
-  )
-}
-
-function MyPagination (tableProps) {
-  const {
-    canPreviousPage,
-    canNextPage,
-    pageOptions,
-    pageCount,
-    gotoPage,
-    nextPage,
-    previousPage,
-    setPageSize,
-    state: { pageIndex, pageSize }
-  } = tableProps
-  const length = tableProps.rows.length
-
-  const [dropdownOpen, setDropdownOpen] = useState(false)
-  const toggle = () => setDropdownOpen(prevState => !prevState)
-
-  const pageOptionsVisible = getPageOptionsVisible({ pageCount, pageIndex, pageOptions })
-
-  return (
-    <div className='d-flex align-items-center'>
-      <div className='mb-3'>
-        Showing {pageIndex * pageSize + 1} to {Math.min((pageIndex + 1) * pageSize, length)} out of {length} &nbsp;&nbsp;
-      </div>
-      <div className='mb-3'>
-        <Dropdown show={dropdownOpen} onToggle={toggle}>
-          <Dropdown.Toggle>
-            {pageSize}
-          </Dropdown.Toggle>
-          <Dropdown.Menu>
-            <Dropdown.Header disabled>Page Size</Dropdown.Header>
-            {SIZE_PER_PAGE_LIST_SEED.map(pageSize => (
-              <Dropdown.Item key={pageSize.text} onClick={e => setPageSize(pageSize.value)}>
-                {pageSize.text}
-              </Dropdown.Item>
-            ))}
-            <Dropdown.Item key='All' onClick={e => setPageSize(length)}>All</Dropdown.Item>
-          </Dropdown.Menu>
-        </Dropdown>
-      </div>
-      <div className='ml-auto'>
-        <Pagination aria-label='Page-by-page navigation of the Offices table'>
-          {(pageOptionsVisible.length >= PAGINATION_SIZE) &&
-            <Pagination.First disabled={pageIndex === 0} onClick={() => gotoPage(0)} />
-          }
-          <Pagination.Prev disabled={!canPreviousPage} onClick={() => previousPage()} />
-          {pageOptionsVisible.map(page => (
-            <Pagination.Item key={page} className={page === pageIndex ? 'active' : ''} onClick={() => gotoPage(page)}>
-              {page + 1}
-            </Pagination.Item>
-          ))}
-          <Pagination.Next disabled={!canNextPage} onClick={() => nextPage()} />
-          {(pageOptionsVisible.length >= PAGINATION_SIZE) &&
-            <Pagination.Last disabled={pageIndex === (pageCount - 1)} onClick={() => gotoPage(pageCount - 1)} />
-          }
-        </Pagination>
-      </div>
-    </div>
-  )
-}
-
 function Table ({ columns, data }) {
   const filterTypes = React.useMemo(
     () => ({
@@ -188,8 +84,7 @@ function Table ({ columns, data }) {
     []
   )
 
-  const tableProps = useTable(
-    {
+  const tableProps = useTable({
       columns,
       data,
       defaultColumn,
@@ -244,7 +139,7 @@ function Table ({ columns, data }) {
           />
         </Col>
       </Row>
-      <MyPagination length={data.length} {...tableProps} />
+      <Pagination length={data.length} {...tableProps} />
       <table {...getTableProps()} className='react-table table table-striped table-hover table-sm'>
         <thead>
           {headerGroups.map((headerGroup, index) => (
@@ -294,7 +189,7 @@ function Table ({ columns, data }) {
           )}
         </tbody>
       </table>
-      <MyPagination length={data.length} {...tableProps} />
+      <Pagination length={data.length} {...tableProps} />
     </>
   )
 }
