@@ -3,7 +3,7 @@ import React, { Component } from 'react'
 import { Link } from 'react-router-dom'
 import PropTypes from 'prop-types'
 import Card from 'react-bootstrap/Card'
-import Col from 'react-bootstrap/Col'
+// import Col from 'react-bootstrap/Col'
 import Row from 'react-bootstrap/Row'
 import Markup from 'interweave'
 import pluralize from 'pluralize'
@@ -31,11 +31,11 @@ class LatestContactUpdates extends Component {
             : 'Contact updated '
           displayHtml += moment(contact.updatedAt).format(DATE_FORMAT_SHORT_FRIENDLY)
           return (
-            <Col xs='12' sm='6' md='4' xx='2' widths={['xs', 'sm', 'md', 'xx']} key={contact._id}>
+            <div className='col col-xs-12 col-sm-6 col-md-4 col-xxxl-2' key={contact._id}>
               <Card className='card-accent-warning'>
                 <Card.Header className='text-truncate'>
                   <b><Link to={`/contacts/${contact._id}/${contact.slug}`}>{contact.displayName}</Link></b>
-                  <small className='float-right d-xx-none'>{contact.theAddress.location}</small>
+                  <small className='float-right'>{contact.theAddress.location}</small>
                 </Card.Header>
                 <Card.Body className='text-truncate'>
                   <Card.Text>
@@ -47,7 +47,7 @@ class LatestContactUpdates extends Component {
                   <small className='text-muted'><Markup content={displayHtml} /></small>
                 </Card.Footer>
               </Card>
-            </Col>
+            </div>
           )
         })}
       </Row>
@@ -88,7 +88,7 @@ class LatestOfficeUpdates extends Component {
             : 'Office updated '
           displayHtml += moment(office.updatedAt).format(DATE_FORMAT_SHORT_FRIENDLY)
           return (
-            <Col xs='12' sm='6' md='4' xx='2' widths={['xs', 'sm', 'md', 'xx']} key={office._id}>
+            <div className='col col-xs-12 col-sm-6 col-md-4 col-xxxl-2' key={office._id}>
               <Card className='card-accent-primary text-truncate d-block'>
                 <Card.Header className='text-truncate d-block'>
                   <b><Link to={`/offices/${office._id}/${office.slug}`}>{office.displayName}</Link></b>
@@ -101,7 +101,7 @@ class LatestOfficeUpdates extends Component {
                   <small className='text-muted'><Markup content={displayHtml} /></small>
                 </Card.Footer>
               </Card>
-            </Col>
+            </div>
           )
         })}
       </Row>
@@ -143,7 +143,7 @@ class LatestProjectUpdates extends Component {
             : 'Project updated '
           displayHtml += moment(project.updatedAt).format(DATE_FORMAT_SHORT_FRIENDLY)
           return (
-            <Col xs='12' sm='6' md='4' xx='2' widths={['xs', 'sm', 'md', 'xx']} key={project._id}>
+            <div className='col col-xs-12 col-sm-6 col-md-4 col-xxxl-2' key={project._id}>
               <Card className='card-accent-danger'>
                 <Card.Header className='text-truncate'>
                   <b><Link to={`/projects/${project._id}/${project.slug}`}>{project.projectTitle}</Link></b>
@@ -161,7 +161,7 @@ class LatestProjectUpdates extends Component {
                   <small className='text-muted'><Markup content={displayHtml} /></small>
                 </Card.Footer>
               </Card>
-            </Col>
+            </div>
           )
         })}
       </Row>
@@ -209,7 +209,7 @@ class LatestPastProjectUpdates extends Component {
     return (
       <Row>
         {pastProjects.map(project =>
-          <Col xs='12' sm='6' md='4' xx='2' widths={['xs', 'sm', 'md', 'xx']} key={project._id}>
+          <div className='col col-xs-12 col-sm-6 col-md-4 col-xxxl-2' key={project._id}>
             <Card className='card-accent-secondary text-truncate d-block'>
               <Card.Header className='text-truncate d-block'>
                 <b><Link to={`/past-projects/${project._id}/${project.slug}`}>{project.projectTitle}</Link></b>
@@ -229,7 +229,7 @@ class LatestPastProjectUpdates extends Component {
                 <small className='text-muted'>Past Project as of {moment(project.updatedAt).format(DATE_FORMAT_SHORT_FRIENDLY)}</small>
               </Card.Footer>
             </Card>
-          </Col>
+          </div>
         )}
       </Row>
     )
