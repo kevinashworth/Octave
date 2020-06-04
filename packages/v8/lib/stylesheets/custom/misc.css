@@ -28,7 +28,7 @@ nav.card-header-tabs {
   border-bottom-width: 1px;
 }
 
-/* To make user dropdown 'grey-500' */
+/* To make UsersMenu dropdown 'grey-500' */
 .ml-auto .dropleft a.dropdown-toggle {
   color: #8f9ba6;
 }
@@ -37,18 +37,11 @@ nav.card-header-tabs {
   border: none;
 }
 
-
-/*
- * To make bigger titles throughout
- */
+/* To make bigger Card.Title's throughout */
 .card-title {
   font-weight: 500;
   font-size: 1.09375rem;
   margin-top: 0;
   margin-bottom: 0.5rem;
   line-height: 1.2;
-}
-
-a.dropdown-item {
-  color: #20a8d8;
 }

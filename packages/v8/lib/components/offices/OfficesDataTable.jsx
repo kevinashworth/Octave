@@ -8,6 +8,7 @@ import Col from 'react-bootstrap/Col'
 import Dropdown from 'react-bootstrap/Dropdown'
 import FormControl from 'react-bootstrap/FormControl'
 import FormGroup from 'react-bootstrap/FormGroup'
+import InputGroup from 'react-bootstrap/InputGroup'
 import Pagination from 'react-bootstrap/Pagination'
 import Row from 'react-bootstrap/Row'
 import {
@@ -81,18 +82,21 @@ function DefaultColumnFilter ({
   column: { filterValue, preFilteredRows, setFilter }
 }) {
   const count = preFilteredRows.length
-  const value = filterValue || ''
-  const invalid = value.length > 0
   return (
-    <FormControl
-      className='column-filter'
-      isInvalid={invalid}
-      onChange={e => setFilter(e.target.value)}
-      onClick={e => e.stopPropagation()} // Otherwise triggers sortBy
-      placeholder={`Filter ${count} records...`}
-      size='sm'
-      value={value}
-    />
+    <InputGroup size='sm'>
+      <FormControl
+        className='column-filter'
+        onChange={e => setFilter(e.target.value)}
+        onClick={e => e.stopPropagation()} // Otherwise triggers sortBy
+        placeholder={`Filter ${count} records...`}
+        value={filterValue}
+      />
+      {filterValue &&
+        <InputGroup.Append>
+          <Button variant='danger' onClick={() => setFilter('')}><i className='fa fa-times' /></Button>
+        </InputGroup.Append>}
+    </InputGroup>
+
   )
 }
 
@@ -254,16 +258,20 @@ function Table ({ columns, data }) {
                   ])}
                   key={index}
                 >
-                  <span>
-                    {column.render('Header')}
-                    {column.isSorted
-                      ? column.isSortedDesc
-                        ? <CaretSorted className='fa fa-sort-desc' />
-                        : <CaretSorted className='fa fa-sort-asc' />
-                      : <CaretUnsorted className='fa fa-sort' />}
-                  </span>
-                  &nbsp;
-                  <span>{column.canFilter ? column.render('Filter') : null}</span>
+                  <div className='d-xl-flex flex-xl-row align-items-center'>
+                    <div className='mr-2 text-nowrap'>
+                      {column.render('Header')}
+                      {column.isSorted
+                        ? column.isSortedDesc
+                          ? <CaretSorted className='fa fa-sort-desc' />
+                          : <CaretSorted className='fa fa-sort-asc' />
+                        : <CaretUnsorted className='fa fa-sort' />}
+                    </div>
+                    {column.canFilter &&
+                    <div className='flex-xl-grow-1'>
+                      {column.render('Filter')}
+                    </div>}
+                  </div>
                 </th>
               ))}
             </tr>
