@@ -15,11 +15,11 @@
     "start-atlas": "./start-atlas.sh",
     "start-mlab": "./start-mlab.sh",
     "start-visualizer": "meteor --extra-packages bundle-visualizer --production --port 4004 --settings settings.json",
-    "lint": "standard 'packages/v8-alba/**/*.js' 'packages/v8-alba/**/*.jsx' --fix",
-    "lintnofix": "standard 'packages/v8-alba/**/*.js' 'packages/v8-alba/**/*.jsx'",
-    "lintnofixv": "standard --verbose 'packages/v8-alba/**/*.js' 'packages/v8-alba/**/*.jsx'",
-    "build:sass": "node-sass -r 'packages/v8-alba/lib/stylesheets/main.scss' -o 'packages/v8-alba/lib/stylesheets/compiled'",
-    "build:sass:min": "node-sass -r 'packages/v8-alba/lib/stylesheets/main.scss' -o 'packages/v8-alba/lib/stylesheets/compiled' --output-style compact",
+    "lint": "standard 'packages/v8/**/*.js' 'packages/v8/**/*.jsx' --fix",
+    "lintnofix": "standard 'packages/v8/**/*.js' 'packages/v8/**/*.jsx'",
+    "lintnofixv": "standard --verbose 'packages/v8/**/*.js' 'packages/v8/**/*.jsx'",
+    "build:sass": "node-sass -r 'packages/v8/lib/stylesheets/main.scss' -o 'packages/v8/lib/stylesheets/compiled'",
+    "build:sass:min": "node-sass -r 'packages/v8/lib/stylesheets/main.scss' -o 'packages/v8/lib/stylesheets/compiled' --output-style compact",
     "watch:sass": "npm run build:sass && npm run build:sass -w"
   },
   "dependencies": {
@@ -195,8 +195,8 @@
   "standard": {
     "ignore": [
       "**/package.json",
-      "packages/v8-alba/package.js",
-      "packages/v8-alba/misc/**"
+      "packages/v8/package.js",
+      "packages/v8/misc/**"
     ],
     "parser": "babel-eslint"
   },

@@ -25,6 +25,6 @@ fortawesome:fontawesome
 jss:flag-icon
 percolate:migrations
 
-v8-alba
+v8
 apollo@3.1.0
 tmeasday:check-npm-versions
