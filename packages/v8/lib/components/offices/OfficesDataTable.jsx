@@ -303,7 +303,6 @@ function OfficesDataTable (props) {
   const [results, setResults] = useState([])
   const [totalCount, setTotalCount] = useState(0)
   const { count, currentUser, loadingMore, loadMore, networkStatus } = props
-  const hasMore = results && (totalCount > results.length)
 
   useEffect(
     () => {
@@ -376,7 +375,7 @@ function OfficesDataTable (props) {
         <Card.Body>
           <Table columns={columns} data={results} />
         </Card.Body>
-        {hasMore &&
+        {(totalCount > results.length) &&
           <Card.Footer>
             {loadingMore
               ? <Components.Loading />
