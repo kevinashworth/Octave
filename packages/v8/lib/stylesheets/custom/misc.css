@@ -52,3 +52,7 @@ nav.card-header-tabs {
 a.dropdown-item {
   color: #20a8d8;
 }
+
+.container-xxl {
+  margin-left: 0;
+}
