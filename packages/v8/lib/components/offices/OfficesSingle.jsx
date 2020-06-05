@@ -2,28 +2,20 @@ import { Components, registerComponent, withCurrentUser, withSingle } from 'mete
 import Users from 'meteor/vulcan:users'
 import { FormattedMessage } from 'meteor/vulcan:i18n'
 import React, { Component } from 'react'
+import PropTypes from 'prop-types'
+import { LinkContainer } from 'react-router-bootstrap'
 import Button from 'react-bootstrap/Button'
 import Card from 'react-bootstrap/Card'
 import Collapse from 'react-bootstrap/Collapse'
 import Tab from 'react-bootstrap/Tab'
 import Tabs from 'react-bootstrap/Tabs'
 import Interweave from 'interweave'
-import mapProps from 'recompose/mapProps'
 import moment from 'moment'
 import pluralize from 'pluralize'
-import styled from 'styled-components'
+import mapProps from 'recompose/mapProps'
 import { DATE_FORMAT_LONG, DATE_FORMAT_SHORT } from '../../modules/constants.js'
 import { transform } from '../../modules/helpers.js'
 import Offices from '../../modules/offices/collection.js'
-
-const Flextest = styled.div`
-  display: flex;
-  flex-direction: column;
-  flex-wrap: wrap;
-  justify-content: flex-start;
-  align-items: stretch;
-align-content: flex-start;
-`
 
 // Don't fetch and render PastProjects unless user clicks to see them
 // See https://reactjs.org/docs/conditional-rendering.html
@@ -31,7 +23,6 @@ function PastProjects (props) {
   if (!props.collapseIsOpen) {
     return null
   }
-
   return (
     <Card>
       <Card.Body>
@@ -81,7 +72,9 @@ class OfficesSingle extends Component {
             {office.displayName}
             {Users.canUpdate({ collection: Offices, user: currentUser, document }) &&
               <div className='float-right'>
-                <Button variant='secondary' href={`/offices/${office._id}/edit`}>Edit</Button>
+                <LinkContainer to={`/offices/${office._id}/edit`}>
+                  <Button variant='secondary'>Edit</Button>
+                </LinkContainer>
               </div>}
           </Card.Header>
           <Card.Body>
@@ -107,9 +100,7 @@ class OfficesSingle extends Component {
                   {office.theProjects &&
                     <Card.Title className='mt-5'><b>Projects</b></Card.Title>}
                   {office.theProjects &&
-                    <Flextest>
-                      {office.theProjects.map((o, index) => <Components.ProjectMini key={`ProjectMini-${index}`} documentId={o._id} />)}
-                    </Flextest>}
+                    office.theProjects.map((o, index) => <Components.ProjectMini key={`ProjectMini-${index}`} documentId={o._id} />)}
                 </Components.ErrorBoundary>
                 {office.links &&
                   <Card.Text className='mt-5'>
@@ -149,6 +140,11 @@ class OfficesSingle extends Component {
       </div>
     )
   }
+}
+
+OfficesSingle.propTypes = {
+  documentId: PropTypes.string.isRequired,
+  document: PropTypes.object
 }
 
 const options = {

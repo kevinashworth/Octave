@@ -2,13 +2,15 @@ import { Components, registerComponent, withCurrentUser, withSingle } from 'mete
 import Users from 'meteor/vulcan:users'
 import { FormattedMessage } from 'meteor/vulcan:i18n'
 import React, { Component } from 'react'
-import mapProps from 'recompose/mapProps'
+import PropTypes from 'prop-types'
+import { LinkContainer } from 'react-router-bootstrap'
 import Button from 'react-bootstrap/Button'
 import Card from 'react-bootstrap/Card'
 import Tab from 'react-bootstrap/Tab'
 import Tabs from 'react-bootstrap/Tabs'
 import Interweave from 'interweave'
 import moment from 'moment'
+import mapProps from 'recompose/mapProps'
 import { DATE_FORMAT_LONG, DATE_FORMAT_SHORT } from '../../modules/constants.js'
 import { transform } from '../../modules/helpers.js'
 import PastProjects from '../../modules/past-projects/collection.js'
@@ -59,7 +61,9 @@ class PastProjectsSingle extends Component {
             {project.projectTitle}
             {Users.canUpdate({ collection: PastProjects, user: currentUser, document }) &&
               <div className='float-right'>
-                <Button variant='secondary' href={`/past-projects/${project._id}/edit`}>Edit</Button>
+                <LinkContainer to={`/past-projects/${project._id}/edit`}>
+                  <Button variant='secondary'>Edit</Button>
+                </LinkContainer>
               </div>}
           </Card.Header>
           <Card.Body>
@@ -128,6 +132,11 @@ class PastProjectsSingle extends Component {
       </div>
     )
   }
+}
+
+PastProjectsSingle.propTypes = {
+  documentId: PropTypes.string.isRequired,
+  document: PropTypes.object
 }
 
 const options = {
