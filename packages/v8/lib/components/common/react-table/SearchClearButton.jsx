@@ -9,7 +9,7 @@ const btnColor = (txt) => {
   return 'danger'
 }
 
-const MyClearButton = ({
+const SearchClearButton = ({
   onClick,
   globalFilter
 }) => (
@@ -18,9 +18,9 @@ const MyClearButton = ({
   </span>
 )
 
-MyClearButton.propTypes = {
+SearchClearButton.propTypes = {
   onClick: PropTypes.func.isRequired,
   globalFilter: PropTypes.string
 }
 
-export default MyClearButton
+export default SearchClearButton

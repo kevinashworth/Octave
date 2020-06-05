@@ -1,12 +1,13 @@
 import { registerComponent, Components, withAccess } from 'meteor/vulcan:core'
 import React, { forwardRef, useState } from 'react'
 import { useHistory } from 'react-router-dom'
+import Media from 'react-media'
 import Button from 'react-bootstrap/Button'
 import Dropdown from 'react-bootstrap/Dropdown'
 import FormControl from 'react-bootstrap/FormControl'
 import InputGroup from 'react-bootstrap/InputGroup'
 import algoliasearch from 'algoliasearch/lite'
-import { connectHits, connectPoweredBy, connectSearchBox, connectStateResults, Highlight, InstantSearch, Snippet } from 'react-instantsearch-dom'
+import { Configure, connectHits, connectPoweredBy, connectSearchBox, connectStateResults, Highlight, InstantSearch, Snippet } from 'react-instantsearch-dom'
 
 // eslint-disable-next-line react/display-name
 const CustomToggle = forwardRef(({ children }, ref) => (
@@ -104,6 +105,22 @@ const Algolia = () => {
       onSearchStateChange={handleSearchStateChange}
       searchClient={searchClient}
     >
+      <Media
+        queries={{
+          small: '(max-height: 555px)',
+          medium: '(max-height: 764px)',
+          large: '(max-height: 1022px)'
+        }}
+      >
+        {matches => (
+          <>
+            {matches.small && <Configure hitsPerPage={4} />}
+            {matches.medium && <Configure hitsPerPage={8} />}
+            {matches.large && <Configure hitsPerPage={12} />}
+            {/* above this, 16 hitsPerPage configured on Algolia dashboard */}
+          </>
+        )}
+      </Media>
       <Dropdown show={show} drop='right' onToggle={toggle}>
         <CustomSearchBox />
         <CustomSearchResults />
