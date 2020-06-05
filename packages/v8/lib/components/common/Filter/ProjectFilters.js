@@ -153,7 +153,7 @@ class ProjectFilters extends PureComponent {
       for (; i < length; i++) {
         this.props.actions.clearProjectStatusFilter(i)
       }
-      this.setState({ statusVariant: 'primary' })
+      this.setState({ statusVariant: 'danger' })
     } else if (all || none) {
       for (let i = 0; i < length; i++) {
         if ((this.props.projectStatusFilters[i].value && none) || (!this.props.projectStatusFilters[i].value && !none)) {
