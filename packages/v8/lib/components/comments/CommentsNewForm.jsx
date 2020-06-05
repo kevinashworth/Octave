@@ -1,3 +1,5 @@
+/* eslint-disable indent */
+/* eslint-disable react/jsx-indent */
 import { Components, registerComponent, getFragment, withCurrentUser, withMessages } from 'meteor/vulcan:core'
 import Users from 'meteor/vulcan:users'
 import React from 'react'

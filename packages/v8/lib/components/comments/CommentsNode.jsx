@@ -1,3 +1,5 @@
+/* eslint-disable indent */
+/* eslint-disable react/jsx-indent */
 import { Components, registerComponent } from 'meteor/vulcan:core'
 import React from 'react'
 import PropTypes from 'prop-types'

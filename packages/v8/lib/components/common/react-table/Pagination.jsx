@@ -48,8 +48,7 @@ const Pagination = (props) => {
       <div className='ml-auto'>
         <RBPagination aria-label='Page-by-page navigation of the Offices table'>
           {(pageOptionsVisible.length >= PAGINATION_SIZE) &&
-            <RBPagination.First disabled={pageIndex === 0} onClick={() => gotoPage(0)} />
-          }
+            <RBPagination.First disabled={pageIndex === 0} onClick={() => gotoPage(0)} />}
           <RBPagination.Prev disabled={!canPreviousPage} onClick={() => previousPage()} />
           {pageOptionsVisible.map(page => (
             <RBPagination.Item key={page} className={page === pageIndex ? 'active' : ''} onClick={() => gotoPage(page)}>
@@ -58,8 +57,7 @@ const Pagination = (props) => {
           ))}
           <RBPagination.Next disabled={!canNextPage} onClick={() => nextPage()} />
           {(pageOptionsVisible.length >= PAGINATION_SIZE) &&
-            <RBPagination.Last disabled={pageIndex === (pageCount - 1)} onClick={() => gotoPage(pageCount - 1)} />
-          }
+            <RBPagination.Last disabled={pageIndex === (pageCount - 1)} onClick={() => gotoPage(pageCount - 1)} />}
         </RBPagination>
       </div>
     </div>

@@ -21,7 +21,7 @@ class AdminComments extends Component {
             }
           }}
           showNew={false}
-          showSearch={true}
+          showSearch
           editFormProps={{
             size: 'sm'
           }}

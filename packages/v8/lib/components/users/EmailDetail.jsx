@@ -1,3 +1,6 @@
+/* eslint-disable indent */
+/* eslint-disable react/jsx-handler-names */
+/* eslint-disable react/jsx-indent */
 import { registerComponent, withMessages } from 'meteor/vulcan:core'
 import { FormattedMessage } from 'meteor/vulcan:i18n'
 import React, { PureComponent } from 'react'
@@ -42,23 +45,25 @@ class EmailDetail extends PureComponent {
           <Row>
             <Col xs>
               <strong>{user.email}&nbsp;</strong>
-              {user.email && <span className='text-success'>&nbsp;(<FormattedMessage id='users.primary_email' />)&nbsp;</span>}
+              {user.email &&
+                <span className='text-success'>&nbsp;(<FormattedMessage id='users.primary_email' />)&nbsp;</span>}
             </Col>
           </Row>
           <Row>
             <Col>
               <ul className='custom-list'>
-                <li>{user.emails && user.emails[0].verified
-                  ? <FormattedMessage id='users.verified' />
-                  : <>
-                      <span className='text-warning'>
-                        <strong><FormattedMessage id='users.unverified' /></strong>&nbsp;
-                      </span>
-                      &nbsp;
-                      <a href='#' onClick={this.sendVerificationEmail}>
-                        <FormattedMessage id='users.verify_email' />
-                      </a>
-                    </>}
+                <li>
+                  {user.emails && user.emails[0].verified
+                    ? <FormattedMessage id='users.verified' />
+                    : <>
+                        <span className='text-warning'>
+                          <strong><FormattedMessage id='users.unverified' /></strong>&nbsp;
+                        </span>
+                        &nbsp;
+                        <a href='#' onClick={this.sendVerificationEmail}>
+                          <FormattedMessage id='users.verify_email' />
+                        </a>
+                      </>}
                 </li>
               </ul>
             </Col>

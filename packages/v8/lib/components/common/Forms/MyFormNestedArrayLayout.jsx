@@ -4,7 +4,7 @@ import PropTypes from 'prop-types'
 import {
   sortableContainer,
   sortableElement,
-  sortableHandle,
+  sortableHandle
 } from 'react-sortable-hoc'
 
 const reorder = (list, startIndex, endIndex) => {
@@ -14,14 +14,12 @@ const reorder = (list, startIndex, endIndex) => {
   return result
 }
 
-const DragHandle = sortableHandle(() => <i className='fa fa-bars'></i>)
+const DragHandle = sortableHandle(() => <i className='fa fa-bars' />)
 
 const SortableItem = sortableElement(({ child, isDisabled }) => (
   <div>
-    {isDisabled
-     ? null
-     : <DragHandle />
-    }
+    {!isDisabled &&
+      <DragHandle />}
     {child}
   </div>
 ))
@@ -31,7 +29,7 @@ const SortableContainer = sortableContainer(({ children }) => {
 })
 
 class MyFormNestedArrayLayout extends PureComponent {
-  constructor(props) {
+  constructor (props) {
     super(props)
     const collection = props.arrayField.name.slice(0, -2) || 'MFNALError' // `offices`, `projects`, `links`, etc.
     this.state = {
@@ -39,18 +37,17 @@ class MyFormNestedArrayLayout extends PureComponent {
       collectionName: [collection],
       originalCollectionLength: props.document[collection] ? props.document[collection].length : 0
     }
-    this.onSortEnd = this.onSortEnd.bind(this)
   }
 
-  onSortEnd({oldIndex, newIndex}) {
+  handleSortEnd = ({ oldIndex, newIndex }) => {
     const reorderedCollection = reorder(this.state[this.state.collectionName], oldIndex, newIndex)
     this.setState({
-      [this.state.collectionName]: reorderedCollection,
+      [this.state.collectionName]: reorderedCollection
     })
     this.context.updateCurrentValues({ [this.state.collectionName]: reorderedCollection })
   }
 
-  render() {
+  render () {
     const {
       hasErrors,
       nestedArrayErrors,
@@ -67,7 +64,7 @@ class MyFormNestedArrayLayout extends PureComponent {
       <div className={`form-group row form-nested ${hasErrors ? 'input-error' : ''}`}>
         {instantiateComponent(beforeComponent, this.props)}
         <label className='control-label col-sm-3'>{label}</label>
-        <SortableContainer distance={2} onSortEnd={this.onSortEnd} useDragHandle>
+        <SortableContainer distance={2} onSortEnd={this.handleSortEnd} useDragHandle>
           {React.Children.map(children, (child, i) => {
             // don't sort new children or when there's just one child
             const disabled = (i > this.state.originalCollectionLength - 1) || (this.state.originalCollectionLength <= 1)
@@ -80,7 +77,8 @@ class MyFormNestedArrayLayout extends PureComponent {
               className='form-nested-button form-nested-add'
               size='sm'
               variant='success'
-              onClick={addItem}>
+              onClick={addItem}
+            >
               <FormComponents.IconAdd height={12} width={12} />
             </FormComponents.Button>
           )}
