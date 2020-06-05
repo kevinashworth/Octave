@@ -28,7 +28,6 @@
     "@coreui/coreui-pro": "^2.1.16",
     "@coreui/icons": "1.0.1",
     "@coreui/react": "github:kevinashworth/coreui-react#semver:2.5.8-v8-alba",
-    "@loadable/component": "^5.12.0",
     "@welldone-software/why-did-you-render": "^4.0.4",
     "algoliasearch": "^4.2.0",
     "analytics-node": "^2.1.1",
