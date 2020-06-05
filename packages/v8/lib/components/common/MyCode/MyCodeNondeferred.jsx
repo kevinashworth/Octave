@@ -1,5 +1,4 @@
 /* eslint-disable react/jsx-key */
-import { Components, registerComponent } from 'meteor/vulcan:lib'
 import React from 'react'
 import prettier from 'prettier/standalone'
 import parserGraphql from 'prettier/parser-graphql'
@@ -19,7 +18,7 @@ const Pre = styled.pre`
   }
 `
 
-function MyCode({code, language}) {
+function MyCode ({ code, language }) {
   let prettyCode
   if (language === 'json') {
     prettyCode = prettier.format(code, {
