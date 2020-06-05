@@ -31,7 +31,7 @@ const Pagination = (props) => {
       </div>
       <div className='mb-3'>
         <Dropdown show={dropdownOpen} onToggle={toggle}>
-          <Dropdown.Toggle>
+          <Dropdown.Toggle variant='secondary'>
             {pageSize}
           </Dropdown.Toggle>
           <Dropdown.Menu>
