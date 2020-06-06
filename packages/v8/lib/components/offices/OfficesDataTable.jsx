@@ -103,8 +103,8 @@ function Table ({ columns, data }) {
     },
     useFilters,
     useGlobalFilter,
-    usePagination,
-    useSortBy
+    useSortBy,
+    usePagination // The usePagination plugin hook must be placed after the useSortBy plugin hook
   )
 
   const {
