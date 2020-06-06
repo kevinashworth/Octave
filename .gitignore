@@ -11,8 +11,7 @@ production.settings.json
 settings.json
 .deploy
 .galaxy
-misc/emails/mailgun-curl-test.sh
-misc/whitelist/aws-whitelist-ip-ranges.sh
+misc/
 start-atlas.sh
 start-mlab.sh
 

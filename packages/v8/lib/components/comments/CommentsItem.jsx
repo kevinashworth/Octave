@@ -9,67 +9,57 @@ import moment from 'moment'
 
 class CommentsItem extends PureComponent {
   constructor () {
-    super();
-    [
-      'showReply',
-      'replyCancelCallback',
-      'replySuccessCallback',
-      'showEdit',
-      'editCancelCallback',
-      'editSuccessCallback',
-      'removeSuccessCallback'
-    ].forEach(methodName => { this[methodName] = this[methodName].bind(this) })
+    super()
     this.state = {
       showReply: false,
       showEdit: false
     }
   }
 
-  showReply (event) {
-    event.preventDefault()
-    this.setState({ showReply: true })
+  editCancelCallback = (event) => {
+    this.setState({ showEdit: false })
   }
 
-  replyCancelCallback (event) {
-    this.setState({ showReply: false })
+  editSuccessCallback = () => {
+    this.setState({ showEdit: false })
   }
 
-  replySuccessCallback () {
-    this.setState({ showReply: false })
-  }
-
-  showEdit (event) {
+  handleClickShowEdit = (event) => {
     event.preventDefault()
     this.setState({ showEdit: true })
   }
 
-  editCancelCallback (event) {
-    this.setState({ showEdit: false })
+  handleClickShowReply = (event) => {
+    event.preventDefault()
+    this.setState({ showReply: true })
   }
 
-  editSuccessCallback () {
-    this.setState({ showEdit: false })
-  }
-
-  removeSuccessCallback ({ documentId }) {
+  removeSuccessCallback = ({ documentId }) => {
     this.props.flash({ id: 'comments.delete_success', type: 'success' })
   }
 
-  renderComment () {
+  replyCancelCallback = (event) => {
+    this.setState({ showReply: false })
+  }
+
+  replySuccessCallback = () => {
+    this.setState({ showReply: false })
+  }
+
+  renderComment = () => {
     const showReplyButton = !this.props.comment.isDeleted && !!this.props.currentUser
     return (
       <div className='comments-item-text'>
         <Markup content={this.props.comment.htmlBody} />
-        {showReplyButton
-          ? <small className='text-muted'>
-              <a onClick={this.showReply}><FormattedMessage id='comments.reply' /></a>
-            </small>
-          : null}
+        {showReplyButton &&
+          <small className='text-muted'>
+            <a onClick={this.handleClickShowReply}><FormattedMessage id='comments.reply' /></a>
+          </small>}
       </div>
     )
   }
 
-  renderReply () {
+  renderReply = () => {
     return (
       <div className='comments-item-reply'>
         <Components.CommentsNewForm
@@ -84,7 +74,7 @@ class CommentsItem extends PureComponent {
     )
   }
 
-  renderEdit () {
+  renderEdit = () => {
     return (
       <Components.CommentsEditForm
         comment={this.props.comment}
@@ -107,7 +97,7 @@ class CommentsItem extends PureComponent {
             {Users.canUpdate({ collection: Comments, user: currentUser, document: comment }) &&
               <div className='flexbox-float-right'>
                 <small className='text-muted'>
-                  <a onClick={this.showEdit}><FormattedMessage id='comments.edit' /></a>
+                  <a onClick={this.handleClickShowEdit}><FormattedMessage id='comments.edit' /></a>
                 </small>
               </div>}
           </div>

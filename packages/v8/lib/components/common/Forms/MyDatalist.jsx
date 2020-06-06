@@ -9,14 +9,14 @@ import { customStyles, theme } from './react-select-settings'
 const groupStyles = {
   display: 'flex',
   alignItems: 'center',
-  justifyContent: 'space-between',
-};
+  justifyContent: 'space-between'
+}
+
 const formatGroupLabel = data => (
   <div style={groupStyles}>
     <span>{data.label}</span>
   </div>
-);
-
+)
 
 class MyDatalist extends Component {
   constructor (props) {

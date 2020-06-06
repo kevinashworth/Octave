@@ -84,7 +84,8 @@ function Table ({ columns, data }) {
     []
   )
 
-  const tableProps = useTable({
+  const tableProps = useTable(
+    {
       columns,
       data,
       defaultColumn,
@@ -102,9 +103,10 @@ function Table ({ columns, data }) {
     },
     useFilters,
     useGlobalFilter,
-    useSortBy,
-    usePagination
+    usePagination,
+    useSortBy
   )
+
   const {
     getTableProps,
     getTableBodyProps,
@@ -163,9 +165,9 @@ function Table ({ columns, data }) {
                         : <CaretUnsorted className='fa fa-sort' />}
                     </div>
                     {column.canFilter &&
-                    <div className='flex-xl-grow-1'>
-                      {column.render('Filter')}
-                    </div>}
+                      <div className='flex-xl-grow-1'>
+                        {column.render('Filter')}
+                      </div>}
                   </div>
                 </th>
               ))}

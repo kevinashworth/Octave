@@ -10,7 +10,7 @@ Until your account is approved, you do have access to our Dashboard graphs, whic
 
   return (
     <Components.Message
-      header={'Welcome to V8'}
+      header='Welcome to V8'
       body={body}
     />
   )

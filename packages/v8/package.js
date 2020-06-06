@@ -21,7 +21,7 @@ Package.onUse(function (api) {
   api.addFiles([
     'lib/stylesheets/vendors/react-bootstrap-table-all.min.css',
     'lib/stylesheets/vendors/react-perfect-scrollbar.css',
-    'lib/stylesheets/vendors/react-virtualized.css'
+    'lib/stylesheets/vendors/react-virtualized/styles.css'
   ], 'client');
 
   api.addFiles([

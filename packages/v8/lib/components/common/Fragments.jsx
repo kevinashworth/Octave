@@ -4,7 +4,7 @@ import Button from 'react-bootstrap/Button'
 import _ from 'lodash'
 import MyCode from './MyCode'
 
-function fragmentOutput(props) {
+function fragmentOutput (props) {
   const { fragmentText } = props.document
   return (
     <MyCode code={fragmentText.replace(/\n$/, '')} language='graphql' />
@@ -32,7 +32,7 @@ const FragmentsDashboard = () => {
   return (
     <div className='fragments'>
       <Button onClick={() => setFormatted(!formatted)}>{formatted ? 'Plain' : 'Formatted'}</Button>
-      <Components.HeadTags title={'V8: Fragments'} />
+      <Components.HeadTags title='V8: Fragments' />
       <Components.Datatable
         showNew={false}
         showEdit={false}

@@ -1,32 +1,5 @@
-import { Components, replaceComponent } from 'meteor/vulcan:core'
 import React, { Component } from 'react'
 import { MyAccountsStateSwitcher } from './MyAccountsStateSwitcher.jsx'
-// let browserHistory
-// try {
-//   browserHistory = require('react-router').browserHistory
-// } catch(e) {
-//   // swallow errors
-// }
-
-// const onSignedInHook = (redirect) => {
-//   if (Meteor.isClient) {
-//     if (window.history) {
-//       Meteor.setTimeout(() => {
-//         if (browserHistory) {
-//           browserHistory.push(redirect)
-//         } else {
-//           window.history.pushState( {} , 'redirect', redirect )
-//         }
-//       }, 100)
-//     }
-//   }
-// }
-
-// const options = {
-//   homeRoutePath: '/latest',
-//   onSignedInHook: onSignedInHook('/dashboard'),
-//   requireEmailVerification: true
-// }
 
 export class MyAccountsLoginForm extends Component {
   componentDidMount () {
@@ -53,5 +26,3 @@ export class MyAccountsLoginForm extends Component {
     )
   }
 }
-
-// replaceComponent('AccountsLoginForm', MyAccountsLoginForm)
