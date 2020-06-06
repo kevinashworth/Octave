@@ -5,6 +5,7 @@ import Button from 'react-bootstrap/Button'
 import Modal from 'react-bootstrap/Modal'
 
 const MyModalTrigger = (props) => {
+  const { children, className, component, dialogClassName, label, size, title, trigger, type } = props
   const [show, setShow] = useState(false)
   const handleClose = () => setShow(false)
   const handleShow = () => setShow(true)
@@ -12,28 +13,31 @@ const MyModalTrigger = (props) => {
   const renderHeader = () => {
     return (
       <Modal.Header closeButton>
-        {props.title}
+        {title}
       </Modal.Header>
     )
   }
 
-  const triggerComponent = props.component
-    ? React.cloneElement(props.component, { onClick: handleShow })
-    : <Button variant='secondary' onClick={handleShow}>{props.label}</Button>
+  const C = component || trigger
+  const triggerComponent = C
+    ? <span onClick={handleShow} className={className}>{C}</span>
+    : type === 'link'
+      ? <a className={className} href='#' onClick={handleShow}>{label}</a>
+      : <Button className={className} onClick={handleShow} variant='secondary'>{label}</Button>
 
-  const childrenComponent = React.cloneElement(props.children, { toggle: this.toggle })
+  const childrenComponent = React.cloneElement(children, { toggle: this.toggle })
 
   return (
     <div className='modal-trigger'>
       {triggerComponent}
       <Modal
-        className={props.className}
+        className={className}
         show={show}
-        size={props.size}
+        size={size}
         onHide={handleClose}
-        dialogClassName={props.dialogClassName}
+        dialogClassName={dialogClassName}
       >
-        {props.title ? renderHeader() : null}
+        {title ? renderHeader() : null}
         <Modal.Body>
           {childrenComponent}
         </Modal.Body>
@@ -46,11 +50,15 @@ const MyModalTrigger = (props) => {
 }
 
 MyModalTrigger.propTypes = {
+  children: PropTypes.node,
   className: PropTypes.string,
-  label: PropTypes.string,
   component: PropTypes.object,
+  dialogClassName: PropTypes.string,
+  label: PropTypes.string,
   size: PropTypes.string,
-  title: PropTypes.oneOfType([PropTypes.string, PropTypes.element])
+  title: PropTypes.oneOfType([PropTypes.string, PropTypes.element]),
+  trigger: PropTypes.object,
+  type: PropTypes.oneOf(['link', 'button'])
 }
 
 MyModalTrigger.defaultProps = {

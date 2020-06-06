@@ -4,5 +4,6 @@ import './fragments.js' // import after schema for getRequiredFields to find all
 import Users from 'meteor/vulcan:users'
 
 Users.createGroup('participants')
+Users.createGroup('pending')
 
 export default Users

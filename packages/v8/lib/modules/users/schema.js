@@ -1,16 +1,15 @@
-import { getCollection } from 'meteor/vulcan:lib'
 import Users from 'meteor/vulcan:users'
 import SimpleSchema from 'simpl-schema'
 
 const notificationsGroup = {
   name: 'notifications',
-  order: 2
+  order: 10
 }
 
-const adminGroup = {
-  name: 'admin',
-  order: 100
-}
+const userGroupsOptions = [
+  { value: 'participants', label: 'Participants' },
+  { value: 'pending', label: 'Pending' }
+]
 
 // fields we are MODIFYING
 Users.addField([
@@ -48,19 +47,9 @@ Users.addField([
       canRead: ['owners', 'admins'],
       defaultValue: ['pending'],
       form: {
-        options: function () {
-          const groups = _.without(
-            _.keys(getCollection('Users').groups),
-            'guests',
-            'members',
-            'owners',
-            'admins'
-          )
-          return groups.map(group => {
-            return { value: group, label: group }
-          })
-        },
-      }
+        options: userGroupsOptions
+      },
+      options: userGroupsOptions
     }
   },
   {

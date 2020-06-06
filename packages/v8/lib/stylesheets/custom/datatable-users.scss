@@ -1,0 +1,78 @@
+.datatable-users {
+  .modal-trigger {
+    display: inline-block;
+    cursor: pointer;
+  }
+
+  a {
+    display: flex;
+    align-items: center;
+
+    div {
+      margin-right: 5px;
+    }
+  }
+
+  .avatar {
+    border-radius: 50%;
+    overflow: hidden;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    background-color: #EEE;
+
+    width: 48px;
+    height: 48px;
+
+    &.size-xsmall {
+      width: 32px;
+      height: 32px;
+    }
+
+    &.size-small {
+      width: 40px;
+      height: 40px;
+    }
+
+    &.size-large {
+      width: 56px;
+      height: 56px;
+    }
+
+    &.size-profile {
+      width: 120px;
+      height: 120px;
+    }
+
+    &.gutter-bottom {
+      margin-bottom: 8px;
+    }
+
+    &.gutter-left {
+      margin-left: 8px;
+    }
+
+    &.gutter-right {
+      margin-right: 8px;
+    }
+
+    &.gutter-sides {
+      margin-right: 8px;
+      margin-left: 8px;
+    }
+
+    &.gutter-all {
+      margin: 8px;
+    }
+
+    & img {
+      width: 100%;
+    }
+  }
+}
+
+.datatable-item-groups ol {
+  padding-left: 0;
+}

@@ -14437,3 +14437,52 @@ html body .app.flex-row.align-items-center {
     margin-right: 10px; }
   .comment-actions a {
     display: block; }
+
+.datatable-users .modal-trigger {
+  display: inline-block;
+  cursor: pointer; }
+
+.datatable-users a {
+  display: flex;
+  align-items: center; }
+  .datatable-users a div {
+    margin-right: 5px; }
+
+.datatable-users .avatar {
+  border-radius: 50%;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  background-color: #EEE;
+  width: 48px;
+  height: 48px; }
+  .datatable-users .avatar.size-xsmall {
+    width: 32px;
+    height: 32px; }
+  .datatable-users .avatar.size-small {
+    width: 40px;
+    height: 40px; }
+  .datatable-users .avatar.size-large {
+    width: 56px;
+    height: 56px; }
+  .datatable-users .avatar.size-profile {
+    width: 120px;
+    height: 120px; }
+  .datatable-users .avatar.gutter-bottom {
+    margin-bottom: 8px; }
+  .datatable-users .avatar.gutter-left {
+    margin-left: 8px; }
+  .datatable-users .avatar.gutter-right {
+    margin-right: 8px; }
+  .datatable-users .avatar.gutter-sides {
+    margin-right: 8px;
+    margin-left: 8px; }
+  .datatable-users .avatar.gutter-all {
+    margin: 8px; }
+  .datatable-users .avatar img {
+    width: 100%; }
+
+.datatable-item-groups ol {
+  padding-left: 0; }
