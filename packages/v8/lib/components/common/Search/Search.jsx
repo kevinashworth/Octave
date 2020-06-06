@@ -93,7 +93,7 @@ const CustomSearchBox = connectSearchBox(SearchBox)
 const Algolia = () => {
   const [show, setShow] = useState(false)
   const handleSearchStateChange = searchState => {
-    if (searchState.query.length) {
+    if (searchState.query && searchState.query.length) {
       setShow(true)
     }
   }
