@@ -98,6 +98,7 @@ const Algolia = () => {
     }
   }
   const toggle = () => setShow(!show)
+  const breakpoints = [555, 865, 1150]
 
   return (
     <InstantSearch
@@ -107,17 +108,18 @@ const Algolia = () => {
     >
       <Media
         queries={{
-          small: '(max-height: 555px)',
-          medium: '(max-height: 764px)',
-          large: '(max-height: 1022px)'
+          sm: { maxHeight: breakpoints[0] },
+          md: { minHeight: breakpoints[0] + 1, maxHeight: breakpoints[1] },
+          lg: { minHeight: breakpoints[1] + 1, maxHeight: breakpoints[2] },
+          xl: { minHeight: breakpoints[2] + 1 }
         }}
       >
         {matches => (
           <>
-            {matches.small && <Configure hitsPerPage={4} />}
-            {matches.medium && <Configure hitsPerPage={8} />}
-            {matches.large && <Configure hitsPerPage={12} />}
-            {/* above this, 16 hitsPerPage configured on Algolia dashboard */}
+            {matches.sm && <Configure hitsPerPage={4} />}
+            {matches.md && <Configure hitsPerPage={8} />}
+            {matches.lg && <Configure hitsPerPage={12} />}
+            {matches.xl && <Configure hitsPerPage={16} />}
           </>
         )}
       </Media>
