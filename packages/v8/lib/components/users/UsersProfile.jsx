@@ -2,12 +2,13 @@ import { Components, registerComponent, withCurrentUser, withSingle2 } from 'met
 import Users from 'meteor/vulcan:users'
 import { FormattedMessage } from 'meteor/vulcan:i18n'
 import React from 'react'
-import mapProps from 'recompose/mapProps'
+import { LinkContainer } from 'react-router-bootstrap'
 import Button from 'react-bootstrap/Button'
 import Card from 'react-bootstrap/Card'
 import Markup from 'interweave'
 import _ from 'lodash'
 import moment from 'moment'
+import mapProps from 'recompose/mapProps'
 import { DATE_FORMAT_LONG, DATE_FORMAT_SHORT } from '../../modules/constants.js'
 
 const UsersProfile = (props) => {
@@ -35,7 +36,9 @@ const UsersProfile = (props) => {
           {Users.getDisplayName(user)}
           {Users.canUpdate({ collection: Users, user: currentUser, document }) &&
             <div className='float-right'>
-              <Button variant='secondary' href={`/users/${user.slug}/edit`}>Edit</Button>
+              <LinkContainer to={`/users/${user.slug}/edit`}>
+                <Button variant='secondary'>Edit</Button>
+              </LinkContainer>
             </div>}
         </Card.Header>
         <Card.Body>
