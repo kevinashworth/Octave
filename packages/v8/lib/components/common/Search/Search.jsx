@@ -98,8 +98,7 @@ const Algolia = () => {
     }
   }
   const toggle = () => setShow(!show)
-  const breakpoints = [555, 865, 1150]
-
+  const breakpoints = [555, 720, 885, 1215]
   return (
     <InstantSearch
       indexName='dev-v8'
@@ -108,15 +107,17 @@ const Algolia = () => {
     >
       <Media
         queries={{
-          sm: { maxHeight: breakpoints[0] },
-          md: { minHeight: breakpoints[0] + 1, maxHeight: breakpoints[1] },
-          lg: { minHeight: breakpoints[1] + 1, maxHeight: breakpoints[2] },
-          xl: { minHeight: breakpoints[2] + 1 }
+          xs: { maxHeight: breakpoints[0] },
+          sm: { minHeight: breakpoints[0] + 1, maxHeight: breakpoints[1] },
+          md: { minHeight: breakpoints[1] + 1, maxHeight: breakpoints[2] },
+          lg: { minHeight: breakpoints[2] + 1, maxHeight: breakpoints[3] },
+          xl: { minHeight: breakpoints[3] + 1 }
         }}
       >
         {matches => (
           <>
-            {matches.sm && <Configure hitsPerPage={4} />}
+            {matches.xs && <Configure hitsPerPage={4} />}
+            {matches.sm && <Configure hitsPerPage={6} />}
             {matches.md && <Configure hitsPerPage={8} />}
             {matches.lg && <Configure hitsPerPage={12} />}
             {matches.xl && <Configure hitsPerPage={16} />}
