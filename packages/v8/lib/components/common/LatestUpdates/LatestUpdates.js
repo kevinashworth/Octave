@@ -3,7 +3,7 @@ import React, { Component } from 'react'
 import { Link } from 'react-router-dom'
 import PropTypes from 'prop-types'
 import Card from 'react-bootstrap/Card'
-// import Col from 'react-bootstrap/Col'
+import Col from 'react-bootstrap/Col'
 import Row from 'react-bootstrap/Row'
 import Markup from 'interweave'
 import pluralize from 'pluralize'
@@ -23,7 +23,7 @@ class LatestContactUpdates extends Component {
     const contacts = this.props.results || []
 
     return (
-      <Row>
+      <Row className='row-cols-xs-1 row-cols-sm-2 row-cols-md-3 row-cols-xxxl-6'>
         {contacts.map(contact => {
           const isItNew = moment(contact.updatedAt).isBefore(moment(contact.createdAt).add(1, 'day'))
           let displayHtml = isItNew
@@ -31,7 +31,7 @@ class LatestContactUpdates extends Component {
             : 'Contact updated '
           displayHtml += moment(contact.updatedAt).format(DATE_FORMAT_SHORT_FRIENDLY)
           return (
-            <div className='col col-xs-12 col-sm-6 col-md-4 col-xxxl-2' key={contact._id}>
+            <Col className='my-2' key={contact._id}>
               <Card className='card-accent-warning'>
                 <Card.Header className='text-truncate'>
                   <b><Link to={`/contacts/${contact._id}/${contact.slug}`}>{contact.displayName}</Link></b>
@@ -47,7 +47,7 @@ class LatestContactUpdates extends Component {
                   <small className='text-muted'><Markup content={displayHtml} /></small>
                 </Card.Footer>
               </Card>
-            </div>
+            </Col>
           )
         })}
       </Row>
@@ -80,7 +80,7 @@ class LatestOfficeUpdates extends Component {
     const offices = this.props.results || []
 
     return (
-      <Row>
+      <Row className='row-cols-xs-1 row-cols-sm-2 row-cols-md-3 row-cols-xxxl-6'>
         {offices.map(office => {
           const isItNew = moment(office.updatedAt).isBefore(moment(office.createdAt).add(1, 'day'))
           let displayHtml = isItNew
@@ -88,8 +88,8 @@ class LatestOfficeUpdates extends Component {
             : 'Office updated '
           displayHtml += moment(office.updatedAt).format(DATE_FORMAT_SHORT_FRIENDLY)
           return (
-            <div className='col col-xs-12 col-sm-6 col-md-4 col-xxxl-2' key={office._id}>
-              <Card className='card-accent-primary text-truncate d-block'>
+            <Col className='my-2' key={office._id}>
+              <Card className='card-accent-primary'>
                 <Card.Header className='text-truncate d-block'>
                   <b><Link to={`/offices/${office._id}/${office.slug}`}>{office.displayName}</Link></b>
                 </Card.Header>
@@ -101,7 +101,7 @@ class LatestOfficeUpdates extends Component {
                   <small className='text-muted'><Markup content={displayHtml} /></small>
                 </Card.Footer>
               </Card>
-            </div>
+            </Col>
           )
         })}
       </Row>
@@ -135,7 +135,7 @@ class LatestProjectUpdates extends Component {
     const projects = this.props.results || []
 
     return (
-      <Row>
+      <Row className='row-cols-xs-1 row-cols-sm-2 row-cols-md-3 row-cols-xxxl-6'>
         {projects.map(project => {
           const isItNew = moment(project.updatedAt).isBefore(moment(project.createdAt).add(1, 'day'))
           let displayHtml = isItNew
@@ -143,7 +143,7 @@ class LatestProjectUpdates extends Component {
             : 'Project updated '
           displayHtml += moment(project.updatedAt).format(DATE_FORMAT_SHORT_FRIENDLY)
           return (
-            <div className='col col-xs-12 col-sm-6 col-md-4 col-xxxl-2' key={project._id}>
+            <Col className='my-2' key={project._id}>
               <Card className='card-accent-danger'>
                 <Card.Header className='text-truncate'>
                   <b><Link to={`/projects/${project._id}/${project.slug}`}>{project.projectTitle}</Link></b>
@@ -161,7 +161,7 @@ class LatestProjectUpdates extends Component {
                   <small className='text-muted'><Markup content={displayHtml} /></small>
                 </Card.Footer>
               </Card>
-            </div>
+            </Col>
           )
         })}
       </Row>
@@ -207,10 +207,10 @@ class LatestPastProjectUpdates extends Component {
     const pastProjects = this.props.results || []
 
     return (
-      <Row>
+      <Row className='row-cols-xs-1 row-cols-sm-2 row-cols-md-3 row-cols-xxxl-6'>
         {pastProjects.map(project =>
-          <div className='col col-xs-12 col-sm-6 col-md-4 col-xxxl-2' key={project._id}>
-            <Card className='card-accent-secondary text-truncate d-block'>
+          <Col className='my-2' key={project._id}>
+            <Card className='card-accent-secondary'>
               <Card.Header className='text-truncate d-block'>
                 <b><Link to={`/past-projects/${project._id}/${project.slug}`}>{project.projectTitle}</Link></b>
               </Card.Header>
@@ -229,7 +229,7 @@ class LatestPastProjectUpdates extends Component {
                 <small className='text-muted'>Past Project as of {moment(project.updatedAt).format(DATE_FORMAT_SHORT_FRIENDLY)}</small>
               </Card.Footer>
             </Card>
-          </div>
+          </Col>
         )}
       </Row>
     )
