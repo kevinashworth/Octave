@@ -1,4 +1,49 @@
 import { registerFragment } from 'meteor/vulcan:core'
+// import gql from 'graphql-tag'
+
+export const DATATABLE_PROJECTS = /* GraphQL */ `{
+  _id
+  createdAt
+  updatedAt
+  projectTitle
+  sortTitle
+  projectType
+  platformType
+  casting
+  castingCompany
+  offices {
+    officeId
+    officeLocation
+    officeName
+  }
+  status
+  network
+  union
+  summary
+  website
+  notes
+  htmlSummary
+  htmlNotes
+  allContactNames
+  allAddresses
+  addresses {
+    street1
+    street2
+    city
+    state
+    zip
+    location
+    addressType
+  }
+  contacts {
+    contactId
+    contactName
+    contactTitle
+  }
+  slug
+}`
+
+registerFragment(/* GraphQL */ `fragment ProjectsDataTableFragment on Project ${DATATABLE_PROJECTS}`)
 
 registerFragment(/* GraphQL */ `
   fragment ProjectsItemFragment on Project {
@@ -66,50 +111,6 @@ registerFragment(/* GraphQL */ `
       platformName
       profileLink
       profileName
-    }
-    slug
-  }
-`)
-
-registerFragment(/* GraphQL */ `
-  fragment ProjectsDataTableFragment on Project {
-    _id
-    createdAt
-    updatedAt
-    projectTitle
-    sortTitle
-    projectType
-    platformType
-    casting
-    castingCompany
-    offices {
-      officeId
-      officeLocation
-      officeName
-    }
-    status
-    network
-    union
-    summary
-    website
-    notes
-    htmlSummary
-    htmlNotes
-    allContactNames
-    allAddresses
-    addresses {
-      street1
-      street2
-      city
-      state
-      zip
-      location
-      addressType
-    }
-    contacts {
-      contactId
-      contactName
-      contactTitle
     }
     slug
   }
