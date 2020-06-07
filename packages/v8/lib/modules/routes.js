@@ -55,3 +55,5 @@ addRoute([
   { name: 'admin.comments', path: '/admin/comments', componentName: 'AdminComments' },
   { name: 'admin.users', path: '/admin/users', componentName: 'AdminUsers' }
 ])
+
+addRoute({ path: '/test', name: 'ApolloTest', componentName: 'ApolloTest' })
