@@ -32,6 +32,7 @@ nav.card-header-tabs {
 .ml-auto .dropleft a.dropdown-toggle {
   color: #8f9ba6;
 }
+
 /* To hide caret next to UsersMenu dropdown, drop = left or right */
 #dropdown-users-menu::before, #dropdown-example::before, #dropdown-users-menu::after, #dropdown-example::after {
   border: none;
@@ -44,4 +45,9 @@ nav.card-header-tabs {
   margin-top: 0;
   margin-bottom: 0.5rem;
   line-height: 1.2;
+}
+
+/* To make numbers appear more table-like on Stats page */
+.statistics-lists {
+  font-variant-numeric: tabular-nums;
 }
