@@ -1,29 +1,45 @@
 import { Components, registerComponent } from 'meteor/vulcan:core'
 import React from 'react'
 import { withRouter } from 'react-router-dom'
+import Card from 'react-bootstrap/Card'
 import Statistics from '../../modules/statistics/collection.js'
 
-const StatisticsEditForm = ({ loading, documentId, params, router, toggle }) => {
+const StatisticsEditForm = (props) => {
+  const { history, loading, toggle } = props
   if (loading) {
-    return (<div><Components.Loading /></div>)
+    return <Components.Loading />
   }
-  const theDocumentId = documentId || params._id
-  const theHandler = (document) => {
+  const handleCallback = () => {
     if (toggle) {
       toggle()
+    } else {
+      history.push('/statistics/list')
     }
   }
   return (
     <div className='animated fadeIn'>
-      <Components.SmartForm
-        collection={Statistics}
-        documentId={theDocumentId}
-        successCallback={theHandler}
-        removeSuccessCallback={theHandler}
-        cancelCallback={theHandler}
-      />
+      <Card>
+        <Card.Header>
+          <i className='icon-briefcase' />Edit Statistics
+        </Card.Header>
+        <Card.Body>
+          <Components.SmartForm
+            collection={Statistics}
+            documentId='HSEC7MWC9RFCJLEMP'
+            showDelete={false}
+            cancelCallback={handleCallback}
+            successCallback={handleCallback}
+          />
+        </Card.Body>
+      </Card>
     </div>
   )
 }
 
-registerComponent('StatisticsEditForm', StatisticsEditForm, withRouter)
+registerComponent({
+  name: 'StatisticsEditForm',
+  component: StatisticsEditForm,
+  hocs: [
+    withRouter
+  ]
+})
