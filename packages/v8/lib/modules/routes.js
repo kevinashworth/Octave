@@ -12,7 +12,6 @@ addRoute([
 ])
 
 addRoute({ path: '/fragments', name: 'fragments', componentName: 'Fragments', layoutName: 'LayoutAdmin' })
-addRoute({ path: '/modals', name: 'modals', componentName: 'Modals', layoutName: 'LayoutAdmin' })
 
 addRoute([
   { name: 'contacts.table', path: '/contacts', componentName: 'ContactsDataTable' },

@@ -26,7 +26,6 @@ import '../components/common/Message/NewRegistration'
 import '../components/common/Search/'
 
 import '../components/common/Fragments'
-import '../components/common/Modals.jsx'
 import '../components/common/ErrorBoundary.jsx'
 
 import '../components/admin/AdminComments'
