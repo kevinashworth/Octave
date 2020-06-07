@@ -42,16 +42,16 @@ addRoute([
 ])
 
 addRoute({ path: '/statistics/list', name: 'StatisticsList', componentName: 'StatisticsList' })
-addRoute({ path: '/statistics/:_id/edit', name: 'StatisticsEditForm', componentName: 'StatisticsEditForm' })
+addRoute({ path: '/statistics/edit', name: 'StatisticsEditForm', componentName: 'StatisticsEditForm' })
 
 addRoute([
   { name: 'users.profile', path: '/users/:slug', componentName: 'UsersProfile' },
   { name: 'users.account', path: '/account', componentName: 'UsersAccount' },
   { name: 'users.edit', path: '/users/:slug/edit', componentName: 'UsersEdit' },
-  { name: 'verifyEmail', path: '/verify-email/:token', componentName: 'AccountsVerifyEmail'}
+  { name: 'verifyEmail', path: '/verify-email/:token', componentName: 'AccountsVerifyEmail' }
 ])
 
 addRoute([
-  {name: 'admin.comments', path: '/admin/comments', componentName: 'AdminComments'},
-  {name: 'admin.users', path: '/admin/users', componentName: 'AdminUsers'}
+  { name: 'admin.comments', path: '/admin/comments', componentName: 'AdminComments' },
+  { name: 'admin.users', path: '/admin/users', componentName: 'AdminUsers' }
 ])

@@ -11,7 +11,7 @@ import Row from 'react-bootstrap/Row'
 import moment from 'moment'
 import Statistics from '../../modules/statistics/collection.js'
 
-const Item = ({ date, quantity}) => {
+const Item = ({ date, quantity }) => {
   return (
     <ListGroup.Item key={date}>
       {moment(date).format('DD MMM YYYY')}: <strong>{quantity}</strong>
