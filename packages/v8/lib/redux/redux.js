@@ -4,7 +4,7 @@ import {
   CASTING_TITLES_ENUM,
   ACTIVE_PROJECT_STATUSES_ENUM,
   PAST_PROJECT_STATUSES_ENUM,
-  PROJECT_TYPES_ENUM,
+  PROJECT_TYPES_ENUM
 } from '../modules/constants.js'
 
 var contactTitleListBuilder = CASTING_TITLES_ENUM.map((option) => {
@@ -24,17 +24,17 @@ let initialState = {
     { contactLocation: 'Unknown', value: true }
   ],
   contactUpdatedFilters: [
-    { contactUpdated: 'One Day', value: false, moment1: '1', moment2: 'day' },
-    { contactUpdated: 'Two Days', value: false, moment1: '2', moment2: 'day' },
-    { contactUpdated: 'One Week', value: false, moment1: '1', moment2: 'week' },
-    { contactUpdated: 'Two Weeks', value: false, moment1: '2', moment2: 'week' },
-    { contactUpdated: 'One Month', value: false, moment1: '1', moment2: 'month' },
-    { contactUpdated: 'Two Months', value: false, moment1: '2', moment2: 'month' },
-    { contactUpdated: 'One Quarter', value: false, moment1: '3', moment2: 'month' },
-    { contactUpdated: 'Two Quarters', value: false, moment1: '6', moment2: 'month' },
-    { contactUpdated: 'One Year', value: false, moment1: '1', moment2: 'year' },
-    { contactUpdated: 'Two Years', value: false, moment1: '2', moment2: 'year' },
-    { contactUpdated: 'All', value: true, moment1: '100', moment2: 'year' }
+    { contactUpdated: 'One Day', value: false, momentNumber: 1, momentPeriod: 'day' },
+    { contactUpdated: 'Two Days', value: false, momentNumber: 2, momentPeriod: 'day' },
+    { contactUpdated: 'One Week', value: false, momentNumber: 1, momentPeriod: 'week' },
+    { contactUpdated: 'Two Weeks', value: false, momentNumber: 2, momentPeriod: 'week' },
+    { contactUpdated: 'One Month', value: false, momentNumber: 1, momentPeriod: 'month' },
+    { contactUpdated: 'Two Months', value: false, momentNumber: 2, momentPeriod: 'month' },
+    { contactUpdated: 'One Quarter', value: false, momentNumber: 3, momentPeriod: 'month' },
+    { contactUpdated: 'Two Quarters', value: false, momentNumber: 6, momentPeriod: 'month' },
+    { contactUpdated: 'One Year', value: false, momentNumber: 1, momentPeriod: 'year' },
+    { contactUpdated: 'Two Years', value: false, momentNumber: 2, momentPeriod: 'year' },
+    { contactUpdated: 'All', value: true, momentNumber: 100, momentPeriod: 'year' }
   ]
 }
 
@@ -50,13 +50,13 @@ initialState = {
   pastProjectTypeFilters: projectTypeListBuilder,
   pastProjectStatusFilters: pastProjectStatusListBuilder,
   pastProjectUpdatedFilters: [
-    { projectUpdated: 'Two Days', value: false, moment1: '2', moment2: 'day' },
-    { projectUpdated: 'Two Weeks', value: false, moment1: '2', moment2: 'week' },
-    { projectUpdated: 'Two Months', value: false, moment1: '2', moment2: 'month' },
-    { projectUpdated: 'Two Quarters', value: false, moment1: '6', moment2: 'month' },
-    { projectUpdated: 'One Year', value: false, moment1: '1', moment2: 'year' },
-    { projectUpdated: 'Two Years', value: false, moment1: '2', moment2: 'year' },
-    { projectUpdated: 'All', value: true, moment1: '100', moment2: 'year' }
+    { projectUpdated: 'Two Days', value: false, momentNumber: 2, momentPeriod: 'day' },
+    { projectUpdated: 'Two Weeks', value: false, momentNumber: 2, momentPeriod: 'week' },
+    { projectUpdated: 'Two Months', value: false, momentNumber: 2, momentPeriod: 'month' },
+    { projectUpdated: 'Two Quarters', value: false, momentNumber: 6, momentPeriod: 'month' },
+    { projectUpdated: 'One Year', value: false, momentNumber: 1, momentPeriod: 'year' },
+    { projectUpdated: 'Two Years', value: false, momentNumber: 2, momentPeriod: 'year' },
+    { projectUpdated: 'All', value: true, momentNumber: 100, momentPeriod: 'year' }
   ],
   ...initialState
 }
@@ -73,17 +73,17 @@ initialState = {
   projectTypeFilters: projectTypeListBuilder,
   projectStatusFilters: projectStatusListBuilder,
   projectUpdatedFilters: [
-    { projectUpdated: 'One Day', value: false, moment1: '1', moment2: 'day' },
-    { projectUpdated: 'Two Days', value: false, moment1: '2', moment2: 'day' },
-    { projectUpdated: 'One Week', value: false, moment1: '1', moment2: 'week' },
-    { projectUpdated: 'Two Weeks', value: false, moment1: '2', moment2: 'week' },
-    { projectUpdated: 'One Month', value: false, moment1: '1', moment2: 'month' },
-    { projectUpdated: 'Two Months', value: false, moment1: '2', moment2: 'month' },
-    { projectUpdated: 'One Quarter', value: false, moment1: '3', moment2: 'month' },
-    { projectUpdated: 'Two Quarters', value: false, moment1: '6', moment2: 'month' },
-    { projectUpdated: 'One Year', value: false, moment1: '1', moment2: 'year' },
-    { projectUpdated: 'Two Years', value: false, moment1: '2', moment2: 'year' },
-    { projectUpdated: 'All', value: true, moment1: '100', moment2: 'year' }
+    { projectUpdated: 'One Day', value: false, momentNumber: 1, momentPeriod: 'day' },
+    { projectUpdated: 'Two Days', value: false, momentNumber: 2, momentPeriod: 'day' },
+    { projectUpdated: 'One Week', value: false, momentNumber: 1, momentPeriod: 'week' },
+    { projectUpdated: 'Two Weeks', value: false, momentNumber: 2, momentPeriod: 'week' },
+    { projectUpdated: 'One Month', value: false, momentNumber: 1, momentPeriod: 'month' },
+    { projectUpdated: 'Two Months', value: false, momentNumber: 2, momentPeriod: 'month' },
+    { projectUpdated: 'One Quarter', value: false, momentNumber: 3, momentPeriod: 'month' },
+    { projectUpdated: 'Two Quarters', value: false, momentNumber: 6, momentPeriod: 'month' },
+    { projectUpdated: 'One Year', value: false, momentNumber: 1, momentPeriod: 'year' },
+    { projectUpdated: 'Two Years', value: false, momentNumber: 2, momentPeriod: 'year' },
+    { projectUpdated: 'All', value: true, momentNumber: 100, momentPeriod: 'year' }
   ],
   projectPlatformFilters: [
     { projectPlatform: 'Broadcast', value: true },
