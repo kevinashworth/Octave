@@ -1,6 +1,6 @@
-import { Components, registerComponent, withAccess, withCurrentUser, withMulti } from 'meteor/vulcan:core'
+import { Components, registerComponent, withAccess, withCurrentUser, withMessages } from 'meteor/vulcan:core'
 import Users from 'meteor/vulcan:users'
-import React, { useEffect, useMemo, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import Button from 'react-bootstrap/Button'
 import Card from 'react-bootstrap/Card'
@@ -12,6 +12,19 @@ import { SIZE_PER_PAGE_LIST_SEED } from '../../modules/constants.js'
 import { dateFormatter, renderShowsTotal, titleSortFunc } from '../../modules/helpers.js'
 import Projects from '../../modules/projects/collection.js'
 import withFilters from '../../modules/hocs/withFilters.js'
+
+import { useQuery } from '@apollo/react-hooks'
+import gql from 'graphql-tag'
+import { DATATABLE_PROJECTS } from '../../modules/projects/fragments.js'
+
+const GET_PROJECTS = gql`
+  query ($limit: Int, $offset: Int) {
+    projects(input: { limit: $limit, offset: $offset }) {
+      totalCount
+      results ${DATATABLE_PROJECTS}
+    }
+  }
+`
 
 // Set initial state. Just options I want to keep.
 // See https://github.com/amannn/react-keep-state
@@ -37,6 +50,11 @@ const AddButtonFooter = () => {
 }
 
 const ProjectsDataTable = (props) => {
+  const {
+    currentUser, flash,
+    projectTypeFilters, projectStatusFilters, projectUpdatedFilters, projectPlatformFilters
+  } = props
+
   const [show, setShow] = useState(false)
   const [project, setProject] = useState(null)
   const [searchColor, setSearchColor] = useState(keptState.searchColor)
@@ -51,6 +69,62 @@ const ProjectsDataTable = (props) => {
       }
     }
   })
+
+  const firstOffset = 0
+  const firstLimit = options.sizePerPage
+  const { data, error, fetchMore, loading } = useQuery(GET_PROJECTS, {
+    variables: {
+      offset: firstOffset,
+      limit: firstLimit
+    }
+  })
+  if (loading) {
+    return (
+      <div className='animated fadeIn'>
+        <Card className='card-accent-danger'>
+          <Card.Header>
+            <i className='fa fa-camera' />Projects
+          </Card.Header>
+          <Card.Body>
+            <Components.Loading />
+          </Card.Body>
+        </Card>
+      </div>
+    )
+  }
+  if (error) flash(error, 'error')
+
+  const resolverName = 'projects'
+  const totalCount = data[resolverName].totalCount
+  const results = data[resolverName].results
+  const count = results.length
+
+  if (count < totalCount) {
+    fetchMore({
+      variables: {
+        offset: count,
+        limit: totalCount
+      },
+      updateQuery: (previousResults, { fetchMoreResult }) => {
+        if (!(
+          fetchMoreResult[resolverName] &&
+          fetchMoreResult[resolverName].results &&
+          fetchMoreResult[resolverName].results.length
+        )) {
+          return previousResults
+        }
+        const newResults = {
+          ...previousResults,
+          [resolverName]: { ...previousResults[resolverName] }
+        }
+        newResults[resolverName].results = [
+          ...previousResults[resolverName].results,
+          ...fetchMoreResult[resolverName].results
+        ]
+        return newResults
+      }
+    })
+  }
 
   const createCustomClearButton = (onClick) => {
     return (
@@ -113,12 +187,6 @@ const ProjectsDataTable = (props) => {
     })
   }
 
-  const {
-    count, currentUser, loadingMore, loadMore, networkStatus, results, totalCount,
-    projectTypeFilters, projectStatusFilters, projectUpdatedFilters, projectPlatformFilters
-  } = props
-
-  const hasMore = results && (totalCount > results.length)
   var typeFilters = []
   projectTypeFilters.forEach(filter => {
     if (filter.value) { typeFilters.push(filter.projectType) }
@@ -132,45 +200,24 @@ const ProjectsDataTable = (props) => {
     if (filter.value) { platformFilters.push(filter.projectPlatform) }
   })
 
-  const filteredResults = useMemo(
-    () => {
-      var momentNumber = 100
-      var momentPeriod = 'years'
-      projectUpdatedFilters.some(filter => {
-        if (filter.value) {
-          momentNumber = filter.momentNumber
-          momentPeriod = filter.momentPeriod
-          return true
-        }
-      })
-      const newResults = _.filter(results, function (o) {
-        const objectDate = moment(o.updatedAt ? o.updatedAt : o.createdAt)
-        const dateToCompare = moment().subtract(momentNumber, momentPeriod).startOf('day')
-        const displayThis = objectDate.isAfter(dateToCompare)
-        return _.includes(statusFilters, o.status) &&
-          _.includes(typeFilters, o.projectType) &&
-          _.includes(platformFilters, o.platformType) &&
-          displayThis
-      })
-      return newResults
-    },
-    [results, platformFilters, projectUpdatedFilters, typeFilters, statusFilters]
-  )
-
-  if (networkStatus !== 8 && networkStatus !== 7) {
-    return (
-      <div className='animated fadeIn'>
-        <Card className='card-accent-danger'>
-          <Card.Header>
-            <i className='fa fa-camera' />Projects
-          </Card.Header>
-          <Card.Body>
-            <Components.Loading />
-          </Card.Body>
-        </Card>
-      </div>
-    )
-  }
+  var momentNumber = 100
+  var momentPeriod = 'years'
+  projectUpdatedFilters.some(filter => {
+    if (filter.value) {
+      momentNumber = filter.momentNumber
+      momentPeriod = filter.momentPeriod
+      return true
+    }
+  })
+  const filteredResults = _.filter(results, function (o) {
+    const objectDate = moment(o.updatedAt ? o.updatedAt : o.createdAt)
+    const dateToCompare = moment().subtract(momentNumber, momentPeriod).startOf('day')
+    const displayThis = objectDate.isAfter(dateToCompare)
+    return _.includes(statusFilters, o.status) &&
+      _.includes(typeFilters, o.projectType) &&
+      _.includes(platformFilters, o.platformType) &&
+      displayThis
+  })
 
   return (
     <div className='animated fadeIn'>
@@ -252,12 +299,6 @@ const ProjectsDataTable = (props) => {
             <TableHeaderColumn dataField='allAddresses' hidden>Hidden</TableHeaderColumn>
           </BootstrapTable>
         </Card.Body>
-        {hasMore &&
-          <Card.Footer>
-            {loadingMore
-              ? <Components.Loading />
-              : <Button onClick={e => { e.preventDefault(); loadMore() }}>Load More ({count}/{totalCount})</Button>}
-          </Card.Footer>}
         {Users.canCreate({ collection: Projects, user: currentUser }) && <AddButtonFooter />}
       </Card>
     </div>
@@ -269,12 +310,6 @@ const accessOptions = {
   redirect: '/welcome/new'
 }
 
-const multiOptions = {
-  collection: Projects,
-  fragmentName: 'ProjectsDataTableFragment',
-  limit: 1000
-}
-
 registerComponent({
   name: 'ProjectsDataTable',
   component: ProjectsDataTable,
@@ -282,6 +317,6 @@ registerComponent({
     [withAccess, accessOptions],
     withCurrentUser,
     withFilters,
-    [withMulti, multiOptions]
+    withMessages
   ]
 })
