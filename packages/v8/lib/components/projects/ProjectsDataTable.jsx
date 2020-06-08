@@ -28,12 +28,13 @@ const GET_PROJECTS = gql`
 
 // Set initial state. Just options I want to keep.
 // See https://github.com/amannn/react-keep-state
+const firstSizePerPage = 50
 let keptState = {
   searchColor: 'btn-secondary',
   options: {
     defaultSearch: '',
     page: 1,
-    sizePerPage: 50,
+    sizePerPage: firstSizePerPage,
     sortName: 'updatedAt',
     sortOrder: 'desc'
   }
@@ -71,7 +72,7 @@ const ProjectsDataTable = (props) => {
   })
 
   const firstOffset = 0
-  const firstLimit = options.sizePerPage
+  const firstLimit = firstSizePerPage
   const { data, error, fetchMore, loading } = useQuery(GET_PROJECTS, {
     variables: {
       offset: firstOffset,
