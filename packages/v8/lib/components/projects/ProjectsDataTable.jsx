@@ -21,8 +21,8 @@ let keptState = {
     defaultSearch: '',
     page: 1,
     sizePerPage: 50,
-    sortName: 'projectTitle',
-    sortOrder: 'asc'
+    sortName: 'updatedAt',
+    sortOrder: 'desc'
   }
 }
 
@@ -37,29 +37,17 @@ const AddButtonFooter = () => {
 }
 
 const ProjectsDataTable = (props) => {
-  const [state, setState] = useState({
-    show: false,
-    project: null,
-    // Retrieve the last state
-    ...keptState.searchColor,
-    options: {
-      ...keptState.options
-    }
-  })
+  const [show, setShow] = useState(false)
+  const [project, setProject] = useState(null)
+  const [searchColor, setSearchColor] = useState(keptState.searchColor)
+  const [options, setOptions] = useState(keptState.options)
 
   // Remember state for the next mount
   useEffect(() => {
     return () => {
-      const { options } = state
       keptState = {
-        searchColor: options.searchColor,
-        options: {
-          defaultSearch: options.defaultSearch,
-          page: options.page,
-          sizePerPage: options.sizePerPage,
-          sortName: options.sortName,
-          sortOrder: options.sortOrder
-        }
+        searchColor,
+        options
       }
     }
   })
@@ -67,70 +55,61 @@ const ProjectsDataTable = (props) => {
   const createCustomClearButton = (onClick) => {
     return (
       <ClearSearchButton
-        btnContextual={state.searchColor}
+        btnContextual={searchColor}
         className='btn-sm'
         onClick={e => handleClearButtonClick(onClick)}
       />
     )
   }
 
-  const createCustomSearchField = (props) => {
-    if (props.defaultValue.length && state.searchColor !== 'btn-danger') {
-      setState(prevState => {
-        return { ...prevState, searchColor: 'btn-danger' }
-      })
-    } else if (props.defaultValue.length === 0 && state.searchColor !== 'btn-secondary') {
-      setState(prevState => {
-        return { ...prevState, searchColor: 'btn-secondary' }
-      })
+  const createCustomSearchField = ({ defaultValue }) => {
+    if (defaultValue.length && searchColor !== 'btn-danger') {
+      setSearchColor('btn-danger')
+    } else if (defaultValue.length === 0 && searchColor !== 'btn-secondary') {
+      setSearchColor('btn-secondary')
     }
     return (
-      <SearchField defaultValue={props.defaultValue} />
+      <SearchField defaultValue={defaultValue} />
     )
   }
 
   const handleClearButtonClick = (onClick) => {
-    setState(prevState => {
-      return { ...prevState, searchColor: 'btn-secondary' }
-    })
+    setSearchColor('btn-secondary')
     onClick()
   }
 
   const handleHide = () => {
-    if (state.show) {
-      setState(prevState => {
-        return { ...prevState, show: false }
-      })
+    if (show) {
+      setShow(false)
     }
   }
 
   const pageChangeHandler = (page, sizePerPage) => {
-    setState(prevState => {
-      return { ...prevState, options: { ...prevState.options, page, sizePerPage } }
+    setOptions(prevOptions => {
+      return { ...prevOptions, page, sizePerPage }
     })
   }
 
   const rowClickHandler = (row, columnIndex, rowIndex, event) => {
-    setState(prevState => {
-      return { ...prevState, project: row, show: true }
-    })
+    setProject(row)
+    setShow(true)
   }
 
   const sortChangeHandler = (sortName, sortOrder) => {
-    setState(prevState => {
-      return { ...prevState, options: { ...prevState.options, sortName, sortOrder } }
+    setOptions(prevOptions => {
+      return { ...prevOptions, sortName, sortOrder }
     })
   }
 
   const searchChangeHandler = (searchText) => {
-    setState(prevState => {
-      return { ...prevState, options: { ...prevState.options, defaultSearch: searchText } }
+    setOptions(prevOptions => {
+      return { ...prevOptions, defaultSearch: searchText }
     })
   }
 
   const sizePerPageListHandler = (sizePerPage) => {
-    setState(prevState => {
-      return { ...prevState, options: { ...prevState.options, sizePerPage } }
+    setOptions(prevOptions => {
+      return { ...prevOptions, sizePerPage }
     })
   }
 
@@ -153,7 +132,7 @@ const ProjectsDataTable = (props) => {
     if (filter.value) { platformFilters.push(filter.projectPlatform) }
   })
 
-  const memoizedValue = useMemo(
+  const filteredResults = useMemo(
     () => {
       var momentNumber = 100
       var momentPeriod = 'years'
@@ -196,15 +175,15 @@ const ProjectsDataTable = (props) => {
   return (
     <div className='animated fadeIn'>
       <Components.HeadTags title='V8: Projects' />
-      {state.project &&
-        <Modal show={state.show} onHide={handleHide}>
+      {project &&
+        <Modal show={show} onHide={handleHide}>
           <Modal.Header closeButton>
             <Modal.Title>
-              <Link to={`/projects/${state.project._id}/${state.project.slug}`}>{state.project.projectTitle}</Link>
+              <Link to={`/projects/${project._id}/${project.slug}`}>{project.projectTitle}</Link>
             </Modal.Title>
           </Modal.Header>
           <Modal.Body>
-            <Components.ProjectModal document={state.project} />
+            <Components.ProjectModal document={project} />
           </Modal.Body>
         </Modal>}
       <Card className='card-accent-danger'>
@@ -216,11 +195,11 @@ const ProjectsDataTable = (props) => {
           <BootstrapTable
             bordered={false}
             condensed
-            data={memoizedValue}
+            data={filteredResults}
             hover
             keyField='_id'
             options={{
-              ...state.options,
+              ...options,
               sortIndicator: true,
               paginationSize: 5,
               hidePageListOnlyOnePage: true,
@@ -239,7 +218,7 @@ const ProjectsDataTable = (props) => {
               onSortChange: sortChangeHandler,
               onSearchChange: searchChangeHandler,
               sizePerPageList: SIZE_PER_PAGE_LIST_SEED.concat([{
-                text: 'All', value: props.totalCount
+                text: 'All', value: totalCount
               }])
             }}
             pagination
