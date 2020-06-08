@@ -1,9 +1,6 @@
 import { Components, registerComponent } from 'meteor/vulcan:core'
-// import { getFragmentText } from 'meteor/vulcan:lib'
-// import Users from 'meteor/vulcan:users'
 import React from 'react'
-// import { LinkContainer } from 'react-router-bootstrap'
-// import Button from 'react-bootstrap/Button'
+import Alert from 'react-bootstrap/Alert'
 import Card from 'react-bootstrap/Card'
 // import Projects from '../../modules/projects/collection.js'
 import { DATATABLE_PROJECTS } from '../../modules/projects/fragments.js'
@@ -13,33 +10,32 @@ import gql from 'graphql-tag'
 
 const GET_PROJECTS = gql`
   query ($limit: Int, $offset: Int) {
-    projects(input: {limit: $limit, offset: $offset}) {
+    projects(input: { limit: $limit, offset: $offset }) {
       totalCount
       results ${DATATABLE_PROJECTS}
     }
   }
 `
 
-console.log('GET_PROJECTS:', GET_PROJECTS)
-// const GET_PROJECTS = gql`${getFragment('ProjectsDataTableFragment')}`
-
 const ApolloTest = (props) => {
-  const { loading, error, data, fetchMore } = useQuery(GET_PROJECTS, {
+  const firstOffset = 0
+  const firstLimit = 20
+
+  const { data, error, fetchMore, loading } = useQuery(GET_PROJECTS, {
     variables: {
-      offset: 0,
-      limit: 50
+      offset: firstOffset,
+      limit: firstLimit
     }
   })
-  if (loading) return <Components.Loading />
-  if (error) return `Error! ${error.message}`
 
-  // const f = getFragmentText('ProjectsDataTableFragment')
-  // console.log('f:', f)
+  if (loading) return <Components.Loading />
+  if (error) return <Alert variant='warning'>Error! ${error.message}</Alert>
 
   const resolverName = 'projects'
-  const projects = data.projects.results
-  const totalCount = data.projects.totalCount
+  const totalCount = data[resolverName].totalCount
+  const projects = data[resolverName].results
   const count = projects.length
+
   if (count < totalCount) {
     fetchMore({
       variables: {
@@ -67,16 +63,15 @@ const ApolloTest = (props) => {
     })
   }
 
-  console.log('fetchMore:', fetchMore)
-
   return (
     <div className='animated fadeIn'>
       <Components.HeadTags title='V8: Test' />
       <Card className='card-accent-danger'>
-        <Card.Header>TEST (totalCount: {totalCount} / count: {count})</Card.Header>
+        <Card.Header>Apollo Test</Card.Header>
         <Card.Body>
+          <Card.Title>Projects (totalCount: {totalCount} / count: {count})</Card.Title>
           {projects.map((project, index) => (
-            <p key={index}>{project.sortTitle}</p>
+            <Card.Text key={index}>{project.projectTitle} ({project.sortTitle})</Card.Text>
           ))}
         </Card.Body>
       </Card>
@@ -88,24 +83,3 @@ registerComponent({
   name: 'ApolloTest',
   component: ApolloTest
 })
-
-// ProjectsSingle.propTypes = {
-//   documentId: PropTypes.string.isRequired,
-//   document: PropTypes.object
-// }
-//
-// const options = {
-//   collection: Projects,
-//   fragmentName: 'ProjectsSingleFragment'
-// }
-//
-// const mapPropsFunction = props => ({ ...props, documentId: props.match && props.match.params._id })
-//
-// registerComponent({
-//   name: 'ProjectsSingle',
-//   component: ProjectsSingle,
-//   hocs: [
-//     withCurrentUser,
-//     mapProps(mapPropsFunction), [withSingle, options] // mapProps must precede withSingle
-//   ]
-// })
