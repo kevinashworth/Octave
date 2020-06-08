@@ -45,7 +45,6 @@ class ContactsDataTable extends Component {
       options: {
         sortIndicator: true,
         paginationSize: 5,
-        hidePageListOnlyOnePage: true,
         prePage: '‹',
         nextPage: '›',
         firstPage: '«',

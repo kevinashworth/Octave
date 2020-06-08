@@ -34,7 +34,6 @@ class ContactsNameOnly extends Component {
       options: {
         sortIndicator: true,
         paginationSize: 4,
-        hidePageListOnlyOnePage: true,
         prePage: '‹',
         nextPage: '›',
         firstPage: '«',

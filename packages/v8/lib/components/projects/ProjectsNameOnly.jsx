@@ -34,7 +34,6 @@ class ProjectsNameOnly extends PureComponent {
       options: {
         sortIndicator: true,
         paginationSize: 4,
-        hidePageListOnlyOnePage: true,
         prePage: '‹',
         nextPage: '›',
         firstPage: '«',
