@@ -177,12 +177,12 @@ class ContactsDataTable extends Component {
     contactLocationFilters.forEach(filter => {
       if (filter.value) { locationFilters.push(filter.contactLocation) }
     })
-    let moment1 = ''
-    let moment2 = ''
+    let momentNumber = ''
+    let momentPeriod = ''
     contactUpdatedFilters.forEach(filter => {
       if (filter.value) {
-        moment1 = filter.moment1
-        moment2 = filter.moment2
+        momentNumber = filter.momentNumber
+        momentPeriod = filter.momentPeriod
       }
     })
 
@@ -190,7 +190,7 @@ class ContactsDataTable extends Component {
       // compare current time generously, so start of day, i.e., filter plus up to 23:59
       const now = moment()
       const dateToCompare = contact.updatedAt ? contact.updatedAt : contact.createdAt
-      const displayThis = moment(dateToCompare).isAfter(now.subtract(moment1, moment2).startOf('day'))
+      const displayThis = moment(dateToCompare).isAfter(now.subtract(momentNumber, momentPeriod).startOf('day'))
       if (!displayThis) {
         return false
       }

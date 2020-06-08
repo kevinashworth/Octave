@@ -188,19 +188,19 @@ class ContactsNameOnly extends Component {
     contactLocationFilters.forEach(filter => {
       if (filter.value) { locationFilters.push(filter.contactLocation) }
     })
-    let moment1 = ''
-    let moment2 = ''
+    let momentNumber = ''
+    let momentPeriod = ''
     contactUpdatedFilters.forEach(filter => {
       if (filter.value) {
-        moment1 = filter.moment1
-        moment2 = filter.moment2
+        momentNumber = filter.momentNumber
+        momentPeriod = filter.momentPeriod
       }
     })
     const filteredResults = _.filter(results, function (o) {
       // compare current time to filter, but generous, so start of day then, not the time it is now - filter plus up to 23:59
       const now = moment()
       const dateToCompare = o.updatedAt ? o.updatedAt : o.createdAt
-      const displayThis = moment(dateToCompare).isAfter(now.subtract(moment1, moment2).startOf('day'))
+      const displayThis = moment(dateToCompare).isAfter(now.subtract(momentNumber, momentPeriod).startOf('day'))
       let theLocation = 'Unknown'
       if (o.theAddress) {
         if (o.theAddress.location) {
