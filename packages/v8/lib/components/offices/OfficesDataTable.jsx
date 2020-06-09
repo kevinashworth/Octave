@@ -20,6 +20,7 @@ import Pagination from '../common/react-table/Pagination'
 import { dateFormatter, linkFormatter } from '../common/react-table/helpers.js'
 import { CaretSorted, CaretUnsorted } from '../common/react-table/styled.js'
 import Offices from '../../modules/offices/collection.js'
+import OfficesDataTableLoading from './OfficesDataTableLoading'
 
 // Set initial state. Just options I want to keep.
 // See https://github.com/amannn/react-keep-state
@@ -33,7 +34,7 @@ let keptState = {
   }],
   globalFilter: '',
   pageIndex: 0,
-  pageSize: 20,
+  pageSize: 50,
   sortBy: [{
     desc: true,
     id: 'updatedAt'
@@ -248,22 +249,12 @@ function OfficesDataTable (props) {
 
   if (networkStatus !== 8 && networkStatus !== 7) {
     return (
-      <div className='animated fadeIn'>
-        <Components.HeadTags title='V8: Offices' />
-        <Card className='card-accent-primary'>
-          <Card.Header>
-            <i className='icon-briefcase' />Offices
-          </Card.Header>
-          <Card.Body>
-            <Components.Loading />
-          </Card.Body>
-        </Card>
-      </div>
+      <OfficesDataTableLoading />
     )
   }
 
   return (
-    <div className='animated fadeIn'>
+    <div>
       <Components.HeadTags title='V8: Offices' />
       <Card className='card-accent-primary'>
         <Card.Header>
