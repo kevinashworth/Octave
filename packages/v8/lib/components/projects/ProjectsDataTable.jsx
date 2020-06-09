@@ -12,7 +12,6 @@ import { SIZE_PER_PAGE_LIST_SEED } from '../../modules/constants.js'
 import { dateFormatter, renderShowsTotal, titleSortFunc } from '../../modules/helpers.js'
 import Projects from '../../modules/projects/collection.js'
 import withFilters from '../../modules/hocs/withFilters.js'
-
 import { useQuery } from '@apollo/react-hooks'
 import gql from 'graphql-tag'
 import { DATATABLE_PROJECTS } from '../../modules/projects/fragments.js'

@@ -1,6 +1,5 @@
 import { Components } from 'meteor/vulcan:core'
 import React from 'react'
-import Button from 'react-bootstrap/Button'
 import Card from 'react-bootstrap/Card'
 import { BootstrapTable, ClearSearchButton, TableHeaderColumn } from 'react-bootstrap-table'
 import { SIZE_PER_PAGE_LIST_SEED } from '../../modules/constants.js'
@@ -21,8 +20,8 @@ const DUMMY_PROJECT_DATA = Array(50).fill(dummyProjectRow)
 const AddButtonFooter = () => {
   return (
     <Card.Footer>
-      <Components.ModalTrigger title='New Project' component={<Button variant='secondary'>Add a Project</Button>}>
-        <Components.ProjectsNewForm />
+      <Components.ModalTrigger title='New Project' label='Add a Project'>
+        {' '}
       </Components.ModalTrigger>
     </Card.Footer>
   )
