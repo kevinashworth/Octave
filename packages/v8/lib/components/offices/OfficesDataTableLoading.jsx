@@ -16,6 +16,15 @@ import GlobalFilter from '../common/react-table/GlobalFilter'
 import Pagination from '../common/react-table/Pagination'
 import { CaretUnsorted } from '../common/react-table/styled.js'
 
+const MyLoader = () => {
+  const width = Math.floor(Math.random() * 20) + 60
+  return (
+    <svg width='100%' height='14'>
+      <rect width={`${width}%`} height='11' style={{ fill: 'lightgrey' }} />
+    </svg>
+  )
+}
+
 const dummyProjectRow = {
   _id: '',
   displayName: ' ', // em space
@@ -23,7 +32,7 @@ const dummyProjectRow = {
   updatedAt: ' ' // em space
 }
 
-const DUMMY_OFFICES_DATA = Array(50).fill(dummyProjectRow)
+const DUMMY_OFFICES_DATA = Array(184).fill(dummyProjectRow)
 
 const keptState = {
   filters: [{
@@ -132,7 +141,7 @@ function Table ({ columns, data }) {
                 <tr {...row.getRowProps()} key={index}>
                   {row.cells.map((cell, index) => {
                     return (
-                      <td {...cell.getCellProps()} key={index}>{cell.render('Cell')}</td>
+                      <td {...cell.getCellProps()} key={index}><MyLoader /></td>
                     )
                   })}
                 </tr>
