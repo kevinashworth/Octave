@@ -107,6 +107,7 @@
     "react-bootstrap-typeahead": "^5.0.0-alpha.1",
     "react-breadcrumbs": "^2.1.7",
     "react-chartjs-2": "^2.8.0",
+    "react-content-loader": "^5.0.4",
     "react-cookie": "^2.1.6",
     "react-datetime": "^2.11.1",
     "react-dom": "^16.10.2",
