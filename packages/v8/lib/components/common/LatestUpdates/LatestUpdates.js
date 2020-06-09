@@ -6,18 +6,45 @@ import Card from 'react-bootstrap/Card'
 import Col from 'react-bootstrap/Col'
 import Row from 'react-bootstrap/Row'
 import Markup from 'interweave'
+import moment from 'moment'
 import pluralize from 'pluralize'
+import ContentLoader from 'react-content-loader'
 import Contacts from '../../../modules/contacts/collection.js'
 import Offices from '../../../modules/offices/collection.js'
 import Projects from '../../../modules/projects/collection.js'
 import PastProjects from '../../../modules/past-projects/collection.js'
-import moment from 'moment'
 import { DATE_FORMAT_SHORT_FRIENDLY } from '../../../modules/constants.js'
+
+const MyLoader = ({ cardClass }) => {
+  return (
+    <Row className='row-cols-xs-1 row-cols-sm-2 row-cols-md-3 row-cols-xxxl-6'>
+      {[1, 2, 3, 4, 5, 6].map(o => {
+        return (
+          <Col className='my-2' key={o}>
+            <Card className={cardClass}>
+              <Card.Header className='text-truncate'>
+                <ContentLoader height={14} />
+              </Card.Header>
+              <Card.Body className='text-truncate'>
+                <Card.Text>
+                  <ContentLoader height={56} />
+                </Card.Text>
+              </Card.Body>
+              <Card.Footer>
+                <small className='text-muted'><ContentLoader height={11} /></small>
+              </Card.Footer>
+            </Card>
+          </Col>
+        )
+      })}
+    </Row>
+  )
+}
 
 class LatestContactUpdates extends Component {
   render () {
     if (this.props.networkStatus !== 8 && this.props.networkStatus !== 7) {
-      return (<div><Components.Loading /></div>)
+      return <MyLoader cardClass='card-accent-warning' />
     }
 
     const contacts = this.props.results || []
@@ -126,47 +153,45 @@ registerComponent({
   hocs: [[withMulti, officesOptions]]
 })
 
-class LatestProjectUpdates extends Component {
-  render () {
-    if (this.props.networkStatus !== 8 && this.props.networkStatus !== 7) {
-      return (<div><Components.Loading /></div>)
-    }
-
-    const projects = this.props.results || []
-
-    return (
-      <Row className='row-cols-xs-1 row-cols-sm-2 row-cols-md-3 row-cols-xxxl-6'>
-        {projects.map(project => {
-          const isItNew = moment(project.updatedAt).isBefore(moment(project.createdAt).add(1, 'day'))
-          let displayHtml = isItNew
-            ? '<b>New!</b> Project added '
-            : 'Project updated '
-          displayHtml += moment(project.updatedAt).format(DATE_FORMAT_SHORT_FRIENDLY)
-          return (
-            <Col className='my-2' key={project._id}>
-              <Card className='card-accent-danger'>
-                <Card.Header className='text-truncate'>
-                  <b><Link to={`/projects/${project._id}/${project.slug}`}>{project.projectTitle}</Link></b>
-                </Card.Header>
-                <Card.Body className='text-truncate'>
-                  <Card.Text>
-                    {project.network && (project.projectType.indexOf('TV') === 0 || project.projectType.indexOf('Pilot') === 0)
-                      ? `${project.projectType} • ${project.network}`
-                      : `${project.projectType}`}<br />
-                    {project.status}<br />
-                    {project.casting}
-                  </Card.Text>
-                </Card.Body>
-                <Card.Footer>
-                  <small className='text-muted'><Markup content={displayHtml} /></small>
-                </Card.Footer>
-              </Card>
-            </Col>
-          )
-        })}
-      </Row>
-    )
+const LatestProjectUpdates = (props) => {
+  if (props.networkStatus !== 8 && props.networkStatus !== 7) {
+    return <MyLoader cardClass='card-accent-danger' />
   }
+
+  const projects = props.results || []
+
+  return (
+    <Row className='row-cols-xs-1 row-cols-sm-2 row-cols-md-3 row-cols-xxxl-6'>
+      {projects.map(project => {
+        const isItNew = moment(project.updatedAt).isBefore(moment(project.createdAt).add(1, 'day'))
+        let displayHtml = isItNew
+          ? '<b>New!</b> Project added '
+          : 'Project updated '
+        displayHtml += moment(project.updatedAt).format(DATE_FORMAT_SHORT_FRIENDLY)
+        return (
+          <Col className='my-2' key={project._id}>
+            <Card className='card-accent-danger'>
+              <Card.Header className='text-truncate'>
+                <b><Link to={`/projects/${project._id}/${project.slug}`}>{project.projectTitle}</Link></b>
+              </Card.Header>
+              <Card.Body className='text-truncate'>
+                <Card.Text>
+                  {project.network && (project.projectType.indexOf('TV') === 0 || project.projectType.indexOf('Pilot') === 0)
+                    ? `${project.projectType} • ${project.network}`
+                    : `${project.projectType}`}<br />
+                  {project.status}<br />
+                  {project.casting}
+                </Card.Text>
+              </Card.Body>
+              <Card.Footer>
+                <small className='text-muted'><Markup content={displayHtml} /></small>
+              </Card.Footer>
+            </Card>
+          </Col>
+        )
+      })}
+    </Row>
+  )
 }
 
 LatestProjectUpdates.propTypes = {
