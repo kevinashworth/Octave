@@ -8,12 +8,12 @@ import { renderShowsTotal } from '../../modules/helpers.js'
 
 const dummyProjectRow = {
   _id: '',
-  projectTitle: '·',
+  projectTitle: ' ', // em space
   casting: '',
   network: '',
   projectType: '',
   status: '',
-  updatedAt: '·'
+  updatedAt: ' ' // em space
 }
 
 const DUMMY_PROJECT_DATA = Array(50).fill(dummyProjectRow)
