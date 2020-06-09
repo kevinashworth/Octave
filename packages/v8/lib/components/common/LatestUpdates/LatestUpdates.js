@@ -22,16 +22,16 @@ const MyLoader = ({ cardClass }) => {
         return (
           <Col className='my-2' key={o}>
             <Card className={cardClass}>
-              <Card.Header className='text-truncate'>
-                <ContentLoader height={14} />
+              <Card.Header>
+                <ContentLoader animate={false} height={14} />
               </Card.Header>
-              <Card.Body className='text-truncate'>
+              <Card.Body>
                 <Card.Text>
-                  <ContentLoader height={56} />
+                  <ContentLoader animate={false} height={56} />
                 </Card.Text>
               </Card.Body>
               <Card.Footer>
-                <small className='text-muted'><ContentLoader height={11} /></small>
+                <small><ContentLoader animate={false} height={11} /></small>
               </Card.Footer>
             </Card>
           </Col>
