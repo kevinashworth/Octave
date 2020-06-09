@@ -16,6 +16,7 @@ import withFilters from '../../modules/hocs/withFilters.js'
 import { useQuery } from '@apollo/react-hooks'
 import gql from 'graphql-tag'
 import { DATATABLE_PROJECTS } from '../../modules/projects/fragments.js'
+import ProjectsDataTableLoading from './ProjectsDataTableLoading'
 
 const GET_PROJECTS = gql`
   query ($limit: Int, $offset: Int) {
@@ -81,16 +82,7 @@ const ProjectsDataTable = (props) => {
   })
   if (loading) {
     return (
-      <div className='animated fadeIn'>
-        <Card className='card-accent-danger'>
-          <Card.Header>
-            <i className='fa fa-camera' />Projects
-          </Card.Header>
-          <Card.Body>
-            <Components.Loading />
-          </Card.Body>
-        </Card>
-      </div>
+      <ProjectsDataTableLoading />
     )
   }
   if (error) flash(error, 'error')
@@ -221,7 +213,7 @@ const ProjectsDataTable = (props) => {
   })
 
   return (
-    <div className='animated fadeIn'>
+    <div>
       <Components.HeadTags title='V8: Projects' />
       {project &&
         <Modal show={show} onHide={handleHide}>
