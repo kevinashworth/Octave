@@ -13,7 +13,7 @@ import {
   AppSidebarHeader,
   AppSidebarMinimizer,
   AppSidebarNav
-} from '@coreui/react'
+} from '../coreui-react'
 
 import nav from './_nav'
 import DefaultFooter from './DefaultFooter'
