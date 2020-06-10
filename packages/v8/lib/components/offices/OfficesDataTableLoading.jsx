@@ -171,6 +171,7 @@ function OfficesDataTableLoading (props) {
       {
         Header: 'Updated',
         accessor: 'updatedAt',
+        disableFilters: true,
         style: {
           textAlign: 'right',
           width: '6.6em'

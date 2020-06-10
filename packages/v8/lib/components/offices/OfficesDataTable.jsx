@@ -1,7 +1,7 @@
 /* eslint-disable react/jsx-curly-newline */
 import { Components, registerComponent, withAccess, withCurrentUser, withMulti } from 'meteor/vulcan:core'
 import Users from 'meteor/vulcan:users'
-import React, { useEffect, useState } from 'react'
+import React, { useEffect } from 'react'
 import Button from 'react-bootstrap/Button'
 import Card from 'react-bootstrap/Card'
 import Col from 'react-bootstrap/Col'
@@ -14,6 +14,7 @@ import {
   useSortBy
 } from 'react-table'
 import matchSorter from 'match-sorter'
+import MyCode from '../common/MyCode'
 import DefaultColumnFilter from '../common/react-table/DefaultColumnFilter'
 import GlobalFilter from '../common/react-table/GlobalFilter'
 import Pagination from '../common/react-table/Pagination'
@@ -24,6 +25,7 @@ import OfficesDataTableLoading from './OfficesDataTableLoading'
 
 // Set initial state. Just options I want to keep.
 // See https://github.com/amannn/react-keep-state
+// I have moved keptState.globalFilterValue to GlobalFilter.jsx
 let keptState = {
   filters: [{
     id: 'displayName',
@@ -32,7 +34,6 @@ let keptState = {
     id: 'fullAddress',
     value: ''
   }],
-  globalFilter: '',
   pageIndex: 0,
   pageSize: 50,
   sortBy: [{
@@ -78,32 +79,23 @@ function Table ({ columns, data }) {
     []
   )
 
-  const defaultColumn = React.useMemo(
-    () => ({
-      Filter: DefaultColumnFilter
-    }),
-    []
-  )
-
   const tableProps = useTable(
     {
       columns,
       data,
-      defaultColumn,
       disableMultiSort: true,
       disableSortRemove: true,
       filterTypes,
       initialState: {
         filters: keptState.filters,
-        globalFilter: keptState.globalFilter,
         hiddenColumns: ['allContactNames', 'body'],
         pageIndex: keptState.pageIndex,
         pageSize: keptState.pageSize,
         sortBy: keptState.sortBy
       }
     },
-    useFilters,
     useGlobalFilter,
+    useFilters,
     useSortBy,
     usePagination // The usePagination plugin hook must be placed after the useSortBy plugin hook
   )
@@ -123,7 +115,6 @@ function Table ({ columns, data }) {
     return () => {
       keptState = {
         filters,
-        globalFilter,
         pageIndex,
         pageSize,
         sortBy
@@ -198,19 +189,7 @@ function Table ({ columns, data }) {
 }
 
 function OfficesDataTable (props) {
-  const [results, setResults] = useState([])
-  const [totalCount, setTotalCount] = useState(0)
-  const { count, currentUser, loadingMore, loadMore, networkStatus } = props
-
-  useEffect(
-    () => {
-      if (props.results) {
-        setResults(props.results)
-        setTotalCount(props.totalCount)
-      }
-    },
-    [props.results, props.totalCount]
-  )
+  const { count, currentUser, error, loading, loadingMore, loadMore, results, totalCount } = props
 
   const columns = React.useMemo(
     () => [
@@ -219,37 +198,44 @@ function OfficesDataTable (props) {
         accessor: 'displayName',
         Cell: linkFormatter,
         filter: 'fuzzyText',
+        Filter: DefaultColumnFilter,
         style: {
           width: '30%'
         }
-      },
-      {
+      }, {
         Header: 'Address',
         accessor: 'fullAddress',
-        filter: 'fuzzyText'
-      },
-      {
+        filter: 'fuzzyText',
+        Filter: DefaultColumnFilter
+      }, {
         Header: 'Updated',
         accessor: 'updatedAt',
+        Filter: null,
         disableFilters: true,
         Cell: dateFormatter,
         style: {
           textAlign: 'right',
           width: '6.6em'
         }
-      },
-      {
-        accessor: 'body'
       }, {
         accessor: 'allContactNames'
+      }, {
+        accessor: 'body'
       }
     ],
     []
   )
 
-  if (networkStatus !== 8 && networkStatus !== 7) {
+  if (loading) {
     return (
       <OfficesDataTableLoading />
+    )
+  }
+  if (error) {
+    return (
+      <div>
+        <MyCode code={error} language='json' />
+      </div>
     )
   }
 
