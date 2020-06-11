@@ -67,7 +67,7 @@ const ContactDisplay = ({ contact }) => {
             </Card.Text>}
         </Card.Body>
         <Card.Footer>
-          <span className='text-muted'>{displayDate}</span>
+          <small className='text-muted'>{displayDate}</small>
         </Card.Footer>
       </Card>
       {contact.pastProjects &&
