@@ -1,9 +1,7 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import classNames from 'classnames'
-// import { sidebarCssClasses, validBreakpoints, checkBreakpoint } from './Shared/index';
-// import toggleClasses from './Shared/toggle-classes';
-import SidebarController from './Shared/my-sidebar-controller.js'
+import SidebarController from './Shared/my-sidebar-controller'
 
 const propTypes = {
   children: PropTypes.node,
@@ -32,16 +30,6 @@ class AppSidebarToggler extends Component {
     // this.toggle();
     this.sidebarController.toggleOpen()
   }
-
-  // toggle(force) {
-  //   const mobile = this.props.mobile;
-  //   const display = this.sidebarController.display;
-  //   let cssClass = sidebarCssClasses[0]
-  //   if (!mobile && display && checkBreakpoint(display, validBreakpoints)) {
-  //     cssClass = `sidebar-${display}-show`
-  //   }
-  //   toggleClasses(cssClass, sidebarCssClasses, force)
-  // }
 
   render () {
     const { className, children, tag: Tag, ...attributes } = this.props

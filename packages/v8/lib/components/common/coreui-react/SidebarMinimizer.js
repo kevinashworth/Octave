@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import classNames from 'classnames'
-import SidebarController from './Shared/my-sidebar-controller.js'
+import SidebarController from './Shared/my-sidebar-controller'
 
 const propTypes = {
   children: PropTypes.node,

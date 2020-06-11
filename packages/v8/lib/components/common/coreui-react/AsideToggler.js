@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import classNames from 'classnames'
-import { asideMenuCssClasses, validBreakpoints, checkBreakpoint } from './Shared/index'
+import { asideMenuCssClasses, validBreakpoints, checkBreakpoint } from './Shared/classes'
 import toggleClasses from './Shared/toggle-classes'
 
 const propTypes = {

@@ -3,7 +3,7 @@ import classNames from 'classnames'
 import PropTypes from 'prop-types'
 import ClickOutHandler from 'react-onclickout'
 import './Shared/element-closest'
-import SidebarController from './Shared/my-sidebar-controller.js'
+import SidebarController from './Shared/my-sidebar-controller'
 
 const propTypes = {
   children: PropTypes.node,

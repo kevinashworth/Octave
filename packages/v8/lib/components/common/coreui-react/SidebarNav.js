@@ -1,3 +1,5 @@
+/* eslint-disable indent */
+/* eslint-disable react/jsx-indent */
 import React, { Component } from 'react'
 import { NavLink } from 'react-router-dom'
 import Badge from 'react-bootstrap/Badge'
@@ -5,7 +7,7 @@ import Nav from 'react-bootstrap/Nav'
 import classNames from 'classnames'
 import PropTypes from 'prop-types'
 import PerfectScrollbar from 'react-perfect-scrollbar'
-import SidebarController from './Shared/my-sidebar-controller.js'
+import SidebarController from './Shared/my-sidebar-controller'
 
 const propTypes = {
   children: PropTypes.node,
@@ -37,7 +39,7 @@ class AppSidebarNav extends Component {
     this.sidebarController = SidebarController
     this.handleClick = this.handleClick.bind(this)
     this.activeRoute = this.activeRoute.bind(this)
-    this.hideMobile = this.hideMobile.bind(this)
+    this.handleNavLinkClick = this.handleNavLinkClick.bind(this)
   }
 
   handleClick (e) {
@@ -51,7 +53,7 @@ class AppSidebarNav extends Component {
       : 'nav-item nav-dropdown'
   }
 
-  hideMobile () {
+  handleNavLinkClick () {
     this.sidebarController.hideMobile()
   }
 
@@ -144,14 +146,14 @@ class AppSidebarNav extends Component {
       <Nav.Item key={key} className={classes.item}>
         {attributes.disabled
           ? <Nav.Link href='' className={classes.link} {...attributes}>
-            {itemIcon}{item.name}{itemBadge}
+              {itemIcon}{item.name}{itemBadge}
             </Nav.Link>
           : this.isExternal(url)
             ? <Nav.Link href={url} className={classes.link} active {...attributes}>
-              {itemIcon}{item.name}{itemBadge}
+                {itemIcon}{item.name}{itemBadge}
               </Nav.Link>
-            : <NavLink to={url} className={classes.link} activeClassName='active' onClick={this.hideMobile} {...attributes}>
-              {itemIcon}{item.name}{itemBadge}
+            : <NavLink to={url} className={classes.link} activeClassName='active' onClick={this.handleNavLinkClick} {...attributes}>
+                {itemIcon}{item.name}{itemBadge}
               </NavLink>}
       </Nav.Item>
     )
@@ -183,7 +185,7 @@ class AppSidebarNav extends Component {
     const navClasses = classNames(className, 'sidebar-nav')
 
     // ToDo: find better rtl fix
-    const isRtl = getComputedStyle(document.documentElement).direction === 'rtl'
+    const isRtl = window.getComputedStyle(document.documentElement).direction === 'rtl'
 
     // sidebar-nav root
     return (
