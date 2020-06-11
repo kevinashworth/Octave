@@ -6,6 +6,8 @@ import MyLoading from '../common/MyLoading'
 import { INITIAL_SIZE_PER_PAGE, LOADING_PROJECTS_DATA, SIZE_PER_PAGE_LIST_SEED } from '../../modules/constants.js'
 import { renderShowsTotal } from '../../modules/helpers.js'
 
+const MyLoadingPrimary = () => <MyLoading variant='primary' />
+
 const AddButtonFooter = () => {
   return (
     <Card.Footer>
@@ -57,7 +59,7 @@ const ProjectsDataTableLoading = (props) => {
             striped
             version='4'
           >
-            <TableHeaderColumn dataField='projectTitle' dataFormat={MyLoading} dataSort width='25%'>Name</TableHeaderColumn>
+            <TableHeaderColumn dataField='projectTitle' dataFormat={MyLoadingPrimary} dataSort width='25%'>Name</TableHeaderColumn>
             <TableHeaderColumn dataField='casting' dataFormat={MyLoading} dataSort>Casting</TableHeaderColumn>
             <TableHeaderColumn dataField='network' dataFormat={MyLoading} dataSort>Network</TableHeaderColumn>
             <TableHeaderColumn dataField='projectType' dataFormat={MyLoading} dataSort>Type</TableHeaderColumn>
