@@ -6,7 +6,7 @@ import Interweave from 'interweave'
 import moment from 'moment'
 import pluralize from 'pluralize'
 import { DATE_FORMAT_LONG } from '../../modules/constants.js'
-import { isEmptyValue, transform } from '../../modules/helpers.js'
+import { isEmptyValue, transformLinks } from '../../modules/helpers.js'
 
 const PastProjects = (props) => {
   return (
@@ -33,7 +33,7 @@ const ContactDisplay = ({ contact }) => {
             {contact.gender && <div>{contact.gender}</div>}
             <hr />
             {contact.htmlBody
-              ? <Interweave content={contact.htmlBody} transform={transform} />
+              ? <Interweave content={contact.htmlBody} transform={transformLinks} />
               : <div>{contact.body}</div>}
           </Card.Text>
           {!isEmptyValue(contact.offices) &&

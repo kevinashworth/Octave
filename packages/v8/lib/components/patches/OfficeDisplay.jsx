@@ -6,7 +6,7 @@ import moment from 'moment'
 import pluralize from 'pluralize'
 import styled from 'styled-components'
 import { DATE_FORMAT_LONG } from '../../modules/constants.js'
-import { transform } from '../../modules/helpers.js'
+import { transformLinks } from '../../modules/helpers.js'
 
 const Flextest = styled.div`
   display: flex;
@@ -45,7 +45,7 @@ const OfficeDisplay = ({ office }) => {
           {office.htmlBody &&
             <Card.Title className='mt-5'><b>Notes</b></Card.Title>}
           {office.htmlBody &&
-            <Interweave content={office.htmlBody} transform={transform} />}
+            <Interweave content={office.htmlBody} transform={transformLinks} />}
           {office.theContacts && office.theContacts.length > 0 &&
             <Card.Title className='mt-5'><b>Contacts</b></Card.Title>}
           {office.theContacts &&

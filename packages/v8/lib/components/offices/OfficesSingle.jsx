@@ -14,7 +14,7 @@ import moment from 'moment'
 import pluralize from 'pluralize'
 import mapProps from 'recompose/mapProps'
 import { DATE_FORMAT_LONG, DATE_FORMAT_SHORT } from '../../modules/constants.js'
-import { transform } from '../../modules/helpers.js'
+import { transformLinks } from '../../modules/helpers.js'
 import Offices from '../../modules/offices/collection.js'
 
 // Don't fetch and render PastProjects unless user clicks to see them
@@ -89,7 +89,7 @@ class OfficesSingle extends Component {
                 {office.htmlBody &&
                   <Card.Title className='mt-5'><b>Notes</b></Card.Title>}
                 {office.htmlBody &&
-                  <Interweave content={office.htmlBody} transform={transform} />}
+                  <Interweave content={office.htmlBody} transform={transformLinks} />}
                 {office.theContacts &&
                   office.theContacts.length > 0 &&
                     <Card.Title className='mt-5'><b>Contacts</b></Card.Title>}

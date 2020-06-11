@@ -376,7 +376,7 @@ export function getSortTitle (title) {
   return newTitle
 }
 
-export const transform = (node, children) => {
+export const transformLinks = (node, children) => {
   if (node.nodeName === 'A') {
     const href = node.getAttribute('href')
     if (href.indexOf('/') === 0) {
