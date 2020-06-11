@@ -34,7 +34,6 @@ class PastProjectsDataTable extends Component {
       options: {
         sortIndicator: true,
         paginationSize: 5,
-        hidePageListOnlyOnePage: true,
         prePage: '‹',
         nextPage: '›',
         firstPage: '«',
@@ -175,12 +174,12 @@ class PastProjectsDataTable extends Component {
     pastProjectStatusFilters.forEach(filter => {
       if (filter.value) { statusFilters.push(filter.pastProjectStatus) }
     })
-    let moment1 = ''
-    let moment2 = ''
+    let momentNumber = ''
+    let momentPeriod = ''
     pastProjectUpdatedFilters.forEach(filter => {
       if (filter.value) {
-        moment1 = filter.moment1
-        moment2 = filter.moment2
+        momentNumber = filter.momentNumber
+        momentPeriod = filter.momentPeriod
       }
     })
 
@@ -188,7 +187,7 @@ class PastProjectsDataTable extends Component {
       // compare current time to filter, but generous, so start of day then, not the time it is now - filter plus up to 23:59
       const now = moment()
       const dateToCompare = o.updatedAt ? o.updatedAt : o.createdAt
-      const displayThis = moment(dateToCompare).isAfter(now.subtract(moment1, moment2).startOf('day'))
+      const displayThis = moment(dateToCompare).isAfter(now.subtract(momentNumber, momentPeriod).startOf('day'))
       return _.includes(statusFilters, o.status) &&
           _.includes(typeFilters, o.projectType) &&
           displayThis

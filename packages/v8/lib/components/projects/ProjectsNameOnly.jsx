@@ -34,7 +34,6 @@ class ProjectsNameOnly extends PureComponent {
       options: {
         sortIndicator: true,
         paginationSize: 4,
-        hidePageListOnlyOnePage: true,
         prePage: '‹',
         nextPage: '›',
         firstPage: '«',
@@ -187,12 +186,12 @@ class ProjectsNameOnly extends PureComponent {
     projectStatusFilters.forEach(filter => {
       if (filter.value) { statusFilters.push(filter.projectStatus) }
     })
-    let moment1 = ''
-    let moment2 = ''
+    let momentNumber = ''
+    let momentPeriod = ''
     projectUpdatedFilters.forEach(filter => {
       if (filter.value) {
-        moment1 = filter.moment1
-        moment2 = filter.moment2
+        momentNumber = filter.momentNumber
+        momentPeriod = filter.momentPeriod
       }
     })
     var platformFilters = []
@@ -203,7 +202,7 @@ class ProjectsNameOnly extends PureComponent {
       // compare current time to filter, but generous, so start of day then, not the time it is now - filter plus up to 23:59
       const now = moment()
       const dateToCompare = o.updatedAt ? o.updatedAt : o.createdAt
-      const displayThis = moment(dateToCompare).isAfter(now.subtract(moment1, moment2).startOf('day'))
+      const displayThis = moment(dateToCompare).isAfter(now.subtract(momentNumber, momentPeriod).startOf('day'))
       return _.includes(statusFilters, o.status) &&
           _.includes(typeFilters, o.projectType) &&
           _.includes(platformFilters, o.platformType) &&

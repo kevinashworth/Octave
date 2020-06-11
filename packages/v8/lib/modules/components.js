@@ -84,6 +84,8 @@ import '../components/projects/ProjectsNameOnly'
 import '../components/projects/ProjectsNewForm'
 import '../components/projects/ProjectsSingle'
 
+import '../components/projects/ApolloTest'
+
 import '../components/statistics/StatisticsEditForm.jsx'
 import '../components/statistics/StatisticsList.jsx'
 

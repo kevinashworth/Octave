@@ -2,25 +2,25 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import Button from 'react-bootstrap/Button'
 
-const btnColor = (txt) => {
-  if (!txt) {
-    return 'secondary'
+const btnColor = (isGlobalFilter) => {
+  if (isGlobalFilter) {
+    return 'danger'
   }
-  return 'danger'
+  return 'secondary'
 }
 
 const SearchClearButton = ({
-  onClick,
-  globalFilter
+  isGlobalFilter,
+  onClick
 }) => (
   <span className='input-group-btn'>
-    <Button size='sm' variant={btnColor(globalFilter)} onClick={onClick}>Clear</Button>
+    <Button size='sm' variant={btnColor(isGlobalFilter)} onClick={onClick}>Clear</Button>
   </span>
 )
 
 SearchClearButton.propTypes = {
-  onClick: PropTypes.func.isRequired,
-  globalFilter: PropTypes.string
+  isGlobalFilter: PropTypes.bool,
+  onClick: PropTypes.func.isRequired
 }
 
 export default SearchClearButton

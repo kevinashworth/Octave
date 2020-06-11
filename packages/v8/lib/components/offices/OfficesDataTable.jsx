@@ -1,7 +1,7 @@
 /* eslint-disable react/jsx-curly-newline */
 import { Components, registerComponent, withAccess, withCurrentUser, withMulti } from 'meteor/vulcan:core'
 import Users from 'meteor/vulcan:users'
-import React, { useEffect, useState } from 'react'
+import React, { useEffect } from 'react'
 import Button from 'react-bootstrap/Button'
 import Card from 'react-bootstrap/Card'
 import Col from 'react-bootstrap/Col'
@@ -14,15 +14,19 @@ import {
   useSortBy
 } from 'react-table'
 import matchSorter from 'match-sorter'
+import MyCode from '../common/MyCode'
 import DefaultColumnFilter from '../common/react-table/DefaultColumnFilter'
 import GlobalFilter from '../common/react-table/GlobalFilter'
 import Pagination from '../common/react-table/Pagination'
 import { dateFormatter, linkFormatter } from '../common/react-table/helpers.js'
 import { CaretSorted, CaretUnsorted } from '../common/react-table/styled.js'
 import Offices from '../../modules/offices/collection.js'
+import OfficesDataTableLoading from './OfficesDataTableLoading'
+import { INITIAL_SIZE_PER_PAGE } from '../../modules/constants.js'
 
 // Set initial state. Just options I want to keep.
 // See https://github.com/amannn/react-keep-state
+// I have moved keptState.globalFilterValue to GlobalFilter.jsx
 let keptState = {
   filters: [{
     id: 'displayName',
@@ -31,9 +35,8 @@ let keptState = {
     id: 'fullAddress',
     value: ''
   }],
-  globalFilter: '',
   pageIndex: 0,
-  pageSize: 20,
+  pageSize: INITIAL_SIZE_PER_PAGE,
   sortBy: [{
     desc: true,
     id: 'updatedAt'
@@ -77,32 +80,23 @@ function Table ({ columns, data }) {
     []
   )
 
-  const defaultColumn = React.useMemo(
-    () => ({
-      Filter: DefaultColumnFilter
-    }),
-    []
-  )
-
   const tableProps = useTable(
     {
       columns,
       data,
-      defaultColumn,
       disableMultiSort: true,
       disableSortRemove: true,
       filterTypes,
       initialState: {
         filters: keptState.filters,
-        globalFilter: keptState.globalFilter,
         hiddenColumns: ['allContactNames', 'body'],
         pageIndex: keptState.pageIndex,
         pageSize: keptState.pageSize,
         sortBy: keptState.sortBy
       }
     },
-    useFilters,
     useGlobalFilter,
+    useFilters,
     useSortBy,
     usePagination // The usePagination plugin hook must be placed after the useSortBy plugin hook
   )
@@ -122,7 +116,6 @@ function Table ({ columns, data }) {
     return () => {
       keptState = {
         filters,
-        globalFilter,
         pageIndex,
         pageSize,
         sortBy
@@ -197,19 +190,7 @@ function Table ({ columns, data }) {
 }
 
 function OfficesDataTable (props) {
-  const [results, setResults] = useState([])
-  const [totalCount, setTotalCount] = useState(0)
-  const { count, currentUser, loadingMore, loadMore, networkStatus } = props
-
-  useEffect(
-    () => {
-      if (props.results) {
-        setResults(props.results)
-        setTotalCount(props.totalCount)
-      }
-    },
-    [props.results, props.totalCount]
-  )
+  const { count, currentUser, error, loading, loadingMore, loadMore, results, totalCount } = props
 
   const columns = React.useMemo(
     () => [
@@ -218,52 +199,49 @@ function OfficesDataTable (props) {
         accessor: 'displayName',
         Cell: linkFormatter,
         filter: 'fuzzyText',
+        Filter: DefaultColumnFilter,
         style: {
           width: '30%'
         }
-      },
-      {
+      }, {
         Header: 'Address',
         accessor: 'fullAddress',
-        filter: 'fuzzyText'
-      },
-      {
+        filter: 'fuzzyText',
+        Filter: DefaultColumnFilter
+      }, {
         Header: 'Updated',
         accessor: 'updatedAt',
+        Filter: null,
         disableFilters: true,
         Cell: dateFormatter,
         style: {
           textAlign: 'right',
           width: '6.6em'
         }
-      },
-      {
-        accessor: 'body'
       }, {
         accessor: 'allContactNames'
+      }, {
+        accessor: 'body'
       }
     ],
     []
   )
 
-  if (networkStatus !== 8 && networkStatus !== 7) {
+  if (loading) {
     return (
-      <div className='animated fadeIn'>
-        <Components.HeadTags title='V8: Offices' />
-        <Card className='card-accent-primary'>
-          <Card.Header>
-            <i className='icon-briefcase' />Offices
-          </Card.Header>
-          <Card.Body>
-            <Components.Loading />
-          </Card.Body>
-        </Card>
+      <OfficesDataTableLoading />
+    )
+  }
+  if (error) {
+    return (
+      <div>
+        <MyCode code={error} language='json' />
       </div>
     )
   }
 
   return (
-    <div className='animated fadeIn'>
+    <div>
       <Components.HeadTags title='V8: Offices' />
       <Card className='card-accent-primary'>
         <Card.Header>

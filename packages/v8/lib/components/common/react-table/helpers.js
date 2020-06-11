@@ -1,8 +1,7 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
 import moment from 'moment'
-import { DATE_FORMAT_SHORT } from '../../../modules/constants.js'
-import { PAGINATION_SIZE } from './constants.js'
+import { DATE_FORMAT_SHORT, PAGINATION_SIZE } from '../../../modules/constants.js'
 
 export const dateFormatter = ({ cell, row }) => {
   let theDate

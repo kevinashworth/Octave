@@ -303,3 +303,27 @@ export const BRANDS_ENUM = [
   { brand: 'website', fa: 'fa-desktop' },
   { brand: 'wikipedia', fa: 'fa-wikipedia-w' }
 ]
+
+export const PAGINATION_SIZE = 5
+export const INITIAL_SIZE_PER_PAGE = 50
+
+const dummyProjectRow = {
+  _id: '',
+  projectTitle: ' ', // em space
+  casting: '',
+  network: '',
+  projectType: '',
+  status: '',
+  updatedAt: ' ' // em space
+}
+
+export const LOADING_PROJECTS_DATA = Array(50).fill(dummyProjectRow)
+
+const dummyOfficeRow = {
+  _id: '',
+  displayName: ' ', // em space
+  fullAddress: '',
+  updatedAt: ' ' // em space
+}
+
+export const LOADING_OFFICES_DATA = Array(180).fill(dummyOfficeRow)

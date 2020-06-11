@@ -95,6 +95,11 @@ const navItems = {
       name: 'Development'
     },
     {
+      name: 'Test',
+      url: '/test',
+      icon: 'fa fa fa-balance-scale'
+    },
+    {
       name: 'Debug',
       url: '/debug',
       icon: 'fa fa-file-code-o'

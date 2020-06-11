@@ -28,7 +28,7 @@ const addressGroup = {
   order: 40
 }
 
-let schema = {
+const schema = {
 
   /* default properties */
 
@@ -108,11 +108,11 @@ let schema = {
   union: {
     type: String,
     defaultValue: 'SAG-AFTRA',
-    canRead: ['guests'],
+    canRead: ['guests']
   },
   network: {
     type: String,
-    canRead: ['guests'],
+    canRead: ['guests']
   },
   status: {
     type: String,
@@ -127,7 +127,7 @@ let schema = {
       return formType !== 'new' && document.status !== 'On Hiatus'
     },
     type: Boolean,
-    canRead: ['guests'],
+    canRead: ['guests']
   },
   shootingLocation: {
     label: 'Shooting Location',
@@ -196,16 +196,16 @@ let schema = {
   },
   season: {
     type: String,
-    canRead: ['members'],
+    canRead: ['members']
   },
   order: {
     type: String,
-    canRead: ['members'],
+    canRead: ['members']
   },
   castingCompany: {
     label: 'Casting Company',
     type: String,
-    canRead: ['members'],
+    canRead: ['members']
   },
   casting: {
     label: 'Casting Calculated',
@@ -214,7 +214,7 @@ let schema = {
     resolveAs: {
       type: 'String',
       resolver: async (project, args, { Offices }) => {
-        if (project.offices && project.offices[0]) {
+        if (project.offices && project.offices[0] && project.offices[0].officeId) {
           const office = await Offices.loader.load(project.offices[0].officeId)
           return office.displayName
         } else if (project.castingCompany && project.castingCompany.length) {
@@ -231,7 +231,7 @@ let schema = {
     canCreate: ['members', 'admins'],
     canUpdate: ['members', 'admins'],
     group: officeGroup,
-    query:/* GraphQL */`
+    query: /* GraphQL */`
       query OfficesNameAndId {
         offices {
           results {
@@ -240,7 +240,7 @@ let schema = {
           }
         }
       }
-    `,
+    `
   },
   'offices.$': {
     type: officeSubSchema
@@ -252,7 +252,7 @@ let schema = {
     canCreate: ['members', 'admins'],
     canUpdate: ['members', 'admins'],
     group: contactGroup,
-    query:/* GraphQL */`
+    query: /* GraphQL */`
       query ContactsNameAndId {
         contacts {
           results {
@@ -262,7 +262,7 @@ let schema = {
         }
       }
     `
-   },
+  },
   'contacts.$': {
     type: contactSubSchema
   },
@@ -428,7 +428,7 @@ const permissionFields = [
   'offices',
   'links',
   // 'allContactNames',
-  'addresses',
+  'addresses'
   // 'allAddresses'
 ]
 
