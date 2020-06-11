@@ -1,9 +1,8 @@
 import React, { useState } from 'react'
 import Dropdown from 'react-bootstrap/Dropdown'
 import RBPagination from 'react-bootstrap/Pagination'
-import { PAGINATION_SIZE } from './constants.js'
 import { getPageOptionsVisible } from './helpers.js'
-import { SIZE_PER_PAGE_LIST_SEED } from '../../../modules/constants.js'
+import { PAGINATION_SIZE, SIZE_PER_PAGE_LIST_SEED } from '../../../modules/constants.js'
 
 const Pagination = (props) => {
   const {

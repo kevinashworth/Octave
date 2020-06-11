@@ -15,24 +15,8 @@ import DefaultColumnFilter from '../common/react-table/DefaultColumnFilter'
 import GlobalFilter from '../common/react-table/GlobalFilter'
 import Pagination from '../common/react-table/Pagination'
 import { CaretUnsorted } from '../common/react-table/styled.js'
-
-const MyLoader = () => {
-  const width = Math.floor(Math.random() * 20) + 60
-  return (
-    <svg width='100%' height='14'>
-      <rect width={`${width}%`} height='11' style={{ fill: 'lightgrey' }} />
-    </svg>
-  )
-}
-
-const dummyProjectRow = {
-  _id: '',
-  displayName: ' ', // em space
-  fullAddress: '',
-  updatedAt: ' ' // em space
-}
-
-const DUMMY_OFFICES_DATA = Array(184).fill(dummyProjectRow)
+import MyLoading from '../common/MyLoading'
+import { INITIAL_SIZE_PER_PAGE, LOADING_OFFICES_DATA } from '../../modules/constants.js'
 
 const keptState = {
   filters: [{
@@ -43,7 +27,7 @@ const keptState = {
     value: ''
   }],
   pageIndex: 0,
-  pageSize: 50
+  pageSize: INITIAL_SIZE_PER_PAGE
 }
 
 function AddButtonFooter () {
@@ -141,7 +125,7 @@ function Table ({ columns, data }) {
                 <tr {...row.getRowProps()} key={index}>
                   {row.cells.map((cell, index) => {
                     return (
-                      <td {...cell.getCellProps()} key={index}><MyLoader /></td>
+                      <td {...cell.getCellProps()} key={index}><MyLoading /></td>
                     )
                   })}
                 </tr>
@@ -189,7 +173,7 @@ function OfficesDataTableLoading (props) {
           <i className='icon-briefcase' />Offices
         </Card.Header>
         <Card.Body>
-          <Table columns={columns} data={DUMMY_OFFICES_DATA} />
+          <Table columns={columns} data={LOADING_OFFICES_DATA} />
         </Card.Body>
         <AddButtonFooter />
       </Card>

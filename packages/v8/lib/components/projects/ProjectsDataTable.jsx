@@ -8,7 +8,7 @@ import Modal from 'react-bootstrap/Modal'
 import { BootstrapTable, ClearSearchButton, SearchField, TableHeaderColumn } from 'react-bootstrap-table'
 import _ from 'lodash'
 import moment from 'moment'
-import { SIZE_PER_PAGE_LIST_SEED } from '../../modules/constants.js'
+import { INITIAL_SIZE_PER_PAGE, SIZE_PER_PAGE_LIST_SEED } from '../../modules/constants.js'
 import { dateFormatter, renderShowsTotal, titleSortFunc } from '../../modules/helpers.js'
 import Projects from '../../modules/projects/collection.js'
 import withFilters from '../../modules/hocs/withFilters.js'
@@ -28,13 +28,12 @@ const GET_PROJECTS = gql`
 
 // Set initial state. Just options I want to keep.
 // See https://github.com/amannn/react-keep-state
-const firstSizePerPage = 50
 let keptState = {
   searchColor: 'btn-secondary',
   options: {
     defaultSearch: '',
     page: 1,
-    sizePerPage: firstSizePerPage,
+    sizePerPage: INITIAL_SIZE_PER_PAGE,
     sortName: 'updatedAt',
     sortOrder: 'desc'
   }
@@ -72,7 +71,7 @@ const ProjectsDataTable = (props) => {
   })
 
   const firstOffset = 0
-  const firstLimit = firstSizePerPage
+  const firstLimit = INITIAL_SIZE_PER_PAGE
   const { data, error, fetchMore, loading } = useQuery(GET_PROJECTS, {
     variables: {
       offset: firstOffset,

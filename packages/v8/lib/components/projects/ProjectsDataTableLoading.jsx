@@ -2,20 +2,9 @@ import { Components } from 'meteor/vulcan:core'
 import React from 'react'
 import Card from 'react-bootstrap/Card'
 import { BootstrapTable, ClearSearchButton, TableHeaderColumn } from 'react-bootstrap-table'
-import { SIZE_PER_PAGE_LIST_SEED } from '../../modules/constants.js'
+import MyLoading from '../common/MyLoading'
+import { INITIAL_SIZE_PER_PAGE, LOADING_PROJECTS_DATA, SIZE_PER_PAGE_LIST_SEED } from '../../modules/constants.js'
 import { renderShowsTotal } from '../../modules/helpers.js'
-
-const dummyProjectRow = {
-  _id: '',
-  projectTitle: ' ', // em space
-  casting: '',
-  network: '',
-  projectType: '',
-  status: '',
-  updatedAt: ' ' // em space
-}
-
-const DUMMY_PROJECT_DATA = Array(50).fill(dummyProjectRow)
 
 const AddButtonFooter = () => {
   return (
@@ -48,10 +37,10 @@ const ProjectsDataTableLoading = (props) => {
           <BootstrapTable
             bordered={false}
             condensed
-            data={DUMMY_PROJECT_DATA}
+            data={LOADING_PROJECTS_DATA}
             keyField='_id'
             options={{
-              sizePerPage: 50,
+              sizePerPage: INITIAL_SIZE_PER_PAGE,
               paginationSize: 5,
               prePage: '‹',
               nextPage: '›',
@@ -68,12 +57,12 @@ const ProjectsDataTableLoading = (props) => {
             striped
             version='4'
           >
-            <TableHeaderColumn dataField='projectTitle' dataSort width='25%'>Name</TableHeaderColumn>
-            <TableHeaderColumn dataField='casting' dataSort>Casting</TableHeaderColumn>
-            <TableHeaderColumn dataField='network' dataSort>Network</TableHeaderColumn>
-            <TableHeaderColumn dataField='projectType' dataSort>Type</TableHeaderColumn>
-            <TableHeaderColumn dataField='status' dataSort width='94px'>Status</TableHeaderColumn>
-            <TableHeaderColumn dataField='updatedAt' dataSort dataAlign='right' width='94px'>Updated</TableHeaderColumn>
+            <TableHeaderColumn dataField='projectTitle' dataFormat={MyLoading} dataSort width='25%'>Name</TableHeaderColumn>
+            <TableHeaderColumn dataField='casting' dataFormat={MyLoading} dataSort>Casting</TableHeaderColumn>
+            <TableHeaderColumn dataField='network' dataFormat={MyLoading} dataSort>Network</TableHeaderColumn>
+            <TableHeaderColumn dataField='projectType' dataFormat={MyLoading} dataSort>Type</TableHeaderColumn>
+            <TableHeaderColumn dataField='status' dataFormat={MyLoading} dataSort width='94px'>Status</TableHeaderColumn>
+            <TableHeaderColumn dataField='updatedAt' dataFormat={MyLoading} dataSort dataAlign='right' width='94px'>Updated</TableHeaderColumn>
           </BootstrapTable>
         </Card.Body>
         <AddButtonFooter />

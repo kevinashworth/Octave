@@ -22,6 +22,7 @@ import { dateFormatter, linkFormatter } from '../common/react-table/helpers.js'
 import { CaretSorted, CaretUnsorted } from '../common/react-table/styled.js'
 import Offices from '../../modules/offices/collection.js'
 import OfficesDataTableLoading from './OfficesDataTableLoading'
+import { INITIAL_SIZE_PER_PAGE } from '../../modules/constants.js'
 
 // Set initial state. Just options I want to keep.
 // See https://github.com/amannn/react-keep-state
@@ -35,7 +36,7 @@ let keptState = {
     value: ''
   }],
   pageIndex: 0,
-  pageSize: 50,
+  pageSize: INITIAL_SIZE_PER_PAGE,
   sortBy: [{
     desc: true,
     id: 'updatedAt'
