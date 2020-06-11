@@ -23,7 +23,7 @@ const MyLoader = ({ cardClass }) => {
           <Col className='my-2' key={o}>
             <Card className={cardClass}>
               <Card.Header>
-                <MyLoading />
+                <MyLoading variant='primary' />
               </Card.Header>
               <Card.Body>
                 <Card.Text>

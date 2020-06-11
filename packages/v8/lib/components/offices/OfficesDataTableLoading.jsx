@@ -125,7 +125,7 @@ function Table ({ columns, data }) {
                 <tr {...row.getRowProps()} key={index}>
                   {row.cells.map((cell, index) => {
                     return (
-                      <td {...cell.getCellProps()} key={index}><MyLoading /></td>
+                      <td {...cell.getCellProps()} key={index}><MyLoading variant={index === 0 && 'primary'} /></td>
                     )
                   })}
                 </tr>
