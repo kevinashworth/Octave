@@ -1,10 +1,12 @@
 import React from 'react'
 
-const MyLoading = () => {
-  const width = Math.floor(Math.random() * 20) + 60
+const MyLoading = ({ height }) => {
+  const h1 = height || 14
+  const h2 = Math.floor((h1 * 11) / 14)
+  const w = Math.floor(Math.random() * 20) + 60
   return (
-    <svg width='100%' height='14'>
-      <rect width={`${width}%`} height='11' style={{ fill: 'lightgrey' }} />
+    <svg width='100%' height={h1}>
+      <rect width={`${w}%`} height={h2} style={{ fill: 'gainsboro' }} />
     </svg>
   )
 }

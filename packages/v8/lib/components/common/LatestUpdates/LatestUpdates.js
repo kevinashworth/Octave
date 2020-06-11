@@ -8,11 +8,11 @@ import Row from 'react-bootstrap/Row'
 import Markup from 'interweave'
 import moment from 'moment'
 import pluralize from 'pluralize'
-import ContentLoader from 'react-content-loader'
 import Contacts from '../../../modules/contacts/collection.js'
 import Offices from '../../../modules/offices/collection.js'
 import Projects from '../../../modules/projects/collection.js'
 import PastProjects from '../../../modules/past-projects/collection.js'
+import MyLoading from '../MyLoading'
 import { DATE_FORMAT_SHORT_FRIENDLY } from '../../../modules/constants.js'
 
 const MyLoader = ({ cardClass }) => {
@@ -23,15 +23,15 @@ const MyLoader = ({ cardClass }) => {
           <Col className='my-2' key={o}>
             <Card className={cardClass}>
               <Card.Header>
-                <ContentLoader animate={false} height={14} />
+                <MyLoading />
               </Card.Header>
               <Card.Body>
                 <Card.Text>
-                  <ContentLoader animate={false} height={56} />
+                  <MyLoading height={63} />
                 </Card.Text>
               </Card.Body>
               <Card.Footer>
-                <small><ContentLoader animate={false} height={11} /></small>
+                <MyLoading />
               </Card.Footer>
             </Card>
           </Col>
