@@ -5,7 +5,7 @@ import Nav from 'react-bootstrap/Nav'
 import NavItem from 'react-bootstrap/NavItem'
 import NavLink from 'react-bootstrap/NavLink'
 
-import { AppNavbarBrand, AppSidebarToggler } from '@coreui/react'
+import { AppNavbarBrand, AppSidebarToggler } from '../coreui-react'
 
 const DefaultHeader = () => {
   return (
