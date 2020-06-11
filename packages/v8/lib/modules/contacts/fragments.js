@@ -38,6 +38,7 @@ registerFragment(/* GraphQL */ `
       city
       state
       zip
+      addressType
       location
     }
     allAddresses
@@ -90,6 +91,8 @@ registerFragment(/* GraphQL */ `
       city
       state
       zip
+      addressType
+      location
     }
     projects {
       projectId
@@ -134,6 +137,7 @@ registerFragment(/* GraphQL */ `
       city
       state
       zip
+      addressType
       location
     }
     projects {
