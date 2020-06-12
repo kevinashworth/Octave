@@ -6,7 +6,7 @@ import Interweave from 'interweave'
 import moment from 'moment'
 import pluralize from 'pluralize'
 import { DATE_FORMAT_LONG } from '../../modules/constants.js'
-import { createdFormattedAddress, isEmptyValue, transform } from '../../modules/helpers.js'
+import { isEmptyValue, transformLinks } from '../../modules/helpers.js'
 
 const PastProjects = (props) => {
   return (
@@ -33,7 +33,7 @@ const ContactDisplay = ({ contact }) => {
             {contact.gender && <div>{contact.gender}</div>}
             <hr />
             {contact.htmlBody
-              ? <Interweave content={contact.htmlBody} transform={transform} />
+              ? <Interweave content={contact.htmlBody} transform={transformLinks} />
               : <div>{contact.body}</div>}
           </Card.Text>
           {!isEmptyValue(contact.offices) &&
@@ -46,7 +46,7 @@ const ContactDisplay = ({ contact }) => {
             contact.addresses[0] && <Card.Title className='mt-5'><b>{pluralize('Address', contact.addresses.length)}</b></Card.Title>}
           {contact.addresses &&
             contact.addresses.map((address, index) =>
-              <Interweave key={`address${index}`} content={createdFormattedAddress(address)} />
+              <Components.AddressDetail key={`address${index}`} address={address} />
             )}
           {!isEmptyValue(contact.projects) &&
             <Card.Title className='mt-5'><b>Projects</b></Card.Title>}
@@ -67,7 +67,7 @@ const ContactDisplay = ({ contact }) => {
             </Card.Text>}
         </Card.Body>
         <Card.Footer>
-          <span className='text-muted'>{displayDate}</span>
+          <small className='text-muted'>{displayDate}</small>
         </Card.Footer>
       </Card>
       {contact.pastProjects &&

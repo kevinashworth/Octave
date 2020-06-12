@@ -4,7 +4,7 @@ import Card from 'react-bootstrap/Card'
 import Interweave from 'interweave'
 import moment from 'moment'
 import { DATE_FORMAT_LONG } from '../../modules/constants.js'
-import { getFullAddress, transform } from '../../modules/helpers.js'
+import { getFullAddress, transformLinks } from '../../modules/helpers.js'
 
 const ProjectDisplay = ({ project }) => {
   const seasonorder = (project) => {
@@ -41,10 +41,10 @@ const ProjectDisplay = ({ project }) => {
         </Card.Text>
         <hr />
         {project.htmlSummary
-          ? <Interweave content={project.htmlSummary} transform={transform} />
+          ? <Interweave content={project.htmlSummary} transform={transformLinks} />
           : <Card.Text>{project.summary}</Card.Text>}
         {project.htmlNotes
-          ? <Interweave content={project.htmlNotes} transform={transform} />
+          ? <Interweave content={project.htmlNotes} transform={transformLinks} />
           : <Card.Text>{project.notes}</Card.Text>}
         {project.shootingLocation &&
           <Card.Text><b>Shooting Location</b>: {project.shootingLocation}</Card.Text>}

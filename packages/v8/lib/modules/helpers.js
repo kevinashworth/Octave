@@ -86,28 +86,28 @@ export const createPlainAddress = (office) => {
 }
 
 // creates address with line breaks and map link
-export const createdFormattedAddress = (office) => {
-  let streetAddress = ''
-  if (office.street1) {
-    streetAddress = office.street1 + '<br/>'
-  }
-  if (office.street2 && office.street2.trim().length > 0) {
-    streetAddress += office.street2 + '<br/>'
-  }
-  if (office.city) {
-    streetAddress += office.city + ', '
-  }
-  if (office.state) {
-    streetAddress += office.state
-  }
-  if (office.zip) {
-    streetAddress += '  ' + office.zip
-  }
-  if (office.street1 && office.city && office.state) {
-    streetAddress += `<br/><small><a href="https://maps.google.com/?q=${office.street1},${office.city},${office.state}" target="googlemaps">Open in Google Maps</a></small>`
-  }
-  return streetAddress
-}
+// export const createdFormattedAddress = (office) => {
+//   let streetAddress = ''
+//   if (office.street1) {
+//     streetAddress = office.street1 + '<br/>'
+//   }
+//   if (office.street2 && office.street2.trim().length > 0) {
+//     streetAddress += office.street2 + '<br/>'
+//   }
+//   if (office.city) {
+//     streetAddress += office.city + ', '
+//   }
+//   if (office.state) {
+//     streetAddress += office.state
+//   }
+//   if (office.zip) {
+//     streetAddress += '  ' + office.zip
+//   }
+//   if (office.street1 && office.city && office.state) {
+//     streetAddress += `<br/><small><a href="https://maps.google.com/?q=${office.street1},${office.city},${office.state}" target="googlemaps">Open in Google Maps</a></small>`
+//   }
+//   return streetAddress
+// }
 
 // copied from Vulcan/packages/vulcan-forms/lib/modules/utils.js
 export const isEmptyValue = value => (typeof value === 'undefined' || value === null || value === '' || Array.isArray(value) && value.length === 0 || Array.isArray(value) && value.length === 1 && Object.keys(value[0]).length === 0 && value[0].constructor === Object) // eslint-disable-line
@@ -376,7 +376,7 @@ export function getSortTitle (title) {
   return newTitle
 }
 
-export const transform = (node, children) => {
+export const transformLinks = (node, children) => {
   if (node.nodeName === 'A') {
     const href = node.getAttribute('href')
     if (href.indexOf('/') === 0) {

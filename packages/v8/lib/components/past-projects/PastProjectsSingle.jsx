@@ -12,7 +12,7 @@ import Interweave from 'interweave'
 import moment from 'moment'
 import mapProps from 'recompose/mapProps'
 import { DATE_FORMAT_LONG, DATE_FORMAT_SHORT } from '../../modules/constants.js'
-import { transform } from '../../modules/helpers.js'
+import { transformLinks } from '../../modules/helpers.js'
 import PastProjects from '../../modules/past-projects/collection.js'
 
 class PastProjectsSingle extends Component {
@@ -77,10 +77,10 @@ class PastProjectsSingle extends Component {
                   {project.status}
                   <hr />
                   {project.htmlSummary
-                    ? <Interweave content={project.htmlSummary} transform={transform} />
+                    ? <Interweave content={project.htmlSummary} transform={transformLinks} />
                     : <Card.Text className='mb-1'>{project.summary}</Card.Text>}
                   {project.htmlNotes
-                    ? <Interweave content={project.htmlNotes} transform={transform} />
+                    ? <Interweave content={project.htmlNotes} transform={transformLinks} />
                     : <Card.Text className='mb-1'>{project.notes}</Card.Text>}
                   {project.shootingLocation &&
                     <Card.Text><b>Shooting Location</b>: {project.shootingLocation}</Card.Text>}

@@ -7,7 +7,6 @@ import Card from 'react-bootstrap/Card'
 import Markup from 'interweave'
 import moment from 'moment'
 import { DATE_FORMAT_LONG, DATE_FORMAT_SHORT } from '../../modules/constants.js'
-import { createdFormattedAddress } from '../../modules/helpers.js'
 
 const ContactModal = (props) => {
   if (props.loading) {
@@ -38,7 +37,7 @@ const ContactModal = (props) => {
         {contact.addresses &&
           contact.addresses.map((address, index) => (
             <Card.Text key={`address${index}`}>
-              <Markup content={createdFormattedAddress(address)} />
+              <Components.AddressDetail address={address} />
             </Card.Text>
           ))}
         {contact.projects && contact.projects[0] && <Card.Title>Projects</Card.Title>}

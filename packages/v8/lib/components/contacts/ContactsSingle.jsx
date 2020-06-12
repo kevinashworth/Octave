@@ -14,7 +14,7 @@ import moment from 'moment'
 import pluralize from 'pluralize'
 import mapProps from 'recompose/mapProps'
 import { DATE_FORMAT_LONG, DATE_FORMAT_SHORT } from '../../modules/constants.js'
-import { isEmptyValue, transform } from '../../modules/helpers.js'
+import { isEmptyValue, transformLinks } from '../../modules/helpers.js'
 import Contacts from '../../modules/contacts/collection.js'
 
 // Don't fetch PastProjects unless user clicks to see them
@@ -85,7 +85,7 @@ class ContactsSingle extends Component {
                     {contact.gender && <div>{contact.gender}</div>}
                     <hr />
                     {contact.htmlBody
-                      ? <Interweave content={contact.htmlBody} transform={transform} />
+                      ? <Interweave content={contact.htmlBody} transform={transformLinks} />
                       : <div>{contact.body}</div>}
                   </Card.Text>
                   {!isEmptyValue(contact.offices) &&

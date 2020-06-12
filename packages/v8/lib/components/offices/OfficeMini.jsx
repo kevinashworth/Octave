@@ -4,8 +4,6 @@ import React from 'react'
 import { Link } from 'react-router-dom'
 import PropTypes from 'prop-types'
 import Card from 'react-bootstrap/Card'
-import Markup from 'interweave'
-import { createdFormattedAddress } from '../../modules/helpers.js'
 import Offices from '../../modules/offices/collection.js'
 
 const OfficeMini = (props) => {
@@ -30,7 +28,7 @@ const OfficeMini = (props) => {
       {office.addresses && office.addresses.map(address => {
         return (
           <Card.Body key={address.street1 + address.street2}>
-            <Markup content={createdFormattedAddress(address)} />
+            <Components.AddressDetail address={address} />
           </Card.Body>
         )
       })}
