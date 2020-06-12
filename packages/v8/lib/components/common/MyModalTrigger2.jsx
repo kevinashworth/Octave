@@ -11,6 +11,13 @@ class MyModalTrigger2 extends PureComponent {
     }
   }
 
+  closeModal = () => {
+    // this.props.closeCallback && this.props.closeCallback()
+    this.setState({ modalIsOpen: false })
+  }
+
+  handleHide = () => this.closeModal()
+
   handleClick = (e) => {
     e.preventDefault()
     if (this.props.onClick) {
@@ -20,58 +27,55 @@ class MyModalTrigger2 extends PureComponent {
   }
 
   openModal = () => {
-    this.props.openCallback && this.props.openCallback()
+    // this.props.openCallback && this.props.openCallback()
     this.setState({ modalIsOpen: true })
   }
 
-  closeModal = () => {
-    this.props.closeCallback && this.props.closeCallback()
-    this.setState({ modalIsOpen: false })
-  }
-
-  handleHide = () => this.closeModal()
-
   render () {
     const {
-      trigger,
-      component,
+      backdrop = 'static',
       children,
+      className,
+      component,
+      dialogClassName,
+      header,
+      footer,
+      modalProps,
       label,
       size,
-      className,
-      dialogClassName,
+      type,
       title,
-      modalProps,
-      header,
-      footer
+      trigger,
+      variant = 'secondary'
     } = this.props
 
-    let triggerComponent = trigger || component
-    triggerComponent = triggerComponent ? (
-      <span onClick={this.handleClick}>{triggerComponent}</span>
-    ) : (
-      <a href='javascript:void(0)' onClick={this.handleClick}>
-        {label}
-      </a>
-    )
     const childrenComponent = React.cloneElement(children, { closeModal: this.closeModal })
-    const headerComponent = header && React.cloneElement(header, { closeModal: this.closeModal })
+
     const footerComponent = footer
       ? React.cloneElement(footer, { closeModal: this.closeModal })
       : <Button variant='secondary' onClick={() => this.closeModal()}>Cancel</Button>
+    const headerComponent = header && React.cloneElement(header, { closeModal: this.closeModal })
+
+    let triggerComponent = trigger || component
+    triggerComponent = component
+      ? <span onClick={this.handleClick}>{component}</span>
+      : type === 'link'
+        ? <a className={className} href='#' onClick={this.handleClick}>{label}</a>
+        : <Button className={className} onClick={this.handleClick} variant={variant}>{label}</Button>
 
     return (
       <div className='modal-trigger'>
         {triggerComponent}
         <Components.Modal
-          size={size}
+          backdrop={backdrop}
           className={className}
-          show={this.state.modalIsOpen}
-          onHide={this.handleHide}
           dialogClassName={dialogClassName}
-          title={title}
           header={headerComponent}
           footer={footerComponent}
+          onHide={this.handleHide}
+          show={this.state.modalIsOpen}
+          size={size}
+          title={title}
           {...modalProps}
         >
           {childrenComponent}
@@ -86,10 +90,12 @@ MyModalTrigger2.propTypes = {
   component: PropTypes.object, // keep for backwards compatibility
   footer: PropTypes.object,
   label: PropTypes.oneOfType([PropTypes.string, PropTypes.element]),
-  trigger: PropTypes.object,
+  onClick: PropTypes.func,
   size: PropTypes.string,
+  trigger: PropTypes.object,
   title: PropTypes.oneOfType([PropTypes.string, PropTypes.element]),
-  onClick: PropTypes.func
+  type: PropTypes.oneOf(['button', 'link']),
+  variant: PropTypes.oneOf(['primary', 'secondary', 'success', 'info', 'warning', 'danger', 'light', 'dark'])
 }
 
 replaceComponent('ModalTrigger', MyModalTrigger2)
