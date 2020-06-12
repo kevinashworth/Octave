@@ -46,11 +46,7 @@ let keptState = {
 function AddButtonFooter () {
   return (
     <Card.Footer>
-      <Components.ModalTrigger
-        component={<Button variant='secondary'>Add an Office</Button>}
-        modalProps={{ backdrop: 'static' }}
-        title='New Office'
-      >
+      <Components.ModalTrigger label='Add an Office' title='New Office'>
         <Components.OfficesNewForm />
       </Components.ModalTrigger>
     </Card.Footer>

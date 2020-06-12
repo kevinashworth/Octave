@@ -2,7 +2,6 @@ import { Components, registerComponent, withAccess, withCurrentUser, withMessage
 import Users from 'meteor/vulcan:users'
 import React, { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
-import Button from 'react-bootstrap/Button'
 import Card from 'react-bootstrap/Card'
 import Modal from 'react-bootstrap/Modal'
 import { BootstrapTable, ClearSearchButton, SearchField, TableHeaderColumn } from 'react-bootstrap-table'
@@ -42,11 +41,7 @@ let keptState = {
 const AddButtonFooter = () => {
   return (
     <Card.Footer>
-      <Components.ModalTrigger
-        component={<Button variant='secondary'>Add a Project</Button>}
-        modalProps={{ backdrop: 'static' }}
-        title='New Project'
-      >
+      <Components.ModalTrigger label='Add a Project' title='New Project'>
         <Components.ProjectsNewForm />
       </Components.ModalTrigger>
     </Card.Footer>
