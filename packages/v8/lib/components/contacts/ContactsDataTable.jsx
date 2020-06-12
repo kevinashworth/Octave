@@ -29,7 +29,11 @@ let keptState = {
 const AddButtonFooter = () => {
   return (
     <Card.Footer>
-      <Components.ModalTrigger title='New Contact' label='Add a Contact'>
+      <Components.ModalTrigger
+        component={<Button variant='secondary'>Add a Contact</Button>}
+        modalProps={{ backdrop: 'static' }}
+        title='New Contact'
+      >
         <Components.ContactsNewForm />
       </Components.ModalTrigger>
     </Card.Footer>
