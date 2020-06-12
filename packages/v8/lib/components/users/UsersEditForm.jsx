@@ -6,7 +6,6 @@ import React from 'react'
 import { withRouter } from 'react-router-dom'
 import PropTypes from 'prop-types'
 // import gql from 'graphql-tag'
-import Button from 'react-bootstrap/Button'
 import Card from 'react-bootstrap/Card'
 import Col from 'react-bootstrap/Col'
 import Row from 'react-bootstrap/Row'
@@ -90,12 +89,9 @@ const UsersEditForm = (props, context) => {
           <Row>
             <Col>
               <Components.ModalTrigger
+                label={<FormattedMessage id='accounts.change_password' />}
                 title={<FormattedMessage id='accounts.change_password' />}
-                component={
-                  <Button variant='warning'>
-                    <FormattedMessage id='accounts.change_password' />
-                  </Button>
-                }
+                variant='warning'
               >
                 <Components.AccountsLoginForm formState={STATES.PASSWORD_CHANGE} />
               </Components.ModalTrigger>

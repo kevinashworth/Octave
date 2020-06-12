@@ -46,7 +46,7 @@ let keptState = {
 function AddButtonFooter () {
   return (
     <Card.Footer>
-      <Components.ModalTrigger title='New Office' label='Add an Office'>
+      <Components.ModalTrigger label='Add an Office' title='New Office'>
         <Components.OfficesNewForm />
       </Components.ModalTrigger>
     </Card.Footer>
