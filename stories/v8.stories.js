@@ -1,21 +1,26 @@
-import { Components } from 'meteor/vulcan:core'
+// import { Components } from 'meteor/vulcan:core'
+import { populateComponentsApp, initializeFragments } from 'meteor/vulcan:lib'
 import React from 'react'
 import { storiesOf } from '@storybook/react'
-import { userData } from './data-user.js'
 
-// import the components
-// import { EmailDetail } from 'v8-alba/lib/components/common/EmailDetail.jsx';
-import 'v8'
+// import { userData } from './data-user.js'
+// import officeData from './data-office.js'
 
-// and then load them in the app so that <Component.Whatever /> is defined
-import { populateComponentsApp, initializeFragments } from 'meteor/vulcan:lib'
-// we need registered fragments to be initialized because populateComponentsApp will run
-// hocs, like withUpdate, that rely on fragments
+// import { AddressDetail } from 'v8/lib/components/common/AddressDetail.jsx';
+// address={officeData.addresses[0]}
+import MyLoading from '../packages/v8/lib/components/common/MyLoading.jsx'
+// import 'v8'
+
 initializeFragments()
-// actually fills the Components object
 populateComponentsApp()
 
-storiesOf('V8/EmailDetail', module)
+storiesOf('V8/MyLoading', module)
   .add('Default', () => (
-    <Components.EmailDetail handle={userData.handles[0]} />
+    <MyLoading />
+  ))
+  .add('Large', () => (
+    <MyLoading height={80} />
+  ))
+  .add('Variant', () => (
+    <MyLoading variant='primary' />
   ))
