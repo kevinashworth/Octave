@@ -1,25 +1,25 @@
-import React from 'react';
-import merge from 'lodash/merge';
-import { storiesOf } from '@storybook/react';
+import React from 'react'
+import merge from 'lodash/merge'
+import { storiesOf } from '@storybook/react'
 // import { action } from '@storybook/addon-actions';
 // import { linkTo } from '@storybook/addon-links';
 
-import { Components } from 'meteor/vulcan:core';
+import { Components } from 'meteor/vulcan:core'
 // and then load them in the app so that <Component.Whatever /> is defined
-import { populateComponentsApp, initializeFragments } from 'meteor/vulcan:lib';
+import { populateComponentsApp, initializeFragments } from 'meteor/vulcan:lib'
 // we need registered fragments to be initialized because populateComponentsApp will run
 // hocs, like withUpdate, that rely on fragments
-initializeFragments();
+initializeFragments()
 // actually fills the Components object
-populateComponentsApp();
+populateComponentsApp()
 
 const lorem = `Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-eiusmod tempor incididunt ut labore et dolore magna aliqua.`;
+eiusmod tempor incididunt ut labore et dolore magna aliqua.`
 
-function capitalize(string) {
-  return string.replace(/\-/, ' ').split(' ').map(word => {
-    return word.charAt(0).toUpperCase() + word.slice(1);
-  }).join(' ');
+function capitalize (string) {
+  return string.replace(/-/, ' ').split(' ').map(word => {
+    return word.charAt(0).toUpperCase() + word.slice(1)
+  }).join(' ')
 }
 /*
 
@@ -32,15 +32,15 @@ UI Components Stories
 Alert
 
 */
-const alerts = ['primary', 'secondary', 'success', 'danger', 'warning'];
+const alerts = ['primary', 'secondary', 'success', 'danger', 'warning']
 
-const alert = storiesOf('UI/Alert', module);
+const alert = storiesOf('UI/Alert', module)
 
 alerts.forEach(variant =>
   alert.add(capitalize(variant), () => (
     <Components.Alert variant={variant}>{lorem}</Components.Alert>
   ))
-);
+)
 
 /*
 
@@ -48,8 +48,8 @@ Avatar
 
 */
 storiesOf('UI/Avatar', module).add('Default', () => (
-  <Components.Avatar user={{ displayName: 'John Smith' }}/>
-));
+  <Components.Avatar user={{ displayName: 'John Smith' }} />
+))
 
 /*
 
@@ -58,7 +58,7 @@ Button
 */
 storiesOf('UI/Button', module).add('Default', () => (
   <Components.Button>Click Me</Components.Button>
-));
+))
 
 /*
 
@@ -71,9 +71,9 @@ const dropdownProps = {
     { label: 'Item 1' },
     { label: 'Item 2' },
     { label: 'Item 3' },
-    { label: 'Item 4' },
-  ],
-};
+    { label: 'Item 4' }
+  ]
+}
 
 storiesOf('UI/Dropdown', module)
   .add('Default', () => <Components.Dropdown {...dropdownProps} />)
@@ -84,27 +84,27 @@ storiesOf('UI/Dropdown', module)
           {
             component: (
               <label>
-                <input type="checkbox" />
+                <input type='checkbox' />
                 My Checkbox
               </label>
-            ),
-          },
-        ],
+            )
+          }
+        ]
       })}
     />
   ))
   .add('Custom Content', () => (
     <Components.Dropdown
       {...merge(dropdownProps, {
-        menuContents: <div style={{ padding: 20 }}>{lorem}</div>,
+        menuContents: <div style={{ padding: 20 }}>{lorem}</div>
       })}
     />
   ))
   .add('Custom Trigger', () => (
     <Components.Dropdown
-      {...merge(dropdownProps, { trigger: <a href="#">Click Me</a> })}
+      {...merge(dropdownProps, { trigger: <a href='#'>Click Me</a> })}
     />
-  ));
+  ))
 
 /*
 
@@ -114,23 +114,23 @@ Modal & ModalTrigger
 const modalProps = {
   title: 'My Modal',
   header: 'My Header',
-  footer: 'My Footer',
-};
+  footer: 'My Footer'
+}
 
 storiesOf('UI/Modal', module).add('Default', () => (
-  <Components.Modal {...modalProps} show={true}>
+  <Components.Modal {...modalProps} show>
     {lorem}
   </Components.Modal>
-));
+))
 
 storiesOf('UI/ModalTrigger', module).add('Default', () => (
   <Components.ModalTrigger
     modalProps={modalProps}
-    trigger={<a href="#">Click Me</a>}
+    trigger={<a href='#'>Click Me</a>}
   >
     <div>{lorem}</div>
   </Components.ModalTrigger>
-));
+))
 
 /*
 
@@ -140,24 +140,24 @@ Form Components Stories
 const options = [
   {
     label: 'Option 1',
-    value: 'opt1',
+    value: 'opt1'
   },
   {
     label: 'Option 2',
-    value: 'opt2',
+    value: 'opt2'
   },
   {
     label: 'Option 3',
-    value: 'opt3',
-  },
-];
+    value: 'opt3'
+  }
+]
 
 const defaultFormProps = {
   inputProperties: {
     value: 'hello world',
-    onChange: () => {},
-  },
-};
+    onChange: () => {}
+  }
+}
 
 const formComponents = [
   { name: 'FormComponentCheckbox' },
@@ -166,33 +166,33 @@ const formComponents = [
     props: {
       inputProperties: {
         value: ['opt1', 'opt3'],
-        options,
-      },
-    },
+        options
+      }
+    }
   },
   {
     name: 'FormComponentDate',
     props: {
       inputProperties: {
-        value: new Date(),
-      },
-    },
+        value: new Date()
+      }
+    }
   },
   {
     name: 'FormComponentDate2',
     props: {
       inputProperties: {
-        value: new Date(),
-      },
-    },
+        value: new Date()
+      }
+    }
   },
   {
     name: 'FormComponentDateTime',
     props: {
       inputProperties: {
-        value: new Date(),
-      },
-    },
+        value: new Date()
+      }
+    }
   },
   { name: 'FormComponentDefault' },
   { name: 'FormComponentText' },
@@ -200,35 +200,35 @@ const formComponents = [
     name: 'FormComponentEmail',
     props: {
       inputProperties: {
-        value: 'hello@vulcanjs.org',
-      },
-    },
+        value: 'hello@vulcanjs.org'
+      }
+    }
   },
   {
     name: 'FormComponentNumber',
     props: {
       inputProperties: {
-        value: 42,
-      },
-    },
+        value: 42
+      }
+    }
   },
   {
     name: 'FormComponentRadioGroup',
     props: {
       inputProperties: {
         value: 'opt2',
-        options,
-      },
-    },
+        options
+      }
+    }
   },
   {
     name: 'FormComponentSelect',
     props: {
       inputProperties: {
         value: 'opt2',
-        options,
-      },
-    },
+        options
+      }
+    }
   },
   { name: 'FormComponentSelectMultiple' },
   { name: 'FormComponentStaticText' },
@@ -237,12 +237,12 @@ const formComponents = [
   { name: 'FormComponentUrl' },
   { name: 'FormControl' },
   { name: 'FormElement' },
-  { name: 'FormItem' },
-];
+  { name: 'FormItem' }
+]
 
 /*
 
-To get form input props, merge: 
+To get form input props, merge:
 
 1. default props common to all inputs
 2. specific props for current input
@@ -251,33 +251,33 @@ To get form input props, merge:
 
 */
 const getFormProps = (componentName, storyProps) => {
-  const component = formComponents.find(c => c.name === componentName);
-  const componentLabel = componentName.replace('FormComponent', '');
+  const component = formComponents.find(c => c.name === componentName)
+  const componentLabel = componentName.replace('FormComponent', '')
   const dynamicProps = {
     inputProperties: {
-      label: `${componentLabel} Input`,
-    },
-  };
-  return merge({}, defaultFormProps, component.props, dynamicProps, storyProps);
-};
+      label: `${componentLabel} Input`
+    }
+  }
+  return merge({}, defaultFormProps, component.props, dynamicProps, storyProps)
+}
 
 formComponents.forEach(item => {
-  const { name } = item;
-  const Component = Components[name];
-  const componentLabel = name.replace('FormComponent', '');
-  const storyName = `Forms/${componentLabel}`;
+  const { name } = item
+  const Component = Components[name]
+  const componentLabel = name.replace('FormComponent', '')
+  const storyName = `Forms/${componentLabel}`
   if (Component) {
     storiesOf(storyName, module)
       .add('Horizontal Layout', () => <Component {...getFormProps(name)} />)
       .add('Input Only', () => (
         <Component
           {...getFormProps(name, {
-            itemProperties: { layout: 'inputOnly' },
+            itemProperties: { layout: 'inputOnly' }
           })}
         />
-      ));
+      ))
   }
-});
+})
 
 /*
 
@@ -302,15 +302,15 @@ const cardProps = {
     now: new Date(),
     component: (
       <label>
-        <input type="checkbox" /> My Checkbox
+        <input type='checkbox' /> My Checkbox
       </label>
     ),
-    array: [1, 2, 'foo', 'bar'],
-  },
-};
+    array: [1, 2, 'foo', 'bar']
+  }
+}
 storiesOf('Core/Card', module).add('Default', () => (
   <Components.Card {...cardProps} />
-));
+))
 
 /*
 

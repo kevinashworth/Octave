@@ -18,6 +18,8 @@
     "lint": "standard 'packages/v8/**/*.js' 'packages/v8/**/*.jsx' --fix",
     "lintnofix": "standard 'packages/v8/**/*.js' 'packages/v8/**/*.jsx'",
     "lintnofixv": "standard --verbose 'packages/v8/**/*.js' 'packages/v8/**/*.jsx'",
+    "storybook": "start-storybook -p 6006",
+    "build-storybook": "build-storybook",
     "build:sass": "node-sass -r 'packages/v8/lib/stylesheets/main.scss' -o 'packages/v8/lib/stylesheets/compiled'",
     "build:sass:min": "node-sass -r 'packages/v8/lib/stylesheets/main.scss' -o 'packages/v8/lib/stylesheets/compiled' --output-style compact",
     "watch:sass": "npm run build:sass && npm run build:sass -w"
@@ -150,20 +152,21 @@
     "twilio": "^3.46.0",
     "underscore": "^1.8.3",
     "universal-cookie-express": "^2.1.5",
-    "url": "^0.11.0",
-    "webpack": "^4.29.5"
+    "url": "^0.11.0"
   },
   "private": true,
   "devDependencies": {
     "@apollo/react-testing": "^3.1.0",
     "@babel/core": "^7.3.3",
+    "@babel/plugin-syntax-dynamic-import": "^7.2.0",
     "@babel/preset-env": "^7.3.1",
     "@babel/preset-react": "^7.0.0",
-    "@storybook/addon-actions": "^5.0.1",
-    "@storybook/addon-links": "^5.0.1",
-    "@storybook/addons": "^5.0.1",
-    "@storybook/react": "^5.0.1",
-    "@storybook/theming": "^5.0.1",
+    "@storybook/addon-actions": "5.0.8",
+    "@storybook/addon-knobs": "5.0.8",
+    "@storybook/addon-links": "5.0.8",
+    "@storybook/addons": "5.0.1",
+    "@storybook/react": "5.0.8",
+    "@storybook/theming": "5.0.8",
     "@userfrosting/merge-package-dependencies": "^1.2.1",
     "autoprefixer": "^9.7.6",
     "babel-eslint": "^10.1.0",
@@ -180,8 +183,12 @@
     "eslint-plugin-meteor": "^7.0.0",
     "eslint-plugin-react": "^7.19.0",
     "eslint-plugin-react-hooks": "^4.0.0",
+    "scrap-meteor-loader": "0.0.1",
     "standard": "^14.3.4",
-    "storybook-react-router": "^1.0.2"
+    "storybook-react-router": "^1.0.5",
+    "style-loader": "^0.23.1",
+    "vulcan-loader": "0.0.1",
+    "webpack": "4.28.4"
   },
   "postcss": {
     "plugins": {
