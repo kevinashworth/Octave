@@ -24,3 +24,5 @@ PhoneDetail.propTypes = {
 }
 
 registerComponent('PhoneDetail', PhoneDetail)
+
+export default PhoneDetail

@@ -47,3 +47,5 @@ AddressDetail.propTypes = {
 }
 
 registerComponent('AddressDetail', AddressDetail)
+
+export default AddressDetail

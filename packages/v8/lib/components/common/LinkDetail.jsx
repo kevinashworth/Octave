@@ -1,6 +1,6 @@
 import { registerComponent } from 'meteor/vulcan:core'
 import React from 'react'
-import { Button } from 'react-bootstrap'
+import Button from 'react-bootstrap/Button'
 import PropTypes from 'prop-types'
 import find from 'lodash/find'
 import { COREUI_BRANDS_LIST, BRANDS_ENUM } from '../../modules/constants.js'

@@ -42,3 +42,5 @@ registerComponent({
     [withSingle, options]
   ]
 })
+
+export default ContactMini
