@@ -110,11 +110,6 @@ const navItems = {
       icon: 'fa fa-files-o'
     },
     {
-      name: 'Modals',
-      url: '/modals',
-      icon: 'fa fa-external-link'
-    },
-    {
       name: 'Contacts (M)',
       url: '/m/contacts',
       icon: 'icon-people'

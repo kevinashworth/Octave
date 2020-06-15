@@ -35,6 +35,7 @@ let keptState = {
     id: 'fullAddress',
     value: ''
   }],
+  globalFilter: undefined,
   pageIndex: 0,
   pageSize: INITIAL_SIZE_PER_PAGE,
   sortBy: [{
@@ -89,6 +90,7 @@ function Table ({ columns, data }) {
       filterTypes,
       initialState: {
         filters: keptState.filters,
+        globalFilter: keptState.globalFilter,
         hiddenColumns: ['allContactNames', 'body'],
         pageIndex: keptState.pageIndex,
         pageSize: keptState.pageSize,
@@ -116,6 +118,7 @@ function Table ({ columns, data }) {
     return () => {
       keptState = {
         filters,
+        globalFilter,
         pageIndex,
         pageSize,
         sortBy
