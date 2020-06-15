@@ -22,3 +22,5 @@ ContactDetail.propTypes = {
 }
 
 registerComponent('ContactDetail', ContactDetail)
+
+export default ContactDetail
