@@ -45,3 +45,5 @@ registerComponent({
     [withSingle, options]
   ]
 })
+
+export default ProjectMini

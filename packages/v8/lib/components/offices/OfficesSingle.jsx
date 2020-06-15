@@ -162,3 +162,5 @@ registerComponent({
     mapProps(mapPropsFunction), [withSingle, options] // mapProps must precede withSingle
   ]
 })
+
+export default OfficesSingle

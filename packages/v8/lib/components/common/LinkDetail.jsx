@@ -50,3 +50,5 @@ LinkDetail.propTypes = {
 }
 
 registerComponent('LinkDetail', LinkDetail)
+
+export default LinkDetail

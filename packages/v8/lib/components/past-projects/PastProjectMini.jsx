@@ -40,3 +40,5 @@ registerComponent({
     [withSingle, options]
   ]
 })
+
+export default PastProjectMini

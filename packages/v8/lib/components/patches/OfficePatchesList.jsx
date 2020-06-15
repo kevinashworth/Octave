@@ -74,3 +74,5 @@ registerComponent({
     [withSingle, officeOptions]
   ]
 })
+
+export default OfficePatchesList
