@@ -22,7 +22,8 @@
     "build-storybook": "build-storybook",
     "build:sass": "node-sass -r 'packages/v8/lib/stylesheets/main.scss' -o 'packages/v8/lib/stylesheets/compiled'",
     "build:sass:min": "node-sass -r 'packages/v8/lib/stylesheets/main.scss' -o 'packages/v8/lib/stylesheets/compiled' --output-style compact",
-    "watch:sass": "npm run build:sass && npm run build:sass -w"
+    "watch:sass": "npm run build:sass && npm run build:sass -w",
+    "postinstall": "patch-package"
   },
   "dependencies": {
     "@apollo/react-hooks": "^3.1.1",
@@ -184,6 +185,7 @@
     "eslint-plugin-meteor": "^7.0.0",
     "eslint-plugin-react": "^7.19.0",
     "eslint-plugin-react-hooks": "^4.0.0",
+    "patch-package": "^6.2.2",
     "scrap-meteor-loader": "0.0.1",
     "standard": "^14.3.4",
     "storybook-react-router": "^1.0.8",
