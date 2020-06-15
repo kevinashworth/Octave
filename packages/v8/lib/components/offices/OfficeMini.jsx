@@ -7,7 +7,7 @@ import Card from 'react-bootstrap/Card'
 import Offices from '../../modules/offices/collection.js'
 
 const OfficeMini = (props) => {
-  const { document: office, documentId, loading, officeName } = props
+  const { document: office, documentId, loading } = props
   if (loading) {
     return <Components.Loading />
   }
@@ -22,7 +22,7 @@ const OfficeMini = (props) => {
     <Card className='card-accent-primary' style={{ minWidth: '8rem', maxWidth: '18rem' }}>
       <Card.Header as='h6'>
         <Link to={`/offices/${office._id}/${office.slug}`}>
-          {officeName || office.displayName}
+          {office.displayName}
         </Link>
       </Card.Header>
       {office.addresses && office.addresses.map(address => {
@@ -46,3 +46,5 @@ const options = {
 }
 
 registerComponent('OfficeMini', OfficeMini, withCurrentUser, [withSingle, options])
+
+export default OfficeMini

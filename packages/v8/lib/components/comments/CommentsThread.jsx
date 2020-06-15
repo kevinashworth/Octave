@@ -80,3 +80,5 @@ registerComponent({
     [withMulti, options]
   ]
 })
+
+export default CommentsThread
