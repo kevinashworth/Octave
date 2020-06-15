@@ -22,7 +22,8 @@
     "build-storybook": "build-storybook",
     "build:sass": "node-sass -r 'packages/v8/lib/stylesheets/main.scss' -o 'packages/v8/lib/stylesheets/compiled'",
     "build:sass:min": "node-sass -r 'packages/v8/lib/stylesheets/main.scss' -o 'packages/v8/lib/stylesheets/compiled' --output-style compact",
-    "watch:sass": "npm run build:sass && npm run build:sass -w"
+    "watch:sass": "npm run build:sass && npm run build:sass -w",
+    "postinstall": "patch-package"
   },
   "dependencies": {
     "@apollo/react-hooks": "^3.1.1",
@@ -92,7 +93,7 @@
     "marked": "^0.7.0",
     "match-sorter": "^4.1.0",
     "meteor-node-stubs": "^0.4.1",
-    "mingo": "^0.8.1",
+    "mingo": "^2.2.0",
     "moment": "^2.26.0",
     "node-sass": "^4.11.0",
     "omit-deep": "^0.3.0",
@@ -129,7 +130,7 @@
     "react-router-bootstrap": "0.25.0",
     "react-router-dom": "^5.1.2",
     "react-select": "^3.0.8",
-    "react-select-virtualized": "^2.5.7",
+    "react-select-virtualized": "^2.5.8",
     "react-sortable-hoc": "^1.11.0",
     "react-stripe-checkout": "^2.4.0",
     "react-syntax-highlighter": "^6.1.2",
@@ -184,6 +185,7 @@
     "eslint-plugin-meteor": "^7.0.0",
     "eslint-plugin-react": "^7.19.0",
     "eslint-plugin-react-hooks": "^4.0.0",
+    "patch-package": "^6.2.2",
     "scrap-meteor-loader": "0.0.1",
     "standard": "^14.3.4",
     "storybook-react-router": "^1.0.8",
