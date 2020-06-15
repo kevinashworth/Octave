@@ -3,7 +3,7 @@
  */
 import React from 'react'
 
-import 'meteor/vulcan:ui-bootstrap/lib/stylesheets/bootstrap.min.css';
+// import 'meteor/vulcan:ui-bootstrap/lib/stylesheets/bootstrap.min.css';
 import 'meteor/vulcan:ui-bootstrap/lib/stylesheets/style.scss';
 import 'meteor/vulcan:ui-bootstrap/lib/stylesheets/datetime.scss';
 
