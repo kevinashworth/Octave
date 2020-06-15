@@ -5,12 +5,9 @@ import { storiesOf } from '@storybook/react'
 // import { linkTo } from '@storybook/addon-links';
 
 import { Components } from 'meteor/vulcan:core'
-// and then load them in the app so that <Component.Whatever /> is defined
 import { populateComponentsApp, initializeFragments } from 'meteor/vulcan:lib'
-// we need registered fragments to be initialized because populateComponentsApp will run
-// hocs, like withUpdate, that rely on fragments
+
 initializeFragments()
-// actually fills the Components object
 populateComponentsApp()
 
 const lorem = `Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
@@ -28,9 +25,7 @@ UI Components Stories
 */
 
 /*
-
 Alert
-
 */
 const alerts = ['primary', 'secondary', 'success', 'danger', 'warning']
 
@@ -43,27 +38,21 @@ alerts.forEach(variant =>
 )
 
 /*
-
 Avatar
-
 */
 storiesOf('UI/Avatar', module).add('Default', () => (
   <Components.Avatar user={{ displayName: 'John Smith' }} />
 ))
 
 /*
-
 Button
-
 */
 storiesOf('UI/Button', module).add('Default', () => (
   <Components.Button>Click Me</Components.Button>
 ))
 
 /*
-
 Dropdown
-
 */
 const dropdownProps = {
   label: 'My Dropdown',
@@ -107,9 +96,7 @@ storiesOf('UI/Dropdown', module)
   ))
 
 /*
-
 Modal & ModalTrigger
-
 */
 const modalProps = {
   title: 'My Modal',
@@ -133,9 +120,7 @@ storiesOf('UI/ModalTrigger', module).add('Default', () => (
 ))
 
 /*
-
 Form Components Stories
-
 */
 const options = [
   {
@@ -286,9 +271,7 @@ Core Components
 */
 
 /*
-
 Card
-
 */
 const cardProps = {
   document: {
@@ -313,9 +296,7 @@ storiesOf('Core/Card', module).add('Default', () => (
 ))
 
 /*
-
 Datatable
-
 */
 
 // TODO
