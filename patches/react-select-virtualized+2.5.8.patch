@@ -1,3 +1,7 @@
+/*
+ * Because react-select-virtualized calls react-virtualized's styles.css file,
+ * but in a Vulcan project CSS needs to be placed in package.js instead.
+ */
 diff --git a/node_modules/react-select-virtualized/dist/index.min.js b/node_modules/react-select-virtualized/dist/index.min.js
 index a3bc0e2..6592140 100644
 --- a/node_modules/react-select-virtualized/dist/index.min.js

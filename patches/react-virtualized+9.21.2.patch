@@ -1,3 +1,7 @@
+/*
+ * Because react-select-virtualized calls react-virtualized's styles.css file,
+ * but in a Vulcan project CSS needs to be placed in package.js instead.
+ */
 diff --git a/node_modules/react-virtualized/styles.css b/node_modules/react-virtualized/styles.css
 index 68b6aea..4b7acb6 100644
 --- a/node_modules/react-virtualized/styles.css
@@ -7,17 +11,17 @@ index 68b6aea..4b7acb6 100644
 +/*
 +KA:
 +Two-fold redundant change:
- 
+
 -.ReactVirtualized__Collection {
 -}
 +1. Deleted the contents of this file that is getting called from within
 +/node_modules/react-select-virtualized/dist/index.min.js
- 
+
 -.ReactVirtualized__Collection__innerScrollContainer {
 -}
 +Serving the contents instead at
 +`lib/stylesheets/react-virtualized-styles.css`
- 
+
 -/* Grid default theme */
 -
 -.ReactVirtualized__Grid {
