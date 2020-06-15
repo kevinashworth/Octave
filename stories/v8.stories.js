@@ -3,9 +3,7 @@ import { addDecorator, storiesOf } from '@storybook/react'
 // import { linkTo } from '@storybook/addon-links'
 // import StoryRouter from 'storybook-react-router'
 
-import contactData from './data-contact.js'
-import officeData from './data-office.js'
-import projectData from './data-project.js'
+import { contactData, officeData, projectData } from './data.js'
 
 import ThemeCard from './ThemeCard.jsx'
 
