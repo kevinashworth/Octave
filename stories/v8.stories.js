@@ -13,6 +13,7 @@ import ErrorBoundary from '../packages/v8/lib/components/common/ErrorBoundary.js
 import LinkDetail from '../packages/v8/lib/components/common/LinkDetail.jsx'
 import MyLoading from '../packages/v8/lib/components/common/MyLoading.jsx'
 import PhoneDetail from '../packages/v8/lib/components/common/PhoneDetail.jsx'
+import GlobalFilter from '../packages/v8/lib/components/common/react-table/GlobalFilter.jsx'
 import ContactMini from '../packages/v8/lib/components/contacts/ContactMini.jsx'
 import OfficeMini from '../packages/v8/lib/components/offices/OfficeMini.jsx'
 import OfficesDataTableLoading from '../packages/v8/lib/components/offices/OfficesDataTableLoading.jsx'
@@ -60,12 +61,20 @@ storiesOf('V8/Offices/OfficeMini', module)
     <OfficeMini document={officeData} documentId='DLF5b8mntvgMfpQyf' />
   ))
 
-storiesOf('V8/Offices/OfficesDataTableLoading', module)
-  .add('Default', () => (
-    <OfficesDataTableLoading />
-  ))
-
 storiesOf('V8/Projects/ProjectMini', module)
   .add('Default', () => (
     <ProjectMini document={projectData} documentId='oJS7SvurxsG2jEFrZ' />
+  ))
+
+storiesOf('V8/Datatables/GlobalFilter', module)
+  .add('Default', () => (
+    <GlobalFilter />
+  ))
+  .add('Search Text', () => (
+    <GlobalFilter globalFilter='foo' />
+  ))
+
+storiesOf('V8/Datatables/OfficesDataTableLoading', module)
+  .add('Default', () => (
+    <OfficesDataTableLoading />
   ))
