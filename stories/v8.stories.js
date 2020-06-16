@@ -4,12 +4,14 @@ import { addDecorator, storiesOf } from '@storybook/react'
 // import StoryRouter from 'storybook-react-router'
 
 import { contactData, officeData, projectData } from './data.js'
+import theStats from './the-stats.js'
 
 import ThemeCard from './ThemeCard.jsx'
 
 import AddressDetail from '../packages/v8/lib/components/common/AddressDetail.jsx'
 import ContactDetail from '../packages/v8/lib/components/common/ContactDetail.jsx'
 import ErrorBoundary from '../packages/v8/lib/components/common/ErrorBoundary.jsx'
+import LineChartLarge from '../packages/v8/lib/components/common/Dashboard/LineChartLarge.jsx'
 import LinkDetail from '../packages/v8/lib/components/common/LinkDetail.jsx'
 import MyLoading from '../packages/v8/lib/components/common/MyLoading.jsx'
 import PhoneDetail from '../packages/v8/lib/components/common/PhoneDetail.jsx'
@@ -39,6 +41,11 @@ storiesOf('V8/Common/ErrorBoundary', module)
 storiesOf('V8/Common/LinkDetail', module)
   .add('Default', () => (
     <LinkDetail link={projectData.links[0]} />
+  ))
+
+storiesOf('V8/Common/LineChartLarge', module)
+  .add('Default', () => (
+    <LineChartLarge theStats={theStats} />
   ))
 
 storiesOf('V8/Common/MyLoading', module)
