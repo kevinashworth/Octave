@@ -4,7 +4,7 @@ import { addDecorator, storiesOf } from '@storybook/react'
 // import StoryRouter from 'storybook-react-router'
 
 import { contactData, officeData, projectData } from './data.js'
-import theStats from './the-stats.js'
+import theStats from './data-stats.js'
 
 import ThemeCard from './ThemeCard.jsx'
 

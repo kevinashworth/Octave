@@ -1,17 +1,16 @@
 # I understand and want these
-.build/
 .DS_Store
-.meteor/versions
-bundle.tar.gz
-dump/
-node_modules/
-bitbucket-pipelines.yml
-development.settings.json
-production.settings.json
-settings.json
+.build/
 .deploy
 .galaxy
+.meteor/versions
+dump/
 misc/
+node_modules/
+storybook-static/
+bitbucket-pipelines.yml
+bundle.tar.gz
+*settings.json
 start-atlas.sh
 start-mlab.sh
 
@@ -25,7 +24,6 @@ providers_secret.js
 config.rb
 deploy.sh
 .demeteorized
-settings.json.not-used
 .idea
 scratch
 .meteor/meteorite
