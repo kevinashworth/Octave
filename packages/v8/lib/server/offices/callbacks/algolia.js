@@ -11,7 +11,7 @@ const fullAddress = (office) => {
 }
 
 export function OfficeEditUpdateAlgoliaBefore (data, { document, originalDocument }) {
-  if (Meteor.settings.private) {
+  if (Meteor.settings.private && Meteor.settings.private.algolia) {
     const applicationid = Meteor.settings.public.algolia.ApplicationID
     const algoliaindex = Meteor.settings.private.algolia.AlgoliaIndex
     const addupdatekey = Meteor.settings.private.algolia.AddAndUpdateAPIKey
@@ -62,7 +62,7 @@ export function OfficeEditUpdateAlgoliaBefore (data, { document, originalDocumen
 }
 
 export function OfficeCreateSaveToAlgolia (document) {
-  if (Meteor.settings.private) {
+  if (Meteor.settings.private && Meteor.settings.private.algolia) {
     const applicationid = Meteor.settings.public.algolia.ApplicationID
     const algoliaindex = Meteor.settings.private.algolia.AlgoliaIndex
     const addupdatekey = Meteor.settings.private.algolia.AddAndUpdateAPIKey

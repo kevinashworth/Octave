@@ -5,7 +5,7 @@ import _ from 'lodash'
 import { ACTIVE_PROJECT_STATUSES_ARRAY } from '../../../modules/constants.js'
 
 export function ProjectEditUpdateAlgoliaBefore (data, { document, originalDocument }) {
-  if (Meteor.settings.private) {
+  if (Meteor.settings.private && Meteor.settings.private.algolia) {
     const applicationid = Meteor.settings.public.algolia.ApplicationID
     const algoliaindex = Meteor.settings.private.algolia.AlgoliaIndex
     const addupdatekey = Meteor.settings.private.algolia.AddAndUpdateAPIKey
@@ -66,7 +66,7 @@ export function ProjectEditUpdateAlgoliaBefore (data, { document, originalDocume
 }
 
 export function ProjectCreateSaveToAlgolia (document) {
-  if (Meteor.settings.private) {
+  if (Meteor.settings.private && Meteor.settings.private.algolia) {
     const applicationid = Meteor.settings.public.algolia.ApplicationID
     const algoliaindex = Meteor.settings.private.algolia.AlgoliaIndex
     const addupdatekey = Meteor.settings.private.algolia.AddAndUpdateAPIKey
