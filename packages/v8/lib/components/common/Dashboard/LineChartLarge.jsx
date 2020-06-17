@@ -16,8 +16,26 @@ import useWindowDimensions from './helpers.js'
 // Set initial state. Just options I want to keep.
 // See https://github.com/amannn/react-keep-state
 let keptState = {
-  timeframe: 3
+  period: 1
 }
+
+const PERIODS = [
+  {
+    moment: { days: 90 },
+    label: 'Quarter',
+    unit: 'week'
+  },
+  {
+    moment: { years: 1 },
+    label: 'Year',
+    unit: 'month'
+  },
+  {
+    moment: { years: 100 },
+    label: 'All',
+    unit: 'quarter'
+  }
+]
 
 const xy = (stat) => {
   return {
@@ -26,24 +44,16 @@ const xy = (stat) => {
   }
 }
 
-const getRecent = (data, timeframe) => {
-  return timeframe === 3
+const getRecent = (data, period) => {
+  return period === 2
     ? data
     : takeRightWhile(data, function (stat) {
-      return moment(stat.x).isSameOrAfter(moment().subtract(1, timeframe === 2 ? 'years' : 'months'))
+      return moment(stat.x).isSameOrAfter(moment().subtract(PERIODS[period].moment))
     })
 }
 
-// function onResize () {
-//   console.log('onResize')
-//   console.log('window.screen.availHeight:', window.screen.availHeight)
-//   console.log('aspectRatio:', arguments[0].aspectRatio)
-//   console.log('h & w:', arguments[1])
-//   console.dir(arguments)
-// }
-
 function LineChartLarge (props) {
-  const [timeframe, setTimeframe] = useState(keptState.timeframe)
+  const [period, setPeriod] = useState(keptState.period)
   const { loading, theStats } = props
 
   const xyEpisodics = theStats.episodics.map(stat => xy(stat))
@@ -51,15 +61,16 @@ function LineChartLarge (props) {
   const xyPilots = theStats.pilots.map(stat => xy(stat))
   const xyOthers = theStats.others.map(stat => xy(stat))
 
-  const theEpisodics = getRecent(xyEpisodics, timeframe)
-  const theFeatures = getRecent(xyFeatures, timeframe)
-  const thePilots = getRecent(xyPilots, timeframe)
-  const theOthers = getRecent(xyOthers, timeframe)
+  const theEpisodics = getRecent(xyEpisodics, period)
+  const theFeatures = getRecent(xyFeatures, period)
+  const thePilots = getRecent(xyPilots, period)
+  const theOthers = getRecent(xyOthers, period)
 
   const datasetProps = {
     backgroundColor: 'transparent',
-    pointHoverBackgroundColor: '#fff',
-    borderWidth: 2
+    borderWidth: 2,
+    lineTension: 0.3,
+    pointHoverBackgroundColor: '#fff'
   }
   const mainChart = {
     datasets: [
@@ -104,9 +115,8 @@ function LineChartLarge (props) {
       display: false
     }
   }
-  const unitProp = timeframe === 1 ? { time: { unit: 'day' } } : { time: { unit: 'month' } }
+  const unitProp = { time: { unit: PERIODS[period].unit } }
   const mainChartOpts = {
-    // onResize,
     maintainAspectRatio: false,
     legend: {
       display: false
@@ -150,13 +160,12 @@ function LineChartLarge (props) {
   const { height } = useWindowDimensions()
   const chartHeight = Math.max(200, Math.floor(height * 0.4))
   // I think 40% looks good, with a minimum height of 200. But it's subjective!
-  // console.log('window height:', height, 'chart height:', chartHeight)
 
   // Remember state for the next mount
   useEffect(() => {
     return () => {
       keptState = {
-        timeframe
+        period
       }
     }
   })
@@ -175,9 +184,9 @@ function LineChartLarge (props) {
           <Col xs={12} sm={4}>
             <ButtonToolbar className='mb-1 float-right'>
               <ButtonGroup>
-                <Button variant='outline-secondary' onClick={() => setTimeframe(1)} active={timeframe === 1}>Month</Button>
-                <Button variant='outline-secondary' onClick={() => setTimeframe(2)} active={timeframe === 2}>Year</Button>
-                <Button variant='outline-secondary' onClick={() => setTimeframe(3)} active={timeframe === 3}>All</Button>
+                <Button variant='outline-secondary' onClick={() => setPeriod(0)} active={period === 0}>{PERIODS[0].label}</Button>
+                <Button variant='outline-secondary' onClick={() => setPeriod(1)} active={period === 1}>{PERIODS[1].label}</Button>
+                <Button variant='outline-secondary' onClick={() => setPeriod(2)} active={period === 2}>{PERIODS[2].label}</Button>
               </ButtonGroup>
             </ButtonToolbar>
           </Col>
@@ -215,3 +224,5 @@ function LineChartLarge (props) {
 }
 
 registerComponent('LineChartLarge', LineChartLarge)
+
+export default LineChartLarge

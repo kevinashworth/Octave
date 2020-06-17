@@ -1,34 +1,32 @@
-import _ from 'lodash'
+/* eslint-disable no-undef */
+/*
+ * Use Twilio Lookup for Validation and Formatting
+ */
+import isEqual from 'lodash/isEqual'
 
-const accountSid = Meteor.settings.private.twilio.accountSid
-const authToken  = Meteor.settings.private.twilio.authToken
-const client = require('twilio')(accountSid, authToken);
-
-const getFormattedValidatedNumber = async (n) => {
-  const response = await client.lookups.phoneNumbers(n).fetch({countryCode: 'US'})
-  return response
-}
-
-export async function OfficeUpdateFormatPhones (data, {document, originalDocument}) {
-  // if there are no changes to `phones`, do nothing
-  if (_.isEqual(document.phones, originalDocument.phones)) {
+export async function OfficeUpdateFormatPhones (data, { document, originalDocument }) {
+  if (isEqual(document.phones, originalDocument.phones)) {
     return data
   }
-  if (document.phones && document.phones.length) {
-    const fvnPhones = await Promise.all(
+  if (Meteor.settings.private && Meteor.settings.private.twilio && document.phones && document.phones.length) {
+    const accountSid = Meteor.settings.private.twilio.accountSid
+    const authToken = Meteor.settings.private.twilio.authToken
+    const client = require('twilio')(accountSid, authToken)
+
+    const vfnPhones = await Promise.all(
       document.phones.map(async phone => {
-        const fvn = await getFormattedValidatedNumber(phone.phoneNumberAsInput)
-        const fvnPhone = {
+        const vfn = await client.lookups.phoneNumbers(phone.phoneNumberAsInput).fetch({ countryCode: 'US' })
+        const vfnPhone = {
           phoneNumberAsInput: phone.phoneNumberAsInput,
           phoneNumberType: phone.phoneNumberType,
-          phoneNumber: fvn.phoneNumber,
-          nationalFormat: fvn.nationalFormat
+          phoneNumber: vfn.phoneNumber,
+          nationalFormat: vfn.nationalFormat
         }
-        return fvnPhone
+        return vfnPhone
       })
     )
-    let updatedData = data
-    updatedData.phones = fvnPhones
+    const updatedData = data
+    updatedData.phones = vfnPhones
     return updatedData
   } else {
     return data
@@ -36,21 +34,25 @@ export async function OfficeUpdateFormatPhones (data, {document, originalDocumen
 }
 
 export async function OfficeCreateFormatPhones (document) {
-  if (document.phones && document.phones.length) {
-    const fvnPhones = await Promise.all(
+  if (Meteor.settings.private && Meteor.settings.private.twilio && document.phones && document.phones.length) {
+    const accountSid = Meteor.settings.private.twilio.accountSid
+    const authToken = Meteor.settings.private.twilio.authToken
+    const client = require('twilio')(accountSid, authToken)
+
+    const vfnPhones = await Promise.all(
       document.phones.map(async phone => {
-        const fvn = await getFormattedValidatedNumber(phone.phoneNumberAsInput)
-        const fvnPhone = {
+        const vfn = await client.lookups.phoneNumbers(phone.phoneNumberAsInput).fetch({ countryCode: 'US' })
+        const vfnPhone = {
           phoneNumberAsInput: phone.phoneNumberAsInput,
           phoneNumberType: phone.phoneNumberType,
-          phoneNumber: fvn.phoneNumber,
-          nationalFormat: fvn.nationalFormat
+          phoneNumber: vfn.phoneNumber,
+          nationalFormat: vfn.nationalFormat
         }
-        return fvnPhone
+        return vfnPhone
       })
     )
-    let updatedDocument = document
-    updatedDocument.phones = fvnPhones
+    const updatedDocument = document
+    updatedDocument.phones = vfnPhones
     return updatedDocument
   } else {
     return document
