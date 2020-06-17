@@ -1,8 +1,6 @@
-export * from '../modules/index.js';
-
 import './methods.js'
-import './migrations.js'
 import './seed.js'
+import './migrations.js'
 
 import './comments/index.js'
 import './contacts/index.js'
