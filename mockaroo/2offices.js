@@ -5,7 +5,7 @@ var chalk = require('chalk')
 var error = chalk.bold.red
 var success = chalk.bold.green
 
-var schema = require('./downloads/offices.schema.json')
+var schema = require('./schemas/offices.schema.json')
 var outFile = './generated/' + schema.name + '.' + schema.file_format
 
 client.generate({

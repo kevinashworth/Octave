@@ -5,7 +5,7 @@ var chalk = require('chalk')
 var error = chalk.bold.red
 var success = chalk.bold.green
 
-var schema = require('./downloads/pastprojects.schema.json')
+var schema = require('./schemas/pastprojects.schema.json')
 var outFile = './generated/pastprojects.' + schema.file_format
 
 client.generate({

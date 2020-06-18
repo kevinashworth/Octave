@@ -5,12 +5,12 @@ var chalk = require('chalk')
 var error = chalk.bold.red
 var success = chalk.bold.green
 
-fs.readdir('./downloads', (err, files) => {
+fs.readdir('./schemas', (err, files) => {
   if (err) {
     return console.log(error('fs.readdir error:', err))
   }
   files.forEach(file => {
-    var schema = require('./downloads/' + file)
+    var schema = require('./schemas/' + file)
     var outFile = './generated/' + schema.name + '.' + schema.file_format
 
     client.generate({
