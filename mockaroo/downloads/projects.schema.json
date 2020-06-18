@@ -50,20 +50,21 @@
       "type": "Custom List",
       "values": [
         "ABC",
-        "AMC",
-        "CBS",
-        "NBC",
-        "Starz",
-        "HBO",
-        "Disney+",
-        "TNT",
-        "Netflix",
         "Amazon",
-        "Hulu",
-        "CW",
-        "Audience",
+        "AMC",
         "Cartoon Network",
-        "TBS"
+        "CBS",
+        "CW",
+        "Disney+",
+        "HBO",
+        "Hulu",
+        "NBC",
+        "Netflix",
+        "Showtime",
+        "Starz",
+        "TBS",
+        "TNT",
+        "USA"
       ],
       "selectionStyle": "random",
       "distribution": null,
@@ -142,6 +143,32 @@
       "formula": ""
     },
     {
+      "name": "offices",
+      "null_percentage": 20,
+      "type": "JSON Array",
+      "minItems": 1,
+      "maxItems": 3,
+      "formula": ""
+    },
+    {
+      "name": "offices.officeId",
+      "null_percentage": 0,
+      "type": "Dataset Column",
+      "dataset": "offices",
+      "column": "_id",
+      "selectionStyle": "random",
+      "formula": ""
+    },
+    {
+      "name": "offices.officeName",
+      "null_percentage": 20,
+      "type": "Dataset Column",
+      "dataset": "offices",
+      "column": "displayName",
+      "selectionStyle": null,
+      "formula": ""
+    },
+    {
       "name": "createdAt",
       "null_percentage": 0,
       "type": "Datetime",
@@ -153,10 +180,8 @@
     {
       "name": "udpatedAt",
       "null_percentage": 20,
-      "type": "Datetime",
-      "min": "6/17/2019",
-      "max": "6/17/2020",
-      "format": "%Y-%m-%dT%H:%M:%SZ",
+      "type": "Formula",
+      "value": "createdAt + days(random(1,365))",
       "formula": ""
     }
   ]

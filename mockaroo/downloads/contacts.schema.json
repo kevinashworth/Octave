@@ -1,6 +1,6 @@
 {
   "id": 101652,
-  "num_rows": 10,
+  "num_rows": 5,
   "file_format": "csv",
   "name": "contacts",
   "include_header": true,
@@ -44,50 +44,69 @@
       "formula": ""
     },
     {
-      "name": "address.street1",
+      "name": "addresses",
+      "null_percentage": 50,
+      "type": "JSON Array",
+      "minItems": 1,
+      "maxItems": 2,
+      "formula": ""
+    },
+    {
+      "name": "addresses.street1",
       "null_percentage": 0,
       "type": "Street Address",
       "formula": ""
     },
     {
-      "name": "address.street2",
-      "null_percentage": 40,
+      "name": "__street2type",
+      "null_percentage": 0,
       "type": "Custom List",
       "values": [
-        "Suite 240",
-        "Suite 102",
-        "Bldg 2 Rm 104",
-        "2nd Floor",
-        "11th Floor"
+        "Suite",
+        "Room",
+        "Bldg"
       ],
       "selectionStyle": "random",
       "distribution": null,
       "formula": ""
     },
     {
-      "name": "address.city",
+      "name": "__street2number",
+      "null_percentage": 0,
+      "type": "Street Number",
+      "formula": ""
+    },
+    {
+      "name": "addresses.street2",
+      "null_percentage": 50,
+      "type": "Formula",
+      "value": "__street2type + ' ' + __street2number",
+      "formula": ""
+    },
+    {
+      "name": "addresses.city",
       "null_percentage": 0,
       "type": "City",
       "formula": ""
     },
     {
-      "name": "address.state",
+      "name": "addresses.state",
       "null_percentage": 0,
       "type": "State",
       "onlyUSPlaces": true,
       "formula": ""
     },
     {
-      "name": "address.zip",
-      "null_percentage": 9,
+      "name": "addresses.zip",
+      "null_percentage": 10,
       "type": "Postal Code",
       "formula": ""
     },
     {
-      "name": "address.location",
+      "name": "addresses.location",
       "null_percentage": 0,
       "type": "Formula",
-      "value": "if field(\"address.state\") == \"California\" then \"Calif.\" else \"NY\" end",
+      "value": "if field(\"state\") == \"California\" then \"Calif.\" else \"NY\" end",
       "formula": ""
     },
     {
@@ -122,7 +141,8 @@
         "Instagram",
         "Facebook",
         "IMDb",
-        "YouTube"
+        "YouTube",
+        "CSA"
       ],
       "selectionStyle": "random",
       "distribution": null,
@@ -154,7 +174,7 @@
     },
     {
       "name": "phone",
-      "null_percentage": 30,
+      "null_percentage": 50,
       "type": "Phone",
       "format": "###-###-####",
       "formula": ""
@@ -170,11 +190,9 @@
     },
     {
       "name": "updatedAt",
-      "null_percentage": 30,
-      "type": "Datetime",
-      "min": "6/1/2019",
-      "max": "3/2/2020",
-      "format": "%Y-%m-%dT%H:%M:%SZ",
+      "null_percentage": 50,
+      "type": "Formula",
+      "value": "createdAt + days(random(1,380))",
       "formula": ""
     }
   ]

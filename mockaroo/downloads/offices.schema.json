@@ -80,6 +80,72 @@
       "formula": ""
     },
     {
+      "name": "addresses",
+      "null_percentage": 50,
+      "type": "JSON Array",
+      "minItems": 1,
+      "maxItems": 2,
+      "formula": ""
+    },
+    {
+      "name": "addresses.street1",
+      "null_percentage": 0,
+      "type": "Street Address",
+      "formula": ""
+    },
+    {
+      "name": "__street2type",
+      "null_percentage": 0,
+      "type": "Custom List",
+      "values": [
+        "Suite",
+        "Room",
+        "Bldg"
+      ],
+      "selectionStyle": "random",
+      "distribution": null,
+      "formula": ""
+    },
+    {
+      "name": "__street2number",
+      "null_percentage": 0,
+      "type": "Street Number",
+      "formula": ""
+    },
+    {
+      "name": "addresses.street2",
+      "null_percentage": 50,
+      "type": "Formula",
+      "value": "__street2type + ' ' + __street2number",
+      "formula": ""
+    },
+    {
+      "name": "addresses.city",
+      "null_percentage": 0,
+      "type": "City",
+      "formula": ""
+    },
+    {
+      "name": "addresses.state",
+      "null_percentage": 0,
+      "type": "State",
+      "onlyUSPlaces": true,
+      "formula": ""
+    },
+    {
+      "name": "addresses.zip",
+      "null_percentage": 10,
+      "type": "Postal Code",
+      "formula": ""
+    },
+    {
+      "name": "addresses.location",
+      "null_percentage": 0,
+      "type": "Formula",
+      "value": "if field(\"state\") == \"California\" then \"Calif.\" else \"NY\" end",
+      "formula": ""
+    },
+    {
       "name": "createdAt",
       "null_percentage": 0,
       "type": "Datetime",
@@ -91,10 +157,8 @@
     {
       "name": "updatedAt",
       "null_percentage": 50,
-      "type": "Datetime",
-      "min": "6/17/2011",
-      "max": "6/17/2020",
-      "format": "%Y-%m-%dT%H:%M:%SZ",
+      "type": "Formula",
+      "value": "createdAt + days(random(1,365))",
       "formula": ""
     }
   ]
