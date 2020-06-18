@@ -185,6 +185,7 @@
     "eslint-plugin-meteor": "^7.0.0",
     "eslint-plugin-react": "^7.19.0",
     "eslint-plugin-react-hooks": "^4.0.0",
+    "mockaroo": "^0.1.7",
     "patch-package": "^6.2.2",
     "scrap-meteor-loader": "0.0.1",
     "standard": "^14.3.4",
