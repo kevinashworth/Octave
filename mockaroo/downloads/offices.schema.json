@@ -1,0 +1,101 @@
+{
+  "id": 243894,
+  "num_rows": 5,
+  "file_format": "csv",
+  "name": "offices",
+  "array": true,
+  "columns": [
+    {
+      "name": "_id",
+      "null_percentage": 0,
+      "type": "Character Sequence",
+      "format": "***************",
+      "formula": ""
+    },
+    {
+      "name": "displayName",
+      "null_percentage": 0,
+      "type": "Fake Company Name",
+      "formula": "this + \" Casting\""
+    },
+    {
+      "name": "contacts",
+      "null_percentage": 0,
+      "type": "JSON Array",
+      "minItems": 1,
+      "maxItems": 5,
+      "formula": ""
+    },
+    {
+      "name": "contacts.contactId",
+      "null_percentage": 0,
+      "type": "Dataset Column",
+      "dataset": "contacts",
+      "column": "_id",
+      "selectionStyle": "random",
+      "formula": ""
+    },
+    {
+      "name": "contacts.contactName",
+      "null_percentage": 0,
+      "type": "Dataset Column",
+      "dataset": "contacts",
+      "column": "displayName",
+      "selectionStyle": null,
+      "formula": ""
+    },
+    {
+      "name": "contacts.contactTitle",
+      "null_percentage": 0,
+      "type": "Dataset Column",
+      "dataset": "contacts",
+      "column": "title",
+      "selectionStyle": null,
+      "formula": ""
+    },
+    {
+      "name": "projects",
+      "null_percentage": 0,
+      "type": "JSON Array",
+      "minItems": 1,
+      "maxItems": 5,
+      "formula": ""
+    },
+    {
+      "name": "projects.projectId",
+      "null_percentage": 0,
+      "type": "Dataset Column",
+      "dataset": "contacts",
+      "column": "_id",
+      "selectionStyle": "random",
+      "formula": ""
+    },
+    {
+      "name": "projects.projectTitle",
+      "null_percentage": 0,
+      "type": "Dataset Column",
+      "dataset": "contacts",
+      "column": "_id",
+      "selectionStyle": "random",
+      "formula": ""
+    },
+    {
+      "name": "createdAt",
+      "null_percentage": 0,
+      "type": "Datetime",
+      "min": "6/17/2018",
+      "max": "6/17/2019",
+      "format": "%Y-%m-%dT%H:%M:%SZ",
+      "formula": ""
+    },
+    {
+      "name": "updatedAt",
+      "null_percentage": 50,
+      "type": "Datetime",
+      "min": "6/17/2011",
+      "max": "6/17/2020",
+      "format": "%Y-%m-%dT%H:%M:%SZ",
+      "formula": ""
+    }
+  ]
+}

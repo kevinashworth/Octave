@@ -1,0 +1,181 @@
+{
+  "id": 101652,
+  "num_rows": 10,
+  "file_format": "csv",
+  "name": "contacts",
+  "include_header": true,
+  "columns": [
+    {
+      "name": "_id",
+      "null_percentage": 0,
+      "type": "Character Sequence",
+      "format": "***************",
+      "formula": ""
+    },
+    {
+      "name": "firstName",
+      "null_percentage": 0,
+      "type": "First Name",
+      "formula": ""
+    },
+    {
+      "name": "middleName",
+      "null_percentage": 80,
+      "type": "First Name",
+      "formula": ""
+    },
+    {
+      "name": "lastName",
+      "null_percentage": 0,
+      "type": "Last Name",
+      "formula": ""
+    },
+    {
+      "name": "displayName",
+      "null_percentage": 0,
+      "type": "Formula",
+      "value": "concat(firstName, \" \", lastName)",
+      "formula": ""
+    },
+    {
+      "name": "gender",
+      "null_percentage": 50,
+      "type": "Gender",
+      "formula": ""
+    },
+    {
+      "name": "address.street1",
+      "null_percentage": 0,
+      "type": "Street Address",
+      "formula": ""
+    },
+    {
+      "name": "address.street2",
+      "null_percentage": 40,
+      "type": "Custom List",
+      "values": [
+        "Suite 240",
+        "Suite 102",
+        "Bldg 2 Rm 104",
+        "2nd Floor",
+        "11th Floor"
+      ],
+      "selectionStyle": "random",
+      "distribution": null,
+      "formula": ""
+    },
+    {
+      "name": "address.city",
+      "null_percentage": 0,
+      "type": "City",
+      "formula": ""
+    },
+    {
+      "name": "address.state",
+      "null_percentage": 0,
+      "type": "State",
+      "onlyUSPlaces": true,
+      "formula": ""
+    },
+    {
+      "name": "address.zip",
+      "null_percentage": 9,
+      "type": "Postal Code",
+      "formula": ""
+    },
+    {
+      "name": "address.location",
+      "null_percentage": 0,
+      "type": "Formula",
+      "value": "if field(\"address.state\") == \"California\" then \"Calif.\" else \"NY\" end",
+      "formula": ""
+    },
+    {
+      "name": "title",
+      "null_percentage": 0,
+      "type": "Custom List",
+      "values": [
+        "Casting Director",
+        "Associate",
+        "Assistant",
+        "Unknown Title"
+      ],
+      "selectionStyle": "random",
+      "distribution": null,
+      "formula": "if this[0] == 'V' then 'Casting Assistant' elsif this[0] == 'A' then 'Casting Director' elsif this[0] == 'S' then 'Other' else 'Casting Associate' end"
+    },
+    {
+      "name": "links",
+      "null_percentage": 25,
+      "type": "JSON Array",
+      "minItems": 1,
+      "maxItems": 2,
+      "formula": ""
+    },
+    {
+      "name": "links.platformName",
+      "null_percentage": 0,
+      "type": "Custom List",
+      "values": [
+        "Twitter",
+        "LinkedIn",
+        "Instagram",
+        "Facebook",
+        "IMDb",
+        "YouTube"
+      ],
+      "selectionStyle": "random",
+      "distribution": null,
+      "formula": ""
+    },
+    {
+      "name": "links.profileName",
+      "null_percentage": 0,
+      "type": "Username",
+      "formula": ""
+    },
+    {
+      "name": "links.profileLink",
+      "null_percentage": 0,
+      "type": "URL",
+      "includeProtocol": true,
+      "includeHost": true,
+      "includePath": true,
+      "includeQueryString": false,
+      "formula": ""
+    },
+    {
+      "name": "body",
+      "null_percentage": 10,
+      "type": "Sentences",
+      "min": 1,
+      "max": 2,
+      "formula": ""
+    },
+    {
+      "name": "phone",
+      "null_percentage": 30,
+      "type": "Phone",
+      "format": "###-###-####",
+      "formula": ""
+    },
+    {
+      "name": "createdAt",
+      "null_percentage": 0,
+      "type": "Datetime",
+      "min": "3/3/2017",
+      "max": "05/31/2019",
+      "format": "%Y-%m-%dT%H:%M:%SZ",
+      "formula": ""
+    },
+    {
+      "name": "updatedAt",
+      "null_percentage": 30,
+      "type": "Datetime",
+      "min": "6/1/2019",
+      "max": "3/2/2020",
+      "format": "%Y-%m-%dT%H:%M:%SZ",
+      "formula": ""
+    }
+  ]
+}
