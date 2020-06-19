@@ -31,8 +31,8 @@ const PERIODS = [
     unit: 'month'
   },
   {
-    moment: { years: 100 },
-    label: 'All',
+    moment: { years: 2 },
+    label: '2 Years',
     unit: 'quarter'
   }
 ]
@@ -45,10 +45,19 @@ const xy = (stat) => {
 }
 
 const getRecent = (data, period) => {
+  let oneMore = true
   return period === 2
     ? data
     : takeRightWhile(data, function (stat) {
-      return moment(stat.x).isSameOrAfter(moment().subtract(PERIODS[period].moment))
+      const shouldTake = moment(stat.x).isSameOrAfter(moment().subtract(PERIODS[period].moment))
+      if (oneMore && shouldTake) {
+        return true
+      } else if (oneMore && !shouldTake) {
+        oneMore = false
+        return true
+      } else {
+        return false
+      }
     })
 }
 
@@ -112,7 +121,9 @@ function LineChartLarge (props) {
       display: false
     },
     ticks: {
-      display: false
+      display: false,
+      max: moment(),
+      min: moment().subtract(PERIODS[period].moment)
     }
   }
   const unitProp = { time: { unit: PERIODS[period].unit } }
@@ -126,7 +137,9 @@ function LineChartLarge (props) {
         id: 'x-axis-episodics',
         position: 'bottom',
         ticks: {
-          maxRotation: 70
+          maxRotation: 70,
+          max: moment(),
+          min: moment().subtract(PERIODS[period].moment)
         },
         type: 'time',
         ...unitProp
