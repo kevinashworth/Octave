@@ -28,6 +28,9 @@ You must have these tools installed first:
 ```
 METEOR_PACKAGE_DIRS="/[YOUR_PATH_TO]/Vulcan/packages" meteor --port 3000 --settings settings.json
 ```
+1. Click Sign Up and enter username, email (valid or dummy), and password.  
+Note: The first user you create will automatically become a user with `admin` permissions. Also, you may need to click menu items after logging in the first time, despite the message that ‘This will just take a moment.’
+1. That’s it.
 
 ## Note
 There are secrets that are not on Github — for the database, for phone number validation and formatting, for search. This install has a limited amount of seed data, and skips some functionality.
