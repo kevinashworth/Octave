@@ -1,9 +1,9 @@
 {
-  "id": 243892,
-  "num_rows": 5,
-  "file_format": "csv",
-  "name": "projects",
-  "include_header": true,
+  "id": 244104,
+  "num_rows": 3,
+  "file_format": "json",
+  "name": "pastprojects",
+  "array": true,
   "columns": [
     {
       "name": "_id",
@@ -75,10 +75,9 @@
       "null_percentage": 0,
       "type": "Custom List",
       "values": [
-        "Casting",
-        "Shooting",
-        "Ordered",
-        "On Hiatus"
+        "Wrapped",
+        "Canceled",
+        "Unknown"
       ],
       "selectionStyle": "random",
       "distribution": null,
@@ -161,7 +160,7 @@
     },
     {
       "name": "offices.officeName",
-      "null_percentage": 20,
+      "null_percentage": 0,
       "type": "Dataset Column",
       "dataset": "offices",
       "column": "displayName",
@@ -181,7 +180,7 @@
       "name": "udpatedAt",
       "null_percentage": 20,
       "type": "Formula",
-      "value": "createdAt + days(random(1,365))",
+      "value": "createdAt + days(random(365))",
       "formula": ""
     }
   ]
