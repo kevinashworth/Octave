@@ -1,14 +1,16 @@
 # What I'm Doing Here
 Trying to script this, instead of using the Mockaroo website.
 
-From the command line, run a Node program that does this:
+<s>From the command line, run a Node program that does this:</s>
+In `seed.js`, we have code that does this:
 
-1. First, create Contacts from a Schema. Save CSV file, and upload it as a Dataset.
-1. Second, create Offices, using some of those Contacts from that Dataset. Save CSV file, and upload it as a Dataset.
-1. Third, create Projects, using some of those Contacts and Offices from those Datasets. Save CSV file.
-1. Fourth, similarly create Past Projects and save CSV file.
-1. Also create Statistics and save CSV file.
-1. Then import these CSV files using [csvtojson](https://github.com/Keyang/node-csvtojson#nested-json-structure), and save as JS/JSON files to later use as seed data.
+1. Create Contacts from a Schema. Upload this CSV as a Dataset, and also convert it to JSON for seeding Contacts Collection.
+1. Create Offices from a Schema, using some of those Contacts from that Dataset. Upload CSV as Dataset, convert to JSON.
+1. Create Projects from a Schema, using some of those Contacts and Offices from those Datasets. No need to upload as Dataset, just convert to JSON.
+1. Create Past Projects from a Schema identical to Projects.
+1. Create Statistics from a Schema, save as JSON.
+
+To convert CSV to JSON, I'm using [papaparse](https://www.papaparse.com/). (Previously was using [csvtojson](https://github.com/Keyang/node-csvtojson#nested-json-structure)).
 
 This process won't have all the interconnectedness of real data, but gets close.
 

@@ -1,5 +1,4 @@
 /* Seed the database with some dummy content. */
-
 import { Promise } from 'meteor/promise'
 import Users from 'meteor/vulcan:users'
 import { newMutation } from 'meteor/vulcan:core'
@@ -10,11 +9,34 @@ import Patches from '../modules/patches/collection.js'
 import Projects from '../modules/projects/collection.js'
 import PastProjects from '../modules/past-projects/collection.js'
 import Statistics from '../modules/statistics/collection.js'
-import seedContacts from './seeds/_contacts3.js'
-import seedProjects from './seeds/_projects3.js'
-import seedPastProjects from './seeds/_past-projects3.js'
-import seedOffices from './seeds/_offices2.js'
-import seedStatistics from './seeds/_statistics.js'
+// import seedContacts from './seeds/_contacts3.js'
+// import seedProjects from './seeds/_projects3.js'
+// import seedPastProjects from './seeds/_past-projects3.js'
+// import seedOffices from './seeds/_offices2.js'
+// import seedStatistics from './seeds/_statistics.js'
+
+import { getContacts, getOffices, getPastProjects, getProjects, getStatistics } from './seed-mockaroo.js'
+
+let seedContacts
+let seedOffices
+let seedPastProjects
+let seedProjects
+let seedStatistics
+Promise.await(getContacts().then(contacts => {
+  seedContacts = contacts
+  getOffices().then(offices => {
+    seedOffices = offices
+    getProjects().then(projects => {
+      seedProjects = projects
+    })
+    getPastProjects().then(pastProjects => {
+      seedPastProjects = pastProjects
+    })
+    getStatistics().then(statistics => {
+      seedStatistics = statistics
+    })
+  })
+}))
 
 const createUser = async (username, email) => {
   const user = {
@@ -57,6 +79,7 @@ Vulcan.removeGettingStartedContent = () => {
   console.log('// Getting started content removed')
 }
 
+// eslint-disable-next-line no-undef
 Meteor.startup(() => {
   if (Users.find().fetch().length === 0) {
     Promise.await(createDummyUsers())
