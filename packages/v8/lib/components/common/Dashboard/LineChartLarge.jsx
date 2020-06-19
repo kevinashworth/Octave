@@ -9,6 +9,7 @@ import Col from 'react-bootstrap/Col'
 import ProgressBar from 'react-bootstrap/ProgressBar'
 import Row from 'react-bootstrap/Row'
 import moment from 'moment'
+import last from 'lodash/last'
 import takeRightWhile from 'lodash/takeRightWhile'
 import { brandColors } from './brandColors.js'
 import useWindowDimensions from './helpers.js'
@@ -44,21 +45,25 @@ const xy = (stat) => {
   }
 }
 
+// get one more to the left, and add one for now at the right
 const getRecent = (data, period) => {
   let oneMore = true
-  return period === 2
-    ? data
-    : takeRightWhile(data, function (stat) {
-      const shouldTake = moment(stat.x).isSameOrAfter(moment().subtract(PERIODS[period].moment))
-      if (oneMore && shouldTake) {
-        return true
-      } else if (oneMore && !shouldTake) {
-        oneMore = false
-        return true
-      } else {
-        return false
-      }
-    })
+  const returnValue = takeRightWhile(data, function (stat) {
+    const shouldTake = moment(stat.x).isSameOrAfter(moment().subtract(PERIODS[period].moment))
+    if (oneMore && shouldTake) {
+      return true
+    } else if (oneMore && !shouldTake) {
+      oneMore = false
+      return true
+    } else {
+      return false
+    }
+  })
+  returnValue.push({
+    x: moment(),
+    y: last(returnValue).y
+  })
+  return returnValue
 }
 
 function LineChartLarge (props) {
