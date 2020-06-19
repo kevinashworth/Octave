@@ -5,7 +5,26 @@ var chalk = require('chalk')
 var error = chalk.bold.red
 var success = chalk.bold.green
 
+var key = encodeURIComponent('8631d820')
 var project = encodeURIComponent('V8')
+
+function generate (schema) {
+  var url = 'https://api.mockaroo.com/api/generate.csv' +
+    '?key=' + key +
+    '&fields=' + encodeURIComponent(JSON.stringify(schema.columns))
+  fetch(url, {
+    method: 'post'
+  }).then(res => {
+    if (res.ok) {
+      console.log(success(schema.name, 'generate success'))
+      console.log('Mockaroo API response:')
+      console.dir(res)
+    } else {
+      console.log(error('generate error:', res.statusText))
+      console.dir(res)
+    }
+  })
+}
 
 function upload (datasetName, filePath) {
   var filename = encodeURIComponent(path.basename(filePath))
@@ -40,5 +59,6 @@ function destroy (name, path) {
 
 module.exports = {
   destroy,
+  generate,
   upload
 }

@@ -1,6 +1,6 @@
 {
   "id": 101652,
-  "num_rows": 5,
+  "num_rows": 4,
   "file_format": "csv",
   "name": "contacts",
   "include_header": true,
