@@ -1,8 +1,8 @@
 {
-  "id": 244104,
-  "num_rows": 5,
+  "id": 243892,
+  "num_rows": 8,
   "file_format": "json",
-  "name": "pastprojects",
+  "name": "projects",
   "array": true,
   "columns": [
     {
@@ -26,14 +26,12 @@
         "Feature Film",
         "Feature Film (LB)",
         "Feature Film (UPA)",
-        "Interactive",
         "Pilot One Hour",
         "Pilot 1/2 Hour",
-        "Podcast",
-        "TV Animation",
-        "TV Daytime",
         "TV One Hour",
-        "TV 1/2 Hour"
+        "TV 1/2 Hour",
+        "Interactive",
+        "Podcast"
       ],
       "selectionStyle": "random",
       "distribution": null,
@@ -77,9 +75,10 @@
       "null_percentage": 0,
       "type": "Custom List",
       "values": [
-        "Wrapped",
-        "Canceled",
-        "Unknown"
+        "Casting",
+        "Shooting",
+        "Ordered",
+        "On Hiatus"
       ],
       "selectionStyle": "random",
       "distribution": null,
@@ -148,7 +147,7 @@
       "null_percentage": 20,
       "type": "JSON Array",
       "minItems": 1,
-      "maxItems": 2,
+      "maxItems": 3,
       "formula": ""
     },
     {
@@ -162,7 +161,7 @@
     },
     {
       "name": "offices.officeName",
-      "null_percentage": 0,
+      "null_percentage": 20,
       "type": "Dataset Column",
       "dataset": "offices",
       "column": "displayName",

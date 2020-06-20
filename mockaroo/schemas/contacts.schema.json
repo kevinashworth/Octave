@@ -1,9 +1,9 @@
 {
   "id": 101652,
-  "num_rows": 4,
-  "file_format": "csv",
+  "num_rows": 6,
+  "file_format": "json",
   "name": "contacts",
-  "include_header": true,
+  "array": true,
   "columns": [
     {
       "name": "_id",
@@ -121,7 +121,7 @@
       ],
       "selectionStyle": "random",
       "distribution": null,
-      "formula": "if this[0] == 'V' then 'Casting Assistant' elsif this[0] == 'A' then 'Casting Director' elsif this[0] == 'S' then 'Other' else 'Casting Associate' end"
+      "formula": ""
     },
     {
       "name": "links",
@@ -136,13 +136,15 @@
       "null_percentage": 0,
       "type": "Custom List",
       "values": [
-        "Twitter",
-        "LinkedIn",
-        "Instagram",
+        "CSA",
         "Facebook",
         "IMDb",
-        "YouTube",
-        "CSA"
+        "IMDbPro",
+        "Instagram",
+        "LinkedIn",
+        "Twitter",
+        "Wikipedia",
+        "YouTube"
       ],
       "selectionStyle": "random",
       "distribution": null,
