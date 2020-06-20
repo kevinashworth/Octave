@@ -4,9 +4,9 @@ Trying to script this, instead of using the Mockaroo website.
 <s>From the command line, run a Node program that does this:</s>
 In `seed.js`, we have code that does this:
 
-1. Create Contacts from a Schema. Upload this CSV as a Dataset, and also convert it to JSON for seeding Contacts Collection.
-1. Create Offices from a Schema, using some of those Contacts from that Dataset. Upload CSV as Dataset, convert to JSON.
-1. Create Projects from a Schema, using some of those Contacts and Offices from those Datasets. No need to upload as Dataset, just convert to JSON.
+1. Create Contacts from a Mockaroo Schema. Save this JSON for seeding Contacts Collection. Convert 3 fields of it to CSV to upload as a Dataset.
+1. Create Offices from a Schema, using Contacts from that Dataset.
+1. Create Projects from a Schema, using some of those Contacts and Offices from those Datasets.
 1. Create Past Projects from a Schema identical to Projects.
 1. Create Statistics from a Schema, save as JSON.
 

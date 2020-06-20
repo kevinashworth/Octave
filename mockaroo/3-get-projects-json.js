@@ -13,7 +13,7 @@ client.generate({
   format: schema.file_format,
   fields: schema.columns
 }).then(function (records) {
-  fs.writeFile(outFile, records, function (err) {
+  fs.writeFile(outFile, JSON.stringify(records, null, 2), function (err) {
     if (err) {
       return console.log(error('fs.writeFile error:', err))
     }

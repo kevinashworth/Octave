@@ -5,15 +5,15 @@ var chalk = require('chalk')
 var error = chalk.bold.red
 var success = chalk.bold.green
 
-var schema = require('./schemas/contacts.schema.json')
-var outFile = './generated/' + schema.name + '.' + schema.file_format
+var schema = require('./schemas/pastprojects.schema.json')
+var outFile = './generated/pastprojects.' + schema.file_format
 
 client.generate({
   count: schema.num_rows,
   format: schema.file_format,
   fields: schema.columns
 }).then(function (records) {
-  fs.writeFile(outFile, records, function (err) {
+  fs.writeFile(outFile, JSON.stringify(records, null, 2), function (err) {
     if (err) {
       return console.log(error('fs.writeFile error:', err))
     }
