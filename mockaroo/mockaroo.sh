@@ -1,4 +1,5 @@
 #!/bin/sh
+set -e
 
 mkdir generated
 node get-from-schema --schema=contacts
