@@ -1,42 +1,19 @@
 /* Seed the database with some dummy content. */
+
 import { Promise } from 'meteor/promise'
 import Users from 'meteor/vulcan:users'
 import { newMutation } from 'meteor/vulcan:core'
-// import AlgoliaLog from '../modules/algolia-log/collection.js'
 import Contacts from '../modules/contacts/collection.js'
 import Offices from '../modules/offices/collection.js'
 import Patches from '../modules/patches/collection.js'
 import Projects from '../modules/projects/collection.js'
 import PastProjects from '../modules/past-projects/collection.js'
 import Statistics from '../modules/statistics/collection.js'
-// import seedContacts from './seeds/_contacts3.js'
-// import seedProjects from './seeds/_projects3.js'
-// import seedPastProjects from './seeds/_past-projects3.js'
-// import seedOffices from './seeds/_offices2.js'
-// import seedStatistics from './seeds/_statistics.js'
-
-import { getContacts, getOffices, getPastProjects, getProjects, getStatistics } from './seed-mockaroo.js'
-
-let seedContacts
-let seedOffices
-let seedPastProjects
-let seedProjects
-let seedStatistics
-Promise.await(getContacts().then(contacts => {
-  seedContacts = contacts
-  getOffices().then(offices => {
-    seedOffices = offices
-    getProjects().then(projects => {
-      seedProjects = projects
-    })
-    getPastProjects().then(pastProjects => {
-      seedPastProjects = pastProjects
-    })
-    getStatistics().then(statistics => {
-      seedStatistics = statistics
-    })
-  })
-}))
+import { contacts } from './seeds/generated/contacts.js'
+import { offices } from './seeds/generated/offices.js'
+import { pastprojects } from './seeds/generated/pastprojects.js'
+import { projects } from './seeds/generated/projects.js'
+import seedStatistics from './seeds/_statistics.js'
 
 const createUser = async (username, email) => {
   const user = {
@@ -56,7 +33,6 @@ const createDummyUsers = async () => {
   console.log('// inserting dummy users…')
   return Promise.all([
     createUser('Bruce', 'dummyuser1@telescopeapp.org'),
-    createUser('Arnold', 'dummyuser2@telescopeapp.org'),
     createUser('Julia', 'dummyuser3@telescopeapp.org')
   ])
 }
@@ -88,7 +64,7 @@ Meteor.startup(() => {
   if (Contacts.find().fetch().length === 0) {
     // eslint-disable-next-line no-console
     console.log('// creating dummy contacts')
-    Promise.awaitAll(seedContacts.map(document => newMutation({
+    Promise.awaitAll(contacts.map(document => newMutation({
       action: 'contacts.new',
       collection: Contacts,
       document,
@@ -99,7 +75,7 @@ Meteor.startup(() => {
   if (Projects.find().fetch().length === 0) {
     // eslint-disable-next-line no-console
     console.log('// creating dummy projects')
-    Promise.awaitAll(seedProjects.map(document => newMutation({
+    Promise.awaitAll(projects.map(document => newMutation({
       action: 'projects.new',
       collection: Projects,
       document,
@@ -110,7 +86,7 @@ Meteor.startup(() => {
   if (PastProjects.find().fetch().length === 0) {
     // eslint-disable-next-line no-console
     console.log('// creating dummy past-projects')
-    Promise.awaitAll(seedPastProjects.map(document => newMutation({
+    Promise.awaitAll(pastprojects.map(document => newMutation({
       action: 'past-projects.create',
       collection: PastProjects,
       document,
@@ -121,7 +97,7 @@ Meteor.startup(() => {
   if (Offices.find().fetch().length === 0) {
     // eslint-disable-next-line no-console
     console.log('// creating dummy offices')
-    Promise.awaitAll(seedOffices.map(document => newMutation({
+    Promise.awaitAll(offices.map(document => newMutation({
       action: 'offices.new',
       collection: Offices,
       document,
@@ -151,15 +127,4 @@ Meteor.startup(() => {
       validate: false
     }))
   }
-  // if (AlgoliaLog.find().fetch().length === 0) {
-  //   // eslint-disable-next-line no-console
-  //   console.log('// creating dummy algolia')
-  //   Promise.await(newMutation({
-  //     action: 'algolia.new',
-  //     collection: AlgoliaLog,
-  //     document: seedAlgoliaLog,
-  //     currentUser,
-  //     validate: false
-  //   }))
-  // }
 })

@@ -1,3 +1,4 @@
+/* eslint-disable */
 // see https://guide.meteor.com/collections.html#migrations
 import { Utils } from 'meteor/vulcan:core'
 import { Migrations } from 'meteor/percolate:migrations'
@@ -8,7 +9,7 @@ import Statistics from '../modules/statistics/collection.js'
 import { PAST_PROJECT_STATUSES_ARRAY } from '../modules/constants.js'
 import moment from 'moment'
 import marked from 'marked'
-import reducedStats from './seeds/_stats-reduced.js'
+// import reducedStats from './seeds/_stats-reduced.js'
 import { getAddress, getFullAddress, getFullNameFromContact, getPlatformType, getSortTitle } from '../modules/helpers.js'
 
 Migrations.add({
@@ -370,19 +371,19 @@ Migrations.add({
   }
 })
 
-Migrations.add({
-  version: 8,
-  name: 'Reduce statistics. (There is no undo)',
-  up: function () {
-    const theStats = Statistics.findOne()
-    let newStats = {}
-    newStats = reducedStats
-    Statistics.update(theStats._id, {
-      $set: newStats
-    })
-  },
-  down: function () { /* There is no undoing this one. */ }
-})
+// Migrations.add({
+//   version: 8,
+//   name: 'Reduce statistics. (There is no undo)',
+//   up: function () {
+//     const theStats = Statistics.findOne()
+//     let newStats = {}
+//     newStats = reducedStats
+//     Statistics.update(theStats._id, {
+//       $set: newStats
+//     })
+//   },
+//   down: function () { /* There is no undoing this one. */ }
+// })
 
 Migrations.add({
   version: 9,
