@@ -7,6 +7,7 @@
 dump/
 misc/
 node_modules/
+packages/v8/lib/server/seeds/generated/
 storybook-static/
 bitbucket-pipelines.yml
 bundle.tar.gz
