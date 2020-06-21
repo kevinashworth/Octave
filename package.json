@@ -29,8 +29,6 @@
   "dependencies": {
     "@apollo/react-hooks": "^3.1.5",
     "@babel/runtime": "^7.1.2",
-    "@coreui/coreui-pro": "^2.1.16",
-    "@coreui/icons": "1.0.1",
     "@welldone-software/why-did-you-render": "^4.2.5",
     "algoliasearch": "^4.2.0",
     "analytics-node": "^2.1.1",
