@@ -18,7 +18,6 @@ var minContacts = generated.contacts.map(contact => {
     title
   }
 })
-console.log(minContacts)
 var csv = Papa.unparse(minContacts)
 
 fetch(`https://api.mockaroo.com/api/datasets/${name}?filename=${name}.csv&key=${key}&project=${project}`, {

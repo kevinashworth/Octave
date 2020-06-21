@@ -17,7 +17,6 @@ var minOffices = generated.offices.map(office => {
     displayName
   }
 })
-console.log(minOffices)
 var csv = Papa.unparse(minOffices)
 
 fetch(`https://api.mockaroo.com/api/datasets/${name}?filename=${name}.csv&key=${key}&project=${project}`, {
