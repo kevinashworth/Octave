@@ -1,10 +1,10 @@
 #!/bin/sh
 
-node 1-get-contacts-json.js
+node get-from-schema --schema=contacts
 node 1-upload-contacts-csv.js
-node 2-get-offices-json.js
+node get-from-schema -s offices
 node 2-upload-offices-csv.js
-node 3-get-projects-json.js
-node 4-get-pastprojects-json.js
+node get-from-schema --schema=pastprojects
+node get-from-schema --schema=projects
 
-cp generated/*.json ../packages/v8/lib/server/seeds
+cp -R generated ../packages/v8/lib/server/seeds

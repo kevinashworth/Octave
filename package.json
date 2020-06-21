@@ -9,6 +9,7 @@
     "deploy-to-heroku": "open --hide --background -a Docker && cp Dockerfile ./.build/bundle && heroku container:push web -a sleepy-earth-65615 --context-path ./.build/bundle && heroku container:release web -a sleepy-earth-65615",
     "deploy-to-galaxy": "DEPLOY_HOSTNAME=us-east-1.galaxy-deploy.meteor.com meteor deploy v8.the-4th-wall.com --settings .galaxy/settings.json",
     "deploy-to-meteorapp": "DEPLOY_HOSTNAME=us-east-1.galaxy-deploy.meteor.com meteor deploy v8.meteorapp.com --settings .galaxy/settings.json",
+    "prepare": "node mockaroo/mockaroo.sh",
     "prestart": "node .vulcan/prestart_vulcan.js",
     "start": "meteor --port 4004 --settings settings.json",
     "start-debug": "meteor debug --port 4004 --settings settings.json",

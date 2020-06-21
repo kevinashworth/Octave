@@ -1,5 +1,4 @@
 var fetch = require('node-fetch')
-var fs = require('fs')
 var Papa = require('papaparse')
 var chalk = require('chalk')
 var error = chalk.bold.red
@@ -10,8 +9,8 @@ var project = encodeURIComponent('V8')
 var datasetName = 'offices'
 var name = encodeURIComponent(datasetName)
 
-var seedOffices = JSON.parse(fs.readFileSync('./generated/' + name + '.json'))
-var minOffices = seedOffices.map(office => {
+var generated = require('./generated/offices.js')
+var minOffices = generated.offices.map(office => {
   const { _id, displayName } = office
   return {
     _id,
@@ -20,7 +19,6 @@ var minOffices = seedOffices.map(office => {
 })
 console.log(minOffices)
 var csv = Papa.unparse(minOffices)
-console.log(csv)
 
 fetch(`https://api.mockaroo.com/api/datasets/${name}?filename=${name}.csv&key=${key}&project=${project}`, {
   method: 'post',
