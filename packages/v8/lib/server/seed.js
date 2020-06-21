@@ -13,7 +13,7 @@ import { contacts } from './seeds/generated/contacts.js'
 import { offices } from './seeds/generated/offices.js'
 import { pastprojects } from './seeds/generated/pastprojects.js'
 import { projects } from './seeds/generated/projects.js'
-import seedStatistics from './seeds/_statistics.js'
+import { statistics } from './seeds/_statistics.js'
 
 const createUser = async (username, email) => {
   const user = {
@@ -108,13 +108,7 @@ Meteor.startup(() => {
   if (Statistics.find().fetch().length === 0) {
     // eslint-disable-next-line no-console
     console.log('// creating dummy statistics')
-    Promise.await(newMutation({
-      action: 'statistics.new',
-      collection: Statistics,
-      document: seedStatistics,
-      currentUser,
-      validate: false
-    }))
+    Promise.await(Statistics.insert(statistics))
   }
   if (Patches.find().fetch().length === 0) {
     // eslint-disable-next-line no-console
