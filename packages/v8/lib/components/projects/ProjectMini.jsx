@@ -1,23 +1,31 @@
-import { Components, registerComponent, withCurrentUser, withSingle } from 'meteor/vulcan:core'
-import { FormattedMessage } from 'meteor/vulcan:i18n'
+import { registerComponent, withCurrentUser, withSingle } from 'meteor/vulcan:core'
 import React from 'react'
 import { Link } from 'react-router-dom'
 import PropTypes from 'prop-types'
 import Card from 'react-bootstrap/Card'
-
 import Projects from '../../modules/projects/collection.js'
+import MyLoading from '../common/MyLoading'
+
+const MyLoader = ({ cardClass }) => {
+  return (
+    <Card.Text style={{ minWidth: '8rem', maxWidth: '18rem' }}>
+      <MyLoading variant='primary' />
+      <br />
+      <small>
+        <MyLoading />
+      </small>
+    </Card.Text>
+  )
+}
 
 const ProjectMini = (props) => {
-  if (props.loading) {
-    return <Components.Loading />
-  }
   if (!props.document) {
-    return <FormattedMessage id='app.404' />
+    return <MyLoader />
   }
 
   const project = props.document
   return (
-    <Card.Text>
+    <Card.Text style={{ minWidth: '8rem', maxWidth: '18rem' }}>
       <b><Link to={`/projects/${project._id}/${project.slug}`}>{project.projectTitle}</Link></b>
       {props.titleForProject && ` (${props.titleForProject})`}
       <br />

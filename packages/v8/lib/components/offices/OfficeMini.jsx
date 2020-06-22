@@ -1,23 +1,30 @@
 import { Components, registerComponent, withCurrentUser, withSingle } from 'meteor/vulcan:core'
-import { FormattedMessage } from 'meteor/vulcan:i18n'
 import React from 'react'
 import { Link } from 'react-router-dom'
 import PropTypes from 'prop-types'
 import Card from 'react-bootstrap/Card'
 import Offices from '../../modules/offices/collection.js'
+import MyLoading from '../common/MyLoading'
+
+const MyLoader = ({ cardClass }) => {
+  return (
+    <Card className='card-accent-primary' style={{ minWidth: '8rem', maxWidth: '18rem' }}>
+      <Card.Header as='h6'>
+        <MyLoading variant='primary' />
+      </Card.Header>
+      <Card.Body>
+        <MyLoading height={63} />
+      </Card.Body>
+    </Card>
+  )
+}
 
 const OfficeMini = (props) => {
-  const { document: office, documentId, loading } = props
-  if (loading) {
-    return <Components.Loading />
+  if (!props.document) {
+    return <MyLoader />
   }
-  if (!document || !documentId) {
-    return (
-      <Card className='card-accent-primary' style={{ minWidth: '8rem', maxWidth: '18rem' }}>
-        <FormattedMessage id='app.missing_document' />
-      </Card>
-    )
-  }
+
+  const office = props.document
   return (
     <Card className='card-accent-primary' style={{ minWidth: '8rem', maxWidth: '18rem' }}>
       <Card.Header as='h6'>
