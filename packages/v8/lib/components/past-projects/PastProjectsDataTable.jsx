@@ -1,4 +1,4 @@
-import { Components, registerComponent, withAccess, withMulti } from 'meteor/vulcan:core'
+import { Components, registerComponent, withAccess, withMulti2 } from 'meteor/vulcan:core'
 import React, { Component } from 'react'
 import { Link } from 'react-router-dom'
 import Button from 'react-bootstrap/Button'
@@ -20,8 +20,8 @@ let keptState = {
     defaultSearch: '',
     page: 1,
     sizePerPage: 50,
-    sortName: 'projectTitle',
-    sortOrder: 'asc'
+    sortName: 'updatedAt',
+    sortOrder: 'desc'
   }
 }
 
@@ -146,11 +146,11 @@ class PastProjectsDataTable extends Component {
 
   render () {
     const {
-      count, loadingMore, loadMore, networkStatus, results, totalCount,
+      count, loading, loadingMore, loadMore, results, totalCount,
       pastProjectTypeFilters, pastProjectStatusFilters, pastProjectUpdatedFilters
     } = this.props
 
-    if (networkStatus !== 8 && networkStatus !== 7) {
+    if (loading) {
       return (
         <div className='animated fadeIn'>
           <Card className='card-accent-secondary'>
@@ -276,7 +276,12 @@ const accessOptions = {
 const multiOptions = {
   collection: PastProjects,
   fragmentName: 'PastProjectsDataTableFragment',
-  limit: 500
+  limit: 500,
+  input: {
+    sort: {
+      updatedAt: 'desc'
+    }
+  }
 }
 
 registerComponent({
@@ -285,6 +290,6 @@ registerComponent({
   hocs: [
     [withAccess, accessOptions],
     withFilters,
-    [withMulti, multiOptions]
+    [withMulti2, multiOptions]
   ]
 })

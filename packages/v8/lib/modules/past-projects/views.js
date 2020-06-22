@@ -1,9 +1,9 @@
 import PastProjects from './collection.js'
 
-// default sort by createdAt timestamp in descending order
+// else default sort is createdAt in descending order
 PastProjects.addDefaultView(terms => {
   return {
-    options: { sort: { updatedAt: -1 } }
+    options: { sort: { updatedAt: 'desc' } }
   }
 })
 
