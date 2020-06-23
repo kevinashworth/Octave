@@ -28,21 +28,21 @@ class DefaultLayout extends Component {
     var xsNav = { items: [] }
     xsNav.items.push(...nav.topItems)
     xsNav.items.push(...nav.xsItems)
-    if (getSetting('myDebug') || Users.isAdmin(currentUser)) {
-      xsNav.items.push(...nav.develItems)
-    }
     if (Users.isAdmin(currentUser)) {
       xsNav.items.push(...nav.adminItems)
+    }
+    if (getSetting('myDebug') || Users.isAdmin(currentUser)) {
+      xsNav.items.push(...nav.develItems)
     }
 
     var smNav = { items: [] }
     smNav.items.push(...nav.topItems)
     smNav.items.push(...nav.smItems)
-    if (getSetting('myDebug') || Users.isAdmin(currentUser)) {
-      smNav.items.push(...nav.develItems)
-    }
     if (Users.isAdmin(currentUser)) {
       smNav.items.push(...nav.adminItems)
+    }
+    if (getSetting('myDebug') || Users.isAdmin(currentUser)) {
+      smNav.items.push(...nav.develItems)
     }
 
     return (
