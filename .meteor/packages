@@ -21,7 +21,6 @@ vulcan:ui-bootstrap
 vulcan:redux
 vulcan:backoffice
 
-fortawesome:fontawesome
 percolate:migrations
 
 v8

@@ -4,6 +4,7 @@
 .deploy
 .galaxy
 .meteor/versions
+.npmrc
 dump/
 misc/
 node_modules/
