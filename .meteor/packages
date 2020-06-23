@@ -22,7 +22,6 @@ vulcan:redux
 vulcan:backoffice
 
 fortawesome:fontawesome
-jss:flag-icon
 percolate:migrations
 
 v8
