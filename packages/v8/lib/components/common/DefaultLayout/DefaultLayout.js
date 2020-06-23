@@ -55,6 +55,7 @@ class DefaultLayout extends Component {
           <link rel='mask-icon' href='/favicon/safari-pinned-tab.svg' color='#20a8d8' />
           <meta name='msapplication-TileColor' content='#da532c' />
           <meta name='theme-color' content='#ffffff' />
+          <script src='https://kit.fontawesome.com/085731bca6.js' crossOrigin='anonymous' />
         </Helmet>
         <AppHeader fixed>
           <DefaultHeader />
