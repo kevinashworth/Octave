@@ -56,6 +56,7 @@ class DefaultLayout extends Component {
           <meta name='msapplication-TileColor' content='#da532c' />
           <meta name='theme-color' content='#ffffff' />
           <script src='https://kit.fontawesome.com/085731bca6.js' crossOrigin='anonymous' />
+          <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/simple-line-icons/2.4.1/css/simple-line-icons.min.css' integrity='sha256-7O1DfUu4pybYI7uAATw34eDrgQaWGOfMV/8erfDQz/Q=' crossOrigin='anonymous' />
         </Helmet>
         <AppHeader fixed>
           <DefaultHeader />
