@@ -215,7 +215,7 @@ class ProjectsNameOnly extends PureComponent {
         <Components.HeadTags title='V8: Projects' />
         <Card>
           <Card.Header>
-            <i className='fa fa-camera' />Projects
+            <i className='fad fa-camera' />Projects
             <Button size='sm' variant={this.state.filtersVariant} className='ml-2' onClick={this.handleShow}>Filters</Button>
             <Modal show={this.state.show} onHide={this.handleHide}>
               <Modal.Header closeButton>Project Filters</Modal.Header>

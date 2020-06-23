@@ -155,7 +155,7 @@ class PastProjectsDataTable extends Component {
         <div className='animated fadeIn'>
           <Card className='card-accent-secondary'>
             <Card.Header>
-              <i className='fa fa-camera-retro' />Past Projects
+              <i className='fad fa-camera-retro' />Past Projects
             </Card.Header>
             <Card.Body>
               <Components.Loading />
@@ -209,7 +209,7 @@ class PastProjectsDataTable extends Component {
           </Modal>}
         <Card className='card-accent-secondary'>
           <Card.Header>
-            <i className='fa fa-camera-retro' />Past Projects
+            <i className='fad fa-camera-retro' />Past Projects
             <Components.PastProjectFilters />
           </Card.Header>
           <Card.Body>

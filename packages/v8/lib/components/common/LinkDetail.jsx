@@ -16,10 +16,9 @@ const iconClass = (platform) => {
   }
   const brand = find(BRANDS_ENUM, { brand: platform })
   if (brand) {
-    return 'fa ' + brand.fa
-  } else {
-    return 'fa fa-external-link'
+    return brand.fa
   }
+  return 'fas fa-external-link'
 }
 
 const LinkDetail = (props) => {

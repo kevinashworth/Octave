@@ -225,7 +225,7 @@ const ProjectsDataTable = (props) => {
         </Modal>}
       <Card className='card-accent-danger'>
         <Card.Header>
-          <i className='fa fa-camera' />Projects
+          <i className='fad fa-camera' />Projects
           <Components.ProjectFilters />
         </Card.Header>
         <Card.Body>

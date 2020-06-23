@@ -28,21 +28,21 @@ class DefaultLayout extends Component {
     var xsNav = { items: [] }
     xsNav.items.push(...nav.topItems)
     xsNav.items.push(...nav.xsItems)
-    if (getSetting('myDebug') || Users.isAdmin(currentUser)) {
-      xsNav.items.push(...nav.develItems)
-    }
     if (Users.isAdmin(currentUser)) {
       xsNav.items.push(...nav.adminItems)
+    }
+    if (getSetting('myDebug') || Users.isAdmin(currentUser)) {
+      xsNav.items.push(...nav.develItems)
     }
 
     var smNav = { items: [] }
     smNav.items.push(...nav.topItems)
     smNav.items.push(...nav.smItems)
-    if (getSetting('myDebug') || Users.isAdmin(currentUser)) {
-      smNav.items.push(...nav.develItems)
-    }
     if (Users.isAdmin(currentUser)) {
       smNav.items.push(...nav.adminItems)
+    }
+    if (getSetting('myDebug') || Users.isAdmin(currentUser)) {
+      smNav.items.push(...nav.develItems)
     }
 
     return (
@@ -55,6 +55,8 @@ class DefaultLayout extends Component {
           <link rel='mask-icon' href='/favicon/safari-pinned-tab.svg' color='#20a8d8' />
           <meta name='msapplication-TileColor' content='#da532c' />
           <meta name='theme-color' content='#ffffff' />
+          <script src='https://kit.fontawesome.com/085731bca6.js' crossOrigin='anonymous' />
+          <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/simple-line-icons/2.4.1/css/simple-line-icons.min.css' integrity='sha256-7O1DfUu4pybYI7uAATw34eDrgQaWGOfMV/8erfDQz/Q=' crossOrigin='anonymous' />
         </Helmet>
         <AppHeader fixed>
           <DefaultHeader />

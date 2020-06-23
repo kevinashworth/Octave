@@ -67,9 +67,8 @@ class AppSidebarNav extends Component {
     return (
       item.title ? this.navTitle(item, idx)
         : item.divider ? this.navDivider(item, idx)
-          : item.label ? this.navLabel(item, idx)
-            : item.children ? this.navDropdown(item, idx)
-              : this.navItem(item, idx)
+          : item.children ? this.navDropdown(item, idx)
+            : this.navItem(item, idx)
     )
   }
 
@@ -86,25 +85,8 @@ class AppSidebarNav extends Component {
 
   // nav list divider
   navDivider (divider, key) {
-    const classes = classNames('divider', divider.class)
+    const classes = classNames('nav-divider', divider.class)
     return <li key={key} className={classes} />
-  }
-
-  // nav label with nav link
-  navLabel (item, key) {
-    const classes = {
-      item: classNames('hidden-cn', item.class),
-      link: classNames('nav-label', item.class ? item.class : ''),
-      icon: classNames(
-        'nav-icon',
-        !item.icon ? 'fa fa-circle' : item.icon,
-        item.label.variant ? `text-${item.label.variant}` : '',
-        item.label.class ? item.label.class : ''
-      )
-    }
-    return (
-      this.navLink(item, key, classes)
-    )
   }
 
   // nav dropdown
@@ -164,7 +146,7 @@ class AppSidebarNav extends Component {
     if (badge) {
       const classes = classNames(badge.class)
       return (
-        <Badge className={classes} color={badge.variant}>{badge.text}</Badge>
+        <Badge className={classes} variant={badge.variant}>{badge.text}</Badge>
       )
     }
     return null

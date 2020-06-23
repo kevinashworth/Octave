@@ -292,16 +292,17 @@ export const COREUI_BRANDS_LIST = [
 ]
 
 export const BRANDS_ENUM = [
-  { brand: 'cbs', fa: 'fa-television' },
-  { brand: 'csa', fa: 'fa-desktop' },
-  { brand: 'freeform', fa: 'fa-television' },
-  { brand: 'hulu', fa: 'fa-television' },
-  { brand: 'imdb', fa: 'fa-imdb' },
-  { brand: 'imdbpro', fa: 'fa-imdb' },
-  { brand: 'netflix', fa: 'fa-television' },
-  { brand: 'vudu', fa: 'fa-television' },
-  { brand: 'website', fa: 'fa-desktop' },
-  { brand: 'wikipedia', fa: 'fa-wikipedia-w' }
+  { brand: 'cbs', fa: 'fad fa-tv-retro' },
+  { brand: 'csa', fa: 'fad fa-circle' },
+  { brand: 'fox', fa: 'fad fa-tv-retro' },
+  { brand: 'freeform', fa: 'fad fa-tv-retro' },
+  { brand: 'hulu', fa: 'fa fa-television' },
+  { brand: 'imdb', fa: 'fa fa-imdb' },
+  { brand: 'imdbpro', fa: 'fa fa-imdb' },
+  { brand: 'netflix', fa: 'fa fa-television' },
+  { brand: 'vudu', fa: 'fa fa-television' },
+  { brand: 'website', fa: 'far fa-browser' },
+  { brand: 'wikipedia', fa: 'fa fa-wikipedia-w' }
 ]
 
 export const PAGINATION_SIZE = 5
