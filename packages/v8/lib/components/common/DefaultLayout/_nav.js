@@ -33,12 +33,12 @@ const navItems = {
     {
       name: 'Projects',
       url: '/projects',
-      icon: 'fa fa-camera'
+      icon: 'fad fa-camera'
     },
     {
       name: 'Past Projects',
       url: '/past-projects',
-      icon: 'fa fa-camera-retro'
+      icon: 'fad fa-camera-retro'
     }
   ],
   xsItems: [
@@ -55,7 +55,7 @@ const navItems = {
     {
       name: 'Projects (M)',
       url: '/m/projects',
-      icon: 'fa fa-camera'
+      icon: 'fad fa-camera'
     }
   ],
   adminItems: [
@@ -66,7 +66,7 @@ const navItems = {
     {
       name: 'New Project',
       url: '/projects/new',
-      icon: 'fa fa-camera'
+      icon: 'fad fa-camera'
     },
     {
       name: 'User Admin',
@@ -122,7 +122,7 @@ const navItems = {
     {
       name: 'Projects (M)',
       url: '/m/projects',
-      icon: 'fa fa-camera'
+      icon: 'fad fa-camera'
     },
     {
       name: 'QraphQL',
