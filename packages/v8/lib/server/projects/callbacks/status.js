@@ -31,7 +31,7 @@ export function ProjectEditUpdateStatusAfter (document, { context, currentUser }
       }))
     }
 
-    if (document.offices & document.offices.length) {
+    if (document.offices && document.offices.length) {
       document.offices.forEach(officeOfDocument => {
         let pastProjects = []
         let projects = []
