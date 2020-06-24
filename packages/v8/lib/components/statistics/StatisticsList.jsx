@@ -45,12 +45,10 @@ const StatisticsList = (props) => {
             </div>}
         </Card.Header>
         <Card.Body>
-          <Components.ModalTrigger label='See Current Stats' title='Current Stats'>
-            <Components.StatisticsCurrent />
-          </Components.ModalTrigger>
+          <Components.StatisticsCurrent />
           <Row>
             <Col>
-              <Button onClick={() => toggle(0)} variant='outline-success'>
+              <Button onClick={() => toggle(0)} variant='outline-success' className='mb-4'>
                 Open/Close Episodics
               </Button>
               <Fade appear in={open[0]} mountOnEnter timeout={50} unmountOnExit>
@@ -60,7 +58,7 @@ const StatisticsList = (props) => {
               </Fade>
             </Col>
             <Col>
-              <Button onClick={() => toggle(1)} variant='outline-primary'>
+              <Button onClick={() => toggle(1)} variant='outline-primary' className='mb-4'>
                 Open/Close Features
               </Button>
               <Fade appear in={open[1]} mountOnEnter timeout={50} unmountOnExit>
@@ -70,7 +68,7 @@ const StatisticsList = (props) => {
               </Fade>
             </Col>
             <Col>
-              <Button onClick={() => toggle(2)} variant='outline-warning'>
+              <Button onClick={() => toggle(2)} variant='outline-warning' className='mb-4'>
                 Open/Close Pilots
               </Button>
               <Fade appear in={open[2]} mountOnEnter timeout={50} unmountOnExit>
@@ -80,7 +78,7 @@ const StatisticsList = (props) => {
               </Fade>
             </Col>
             <Col>
-              <Button onClick={() => toggle(3)} variant='outline-danger'>
+              <Button onClick={() => toggle(3)} variant='outline-danger' className='mb-4'>
                 Open/Close Others
               </Button>
               <Fade appear in={open[3]} mountOnEnter timeout={50} unmountOnExit>
@@ -90,7 +88,7 @@ const StatisticsList = (props) => {
               </Fade>
             </Col>
           </Row>
-          <Row className='mt-4'>
+          <Row className={open.some(true) ? 'mt-4' : 'd-none'}>
             <Col>
               <Button onClick={() => toggle(0)} variant='outline-success'>
                 Open/Close Episodics

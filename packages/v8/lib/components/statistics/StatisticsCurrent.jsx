@@ -61,7 +61,7 @@ const StatisticsCurrent = () => {
 
   return (
     <Card className='card-accent-warning'>
-      <Card.Head>Current Statistics</Card.Head>
+      <Card.Header>Current Statistics</Card.Header>
       <Card.Body>
         <ListGroup className='statistics-lists'>
           <ListGroup.Item>Episodics Casting: {episodicsCasting}</ListGroup.Item>
