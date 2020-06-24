@@ -42,6 +42,22 @@ export const ADDRESS_TYPES_ENUM = [
   { value: 'Unverified', label: 'Unverified' }
 ]
 
+export const PROJECT_TYPES_EPISODICS = [
+  'TV One Hour', 'TV 1/2 Hour', 'TV Animation'
+]
+
+export const PROJECT_TYPES_FEATURES = [
+  'Feature Film', 'Feature Film (LB)', 'Feature Film (MLB)', 'Feature Film (MPA)', 'Feature Film (ULB)', 'Feature Film (UPA)'
+]
+
+export const PROJECT_TYPES_PILOTS = [
+  'Pilot One Hour', 'Pilot 1/2 Hour', 'Pilot Presentation'
+]
+
+export const PROJECT_TYPES_OTHERS = [
+  'Short Film', 'TV Daytime', 'TV Mini-Series', 'TV Movie', 'TV Talk/Variety', 'TV Sketch/Improv', 'New Media', 'Interactive', 'Podcast'
+]
+
 export const PROJECT_TYPES_ENUM = [
   { value: 'Feature Film', label: 'Feature Film' },
   { value: 'Feature Film (LB)', label: 'Feature Film (LB)' },
@@ -55,13 +71,13 @@ export const PROJECT_TYPES_ENUM = [
   { value: 'Pilot Presentation', label: 'Pilot Presentation' },
   { value: 'TV One Hour', label: 'TV One Hour' },
   { value: 'TV 1/2 Hour', label: 'TV 1/2 Hour' },
+  { value: 'TV Animation', label: 'TV Animation' },
   { value: 'TV Daytime', label: 'TV Daytime' },
   { value: 'TV Mini-Series', label: 'TV Mini-Series' },
   { value: 'TV Movie', label: 'TV Movie' },
   { value: 'TV Talk/Variety', label: 'TV Talk/Variety' },
   { value: 'TV Sketch/Improv', label: 'TV Sketch/Improv' },
   { value: 'New Media', label: 'New Media' },
-  { value: 'TV Animation', label: 'TV Animation' },
   { value: 'Interactive', label: 'Interactive' },
   { value: 'Podcast', label: 'Podcast' }
 ]

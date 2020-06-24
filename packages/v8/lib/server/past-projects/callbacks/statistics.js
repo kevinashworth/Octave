@@ -2,6 +2,7 @@ import { updateMutator } from 'meteor/vulcan:core'
 import Projects from '../../../modules/projects/collection.js'
 import Statistics from '../../../modules/statistics/collection.js'
 import moment from 'moment'
+import { PROJECT_TYPES_EPISODICS, PROJECT_TYPES_FEATURES, PROJECT_TYPES_PILOTS, PROJECT_TYPES_OTHERS } from '../../../modules/constants.js'
 
 function latestStatIsFromToday (theStatsArray) {
   const latestDate = theStatsArray[theStatsArray.length - 1].date
@@ -13,14 +14,14 @@ function latestStatIsFromToday (theStatsArray) {
 export async function PastProjectUpdateStatisticsAsync ({ currentUser, document }) {
   const project = document
   const theStats = await Statistics.findOne()
-  let newStats = { ...theStats } // TODO: do we need to work with a copy?
+  const newStats = { ...theStats } // TODO: do we need to work with a copy?
 
   switch (project.projectType) {
     case 'TV One Hour':
     case 'TV 1/2 Hour':
     case 'TV Animation': {
       const episodicsCasting = Projects.find({
-        projectType: { $in: ['TV One Hour', 'TV 1/2 Hour', 'TV Animation'] },
+        projectType: { $in: PROJECT_TYPES_EPISODICS },
         status: 'Casting'
       }).count()
       console.debug('There are ' + newStats.episodics.length + ' episodics, ' + episodicsCasting + ' casting.')
@@ -36,7 +37,7 @@ export async function PastProjectUpdateStatisticsAsync ({ currentUser, document 
     case 'Feature Film (MLB)':
     case 'Feature Film (ULB)': {
       const featuresCasting = Projects.find({
-        projectType: { $in: ['Feature Film', 'Feature Film (LB)', 'Feature Film (MLB)', 'Feature Film (ULB)'] },
+        projectType: { $in: PROJECT_TYPES_FEATURES },
         status: 'Casting'
       }).count()
       console.debug('There are ' + newStats.features.length + ' features, ' + featuresCasting + ' casting.')
@@ -51,7 +52,7 @@ export async function PastProjectUpdateStatisticsAsync ({ currentUser, document 
     case 'Pilot 1/2 Hour':
     case 'Pilot Presentation': {
       const pilotsCasting = Projects.find({
-        projectType: { $in: ['Pilot One Hour', 'Pilot 1/2 Hour', 'Pilot Presentation'] },
+        projectType: { $in: PROJECT_TYPES_PILOTS },
         status: 'Casting'
       }).count()
       console.debug('There are ' + newStats.pilots.length + ' pilots, ' + pilotsCasting + ' casting.')
@@ -70,7 +71,7 @@ export async function PastProjectUpdateStatisticsAsync ({ currentUser, document 
     case 'TV Sketch/Improv':
     case 'New Media': {
       const othersCasting = Projects.find({
-        projectType: { $in: ['Short Film', 'TV Daytime', 'TV Mini-Series', 'TV Movie', 'TV Talk/Variety', 'TV Sketch/Improv', 'New Media'] },
+        projectType: { $in: PROJECT_TYPES_OTHERS },
         status: 'Casting'
       }).count()
       console.debug('There are ' + newStats.others.length + ' others, ' + othersCasting + ' casting.')
