@@ -86,8 +86,9 @@ import '../components/projects/ProjectsSingle'
 
 import '../components/projects/ApolloTest'
 
-import '../components/statistics/StatisticsEditForm.jsx'
-import '../components/statistics/StatisticsList.jsx'
+import '../components/statistics/StatisticsCurrent'
+import '../components/statistics/StatisticsEditForm'
+import '../components/statistics/StatisticsList'
 
 import '../components/users/EmailDetail'
 import '../components/users/MyVerifyEmail'
