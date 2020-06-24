@@ -41,8 +41,8 @@ const schema = {
     type: Date,
     optional: true,
     canRead: ['guests'],
-    onCreate: (o) => {
-      if (!o.createdAt) { // keep createdAt from a project being made a past-project
+    onCreate: ({ document, currentUser }) => {
+      if (!document.createdAt) { // keep createdAt from a project being made a past-project
         return new Date()
       }
     }
@@ -266,7 +266,7 @@ const schema = {
     canCreate: ['admins'],
     canUpdate: ['members', 'admins'],
     group: officeGroup,
-    query:/* GraphQL */`
+    query: /* GraphQL */`
       query OfficesNameAndId {
         offices {
           results {
@@ -275,7 +275,7 @@ const schema = {
           }
         }
       }
-    `,
+    `
   },
   'offices.$': {
     type: officeSubSchema
@@ -346,7 +346,7 @@ const schema = {
     canCreate: ['members', 'admins'],
     canUpdate: ['members', 'admins'],
     group: contactGroup,
-    query:/* GraphQL */`
+    query: /* GraphQL */`
       query ContactsNameAndId {
         contacts{
           results{
