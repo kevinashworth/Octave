@@ -20,7 +20,7 @@ const Item = ({ date, quantity }) => {
 }
 
 const StatisticsList = (props) => {
-  const [open, setOpen] = useState(Array(4).fill(true))
+  const [open, setOpen] = useState(Array(4).fill(false))
   const { currentUser, loading, results = [] } = props
   if (loading) {
     return <Components.Loading />
@@ -45,6 +45,9 @@ const StatisticsList = (props) => {
             </div>}
         </Card.Header>
         <Card.Body>
+          <Components.ModalTrigger label='See Current Stats' title='Current Stats'>
+            <Components.StatisticsCurrent />
+          </Components.ModalTrigger>
           <Row>
             <Col>
               <Button onClick={() => toggle(0)} variant='outline-success'>
