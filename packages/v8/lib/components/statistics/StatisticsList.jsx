@@ -88,7 +88,7 @@ const StatisticsList = (props) => {
               </Fade>
             </Col>
           </Row>
-          <Row className={open.some(true) ? 'mt-4' : 'd-none'}>
+          <Row className={open.some(o => o) ? 'mt-4' : 'd-none'}>
             <Col>
               <Button onClick={() => toggle(0)} variant='outline-success'>
                 Open/Close Episodics
