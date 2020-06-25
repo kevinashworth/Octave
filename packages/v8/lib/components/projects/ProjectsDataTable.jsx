@@ -1,3 +1,8 @@
+/*
+ * A simple approach to loading: fetch one batch, then if there are more, fetch once more to load the rest.
+ * Don't allow for additional querying through the boolean fetchedMore.
+ * TODO: What happens when the number of projects in the database changes?
+ */
 import { Components, registerComponent, withAccess, withCurrentUser, withMessages } from 'meteor/vulcan:core'
 import Users from 'meteor/vulcan:users'
 import React, { useEffect, useState } from 'react'
@@ -58,6 +63,8 @@ const ProjectsDataTable = (props) => {
   const [project, setProject] = useState(null)
   const [searchColor, setSearchColor] = useState(keptState.searchColor)
   const [options, setOptions] = useState(keptState.options)
+  const [fetchedMore, setFetchedMore] = useState(false)
+  const history = useHistory()
 
   // Remember state for the next mount
   useEffect(() => {
@@ -89,7 +96,7 @@ const ProjectsDataTable = (props) => {
   const results = data[resolverName].results
   const count = results.length
 
-  if (count < totalCount) {
+  if (!fetchedMore && count < totalCount) {
     fetchMore({
       variables: {
         offset: count,
@@ -111,6 +118,7 @@ const ProjectsDataTable = (props) => {
           ...previousResults[resolverName].results,
           ...fetchMoreResult[resolverName].results
         ]
+        setFetchedMore(true)
         return newResults
       }
     })
