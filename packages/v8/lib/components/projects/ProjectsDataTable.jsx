@@ -6,7 +6,7 @@
 import { Components, registerComponent, withAccess, withCurrentUser, withMessages } from 'meteor/vulcan:core'
 import Users from 'meteor/vulcan:users'
 import React, { useEffect, useState } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useHistory } from 'react-router-dom'
 import Card from 'react-bootstrap/Card'
 import Modal from 'react-bootstrap/Modal'
 import { BootstrapTable, ClearSearchButton, SearchField, TableHeaderColumn } from 'react-bootstrap-table'
@@ -59,8 +59,8 @@ const ProjectsDataTable = (props) => {
     projectTypeFilters, projectStatusFilters, projectUpdatedFilters, projectPlatformFilters
   } = props
 
-  const [show, setShow] = useState(false)
-  const [project, setProject] = useState(null)
+  const [show, setShow] = useState(false) // show Modal
+  const [project, setProject] = useState(null) // Modal project
   const [searchColor, setSearchColor] = useState(keptState.searchColor)
   const [options, setOptions] = useState(keptState.options)
   const [fetchedMore, setFetchedMore] = useState(false)
@@ -163,8 +163,16 @@ const ProjectsDataTable = (props) => {
   }
 
   const rowClickHandler = (row, columnIndex, rowIndex, event) => {
-    setProject(row)
-    setShow(true)
+    if (columnIndex === 0) {
+      event.stopPropagation()
+      const url = event.target.getElementsByTagName('a')[0].getAttribute('href')
+      if (url && url.length) {
+        history.push(url)
+      }
+    } else {
+      setProject(row)
+      setShow(true)
+    }
   }
 
   const sortChangeHandler = (sortName, sortOrder) => {
