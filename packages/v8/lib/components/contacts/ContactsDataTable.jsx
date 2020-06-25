@@ -118,10 +118,18 @@ class ContactsDataTable extends Component {
   }
 
   rowClickHandler = (row, columnIndex, rowIndex, event) => {
-    this.setState({
-      contact: row,
-      show: true
-    })
+    if (columnIndex === 0) {
+      event.stopPropagation()
+      const url = event.target.getElementsByTagName('a')[0].getAttribute('href')
+      if (url && url.length) {
+        this.props.history.push(url)
+      }
+    } else {
+      this.setState({
+        contact: row,
+        show: true
+      })
+    }
   }
 
   searchChangeHandler = (searchText) => {
