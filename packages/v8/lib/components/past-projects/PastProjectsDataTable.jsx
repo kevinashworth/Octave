@@ -6,7 +6,7 @@ import Modal from 'react-bootstrap/Modal'
 import { BootstrapTable, ClearSearchButton, SearchField, TableHeaderColumn } from 'react-bootstrap-table'
 import _ from 'lodash'
 import moment from 'moment'
-import { SIZE_PER_PAGE_LIST_SEED } from '../../modules/constants.js'
+import { INITIAL_SIZE_PER_PAGE, PAGINATION_SIZE, SIZE_PER_PAGE_LIST_SEED } from '../../modules/constants.js'
 import { dateFormatter, renderShowsTotal, titleSortFunc } from '../../modules/helpers.js'
 import PastProjects from '../../modules/past-projects/collection.js'
 import withFilters from '../../modules/hocs/withFilters.js'
@@ -18,7 +18,7 @@ let keptState = {
   options: {
     defaultSearch: '',
     page: 1,
-    sizePerPage: 50,
+    sizePerPage: INITIAL_SIZE_PER_PAGE,
     sortName: 'updatedAt',
     sortOrder: 'desc'
   }
@@ -32,7 +32,7 @@ class PastProjectsDataTable extends Component {
       project: null,
       options: {
         sortIndicator: true,
-        paginationSize: 5,
+        paginationSize: PAGINATION_SIZE,
         prePage: '‹',
         nextPage: '›',
         firstPage: '«',
@@ -158,7 +158,7 @@ class PastProjectsDataTable extends Component {
 
   render () {
     const {
-      count, loading, loadingMore, results, totalCount, networkStatus,
+      count, loading, loadingMore, networkStatus, results, totalCount,
       pastProjectTypeFilters, pastProjectStatusFilters, pastProjectUpdatedFilters
     } = this.props
     const myLoadingMore = networkStatus === 2 || loadingMore

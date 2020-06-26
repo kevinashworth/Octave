@@ -1,8 +1,7 @@
-import { Components, registerComponent, withAccess, withCurrentUser, withMulti } from 'meteor/vulcan:core'
+import { Components, registerComponent, withAccess, withCurrentUser, withMulti2 } from 'meteor/vulcan:core'
 import Users from 'meteor/vulcan:users'
 import React, { Component } from 'react'
 import { Link } from 'react-router-dom'
-import Button from 'react-bootstrap/Button'
 import Card from 'react-bootstrap/Card'
 import Modal from 'react-bootstrap/Modal'
 import { BootstrapTable, ClearSearchButton, SearchField, TableHeaderColumn } from 'react-bootstrap-table'
@@ -10,7 +9,7 @@ import _ from 'lodash'
 import moment from 'moment'
 import Contacts from '../../modules/contacts/collection.js'
 import withFilters from '../../modules/hocs/withFilters.js'
-import { SIZE_PER_PAGE_LIST_SEED } from '../../modules/constants.js'
+import { INITIAL_SIZE_PER_PAGE, PAGINATION_SIZE, SIZE_PER_PAGE_LIST_SEED } from '../../modules/constants.js'
 import { dateFormatter, getAddress, renderShowsTotal } from '../../modules/helpers.js'
 
 // Set initial state. Just options I want to keep.
@@ -20,9 +19,9 @@ let keptState = {
   options: {
     defaultSearch: '',
     page: 1,
-    sizePerPage: 20,
-    sortName: 'updatedAt',
-    sortOrder: 'desc'
+    sizePerPage: INITIAL_SIZE_PER_PAGE,
+    sortName: 'displayName',
+    sortOrder: 'asc'
   }
 }
 
@@ -44,7 +43,7 @@ class ContactsDataTable extends Component {
       contact: null,
       options: {
         sortIndicator: true,
-        paginationSize: 5,
+        paginationSize: PAGINATION_SIZE,
         prePage: '‹',
         nextPage: '›',
         firstPage: '«',
@@ -304,7 +303,12 @@ const accessOptions = {
 const multiOptions = {
   collection: Contacts,
   fragmentName: 'ContactsDataTableFragment',
-  limit: 1000
+  limit: 500,
+  input: {
+    sort: {
+      displayName: 'asc'
+    }
+  }
 }
 
 registerComponent({
@@ -314,6 +318,6 @@ registerComponent({
     [withAccess, accessOptions],
     withCurrentUser,
     withFilters,
-    [withMulti, multiOptions]
+    [withMulti2, multiOptions]
   ]
 })

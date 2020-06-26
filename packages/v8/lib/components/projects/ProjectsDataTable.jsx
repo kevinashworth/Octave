@@ -1,5 +1,5 @@
-/*
- * A simple approach to loading: fetch one batch, then if there are more, fetch once more to load the rest.
+/* We always want to show all the projects.
+ * Approach to loading: fetch one (small) batch; then, if there are more, fetch again for the rest.
  * Don't allow for additional querying through the boolean fetchedMore.
  * TODO: What happens when the number of projects in the database changes?
  */
@@ -12,7 +12,7 @@ import Modal from 'react-bootstrap/Modal'
 import { BootstrapTable, ClearSearchButton, SearchField, TableHeaderColumn } from 'react-bootstrap-table'
 import _ from 'lodash'
 import moment from 'moment'
-import { INITIAL_SIZE_PER_PAGE, SIZE_PER_PAGE_LIST_SEED } from '../../modules/constants.js'
+import { INITIAL_SIZE_PER_PAGE, PAGINATION_SIZE, SIZE_PER_PAGE_LIST_SEED } from '../../modules/constants.js'
 import { dateFormatter, renderShowsTotal, titleSortFunc } from '../../modules/helpers.js'
 import Projects from '../../modules/projects/collection.js'
 import withFilters from '../../modules/hocs/withFilters.js'
@@ -254,7 +254,7 @@ const ProjectsDataTable = (props) => {
             options={{
               ...options,
               sortIndicator: true,
-              paginationSize: 5,
+              paginationSize: PAGINATION_SIZE,
               prePage: '‹',
               nextPage: '›',
               firstPage: '«',
