@@ -15,6 +15,8 @@ import { dateFormatter, getAddress, renderShowsTotal } from '../../modules/helpe
 // Set initial state. Just options I want to keep.
 // See https://github.com/amannn/react-keep-state
 let keptState = {
+  limit: INITIAL_SIZE_PER_PAGE,
+  requestedAllMore: false,
   searchColor: 'btn-secondary',
   options: {
     defaultSearch: '',
@@ -61,7 +63,45 @@ class ContactsDataTable extends Component {
         // Retrieve the last state
         ...keptState.options
       },
-      ...keptState.searchColor
+      limit: keptState.limit,
+      requestedAllMore: keptState.requestedAllMore,
+      searchColor: keptState.searchColor
+    }
+  }
+
+  componentDidMount () {
+    const { count, loading, loadingMore, loadMore, networkStatus, totalCount } = this.props
+    const myLoadingMore = networkStatus === 2 || loadingMore
+    if (!this.state.requestedAllMore && totalCount > this.state.limit) {
+      console.log('componentDidMount about to setState')
+      this.setState({
+        limit: totalCount,
+        requestedAllMore: true
+      })
+    }
+    if (this.state.requestedAllMore && !loading && !loadingMore && !myLoadingMore && count < totalCount) {
+      console.log('componentDidMount about to loadMore')
+      loadMore({
+        limit: totalCount
+      })
+    }
+  }
+
+  componentDidUpdate () {
+    const { count, loading, loadingMore, loadMore, networkStatus, totalCount } = this.props
+    const myLoadingMore = networkStatus === 2 || loadingMore
+    if (!this.state.requestedAllMore && totalCount > this.state.limit) {
+      console.log('componentDidUpdate about to setState')
+      this.setState({
+        limit: totalCount,
+        requestedAllMore: true
+      })
+    }
+    if (this.state.requestedAllMore && !loading && !loadingMore && !myLoadingMore && count < totalCount) {
+      console.log('componentDidUpdate about to loadMore')
+      loadMore({
+        limit: totalCount
+      })
     }
   }
 
@@ -69,6 +109,8 @@ class ContactsDataTable extends Component {
     // Remember state for the next mount
     const { options } = this.state
     keptState = {
+      limit: this.state.limit,
+      requestedAllMore: this.state.requestedAllMore,
       searchColor: this.state.searchColor,
       options: {
         defaultSearch: options.defaultSearch,
@@ -115,6 +157,16 @@ class ContactsDataTable extends Component {
     this.setState({ show: false })
   }
 
+  handleLoadAllClick = (e) => {
+    e.preventDefault()
+    this.props.loadMore({
+      limit: this.props.totalCount
+    })
+    this.setState({
+      requestedAllMore: true
+    })
+  }
+
   pageChangeHandler = (page, sizePerPage) => {
     this.setState((prevState) => ({
       options: { ...prevState.options, page, sizePerPage }
@@ -154,12 +206,13 @@ class ContactsDataTable extends Component {
     }))
   }
 
+  // currentUser, count, loading, loadingMore, networkStatus, results, totalCount,
   render () {
     const {
-      currentUser, count, loading, loadingMore, networkStatus, results, totalCount,
+      currentUser, loading, results,
       contactTitleFilters, contactLocationFilters, contactUpdatedFilters
     } = this.props
-    const myLoadingMore = networkStatus === 2 || loadingMore
+    // const myLoadingMore = networkStatus === 2 || loadingMore
 
     if (loading) {
       return (
@@ -176,7 +229,7 @@ class ContactsDataTable extends Component {
       )
     }
 
-    const hasMore = results && (totalCount > results.length)
+    // const hasMore = results && (totalCount > results.length)
     const titleFilters = []
     contactTitleFilters.forEach(filter => {
       if (filter.value) { titleFilters.push(filter.contactTitle) }
@@ -284,10 +337,6 @@ class ContactsDataTable extends Component {
               <TableHeaderColumn dataField='body' hidden>Hidden</TableHeaderColumn>
             </BootstrapTable>
           </Card.Body>
-          {hasMore &&
-            <Card.Footer>
-              <Components.LoadingButton loading={myLoadingMore} onClick={this.handleLoadMoreClick} label={`Load More (${count}/${totalCount})`} />
-            </Card.Footer>}
           {Users.canCreate({ collection: Contacts, user: currentUser }) && <AddButtonFooter />}
         </Card>
       </div>
@@ -303,7 +352,7 @@ const accessOptions = {
 const multiOptions = {
   collection: Contacts,
   fragmentName: 'ContactsDataTableFragment',
-  limit: 500,
+  limit: keptState.limit,
   input: {
     sort: {
       displayName: 'asc'
