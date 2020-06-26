@@ -1,7 +1,6 @@
 import { Components, registerComponent, withAccess, withMulti2 } from 'meteor/vulcan:core'
 import React, { Component } from 'react'
 import { Link } from 'react-router-dom'
-import Button from 'react-bootstrap/Button'
 import Card from 'react-bootstrap/Card'
 import Modal from 'react-bootstrap/Modal'
 import { BootstrapTable, ClearSearchButton, SearchField, TableHeaderColumn } from 'react-bootstrap-table'
@@ -113,6 +112,11 @@ class PastProjectsDataTable extends Component {
     }
   }
 
+  handleLoadMoreClick = (e) => {
+    e.preventDefault()
+    this.props.loadMore()
+  }
+
   pageChangeHandler = (page, sizePerPage) => {
     this.setState((prevState) => ({
       options: { ...prevState.options, page, sizePerPage }
@@ -154,9 +158,10 @@ class PastProjectsDataTable extends Component {
 
   render () {
     const {
-      count, loading, loadingMore, loadMore, results, totalCount,
+      count, loading, loadingMore, results, totalCount, networkStatus,
       pastProjectTypeFilters, pastProjectStatusFilters, pastProjectUpdatedFilters
     } = this.props
+    const myLoadingMore = networkStatus === 2 || loadingMore
 
     if (loading) {
       return (
@@ -266,9 +271,7 @@ class PastProjectsDataTable extends Component {
           </Card.Body>
           {hasMore &&
             <Card.Footer>
-              {loadingMore
-                ? <Components.Loading />
-                : <Button onClick={e => { e.preventDefault(); loadMore() }}>Load More ({count}/{totalCount})</Button>}
+              <Components.LoadingButton loading={myLoadingMore} onClick={this.handleLoadMoreClick} label={`Load More (${count}/${totalCount})`} />
             </Card.Footer>}
         </Card>
       </div>

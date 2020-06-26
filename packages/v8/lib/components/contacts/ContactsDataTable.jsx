@@ -107,6 +107,11 @@ class ContactsDataTable extends Component {
     onClick()
   }
 
+  handleLoadMoreClick = (e) => {
+    e.preventDefault()
+    this.props.loadMore()
+  }
+
   handleHide = () => {
     this.setState({ show: false })
   }
@@ -152,11 +157,12 @@ class ContactsDataTable extends Component {
 
   render () {
     const {
-      count, totalCount, results, loadingMore, loadMore, networkStatus, currentUser,
+      currentUser, count, loading, loadingMore, networkStatus, results, totalCount,
       contactTitleFilters, contactLocationFilters, contactUpdatedFilters
     } = this.props
+    const myLoadingMore = networkStatus === 2 || loadingMore
 
-    if (networkStatus !== 8 && networkStatus !== 7) {
+    if (loading) {
       return (
         <div className='animated fadeIn'>
           <Card className='card-accent-warning'>
@@ -281,9 +287,7 @@ class ContactsDataTable extends Component {
           </Card.Body>
           {hasMore &&
             <Card.Footer>
-              {loadingMore
-                ? <Components.Loading />
-                : <Button onClick={e => { e.preventDefault(); loadMore() }}>Load More ({count}/{totalCount})</Button>}
+              <Components.LoadingButton loading={myLoadingMore} onClick={this.handleLoadMoreClick} label={`Load More (${count}/${totalCount})`} />
             </Card.Footer>}
           {Users.canCreate({ collection: Contacts, user: currentUser }) && <AddButtonFooter />}
         </Card>
