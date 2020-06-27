@@ -30,23 +30,23 @@ const SIZE_PER_LOAD = 250
 
 // Set initial state. Just options I want to keep.
 // See https://github.com/amannn/react-keep-state
-// I have moved keptState.globalFilterValue to GlobalFilter.jsx
-let keptState = {
-  filters: [{
-    id: 'projectTitle',
-    value: ''
-  }],
-  globalFilter: undefined,
-  pageIndex: 0,
-  pageSize: INITIAL_SIZE_PER_PAGE,
-  sortBy: [{
-    desc: true,
-    id: 'updatedAt'
-  }]
-}
-
-let keptState2 = {
-  limit: SIZE_PER_LOAD
+const keptState = {
+  Table: {
+    filters: [{
+      id: 'projectTitle',
+      value: ''
+    }],
+    globalFilter: undefined,
+    pageIndex: 0,
+    pageSize: INITIAL_SIZE_PER_PAGE,
+    sortBy: [{
+      desc: true,
+      id: 'updatedAt'
+    }]
+  },
+  ProjectsDataTable: {
+    limit: SIZE_PER_LOAD
+  }
 }
 
 function AddButtonFooter () {
@@ -94,12 +94,12 @@ function Table ({ columns, data }) {
       disableSortRemove: true,
       filterTypes,
       initialState: {
-        filters: keptState.filters,
-        globalFilter: keptState.globalFilter,
+        filters: keptState.Table.filters,
+        globalFilter: keptState.Table.globalFilter,
         hiddenColumns: ['allAddresses', 'allContactNames', 'notes', 'summary'],
-        pageIndex: keptState.pageIndex,
-        pageSize: keptState.pageSize,
-        sortBy: keptState.sortBy
+        pageIndex: keptState.Table.pageIndex,
+        pageSize: keptState.Table.pageSize,
+        sortBy: keptState.Table.sortBy
       }
     },
     useGlobalFilter,
@@ -122,7 +122,7 @@ function Table ({ columns, data }) {
   // Remember state for the next mount
   useEffect(() => {
     return () => {
-      keptState = {
+      keptState.Table = {
         filters,
         globalFilter,
         pageIndex,
@@ -204,12 +204,12 @@ function ProjectsDataTable (props) {
     projectTypeFilters, projectStatusFilters, projectUpdatedFilters, projectPlatformFilters
   } = props
   const myLoadingMore = networkStatus === 2 || loadingMore
-  const [limit, setLimit] = useState(keptState2.limit)
+  const [limit, setLimit] = useState(keptState.ProjectsDataTable.limit)
 
   const columns = useMemo(
     () => [
       {
-        Header: 'Name',
+        Header: 'Title',
         accessor: 'projectTitle',
         Cell: linkFormatter,
         filter: 'fuzzyText',
@@ -303,7 +303,7 @@ function ProjectsDataTable (props) {
     }
     // Remember state for the next mount
     return () => {
-      keptState2 = {
+      keptState.ProjectsDataTable = {
         limit
       }
     }
@@ -360,7 +360,7 @@ const accessOptions = {
 const multiOptions = {
   collection: Projects,
   fragmentName: 'ProjectsDataTableFragment',
-  limit: keptState2.limit,
+  limit: keptState.ProjectsDataTable.limit,
   input: {
     sort: {
       updatedAt: 'desc'
