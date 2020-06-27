@@ -13,9 +13,9 @@ export const dateFormatter = ({ cell, row }) => {
   return moment(theDate).format(DATE_FORMAT_SHORT)
 }
 
-export const linkFormatter = ({ cell, row }) => {
+export const linkFormatter = ({ cell, collection, row }) => {
   return (
-    <Link to={`/offices/${row.original._id}/${row.original.slug}`}>
+    <Link to={`/${collection}/${row.original._id}/${row.original.slug}`}>
       {cell.value}
     </Link>
   )

@@ -1,49 +1,51 @@
-/* We always want to show all the projects.
- * Approach to loading: fetch one (small) batch; then, if there are more, fetch again for the rest.
- * Don't allow for additional querying through the boolean fetchedMore.
- * TODO: What happens when the number of projects in the database changes?
- */
-import { Components, registerComponent, withAccess, withCurrentUser, withMessages } from 'meteor/vulcan:core'
+/* eslint-disable react/jsx-curly-newline */
+import { Components, registerComponent, withAccess, withCurrentUser, withMulti2 } from 'meteor/vulcan:core'
 import Users from 'meteor/vulcan:users'
 import React, { useEffect, useState } from 'react'
-import { Link, useHistory } from 'react-router-dom'
 import Card from 'react-bootstrap/Card'
-import Modal from 'react-bootstrap/Modal'
-import { BootstrapTable, ClearSearchButton, SearchField, TableHeaderColumn } from 'react-bootstrap-table'
-import _ from 'lodash'
-import moment from 'moment'
-import { INITIAL_SIZE_PER_PAGE, PAGINATION_SIZE, SIZE_PER_PAGE_LIST_SEED } from '../../modules/constants.js'
-import { dateFormatter, renderShowsTotal, titleSortFunc } from '../../modules/helpers.js'
+import Col from 'react-bootstrap/Col'
+import Row from 'react-bootstrap/Row'
+import {
+  useFilters,
+  useGlobalFilter,
+  useTable,
+  usePagination,
+  useSortBy
+} from 'react-table'
+import matchSorter from 'match-sorter'
+import MyCode from '../common/MyCode'
+import DefaultColumnFilter from '../common/react-table/DefaultColumnFilter'
+import GlobalFilter from '../common/react-table/GlobalFilter'
+import Pagination from '../common/react-table/Pagination'
+import { dateFormatter, linkFormatter } from '../common/react-table/helpers.js'
+import { CaretSorted, CaretUnsorted } from '../common/react-table/styled.js'
 import Projects from '../../modules/projects/collection.js'
-import withFilters from '../../modules/hocs/withFilters.js'
-import { useQuery } from '@apollo/react-hooks'
-import gql from 'graphql-tag'
-import { DATATABLE_PROJECTS } from '../../modules/projects/fragments.js'
-import ProjectsDataTableLoading from './ProjectsDataTableLoading'
+import { INITIAL_SIZE_PER_PAGE } from '../../modules/constants.js'
 
-const GET_PROJECTS = gql`
-  query ($limit: Int, $offset: Int) {
-    projects(input: { limit: $limit, offset: $offset }) {
-      totalCount
-      results ${DATATABLE_PROJECTS}
-    }
-  }
-`
+const SIZE_PER_LOAD = 250
 
 // Set initial state. Just options I want to keep.
 // See https://github.com/amannn/react-keep-state
+// I have moved keptState.globalFilterValue to GlobalFilter.jsx
 let keptState = {
-  searchColor: 'btn-secondary',
-  options: {
-    defaultSearch: '',
-    page: 1,
-    sizePerPage: INITIAL_SIZE_PER_PAGE,
-    sortName: 'updatedAt',
-    sortOrder: 'desc'
-  }
+  filters: [{
+    id: 'projectTitle',
+    value: ''
+  }],
+  globalFilter: undefined,
+  pageIndex: 0,
+  pageSize: INITIAL_SIZE_PER_PAGE,
+  sortBy: [{
+    desc: true,
+    id: 'updatedAt'
+  }]
 }
 
-const AddButtonFooter = () => {
+let keptState2 = {
+  limit: SIZE_PER_LOAD
+}
+
+function AddButtonFooter () {
   return (
     <Card.Footer>
       <Components.ModalTrigger label='Add a Project' title='New Project'>
@@ -53,257 +55,254 @@ const AddButtonFooter = () => {
   )
 }
 
-const ProjectsDataTable = (props) => {
-  const {
-    currentUser, flash,
-    projectTypeFilters, projectStatusFilters, projectUpdatedFilters, projectPlatformFilters
-  } = props
+function fuzzyTextFilterFn (rows, id, filterValue) {
+  return matchSorter(rows, filterValue, {
+    keys: [row => row.values[id]],
+    threshold: matchSorter.rankings.ACRONYM
+  })
+}
 
-  const [show, setShow] = useState(false) // show Modal
-  const [project, setProject] = useState(null) // Modal project
-  const [searchColor, setSearchColor] = useState(keptState.searchColor)
-  const [options, setOptions] = useState(keptState.options)
-  const [fetchedMore, setFetchedMore] = useState(false)
-  const history = useHistory()
+function Table ({ columns, data }) {
+  const filterTypes = React.useMemo(
+    () => ({
+      // Add a fuzzyTextFilterFn filter type
+      fuzzyText: fuzzyTextFilterFn,
+      // Or override the default text filter to use "startsWith"
+      text: (rows, id, filterValue) => {
+        return rows.filter(row => {
+          const rowValue = row.values[id]
+          return rowValue !== undefined
+            ? String(rowValue)
+              .toLowerCase()
+              .startsWith(String(filterValue).toLowerCase())
+            : true
+        })
+      }
+    }),
+    []
+  )
+
+  const tableProps = useTable(
+    {
+      columns,
+      data,
+      disableMultiSort: true,
+      disableSortRemove: true,
+      filterTypes,
+      initialState: {
+        filters: keptState.filters,
+        globalFilter: keptState.globalFilter,
+        hiddenColumns: ['allAddresses', 'allContactNames', 'notes', 'summary'],
+        pageIndex: keptState.pageIndex,
+        pageSize: keptState.pageSize,
+        sortBy: keptState.sortBy
+      }
+    },
+    useGlobalFilter,
+    useFilters,
+    useSortBy,
+    usePagination // The usePagination plugin hook must be placed after the useSortBy plugin hook
+  )
+
+  const {
+    getTableProps,
+    getTableBodyProps,
+    headerGroups,
+    page, // has only the rows for the active page
+    prepareRow,
+    setGlobalFilter,
+    state: { filters, globalFilter, pageIndex, pageSize, sortBy }
+  } = tableProps
+  tableProps.collection = 'projects'
 
   // Remember state for the next mount
   useEffect(() => {
     return () => {
       keptState = {
-        searchColor,
-        options
+        filters,
+        globalFilter,
+        pageIndex,
+        pageSize,
+        sortBy
       }
     }
   })
 
-  const firstOffset = 0
-  const firstLimit = INITIAL_SIZE_PER_PAGE
-  const { data, error, fetchMore, loading } = useQuery(GET_PROJECTS, {
-    variables: {
-      offset: firstOffset,
-      limit: firstLimit
+  return (
+    <>
+      <Row>
+        <Col xs='6' lg='8' />
+        <Col xs='6' lg='4'>
+          <GlobalFilter
+            globalFilter={globalFilter}
+            setGlobalFilter={setGlobalFilter}
+          />
+        </Col>
+      </Row>
+      <Pagination length={data.length} {...tableProps} />
+      <table {...getTableProps()} className='react-table table table-striped table-hover table-sm'>
+        <thead>
+          {headerGroups.map((headerGroup, index) => (
+            <tr {...headerGroup.getHeaderGroupProps()} key={index}>
+              {headerGroup.headers.map((column, index) => (
+                // Return an array of prop objects and react-table will merge them appropriately
+                <th
+                  {...column.getHeaderProps([
+                    { style: column.style },
+                    column.getSortByToggleProps()
+                  ])}
+                  key={index}
+                >
+                  <div className='d-xl-flex flex-xl-row align-items-center'>
+                    <div className='mr-2 text-nowrap'>
+                      {column.render('Header')}
+                      {column.isSorted
+                        ? column.isSortedDesc
+                          ? <CaretSorted className='fa fa-sort-desc' />
+                          : <CaretSorted className='fa fa-sort-asc' />
+                        : <CaretUnsorted className='fa fa-sort' />}
+                    </div>
+                    {column.canFilter &&
+                      <div className='flex-xl-grow-1'>
+                        {column.render('Filter')}
+                      </div>}
+                  </div>
+                </th>
+              ))}
+            </tr>
+          ))}
+        </thead>
+        <tbody {...getTableBodyProps()}>
+          {page.map(
+            (row, index) => {
+              prepareRow(row)
+              return (
+                <tr {...row.getRowProps()} key={index}>
+                  {row.cells.map((cell, index) => {
+                    return (
+                      <td {...cell.getCellProps()} key={index}>{cell.render('Cell')}</td>
+                    )
+                  })}
+                </tr>
+              )
+            }
+          )}
+        </tbody>
+      </table>
+      <Pagination length={data.length} {...tableProps} />
+    </>
+  )
+}
+
+function ProjectsDataTable (props) {
+  const { count, currentUser, error, loading, loadingMore, loadMore, networkStatus, results, totalCount } = props
+  const myLoadingMore = networkStatus === 2 || loadingMore
+  const [limit, setLimit] = useState(keptState2.limit)
+
+  const columns = React.useMemo(
+    () => [
+      {
+        Header: 'Name',
+        accessor: 'projectTitle',
+        Cell: linkFormatter,
+        filter: 'fuzzyText',
+        Filter: DefaultColumnFilter,
+        style: {
+          width: '30%'
+        }
+      }, {
+        Header: 'Casting',
+        accessor: 'casting',
+        Filter: null,
+        disableFilters: true
+      }, {
+        Header: 'Network',
+        accessor: 'network',
+        Filter: null,
+        disableFilters: true
+      }, {
+        Header: 'Type',
+        accessor: 'projectType',
+        Filter: null,
+        disableFilters: true
+      }, {
+        Header: 'Status',
+        accessor: 'status',
+        Filter: null,
+        disableFilters: true
+      }, {
+        Header: 'Updated',
+        accessor: 'updatedAt',
+        Filter: null,
+        disableFilters: true,
+        Cell: dateFormatter,
+        style: {
+          textAlign: 'right',
+          width: '6.6em'
+        }
+      }, {
+        accessor: 'allAddresses'
+      }, {
+        accessor: 'allContactNames'
+      }, {
+        accessor: 'notes'
+      }, {
+        accessor: 'summary'
+      }
+    ],
+    []
+  )
+
+  useEffect(() => {
+    if (limit > count && totalCount > count && !loading && !loadingMore && !myLoadingMore) {
+      loadMore({
+        limit
+      })
+    }
+    // Remember state for the next mount
+    return () => {
+      keptState2 = {
+        limit
+      }
     }
   })
+
+  const handleLoadMoreClick = (e) => {
+    e.preventDefault()
+    setLimit(limit + SIZE_PER_LOAD)
+    loadMore({
+      limit: limit + SIZE_PER_LOAD
+    })
+  }
+
   if (loading) {
     return (
-      <ProjectsDataTableLoading />
+      <Components.Loading />
     )
   }
-  if (error) flash(error, 'error')
-
-  const resolverName = 'projects'
-  const totalCount = data[resolverName].totalCount
-  const results = data[resolverName].results
-  const count = results.length
-
-  if (!fetchedMore && count < totalCount) {
-    fetchMore({
-      variables: {
-        offset: count,
-        limit: totalCount
-      },
-      updateQuery: (previousResults, { fetchMoreResult }) => {
-        if (!(
-          fetchMoreResult[resolverName] &&
-          fetchMoreResult[resolverName].results &&
-          fetchMoreResult[resolverName].results.length
-        )) {
-          return previousResults
-        }
-        const newResults = {
-          ...previousResults,
-          [resolverName]: { ...previousResults[resolverName] }
-        }
-        newResults[resolverName].results = [
-          ...previousResults[resolverName].results,
-          ...fetchMoreResult[resolverName].results
-        ]
-        setFetchedMore(true)
-        return newResults
-      }
-    })
-  }
-
-  const createCustomClearButton = (onClick) => {
+  if (error) {
     return (
-      <ClearSearchButton
-        btnContextual={searchColor}
-        className='btn-sm'
-        onClick={e => handleClearButtonClick(onClick)}
-      />
+      <div>
+        <MyCode code={error} language='json' />
+      </div>
     )
   }
-
-  const createCustomSearchField = ({ defaultValue }) => {
-    if (defaultValue.length && searchColor !== 'btn-danger') {
-      setSearchColor('btn-danger')
-    } else if (defaultValue.length === 0 && searchColor !== 'btn-secondary') {
-      setSearchColor('btn-secondary')
-    }
-    return (
-      <SearchField defaultValue={defaultValue} />
-    )
-  }
-
-  const handleClearButtonClick = (onClick) => {
-    setSearchColor('btn-secondary')
-    onClick()
-  }
-
-  const handleHide = () => {
-    if (show) {
-      setShow(false)
-    }
-  }
-
-  const pageChangeHandler = (page, sizePerPage) => {
-    setOptions(prevOptions => {
-      return { ...prevOptions, page, sizePerPage }
-    })
-  }
-
-  const rowClickHandler = (row, columnIndex, rowIndex, event) => {
-    if (columnIndex === 0) {
-      event.stopPropagation()
-      const url = event.target.getElementsByTagName('a')[0].getAttribute('href')
-      if (url && url.length) {
-        history.push(url)
-      }
-    } else {
-      setProject(row)
-      setShow(true)
-    }
-  }
-
-  const sortChangeHandler = (sortName, sortOrder) => {
-    setOptions(prevOptions => {
-      return { ...prevOptions, sortName, sortOrder }
-    })
-  }
-
-  const searchChangeHandler = (searchText) => {
-    setOptions(prevOptions => {
-      return { ...prevOptions, defaultSearch: searchText }
-    })
-  }
-
-  const sizePerPageListHandler = (sizePerPage) => {
-    setOptions(prevOptions => {
-      return { ...prevOptions, sizePerPage }
-    })
-  }
-
-  var typeFilters = []
-  projectTypeFilters.forEach(filter => {
-    if (filter.value) { typeFilters.push(filter.projectType) }
-  })
-  var statusFilters = []
-  projectStatusFilters.forEach(filter => {
-    if (filter.value) { statusFilters.push(filter.projectStatus) }
-  })
-  var platformFilters = []
-  projectPlatformFilters.forEach(filter => {
-    if (filter.value) { platformFilters.push(filter.projectPlatform) }
-  })
-
-  var momentNumber = 100
-  var momentPeriod = 'years'
-  projectUpdatedFilters.some(filter => {
-    if (filter.value) {
-      momentNumber = filter.momentNumber
-      momentPeriod = filter.momentPeriod
-      return true
-    }
-  })
-  const filteredResults = _.filter(results, function (o) {
-    const objectDate = moment(o.updatedAt ? o.updatedAt : o.createdAt)
-    const dateToCompare = moment().subtract(momentNumber, momentPeriod).startOf('day')
-    const displayThis = objectDate.isAfter(dateToCompare)
-    return _.includes(statusFilters, o.status) &&
-      _.includes(typeFilters, o.projectType) &&
-      _.includes(platformFilters, o.platformType) &&
-      displayThis
-  })
 
   return (
     <div>
       <Components.HeadTags title='V8: Projects' />
-      {project &&
-        <Modal show={show} onHide={handleHide}>
-          <Modal.Header closeButton>
-            <Modal.Title>
-              <Link to={`/projects/${project._id}/${project.slug}`}>{project.projectTitle}</Link>
-            </Modal.Title>
-          </Modal.Header>
-          <Modal.Body>
-            <Components.ProjectModal document={project} />
-          </Modal.Body>
-        </Modal>}
       <Card className='card-accent-danger'>
         <Card.Header>
-          <i className='fad fa-camera' />Projects
-          <Components.ProjectFilters />
+          <i className='fa fa-camera' />Projects
         </Card.Header>
         <Card.Body>
-          <BootstrapTable
-            bordered={false}
-            condensed
-            data={filteredResults}
-            hover
-            keyField='_id'
-            options={{
-              ...options,
-              sortIndicator: true,
-              paginationSize: PAGINATION_SIZE,
-              prePage: '‹',
-              nextPage: '›',
-              firstPage: '«',
-              lastPage: '»',
-              paginationShowsTotal: renderShowsTotal,
-              paginationPosition: 'both',
-              clearSearch: true,
-              clearSearchBtn: createCustomClearButton,
-              searchField: createCustomSearchField,
-              onPageChange: pageChangeHandler,
-              onRowClick: rowClickHandler,
-              onSizePerPageList: sizePerPageListHandler,
-              onSortChange: sortChangeHandler,
-              onSearchChange: searchChangeHandler,
-              sizePerPageList: SIZE_PER_PAGE_LIST_SEED.concat([{
-                text: 'All', value: totalCount
-              }])
-            }}
-            pagination
-            search
-            striped
-            version='4'
-          >
-            <TableHeaderColumn
-              dataField='projectTitle'
-              dataSort
-              dataFormat={(cell, row) => {
-                return (
-                  <Link to={`/projects/${row._id}/${row.slug}`}>
-                    {cell}
-                  </Link>
-                )
-              }}
-              sortFunc={titleSortFunc}
-              width='25%'
-            >
-              Name
-            </TableHeaderColumn>
-            <TableHeaderColumn dataField='casting' dataSort>Casting</TableHeaderColumn>
-            <TableHeaderColumn dataField='network' dataSort>Network</TableHeaderColumn>
-            <TableHeaderColumn dataField='projectType' dataSort>Type</TableHeaderColumn>
-            <TableHeaderColumn dataField='status' dataSort width='94px'>Status</TableHeaderColumn>
-            <TableHeaderColumn dataField='updatedAt' dataSort dataFormat={dateFormatter} dataAlign='right' width='94px'>Updated</TableHeaderColumn>
-            <TableHeaderColumn dataField='summary' hidden>Hidden</TableHeaderColumn>
-            <TableHeaderColumn dataField='notes' hidden>Hidden</TableHeaderColumn>
-            <TableHeaderColumn dataField='allContactNames' hidden>Hidden</TableHeaderColumn>
-            <TableHeaderColumn dataField='allAddresses' hidden>Hidden</TableHeaderColumn>
-          </BootstrapTable>
+          <Table columns={columns} data={results} />
         </Card.Body>
+        {(totalCount > results.length) &&
+          <Card.Footer>
+            <Components.LoadingButton loading={myLoadingMore} onClick={handleLoadMoreClick} label={`Load ${SIZE_PER_LOAD} More (${count}/${totalCount})`} />
+          </Card.Footer>
+        }
         {Users.canCreate({ collection: Projects, user: currentUser }) && <AddButtonFooter />}
       </Card>
     </div>
@@ -315,13 +314,23 @@ const accessOptions = {
   redirect: '/welcome/new'
 }
 
+const multiOptions = {
+  collection: Projects,
+  fragmentName: 'ProjectsDataTableFragment',
+  limit: keptState2.limit,
+  input: {
+    sort: {
+      updatedAt: 'desc'
+    }
+  }
+}
+
 registerComponent({
   name: 'ProjectsDataTable',
   component: ProjectsDataTable,
   hocs: [
     [withAccess, accessOptions],
     withCurrentUser,
-    withFilters,
-    withMessages
+    [withMulti2, multiOptions]
   ]
 })

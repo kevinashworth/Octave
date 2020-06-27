@@ -112,6 +112,7 @@ function Table ({ columns, data }) {
     setGlobalFilter,
     state: { filters, globalFilter, pageIndex, pageSize, sortBy }
   } = tableProps
+  tableProps.collection = 'offices'
 
   // Remember state for the next mount
   useEffect(() => {
