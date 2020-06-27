@@ -1,7 +1,7 @@
 /* eslint-disable react/jsx-curly-newline */
 import { Components, registerComponent, withAccess, withCurrentUser, withMulti2 } from 'meteor/vulcan:core'
 import Users from 'meteor/vulcan:users'
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useMemo, useState } from 'react'
 import Card from 'react-bootstrap/Card'
 import Col from 'react-bootstrap/Col'
 import Row from 'react-bootstrap/Row'
@@ -12,13 +12,17 @@ import {
   usePagination,
   useSortBy
 } from 'react-table'
+import filter from 'lodash/filter'
+import includes from 'lodash/includes'
 import matchSorter from 'match-sorter'
+import moment from 'moment'
 import MyCode from '../common/MyCode'
 import DefaultColumnFilter from '../common/react-table/DefaultColumnFilter'
 import GlobalFilter from '../common/react-table/GlobalFilter'
 import Pagination from '../common/react-table/Pagination'
 import { dateFormatter, linkFormatter } from '../common/react-table/helpers.js'
 import { CaretSorted, CaretUnsorted } from '../common/react-table/styled.js'
+import withFilters from '../../modules/hocs/withFilters.js'
 import Projects from '../../modules/projects/collection.js'
 import { INITIAL_SIZE_PER_PAGE } from '../../modules/constants.js'
 
@@ -63,7 +67,7 @@ function fuzzyTextFilterFn (rows, id, filterValue) {
 }
 
 function Table ({ columns, data }) {
-  const filterTypes = React.useMemo(
+  const filterTypes = useMemo(
     () => ({
       // Add a fuzzyTextFilterFn filter type
       fuzzyText: fuzzyTextFilterFn,
@@ -195,11 +199,14 @@ function Table ({ columns, data }) {
 }
 
 function ProjectsDataTable (props) {
-  const { count, currentUser, error, loading, loadingMore, loadMore, networkStatus, results, totalCount } = props
+  const {
+    count, currentUser, error, loading, loadingMore, loadMore, networkStatus, results, totalCount,
+    projectTypeFilters, projectStatusFilters, projectUpdatedFilters, projectPlatformFilters
+  } = props
   const myLoadingMore = networkStatus === 2 || loadingMore
   const [limit, setLimit] = useState(keptState2.limit)
 
-  const columns = React.useMemo(
+  const columns = useMemo(
     () => [
       {
         Header: 'Name',
@@ -253,6 +260,41 @@ function ProjectsDataTable (props) {
     []
   )
 
+  const filteredResults = useMemo(
+    () => {
+      var typeFilters = []
+      projectTypeFilters.forEach(filter => {
+        if (filter.value) { typeFilters.push(filter.projectType) }
+      })
+      var statusFilters = []
+      projectStatusFilters.forEach(filter => {
+        if (filter.value) { statusFilters.push(filter.projectStatus) }
+      })
+      var platformFilters = []
+      projectPlatformFilters.forEach(filter => {
+        if (filter.value) { platformFilters.push(filter.projectPlatform) }
+      })
+      var momentNumber = 100
+      var momentPeriod = 'years'
+      projectUpdatedFilters.some(filter => {
+        if (filter.value) {
+          momentNumber = filter.momentNumber
+          momentPeriod = filter.momentPeriod
+          return true
+        }
+      })
+      return filter(results, function (o) {
+        const objectDate = moment(o.updatedAt ? o.updatedAt : o.createdAt)
+        const dateToCompare = moment().subtract(momentNumber, momentPeriod).startOf('day')
+        const displayThis = objectDate.isAfter(dateToCompare)
+        return displayThis &&
+          includes(statusFilters, o.status) &&
+          includes(typeFilters, o.projectType) &&
+          includes(platformFilters, o.platformType)
+      })
+    }, [projectTypeFilters, projectStatusFilters, projectPlatformFilters, projectUpdatedFilters, results]
+  )
+
   useEffect(() => {
     if (limit > count && totalCount > count && !loading && !loadingMore && !myLoadingMore) {
       loadMore({
@@ -294,13 +336,14 @@ function ProjectsDataTable (props) {
       <Card className='card-accent-danger'>
         <Card.Header>
           <i className='fa fa-camera' />Projects
+          <Components.ProjectFilters />
         </Card.Header>
         <Card.Body>
-          <Table columns={columns} data={results} />
+          <Table columns={columns} data={filteredResults} />
         </Card.Body>
         {(totalCount > results.length) &&
           <Card.Footer>
-            <Components.LoadingButton loading={myLoadingMore} onClick={handleLoadMoreClick} label={`Load ${SIZE_PER_LOAD} More (${count}/${totalCount})`} />
+            <Components.LoadingButton loading={myLoadingMore} onClick={handleLoadMoreClick} label={`Load ${Math.min(totalCount - count, SIZE_PER_LOAD)} More (${count}/${totalCount})`} />
           </Card.Footer>
         }
         {Users.canCreate({ collection: Projects, user: currentUser }) && <AddButtonFooter />}
@@ -331,6 +374,7 @@ registerComponent({
   hocs: [
     [withAccess, accessOptions],
     withCurrentUser,
+    withFilters,
     [withMulti2, multiOptions]
   ]
 })
