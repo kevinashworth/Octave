@@ -38,3 +38,26 @@ export const getPageOptionsVisible = ({ pageCount, pageIndex, pageOptions }) => 
 
   return pageOptionsVisible
 }
+
+export function getSortTitle (title) {
+  const theTitle = title.trim().toLowerCase()
+  const firstSpace = theTitle.indexOf(' ')
+  const firstWord = theTitle.slice(0, firstSpace)
+  let sortTitle = ''
+  switch (firstWord) {
+    case 'a':
+    case 'an':
+    case 'the':
+      sortTitle = theTitle.slice(firstSpace + 1)
+      break
+    default:
+      sortTitle = theTitle
+  }
+  return sortTitle
+}
+
+export function titleSortFn (rowA, rowB) {
+  const a = rowA.values.sortTitle || rowA.values.projectTitle
+  const b = rowB.values.sortTitle || rowB.values.projectTitle
+  return a.localeCompare(b)
+}

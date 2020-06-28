@@ -19,7 +19,7 @@ import MyCode from '../common/MyCode'
 import DefaultColumnFilter from '../common/react-table/DefaultColumnFilter'
 import GlobalFilter from '../common/react-table/GlobalFilter'
 import Pagination from '../common/react-table/Pagination'
-import { dateFormatter, linkFormatter } from '../common/react-table/helpers.js'
+import { dateFormatter, linkFormatter, titleSortFn } from '../common/react-table/helpers.js'
 import { CaretSorted, CaretUnsorted } from '../common/react-table/styled.js'
 import withFilters from '../../modules/hocs/withFilters.js'
 import PastProjects from '../../modules/past-projects/collection.js'
@@ -84,7 +84,7 @@ function Table ({ columns, data }) {
       initialState: {
         filters: keptState.filters,
         globalFilter: keptState.globalFilter,
-        hiddenColumns: ['allAddresses', 'allContactNames', 'notes', 'summary'],
+        hiddenColumns: ['allAddresses', 'allContactNames', 'notes', 'sortTitle', 'summary'],
         pageIndex: keptState.pageIndex,
         pageSize: keptState.pageSize,
         sortBy: keptState.sortBy
@@ -202,6 +202,7 @@ function PastProjectsDataTable (props) {
         Cell: linkFormatter,
         filter: 'fuzzyText',
         Filter: DefaultColumnFilter,
+        sortType: titleSortFn,
         style: {
           width: '30%'
         }
@@ -241,6 +242,8 @@ function PastProjectsDataTable (props) {
         accessor: 'allContactNames'
       }, {
         accessor: 'notes'
+      }, {
+        accessor: 'sortTitle'
       }, {
         accessor: 'summary'
       }

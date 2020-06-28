@@ -20,7 +20,7 @@ import MyCode from '../common/MyCode'
 import DefaultColumnFilter from '../common/react-table/DefaultColumnFilter'
 import GlobalFilter from '../common/react-table/GlobalFilter'
 import Pagination from '../common/react-table/Pagination'
-import { dateFormatter, linkFormatter } from '../common/react-table/helpers.js'
+import { dateFormatter, linkFormatter, titleSortFn } from '../common/react-table/helpers.js'
 import { CaretSorted, CaretUnsorted } from '../common/react-table/styled.js'
 import withFilters from '../../modules/hocs/withFilters.js'
 import Projects from '../../modules/projects/collection.js'
@@ -211,6 +211,7 @@ function ProjectsDataTable (props) {
         Cell: linkFormatter,
         filter: 'fuzzyText',
         Filter: DefaultColumnFilter,
+        sortType: titleSortFn,
         style: {
           width: '30%'
         }
@@ -250,6 +251,8 @@ function ProjectsDataTable (props) {
         accessor: 'allContactNames'
       }, {
         accessor: 'notes'
+      }, {
+        accessor: 'sortTitle'
       }, {
         accessor: 'summary'
       }
