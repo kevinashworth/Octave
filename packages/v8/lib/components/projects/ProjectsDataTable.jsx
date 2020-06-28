@@ -1,7 +1,7 @@
 /* eslint-disable react/jsx-curly-newline */
 import { Components, registerComponent, withAccess, withCurrentUser, withMulti2 } from 'meteor/vulcan:core'
 import Users from 'meteor/vulcan:users'
-import React, { useEffect, useMemo, useState } from 'react'
+import React, { useEffect, useMemo } from 'react'
 import Card from 'react-bootstrap/Card'
 import Col from 'react-bootstrap/Col'
 import Row from 'react-bootstrap/Row'
@@ -26,28 +26,26 @@ import withFilters from '../../modules/hocs/withFilters.js'
 import Projects from '../../modules/projects/collection.js'
 import { INITIAL_SIZE_PER_PAGE } from '../../modules/constants.js'
 
-const SIZE_PER_LOAD = 250
+const SIZE_PER_LOAD = 100
+const AUTOMATICALLY_LOAD_UP_TO = 600
 
 // Set initial state. Just options I want to keep.
 // See https://github.com/amannn/react-keep-state
-const keptState = {
-  Table: {
-    filters: [{
-      id: 'projectTitle',
-      value: ''
-    }],
-    globalFilter: undefined,
-    pageIndex: 0,
-    pageSize: INITIAL_SIZE_PER_PAGE,
-    sortBy: [{
-      desc: true,
-      id: 'updatedAt'
-    }]
-  },
-  ProjectsDataTable: {
-    limit: SIZE_PER_LOAD
-  }
+let keptState = {
+  filters: [{
+    id: 'projectTitle',
+    value: ''
+  }],
+  globalFilter: undefined,
+  pageIndex: 0,
+  pageSize: INITIAL_SIZE_PER_PAGE,
+  sortBy: [{
+    desc: true,
+    id: 'updatedAt'
+  }]
 }
+
+let keptUserRequestedLoad = null
 
 function AddButtonFooter () {
   return (
@@ -94,12 +92,12 @@ function Table ({ columns, data }) {
       disableSortRemove: true,
       filterTypes,
       initialState: {
-        filters: keptState.Table.filters,
-        globalFilter: keptState.Table.globalFilter,
-        hiddenColumns: ['allAddresses', 'allContactNames', 'notes', 'summary'],
-        pageIndex: keptState.Table.pageIndex,
-        pageSize: keptState.Table.pageSize,
-        sortBy: keptState.Table.sortBy
+        filters: keptState.filters,
+        globalFilter: keptState.globalFilter,
+        hiddenColumns: ['allAddresses', 'allContactNames', 'notes', 'sortTitle', 'summary'],
+        pageIndex: keptState.pageIndex,
+        pageSize: keptState.pageSize,
+        sortBy: keptState.sortBy
       }
     },
     useGlobalFilter,
@@ -122,7 +120,7 @@ function Table ({ columns, data }) {
   // Remember state for the next mount
   useEffect(() => {
     return () => {
-      keptState.Table = {
+      keptState = {
         filters,
         globalFilter,
         pageIndex,
@@ -200,11 +198,10 @@ function Table ({ columns, data }) {
 
 function ProjectsDataTable (props) {
   const {
-    count, currentUser, error, loading, loadingMore, loadMore, networkStatus, results, totalCount,
+    count, currentUser, error, loading, loadMore, networkStatus, results, totalCount,
     projectTypeFilters, projectStatusFilters, projectUpdatedFilters, projectPlatformFilters
   } = props
-  const myLoadingMore = networkStatus === 2 || loadingMore
-  const [limit, setLimit] = useState(keptState.ProjectsDataTable.limit)
+  const myLoadingMore = networkStatus === 2
 
   const columns = useMemo(
     () => [
@@ -284,9 +281,12 @@ function ProjectsDataTable (props) {
         }
       })
       return filter(results, function (o) {
-        const objectDate = moment(o.updatedAt ? o.updatedAt : o.createdAt)
-        const dateToCompare = moment().subtract(momentNumber, momentPeriod).startOf('day')
-        const displayThis = objectDate.isAfter(dateToCompare)
+        const now = moment()
+        const dateToCompare = o.updatedAt ? o.updatedAt : o.createdAt
+        const displayThis = moment(dateToCompare).isAfter(now.subtract(momentNumber, momentPeriod).startOf('day'))
+        // const objectDate = moment(o.updatedAt ? o.updatedAt : o.createdAt)
+        // const dateToCompare = moment().subtract(momentNumber, momentPeriod).startOf('day')
+        // const displayThis = objectDate.isAfter(dateToCompare)
         return displayThis &&
           includes(statusFilters, o.status) &&
           includes(typeFilters, o.projectType) &&
@@ -296,25 +296,31 @@ function ProjectsDataTable (props) {
   )
 
   useEffect(() => {
-    if (limit > count && totalCount > count && !loading && !loadingMore && !myLoadingMore) {
+    console.log('loading:', loading)
+    console.log('myLoadingMore:', myLoadingMore)
+    if (keptUserRequestedLoad && count < keptUserRequestedLoad && !loading && !myLoadingMore) {
+      console.log('useEffect about to loadMore:', keptUserRequestedLoad)
       loadMore({
-        limit
+        limit: keptUserRequestedLoad
       })
-    }
-    // Remember state for the next mount
-    return () => {
-      keptState.ProjectsDataTable = {
-        limit
-      }
+    } else if (count < totalCount && count < AUTOMATICALLY_LOAD_UP_TO && !loading && !myLoadingMore) {
+      const newLimit = count + SIZE_PER_LOAD
+      console.log('useEffect about to loadMore, limit:', newLimit)
+      loadMore({
+        limit: newLimit
+      })
     }
   })
 
   const handleLoadMoreClick = (e) => {
     e.preventDefault()
-    setLimit(limit + SIZE_PER_LOAD)
+    const newLimit = Math.min(count + SIZE_PER_LOAD, totalCount)
+    console.log('handleLoadMoreClick about to loadMore, limit:', newLimit)
     loadMore({
-      limit: limit + SIZE_PER_LOAD
+      limit: newLimit
     })
+    // Remember state for the next mount
+    keptUserRequestedLoad = newLimit
   }
 
   if (loading) {
@@ -360,7 +366,7 @@ const accessOptions = {
 const multiOptions = {
   collection: Projects,
   fragmentName: 'ProjectsDataTableFragment',
-  limit: keptState.ProjectsDataTable.limit,
+  limit: SIZE_PER_LOAD,
   input: {
     sort: {
       updatedAt: 'desc'

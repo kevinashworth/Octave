@@ -29,7 +29,6 @@ const SIZE_PER_LOAD = 500
 
 // Set initial state. Just options I want to keep.
 // See https://github.com/amannn/react-keep-state
-// I have moved keptState.globalFilterValue to GlobalFilter.jsx
 let keptState = {
   filters: [{
     id: 'projectTitle',
@@ -189,16 +188,16 @@ function Table ({ columns, data }) {
 
 function PastProjectsDataTable (props) {
   const {
-    count, error, loading, loadingMore, loadMore, networkStatus, results, totalCount,
+    count, error, loading, loadMore, networkStatus, results, totalCount,
     pastProjectTypeFilters, pastProjectStatusFilters, pastProjectUpdatedFilters
   } = props
-  const myLoadingMore = networkStatus === 2 || loadingMore
+  const myLoadingMore = networkStatus === 2
   const [limit, setLimit] = useState(keptState2.limit)
 
   const columns = useMemo(
     () => [
       {
-        Header: 'Name',
+        Header: 'Title',
         accessor: 'projectTitle',
         Cell: linkFormatter,
         filter: 'fuzzyText',
@@ -259,8 +258,8 @@ function PastProjectsDataTable (props) {
       pastProjectStatusFilters.forEach(filter => {
         if (filter.value) { statusFilters.push(filter.pastProjectStatus) }
       })
-      let momentNumber = ''
-      let momentPeriod = ''
+      let momentNumber = '100'
+      let momentPeriod = 'years'
       pastProjectUpdatedFilters.forEach(filter => {
         if (filter.value) {
           momentNumber = filter.momentNumber
@@ -280,7 +279,10 @@ function PastProjectsDataTable (props) {
   )
 
   useEffect(() => {
-    if (limit > count && totalCount > count && !loading && !loadingMore && !myLoadingMore) {
+    console.log('loading:', loading)
+    console.log('myLoadingMore:', myLoadingMore)
+    if (limit > count && totalCount > count && !loading && !myLoadingMore) {
+      console.log('useEffect about to loadMore:', limit)
       loadMore({
         limit
       })
