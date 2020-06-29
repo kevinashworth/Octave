@@ -28,6 +28,7 @@ import { INITIAL_SIZE_PER_PAGE, LOADING_PROJECTS_DATA } from '../../modules/cons
 const INITIAL_LOAD = 50
 const SIZE_PER_LOAD = 150
 const AUTOMATICALLY_LOAD_UP_TO = 650
+const hiddenColumns = ['allAddresses', 'allContactNames', 'notes', 'summary']
 
 // Set initial state. Just options I want to keep.
 // See https://github.com/amannn/react-keep-state
@@ -41,7 +42,7 @@ let keptState = {
   }]
 }
 
-let keptUserRequestedLoad = null
+let keptLimit = null
 
 function AddButtonFooter () {
   return (
@@ -62,7 +63,7 @@ function Table ({ columns, data, loading }) {
       disableSortRemove: true,
       initialState: {
         globalFilter: keptState.globalFilter,
-        hiddenColumns: ['allAddresses', 'allContactNames', 'notes', 'sortTitle', 'summary'],
+        hiddenColumns: hiddenColumns,
         pageIndex: keptState.pageIndex,
         pageSize: keptState.pageSize,
         sortBy: keptState.sortBy
@@ -198,17 +199,10 @@ function ProjectsDataTable (props) {
           textAlign: 'right',
           width: '6.6em'
         }
-      }, {
-        accessor: 'allAddresses'
-      }, {
-        accessor: 'allContactNames'
-      }, {
-        accessor: 'notes'
-      }, {
-        accessor: 'sortTitle'
-      }, {
-        accessor: 'summary'
-      }
+      },
+      ...hiddenColumns.map(id => ({
+        accessor: id
+      }))
     ],
     []
   )
@@ -249,16 +243,12 @@ function ProjectsDataTable (props) {
   )
 
   useEffect(() => {
-    console.log('loading:', loading)
-    console.log('myLoadingMore:', myLoadingMore)
-    if (keptUserRequestedLoad && count < keptUserRequestedLoad && !loading && !myLoadingMore) {
-      console.log('useEffect about to loadMore:', keptUserRequestedLoad)
+    if (keptLimit && count < keptLimit && !loading && !myLoadingMore) {
       loadMore({
-        limit: keptUserRequestedLoad
+        limit: keptLimit
       })
     } else if (count < totalCount && count < AUTOMATICALLY_LOAD_UP_TO && !loading && !myLoadingMore) {
       const newLimit = count + SIZE_PER_LOAD
-      console.log('useEffect about to loadMore, limit:', newLimit)
       loadMore({
         limit: newLimit
       })
@@ -268,12 +258,11 @@ function ProjectsDataTable (props) {
   const handleLoadMoreClick = (e) => {
     e.preventDefault()
     const newLimit = Math.min(count + SIZE_PER_LOAD, totalCount)
-    console.log('handleLoadMoreClick about to loadMore, limit:', newLimit)
     loadMore({
       limit: newLimit
     })
     // Remember state for the next mount
-    keptUserRequestedLoad = newLimit
+    keptLimit = newLimit
   }
 
   if (error) {

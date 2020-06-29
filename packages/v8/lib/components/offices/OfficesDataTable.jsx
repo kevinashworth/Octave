@@ -1,10 +1,10 @@
 /* eslint-disable react/jsx-curly-newline */
-import { Components, registerComponent, withAccess, withCurrentUser, withMulti } from 'meteor/vulcan:core'
+import { Components, registerComponent, withAccess, withCurrentUser, withMulti2 } from 'meteor/vulcan:core'
 import Users from 'meteor/vulcan:users'
 import React, { useEffect } from 'react'
-import Button from 'react-bootstrap/Button'
 import Card from 'react-bootstrap/Card'
 import Col from 'react-bootstrap/Col'
+import ProgressBar from 'react-bootstrap/ProgressBar'
 import Row from 'react-bootstrap/Row'
 import {
   useFilters,
@@ -15,18 +15,22 @@ import {
 } from 'react-table'
 import matchSorter from 'match-sorter'
 import MyCode from '../common/MyCode'
+import MyLoading from '../common/MyLoading'
 import DefaultColumnFilter from '../common/react-table/DefaultColumnFilter'
 import GlobalFilter from '../common/react-table/GlobalFilter'
 import Pagination from '../common/react-table/Pagination'
 import { dateFormatter, linkFormatter } from '../common/react-table/helpers.js'
 import { CaretSorted, CaretUnsorted } from '../common/react-table/styled.js'
 import Offices from '../../modules/offices/collection.js'
-import OfficesDataTableLoading from './OfficesDataTableLoading'
-import { INITIAL_SIZE_PER_PAGE } from '../../modules/constants.js'
+import { INITIAL_SIZE_PER_PAGE, LOADING_OFFICES_DATA } from '../../modules/constants.js'
+
+const INITIAL_LOAD = 50
+const SIZE_PER_LOAD = 150
+const AUTOMATICALLY_LOAD_UP_TO = 650
+const hiddenColumns = ['allContactNames', 'body']
 
 // Set initial state. Just options I want to keep.
 // See https://github.com/amannn/react-keep-state
-// I have moved keptState.globalFilterValue to GlobalFilter.jsx
 let keptState = {
   filters: [{
     id: 'displayName',
@@ -43,6 +47,8 @@ let keptState = {
     id: 'updatedAt'
   }]
 }
+
+let keptLimit = null
 
 function AddButtonFooter () {
   return (
@@ -61,7 +67,7 @@ function fuzzyTextFilterFn (rows, id, filterValue) {
   })
 }
 
-function Table ({ columns, data }) {
+function Table ({ columns, data, loading }) {
   const filterTypes = React.useMemo(
     () => ({
       // Add a fuzzyTextFilterFn filter type
@@ -84,14 +90,14 @@ function Table ({ columns, data }) {
   const tableProps = useTable(
     {
       columns,
-      data,
+      data: loading ? LOADING_OFFICES_DATA : data,
       disableMultiSort: true,
       disableSortRemove: true,
       filterTypes,
       initialState: {
         filters: keptState.filters,
         globalFilter: keptState.globalFilter,
-        hiddenColumns: ['allContactNames', 'body'],
+        hiddenColumns: hiddenColumns,
         pageIndex: keptState.pageIndex,
         pageSize: keptState.pageSize,
         sortBy: keptState.sortBy
@@ -138,7 +144,7 @@ function Table ({ columns, data }) {
           />
         </Col>
       </Row>
-      <Pagination length={data.length} {...tableProps} />
+      <Pagination {...tableProps} />
       <table {...getTableProps()} className='react-table table table-striped table-hover table-sm'>
         <thead>
           {headerGroups.map((headerGroup, index) => (
@@ -179,7 +185,7 @@ function Table ({ columns, data }) {
                 <tr {...row.getRowProps()} key={index}>
                   {row.cells.map((cell, index) => {
                     return (
-                      <td {...cell.getCellProps()} key={index}>{cell.render('Cell')}</td>
+                      <td {...cell.getCellProps()} key={index}>{loading ? <MyLoading variant={index === 0 && 'primary'} /> : cell.render('Cell')}</td>
                     )
                   })}
                 </tr>
@@ -188,13 +194,14 @@ function Table ({ columns, data }) {
           )}
         </tbody>
       </table>
-      <Pagination length={data.length} {...tableProps} />
+      <Pagination {...tableProps} />
     </>
   )
 }
 
 function OfficesDataTable (props) {
-  const { count, currentUser, error, loading, loadingMore, loadMore, results, totalCount } = props
+  const { count, currentUser, error, loading, loadMore, networkStatus, results, totalCount } = props
+  const myLoadingMore = networkStatus === 2
 
   const columns = React.useMemo(
     () => [
@@ -222,20 +229,37 @@ function OfficesDataTable (props) {
           textAlign: 'right',
           width: '6.6em'
         }
-      }, {
-        accessor: 'allContactNames'
-      }, {
-        accessor: 'body'
-      }
+      },
+      ...hiddenColumns.map(id => ({
+        accessor: id
+      }))
     ],
     []
   )
 
-  if (loading) {
-    return (
-      <OfficesDataTableLoading />
-    )
+  useEffect(() => {
+    if (keptLimit && count < keptLimit && !loading && !myLoadingMore) {
+      loadMore({
+        limit: keptLimit
+      })
+    } else if (count < totalCount && count < AUTOMATICALLY_LOAD_UP_TO && !loading && !myLoadingMore) {
+      const newLimit = count + SIZE_PER_LOAD
+      loadMore({
+        limit: newLimit
+      })
+    }
+  })
+
+  const handleLoadMoreClick = (e) => {
+    e.preventDefault()
+    const newLimit = Math.min(count + SIZE_PER_LOAD, totalCount)
+    loadMore({
+      limit: newLimit
+    })
+    // Remember state for the next mount
+    keptLimit = newLimit
   }
+
   if (error) {
     return (
       <div>
@@ -243,23 +267,23 @@ function OfficesDataTable (props) {
       </div>
     )
   }
+  const progress = Math.ceil(100 * count / totalCount)
 
   return (
     <div>
       <Components.HeadTags title='V8: Offices' />
-      <Card className='card-accent-primary'>
+      <Card className='card-accent-primary' style={{ borderTopWidth: 1 }}>
+        <ProgressBar now={progress} style={{ height: 2 }} variant='primary' />
         <Card.Header>
           <i className='icon-briefcase' />Offices
         </Card.Header>
         <Card.Body>
-          <Table columns={columns} data={results} />
+          <Table columns={columns} data={results} loading={loading} />
         </Card.Body>
-        {(totalCount > results.length) &&
+        <ProgressBar now={progress} style={{ height: 2 }} variant='secondary' />
+        {results && totalCount > results.length &&
           <Card.Footer>
-            {loadingMore
-              ? <Components.Loading />
-              : <Button onClick={e => { e.preventDefault(); loadMore() }}>Load More ({count}/{totalCount})</Button>
-            }
+            <Components.LoadingButton loading={myLoadingMore} onClick={handleLoadMoreClick} label={`Load ${Math.min(totalCount - count, SIZE_PER_LOAD)} More (${count}/${totalCount})`} />
           </Card.Footer>
         }
         {Users.canCreate({ collection: Offices, user: currentUser }) && <AddButtonFooter />}
@@ -276,7 +300,7 @@ const accessOptions = {
 const multiOptions = {
   collection: Offices,
   fragmentName: 'OfficesDataTableFragment',
-  limit: 1000
+  limit: INITIAL_LOAD
 }
 
 registerComponent({
@@ -285,6 +309,6 @@ registerComponent({
   hocs: [
     [withAccess, accessOptions],
     withCurrentUser,
-    [withMulti, multiOptions]
+    [withMulti2, multiOptions]
   ]
 })

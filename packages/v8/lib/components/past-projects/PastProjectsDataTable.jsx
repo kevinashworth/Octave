@@ -27,7 +27,7 @@ import { INITIAL_SIZE_PER_PAGE, LOADING_PROJECTS_DATA } from '../../modules/cons
 const INITIAL_LOAD = 50
 const SIZE_PER_LOAD = 150
 const AUTOMATICALLY_LOAD_UP_TO = 500
-const hiddenColumns = ['allAddresses', 'allContactNames', 'notes', 'sortTitle', 'summary']
+const hiddenColumns = ['allAddresses', 'allContactNames', 'notes', 'summary']
 
 // Set initial state. Just options I want to keep.
 // See https://github.com/amannn/react-keep-state
