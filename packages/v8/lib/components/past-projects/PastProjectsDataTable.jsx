@@ -3,6 +3,7 @@ import { Components, registerComponent, withAccess, withMulti2 } from 'meteor/vu
 import React, { useEffect, useMemo, useState } from 'react'
 import Card from 'react-bootstrap/Card'
 import Col from 'react-bootstrap/Col'
+import ProgressBar from 'react-bootstrap/ProgressBar'
 import Row from 'react-bootstrap/Row'
 import {
   useFilters,
@@ -318,11 +319,13 @@ function PastProjectsDataTable (props) {
       </div>
     )
   }
+  const progress = Math.ceil(100 * count / Math.min(totalCount, limit))
 
   return (
     <div>
       <Components.HeadTags title='V8: Past Projects' />
-      <Card className='card-accent-secondary'>
+      <Card className='card-accent-secondary' style={{ borderTopWidth: 1 }}>
+        <ProgressBar now={progress} style={{ height: 2 }} variant='secondary' />
         <Card.Header>
           <i className='fad fa-camera-retro' />Past Projects
           <Components.PastProjectFilters />
@@ -330,6 +333,7 @@ function PastProjectsDataTable (props) {
         <Card.Body>
           <Table columns={columns} data={filteredResults} />
         </Card.Body>
+        <ProgressBar now={progress} style={{ height: 2 }} variant='secondary' />
         {(totalCount > results.length) &&
           <Card.Footer>
             <Components.LoadingButton loading={myLoadingMore} onClick={handleLoadMoreClick} label={`Load ${Math.min(totalCount - count, SIZE_PER_LOAD)} More (${count}/${totalCount})`} />
