@@ -16,13 +16,14 @@ import filter from 'lodash/filter'
 import includes from 'lodash/includes'
 import moment from 'moment'
 import MyCode from '../common/MyCode'
+import MyLoading from '../common/MyLoading'
 import GlobalFilter from '../common/react-table/GlobalFilter'
 import Pagination from '../common/react-table/Pagination'
 import { dateFormatter, linkFormatter, titleSortFn } from '../common/react-table/helpers.js'
 import { CaretSorted, CaretUnsorted } from '../common/react-table/styled.js'
 import withFilters from '../../modules/hocs/withFilters.js'
 import Projects from '../../modules/projects/collection.js'
-import { INITIAL_SIZE_PER_PAGE } from '../../modules/constants.js'
+import { INITIAL_SIZE_PER_PAGE, LOADING_PROJECTS_DATA } from '../../modules/constants.js'
 
 const INITIAL_LOAD = 50
 const SIZE_PER_LOAD = 150
@@ -52,11 +53,11 @@ function AddButtonFooter () {
   )
 }
 
-function Table ({ columns, data }) {
+function Table ({ columns, data, loading }) {
   const tableProps = useTable(
     {
       columns,
-      data,
+      data: loading ? LOADING_PROJECTS_DATA : data,
       disableMultiSort: true,
       disableSortRemove: true,
       initialState: {
@@ -143,7 +144,7 @@ function Table ({ columns, data }) {
                 <tr {...row.getRowProps()} key={index}>
                   {row.cells.map((cell, index) => {
                     return (
-                      <td {...cell.getCellProps()} key={index}>{cell.render('Cell')}</td>
+                      <td {...cell.getCellProps()} key={index}>{loading ? <MyLoading variant={index === 0 && 'primary'} /> : cell.render('Cell')}</td>
                     )
                   })}
                 </tr>
@@ -275,11 +276,6 @@ function ProjectsDataTable (props) {
     keptUserRequestedLoad = newLimit
   }
 
-  if (loading) {
-    return (
-      <Components.Loading />
-    )
-  }
   if (error) {
     return (
       <div>
@@ -299,9 +295,9 @@ function ProjectsDataTable (props) {
           <Components.ProjectFilters />
         </Card.Header>
         <Card.Body>
-          <Table columns={columns} data={filteredResults} />
+          <Table columns={columns} data={filteredResults} loading={loading} />
         </Card.Body>
-        {(totalCount > results.length) &&
+        {results && totalCount > results.length &&
           <Card.Footer>
             <Components.LoadingButton loading={myLoadingMore} onClick={handleLoadMoreClick} label={`Load ${Math.min(totalCount - count, SIZE_PER_LOAD)} More (${count}/${totalCount})`} />
           </Card.Footer>
