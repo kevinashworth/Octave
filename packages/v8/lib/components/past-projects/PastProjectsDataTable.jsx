@@ -6,7 +6,6 @@ import Col from 'react-bootstrap/Col'
 import ProgressBar from 'react-bootstrap/ProgressBar'
 import Row from 'react-bootstrap/Row'
 import {
-  useFilters,
   useGlobalFilter,
   useTable,
   usePagination,
@@ -14,10 +13,8 @@ import {
 } from 'react-table'
 import filter from 'lodash/filter'
 import includes from 'lodash/includes'
-import matchSorter from 'match-sorter'
 import moment from 'moment'
 import MyCode from '../common/MyCode'
-import DefaultColumnFilter from '../common/react-table/DefaultColumnFilter'
 import GlobalFilter from '../common/react-table/GlobalFilter'
 import Pagination from '../common/react-table/Pagination'
 import { dateFormatter, linkFormatter, titleSortFn } from '../common/react-table/helpers.js'
@@ -31,10 +28,6 @@ const SIZE_PER_LOAD = 500
 // Set initial state. Just options I want to keep.
 // See https://github.com/amannn/react-keep-state
 let keptState = {
-  filters: [{
-    id: 'projectTitle',
-    value: ''
-  }],
   globalFilter: undefined,
   pageIndex: 0,
   pageSize: INITIAL_SIZE_PER_PAGE,
@@ -48,42 +41,14 @@ let keptState2 = {
   limit: SIZE_PER_LOAD
 }
 
-function fuzzyTextFilterFn (rows, id, filterValue) {
-  return matchSorter(rows, filterValue, {
-    keys: [row => row.values[id]],
-    threshold: matchSorter.rankings.ACRONYM
-  })
-}
-
 function Table ({ columns, data }) {
-  const filterTypes = useMemo(
-    () => ({
-      // Add a fuzzyTextFilterFn filter type
-      fuzzyText: fuzzyTextFilterFn,
-      // Or override the default text filter to use "startsWith"
-      text: (rows, id, filterValue) => {
-        return rows.filter(row => {
-          const rowValue = row.values[id]
-          return rowValue !== undefined
-            ? String(rowValue)
-              .toLowerCase()
-              .startsWith(String(filterValue).toLowerCase())
-            : true
-        })
-      }
-    }),
-    []
-  )
-
   const tableProps = useTable(
     {
       columns,
       data,
       disableMultiSort: true,
       disableSortRemove: true,
-      filterTypes,
       initialState: {
-        filters: keptState.filters,
         globalFilter: keptState.globalFilter,
         hiddenColumns: ['allAddresses', 'allContactNames', 'notes', 'sortTitle', 'summary'],
         pageIndex: keptState.pageIndex,
@@ -92,7 +57,6 @@ function Table ({ columns, data }) {
       }
     },
     useGlobalFilter,
-    useFilters,
     useSortBy,
     usePagination // The usePagination plugin hook must be placed after the useSortBy plugin hook
   )
@@ -132,7 +96,7 @@ function Table ({ columns, data }) {
           />
         </Col>
       </Row>
-      <Pagination length={data.length} {...tableProps} />
+      <Pagination {...tableProps} />
       <table {...getTableProps()} className='react-table table table-striped table-hover table-sm'>
         <thead>
           {headerGroups.map((headerGroup, index) => (
@@ -155,10 +119,6 @@ function Table ({ columns, data }) {
                           : <CaretSorted className='fa fa-sort-asc' />
                         : <CaretUnsorted className='fa fa-sort' />}
                     </div>
-                    {column.canFilter &&
-                      <div className='flex-xl-grow-1'>
-                        {column.render('Filter')}
-                      </div>}
                   </div>
                 </th>
               ))}
@@ -182,7 +142,7 @@ function Table ({ columns, data }) {
           )}
         </tbody>
       </table>
-      <Pagination length={data.length} {...tableProps} />
+      <Pagination {...tableProps} />
     </>
   )
 }
@@ -201,37 +161,25 @@ function PastProjectsDataTable (props) {
         Header: 'Title',
         accessor: 'projectTitle',
         Cell: linkFormatter,
-        filter: 'fuzzyText',
-        Filter: DefaultColumnFilter,
         sortType: titleSortFn,
         style: {
           width: '30%'
         }
       }, {
         Header: 'Casting',
-        accessor: 'casting',
-        Filter: null,
-        disableFilters: true
+        accessor: 'casting'
       }, {
         Header: 'Network',
-        accessor: 'network',
-        Filter: null,
-        disableFilters: true
+        accessor: 'network'
       }, {
         Header: 'Type',
-        accessor: 'projectType',
-        Filter: null,
-        disableFilters: true
+        accessor: 'projectType'
       }, {
         Header: 'Status',
-        accessor: 'status',
-        Filter: null,
-        disableFilters: true
+        accessor: 'status'
       }, {
         Header: 'Updated',
         accessor: 'updatedAt',
-        Filter: null,
-        disableFilters: true,
         Cell: dateFormatter,
         style: {
           textAlign: 'right',
