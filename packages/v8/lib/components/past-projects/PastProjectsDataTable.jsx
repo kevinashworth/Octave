@@ -21,9 +21,13 @@ import { dateFormatter, linkFormatter, titleSortFn } from '../common/react-table
 import { CaretSorted, CaretUnsorted } from '../common/react-table/styled.js'
 import withFilters from '../../modules/hocs/withFilters.js'
 import PastProjects from '../../modules/past-projects/collection.js'
-import { INITIAL_SIZE_PER_PAGE } from '../../modules/constants.js'
+import MyLoading from '../common/MyLoading'
+import { INITIAL_SIZE_PER_PAGE, LOADING_PROJECTS_DATA } from '../../modules/constants.js'
 
-const SIZE_PER_LOAD = 500
+const INITIAL_LOAD = 50
+const SIZE_PER_LOAD = 150
+const AUTOMATICALLY_LOAD_UP_TO = 500
+const hiddenColumns = ['allAddresses', 'allContactNames', 'notes', 'sortTitle', 'summary']
 
 // Set initial state. Just options I want to keep.
 // See https://github.com/amannn/react-keep-state
@@ -37,20 +41,18 @@ let keptState = {
   }]
 }
 
-let keptState2 = {
-  limit: SIZE_PER_LOAD
-}
+let keptLimit = SIZE_PER_LOAD
 
-function Table ({ columns, data }) {
+function Table ({ columns, data, loading }) {
   const tableProps = useTable(
     {
       columns,
-      data,
+      data: loading ? LOADING_PROJECTS_DATA : data,
       disableMultiSort: true,
       disableSortRemove: true,
       initialState: {
         globalFilter: keptState.globalFilter,
-        hiddenColumns: ['allAddresses', 'allContactNames', 'notes', 'sortTitle', 'summary'],
+        hiddenColumns: hiddenColumns,
         pageIndex: keptState.pageIndex,
         pageSize: keptState.pageSize,
         sortBy: keptState.sortBy
@@ -133,7 +135,7 @@ function Table ({ columns, data }) {
                 <tr {...row.getRowProps()} key={index}>
                   {row.cells.map((cell, index) => {
                     return (
-                      <td {...cell.getCellProps()} key={index}>{cell.render('Cell')}</td>
+                      <td {...cell.getCellProps()} key={index}>{loading ? <MyLoading variant={index === 0 && 'primary'} /> : cell.render('Cell')}</td>
                     )
                   })}
                 </tr>
@@ -153,7 +155,7 @@ function PastProjectsDataTable (props) {
     pastProjectTypeFilters, pastProjectStatusFilters, pastProjectUpdatedFilters
   } = props
   const myLoadingMore = networkStatus === 2
-  const [limit, setLimit] = useState(keptState2.limit)
+  const [limit, setLimit] = useState(keptLimit) // only pertains if user clicks Load More
 
   const columns = useMemo(
     () => [
@@ -185,17 +187,10 @@ function PastProjectsDataTable (props) {
           textAlign: 'right',
           width: '6.6em'
         }
-      }, {
-        accessor: 'allAddresses'
-      }, {
-        accessor: 'allContactNames'
-      }, {
-        accessor: 'notes'
-      }, {
-        accessor: 'sortTitle'
-      }, {
-        accessor: 'summary'
-      }
+      },
+      ...hiddenColumns.map(id => ({
+        accessor: id
+      }))
     ],
     []
   )
@@ -231,35 +226,31 @@ function PastProjectsDataTable (props) {
   )
 
   useEffect(() => {
-    console.log('loading:', loading)
-    console.log('myLoadingMore:', myLoadingMore)
-    if (limit > count && totalCount > count && !loading && !myLoadingMore) {
-      console.log('useEffect about to loadMore:', limit)
+    if (count < AUTOMATICALLY_LOAD_UP_TO && !loading && !myLoadingMore) {
+      const newLimit = Math.min(count + SIZE_PER_LOAD, AUTOMATICALLY_LOAD_UP_TO)
       loadMore({
-        limit
+        limit: newLimit
+      })
+    } else if (count >= AUTOMATICALLY_LOAD_UP_TO && count < limit && !loading && !myLoadingMore) {
+      loadMore({
+        limit: limit
       })
     }
     // Remember state for the next mount
     return () => {
-      keptState2 = {
-        limit
-      }
+      keptLimit = limit
     }
   })
 
   const handleLoadMoreClick = (e) => {
     e.preventDefault()
-    setLimit(limit + SIZE_PER_LOAD)
+    const newLimit = Math.min(count + SIZE_PER_LOAD, totalCount)
+    setLimit(newLimit)
     loadMore({
-      limit: limit + SIZE_PER_LOAD
+      limit: newLimit
     })
   }
 
-  if (loading) {
-    return (
-      <Components.Loading />
-    )
-  }
   if (error) {
     return (
       <div>
@@ -267,22 +258,22 @@ function PastProjectsDataTable (props) {
       </div>
     )
   }
-  const progress = Math.ceil(100 * count / Math.min(totalCount, limit))
+  const progress = Math.ceil(100 * count / Math.min(totalCount, Math.max(limit, AUTOMATICALLY_LOAD_UP_TO)))
 
   return (
     <div>
       <Components.HeadTags title='V8: Past Projects' />
-      <Card className='card-accent-secondary' style={{ borderTopWidth: 1 }}>
-        <ProgressBar now={progress} style={{ height: 2 }} variant='secondary' />
+      <Card className='card-accent-danger' style={{ borderTopWidth: 1 }}>
+        <ProgressBar now={progress} style={{ height: 2 }} variant='danger' />
         <Card.Header>
           <i className='fad fa-camera-retro' />Past Projects
           <Components.PastProjectFilters />
         </Card.Header>
         <Card.Body>
-          <Table columns={columns} data={filteredResults} />
+          <Table columns={columns} data={filteredResults} loading={loading} />
         </Card.Body>
         <ProgressBar now={progress} style={{ height: 2 }} variant='secondary' />
-        {(totalCount > results.length) &&
+        {results && totalCount > results.length &&
           <Card.Footer>
             <Components.LoadingButton loading={myLoadingMore} onClick={handleLoadMoreClick} label={`Load ${Math.min(totalCount - count, SIZE_PER_LOAD)} More (${count}/${totalCount})`} />
           </Card.Footer>
@@ -300,7 +291,7 @@ const accessOptions = {
 const multiOptions = {
   collection: PastProjects,
   fragmentName: 'PastProjectsDataTableFragment',
-  limit: keptState2.limit,
+  limit: INITIAL_LOAD,
   input: {
     sort: {
       updatedAt: 'desc'
