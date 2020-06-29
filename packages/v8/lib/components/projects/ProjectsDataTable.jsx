@@ -4,9 +4,9 @@ import Users from 'meteor/vulcan:users'
 import React, { useEffect, useMemo } from 'react'
 import Card from 'react-bootstrap/Card'
 import Col from 'react-bootstrap/Col'
+import ProgressBar from 'react-bootstrap/ProgressBar'
 import Row from 'react-bootstrap/Row'
 import {
-  useFilters,
   useGlobalFilter,
   useTable,
   usePagination,
@@ -14,10 +14,8 @@ import {
 } from 'react-table'
 import filter from 'lodash/filter'
 import includes from 'lodash/includes'
-import matchSorter from 'match-sorter'
 import moment from 'moment'
 import MyCode from '../common/MyCode'
-import DefaultColumnFilter from '../common/react-table/DefaultColumnFilter'
 import GlobalFilter from '../common/react-table/GlobalFilter'
 import Pagination from '../common/react-table/Pagination'
 import { dateFormatter, linkFormatter, titleSortFn } from '../common/react-table/helpers.js'
@@ -26,16 +24,13 @@ import withFilters from '../../modules/hocs/withFilters.js'
 import Projects from '../../modules/projects/collection.js'
 import { INITIAL_SIZE_PER_PAGE } from '../../modules/constants.js'
 
-const SIZE_PER_LOAD = 100
-const AUTOMATICALLY_LOAD_UP_TO = 600
+const INITIAL_LOAD = 50
+const SIZE_PER_LOAD = 150
+const AUTOMATICALLY_LOAD_UP_TO = 650
 
 // Set initial state. Just options I want to keep.
 // See https://github.com/amannn/react-keep-state
 let keptState = {
-  filters: [{
-    id: 'projectTitle',
-    value: ''
-  }],
   globalFilter: undefined,
   pageIndex: 0,
   pageSize: INITIAL_SIZE_PER_PAGE,
@@ -57,42 +52,14 @@ function AddButtonFooter () {
   )
 }
 
-function fuzzyTextFilterFn (rows, id, filterValue) {
-  return matchSorter(rows, filterValue, {
-    keys: [row => row.values[id]],
-    threshold: matchSorter.rankings.ACRONYM
-  })
-}
-
 function Table ({ columns, data }) {
-  const filterTypes = useMemo(
-    () => ({
-      // Add a fuzzyTextFilterFn filter type
-      fuzzyText: fuzzyTextFilterFn,
-      // Or override the default text filter to use "startsWith"
-      text: (rows, id, filterValue) => {
-        return rows.filter(row => {
-          const rowValue = row.values[id]
-          return rowValue !== undefined
-            ? String(rowValue)
-              .toLowerCase()
-              .startsWith(String(filterValue).toLowerCase())
-            : true
-        })
-      }
-    }),
-    []
-  )
-
   const tableProps = useTable(
     {
       columns,
       data,
       disableMultiSort: true,
       disableSortRemove: true,
-      filterTypes,
       initialState: {
-        filters: keptState.filters,
         globalFilter: keptState.globalFilter,
         hiddenColumns: ['allAddresses', 'allContactNames', 'notes', 'sortTitle', 'summary'],
         pageIndex: keptState.pageIndex,
@@ -101,7 +68,6 @@ function Table ({ columns, data }) {
       }
     },
     useGlobalFilter,
-    useFilters,
     useSortBy,
     usePagination // The usePagination plugin hook must be placed after the useSortBy plugin hook
   )
@@ -113,7 +79,7 @@ function Table ({ columns, data }) {
     page, // has only the rows for the active page
     prepareRow,
     setGlobalFilter,
-    state: { filters, globalFilter, pageIndex, pageSize, sortBy }
+    state: { globalFilter, pageIndex, pageSize, sortBy }
   } = tableProps
   tableProps.collection = 'projects'
 
@@ -121,7 +87,6 @@ function Table ({ columns, data }) {
   useEffect(() => {
     return () => {
       keptState = {
-        filters,
         globalFilter,
         pageIndex,
         pageSize,
@@ -141,7 +106,7 @@ function Table ({ columns, data }) {
           />
         </Col>
       </Row>
-      <Pagination length={data.length} {...tableProps} />
+      <Pagination {...tableProps} />
       <table {...getTableProps()} className='react-table table table-striped table-hover table-sm'>
         <thead>
           {headerGroups.map((headerGroup, index) => (
@@ -164,10 +129,6 @@ function Table ({ columns, data }) {
                           : <CaretSorted className='fa fa-sort-asc' />
                         : <CaretUnsorted className='fa fa-sort' />}
                     </div>
-                    {column.canFilter &&
-                      <div className='flex-xl-grow-1'>
-                        {column.render('Filter')}
-                      </div>}
                   </div>
                 </th>
               ))}
@@ -191,7 +152,7 @@ function Table ({ columns, data }) {
           )}
         </tbody>
       </table>
-      <Pagination length={data.length} {...tableProps} />
+      <Pagination {...tableProps} />
     </>
   )
 }
@@ -206,40 +167,31 @@ function ProjectsDataTable (props) {
   const columns = useMemo(
     () => [
       {
-        Header: 'Title',
+        Header: 'Name',
         accessor: 'projectTitle',
         Cell: linkFormatter,
-        filter: 'fuzzyText',
-        Filter: DefaultColumnFilter,
         sortType: titleSortFn,
         style: {
-          width: '30%'
+          width: '25%'
         }
       }, {
         Header: 'Casting',
-        accessor: 'casting',
-        Filter: null,
-        disableFilters: true
+        accessor: 'casting'
       }, {
         Header: 'Network',
-        accessor: 'network',
-        Filter: null,
-        disableFilters: true
+        accessor: 'network'
       }, {
         Header: 'Type',
-        accessor: 'projectType',
-        Filter: null,
-        disableFilters: true
+        accessor: 'projectType'
       }, {
         Header: 'Status',
         accessor: 'status',
-        Filter: null,
-        disableFilters: true
+        style: {
+          width: '6.6em'
+        }
       }, {
         Header: 'Updated',
         accessor: 'updatedAt',
-        Filter: null,
-        disableFilters: true,
         Cell: dateFormatter,
         style: {
           textAlign: 'right',
@@ -287,9 +239,6 @@ function ProjectsDataTable (props) {
         const now = moment()
         const dateToCompare = o.updatedAt ? o.updatedAt : o.createdAt
         const displayThis = moment(dateToCompare).isAfter(now.subtract(momentNumber, momentPeriod).startOf('day'))
-        // const objectDate = moment(o.updatedAt ? o.updatedAt : o.createdAt)
-        // const dateToCompare = moment().subtract(momentNumber, momentPeriod).startOf('day')
-        // const displayThis = objectDate.isAfter(dateToCompare)
         return displayThis &&
           includes(statusFilters, o.status) &&
           includes(typeFilters, o.projectType) &&
@@ -338,13 +287,15 @@ function ProjectsDataTable (props) {
       </div>
     )
   }
+  const progress = Math.ceil(100 * count / Math.min(totalCount, AUTOMATICALLY_LOAD_UP_TO))
 
   return (
     <div>
       <Components.HeadTags title='V8: Projects' />
-      <Card className='card-accent-danger'>
+      <Card className='card-accent-danger' style={{ borderTopWidth: 1 }}>
+        <ProgressBar now={progress} style={{ height: 2 }} variant='danger' />
         <Card.Header>
-          <i className='fa fa-camera' />Projects
+          <i className='fad fa-camera' />Projects
           <Components.ProjectFilters />
         </Card.Header>
         <Card.Body>
@@ -355,6 +306,7 @@ function ProjectsDataTable (props) {
             <Components.LoadingButton loading={myLoadingMore} onClick={handleLoadMoreClick} label={`Load ${Math.min(totalCount - count, SIZE_PER_LOAD)} More (${count}/${totalCount})`} />
           </Card.Footer>
         }
+        <ProgressBar now={progress} style={{ height: 2 }} variant='secondary' />
         {Users.canCreate({ collection: Projects, user: currentUser }) && <AddButtonFooter />}
       </Card>
     </div>
@@ -369,7 +321,7 @@ const accessOptions = {
 const multiOptions = {
   collection: Projects,
   fragmentName: 'ProjectsDataTableFragment',
-  limit: SIZE_PER_LOAD,
+  limit: INITIAL_LOAD,
   input: {
     sort: {
       updatedAt: 'desc'
