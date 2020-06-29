@@ -1,33 +1,51 @@
+/* eslint-disable react/jsx-curly-newline */
 import { Components, registerComponent, withAccess, withCurrentUser, withMulti2 } from 'meteor/vulcan:core'
 import Users from 'meteor/vulcan:users'
-import React, { Component } from 'react'
-import { Link } from 'react-router-dom'
+import React, { useEffect, useMemo } from 'react'
 import Card from 'react-bootstrap/Card'
-import Modal from 'react-bootstrap/Modal'
-import { BootstrapTable, ClearSearchButton, SearchField, TableHeaderColumn } from 'react-bootstrap-table'
-import _ from 'lodash'
+import Col from 'react-bootstrap/Col'
+import ProgressBar from 'react-bootstrap/ProgressBar'
+import Row from 'react-bootstrap/Row'
+import {
+  useGlobalFilter,
+  useTable,
+  usePagination,
+  useSortBy
+} from 'react-table'
+import every from 'lodash/every'
+import filter from 'lodash/filter'
+import includes from 'lodash/includes'
 import moment from 'moment'
-import Contacts from '../../modules/contacts/collection.js'
+import MyCode from '../common/MyCode'
+import GlobalFilter from '../common/react-table/GlobalFilter'
+import Pagination from '../common/react-table/Pagination'
+import { dateFormatter, linkFormatter, titleSortFn } from '../common/react-table/helpers.js'
+import { CaretSorted, CaretUnsorted } from '../common/react-table/styled.js'
 import withFilters from '../../modules/hocs/withFilters.js'
-import { INITIAL_SIZE_PER_PAGE, PAGINATION_SIZE, SIZE_PER_PAGE_LIST_SEED } from '../../modules/constants.js'
-import { dateFormatter, getAddress, renderShowsTotal } from '../../modules/helpers.js'
+import Contacts from '../../modules/contacts/collection.js'
+import { getAddress } from '../../modules/helpers.js'
+import { INITIAL_SIZE_PER_PAGE } from '../../modules/constants.js'
+
+const INITIAL_LOAD = 50
+const SIZE_PER_LOAD = 150
+const AUTOMATICALLY_LOAD_UP_TO = 650
+const hiddenColumns = ['allLinks', 'allAddresses', 'body']
 
 // Set initial state. Just options I want to keep.
 // See https://github.com/amannn/react-keep-state
 let keptState = {
-  limit: INITIAL_SIZE_PER_PAGE,
-  requestedAllMore: false,
-  searchColor: 'btn-secondary',
-  options: {
-    defaultSearch: '',
-    page: 1,
-    sizePerPage: INITIAL_SIZE_PER_PAGE,
-    sortName: 'displayName',
-    sortOrder: 'asc'
-  }
+  globalFilter: undefined,
+  pageIndex: 0,
+  pageSize: INITIAL_SIZE_PER_PAGE,
+  sortBy: [{
+    desc: true,
+    id: 'updatedAt'
+  }]
 }
 
-const AddButtonFooter = () => {
+let keptUserRequestedLoad = null
+
+function AddButtonFooter () {
   return (
     <Card.Footer>
       <Components.ModalTrigger label='Add a Contact' title='New Contact'>
@@ -37,311 +55,259 @@ const AddButtonFooter = () => {
   )
 }
 
-class ContactsDataTable extends Component {
-  constructor (props) {
-    super(props)
-    this.state = {
-      show: false,
-      contact: null,
-      options: {
-        sortIndicator: true,
-        paginationSize: PAGINATION_SIZE,
-        prePage: '‹',
-        nextPage: '›',
-        firstPage: '«',
-        lastPage: '»',
-        paginationShowsTotal: renderShowsTotal,
-        paginationPosition: 'both',
-        onPageChange: this.pageChangeHandler,
-        onSizePerPageList: this.sizePerPageListHandler,
-        onSortChange: this.sortChangeHandler,
-        onSearchChange: this.searchChangeHandler,
-        onRowClick: this.rowClickHandler,
-        clearSearch: true,
-        clearSearchBtn: this.createCustomClearButton,
-        searchField: this.createCustomSearchField,
-        // Retrieve the last state
-        ...keptState.options
+function Table ({ columns, data }) {
+  const tableProps = useTable(
+    {
+      columns,
+      data,
+      disableMultiSort: true,
+      disableSortRemove: true,
+      initialState: {
+        globalFilter: keptState.globalFilter,
+        hiddenColumns: hiddenColumns,
+        pageIndex: keptState.pageIndex,
+        pageSize: keptState.pageSize,
+        sortBy: keptState.sortBy
+      }
+    },
+    useGlobalFilter,
+    useSortBy,
+    usePagination // The usePagination plugin hook must be placed after the useSortBy plugin hook
+  )
+
+  const {
+    getTableProps,
+    getTableBodyProps,
+    headerGroups,
+    page, // has only the rows for the active page
+    prepareRow,
+    setGlobalFilter,
+    state: { globalFilter, pageIndex, pageSize, sortBy }
+  } = tableProps
+  tableProps.collection = 'contacts'
+
+  // Remember state for the next mount
+  useEffect(() => {
+    return () => {
+      keptState = {
+        globalFilter,
+        pageIndex,
+        pageSize,
+        sortBy
+      }
+    }
+  })
+
+  return (
+    <>
+      <Row>
+        <Col xs='6' lg='8' />
+        <Col xs='6' lg='4'>
+          <GlobalFilter
+            globalFilter={globalFilter}
+            setGlobalFilter={setGlobalFilter}
+          />
+        </Col>
+      </Row>
+      <Pagination {...tableProps} />
+      <table {...getTableProps()} className='react-table table table-striped table-hover table-sm'>
+        <thead>
+          {headerGroups.map((headerGroup, index) => (
+            <tr {...headerGroup.getHeaderGroupProps()} key={index}>
+              {headerGroup.headers.map((column, index) => (
+                // Return an array of prop objects and react-table will merge them appropriately
+                <th
+                  {...column.getHeaderProps([
+                    { style: column.style },
+                    column.getSortByToggleProps()
+                  ])}
+                  key={index}
+                >
+                  <div className='d-xl-flex flex-xl-row align-items-center'>
+                    <div className='mr-2 text-nowrap'>
+                      {column.render('Header')}
+                      {column.isSorted
+                        ? column.isSortedDesc
+                          ? <CaretSorted className='fa fa-sort-desc' />
+                          : <CaretSorted className='fa fa-sort-asc' />
+                        : <CaretUnsorted className='fa fa-sort' />}
+                    </div>
+                  </div>
+                </th>
+              ))}
+            </tr>
+          ))}
+        </thead>
+        <tbody {...getTableBodyProps()}>
+          {page.map(
+            (row, index) => {
+              prepareRow(row)
+              return (
+                <tr {...row.getRowProps()} key={index}>
+                  {row.cells.map((cell, index) => {
+                    return (
+                      <td {...cell.getCellProps()} key={index}>{cell.render('Cell')}</td>
+                    )
+                  })}
+                </tr>
+              )
+            }
+          )}
+        </tbody>
+      </table>
+      <Pagination {...tableProps} />
+    </>
+  )
+}
+
+function ContactsDataTable (props) {
+  const {
+    count, currentUser, error, loading, loadMore, networkStatus, results, totalCount,
+    contactTitleFilters, contactLocationFilters, contactUpdatedFilters
+  } = props
+  const myLoadingMore = networkStatus === 2
+
+  const columns = useMemo(
+    () => [
+      {
+        Header: 'Name',
+        accessor: 'displayName',
+        Cell: linkFormatter,
+        sortType: titleSortFn,
+        style: {
+          width: '25%'
+        }
+      }, {
+        Header: 'Title',
+        accessor: 'title'
+      }, {
+        Header: 'Address',
+        accessor: 'addressString'
+      }, {
+        Header: 'Updated',
+        accessor: 'updatedAt',
+        Cell: dateFormatter,
+        style: {
+          textAlign: 'right',
+          width: '6.6em'
+        }
       },
-      limit: keptState.limit,
-      requestedAllMore: keptState.requestedAllMore,
-      searchColor: keptState.searchColor
-    }
-  }
+      ...hiddenColumns.map(id => ({
+        accessor: id
+      }))
+    ],
+    []
+  )
 
-  componentDidMount () {
-    const { count, loading, loadingMore, loadMore, networkStatus, totalCount } = this.props
-    const myLoadingMore = networkStatus === 2 || loadingMore
-    if (!this.state.requestedAllMore && totalCount > this.state.limit) {
-      console.log('componentDidMount about to setState')
-      this.setState({
-        limit: totalCount,
-        requestedAllMore: true
+  const filteredResults = useMemo(
+    () => {
+      const titleFilters = []
+      contactTitleFilters.forEach(filter => {
+        if (filter.value) { titleFilters.push(filter.contactTitle) }
       })
-    }
-    if (this.state.requestedAllMore && !loading && !loadingMore && !myLoadingMore && count < totalCount) {
-      console.log('componentDidMount about to loadMore')
+      const otherFilters = []
+      contactTitleFilters.forEach(filter => {
+        if (!filter.value) { otherFilters.push(filter.contactTitle) }
+      })
+      const locationFilters = []
+      contactLocationFilters.forEach(filter => {
+        if (filter.value) { locationFilters.push(filter.contactLocation) }
+      })
+      let momentNumber = 100
+      let momentPeriod = 'years'
+      contactUpdatedFilters.forEach(filter => {
+        if (filter.value) {
+          momentNumber = filter.momentNumber
+          momentPeriod = filter.momentPeriod
+        }
+      })
+      return filter(results, function (contact) {
+        // compare current time generously, so start of day, i.e., filter plus up to 23:59
+        const now = moment()
+        const dateToCompare = contact.updatedAt ? contact.updatedAt : contact.createdAt
+        const displayThis = moment(dateToCompare).isAfter(now.subtract(momentNumber, momentPeriod).startOf('day'))
+        if (!displayThis) {
+          return false
+        }
+        const location = contact.theAddress.location ? contact.theAddress.location : getAddress({ contact }).location
+        // if "Other" is not checked, filter per normal via titleFilters:
+        if (!(includes(titleFilters, 'Other'))) {
+          return displayThis &&
+              includes(locationFilters, location) &&
+              includes(titleFilters, contact.title)
+        } else if (every(titleFilters, { value: true })) {
+          // if "Other" is checked and so are all the titles, do not filter by title
+          return displayThis &&
+            includes(locationFilters, location)
+        } else {
+          // if "Other" is checked and some are not checked, eliminate based on titles in contactTitleFilters
+          return displayThis &&
+              includes(locationFilters, location) &&
+              !includes(otherFilters, contact.title)
+        }
+      })
+    }, [contactTitleFilters, contactLocationFilters, contactUpdatedFilters, results]
+  )
+
+  useEffect(() => {
+    if (keptUserRequestedLoad && count < keptUserRequestedLoad && !loading && !myLoadingMore) {
       loadMore({
-        limit: totalCount
+        limit: keptUserRequestedLoad
       })
-    }
-  }
-
-  componentDidUpdate () {
-    const { count, loading, loadingMore, loadMore, networkStatus, totalCount } = this.props
-    const myLoadingMore = networkStatus === 2 || loadingMore
-    if (!this.state.requestedAllMore && totalCount > this.state.limit) {
-      console.log('componentDidUpdate about to setState')
-      this.setState({
-        limit: totalCount,
-        requestedAllMore: true
-      })
-    }
-    if (this.state.requestedAllMore && !loading && !loadingMore && !myLoadingMore && count < totalCount) {
-      console.log('componentDidUpdate about to loadMore')
+    } else if (count < totalCount && count < AUTOMATICALLY_LOAD_UP_TO && !loading && !myLoadingMore) {
+      const newLimit = count + SIZE_PER_LOAD
       loadMore({
-        limit: totalCount
+        limit: newLimit
       })
     }
-  }
+  })
 
-  componentWillUnmount () {
+  const handleLoadMoreClick = (e) => {
+    e.preventDefault()
+    const newLimit = Math.min(count + SIZE_PER_LOAD, totalCount)
+    loadMore({
+      limit: newLimit
+    })
     // Remember state for the next mount
-    const { options } = this.state
-    keptState = {
-      limit: this.state.limit,
-      requestedAllMore: this.state.requestedAllMore,
-      searchColor: this.state.searchColor,
-      options: {
-        defaultSearch: options.defaultSearch,
-        page: options.page,
-        sizePerPage: options.sizePerPage,
-        sortName: options.sortName,
-        sortOrder: options.sortOrder
-      }
-    }
+    keptUserRequestedLoad = newLimit
   }
 
-  createCustomClearButton = (onClick) => {
+  if (loading) {
     return (
-      <ClearSearchButton
-        className='btn-sm'
-        btnContextual={this.state.searchColor}
-        onClick={e => this.handleClearButtonClick(onClick)}
-      />
+      <Components.Loading />
     )
   }
-
-  createCustomSearchField = (props) => {
-    if (props.defaultValue.length && this.state.searchColor !== 'btn-danger') {
-      this.setState({ searchColor: 'btn-danger' })
-    } else if (props.defaultValue.length === 0 && this.state.searchColor !== 'btn-secondary') {
-      this.setState({ searchColor: 'btn-secondary' })
-    }
+  if (error) {
     return (
-      <SearchField defaultValue={props.defaultValue} />
-    )
-  }
-
-  handleClearButtonClick = (onClick) => {
-    this.setState({ searchColor: 'btn-secondary' })
-    onClick()
-  }
-
-  handleLoadMoreClick = (e) => {
-    e.preventDefault()
-    this.props.loadMore()
-  }
-
-  handleHide = () => {
-    this.setState({ show: false })
-  }
-
-  handleLoadAllClick = (e) => {
-    e.preventDefault()
-    this.props.loadMore({
-      limit: this.props.totalCount
-    })
-    this.setState({
-      requestedAllMore: true
-    })
-  }
-
-  pageChangeHandler = (page, sizePerPage) => {
-    this.setState((prevState) => ({
-      options: { ...prevState.options, page, sizePerPage }
-    }))
-  }
-
-  rowClickHandler = (row, columnIndex, rowIndex, event) => {
-    if (columnIndex === 0) {
-      event.stopPropagation()
-      const url = event.target.getElementsByTagName('a')[0].getAttribute('href')
-      if (url && url.length) {
-        this.props.history.push(url)
-      }
-    } else {
-      this.setState({
-        contact: row,
-        show: true
-      })
-    }
-  }
-
-  searchChangeHandler = (searchText) => {
-    this.setState((prevState) => ({
-      options: { ...prevState.options, defaultSearch: searchText }
-    }))
-  }
-
-  sizePerPageListHandler = (sizePerPage) => {
-    this.setState((prevState) => ({
-      options: { ...prevState.options, sizePerPage }
-    }))
-  }
-
-  sortChangeHandler = (sortName, sortOrder) => {
-    this.setState((prevState) => ({
-      options: { ...prevState.options, sortName, sortOrder }
-    }))
-  }
-
-  // currentUser, count, loading, loadingMore, networkStatus, results, totalCount,
-  render () {
-    const {
-      currentUser, loading, results,
-      contactTitleFilters, contactLocationFilters, contactUpdatedFilters
-    } = this.props
-    // const myLoadingMore = networkStatus === 2 || loadingMore
-
-    if (loading) {
-      return (
-        <div className='animated fadeIn'>
-          <Card className='card-accent-warning'>
-            <Card.Header>
-              <i className='icon-people' />Contacts
-            </Card.Header>
-            <Card.Body>
-              <Components.Loading />
-            </Card.Body>
-          </Card>
-        </div>
-      )
-    }
-
-    // const hasMore = results && (totalCount > results.length)
-    const titleFilters = []
-    contactTitleFilters.forEach(filter => {
-      if (filter.value) { titleFilters.push(filter.contactTitle) }
-    })
-    const otherFilters = []
-    contactTitleFilters.forEach(filter => {
-      if (!filter.value) { otherFilters.push(filter.contactTitle) }
-    })
-    const locationFilters = []
-    contactLocationFilters.forEach(filter => {
-      if (filter.value) { locationFilters.push(filter.contactLocation) }
-    })
-    let momentNumber = ''
-    let momentPeriod = ''
-    contactUpdatedFilters.forEach(filter => {
-      if (filter.value) {
-        momentNumber = filter.momentNumber
-        momentPeriod = filter.momentPeriod
-      }
-    })
-
-    const filteredResults = _.filter(results, function (contact) {
-      // compare current time generously, so start of day, i.e., filter plus up to 23:59
-      const now = moment()
-      const dateToCompare = contact.updatedAt ? contact.updatedAt : contact.createdAt
-      const displayThis = moment(dateToCompare).isAfter(now.subtract(momentNumber, momentPeriod).startOf('day'))
-      if (!displayThis) {
-        return false
-      }
-      const location = contact.theAddress.location ? contact.theAddress.location : getAddress({ contact }).location
-      // if "Other" is not checked, filter per normal via titleFilters:
-      if (!(_.includes(titleFilters, 'Other'))) {
-        return _.includes(locationFilters, location) &&
-            _.includes(titleFilters, contact.title) &&
-            displayThis
-      } else if (_.every(titleFilters, { value: true })) {
-        // if "Other" is checked and so are all the titles, do not filter by title
-        return _.includes(locationFilters, location) &&
-            displayThis
-      } else {
-        // if "Other" is checked and some are not checked, eliminate based on titles in contactTitleFilters
-        return _.includes(locationFilters, location) &&
-            !_.includes(otherFilters, contact.title) &&
-            displayThis
-      }
-    })
-
-    return (
-      <div className='animated fadeIn'>
-        <Components.HeadTags title='V8: Contacts' />
-        {this.state.contact &&
-          <Modal show={this.state.show} onHide={this.handleHide}>
-            <Modal.Header closeButton>
-              <Modal.Title>
-                <Link to={`/contacts/${this.state.contact._id}/${this.state.contact.slug}`}>{this.state.contact.displayName}</Link>
-              </Modal.Title>
-            </Modal.Header>
-            <Modal.Body>
-              <Components.ContactModal document={this.state.contact} />
-            </Modal.Body>
-          </Modal>}
-        <Card className='card-accent-warning'>
-          <Card.Header>
-            <i className='icon-people' />Contacts
-            <Components.ContactFilters />
-          </Card.Header>
-          <Card.Body>
-            <BootstrapTable
-              bordered={false}
-              condensed
-              data={filteredResults}
-              hover
-              keyField='_id'
-              options={{
-                ...this.state.options,
-                sizePerPageList: SIZE_PER_PAGE_LIST_SEED.concat([{
-                  text: 'All', value: this.props.totalCount
-                }])
-              }}
-              pagination
-              search
-              striped
-              version='4'
-            >
-              <TableHeaderColumn
-                dataField='displayName'
-                dataFormat={(cell, row) => (
-                  <Link to={`/contacts/${row._id}/${row.slug}`}>
-                    {cell}
-                  </Link>
-                )}
-                dataSort
-              >
-                Name
-              </TableHeaderColumn>
-              <TableHeaderColumn dataField='title' dataSort>Title</TableHeaderColumn>
-              <TableHeaderColumn dataField='addressString' dataSort>Address</TableHeaderColumn>
-              <TableHeaderColumn
-                dataField='updatedAt' dataSort dataFormat={dateFormatter}
-                dataAlign='right' width='94px'
-              >Updated
-              </TableHeaderColumn>
-              <TableHeaderColumn dataField='allLinks' hidden>Hidden</TableHeaderColumn>
-              <TableHeaderColumn dataField='allAddresses' hidden>Hidden</TableHeaderColumn>
-              <TableHeaderColumn dataField='body' hidden>Hidden</TableHeaderColumn>
-            </BootstrapTable>
-          </Card.Body>
-          {Users.canCreate({ collection: Contacts, user: currentUser }) && <AddButtonFooter />}
-        </Card>
+      <div>
+        <MyCode code={error} language='json' />
       </div>
     )
   }
+  const progress = Math.ceil(100 * count / Math.min(totalCount, AUTOMATICALLY_LOAD_UP_TO))
+
+  return (
+    <div>
+      <Components.HeadTags title='V8: Contacts' />
+      <Card className='card-accent-warning' style={{ borderTopWidth: 1 }}>
+        <ProgressBar now={progress} style={{ height: 2 }} variant='warning' />
+        <Card.Header>
+          <i className='icon-people' />Contacts
+          <Components.ContactFilters />
+        </Card.Header>
+        <Card.Body>
+          <Table columns={columns} data={filteredResults} />
+        </Card.Body>
+        {(totalCount > results.length) &&
+          <Card.Footer>
+            <Components.LoadingButton loading={myLoadingMore} onClick={handleLoadMoreClick} label={`Load ${Math.min(totalCount - count, SIZE_PER_LOAD)} More (${count}/${totalCount})`} />
+          </Card.Footer>
+        }
+        <ProgressBar now={progress} style={{ height: 2 }} variant='secondary' />
+        {Users.canCreate({ collection: Contacts, user: currentUser }) && <AddButtonFooter />}
+      </Card>
+    </div>
+  )
 }
 
 const accessOptions = {
@@ -352,10 +318,10 @@ const accessOptions = {
 const multiOptions = {
   collection: Contacts,
   fragmentName: 'ContactsDataTableFragment',
-  limit: keptState.limit,
+  limit: INITIAL_LOAD,
   input: {
     sort: {
-      displayName: 'asc'
+      updatedAt: 'desc'
     }
   }
 }
