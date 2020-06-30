@@ -57,7 +57,13 @@ export function getSortTitle (title) {
 }
 
 export function titleSortFn (rowA, rowB) {
-  const a = rowA.values.sortTitle || rowA.values.projectTitle
-  const b = rowB.values.sortTitle || rowB.values.projectTitle
+  const a = rowA.values.sortTitle
+  const b = rowB.values.sortTitle
+  return a.localeCompare(b)
+}
+
+export function nameSortFn (rowA, rowB) {
+  const a = rowA.values.displayName
+  const b = rowB.values.displayName
   return a.localeCompare(b)
 }

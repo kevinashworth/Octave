@@ -19,7 +19,7 @@ import moment from 'moment'
 import MyCode from '../common/MyCode'
 import GlobalFilter from '../common/react-table/GlobalFilter'
 import Pagination from '../common/react-table/Pagination'
-import { dateFormatter, linkFormatter, titleSortFn } from '../common/react-table/helpers.js'
+import { dateFormatter, linkFormatter, nameSortFn } from '../common/react-table/helpers.js'
 import { CaretSorted, CaretUnsorted } from '../common/react-table/styled.js'
 import withFilters from '../../modules/hocs/withFilters.js'
 import Contacts from '../../modules/contacts/collection.js'
@@ -173,7 +173,7 @@ function ContactsDataTable (props) {
         Header: 'Name',
         accessor: 'displayName',
         Cell: linkFormatter,
-        sortType: titleSortFn,
+        sortType: nameSortFn,
         style: {
           width: '25%'
         }
