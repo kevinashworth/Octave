@@ -1,4 +1,4 @@
-/* OfficesDataTable (react-table, not react-bootstrap-table) */
+/* react-table */
 
 .react-table {
   table-layout: fixed;
@@ -22,27 +22,3 @@
 .column-filter.form-control.is-invalid {
   background-image: none; /* Hide the red exclamation point in a circle */
 }
-
-/* Now-unused experimental datatable */
-/*
-tr.datatable-item td, .datatable-list > table > thead > tr > th {
-  padding: 0.25rem;
-}
-
-.datatable-list table {
-  width: auto;
-}
-
-div.datatable-list > table > thead > tr {
-  border-top: 2px solid #c8ced3;
-}
-
-div.datatable-list > table > tbody > tr:last-child {
-  border-bottom: 2px solid #c8ced3;
-}
-
-.datatable-title {
-  font-size: 1.75rem;
-  font-weight: 500;
-}
-*/
