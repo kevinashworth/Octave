@@ -1,5 +1,4 @@
 /* eslint-disable */
-// see https://guide.meteor.com/collections.html#migrations
 import { Utils } from 'meteor/vulcan:core'
 import { Migrations } from 'meteor/percolate:migrations'
 import Contacts from '../modules/contacts/collection.js'
@@ -759,6 +758,27 @@ Migrations.add({
     }
   }
 })
+
+Migrations.add({
+  version: 22,
+  name: 'Ensure all (Projects and) PastProjects have a sortTitle',
+  up () {
+    Projects.find({ sortTitle: { $exists: false } }).forEach(project => {
+      console.log('Project without sortTitle:', project._id, project.projectTitle);
+      Projects.update(project._id, {
+        $set: { sortTitle: getSortTitle(project.projectTitle) }
+      })
+    })
+    PastProjects.find({ sortTitle: { $exists: false } }).forEach(project => {
+      console.log('PastProject without sortTitle:', project._id, project.projectTitle);
+      PastProjects.update(project._id, {
+        $set: { sortTitle: getSortTitle(project.projectTitle) }
+      })
+    })
+  },
+  down: function () { /* There is no undoing this one. */ }
+})
+
 
 Meteor.startup(() => {
   Migrations.migrateTo('latest')

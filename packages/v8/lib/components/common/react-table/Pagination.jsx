@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import Dropdown from 'react-bootstrap/Dropdown'
 import RBPagination from 'react-bootstrap/Pagination'
 import { getPageOptionsVisible } from './helpers.js'
@@ -22,6 +22,13 @@ const Pagination = (props) => {
   const toggle = () => setDropdownOpen(prevState => !prevState)
 
   const pageOptionsVisible = getPageOptionsVisible({ pageCount, pageIndex, pageOptions })
+
+  useEffect(() => {
+    // when globalFilter reduces pageCount
+    if (pageIndex >= pageCount) {
+      gotoPage(pageCount - 1)
+    }
+  })
 
   return (
     <div className='d-flex align-items-center'>

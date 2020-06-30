@@ -13,9 +13,9 @@ export const dateFormatter = ({ cell, row }) => {
   return moment(theDate).format(DATE_FORMAT_SHORT)
 }
 
-export const linkFormatter = ({ cell, row }) => {
+export const linkFormatter = ({ cell, collection, row }) => {
   return (
-    <Link to={`/offices/${row.original._id}/${row.original.slug}`}>
+    <Link to={`/${collection}/${row.original._id}/${row.original.slug}`}>
       {cell.value}
     </Link>
   )
@@ -37,4 +37,33 @@ export const getPageOptionsVisible = ({ pageCount, pageIndex, pageOptions }) => 
       : pageOptions.slice(firstOptionVisible, lastOptionVisible)
 
   return pageOptionsVisible
+}
+
+export function getSortTitle (title) {
+  const theTitle = title.trim().toLowerCase()
+  const firstSpace = theTitle.indexOf(' ')
+  const firstWord = theTitle.slice(0, firstSpace)
+  let sortTitle = ''
+  switch (firstWord) {
+    case 'a':
+    case 'an':
+    case 'the':
+      sortTitle = theTitle.slice(firstSpace + 1)
+      break
+    default:
+      sortTitle = theTitle
+  }
+  return sortTitle
+}
+
+export function titleSortFn (rowA, rowB) {
+  const a = rowA.values.sortTitle
+  const b = rowB.values.sortTitle
+  return a.localeCompare(b)
+}
+
+export function nameSortFn (rowA, rowB) {
+  const a = rowA.values.displayName
+  const b = rowB.values.displayName
+  return a.localeCompare(b)
 }

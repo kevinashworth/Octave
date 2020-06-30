@@ -76,7 +76,6 @@ const schema = {
   },
   sortTitle: {
     type: String,
-    optional: true,
     canRead: ['guests'],
     canCreate: ['members', 'admins'],
     canUpdate: ['members', 'admins'],

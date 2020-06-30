@@ -324,6 +324,24 @@ export const BRANDS_ENUM = [
 export const PAGINATION_SIZE = 5
 export const INITIAL_SIZE_PER_PAGE = 50
 
+const dummyContactRow = {
+  _id: '',
+  displayName: ' ', // em space
+  fullAddress: '',
+  updatedAt: ' ' // em space
+}
+
+export const LOADING_CONTACTS_DATA = Array(50).fill(dummyContactRow)
+
+const dummyOfficeRow = {
+  _id: '',
+  displayName: ' ', // em space
+  fullAddress: '',
+  updatedAt: ' ' // em space
+}
+
+export const LOADING_OFFICES_DATA = Array(50).fill(dummyOfficeRow)
+
 const dummyProjectRow = {
   _id: '',
   projectTitle: ' ', // em space
@@ -335,12 +353,3 @@ const dummyProjectRow = {
 }
 
 export const LOADING_PROJECTS_DATA = Array(50).fill(dummyProjectRow)
-
-const dummyOfficeRow = {
-  _id: '',
-  displayName: ' ', // em space
-  fullAddress: '',
-  updatedAt: ' ' // em space
-}
-
-export const LOADING_OFFICES_DATA = Array(180).fill(dummyOfficeRow)
