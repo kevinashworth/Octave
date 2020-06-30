@@ -10,6 +10,7 @@ import Collapse from 'react-bootstrap/Collapse'
 import Tab from 'react-bootstrap/Tab'
 import Tabs from 'react-bootstrap/Tabs'
 import Interweave from 'interweave'
+import sortBy from 'lodash/sortBy'
 import moment from 'moment'
 import pluralize from 'pluralize'
 import mapProps from 'recompose/mapProps'
@@ -18,16 +19,19 @@ import { transformLinks } from '../../modules/helpers.js'
 import Offices from '../../modules/offices/collection.js'
 
 // Don't fetch and render PastProjects unless user clicks to see them
-// See https://reactjs.org/docs/conditional-rendering.html
+// See https://reactjs.org/docs/conditional-rendering.html#preventing-component-from-rendering
 function PastProjects (props) {
-  if (!props.collapseIsOpen) {
+  const { collapseIsOpen, pastProjects } = props
+  if (!collapseIsOpen) {
     return null
   }
+  const sortedProjects = sortBy(pastProjects, 'projectTitle') // NB: 'sortTitle' not available here
   return (
     <Card>
       <Card.Body>
         <Card.Title>Past Projects</Card.Title>
-        {props.pastProjects.map((o, index) => <Components.PastProjectMini key={`PastProjectMini${index}`} documentId={o.projectId} />)}
+        {sortedProjects.map((o, index) =>
+          <Components.PastProjectMini key={`PastProjectMini${index}`} documentId={o.projectId} />)}
       </Card.Body>
     </Card>
   )
