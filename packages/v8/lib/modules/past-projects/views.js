@@ -3,7 +3,7 @@ import PastProjects from './collection.js'
 // else default sort is createdAt in descending order
 PastProjects.addDefaultView(terms => {
   return {
-    options: { sort: { updatedAt: 'desc' } }
+    options: { sort: { updatedAt: -1 } }
   }
 })
 
