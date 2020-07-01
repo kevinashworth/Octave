@@ -1,297 +1,233 @@
-import { Components, registerComponent, withAccess, withMulti } from 'meteor/vulcan:core'
-import React, { Component } from 'react'
+/* eslint-disable react/jsx-curly-newline */
+import { Components, registerComponent, withAccess, withCurrentUser, withMulti2 } from 'meteor/vulcan:core'
+import React, { useEffect, useMemo, useState } from 'react'
 import { Link } from 'react-router-dom'
 import Button from 'react-bootstrap/Button'
 import Card from 'react-bootstrap/Card'
 import Modal from 'react-bootstrap/Modal'
-import { BootstrapTable, ClearSearchButton, SearchField, SizePerPageDropDown, TableHeaderColumn } from 'react-bootstrap-table'
-import _ from 'lodash'
+import {
+  useGlobalFilter,
+  useTable
+} from 'react-table'
+import every from 'lodash/every'
+import filter from 'lodash/filter'
+import includes from 'lodash/includes'
 import moment from 'moment'
-import { SIZE_PER_PAGE_LIST_SEED } from '../../modules/constants.js'
+import GlobalFilter from '../common/react-table/GlobalFilter'
 import Contacts from '../../modules/contacts/collection.js'
 import withFilters from '../../modules/hocs/withFilters.js'
+import { getAddress } from '../../modules/helpers.js'
+
+const linkFormatter = (props) => {
+  const row = props.row.original
+  return (
+    <Link to={`/${props.collection}/${row._id}/${row.slug}`}>
+      {row.firstName} {row.middleName || null} <strong>{row.lastName}</strong>
+    </Link>
+  )
+}
 
 // Set initial state. Just options I want to keep.
 // See https://github.com/amannn/react-keep-state
-let keptState = {
-  filtersVariant: 'outline-primary',
-  searchColor: 'btn-secondary',
-  options: {
-    defaultSearch: '',
-    page: 1,
-    sizePerPage: null,
-    sortOrder: 'desc'
-  }
+let keptVariant = 'outline-primary'
+let keptGlobalFilter
+
+function Table ({ columns, data }) {
+  const tableProps = useTable(
+    {
+      columns,
+      data,
+      initialState: {
+        globalFilter: keptGlobalFilter
+      }
+    },
+    useGlobalFilter
+  )
+
+  const {
+    headerGroups,
+    rows,
+    prepareRow,
+    setGlobalFilter,
+    state: { globalFilter }
+  } = tableProps
+  tableProps.collection = 'contacts'
+
+  // Remember state for the next mount
+  useEffect(() => {
+    return () => {
+      keptGlobalFilter = globalFilter
+    }
+  })
+
+  return (
+    <>
+      <GlobalFilter
+        globalFilter={globalFilter}
+        setGlobalFilter={setGlobalFilter}
+      />
+      <table className='react-table table table-striped table-hover table-sm'>
+        <thead>
+          {headerGroups.map((headerGroup, index) => (
+            <tr key={index}>
+              {headerGroup.headers.map((column, index) => (
+                // Return an array of prop objects and react-table will merge them appropriately
+                <th key={index}>
+                  {column.render('Header')}
+                </th>
+              ))}
+            </tr>
+          ))}
+        </thead>
+        <tbody>
+          {rows.map(
+            (row, index) => {
+              prepareRow(row)
+              return (
+                <tr key={index}>
+                  {row.cells.map((cell, index) => {
+                    return (
+                      <td key={index}>{cell.render('Cell')}</td>
+                    )
+                  })}
+                </tr>
+              )
+            }
+          )}
+        </tbody>
+      </table>
+    </>
+  )
 }
 
-class ContactsNameOnly extends Component {
-  constructor (props) {
-    super(props)
-    this.state = {
-      filtersVariant: keptState.filtersVariant,
-      searchColor: keptState.searchColor,
-      show: false,
-      options: {
-        sortIndicator: true,
-        paginationSize: 4,
-        prePage: '‹',
-        nextPage: '›',
-        firstPage: '«',
-        lastPage: '»',
-        paginationShowsTotal: this.renderShowsTotal,
-        paginationPosition: 'bottom',
-        onPageChange: this.pageChangeHandler,
-        onSizePerPageList: this.sizePerPageListHandler,
-        sizePerPageDropDown: this.renderSizePerPageDropDown,
-        onSearchChange: this.searchChangeHandler,
-        clearSearch: true,
-        clearSearchBtn: this.createCustomClearButton,
-        searchField: this.createCustomSearchField,
-        btnGroup: () => { return null }, // hides area above search field
-        ...keptState.options
-      }
+function ContactsNameOnly (props) {
+  const [variant, setVariant] = useState(keptVariant)
+  const [show, setShow] = useState(false)
+  const {
+    error, loading, results,
+    contactTitleFilters, contactLocationFilters, contactUpdatedFilters
+  } = props
+  let contactFiltersRef
+
+  const columns = [{
+    Header: 'Name',
+    accessor: 'displayName',
+    Cell: linkFormatter
+  }]
+
+  const filteredResults = useMemo(
+    () => {
+      const titleFilters = []
+      contactTitleFilters.forEach(filter => {
+        if (filter.value) { titleFilters.push(filter.contactTitle) }
+      })
+      const otherFilters = []
+      contactTitleFilters.forEach(filter => {
+        if (!filter.value) { otherFilters.push(filter.contactTitle) }
+      })
+      const locationFilters = []
+      contactLocationFilters.forEach(filter => {
+        if (filter.value) { locationFilters.push(filter.contactLocation) }
+      })
+      let momentNumber = 100
+      let momentPeriod = 'years'
+      contactUpdatedFilters.forEach(filter => {
+        if (filter.value) {
+          momentNumber = filter.momentNumber
+          momentPeriod = filter.momentPeriod
+        }
+      })
+      return filter(results, function (contact) {
+        // compare current time generously, so start of day, i.e., filter plus up to 23:59
+        const now = moment()
+        const dateToCompare = contact.updatedAt ? contact.updatedAt : contact.createdAt
+        const displayThis = moment(dateToCompare).isAfter(now.subtract(momentNumber, momentPeriod).startOf('day'))
+        if (!displayThis) {
+          return false
+        }
+        const location = contact.theAddress.location ? contact.theAddress.location : getAddress({ contact }).location
+        // if "Other" is not checked, filter per normal via titleFilters:
+        if (!(includes(titleFilters, 'Other'))) {
+          return displayThis &&
+              includes(locationFilters, location) &&
+              includes(titleFilters, contact.title)
+        } else if (every(titleFilters, { value: true })) {
+          // if "Other" is checked and so are all the titles, do not filter by title
+          return displayThis &&
+            includes(locationFilters, location)
+        } else {
+          // if "Other" is checked and some are not checked, eliminate based on titles in contactTitleFilters
+          return displayThis &&
+              includes(locationFilters, location) &&
+              !includes(otherFilters, contact.title)
+        }
+      })
+    }, [contactTitleFilters, contactLocationFilters, contactUpdatedFilters, results]
+  )
+
+  // Remember state for the next mount
+  useEffect(() => {
+    return () => {
+      keptVariant = variant
     }
-    this.toggle = this.toggle.bind(this)
-    this.setContactFiltersRef = this.setContactFiltersRef.bind(this)
+  })
+
+  if (loading) {
+    return <Components.Loading />
   }
 
-  componentWillUnmount () {
-    const { filtersVariant, options, searchColor } = this.state
-    keptState = {
-      filtersVariant,
-      searchColor,
-      options: {
-        defaultSearch: options.defaultSearch,
-        page: options.page,
-        sizePerPage: options.sizePerPage ? options.sizePerPage : null,
-        sortOrder: options.sortOrder
-      }
+  if (error) {
+    console.error('ContactsNameOnly error:', error)
+  }
+
+  const handleHide = () => {
+    if (show) {
+      toggle()
     }
   }
 
-  createCustomClearButton = (onClick) => {
-    return (
-      <ClearSearchButton
-        className='btn-sm'
-        btnContextual={this.state.searchColor}
-        onClick={e => this.handleClearButtonClick(onClick)}
-      />
-    )
-  }
-
-  createCustomSearchField = (props) => {
-    if (props.defaultValue.length && this.state.searchColor !== 'btn-danger') {
-      this.setState({ searchColor: 'btn-danger' })
-    } else if (props.defaultValue.length === 0 && this.state.searchColor !== 'btn-secondary') {
-      this.setState({ searchColor: 'btn-secondary' })
-    }
-    return (
-      <SearchField defaultValue={props.defaultValue} />
-    )
-  }
-
-  handleClearButtonClick = (onClick) => {
-    this.setState({ searchColor: 'btn-secondary' })
-    onClick()
-  }
-
-  handleHide = () => {
-    if (this.state.show) {
-      this.toggle()
+  const handleShow = () => {
+    if (!show) {
+      toggle()
     }
   }
 
-  handleShow = () => {
-    if (!this.state.show) {
-      this.toggle()
-    }
+  const setContactFiltersRef = (node) => {
+    contactFiltersRef = node
   }
 
-  pageChangeHandler = (page, sizePerPage) => {
-    this.setState((prevState) => ({
-      options: { ...prevState.options, page, sizePerPage }
-    }))
-  }
-
-  renderShowsTotal = (start, to, total) => {
-    return (
-      <span className='mr-2'>
-        Showing {start} to {to} out of {total}
-      </span>
-    )
-  }
-
-  renderSizePerPageDropDown = (props) => {
-    return (
-      <SizePerPageDropDown btnContextual='btn-secondary btn-sm' {...props} />
-    )
-  }
-
-  searchChangeHandler = (searchText) => {
-    this.setState((prevState) => ({
-      options: { ...prevState.options, defaultSearch: searchText }
-    }))
-  }
-
-  sizePerPageListHandler = (sizePerPage) => {
-    this.setState((prevState) => ({
-      options: { ...prevState.options, sizePerPage }
-    }))
-    keptState.options.sizePerPage = sizePerPage
-  }
-
-  setContactFiltersRef (node) {
-    this.contactFiltersRef = node
-  }
-
-  toggle () {
-    this.setState({
-      show: !this.state.show
-    })
-    const cfr = this.contactFiltersRef
+  const toggle = () => {
+    setShow(!show)
+    const cfr = contactFiltersRef
     if (!cfr) { return } // is null when modal opens, has value when closes
     const colors = Object.values(cfr.state) // includes unwanted state values, but no big deal to include them
     if (colors.includes('danger')) {
-      this.setState({ filtersVariant: 'outline-danger' })
+      setVariant('outline-danger')
     } else {
-      this.setState({ filtersVariant: 'outline-primary' })
+      setVariant('outline-primary')
     }
   }
 
-  render () {
-    const { count, totalCount, results, loadingMore, loadMore, networkStatus, contactTitleFilters, contactLocationFilters, contactUpdatedFilters } = this.props
-    if (networkStatus !== 8 && networkStatus !== 7) {
-      return (
-        <div className='animated fadeIn'>
-          <Components.HeadTags title='V8: Contacts' />
-          <Card>
-            <Card.Header>
-              <i className='icon-people' />Contacts
-            </Card.Header>
-            <Card.Body>
-              <Components.Loading />
-            </Card.Body>
-          </Card>
-        </div>
-      )
-    }
-    var titleFilters = []
-    contactTitleFilters.forEach(filter => {
-      if (filter.value) { titleFilters.push(filter.contactTitle) }
-    })
-    var otherFilters = []
-    contactTitleFilters.forEach(filter => {
-      if (!filter.value) { otherFilters.push(filter.contactTitle) }
-    })
-    var locationFilters = []
-    contactLocationFilters.forEach(filter => {
-      if (filter.value) { locationFilters.push(filter.contactLocation) }
-    })
-    let momentNumber = ''
-    let momentPeriod = ''
-    contactUpdatedFilters.forEach(filter => {
-      if (filter.value) {
-        momentNumber = filter.momentNumber
-        momentPeriod = filter.momentPeriod
-      }
-    })
-    const filteredResults = _.filter(results, function (o) {
-      // compare current time to filter, but generous, so start of day then, not the time it is now - filter plus up to 23:59
-      const now = moment()
-      const dateToCompare = o.updatedAt ? o.updatedAt : o.createdAt
-      const displayThis = moment(dateToCompare).isAfter(now.subtract(momentNumber, momentPeriod).startOf('day'))
-      let theLocation = 'Unknown'
-      if (o.theAddress) {
-        if (o.theAddress.location) {
-          theLocation = o.theAddress.location
-        }
-      } else if (o.addresses) {
-        if (o.addresses[0]) {
-          if (o.addresses[0].state) {
-            theLocation = o.addresses[0].state
-          }
-        }
-      }
-      // if "Other" is not checked, filter per normal via titleFilters:
-      if (!(_.includes(titleFilters, 'Other'))) {
-        return _.includes(locationFilters, theLocation) &&
-            _.includes(titleFilters, o.title) &&
-            displayThis
-      } else if (_.every(titleFilters, { value: true })) {
-        // if "Other" is checked and so are all the titles, do not filter by title
-        return _.includes(locationFilters, theLocation) &&
-            displayThis
-      } else {
-        // if "Other" is checked and some are not checked, eliminate based on titles in contactTitleFilters
-        return _.includes(locationFilters, theLocation) &&
-            !_.includes(otherFilters, o.title) &&
-            displayThis
-      }
-    })
-
-    const hasMore = results && (totalCount > results.length)
-    return (
-      <div className='animated fadeIn'>
-        <Components.HeadTags title='V8: Contacts' />
-        <Card>
-          <Card.Header>
-            <i className='icon-people' />Contacts
-            <Button size='sm' variant={this.state.filtersVariant} className='ml-2' onClick={this.handleShow}>Filters</Button>
-            <Modal show={this.state.show} onHide={this.handleHide}>
-              <Modal.Header closeButton>Contact Filters</Modal.Header>
-              <Modal.Body>
-                <Components.ContactFilters ref={this.setContactFiltersRef} />
-              </Modal.Body>
-            </Modal>
-          </Card.Header>
-          <Card.Body>
-            <BootstrapTable
-              bordered={false}
-              condensed
-              data={filteredResults}
-              hover
-              keyField='_id'
-              options={{
-                ...this.state.options,
-                sizePerPageList: SIZE_PER_PAGE_LIST_SEED.concat([{
-                  text: 'All', value: this.props.totalCount
-                }]),
-                sizePerPage: this.state.options.sizePerPage
-                  ? this.state.options.sizePerPage
-                  : totalCount
-              }}
-              pagination
-              search
-              striped
-              tableHeaderClass='d-none'
-              version='4'
-            >
-              <TableHeaderColumn
-                dataField='displayName'
-                dataFormat={(cell, row) => (
-                  <Link to={`/contacts/${row._id}/${row.slug}`}>
-                    {row.firstName} {row.middleName ? row.middleName : null} <strong>{row.lastName}</strong>
-                  </Link>
-                )}
-              >
-                Name
-              </TableHeaderColumn>
-              <TableHeaderColumn dataField='title' hidden>Title</TableHeaderColumn>
-              <TableHeaderColumn dataField='addressString' hidden>Address</TableHeaderColumn>
-              <TableHeaderColumn dataField='allLinks' hidden>Hidden</TableHeaderColumn>
-              <TableHeaderColumn dataField='body' hidden>Hidden</TableHeaderColumn>
-            </BootstrapTable>
-          </Card.Body>
-          {hasMore &&
-            <Card.Footer>
-              {loadingMore
-                ? <Components.Loading />
-                : <Button onClick={e => { e.preventDefault(); loadMore() }}>Load More ({count}/{totalCount})</Button>}
-            </Card.Footer>}
-        </Card>
-      </div>
-    )
-  }
+  return (
+    <>
+      <Components.HeadTags title='V8: Contacts' />
+      <Card className='card-accent-warning'>
+        <Card.Header>
+          <i className='icon-people' />Contacts
+          <Button size='sm' variant={variant} className='ml-2' onClick={handleShow}>Filters</Button>
+          <Modal show={show} onHide={handleHide}>
+            <Modal.Header closeButton>Contact Filters</Modal.Header>
+            <Modal.Body>
+              <Components.ContactFilters ref={setContactFiltersRef} />
+            </Modal.Body>
+          </Modal>
+        </Card.Header>
+        <Card.Body>
+          <Table columns={columns} data={filteredResults} />
+        </Card.Body>
+      </Card>
+    </>
+  )
 }
 
 const accessOptions = {
@@ -302,8 +238,12 @@ const accessOptions = {
 const multiOptions = {
   collection: Contacts,
   fragmentName: 'ContactsDataTableFragment',
-  limit: 1000,
-  terms: { view: 'contactsByLastName' }
+  input: {
+    sort: {
+      displayName: 'asc'
+    }
+  },
+  limit: 1000
 }
 
 registerComponent({
@@ -311,7 +251,8 @@ registerComponent({
   component: ContactsNameOnly,
   hocs: [
     [withAccess, accessOptions],
+    withCurrentUser,
     withFilters,
-    [withMulti, multiOptions]
+    [withMulti2, multiOptions]
   ]
 })

@@ -18,7 +18,6 @@ import PhoneDetail from '../packages/v8/lib/components/common/PhoneDetail.jsx'
 import GlobalFilter from '../packages/v8/lib/components/common/react-table/GlobalFilter.jsx'
 import ContactMini from '../packages/v8/lib/components/contacts/ContactMini.jsx'
 import OfficeMini from '../packages/v8/lib/components/offices/OfficeMini.jsx'
-import OfficesDataTableLoading from '../packages/v8/lib/components/offices/OfficesDataTableLoading.jsx'
 import ProjectMini from '../packages/v8/lib/components/projects/ProjectMini.jsx'
 
 addDecorator(storyFn => <ThemeCard>{storyFn()}</ThemeCard>)
@@ -79,9 +78,4 @@ storiesOf('V8/Datatables/GlobalFilter', module)
   ))
   .add('Search Text', () => (
     <GlobalFilter globalFilter='foo' />
-  ))
-
-storiesOf('V8/Datatables/OfficesDataTableLoading', module)
-  .add('Default', () => (
-    <OfficesDataTableLoading />
   ))

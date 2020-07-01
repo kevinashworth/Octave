@@ -19,7 +19,6 @@ Package.onUse(function (api) {
   // import .css here; import .scss in main.scss
   api.addFiles('lib/stylesheets/compiled/main.css', 'client');
   api.addFiles([
-    'lib/stylesheets/vendors/react-bootstrap-table-all.min.css',
     'lib/stylesheets/vendors/react-perfect-scrollbar.css',
     'lib/stylesheets/vendors/react-virtualized/styles.css'
   ], 'client');

@@ -1,281 +1,207 @@
-import { Components, registerComponent, withAccess, withMulti } from 'meteor/vulcan:core'
-import React, { PureComponent } from 'react'
-import { Link } from 'react-router-dom'
+/* eslint-disable react/jsx-curly-newline */
+import { Components, registerComponent, withAccess, withCurrentUser, withMulti2 } from 'meteor/vulcan:core'
+import React, { useEffect, useMemo, useState } from 'react'
 import Button from 'react-bootstrap/Button'
 import Card from 'react-bootstrap/Card'
 import Modal from 'react-bootstrap/Modal'
-import { BootstrapTable, ClearSearchButton, SearchField, SizePerPageDropDown, TableHeaderColumn } from 'react-bootstrap-table'
-import _ from 'lodash'
+import {
+  useGlobalFilter,
+  useTable
+} from 'react-table'
+import filter from 'lodash/filter'
+import includes from 'lodash/includes'
 import moment from 'moment'
-import { SIZE_PER_PAGE_LIST_SEED } from '../../modules/constants.js'
+import GlobalFilter from '../common/react-table/GlobalFilter'
 import Projects from '../../modules/projects/collection.js'
 import withFilters from '../../modules/hocs/withFilters.js'
+import { linkFormatter } from '../common/react-table/helpers.js'
 
 // Set initial state. Just options I want to keep.
 // See https://github.com/amannn/react-keep-state
-let keptState = {
-  filtersVariant: 'outline-primary',
-  searchColor: 'btn-secondary',
-  options: {
-    defaultSearch: '',
-    page: 1,
-    sizePerPage: null,
-    sortOrder: 'desc'
-  }
+let keptVariant = 'outline-primary'
+let keptGlobalFilter
+
+function Table ({ columns, data }) {
+  const tableProps = useTable(
+    {
+      columns,
+      data,
+      initialState: {
+        globalFilter: keptGlobalFilter
+      }
+    },
+    useGlobalFilter
+  )
+
+  const {
+    headerGroups,
+    rows,
+    prepareRow,
+    setGlobalFilter,
+    state: { globalFilter }
+  } = tableProps
+  tableProps.collection = 'projects'
+
+  // Remember state for the next mount
+  useEffect(() => {
+    return () => {
+      keptGlobalFilter = globalFilter
+    }
+  })
+
+  return (
+    <>
+      <GlobalFilter
+        globalFilter={globalFilter}
+        setGlobalFilter={setGlobalFilter}
+      />
+      <table className='react-table table table-striped table-hover table-sm'>
+        <thead>
+          {headerGroups.map((headerGroup, index) => (
+            <tr key={index}>
+              {headerGroup.headers.map((column, index) => (
+                // Return an array of prop objects and react-table will merge them appropriately
+                <th key={index}>
+                  {column.render('Header')}
+                </th>
+              ))}
+            </tr>
+          ))}
+        </thead>
+        <tbody>
+          {rows.map(
+            (row, index) => {
+              prepareRow(row)
+              return (
+                <tr key={index}>
+                  {row.cells.map((cell, index) => {
+                    return (
+                      <td key={index}>{cell.render('Cell')}</td>
+                    )
+                  })}
+                </tr>
+              )
+            }
+          )}
+        </tbody>
+      </table>
+    </>
+  )
 }
 
-class ProjectsNameOnly extends PureComponent {
-  constructor (props) {
-    super(props)
-    this.state = {
-      filtersVariant: keptState.filtersVariant,
-      searchColor: keptState.searchColor,
-      show: false,
-      options: {
-        sortIndicator: true,
-        paginationSize: 4,
-        prePage: '‹',
-        nextPage: '›',
-        firstPage: '«',
-        lastPage: '»',
-        paginationShowsTotal: this.renderShowsTotal,
-        paginationPosition: 'bottom',
-        onPageChange: this.pageChangeHandler,
-        onSizePerPageList: this.sizePerPageListHandler,
-        sizePerPageDropDown: this.renderSizePerPageDropDown,
-        onSearchChange: this.searchChangeHandler,
-        clearSearch: true,
-        clearSearchBtn: this.createCustomClearButton,
-        searchField: this.createCustomSearchField,
-        btnGroup: () => { return null },
-        ...keptState.options
-      }
+function ProjectsNameOnly (props) {
+  const [variant, setVariant] = useState(keptVariant)
+  const [show, setShow] = useState(false)
+  const {
+    error, loading, results,
+    projectTypeFilters, projectStatusFilters, projectPlatformFilters, projectUpdatedFilters
+  } = props
+  let projectFiltersRef
+
+  const columns = [{
+    Header: 'Name',
+    accessor: 'projectTitle',
+    Cell: linkFormatter
+  }]
+
+  const filteredResults = useMemo(
+    () => {
+      var typeFilters = []
+      projectTypeFilters.forEach(filter => {
+        if (filter.value) { typeFilters.push(filter.projectType) }
+      })
+      var statusFilters = []
+      projectStatusFilters.forEach(filter => {
+        if (filter.value) { statusFilters.push(filter.projectStatus) }
+      })
+      var platformFilters = []
+      projectPlatformFilters.forEach(filter => {
+        if (filter.value) { platformFilters.push(filter.projectPlatform) }
+      })
+      var momentNumber = 100
+      var momentPeriod = 'years'
+      projectUpdatedFilters.some(filter => {
+        if (filter.value) {
+          momentNumber = filter.momentNumber
+          momentPeriod = filter.momentPeriod
+          return true
+        }
+      })
+      return filter(results, function (o) {
+        const now = moment()
+        const dateToCompare = o.updatedAt ? o.updatedAt : o.createdAt
+        const displayThis = moment(dateToCompare).isAfter(now.subtract(momentNumber, momentPeriod).startOf('day'))
+        return displayThis &&
+          includes(statusFilters, o.status) &&
+          includes(typeFilters, o.projectType) &&
+          includes(platformFilters, o.platformType)
+      })
+    }, [projectTypeFilters, projectStatusFilters, projectPlatformFilters, projectUpdatedFilters, results]
+  )
+
+  // Remember state for the next mount
+  useEffect(() => {
+    return () => {
+      keptVariant = variant
     }
-    this.toggle = this.toggle.bind(this)
-    this.setProjectFiltersRef = this.setProjectFiltersRef.bind(this)
+  })
+
+  if (loading) {
+    return <Components.Loading />
   }
 
-  componentWillUnmount () {
-    const { filtersVariant, options, searchColor } = this.state
-    keptState = {
-      filtersVariant,
-      searchColor,
-      options: {
-        defaultSearch: options.defaultSearch,
-        page: options.page,
-        sizePerPage: options.sizePerPage ? options.sizePerPage : null,
-        sortOrder: options.sortOrder
-      }
-    }
+  if (error) {
+    console.error('ProjectsNameOnly error:', error)
   }
 
-  createCustomClearButton = (onClick) => {
-    return (
-      <ClearSearchButton
-        className='btn-sm'
-        btnContextual={this.state.searchColor}
-        onClick={e => this.handleClearButtonClick(onClick)}
-      />
-    )
-  }
-
-  createCustomSearchField = (props) => {
-    if (props.defaultValue.length) {
-      this.setState({ searchColor: 'btn-danger' })
-    } else {
-      this.setState({ searchColor: 'btn-secondary' })
-    }
-    return (
-      <SearchField defaultValue={props.defaultValue} />
-    )
-  }
-
-  handleClearButtonClick = (onClick) => {
-    this.setState({ searchColor: 'btn-secondary' })
-    onClick()
-  }
-
-  handleHide = () => {
-    if (this.state.show) {
-      this.toggle()
+  const handleHide = () => {
+    if (show) {
+      toggle()
     }
   }
 
-  handleShow = () => {
-    if (!this.state.show) {
-      this.toggle()
+  const handleShow = () => {
+    if (!show) {
+      toggle()
     }
   }
 
-  pageChangeHandler = (page, sizePerPage) => {
-    this.setState((prevState) => ({
-      options: { ...prevState.options, page, sizePerPage }
-    }))
+  const setProjectFiltersRef = (node) => {
+    projectFiltersRef = node
   }
 
-  renderShowsTotal = (start, to, total) => {
-    return (
-      <span className='mr-2'>
-        Showing {start} to {to} out of {total}
-      </span>
-    )
-  }
-
-  renderSizePerPageDropDown = (props) => {
-    return (
-      <SizePerPageDropDown btnContextual='btn-secondary btn-sm' {...props} />
-    )
-  }
-
-  searchChangeHandler = (searchText) => {
-    this.setState((prevState) => ({
-      options: { ...prevState.options, defaultSearch: searchText }
-    }))
-  }
-
-  setProjectFiltersRef (node) {
-    this.projectFiltersRef = node
-  }
-
-  sizePerPageListHandler = (sizePerPage) => {
-    this.setState((prevState) => ({
-      options: { ...prevState.options, sizePerPage }
-    }))
-    keptState.options.sizePerPage = sizePerPage
-  }
-
-  toggle () {
-    this.setState({
-      show: !this.state.show
-    })
-    const pfr = this.projectFiltersRef
-    if (!pfr) { return }
-    const colors = Object.values(pfr.state)
+  const toggle = () => {
+    setShow(!show)
+    const cfr = projectFiltersRef
+    if (!cfr) { return } // is null when modal opens, has value when closes
+    const colors = Object.values(cfr.state) // includes unwanted state values, but no big deal to include them
     if (colors.includes('danger')) {
-      this.setState({ filtersVariant: 'outline-danger' })
+      setVariant('outline-danger')
     } else {
-      this.setState({ filtersVariant: 'outline-primary' })
+      setVariant('outline-primary')
     }
   }
 
-  render () {
-    const {
-      count, totalCount, results, loadingMore, loadMore, networkStatus,
-      projectTypeFilters, projectStatusFilters, projectUpdatedFilters, projectPlatformFilters
-    } = this.props
-    if (networkStatus !== 8 && networkStatus !== 7) {
-      return (
-        <div className='animated fadeIn'>
-          <Components.HeadTags title='V8: Projects' />
-          <Card>
-            <Card.Header>
-              <i className='icon-people' />Projects
-            </Card.Header>
-            <Card.Body>
-              <Components.Loading />
-            </Card.Body>
-          </Card>
-        </div>
-      )
-    }
-    var typeFilters = []
-    projectTypeFilters.forEach(filter => {
-      if (filter.value) { typeFilters.push(filter.projectType) }
-    })
-    var statusFilters = []
-    projectStatusFilters.forEach(filter => {
-      if (filter.value) { statusFilters.push(filter.projectStatus) }
-    })
-    let momentNumber = ''
-    let momentPeriod = ''
-    projectUpdatedFilters.forEach(filter => {
-      if (filter.value) {
-        momentNumber = filter.momentNumber
-        momentPeriod = filter.momentPeriod
-      }
-    })
-    var platformFilters = []
-    projectPlatformFilters.forEach(filter => {
-      if (filter.value) { platformFilters.push(filter.projectPlatform) }
-    })
-    const filteredResults = _.filter(results, function (o) {
-      // compare current time to filter, but generous, so start of day then, not the time it is now - filter plus up to 23:59
-      const now = moment()
-      const dateToCompare = o.updatedAt ? o.updatedAt : o.createdAt
-      const displayThis = moment(dateToCompare).isAfter(now.subtract(momentNumber, momentPeriod).startOf('day'))
-      return _.includes(statusFilters, o.status) &&
-          _.includes(typeFilters, o.projectType) &&
-          _.includes(platformFilters, o.platformType) &&
-          displayThis
-    })
-
-    const hasMore = results && (totalCount > results.length)
-    return (
-      <div className='animated fadeIn'>
-        <Components.HeadTags title='V8: Projects' />
-        <Card>
-          <Card.Header>
-            <i className='fad fa-camera' />Projects
-            <Button size='sm' variant={this.state.filtersVariant} className='ml-2' onClick={this.handleShow}>Filters</Button>
-            <Modal show={this.state.show} onHide={this.handleHide}>
-              <Modal.Header closeButton>Project Filters</Modal.Header>
-              <Modal.Body>
-                <Components.ProjectFilters ref={this.setProjectFiltersRef} />
-              </Modal.Body>
-            </Modal>
-          </Card.Header>
-          <Card.Body>
-            <BootstrapTable
-              bordered={false}
-              condensed
-              data={filteredResults}
-              hover
-              keyField='_id'
-              options={{
-                ...this.state.options,
-                sizePerPageList: SIZE_PER_PAGE_LIST_SEED.concat([{
-                  text: 'All', value: this.props.totalCount
-                }]),
-                sizePerPage: this.state.options.sizePerPage
-                  ? this.state.options.sizePerPage
-                  : totalCount
-              }}
-              pagination
-              search
-              striped
-              tableHeaderClass='d-none'
-              version='4'
-            >
-              <TableHeaderColumn
-                dataField='projectTitle'
-                dataFormat={(cell, row) => (
-                  <Link to={`/projects/${row._id}/${row.slug}`}>
-                    {cell}
-                  </Link>
-                )}
-              >
-                Name
-              </TableHeaderColumn>
-              <TableHeaderColumn dataField='network' hidden>Network</TableHeaderColumn>
-              <TableHeaderColumn dataField='projectType' hidden>Type</TableHeaderColumn>
-              <TableHeaderColumn dataField='casting' hidden>Casting</TableHeaderColumn>
-              <TableHeaderColumn dataField='status' hidden>Status</TableHeaderColumn>
-              <TableHeaderColumn dataField='summary' hidden>Hidden</TableHeaderColumn>
-              <TableHeaderColumn dataField='notes' hidden>Hidden</TableHeaderColumn>
-              <TableHeaderColumn dataField='allContactNames' hidden>Hidden</TableHeaderColumn>
-              <TableHeaderColumn dataField='allAddresses' hidden>Hidden</TableHeaderColumn>
-            </BootstrapTable>
-          </Card.Body>
-          {hasMore &&
-            <Card.Footer>
-              {loadingMore
-                ? <Components.Loading />
-                : <Button onClick={e => { e.preventDefault(); loadMore() }}>Load More ({count}/{totalCount})</Button>}
-            </Card.Footer>}
-        </Card>
-      </div>
-    )
-  }
+  return (
+    <>
+      <Components.HeadTags title='V8: Projects' />
+      <Card className='card-accent-danger'>
+        <Card.Header>
+          <i className='icon-people' />Projects
+          <Button size='sm' variant={variant} className='ml-2' onClick={handleShow}>Filters</Button>
+          <Modal show={show} onHide={handleHide}>
+            <Modal.Header closeButton>Project Filters</Modal.Header>
+            <Modal.Body>
+              <Components.ProjectFilters ref={setProjectFiltersRef} />
+            </Modal.Body>
+          </Modal>
+        </Card.Header>
+        <Card.Body>
+          <Table columns={columns} data={filteredResults} />
+        </Card.Body>
+      </Card>
+    </>
+  )
 }
 
 const accessOptions = {
@@ -286,8 +212,12 @@ const accessOptions = {
 const multiOptions = {
   collection: Projects,
   fragmentName: 'ProjectsDataTableFragment',
-  limit: 1000,
-  terms: { view: 'projectsByTitle' }
+  input: {
+    sort: {
+      sortTitle: 'asc'
+    }
+  },
+  limit: 1000
 }
 
 registerComponent({
@@ -295,7 +225,8 @@ registerComponent({
   component: ProjectsNameOnly,
   hocs: [
     [withAccess, accessOptions],
+    withCurrentUser,
     withFilters,
-    [withMulti, multiOptions]
+    [withMulti2, multiOptions]
   ]
 })
