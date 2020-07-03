@@ -1,29 +1,30 @@
-import { Components, registerComponent, withCurrentUser, withSingle } from 'meteor/vulcan:core'
+import { Components, registerComponent, withSingle2 } from 'meteor/vulcan:core'
 import { FormattedMessage } from 'meteor/vulcan:i18n'
 import React from 'react'
 import PropTypes from 'prop-types'
+import mapProps from 'recompose/mapProps'
 import Card from 'react-bootstrap/Card'
-import Projects from '../../modules/projects/collection.js'
 import Patches from '../../modules/patches/collection.js'
 
 const ProjectPatchesList = (props) => {
-  const { projectDocument, patchesDocument, networkStatus } = props
-  var accumulatedPatches = []
-  if (networkStatus !== 8 && networkStatus !== 7) {
+  const { loading, patchesDocument, project } = props
+  if (loading) {
     return <Components.Loading />
-  } else if (!patchesDocument || !projectDocument) {
+  }
+  if (!patchesDocument) {
     return <FormattedMessage id='patches.missing_document' />
-  } else {
-    const reversedPatches = [...patchesDocument.patches].reverse()
-    accumulatedPatches[0] = {
-      date: reversedPatches[0].date,
-      patch: reversedPatches[0].patch
-    }
-    for (var i = 1; i < patchesDocument.patches.length; i++) {
-      accumulatedPatches[i] = {
-        date: reversedPatches[i].date,
-        patch: [...accumulatedPatches[i - 1].patch, ...reversedPatches[i].patch]
-      }
+  }
+
+  var accumulatedPatches = []
+  const reversedPatches = [...patchesDocument.patches].reverse()
+  accumulatedPatches[0] = {
+    date: reversedPatches[0].date,
+    patch: reversedPatches[0].patch
+  }
+  for (var i = 1; i < patchesDocument.patches.length; i++) {
+    accumulatedPatches[i] = {
+      date: reversedPatches[i].date,
+      patch: [...accumulatedPatches[i - 1].patch, ...reversedPatches[i].patch]
     }
   }
 
@@ -35,9 +36,9 @@ const ProjectPatchesList = (props) => {
       <Card.Body>
         {accumulatedPatches.map((patch) =>
           <Components.ProjectPatch
-            project={projectDocument}
             key={patch.date}
             patch={patch}
+            project={project}
           />
         )}
       </Card.Body>
@@ -48,7 +49,7 @@ const ProjectPatchesList = (props) => {
   )
 }
 
-const patchOptions = {
+const options = {
   collection: Patches,
   propertyName: 'patchesDocument',
   queryOptions: {
@@ -56,22 +57,25 @@ const patchOptions = {
   }
 }
 
-const projectOptions = {
-  collection: Projects,
-  fragmentName: 'ProjectsPatchesFragment',
-  propertyName: 'projectDocument'
+ProjectPatchesList.propTypes = {
+  documentId: PropTypes.string.isRequired, // same _id for Project and Patches
+  project: PropTypes.object.isRequired
 }
 
-ProjectPatchesList.propTypes = {
-  documentId: PropTypes.string.isRequired
+const mapPropsFunction = (props) => {
+  return {
+    ...props,
+    input: {
+      allowNull: true,
+      id: props.documentId
+    }
+  }
 }
 
 registerComponent({
   name: 'ProjectPatchesList',
   component: ProjectPatchesList,
   hocs: [
-    withCurrentUser,
-    [withSingle, patchOptions],
-    [withSingle, projectOptions]
+    mapProps(mapPropsFunction), [withSingle2, options]
   ]
 })
