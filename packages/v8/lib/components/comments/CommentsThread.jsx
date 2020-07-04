@@ -1,9 +1,9 @@
-import { Components, registerComponent, Utils, withCurrentUser, withMulti } from 'meteor/vulcan:core'
+import { Components, registerComponent, Utils, withCurrentUser, withMulti2 } from 'meteor/vulcan:core'
 import React, { Component } from 'react'
-import PropTypes from 'prop-types'
 import Card from 'react-bootstrap/Card'
 import _ from 'lodash'
 import pluralize from 'pluralize'
+import mapProps from 'recompose/mapProps'
 import Comments from '../../modules/comments/collection.js'
 
 class CommentsThread extends Component {
@@ -34,10 +34,11 @@ class CommentsThread extends Component {
   }
 
   render () {
-    const { loading, terms: { collectionName, objectId }, results, totalCount, currentUser } = this.props
+    const { collectionName, currentUser, loading, objectId, results, totalCount } = this.props
     if (loading) {
       return <Components.Loading />
     }
+
     const resultsClone = _.map(results, _.clone) // we don't want to modify the objects we got from props
     const nestedComments = Utils.unflatten(resultsClone, { idProperty: '_id', parentIdProperty: 'parentCommentId' })
 
@@ -60,16 +61,17 @@ class CommentsThread extends Component {
   }
 }
 
-CommentsThread.displayName = 'CommentsThread'
-
-CommentsThread.propTypes = {
-  currentUser: PropTypes.object
-}
-
 const options = {
   collection: Comments,
   fragmentName: 'CommentsList',
-  limit: 10
+  limit: 0
+}
+
+const mapPropsFunction = (props) => {
+  return {
+    ...props,
+    input: { filter: { objectId: { _eq: props.objectId } } }
+  }
 }
 
 registerComponent({
@@ -77,7 +79,7 @@ registerComponent({
   component: CommentsThread,
   hocs: [
     withCurrentUser,
-    [withMulti, options]
+    mapProps(mapPropsFunction), [withMulti2, options]
   ]
 })
 

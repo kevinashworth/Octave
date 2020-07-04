@@ -159,7 +159,8 @@ class ProjectsSingle extends Component {
               <Tab eventKey='comments' title={this.state.commentsTabTitle}>
                 <Components.CommentsThread
                   callbackFromSingle={this.commentsCallback}
-                  terms={{ objectId: documentId, collectionName: 'Projects' }}
+                  collectionName='Projects'
+                  objectId={documentId}
                 />
               </Tab>
               <Tab eventKey='history' title='History'>
@@ -186,7 +187,7 @@ const options = {
   fragmentName: 'ProjectsSingleFragment'
 }
 
-const mapPropsFunction = props => {
+const mapPropsFunction = (props) => {
   const id = get(props, 'match.params._id')
   return {
     ...props,
