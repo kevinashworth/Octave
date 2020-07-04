@@ -116,7 +116,8 @@ class OfficesSingle extends Component {
               <Tab eventKey='comments' title={this.state.commentsTabTitle}>
                 <Components.CommentsThread
                   callbackFromSingle={this.commentsCallback}
-                  terms={{ objectId: document._id, collectionName: 'Offices', view: 'Comments' }}
+                  collectionName='Offices'
+                  objectId={document._id}
                 />
               </Tab>
               <Tab eventKey='history' title='History'>

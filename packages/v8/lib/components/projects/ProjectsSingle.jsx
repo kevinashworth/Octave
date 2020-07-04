@@ -1,14 +1,16 @@
-import { Components, registerComponent, withCurrentUser, withSingle } from 'meteor/vulcan:core'
+import { Components, registerComponent, withCurrentUser, withSingle2 } from 'meteor/vulcan:core'
 import Users from 'meteor/vulcan:users'
 import { FormattedMessage } from 'meteor/vulcan:i18n'
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import { LinkContainer } from 'react-router-bootstrap'
+import { Link } from 'react-router-dom'
 import Button from 'react-bootstrap/Button'
 import Card from 'react-bootstrap/Card'
 import Tab from 'react-bootstrap/Tab'
 import Tabs from 'react-bootstrap/Tabs'
 import Interweave from 'interweave'
+import get from 'lodash/get'
 import moment from 'moment'
 import mapProps from 'recompose/mapProps'
 import { DATE_FORMAT_LONG, DATE_FORMAT_SHORT } from '../../modules/constants.js'
@@ -62,19 +64,27 @@ class ProjectsSingle extends Component {
   }
 
   render () {
-    const { currentUser, document, networkStatus, documentId } = this.props
-    if (networkStatus !== 8 && networkStatus !== 7) {
+    const { currentUser, document, documentId, loading } = this.props
+    if (loading) {
       return (<div><Components.Loading /></div>)
     }
     if (!document) {
       return (
-        <div>
-          <FormattedMessage id='app.missing_document' />
-          {Users.isAdmin(currentUser) &&
-            <Button color='danger' onClick={this.deleteAlgoliaRecord(documentId)}>Delete {documentId} from Algolia</Button>}
-        </div>
+        <Card>
+          <Card.Body>
+            <Card.Text>
+              <FormattedMessage id='app.missing_document' />
+            </Card.Text>
+            {Users.isAdmin(currentUser) &&
+              <Card.Text>
+                <Button variant='danger' onClick={this.deleteAlgoliaRecord(documentId)}>Admin: Delete {documentId} from Algolia</Button>{' '}
+                <Link to={`/past-projects/${documentId}`}>Is this _id for a Past Project?</Link>
+              </Card.Text>}
+          </Card.Body>
+        </Card>
       )
     }
+
     const project = document
     const seasonorder = this.seasonorder(project)
     const displayDate =
@@ -149,11 +159,12 @@ class ProjectsSingle extends Component {
               <Tab eventKey='comments' title={this.state.commentsTabTitle}>
                 <Components.CommentsThread
                   callbackFromSingle={this.commentsCallback}
-                  terms={{ objectId: document._id, collectionName: 'Projects', view: 'Comments' }}
+                  collectionName='Projects'
+                  objectId={documentId}
                 />
               </Tab>
               <Tab eventKey='history' title='History'>
-                <Components.ProjectPatchesList documentId={document._id} />
+                <Components.ProjectPatchesList project={project} documentId={document._id} />
               </Tab>
             </Tabs>
           </Card.Body>
@@ -176,13 +187,20 @@ const options = {
   fragmentName: 'ProjectsSingleFragment'
 }
 
-const mapPropsFunction = props => ({ ...props, documentId: props.match && props.match.params._id })
+const mapPropsFunction = (props) => {
+  const id = get(props, 'match.params._id')
+  return {
+    ...props,
+    documentId: id,
+    input: { id }
+  }
+}
 
 registerComponent({
   name: 'ProjectsSingle',
   component: ProjectsSingle,
   hocs: [
     withCurrentUser,
-    mapProps(mapPropsFunction), [withSingle, options] // mapProps must precede withSingle
+    mapProps(mapPropsFunction), [withSingle2, options] // mapProps must precede withSingle
   ]
 })
