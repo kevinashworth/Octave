@@ -20,6 +20,7 @@ const PastProjects = (props) => {
 }
 
 const ContactDisplay = ({ contact }) => {
+  if (!contact) return null
   const displayDate =
     'Contact as it was in the database before it was edited ' + moment(contact.updatedAt).format(DATE_FORMAT_LONG)
   return (
