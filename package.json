@@ -85,6 +85,7 @@
     "interweave": "^12.5.0",
     "intl": "^1.2.4",
     "intl-locales-supported": "1.4.6",
+    "jiff": "^0.7.3",
     "juice": "^5.1.0",
     "lodash": "^4.17.15",
     "mailchimp": "^1.1.6",

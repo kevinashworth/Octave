@@ -4,7 +4,7 @@ import React, { useState } from 'react'
 import PropTypes from 'prop-types'
 import Button from 'react-bootstrap/Button'
 import Collapse from 'react-bootstrap/Collapse'
-import * as jsonpatch from 'fast-json-patch'
+import jiff from 'jiff'
 import _ from 'lodash'
 import moment from 'moment'
 import omitDeep from 'omit-deep'
@@ -20,16 +20,13 @@ const ProjectPatchDisplay = (props) => {
     return <FormattedMessage id='app.missing_document' />
   }
   var clonedProject = _.cloneDeep(omitDeep(project, ['__typename']))
-  // console.log('[ProjectPatchDisplay] clonedProject:', clonedProject)
 
-  var patchedProject = project
+  var patchedProject = null
   try {
-    patchedProject = jsonpatch.applyPatch(clonedProject, patch.patch).newDocument
+    patchedProject = jiff.patch(patch, clonedProject)
   } catch (e) {
     console.log('[ProjectPatch] error:', e)
   }
-  // console.log('[ProjectPatchDisplay] patch:', patch.patch)
-  // console.log('[ProjectPatchDisplay] patchedProject:', patchedProject)
 
   return <ProjectDisplay project={patchedProject} />
 }
@@ -50,7 +47,7 @@ const ProjectPatch = ({ project, patch }) => {
     <div>
       <Button variant='secondary' onClick={toggle} className='mb-1'>Toggle {moment(patch.date).format(DATE_FORMAT_LONG)} Version</Button>
       <Collapse isOpen={collapseIsOpen}>
-        <ProjectPatchDisplay project={project} patch={patch} collapseIsOpen={collapseIsOpen} />
+        <ProjectPatchDisplay project={project} patch={patch.patch} collapseIsOpen={collapseIsOpen} />
       </Collapse>
     </div>
   )

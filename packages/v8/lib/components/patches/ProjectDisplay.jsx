@@ -7,6 +7,7 @@ import { DATE_FORMAT_LONG } from '../../modules/constants.js'
 import { getFullAddress, transformLinks } from '../../modules/helpers.js'
 
 const ProjectDisplay = ({ project }) => {
+  if (!project) return null
   const seasonorder = (project) => {
     if (!project.season) {
       return null

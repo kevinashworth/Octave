@@ -70,6 +70,7 @@ registerFragment(/* GraphQL */ `
     updatedAt
     userId
     projectTitle
+    sortTitle
     projectType
     platformType
     shootingLocation
