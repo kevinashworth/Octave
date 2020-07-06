@@ -4,8 +4,8 @@ import React, { useState } from 'react'
 import PropTypes from 'prop-types'
 import Button from 'react-bootstrap/Button'
 import Collapse from 'react-bootstrap/Collapse'
-import jiff from 'jiff'
-import _ from 'lodash'
+import * as jsonpatch from 'fast-json-patch'
+import cloneDeep from 'lodash/cloneDeep'
 import moment from 'moment'
 import omitDeep from 'omit-deep'
 import { DATE_FORMAT_LONG } from '../../modules/constants.js'
@@ -19,11 +19,11 @@ const ContactPatchDisplay = (props) => {
   if (!contact) {
     return <FormattedMessage id='patches.missing_document' />
   }
-  var clonedContact = _.cloneDeep(omitDeep(contact, ['__typename']))
+  var clonedContact = cloneDeep(omitDeep(contact, ['__typename']))
 
   var patchedContact = null
   try {
-    patchedContact = jiff.patch(patch, clonedContact)
+    patchedContact = jsonpatch.applyPatch(clonedContact, patch, false, false).newDocument
   } catch (e) {
     console.log('[ContactPatch] error:', e)
   }
