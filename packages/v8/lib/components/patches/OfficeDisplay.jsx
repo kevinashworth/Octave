@@ -14,7 +14,7 @@ const Flextest = styled.div`
   flex-wrap: wrap;
   justify-content: flex-start;
   align-items: stretch;
-align-content: flex-start;
+  align-content: flex-start;
 `
 
 function PastProjects (props) {
@@ -29,6 +29,7 @@ function PastProjects (props) {
 }
 
 const OfficeDisplay = ({ office }) => {
+  if (!office) return null
   const displayDate =
     'Office as it was in the database before it was edited ' + moment(office.updatedAt).format(DATE_FORMAT_LONG)
   return (
@@ -46,18 +47,19 @@ const OfficeDisplay = ({ office }) => {
             <Card.Title className='mt-5'><b>Notes</b></Card.Title>}
           {office.htmlBody &&
             <Interweave content={office.htmlBody} transform={transformLinks} />}
-          {office.theContacts && office.theContacts.length > 0 &&
+          {office.contacts && office.contacts.length > 0 &&
             <Card.Title className='mt-5'><b>Contacts</b></Card.Title>}
-          {office.theContacts &&
-            office.theContacts.length > 0 &&
-            office.theContacts.map((o, index) => <Components.ContactMini key={`ContactMini${index}`} documentId={o._id} />)}
+          {office.contacts &&
+            office.contacts.length > 0 &&
+            office.contacts.map((o, index) => <Components.ContactMini key={`ContactMini${index}`} documentId={o.contactId} />)}
           <Components.ErrorBoundary>
-            {office.theProjects &&
+            {office.projects && office.projects.length > 0 &&
               <Card.Title className='mt-5'><b>Projects</b></Card.Title>}
-            {office.theProjects &&
-              <Flextest>
-                {office.theProjects.map((o, index) => <Components.ProjectMini key={`ProjectMini-${index}`} documentId={o._id} />)}
-              </Flextest>}
+            {office.projects &&
+              office.projects.length > 0 &&
+                <Flextest>
+                  {office.projects.map((o, index) => <Components.ProjectMini key={`ProjectMini-${index}`} documentId={o.projectId} />)}
+                </Flextest>}
           </Components.ErrorBoundary>
           {office.links &&
             <Card.Text className='mt-5'>
