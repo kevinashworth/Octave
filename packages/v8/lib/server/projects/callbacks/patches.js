@@ -11,7 +11,7 @@ export function ProjectEditUpdateHistoryAfter (document, { currentUser, original
   const myOriginalDocument = cloneDeep(omitDeep(originalDocument, doNotDiff))
   const patch = jsonpatch.compare(myDocument, myOriginalDocument, true)
 
-  if (patch.length > 0) { // If there are no differences, jiff.diff returns an empty array (length 0)
+  if (patch.length > 0) { // If there are no differences, returns an empty array (length 0)
     const patchHistory = Patches.findOne(objectId)
     if (patchHistory) {
       Connectors.update(Patches, objectId,
