@@ -5,7 +5,7 @@ import PropTypes from 'prop-types'
 import Button from 'react-bootstrap/Button'
 import Collapse from 'react-bootstrap/Collapse'
 import * as jsonpatch from 'fast-json-patch'
-import _ from 'lodash'
+import cloneDeep from 'lodash/cloneDeep'
 import moment from 'moment'
 import omitDeep from 'omit-deep'
 import { DATE_FORMAT_LONG } from '../../modules/constants.js'
@@ -19,17 +19,14 @@ const PastProjectPatchDisplay = (props) => {
   if (!project) {
     return <FormattedMessage id='patches.missing_document' />
   }
-  var clonedProject = _.cloneDeep(omitDeep(project, ['__typename']))
-  // console.log('[ProjectPatchDisplay] clonedProject:', clonedProject)
+  var clonedProject = cloneDeep(omitDeep(project, ['__typename']))
 
   var patchedProject = project
   try {
-    patchedProject = jsonpatch.applyPatch(clonedProject, patch.patch).newDocument
+    patchedProject = jsonpatch.applyPatch(clonedProject, patch, false, false).newDocument
   } catch (e) {
     console.log('[ProjectPatch] error:', e)
   }
-  // console.log('[ProjectPatchDisplay] patch:', patch.patch)
-  // console.log('[ProjectPatchDisplay] patchedProject:', patchedProject)
 
   return <ProjectDisplay project={patchedProject} />
 }
@@ -41,7 +38,6 @@ PastProjectPatchDisplay.propTypes = {
 const PastProjectPatch = ({ project, patch }) => {
   const [collapseIsOpen, toggleCollapse] = useState(false)
   const toggle = () => toggleCollapse(!collapseIsOpen)
-
   if (!project) {
     return <div>No History (PastProjectPatch)</div>
   }
@@ -50,7 +46,7 @@ const PastProjectPatch = ({ project, patch }) => {
     <div>
       <Button variant='secondary' onClick={toggle} className='mb-1'>Toggle {moment(patch.date).format(DATE_FORMAT_LONG)} Version</Button>
       <Collapse isOpen={collapseIsOpen}>
-        <PastProjectPatchDisplay project={project} patch={patch} collapseIsOpen={collapseIsOpen} />
+        <PastProjectPatchDisplay project={project} patch={patch.patch} collapseIsOpen={collapseIsOpen} />
       </Collapse>
     </div>
   )

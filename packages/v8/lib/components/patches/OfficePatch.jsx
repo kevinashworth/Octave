@@ -5,7 +5,7 @@ import PropTypes from 'prop-types'
 import Button from 'react-bootstrap/Button'
 import Collapse from 'react-bootstrap/Collapse'
 import * as jsonpatch from 'fast-json-patch'
-import _ from 'lodash'
+import cloneDeep from 'lodash/cloneDeep'
 import moment from 'moment'
 import omitDeep from 'omit-deep'
 import { DATE_FORMAT_LONG } from '../../modules/constants.js'
@@ -19,17 +19,14 @@ const OfficePatchDisplay = (props) => {
   if (!office) {
     return <FormattedMessage id='patches.missing_document' />
   }
-  var clonedOffice = _.cloneDeep(omitDeep(office, ['__typename']))
-  // console.log('[OfficePatchDisplay] clonedOffice:', clonedOffice)
+  var clonedOffice = cloneDeep(omitDeep(office, ['__typename']))
 
-  var patchedOffice = office
+  var patchedOffice = null
   try {
-    patchedOffice = jsonpatch.applyPatch(clonedOffice, patch.patch).newDocument
+    patchedOffice = jsonpatch.applyPatch(clonedOffice, patch, false, false).newDocument
   } catch (e) {
     console.log('[OfficePatch] error:', e)
   }
-  // console.log('[OfficePatchDisplay] patch:', patch.patch)
-  // console.log('[OfficePatchDisplay] patchedOffice:', patchedOffice)
 
   return <OfficeDisplay office={patchedOffice} />
 }
@@ -41,7 +38,6 @@ OfficePatchDisplay.propTypes = {
 const OfficePatch = ({ office, patch }) => {
   const [collapseIsOpen, toggleCollapse] = useState(false)
   const toggle = () => toggleCollapse(!collapseIsOpen)
-
   if (!office) {
     return <div>No History (OfficePatch)</div>
   }
@@ -50,7 +46,7 @@ const OfficePatch = ({ office, patch }) => {
     <div>
       <Button variant='secondary' onClick={toggle} className='mb-1'>Toggle {moment(patch.date).format(DATE_FORMAT_LONG)} Version</Button>
       <Collapse isOpen={collapseIsOpen}>
-        <OfficePatchDisplay office={office} patch={patch} collapseIsOpen={collapseIsOpen} />
+        <OfficePatchDisplay office={office} patch={patch.patch} collapseIsOpen={collapseIsOpen} />
       </Collapse>
     </div>
   )

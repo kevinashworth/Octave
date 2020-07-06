@@ -76,37 +76,8 @@ registerFragment(/* GraphQL */ `
   }
 `)
 
-// OfficesPatchesFragment includes only directly-editable fields, plus `htmlBody`, and `theProjects` and `theContacts` instead of `projects` and `contacts`
-registerFragment(/* GraphQL */ `
-  fragment OfficesPatchesFragment on Office {
-    displayName
-    body
-    htmlBody
-    links {
-      platformName
-      profileLink
-      profileName
-    }
-    theProjects {
-      _id
-    }
-    theContacts {
-      _id
-    }
-    addresses {
-      street1
-      street2
-      city
-      state
-      zip
-      addressType
-    }
-    slug
-  }
-`)
-registerFragment(/* GraphQL */ `
-  fragment OfficesEditFragment on Office {
-    _id
+registerFragment(/* GraphQL */`
+  fragment DirectlyEditableFields on Office {
     displayName
     body
     links {
@@ -135,6 +106,29 @@ registerFragment(/* GraphQL */ `
       zip
       addressType
     }
+  }
+`)
+
+registerFragment(/* GraphQL */ `
+  fragment OfficesPatchesFragment on Office {
+    ...DirectlyEditableFields
+    htmlBody
+    theContacts {
+      _id
+      displayName
+    }
+    theProjects {
+      _id
+      projectTitle
+    }
+    slug
+  }
+`)
+
+registerFragment(/* GraphQL */ `
+  fragment OfficesEditFragment on Office {
+    _id
+    ...DirectlyEditableFields
     slug
   }
 `)
