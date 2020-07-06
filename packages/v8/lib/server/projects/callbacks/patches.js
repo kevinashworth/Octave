@@ -1,14 +1,15 @@
 import { Connectors, newMutation } from 'meteor/vulcan:core'
-import jiff from 'jiff'
+import * as jsonpatch from 'fast-json-patch'
+import cloneDeep from 'lodash/cloneDeep'
 import omitDeep from 'omit-deep'
 import Patches from '../../../modules/patches/collection.js'
 
 export function ProjectEditUpdateHistoryAfter (document, { currentUser, originalDocument }) {
   const objectId = originalDocument._id
   const doNotDiff = ['createdAt', 'updatedAt']
-  const myDocument = jiff.clone(omitDeep(document, doNotDiff))
-  const myOriginalDocument = jiff.clone(omitDeep(originalDocument, doNotDiff))
-  const patch = jiff.diff(myDocument, myOriginalDocument)
+  const myDocument = cloneDeep(omitDeep(document, doNotDiff))
+  const myOriginalDocument = cloneDeep(omitDeep(originalDocument, doNotDiff))
+  const patch = jsonpatch.compare(myDocument, myOriginalDocument, true)
 
   if (patch.length > 0) { // If there are no differences, jiff.diff returns an empty array (length 0)
     const patchHistory = Patches.findOne(objectId)

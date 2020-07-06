@@ -4,8 +4,8 @@ import React, { useState } from 'react'
 import PropTypes from 'prop-types'
 import Button from 'react-bootstrap/Button'
 import Collapse from 'react-bootstrap/Collapse'
-import jiff from 'jiff'
-import _ from 'lodash'
+import * as jsonpatch from 'fast-json-patch'
+import cloneDeep from 'lodash/cloneDeep'
 import moment from 'moment'
 import omitDeep from 'omit-deep'
 import { DATE_FORMAT_LONG } from '../../modules/constants.js'
@@ -17,13 +17,13 @@ const ProjectPatchDisplay = (props) => {
     return null
   }
   if (!project) {
-    return <FormattedMessage id='app.missing_document' />
+    return <FormattedMessage id='patches.missing_document' />
   }
-  var clonedProject = _.cloneDeep(omitDeep(project, ['__typename']))
+  var clonedProject = cloneDeep(omitDeep(project, ['__typename']))
 
   var patchedProject = null
   try {
-    patchedProject = jiff.patch(patch, clonedProject)
+    patchedProject = jsonpatch.applyPatch(clonedProject, patch, false, false).newDocument
   } catch (e) {
     console.log('[ProjectPatch] error:', e)
   }
@@ -38,7 +38,6 @@ ProjectPatchDisplay.propTypes = {
 const ProjectPatch = ({ project, patch }) => {
   const [collapseIsOpen, toggleCollapse] = useState(false)
   const toggle = () => toggleCollapse(!collapseIsOpen)
-
   if (!project) {
     return <div>No History (ProjectPatch)</div>
   }
