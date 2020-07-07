@@ -42,11 +42,11 @@ const MyLoader = ({ cardClass }) => {
 }
 
 const LatestContactUpdates = (props) => {
-  if (props.networkStatus !== 8 && props.networkStatus !== 7) {
+  const { loading, results } = props
+  if (loading) {
     return <MyLoader cardClass='card-accent-warning' />
   }
-
-  const contacts = props.results || []
+  const contacts = results
 
   return (
     <Row className='row-cols-xs-1 row-cols-sm-2 row-cols-md-3 row-cols-xxxl-6'>
@@ -78,10 +78,6 @@ const LatestContactUpdates = (props) => {
       })}
     </Row>
   )
-}
-
-LatestContactUpdates.propTypes = {
-  results: PropTypes.array
 }
 
 const contactsOptions = {

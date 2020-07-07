@@ -9,6 +9,7 @@ import {
   ContactEditUpdatePastProjects,
   ContactEditUpdateHistoryAfter
 } from './callbacks/index.js'
+import './views.js'
 
 extendCollection(Contacts, {
   callbacks: {
