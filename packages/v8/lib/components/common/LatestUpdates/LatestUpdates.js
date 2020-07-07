@@ -149,12 +149,12 @@ registerComponent({
   hocs: [[withMulti, officesOptions]]
 })
 
-const LatestProjectUpdates = (props) => {
-  if (props.networkStatus !== 8 && props.networkStatus !== 7) {
+const ProjectUpdates = (props) => {
+  const { loading, results } = props
+  if (loading) {
     return <MyLoader cardClass='card-accent-danger' />
   }
-
-  const projects = props.results || []
+  const projects = results
 
   return (
     <Row className='row-cols-xs-1 row-cols-sm-2 row-cols-md-3 row-cols-xxxl-6'>
@@ -190,18 +190,14 @@ const LatestProjectUpdates = (props) => {
   )
 }
 
-LatestProjectUpdates.propTypes = {
-  results: PropTypes.array
-}
-
-const projectsOptions1 = {
+const newestProjectsAddedOptions = {
   collection: Projects,
   fragmentName: 'ProjectsSingleFragment',
   limit: 6,
   terms: { view: 'newestProjectsCasting' }
 }
 
-const projectsOptions2 = {
+const latestProjectUpdatesOptions = {
   collection: Projects,
   fragmentName: 'ProjectsSingleFragment',
   limit: 12
@@ -209,14 +205,14 @@ const projectsOptions2 = {
 
 registerComponent({
   name: 'NewestProjectsAdded',
-  component: LatestProjectUpdates,
-  hocs: [[withMulti, projectsOptions1]]
+  component: ProjectUpdates,
+  hocs: [[withMulti, newestProjectsAddedOptions]]
 })
 
 registerComponent({
   name: 'LatestProjectUpdates',
-  component: LatestProjectUpdates,
-  hocs: [[withMulti, projectsOptions2]]
+  component: ProjectUpdates,
+  hocs: [[withMulti, latestProjectUpdatesOptions]]
 })
 
 const LatestPastProjectUpdates = (props) => {

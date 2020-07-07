@@ -12,6 +12,11 @@ export const Projects = createCollection({
     canRead: ['guests'],
     canUpdate: ['owners', 'admins'],
     canDelete: ['admins']
+  },
+  defaultInput: {
+    sort: {
+      updatedAt: 'desc'
+    }
   }
 })
 
