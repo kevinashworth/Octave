@@ -23,3 +23,5 @@ extendCollection(Projects, {
     }
   }
 })
+
+Projects.rawCollection().createIndex({ updatedAt: -1 })

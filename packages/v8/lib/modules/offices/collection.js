@@ -15,16 +15,4 @@ export const Offices = createCollection({
   }
 })
 
-Offices.addDefaultView(terms => ({
-  options: {
-    sort: { displayName: 1 }
-  }
-}))
-
-Offices.addView('officesByUpdated', terms => ({
-  options: {
-    sort: { updatedAt: -1 }
-  }
-}))
-
 export default Offices

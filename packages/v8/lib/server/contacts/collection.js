@@ -21,3 +21,5 @@ extendCollection(Contacts, {
     }
   }
 })
+
+Contacts.rawCollection().createIndex({ updatedAt: -1 })

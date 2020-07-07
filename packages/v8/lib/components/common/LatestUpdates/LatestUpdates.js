@@ -1,7 +1,6 @@
 import { Components, registerComponent, withAccess, withMulti } from 'meteor/vulcan:core'
 import React from 'react'
 import { Link } from 'react-router-dom'
-import PropTypes from 'prop-types'
 import Card from 'react-bootstrap/Card'
 import Col from 'react-bootstrap/Col'
 import Row from 'react-bootstrap/Row'
@@ -42,11 +41,11 @@ const MyLoader = ({ cardClass }) => {
 }
 
 const LatestContactUpdates = (props) => {
-  if (props.networkStatus !== 8 && props.networkStatus !== 7) {
+  const { loading, results } = props
+  if (loading) {
     return <MyLoader cardClass='card-accent-warning' />
   }
-
-  const contacts = props.results || []
+  const contacts = results
 
   return (
     <Row className='row-cols-xs-1 row-cols-sm-2 row-cols-md-3 row-cols-xxxl-6'>
@@ -80,10 +79,6 @@ const LatestContactUpdates = (props) => {
   )
 }
 
-LatestContactUpdates.propTypes = {
-  results: PropTypes.array
-}
-
 const contactsOptions = {
   collection: Contacts,
   fragmentName: 'ContactsSingleFragment',
@@ -97,11 +92,11 @@ registerComponent({
 })
 
 const LatestOfficeUpdates = (props) => {
-  if (props.networkStatus !== 8 && props.networkStatus !== 7) {
+  const { loading, results } = props
+  if (loading) {
     return <MyLoader cardClass='card-accent-primary' />
   }
-
-  const offices = props.results || []
+  const offices = results
 
   return (
     <Row className='row-cols-xs-1 row-cols-sm-2 row-cols-md-3 row-cols-xxxl-6'>
@@ -132,14 +127,9 @@ const LatestOfficeUpdates = (props) => {
   )
 }
 
-LatestOfficeUpdates.propTypes = {
-  results: PropTypes.array
-}
-
 const officesOptions = {
   collection: Offices,
   fragmentName: 'OfficesSingleFragment',
-  terms: { view: 'officesByUpdated' },
   limit: 6
 }
 
@@ -149,12 +139,12 @@ registerComponent({
   hocs: [[withMulti, officesOptions]]
 })
 
-const LatestProjectUpdates = (props) => {
-  if (props.networkStatus !== 8 && props.networkStatus !== 7) {
+const ProjectUpdates = (props) => {
+  const { loading, results } = props
+  if (loading) {
     return <MyLoader cardClass='card-accent-danger' />
   }
-
-  const projects = props.results || []
+  const projects = results
 
   return (
     <Row className='row-cols-xs-1 row-cols-sm-2 row-cols-md-3 row-cols-xxxl-6'>
@@ -190,18 +180,14 @@ const LatestProjectUpdates = (props) => {
   )
 }
 
-LatestProjectUpdates.propTypes = {
-  results: PropTypes.array
-}
-
-const projectsOptions1 = {
+const newestProjectsAddedOptions = {
   collection: Projects,
   fragmentName: 'ProjectsSingleFragment',
   limit: 6,
-  terms: { view: 'newestProjectsCasting' }
+  terms: { view: 'projectsCastingByCreated' }
 }
 
-const projectsOptions2 = {
+const latestProjectUpdatesOptions = {
   collection: Projects,
   fragmentName: 'ProjectsSingleFragment',
   limit: 12
@@ -209,18 +195,19 @@ const projectsOptions2 = {
 
 registerComponent({
   name: 'NewestProjectsAdded',
-  component: LatestProjectUpdates,
-  hocs: [[withMulti, projectsOptions1]]
+  component: ProjectUpdates,
+  hocs: [[withMulti, newestProjectsAddedOptions]]
 })
 
 registerComponent({
   name: 'LatestProjectUpdates',
-  component: LatestProjectUpdates,
-  hocs: [[withMulti, projectsOptions2]]
+  component: ProjectUpdates,
+  hocs: [[withMulti, latestProjectUpdatesOptions]]
 })
 
 const LatestPastProjectUpdates = (props) => {
-  if (props.networkStatus !== 8 && props.networkStatus !== 7) {
+  const { loading, results } = props
+  if (loading) {
     return (
       <>
         <MyLoader cardClass='card-accent-secondary' />
@@ -228,8 +215,7 @@ const LatestPastProjectUpdates = (props) => {
       </>
     )
   }
-
-  const pastProjects = props.results || []
+  const pastProjects = results
 
   return (
     <Row className='row-cols-xs-1 row-cols-sm-2 row-cols-md-3 row-cols-xxxl-6'>
@@ -251,7 +237,7 @@ const LatestPastProjectUpdates = (props) => {
                   : null}
             </Card.Body>
             <Card.Footer>
-              <small className='text-muted'>Past Project as of {moment(project.updatedAt).format(DATE_FORMAT_SHORT_FRIENDLY)}</small>
+              <small className='text-muted'>Past Project updated {moment(project.updatedAt).format(DATE_FORMAT_SHORT_FRIENDLY)}</small>
             </Card.Footer>
           </Card>
         </Col>
@@ -260,15 +246,10 @@ const LatestPastProjectUpdates = (props) => {
   )
 }
 
-LatestPastProjectUpdates.propTypes = {
-  results: PropTypes.array
-}
-
 const pastProjectsOptions = {
   collection: PastProjects,
   fragmentName: 'PastProjectsSingleFragment',
-  limit: 6,
-  terms: { view: 'newestPastProjects' }
+  limit: 6
 }
 
 registerComponent({
@@ -312,7 +293,7 @@ const LatestUpdates = () => {
 
       <Card>
         <Card.Body>
-          <Card.Title>Newest Past Projects</Card.Title>
+          <Card.Title>Recently Updated Past Projects</Card.Title>
           <Components.LatestPastProjectUpdates />
         </Card.Body>
       </Card>

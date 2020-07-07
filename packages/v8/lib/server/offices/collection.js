@@ -10,7 +10,7 @@ import {
   OfficeEditUpdateProjects,
   OfficeCreateFormatPhones,
   OfficeUpdateFormatPhones,
-  OfficeEditUpdateHistoryAfter,
+  OfficeEditUpdateHistoryAfter
 } from './callbacks/index.js'
 
 extendCollection(Offices, {
@@ -36,3 +36,5 @@ extendCollection(Offices, {
     }
   }
 })
+
+Offices.rawCollection().createIndex({ updatedAt: -1 })
