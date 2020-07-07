@@ -1,4 +1,4 @@
-FROM node:8.15.1
+FROM node:12
 
 COPY programs/server/package.json /usr/src/app/programs/server/package.json
 WORKDIR /usr/src/app/programs/server

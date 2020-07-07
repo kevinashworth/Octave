@@ -1,12 +1,14 @@
 {
-  "name": "Vulcan",
-  "version": "1.15.0",
+  "name": "v8",
+  "version": "1.15.2",
   "engines": {
-    "npm": "^3.0"
+    "node": "12.x",
+    "npm": "^6.0"
   },
   "scripts": {
     "build-for-heroku": "meteor build ./.build --directory --server-only --architecture=os.linux.x86_64",
     "deploy-to-heroku": "open --hide --background -a Docker && cp Dockerfile ./.build/bundle && heroku container:push web -a sleepy-earth-65615 --context-path ./.build/bundle && heroku container:release web -a sleepy-earth-65615",
+    "deploy-2-heroku": "open --hide --background -a Docker && cp Dockerfile ./.build/bundle && heroku container:push web --context-path ./.build/bundle && heroku container:release web",
     "deploy-to-galaxy": "DEPLOY_HOSTNAME=us-east-1.galaxy-deploy.meteor.com meteor deploy v8.the-4th-wall.com --settings .galaxy/settings.json",
     "deploy-to-meteorapp": "DEPLOY_HOSTNAME=us-east-1.galaxy-deploy.meteor.com meteor deploy v8.meteorapp.com --settings .galaxy/settings.json",
     "prepare": "cd mockaroo; ./mockaroo.sh; cd ..",
