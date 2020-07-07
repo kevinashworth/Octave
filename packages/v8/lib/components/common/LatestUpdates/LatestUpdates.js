@@ -1,7 +1,6 @@
 import { Components, registerComponent, withAccess, withMulti } from 'meteor/vulcan:core'
 import React from 'react'
 import { Link } from 'react-router-dom'
-import PropTypes from 'prop-types'
 import Card from 'react-bootstrap/Card'
 import Col from 'react-bootstrap/Col'
 import Row from 'react-bootstrap/Row'
@@ -207,7 +206,8 @@ registerComponent({
 })
 
 const LatestPastProjectUpdates = (props) => {
-  if (props.networkStatus !== 8 && props.networkStatus !== 7) {
+  const { loading, results } = props
+  if (loading) {
     return (
       <>
         <MyLoader cardClass='card-accent-secondary' />
@@ -215,8 +215,7 @@ const LatestPastProjectUpdates = (props) => {
       </>
     )
   }
-
-  const pastProjects = props.results || []
+  const pastProjects = results
 
   return (
     <Row className='row-cols-xs-1 row-cols-sm-2 row-cols-md-3 row-cols-xxxl-6'>
@@ -238,7 +237,7 @@ const LatestPastProjectUpdates = (props) => {
                   : null}
             </Card.Body>
             <Card.Footer>
-              <small className='text-muted'>Past Project as of {moment(project.updatedAt).format(DATE_FORMAT_SHORT_FRIENDLY)}</small>
+              <small className='text-muted'>Past Project updated {moment(project.updatedAt).format(DATE_FORMAT_SHORT_FRIENDLY)}</small>
             </Card.Footer>
           </Card>
         </Col>
@@ -247,15 +246,10 @@ const LatestPastProjectUpdates = (props) => {
   )
 }
 
-LatestPastProjectUpdates.propTypes = {
-  results: PropTypes.array
-}
-
 const pastProjectsOptions = {
   collection: PastProjects,
   fragmentName: 'PastProjectsSingleFragment',
-  limit: 6,
-  terms: { view: 'newestPastProjects' }
+  limit: 6
 }
 
 registerComponent({
@@ -299,7 +293,7 @@ const LatestUpdates = () => {
 
       <Card>
         <Card.Body>
-          <Card.Title>Newest Past Projects</Card.Title>
+          <Card.Title>Recently Updated Past Projects</Card.Title>
           <Components.LatestPastProjectUpdates />
         </Card.Body>
       </Card>

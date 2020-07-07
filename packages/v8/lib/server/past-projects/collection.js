@@ -18,8 +18,10 @@ extendCollection(PastProjects, {
 
 // create: {
 //   after: [PastProjectCreateUpdateOfficeAfter],
-  // async: [PastProjectUpdateStatisticsAsync]
+// async: [PastProjectUpdateStatisticsAsync]
 // },
 
 // PastProjectCreateUpdateOfficeAfter,
 // PastProjectUpdateStatisticsAsync,
+
+PastProjects.rawCollection().createIndex({ updatedAt: -1 })
