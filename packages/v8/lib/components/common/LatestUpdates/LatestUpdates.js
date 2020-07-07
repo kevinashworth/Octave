@@ -184,7 +184,7 @@ const newestProjectsAddedOptions = {
   collection: Projects,
   fragmentName: 'ProjectsSingleFragment',
   limit: 6,
-  terms: { view: 'newestProjectsCasting' }
+  terms: { view: 'projectsCastingByCreated' }
 }
 
 const latestProjectUpdatesOptions = {
