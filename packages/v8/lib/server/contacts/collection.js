@@ -9,7 +9,6 @@ import {
   ContactEditUpdatePastProjects,
   ContactEditUpdateHistoryAfter
 } from './callbacks/index.js'
-import './views.js'
 
 extendCollection(Contacts, {
   callbacks: {
@@ -22,3 +21,5 @@ extendCollection(Contacts, {
     }
   }
 })
+
+Contacts.rawCollection().createIndex({ updatedAt: -1 })

@@ -25,29 +25,3 @@ extendCollection(Projects, {
 })
 
 Projects.rawCollection().createIndex({ updatedAt: -1 })
-
-// else default sort by createdAt timestamp in descending order
-Projects.addDefaultView(terms => ({
-  options: { sort: { updatedAt: -1 } }
-}))
-
-Projects.addView('collectionWithStatus', terms => ({
-  selector: {
-    status: terms.status
-  }
-}))
-
-Projects.addView('projectsByTitle', terms => ({
-  options: { sort: { sortTitle: 1 } }
-}))
-
-// Projects.addView('projectsByUpdated', terms => ({
-//   options: { sort: { updatedAt: -1 } }
-// }))
-//
-Projects.addView('newestProjectsCasting', terms => ({
-  selector: {
-    status: 'Casting'
-  },
-  options: { sort: { createdAt: -1 } }
-}))
