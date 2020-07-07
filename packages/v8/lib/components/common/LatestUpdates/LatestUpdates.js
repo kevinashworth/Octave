@@ -93,11 +93,11 @@ registerComponent({
 })
 
 const LatestOfficeUpdates = (props) => {
-  if (props.networkStatus !== 8 && props.networkStatus !== 7) {
+  const { loading, results } = props
+  if (loading) {
     return <MyLoader cardClass='card-accent-primary' />
   }
-
-  const offices = props.results || []
+  const offices = results
 
   return (
     <Row className='row-cols-xs-1 row-cols-sm-2 row-cols-md-3 row-cols-xxxl-6'>
@@ -128,14 +128,9 @@ const LatestOfficeUpdates = (props) => {
   )
 }
 
-LatestOfficeUpdates.propTypes = {
-  results: PropTypes.array
-}
-
 const officesOptions = {
   collection: Offices,
   fragmentName: 'OfficesSingleFragment',
-  terms: { view: 'officesByUpdated' },
   limit: 6
 }
 
