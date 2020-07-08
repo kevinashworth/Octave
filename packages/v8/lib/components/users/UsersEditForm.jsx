@@ -5,29 +5,9 @@ import { STATES } from 'meteor/vulcan:accounts'
 import React from 'react'
 import { withRouter } from 'react-router-dom'
 import PropTypes from 'prop-types'
-// import gql from 'graphql-tag'
 import Card from 'react-bootstrap/Card'
 import Col from 'react-bootstrap/Col'
 import Row from 'react-bootstrap/Row'
-
-// const theFragment = gql`
-//   fragment MyUsersEditFragment on User {
-//     _id
-//     displayName
-//     email
-//     username
-//     twitterUsername
-//     bio
-//     website
-//     notifications_comments
-//     notifications_posts
-//     notifications_replies
-//     notifications_users
-//     isAdmin
-//     groups
-//     slug
-//   }
-// `
 
 const UsersEditForm = (props, context) => {
   const { document: user, currentUser, flash, history, loading, toggle } = props
@@ -37,6 +17,7 @@ const UsersEditForm = (props, context) => {
   if (!Users.canUpdate({ collection: Users, document: user, user: currentUser })) {
     return <FormattedMessage id='app.noPermission' />
   }
+
   return (
     <div className='animated fadeIn page users-edit-form'>
       <Components.HeadTags title={`V8: ${context.intl.formatMessage({ id: 'users.edit_account' })}`} />
@@ -45,23 +26,9 @@ const UsersEditForm = (props, context) => {
           <Card.Title>{`${context.intl.formatMessage({ id: 'cards.edit' })} “${user.displayName}”`}</Card.Title>
           <hr />
           <Components.SmartForm
-            documentId={user._id}
             collection={Users}
-            fields={[
-              'displayName',
-              'email',
-              'username',
-              'twitterUsername',
-              'bio',
-              'website',
-              'notifications_comments',
-              'notifications_posts',
-              'notifications_replies',
-              'notifications_users',
-              'isAdmin',
-              'groups',
-              'slug'
-            ]}
+            currentUser={currentUser}
+            documentId={user._id}
             successCallback={user => {
               if (toggle) {
                 toggle()
@@ -122,5 +89,10 @@ const options = {
 registerComponent({
   name: 'UsersEditForm',
   component: UsersEditForm,
-  hocs: [withMessages, withCurrentUser, withRouter, [withSingle2, options]]
+  hocs: [
+    withCurrentUser,
+    withMessages,
+    withRouter,
+    [withSingle2, options]
+  ]
 })

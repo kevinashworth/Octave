@@ -15,6 +15,10 @@ registerFragment(/* GraphQL */`
     avatarUrl
     pageUrl
     isAdmin
+    notifications_comments
+    notifications_posts
+    notifications_replies
+    notifications_users
     bio
     htmlBio
     website

@@ -25,6 +25,7 @@ const UsersProfile = (props) => {
   if (user.updatedAt) {
     displayDate += ' / ' + 'Last modified ' + moment(user.updatedAt).format(DATE_FORMAT_LONG)
   }
+
   return (
     <div className='animated fadeIn'>
       <Components.HeadTags
@@ -81,12 +82,6 @@ const options = {
   collection: Users,
   fragmentName: 'UsersProfile'
 }
-
-// const mapPropsFunction = props => ({
-//   ...props,
-//   documentId: props.match && props.match.params._id,
-//   slug: props.match && props.match.params.slug
-// })
 
 // make router slug param available as `slug` prop
 const mapPropsFunction = props => ({
