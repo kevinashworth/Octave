@@ -1,39 +1,10 @@
 import SimpleSchema from 'simpl-schema'
-
 const notificationsGroup = {
   name: 'notifications',
   order: 10
 }
-const userGroupsOptions = [
-  { value: 'participants', label: 'Participants' },
-  { value: 'pending', label: 'Pending' }
-]
 
 const schema = {
-  // fields we are MODIFYING*
-  createdAt: {
-    canRead: ['guests']
-  },
-  locale: {
-    hidden: true
-  },
-  isAdmin: {
-    itemProperties: { layout: 'inputOnly' }
-  },
-  emails: {
-    canRead: ['owners', 'admins']
-  },
-  'emails.$': {},
-  groups: {
-    canRead: ['owners', 'admins'],
-    defaultValue: ['pending'],
-    form: {
-      options: userGroupsOptions
-    },
-    options: userGroupsOptions
-  },
-  'groups.$': {},
-  // fields we are ADDING
   bio: {
     type: String,
     optional: true,
@@ -62,14 +33,14 @@ const schema = {
     defaultValue: 0,
     canRead: ['guests']
   },
-  // twitterUsername: {
-  //   type: String,
-  //   optional: true,
-  //   input: 'text',
-  //   canRead: ['guests'],
-  //   canCreate: ['members'],
-  //   canUpdate: ['members']
-  // },
+  twitterUsername: {
+    type: String,
+    optional: true,
+    input: 'text',
+    canRead: ['guests'],
+    canCreate: ['members'],
+    canUpdate: ['members']
+  },
   website: {
     type: String,
     regEx: SimpleSchema.RegEx.Url,
@@ -146,9 +117,5 @@ const schema = {
     itemProperties: { layout: 'inputOnly' }
   }
 }
-
-// *
-// fields we are MODIFYING using lodash/mergeWith
-// original schema found in packages/vulcan-users/lib/modules/schema.js
 
 export default schema
