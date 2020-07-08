@@ -3,7 +3,7 @@ import Users from 'meteor/vulcan:users'
 import {
   callbackXYZ
 } from './callbacks/index.js'
-import schema from './schema.js'
+import schema from '../../modules/users/schema.js'
 
 extendCollection(Users, {
   callbacks: {
