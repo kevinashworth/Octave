@@ -4,10 +4,6 @@ const notificationsGroup = {
   name: 'notifications',
   order: 10
 }
-const userGroupsOptions = [
-  { value: 'participants', label: 'Participants' },
-  { value: 'pending', label: 'Pending' }
-]
 
 const schema = {
   // fields we are MODIFYING*
@@ -26,11 +22,7 @@ const schema = {
   'emails.$': {},
   groups: {
     canRead: ['owners', 'admins'],
-    defaultValue: ['pending'],
-    form: {
-      options: userGroupsOptions
-    },
-    options: userGroupsOptions
+    defaultValue: ['pending']
   },
   'groups.$': {},
   // fields we are ADDING
