@@ -1,18 +1,13 @@
-import { updateMutator } from 'meteor/vulcan:core'
-import Users from 'meteor/vulcan:users'
+/* eslint-disable no-undef */
 import algoliasearch from 'algoliasearch'
-import AlgoliaLog from '../modules/algolia-log/collection.js'
 import Contacts from '../modules/contacts/collection.js'
 import Offices from '../modules/offices/collection.js'
 import Projects from '../modules/projects/collection.js'
 import PastProjects from '../modules/past-projects/collection.js'
 
 const applicationid = Meteor.settings.public.algolia.ApplicationID
-const algoliaindex  = Meteor.settings.private.algolia.AlgoliaIndex
-const addupdatekey   = Meteor.settings.private.algolia.AddAndUpdateAPIKey
-
-const currentUser = Users.findOne() // just get the first user available
-let algoliaLog = AlgoliaLog.findOne()
+const algoliaindex = Meteor.settings.private.algolia.AlgoliaIndex
+const addupdatekey = Meteor.settings.private.algolia.AddAndUpdateAPIKey
 
 const populateAlgoliaIndex = () => {
   const client = algoliasearch(applicationid, addupdatekey)
@@ -38,7 +33,7 @@ const populateAlgoliaIndex = () => {
     ],
     snippetEllipsisText: '…',
     hitsPerPage: 16
-  });
+  })
 
   index.getSettings()
     .then(response => {
@@ -50,7 +45,7 @@ const populateAlgoliaIndex = () => {
       console.error('Algolia getSettings error:', error)
     })
 
-  let objects = []
+  var objects = []
   Contacts.find().forEach((o) => {
     const indexedObject = {
       objectID: o._id,
@@ -105,15 +100,6 @@ const populateAlgoliaIndex = () => {
   index
     .saveObjects(objects)
     .then((response) => {
-      algoliaLog.algolia.push({ dateOfSend: new Date(), sentObjectCount: response.objectIDs.length })
-      Promise.await(updateMutator({
-        action: 'algolialog.update',
-        documentId: algoliaLog._id,
-        collection: AlgoliaLog,
-        set: AlgoliaLog,
-        currentUser,
-        validate: false
-      }))
       console.group('AlgoliaLog saveObjects response:')
       console.log(response)
       console.groupEnd()

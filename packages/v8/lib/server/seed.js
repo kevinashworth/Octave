@@ -8,7 +8,7 @@ import Patches from '../modules/patches/collection.js'
 import Projects from '../modules/projects/collection.js'
 import PastProjects from '../modules/past-projects/collection.js'
 import Statistics from '../modules/statistics/collection.js'
-import populateAlgoliaIndexMockaroo from './algolia-mockaroo.js'
+import populateAlgoliaMockaroo from './algolia-mockaroo.js'
 
 const createUser = async (username, email) => {
   const user = {
@@ -106,7 +106,9 @@ Meteor.startup(() => {
       pastprojects2 = pastprojects
     })
   }
-  populateAlgoliaIndexMockaroo(contacts2, offices2, projects2, pastprojects2)
+  if (contacts2.length || offices2.length || projects2.length || pastprojects2.length) {
+    populateAlgoliaMockaroo(contacts2, offices2, projects2, pastprojects2)
+  }
 
   if (Statistics.find().fetch().length === 0) {
     // eslint-disable-next-line no-console
