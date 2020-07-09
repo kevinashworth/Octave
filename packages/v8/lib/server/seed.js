@@ -48,7 +48,7 @@ Meteor.startup(() => {
   if (Contacts.find().fetch().length === 0) {
     // eslint-disable-next-line no-console
     console.log('// creating dummy contacts')
-    import('./generated/contacts.js').then(({ contacts }) => {
+    import('./seeds/generated/contacts.js').then(({ contacts }) => {
       Promise.awaitAll(contacts.map(document => newMutation({
         action: 'contacts.new',
         collection: Contacts,
@@ -61,7 +61,7 @@ Meteor.startup(() => {
   if (Offices.find().fetch().length === 0) {
     // eslint-disable-next-line no-console
     console.log('// creating dummy offices')
-    import('./generated/offices.js').then(({ offices }) => {
+    import('./seeds/generated/offices.js').then(({ offices }) => {
       Promise.awaitAll(offices.map(document => newMutation({
         action: 'offices.new',
         collection: Offices,
@@ -74,7 +74,7 @@ Meteor.startup(() => {
   if (Projects.find().fetch().length === 0) {
     // eslint-disable-next-line no-console
     console.log('// creating dummy projects')
-    import('./generated/projects.js').then(({ projects }) => {
+    import('./seeds/generated/projects.js').then(({ projects }) => {
       Promise.awaitAll(projects.map(document => newMutation({
         action: 'projects.new',
         collection: Projects,
@@ -87,7 +87,7 @@ Meteor.startup(() => {
   if (PastProjects.find().fetch().length === 0) {
     // eslint-disable-next-line no-console
     console.log('// creating dummy past-projects')
-    import('./generated/pastprojects.js').then(({ pastprojects }) => {
+    import('./seeds/generated/pastprojects.js').then(({ pastprojects }) => {
       Promise.awaitAll(pastprojects.map(document => newMutation({
         action: 'past-projects.create',
         collection: PastProjects,
