@@ -9,6 +9,13 @@
       "SearchOnlyAPIKey": "2cd70a6b9a01c10aeaee6f6f11105f46"
     }
   },
+  "private": {
+    "algolia": {
+      "AlgoliaIndex": "mockaroo",
+      "AddAndUpdateAPIKey": "202906167c49f16568567be849d3aa45",
+      "README": "This Algolia index is for development only. It is a sandbox to play in."
+    }
+  },
   "apolloServer": {
     "corsWhitelist": [],
     "corsEnableAll": false
