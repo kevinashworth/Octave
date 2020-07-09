@@ -23,7 +23,7 @@ Have these tools installed first:
 * NPM
 
 ### Installation Steps
-1. Clone the [main Vulcan repo](https://github.com/VulcanJS/Vulcan).
+1. Clone [my fork](https://github.com/kevinashworth/Vulcan) of the [main Vulcan repo](https://github.com/VulcanJS/Vulcan). Be sure to check out branch `v8`. (There is no need to do more than clone this repo on the correct branch.)
 1. Clone this **V8** repo, then `cd` into its directory.
 1. Rename `sample_settings.json` to `settings.json`.
 1. Run `npm install`.<sup>1</sup>
