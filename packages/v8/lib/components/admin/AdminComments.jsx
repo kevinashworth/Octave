@@ -24,7 +24,8 @@ class AdminComments extends Component {
         <Components.Datatable
           collection={Comments}
           options={{
-            fragmentName: 'CommentItemAdmin'
+            fragmentName: 'CommentItemAdmin',
+            limit: 100
           }}
           initialState={{
             sort: {
