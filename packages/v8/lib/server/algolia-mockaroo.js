@@ -2,7 +2,7 @@
 import algoliasearch from 'algoliasearch'
 
 const applicationid = Meteor.settings.public.algolia.ApplicationID
-const algoliaindex = Meteor.settings.private.algolia.AlgoliaIndex
+const algoliaindex = Meteor.settings.public.algolia.AlgoliaIndex
 const addupdatekey = Meteor.settings.private.algolia.AddAndUpdateAPIKey
 const client = algoliasearch(applicationid, addupdatekey)
 const index = client.initIndex(algoliaindex)

@@ -34,7 +34,7 @@ Have these tools installed first:
 
 
 ## Notes
-There are secrets that are not on Github — for the real **V8** database, for phone number validation and formatting, for search. This publicly available version has a limited amount of seed data, and skips some functionality.
+There are secrets that are not on Github — for the real **V8** database, for phone number validation and formatting, for search. This publicly available version has a limited amount of seed data, and skips some functionality. There is a secret, alternative install procedure to get to full functionality.
 
 <sup>1</sup> Near the end of the `install` process, you will see messages about contacts, offices, etc. This is seed data being randomly generated via Mockaroo. You can re-run this seeding process by typing `npm run prepare`. To replace old seed data with new seed data, run `meteor reset`, which will clear out the existing Mongo data, and delete the `mockaroo/generated` and `packages/v8/lib/server/seeds/generated` directories. Then the `npm` command `install` or `prepare` will trigger a re-seeding of the database on the next **V8** launch.
 

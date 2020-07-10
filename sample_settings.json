@@ -6,14 +6,8 @@
     "locale": "en",
     "algolia": {
       "ApplicationID": "14RUP1OK0B",
-      "SearchOnlyAPIKey": "2cd70a6b9a01c10aeaee6f6f11105f46"
-    }
-  },
-  "private": {
-    "algolia": {
+      "SearchOnlyAPIKey": "2cd70a6b9a01c10aeaee6f6f11105f46",
       "AlgoliaIndex": "mockaroo",
-      "AddAndUpdateAPIKey": "202906167c49f16568567be849d3aa45",
-      "README": "This Algolia index is for development only. It is a sandbox to play in."
     }
   },
   "apolloServer": {
@@ -41,6 +35,16 @@
     "twitter": {
       "consumerKey": "foo",
       "secret": "bar"
+    }
+  },
+  "private": {
+    "algolia": {
+      "AddAndUpdateAPIKey": "202906167c49f16568567be849d3aa45",
+      "README": "The mockaroo Algolia index is a sandbox for development only."
+    },
+    "twilio": {
+      "accountSid": "foo",
+      "authToken": "bar"
     }
   },
   "defaultEmail": "4@the-4th-wall.com",
