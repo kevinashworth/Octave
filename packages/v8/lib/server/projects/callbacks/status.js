@@ -1,5 +1,6 @@
 import { Connectors, createMutator, deleteMutator } from 'meteor/vulcan:core'
 import _ from 'lodash'
+import Comments from '../../../modules/comments/collection.js'
 import Contacts from '../../../modules/contacts/collection.js'
 import Offices from '../../../modules/offices/collection.js'
 import Projects from '../../../modules/projects/collection.js'
@@ -80,6 +81,14 @@ export function ProjectEditUpdateStatusAfter (document, { context, currentUser }
         })
       })
     }
+
+    Comments.find({ objectId: { $eq: document._id } }).forEach(comment => {
+      Connectors.update(Comments, comment._id, {
+        $set: {
+          collectionName: 'PastProjects'
+        }
+      })
+    })
   }
 }
 

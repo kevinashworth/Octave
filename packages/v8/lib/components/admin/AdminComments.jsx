@@ -5,6 +5,17 @@ import moment from 'moment'
 import { DATE_FORMAT_MONGO } from '../../modules/constants.js'
 import { Comments } from '../../modules/comments/collection.js'
 
+const docLink = ({ document }) => {
+  let { collectionName } = document
+  const { objectId } = document
+  if (collectionName === 'PastProjects') {
+    collectionName = 'past-projects'
+  } else {
+    collectionName = collectionName.toLowerCase()
+  }
+  return <Link to={`/${collectionName}/${objectId}`}>{objectId}</Link>
+}
+
 class AdminComments extends Component {
   render () {
     return (
@@ -13,7 +24,8 @@ class AdminComments extends Component {
         <Components.Datatable
           collection={Comments}
           options={{
-            fragmentName: 'CommentItemAdmin'
+            fragmentName: 'CommentItemAdmin',
+            limit: 100
           }}
           initialState={{
             sort: {
@@ -47,7 +59,7 @@ class AdminComments extends Component {
               name: 'objectId',
               label: 'Doc ID',
               sortable: true,
-              component: ({ document }) => <Link to={`/${document.collectionName.toLowerCase()}/${document.objectId}`}>{document.objectId}</Link>
+              component: docLink
             },
             {
               name: 'body',
