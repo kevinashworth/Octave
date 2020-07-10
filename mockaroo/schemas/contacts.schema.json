@@ -196,6 +196,13 @@
       "type": "Formula",
       "value": "createdAt + days(random(1,380))",
       "formula": ""
+    },
+    {
+      "name": "source",
+      "null_percentage": 0,
+      "type": "Character Sequence",
+      "format": "mockaroo",
+      "formula": ""
     }
   ]
 }

@@ -1,52 +1,15 @@
 /* eslint-disable no-undef */
 import algoliasearch from 'algoliasearch'
-import Contacts from '../modules/contacts/collection.js'
-import Offices from '../modules/offices/collection.js'
-import Projects from '../modules/projects/collection.js'
-import PastProjects from '../modules/past-projects/collection.js'
 
 const applicationid = Meteor.settings.public.algolia.ApplicationID
-const algoliaindex = Meteor.settings.private.algolia.AlgoliaIndex
+const algoliaindex = Meteor.settings.public.algolia.AlgoliaIndex
 const addupdatekey = Meteor.settings.private.algolia.AddAndUpdateAPIKey
+const client = algoliasearch(applicationid, addupdatekey)
+const index = client.initIndex(algoliaindex)
 
-const populateAlgoliaIndex = () => {
-  const client = algoliasearch(applicationid, addupdatekey)
-  const index = client.initIndex(algoliaindex)
-
-  index.setSettings({
-    customRanking: [
-      'asc(name)',
-      'desc(boosted)',
-      'asc(updatedAt)'
-    ],
-    searchableAttributes: [
-      'name',
-      'body',
-      'notes',
-      'addressString',
-      'network'
-    ],
-    highlightPreTag: '<strong>',
-    highlightPostTag: '</strong>',
-    attributesToSnippet: [
-      'body:10'
-    ],
-    snippetEllipsisText: '…',
-    hitsPerPage: 16
-  })
-
-  index.getSettings()
-    .then(response => {
-      console.group('Algolia getSettings:')
-      console.log(response)
-      console.groupEnd()
-    })
-    .catch(error => {
-      console.error('Algolia getSettings error:', error)
-    })
-
+const populateAlgoliaMockaroo = (contacts, offices, projects, pastProjects) => {
   var objects = []
-  Contacts.find().forEach((o) => {
+  contacts.forEach((o) => {
     const indexedObject = {
       objectID: o._id,
       name: o.displayName,
@@ -58,7 +21,7 @@ const populateAlgoliaIndex = () => {
     }
     objects.push(indexedObject)
   })
-  Offices.find().forEach((o) => {
+  offices.forEach((o) => {
     const indexedObject = {
       objectID: o._id,
       name: o.displayName,
@@ -70,7 +33,7 @@ const populateAlgoliaIndex = () => {
     }
     objects.push(indexedObject)
   })
-  Projects.find().forEach((o) => {
+  projects.forEach((o) => {
     const indexedObject = {
       objectID: o._id,
       name: o.projectTitle,
@@ -83,7 +46,7 @@ const populateAlgoliaIndex = () => {
     }
     objects.push(indexedObject)
   })
-  PastProjects.find().forEach((o) => {
+  pastProjects.forEach((o) => {
     const indexedObject = {
       objectID: o._id,
       name: o.projectTitle,
@@ -100,15 +63,13 @@ const populateAlgoliaIndex = () => {
   index
     .saveObjects(objects)
     .then((response) => {
-      console.group('AlgoliaLog saveObjects response:')
+      console.group('populateAlgoliaMockaroo response:')
       console.log(response)
       console.groupEnd()
     })
     .catch(err => {
-      console.error('AlgoliaLog saveObjects error:', err)
+      console.error('populateAlgoliaMockaroo error:', err)
     })
 }
 
-Meteor.startup(() => {
-  populateAlgoliaIndex()
-})
+export default populateAlgoliaMockaroo

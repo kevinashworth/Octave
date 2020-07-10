@@ -25,10 +25,11 @@ const popperConfig = {
   }]
 }
 
-// eslint-disable-next-line no-undef
+/* eslint-disable no-undef */
 const applicationid = Meteor.settings.public.algolia.ApplicationID
-// eslint-disable-next-line no-undef
 const searchonlyapikey = Meteor.settings.public.algolia.SearchOnlyAPIKey
+const algoliaindex = Meteor.settings.public.algolia.AlgoliaIndex
+/* eslint-enable no-undef */
 const searchClient = algoliasearch(applicationid, searchonlyapikey)
 
 const PoweredBy = ({ url }) => <a href={url} target='_blank' rel='noopener noreferrer'>Algolia</a>
@@ -101,7 +102,7 @@ const Algolia = () => {
   const breakpoints = [555, 720, 885, 1215]
   return (
     <InstantSearch
-      indexName='dev-v8'
+      indexName={algoliaindex}
       onSearchStateChange={handleSearchStateChange}
       searchClient={searchClient}
     >
