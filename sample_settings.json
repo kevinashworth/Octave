@@ -7,7 +7,7 @@
     "algolia": {
       "ApplicationID": "14RUP1OK0B",
       "SearchOnlyAPIKey": "2cd70a6b9a01c10aeaee6f6f11105f46",
-      "AlgoliaIndex": "mockaroo",
+      "AlgoliaIndex": "mockaroo"
     }
   },
   "apolloServer": {

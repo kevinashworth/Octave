@@ -24,13 +24,13 @@ Have these tools installed first:
 
 ### Installation Steps
 1. Clone [my fork](https://github.com/kevinashworth/Vulcan) of the [main Vulcan repo](https://github.com/VulcanJS/Vulcan). Be sure to check out branch `v8`. (There is no need to do more than clone this repo on the correct branch.)
-1. Clone this **V8** repo, then `cd` into its directory.
-1. Rename `sample_settings.json` to `settings.json`.
-1. Run `npm install`.<sup>1</sup>
-1. As per Vulcan’s [Two-Repo Install](https://docs.vulcanjs.org/#Two-Repo-Install-Optional), start **V8** with `METEOR_PACKAGE_DIRS="/[YOUR_PATH_TO]/Vulcan/packages" meteor --port 4004 --settings settings.json`.
-1. When this command finishes after a few minutes, launch **V8** by visiting <http://localhost:4004> in your browser.
-1. Click Sign Up and enter username, email, and password.<sup>2</sup>
-1. That’s it. You’re in!
+2. Clone this **V8** repo, then `cd` into its directory.
+3. Rename `sample_settings.json` to `settings.json`.
+4. Run `npm install`.<sup>1</sup>
+5. As per Vulcan’s [Two-Repo Install](https://docs.vulcanjs.org/#Two-Repo-Install-Optional), start **V8** with `METEOR_PACKAGE_DIRS="/[YOUR_PATH_TO]/Vulcan/packages" meteor --port 4004 --settings settings.json`.
+6. When this command finishes after a few minutes, launch **V8** by visiting <http://localhost:4004> in your browser.
+7. Click Sign Up and enter username, email, and password.<sup>2</sup>
+8. That’s it. You’re in!
 
 
 ## Notes
