@@ -39,6 +39,9 @@ const OfficesEditForm = ({ documentId, match, history, toggle }) => {
             }}
           />
         </Card.Body>
+        <Card.Body>
+          <Card.Link href={`https://mlab.com/databases/v8-alba-mlab/collections/offices?_id=${theDocumentId}`} target='mLab'>Edit on mLab</Card.Link>
+        </Card.Body>
       </Card>
     </div>
   )

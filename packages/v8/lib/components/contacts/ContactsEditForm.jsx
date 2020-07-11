@@ -1,11 +1,10 @@
-import { Components, getFragment, registerComponent, withCurrentUser } from 'meteor/vulcan:core'
-import Users from 'meteor/vulcan:users'
+import { Components, getFragment, registerComponent } from 'meteor/vulcan:core'
 import React from 'react'
 import { withRouter } from 'react-router-dom'
 import Card from 'react-bootstrap/Card'
 import Contacts from '../../modules/contacts/collection.js'
 
-const ContactsEditForm = ({ documentId, match, history, toggle, currentUser }) => {
+const ContactsEditForm = ({ documentId, match, history, toggle }) => {
   const theDocumentId = documentId || (match && match.params._id)
   return (
     <div className='animated fadeIn'>
@@ -16,7 +15,7 @@ const ContactsEditForm = ({ documentId, match, history, toggle, currentUser }) =
             collection={Contacts}
             documentId={theDocumentId}
             mutationFragment={getFragment('ContactsEditFragment')}
-            showRemove={Users.canDo(currentUser, 'contact.delete.own')}
+            showRemove
             successCallback={document => {
               if (toggle) {
                 toggle()
@@ -40,9 +39,12 @@ const ContactsEditForm = ({ documentId, match, history, toggle, currentUser }) =
             }}
           />
         </Card.Body>
+        <Card.Body>
+          <Card.Link href={`https://mlab.com/databases/v8-alba-mlab/collections/contacts?_id=${theDocumentId}`} target='mLab'>Edit on mLab</Card.Link>
+        </Card.Body>
       </Card>
     </div>
   )
 }
 
-registerComponent('ContactsEditForm', ContactsEditForm, withCurrentUser, withRouter)
+registerComponent('ContactsEditForm', ContactsEditForm, withRouter)
