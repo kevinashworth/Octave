@@ -1,4 +1,5 @@
-import { Components, registerComponent, withSingle2 } from 'meteor/vulcan:core'
+import { Components, registerComponent, withCurrentUser, withSingle2 } from 'meteor/vulcan:core'
+import Users from 'meteor/vulcan:users'
 import { FormattedMessage } from 'meteor/vulcan:i18n'
 import React from 'react'
 import PropTypes from 'prop-types'
@@ -7,7 +8,7 @@ import Card from 'react-bootstrap/Card'
 import Patches from '../../modules/patches/collection.js'
 
 const ProjectPatchesList = (props) => {
-  const { loading, patchesDocument, project } = props
+  const { project, patchesDocument, loading, currentUser } = props
   if (loading) {
     return <Components.Loading />
   }
@@ -42,6 +43,10 @@ const ProjectPatchesList = (props) => {
           />
         )}
       </Card.Body>
+      {Users.isAdmin(currentUser) &&
+        <Card.Body>
+          <Card.Link href={`https://mlab.com/databases/v8-alba-mlab/collections/patches?_id=${patchesDocument._id}`} target='mLab'>Edit on mLab</Card.Link>
+        </Card.Body>}
       <Card.Footer>
         <small className='text-muted'>This is the unused footer of ProjectPatchesList</small>
       </Card.Footer>
@@ -58,8 +63,7 @@ const options = {
 }
 
 ProjectPatchesList.propTypes = {
-  documentId: PropTypes.string.isRequired, // same _id for Project and Patches
-  project: PropTypes.object.isRequired
+  documentId: PropTypes.string.isRequired // same _id for Project and Patches
 }
 
 const mapPropsFunction = (props) => {
@@ -76,6 +80,7 @@ registerComponent({
   name: 'ProjectPatchesList',
   component: ProjectPatchesList,
   hocs: [
+    withCurrentUser,
     mapProps(mapPropsFunction), [withSingle2, options]
   ]
 })

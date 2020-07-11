@@ -1,4 +1,5 @@
 import { Components, registerComponent, withCurrentUser, withSingle } from 'meteor/vulcan:core'
+import Users from 'meteor/vulcan:users'
 import { FormattedMessage } from 'meteor/vulcan:i18n'
 import React from 'react'
 import PropTypes from 'prop-types'
@@ -7,9 +8,9 @@ import PastProjects from '../../modules/past-projects/collection.js'
 import Patches from '../../modules/patches/collection.js'
 
 const PastProjectPatchesList = (props) => {
-  const { pastProjectDocument, patchesDocument, networkStatus } = props
+  const { pastProjectDocument, patchesDocument, loading, currentUser } = props
   var accumulatedPatches = []
-  if (networkStatus !== 8 && networkStatus !== 7) {
+  if (loading) {
     return <Components.Loading />
   } else if (!patchesDocument || !pastProjectDocument) {
     return <FormattedMessage id='patches.missing_document' />
@@ -40,6 +41,10 @@ const PastProjectPatchesList = (props) => {
           />
         )}
       </Card.Body>
+      {Users.isAdmin(currentUser) &&
+        <Card.Body>
+          <Card.Link href={`https://mlab.com/databases/v8-alba-mlab/collections/patches?_id=${patchesDocument._id}`} target='mLab'>Edit on mLab</Card.Link>
+        </Card.Body>}
       <Card.Footer>
         <small className='text-muted'>This is the unused footer of PastProjectPatchesList</small>
       </Card.Footer>
@@ -68,5 +73,9 @@ PastProjectPatchesList.propTypes = {
 registerComponent({
   name: 'PastProjectPatchesList',
   component: PastProjectPatchesList,
-  hocs: [withCurrentUser, [withSingle, patchOptions], [withSingle, projectOptions]]
+  hocs: [
+    withCurrentUser,
+    [withSingle, patchOptions],
+    [withSingle, projectOptions]
+  ]
 })
