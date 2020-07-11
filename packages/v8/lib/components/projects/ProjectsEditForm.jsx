@@ -4,6 +4,7 @@ import { withRouter } from 'react-router-dom'
 import Card from 'react-bootstrap/Card'
 import Projects from '../../modules/projects/collection.js'
 import { PAST_PROJECT_STATUSES_ARRAY } from '../../modules/constants.js'
+import { getMongoUrl } from '../../modules/helpers.js'
 import _ from 'lodash'
 
 const ProjectsEditForm = ({ documentId, match, history, toggle }) => {
@@ -43,9 +44,10 @@ const ProjectsEditForm = ({ documentId, match, history, toggle }) => {
             }}
           />
         </Card.Body>
-        <Card.Body>
-          <Card.Link href={`https://mlab.com/databases/v8-alba-mlab/collections/projects?_id=${theDocumentId}`} target='mLab'>Edit on mLab</Card.Link>
-        </Card.Body>
+        {getMongoUrl().indexOf('mlab.com') !== -1 &&
+          <Card.Body>
+            <Card.Link href={`https://mlab.com/databases/v8-alba-mlab/collections/projects?_id=${theDocumentId}`} target='mLab'>Edit on mLab</Card.Link>
+          </Card.Body>}
       </Card>
     </div>
   )

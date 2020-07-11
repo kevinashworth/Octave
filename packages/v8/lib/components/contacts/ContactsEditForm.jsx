@@ -3,6 +3,7 @@ import React from 'react'
 import { withRouter } from 'react-router-dom'
 import Card from 'react-bootstrap/Card'
 import Contacts from '../../modules/contacts/collection.js'
+import { getMongoUrl } from '../../modules/helpers.js'
 
 const ContactsEditForm = ({ documentId, match, history, toggle }) => {
   const theDocumentId = documentId || (match && match.params._id)
@@ -39,9 +40,10 @@ const ContactsEditForm = ({ documentId, match, history, toggle }) => {
             }}
           />
         </Card.Body>
-        <Card.Body>
-          <Card.Link href={`https://mlab.com/databases/v8-alba-mlab/collections/contacts?_id=${theDocumentId}`} target='mLab'>Edit on mLab</Card.Link>
-        </Card.Body>
+        {getMongoUrl().indexOf('mlab.com') !== -1 &&
+          <Card.Body>
+            <Card.Link href={`https://mlab.com/databases/v8-alba-mlab/collections/contacts?_id=${theDocumentId}`} target='mLab'>Edit on mLab</Card.Link>
+          </Card.Body>}
       </Card>
     </div>
   )
