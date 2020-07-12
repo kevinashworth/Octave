@@ -2,12 +2,12 @@ import { Components, getFragment, registerComponent } from 'meteor/vulcan:core'
 import React from 'react'
 import { withRouter } from 'react-router-dom'
 import Card from 'react-bootstrap/Card'
-import Projects from '../../modules/projects/collection.js'
-import { PAST_PROJECT_STATUSES_ARRAY } from '../../modules/constants.js'
-import { getMongoUrl } from '../../modules/helpers.js'
 import _ from 'lodash'
+import Projects from '../../modules/projects/collection.js'
+import withSettings from '../../modules/hocs/withSettings.js'
+import { MLAB, PAST_PROJECT_STATUSES_ARRAY } from '../../modules/constants.js'
 
-const ProjectsEditForm = ({ documentId, match, history, toggle }) => {
+const ProjectsEditForm = ({ documentId, match, history, toggle, mongoProvider }) => {
   const theDocumentId = documentId || (match && match.params._id)
   return (
     <div className='animated fadeIn'>
@@ -44,13 +44,20 @@ const ProjectsEditForm = ({ documentId, match, history, toggle }) => {
             }}
           />
         </Card.Body>
-        {getMongoUrl().indexOf('mlab.com') !== -1 &&
+        {mongoProvider === MLAB &&
           <Card.Body>
-            <Card.Link href={`https://mlab.com/databases/v8-alba-mlab/collections/projects?_id=${theDocumentId}`} target='mLab'>Edit on mLab</Card.Link>
+            <Card.Link href={`https://mlab.com/databases/v8-alba-mlab/collections/projects?_id=${theDocumentId}`} target={MLAB}>Edit on mLab</Card.Link>
           </Card.Body>}
       </Card>
     </div>
   )
 }
 
-registerComponent('ProjectsEditForm', ProjectsEditForm, withRouter)
+registerComponent({
+  name: 'ProjectsEditForm',
+  component: ProjectsEditForm,
+  hocs: [
+    withRouter,
+    withSettings
+  ]
+})

@@ -6,10 +6,11 @@ import PropTypes from 'prop-types'
 import Card from 'react-bootstrap/Card'
 import PastProjects from '../../modules/past-projects/collection.js'
 import Patches from '../../modules/patches/collection.js'
-import { getMongoUrl } from '../../modules/helpers.js'
+import withSettings from '../../modules/hocs/withSettings.js'
+import { MLAB } from '../../modules/constants.js'
 
 const PastProjectPatchesList = (props) => {
-  const { pastProjectDocument, patchesDocument, loading, currentUser } = props
+  const { pastProjectDocument, patchesDocument, loading, currentUser, mongoProvider } = props
   var accumulatedPatches = []
   if (loading) {
     return <Components.Loading />
@@ -42,9 +43,9 @@ const PastProjectPatchesList = (props) => {
           />
         )}
       </Card.Body>
-      {Users.isAdmin(currentUser) && getMongoUrl().indexOf('mlab.com') !== -1 &&
+      {Users.isAdmin(currentUser) && mongoProvider === MLAB &&
         <Card.Body>
-          <Card.Link href={`https://mlab.com/databases/v8-alba-mlab/collections/patches?_id=${patchesDocument._id}`} target='mLab'>Edit on mLab</Card.Link>
+          <Card.Link href={`https://mlab.com/databases/v8-alba-mlab/collections/patches?_id=${patchesDocument._id}`} target={MLAB}>Edit on mLab</Card.Link>
         </Card.Body>}
       <Card.Footer>
         <small className='text-muted'>This is the unused footer of PastProjectPatchesList</small>
@@ -77,6 +78,7 @@ registerComponent({
   hocs: [
     withCurrentUser,
     [withSingle, patchOptions],
-    [withSingle, projectOptions]
+    [withSingle, projectOptions],
+    withSettings
   ]
 })

@@ -3,9 +3,10 @@ import React from 'react'
 import { withRouter } from 'react-router-dom'
 import Card from 'react-bootstrap/Card'
 import Contacts from '../../modules/contacts/collection.js'
-import { getMongoUrl } from '../../modules/helpers.js'
+import withSettings from '../../modules/hocs/withSettings.js'
+import { MLAB } from '../../modules/constants.js'
 
-const ContactsEditForm = ({ documentId, match, history, toggle }) => {
+const ContactsEditForm = ({ documentId, match, history, toggle, mongoProvider }) => {
   const theDocumentId = documentId || (match && match.params._id)
   return (
     <div className='animated fadeIn'>
@@ -40,13 +41,20 @@ const ContactsEditForm = ({ documentId, match, history, toggle }) => {
             }}
           />
         </Card.Body>
-        {getMongoUrl().indexOf('mlab.com') !== -1 &&
+        {mongoProvider === MLAB &&
           <Card.Body>
-            <Card.Link href={`https://mlab.com/databases/v8-alba-mlab/collections/contacts?_id=${theDocumentId}`} target='mLab'>Edit on mLab</Card.Link>
+            <Card.Link href={`https://mlab.com/databases/v8-alba-mlab/collections/contacts?_id=${theDocumentId}`} target={MLAB}>Edit on mLab</Card.Link>
           </Card.Body>}
       </Card>
     </div>
   )
 }
 
-registerComponent('ContactsEditForm', ContactsEditForm, withRouter)
+registerComponent({
+  name: 'ContactsEditForm',
+  component: ContactsEditForm,
+  hocs: [
+    withRouter,
+    withSettings
+  ]
+})

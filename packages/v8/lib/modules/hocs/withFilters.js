@@ -1,4 +1,3 @@
-
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import { getActions, getStore } from 'meteor/vulcan:redux'
