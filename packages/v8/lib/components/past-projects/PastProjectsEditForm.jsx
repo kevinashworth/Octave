@@ -1,13 +1,13 @@
-import { Components, getFragment, registerComponent, withCurrentUser } from 'meteor/vulcan:core'
-import Users from 'meteor/vulcan:users'
+import { Components, getFragment, registerComponent } from 'meteor/vulcan:core'
 import React from 'react'
 import { withRouter } from 'react-router-dom'
 import Card from 'react-bootstrap/Card'
 import PastProjects from '../../modules/past-projects/collection.js'
 import { ACTIVE_PROJECT_STATUSES_ARRAY } from '../../modules/constants.js'
+import { getMongoUrl } from '../../modules/helpers.js'
 import _ from 'lodash'
 
-const PastProjectsEditForm = ({ documentId, match, history, toggle, currentUser }) => {
+const PastProjectsEditForm = ({ documentId, match, history, toggle }) => {
   const theDocumentId = documentId || match.params._id
   return (
     <div className='animated fadeIn'>
@@ -18,7 +18,7 @@ const PastProjectsEditForm = ({ documentId, match, history, toggle, currentUser 
             collection={PastProjects}
             documentId={theDocumentId}
             mutationFragment={getFragment('PastProjectsEditFragment')}
-            showRemove={Users.canDo(currentUser, ['pastproject.delete.own', 'pastproject.delete.all'])}
+            showRemove
             successCallback={document => {
               if (_.includes(ACTIVE_PROJECT_STATUSES_ARRAY, document.status)) {
                 history.push(`/projects/${theDocumentId}/${document.slug}`)
@@ -44,9 +44,13 @@ const PastProjectsEditForm = ({ documentId, match, history, toggle, currentUser 
             }}
           />
         </Card.Body>
+        {getMongoUrl().indexOf('mlab.com') !== -1 &&
+          <Card.Body>
+            <Card.Link href={`https://mlab.com/databases/v8-alba-mlab/collections/pastprojects?_id=${theDocumentId}`} target='mLab'>Edit on mLab</Card.Link>
+          </Card.Body>}
       </Card>
     </div>
   )
 }
 
-registerComponent('PastProjectsEditForm', PastProjectsEditForm, withCurrentUser, withRouter)
+registerComponent('PastProjectsEditForm', PastProjectsEditForm, withRouter)

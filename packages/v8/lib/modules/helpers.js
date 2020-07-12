@@ -426,3 +426,27 @@ export function titleSortFunc (a, b, order) {
     }
   }
 }
+
+/* eslint-disable no-undef */
+export const getMongoUrl = () => {
+  if (Meteor.isClient) {
+    Meteor.call('getProcessEnvMongoUrl', function (err, results) {
+      if (err) {
+        console.error('getProcessEnvMongoUrl[index] error:', err)
+      }
+      console.info('process.env.MONGO_URL:', results)
+      return results
+    })
+  }
+  if (Meteor.isServer) {
+    Meteor.methods({
+      getProcessEnvMongoUrl: function () {
+        var mongoUrl = process.env.MONGO_URL
+        console.info('mongoURL:', mongoUrl)
+        return mongoUrl
+      }
+    })
+  }
+  return 'MONGO_URL not found'
+}
+/* eslint-enable no-undef */

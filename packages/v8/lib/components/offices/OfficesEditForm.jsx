@@ -3,6 +3,7 @@ import React from 'react'
 import { withRouter } from 'react-router-dom'
 import Card from 'react-bootstrap/Card'
 import Offices from '../../modules/offices/collection.js'
+import { getMongoUrl } from '../../modules/helpers.js'
 
 const OfficesEditForm = ({ documentId, match, history, toggle }) => {
   const theDocumentId = documentId || match.params._id
@@ -39,6 +40,10 @@ const OfficesEditForm = ({ documentId, match, history, toggle }) => {
             }}
           />
         </Card.Body>
+        {getMongoUrl().indexOf('mlab.com') !== -1 &&
+          <Card.Body>
+            <Card.Link href={`https://mlab.com/databases/v8-alba-mlab/collections/offices?_id=${theDocumentId}`} target='mLab'>Edit on mLab</Card.Link>
+          </Card.Body>}
       </Card>
     </div>
   )

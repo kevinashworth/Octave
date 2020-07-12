@@ -1,15 +1,17 @@
 import { Components, registerComponent, withCurrentUser, withSingle } from 'meteor/vulcan:core'
+import Users from 'meteor/vulcan:users'
 import { FormattedMessage } from 'meteor/vulcan:i18n'
 import React from 'react'
 import PropTypes from 'prop-types'
 import Card from 'react-bootstrap/Card'
 import Contacts from '../../modules/contacts/collection.js'
 import Patches from '../../modules/patches/collection.js'
+import { getMongoUrl } from '../../modules/helpers.js'
 
 const ContactPatchesList = (props) => {
-  const { contactDocument, patchesDocument, networkStatus } = props
+  const { contactDocument, patchesDocument, loading, currentUser } = props
   var accumulatedPatches = []
-  if (networkStatus !== 8 && networkStatus !== 7) {
+  if (loading) {
     return <Components.Loading />
   } else if (!patchesDocument || !contactDocument) {
     return <FormattedMessage id='patches.missing_document' />
@@ -41,6 +43,10 @@ const ContactPatchesList = (props) => {
           />
         )}
       </Card.Body>
+      {Users.isAdmin(currentUser) && getMongoUrl().indexOf('mlab.com') !== -1 &&
+        <Card.Body>
+          <Card.Link href={`https://mlab.com/databases/v8-alba-mlab/collections/patches?_id=${patchesDocument._id}`} target='mLab'>Edit on mLab</Card.Link>
+        </Card.Body>}
       <Card.Footer>
         <small className='text-muted'>This is the unused footer of ContactPatchesList</small>
       </Card.Footer>
