@@ -15,11 +15,13 @@ accounts-github@1.4.3
 
 ############ Your Packages ############
 
-vulcan:debug
-vulcan:email
-vulcan:ui-bootstrap
-vulcan:redux
 vulcan:backoffice
+vulcan:debug
+vulcan:errors
+
+vulcan:email
+vulcan:redux
+vulcan:ui-bootstrap
 
 percolate:migrations
 
