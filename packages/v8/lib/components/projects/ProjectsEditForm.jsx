@@ -17,7 +17,7 @@ const ProjectsEditForm = ({ documentId, match, history, toggle, mongoProvider })
           <Components.SmartForm
             collection={Projects}
             documentId={theDocumentId}
-            mutationFragment={getFragment('PastProjectsEditFragment')}
+            mutationFragment={getFragment('ProjectsEditFragment')}
             showRemove
             successCallback={document => {
               if (_.includes(PAST_PROJECT_STATUSES_ARRAY, document.status)) {
