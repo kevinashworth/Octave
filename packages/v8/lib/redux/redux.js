@@ -98,6 +98,11 @@ initialState = {
   ...initialState
 }
 
+initialState = {
+  mongoProvider: 'Mongo provider not set yet',
+  ...initialState
+}
+
 addAction({
   toggleContactTitleFilter (i) {
     return {
@@ -223,6 +228,15 @@ addAction({
     return {
       type: 'CLEAR_PROJECT_PLATFORM_FILTER',
       i
+    }
+  }
+})
+
+addAction({
+  setMongoProvider (provider) {
+    return {
+      type: 'SET_MONGO_PROVIDER',
+      provider
     }
   }
 })
@@ -433,6 +447,17 @@ addReducer({
           }
           return filter
         })
+      default:
+        return state
+    }
+  }
+})
+
+addReducer({
+  mongoProvider: (state = initialState.mongoProvider, action) => {
+    switch (action.type) {
+      case 'SET_MONGO_PROVIDER':
+        return action.provider
       default:
         return state
     }

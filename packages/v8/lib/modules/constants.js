@@ -353,3 +353,6 @@ const dummyProjectRow = {
 }
 
 export const LOADING_PROJECTS_DATA = Array(50).fill(dummyProjectRow)
+
+export const MLAB = 'mLab'
+export const ATLAS = 'Atlas'

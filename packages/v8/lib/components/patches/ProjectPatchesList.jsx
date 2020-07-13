@@ -6,10 +6,11 @@ import PropTypes from 'prop-types'
 import mapProps from 'recompose/mapProps'
 import Card from 'react-bootstrap/Card'
 import Patches from '../../modules/patches/collection.js'
-import { getMongoUrl } from '../../modules/helpers.js'
+import withSettings from '../../modules/hocs/withSettings.js'
+import { MLAB } from '../../modules/constants.js'
 
 const ProjectPatchesList = (props) => {
-  const { project, patchesDocument, loading, currentUser } = props
+  const { project, patchesDocument, loading, currentUser, mongoProvider } = props
   if (loading) {
     return <Components.Loading />
   }
@@ -44,9 +45,9 @@ const ProjectPatchesList = (props) => {
           />
         )}
       </Card.Body>
-      {Users.isAdmin(currentUser) && getMongoUrl().indexOf('mlab.com') !== -1 &&
+      {Users.isAdmin(currentUser) && mongoProvider === MLAB &&
         <Card.Body>
-          <Card.Link href={`https://mlab.com/databases/v8-alba-mlab/collections/patches?_id=${patchesDocument._id}`} target='mLab'>Edit on mLab</Card.Link>
+          <Card.Link href={`https://mlab.com/databases/v8-alba-mlab/collections/patches?_id=${patchesDocument._id}`} target={MLAB}>Edit on mLab</Card.Link>
         </Card.Body>}
       <Card.Footer>
         <small className='text-muted'>This is the unused footer of ProjectPatchesList</small>
@@ -82,6 +83,7 @@ registerComponent({
   component: ProjectPatchesList,
   hocs: [
     withCurrentUser,
-    mapProps(mapPropsFunction), [withSingle2, options]
+    mapProps(mapPropsFunction), [withSingle2, options],
+    withSettings
   ]
 })

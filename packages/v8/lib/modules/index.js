@@ -15,6 +15,10 @@ import './statistics'
 import './users'
 import './patches'
 
+import { getMongoProvider } from './helpers.js'
+
+getMongoProvider()
+
 // See https://stackoverflow.com/questions/14342848/how-do-i-access-process-env-in-meteor
 // if (Meteor.isClient) {
 //   Meteor.call('getProcessEnvMongoUrl', function (err, results) {

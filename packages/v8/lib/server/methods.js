@@ -1,6 +1,7 @@
 import { Meteor } from 'meteor/meteor'
 import { Accounts } from 'meteor/accounts-base'
 import algoliasearch from 'algoliasearch'
+import { MLAB } from '../modules/constants.js'
 
 Meteor.methods({
 
@@ -15,9 +16,17 @@ Meteor.methods({
       .catch(error => console.error('deleteObject error:', error))
   },
 
-  getProcessEnvMongoUrl () {
-    var mongoURL = process.env.MONGO_URL
-    return mongoURL
+  // getProcessEnvMongoUrl () {
+  //   var mongoURL = process.env.MONGO_URL
+  //   return mongoURL
+  // },
+
+  getProcessEnvMongoProvider () {
+    var mongoUrl = process.env.MONGO_URL
+    if (mongoUrl.indexOf('mlab.com') > -1) {
+      return MLAB
+    }
+    return 'Mongo provider is unknown'
   },
 
   getPrivateSettings () {
@@ -36,7 +45,7 @@ Meteor.methods({
     try {
       Meteor.wrapAsync(Accounts.addEmail(userId, newEmail))
       return newEmail
-    } catch(error) {
+    } catch (error) {
       // console.log('addEmail error:', error)
       throw new Meteor.Error('already-exists', 'Email already exists in the database.')
     }
@@ -49,7 +58,7 @@ Meteor.methods({
     try {
       Meteor.wrapAsync(Accounts.removeEmail(userId, email))
       removeSuccess = true
-    } catch(error) {
+    } catch (error) {
       // console.log('removeEmail error:', error)
       removeSuccess = false
       throw new Meteor.Error('remove-error', 'Meteor.methods/removeEmail error.')
@@ -69,7 +78,7 @@ Meteor.methods({
     try {
       Meteor.wrapAsync(Accounts.removeEmail(userId, oldEmail))
       removeSuccess = true
-    } catch(error) {
+    } catch (error) {
       removeSuccess = false
       throw new Meteor.Error('remove-error', 'Meteor.methods / removeThenAddEmail remove error.')
     }
@@ -78,7 +87,7 @@ Meteor.methods({
       try {
         Meteor.wrapAsync(Accounts.addEmail(userId, newEmail))
         addSuccess = true
-      } catch(error) {
+      } catch (error) {
         addSuccess = false
         throw new Meteor.Error('add-error', 'Meteor.methods / removeThenAddEmail add error.')
       }
@@ -86,10 +95,10 @@ Meteor.methods({
         // const user = Users.getUser(userId)
         // mapEmailsLocalFunction({ user })
         return newEmail
-        } else {
-          return null
-        }
+      } else {
+        return null
       }
+    }
   }
 
 })

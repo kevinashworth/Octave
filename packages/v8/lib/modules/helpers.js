@@ -1,3 +1,4 @@
+import { getActions, getStore } from 'meteor/vulcan:redux'
 import React from 'react'
 import { Link } from 'react-router-dom'
 import _ from 'lodash'
@@ -428,25 +429,16 @@ export function titleSortFunc (a, b, order) {
 }
 
 /* eslint-disable no-undef */
-export const getMongoUrl = () => {
+export const getMongoProvider = () => {
+  const { setMongoProvider } = getActions()
   if (Meteor.isClient) {
-    Meteor.call('getProcessEnvMongoUrl', function (err, results) {
+    Meteor.call('getProcessEnvMongoProvider', function (err, results) {
       if (err) {
-        console.error('getProcessEnvMongoUrl[index] error:', err)
+        console.error('getProcessEnvMongoProvider error:', err)
       }
-      console.info('process.env.MONGO_URL:', results)
-      return results
+      getStore().dispatch(setMongoProvider(results))
     })
   }
-  if (Meteor.isServer) {
-    Meteor.methods({
-      getProcessEnvMongoUrl: function () {
-        var mongoUrl = process.env.MONGO_URL
-        console.info('mongoURL:', mongoUrl)
-        return mongoUrl
-      }
-    })
-  }
-  return 'MONGO_URL not found'
+  return 'getMongoProvider error'
 }
 /* eslint-enable no-undef */
