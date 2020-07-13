@@ -1,5 +1,8 @@
 import { Connectors } from 'meteor/vulcan:core'
-import _ from 'lodash'
+import differenceWith from 'lodash/differenceWith'
+import findIndex from 'lodash/findIndex'
+import isEqual from 'lodash/isEqual'
+import remove from 'lodash/remove'
 import Offices from '../../../modules/offices/collection.js'
 import { isEmptyValue } from '../../../modules/helpers.js'
 
@@ -36,7 +39,7 @@ export function ProjectCreateUpdateOfficesAfter (document, properties) {
     if (!office.projects) {
       updatedOfficeProjects = [newProject]
     } else {
-      const i = _.findIndex(office.projects, { projectId: project._id })
+      const i = findIndex(office.projects, { projectId: project._id })
       updatedOfficeProjects = office.projects
       if (i < 0) {
         // case 2: this project is not on this office but other projects are and we're adding this project
@@ -129,8 +132,8 @@ export function ProjectEditUpdateOfficesBefore (data, { document, originalDocume
   let officesToAddThisProjectTo = []
   const newProject = document
   const oldProject = originalDocument
-  officesToAddThisProjectTo = _.differenceWith(newProject.offices, oldProject.offices, _.isEqual)
-  officesToRemoveThisProjectFrom = _.differenceWith(oldProject.offices, newProject.offices, _.isEqual)
+  officesToAddThisProjectTo = differenceWith(newProject.offices, oldProject.offices, isEqual)
+  officesToRemoveThisProjectFrom = differenceWith(oldProject.offices, newProject.offices, isEqual)
   console.group('ProjectEditUpdateOfficesBefore:')
   console.info('officesToRemoveThisProjectFrom:', officesToRemoveThisProjectFrom)
   console.info('officesToAddThisProjectTo:', officesToAddThisProjectTo)
@@ -140,9 +143,9 @@ export function ProjectEditUpdateOfficesBefore (data, { document, originalDocume
   if (officesToRemoveThisProjectFrom) {
     officesToRemoveThisProjectFrom.forEach(deletedOffice => {
       const oldOffice = Offices.findOne(deletedOffice.officeId)
-      let oldOfficeProjects = oldOffice && oldOffice.projects
+      const oldOfficeProjects = oldOffice && oldOffice.projects
 
-      _.remove(oldOfficeProjects, function (p) {
+      remove(oldOfficeProjects, function (p) {
         return p.projectId === document._id
       })
 
@@ -177,7 +180,7 @@ export function ProjectEditUpdateOfficesBefore (data, { document, originalDocume
         updatedProjects = [updatedProject]
       } else {
         updatedProjects = office.projects
-        const i = _.findIndex(office.projects, { projectId: project._id })
+        const i = findIndex(office.projects, { projectId: project._id })
         if (i < 0) {
           // case 2: add to it
           updatedProjects.push(updatedProject)

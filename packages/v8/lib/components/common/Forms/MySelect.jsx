@@ -3,7 +3,7 @@ import { intlShape } from 'meteor/vulcan:i18n'
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import Select from 'react-select-virtualized'
-import _ from 'lodash'
+import find from 'lodash/find'
 import { nullOption } from '../../../modules/constants.js'
 import { customStyles, theme } from './react-select-settings'
 
@@ -37,7 +37,7 @@ class MySelect extends Component {
   }
 
   componentDidMount () {
-    const selectedOption = _.find(this.props.options, { value: this.props.value }) || null
+    const selectedOption = find(this.props.options, { value: this.props.value }) || null
     if (selectedOption) {
       let siblingPath = null
       if (this.props.parentFieldName === 'projects' || this.props.parentFieldName === 'pastProjects') {
@@ -54,7 +54,7 @@ class MySelect extends Component {
 
   render () {
     const { inputOnly } = this.props.itemProperties
-    const selectedOption = _.find(this.props.options, { value: this.props.value }) || nullOption
+    const selectedOption = find(this.props.options, { value: this.props.value }) || nullOption
 
     const theSelect = () => {
       return (

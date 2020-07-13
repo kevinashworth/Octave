@@ -1,7 +1,7 @@
 /* eslint-disable no-undef */
 import { Promise } from 'meteor/promise'
 import algoliasearch from 'algoliasearch'
-import _ from 'lodash'
+import includes from 'lodash/includes'
 import { PAST_PROJECT_STATUSES_ARRAY } from '../../../modules/constants.js'
 
 export function PastProjectEditUpdateAlgoliaBefore (data, { document, originalDocument }) {
@@ -35,7 +35,7 @@ export function PastProjectEditUpdateAlgoliaBefore (data, { document, originalDo
       dirty = true
     }
     if (document.status !== originalDocument.status) {
-      if (_.includes(PAST_PROJECT_STATUSES_ARRAY, document.status)) {
+      if (includes(PAST_PROJECT_STATUSES_ARRAY, document.status)) {
         indexedObject.url = `/past-projects/${document._id}/${document.slug}`
       } else {
         indexedObject.url = `/projects/${document._id}/${document.slug}`

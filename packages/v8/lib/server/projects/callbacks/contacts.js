@@ -1,6 +1,9 @@
 import { Connectors } from 'meteor/vulcan:core'
 import Contacts from '../../../modules/contacts/collection.js'
-import _ from 'lodash'
+import differenceWith from 'lodash/differenceWith'
+import findIndex from 'lodash/findIndex'
+import isEqual from 'lodash/isEqual'
+import remove from 'lodash/remove'
 // import { PAST_PROJECT_STATUSES_ARRAY } from '../../constants.js'
 import { isEmptyValue } from '../../../modules/helpers.js'
 
@@ -33,8 +36,8 @@ export function ProjectEditUpdateContacts (data, { document, originalDocument })
   let contactsToAddThisProjectTo = []
   const newProject = document
   const oldProject = originalDocument
-  contactsToAddThisProjectTo = _.differenceWith(newProject.contacts, oldProject.contacts, _.isEqual)
-  contactsToRemoveThisProjectFrom = _.differenceWith(oldProject.contacts, newProject.contacts, _.isEqual)
+  contactsToAddThisProjectTo = differenceWith(newProject.contacts, oldProject.contacts, isEqual)
+  contactsToRemoveThisProjectFrom = differenceWith(oldProject.contacts, newProject.contacts, isEqual)
   console.group('ProjectEditUpdateContacts:')
   console.info('contactsToRemoveThisProjectFrom:', contactsToRemoveThisProjectFrom)
   console.info('contactsToAddThisProjectTo:', contactsToAddThisProjectTo)
@@ -44,9 +47,9 @@ export function ProjectEditUpdateContacts (data, { document, originalDocument })
   if (!isEmptyValue(contactsToRemoveThisProjectFrom)) {
     contactsToRemoveThisProjectFrom.forEach(deletedContact => {
       const oldContact = Contacts.findOne(deletedContact.contactId)
-      let oldContactProjects = oldContact && oldContact.projects
+      const oldContactProjects = oldContact && oldContact.projects
 
-      _.remove(oldContactProjects, function (p) {
+      remove(oldContactProjects, function (p) {
         return p.projectId === document._id
       })
 
@@ -82,7 +85,7 @@ export function ProjectEditUpdateContacts (data, { document, originalDocument })
         updatedProjects = [updatedProject]
       } else {
         updatedProjects = contact.projects
-        const i = _.findIndex(contact.projects, { projectId: project._id })
+        const i = findIndex(contact.projects, { projectId: project._id })
         if (i < 0) {
           // case 2: add to it
           updatedProjects.push(updatedProject)
@@ -103,7 +106,7 @@ export function ProjectEditUpdateContacts (data, { document, originalDocument })
 
 export function ProjectCreateUpdateContacts (data, { document, originalDocument }) {
   const project = document
-  let contactsToAddThisProjectTo = project.contacts
+  const contactsToAddThisProjectTo = project.contacts
   console.group('ProjectCreateUpdateContacts:')
   console.info('contactsToAddThisProjectTo:', contactsToAddThisProjectTo)
   console.groupEnd()
@@ -122,7 +125,7 @@ export function ProjectCreateUpdateContacts (data, { document, originalDocument 
         updatedProjects = [updatedProject]
       } else {
         updatedProjects = contact.projects
-        const i = _.findIndex(contact.projects, { projectId: project._id })
+        const i = findIndex(contact.projects, { projectId: project._id })
         if (i < 0) {
           // case 2: add to it
           updatedProjects.push(updatedProject)

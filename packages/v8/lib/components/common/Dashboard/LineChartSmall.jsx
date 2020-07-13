@@ -2,7 +2,7 @@ import { Components, registerComponent } from 'meteor/vulcan:core'
 import React, { PureComponent } from 'react'
 import { Line } from 'react-chartjs-2'
 import Card from 'react-bootstrap/Card'
-import _ from 'lodash'
+import takeRightWhile from 'lodash/takeRightWhile'
 import moment from 'moment'
 import { brandColors } from './brandColors.js'
 
@@ -13,7 +13,7 @@ class LineChartSmall extends PureComponent {
       return (<div><Components.Loading /></div>)
     }
 
-    const displayStats = _.takeRightWhile(theSmallStats, function (stat) {
+    const displayStats = takeRightWhile(theSmallStats, function (stat) {
       return moment(stat.date).isSameOrAfter(moment().subtract(1, 'years'))
     })
 
