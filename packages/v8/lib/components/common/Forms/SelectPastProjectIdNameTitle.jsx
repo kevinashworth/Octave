@@ -3,7 +3,7 @@ import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import Form from 'react-bootstrap/Form'
 import Select from 'react-select-virtualized'
-import _ from 'lodash'
+import find from 'lodash/find'
 import { customStyles, theme } from './react-select-settings'
 import { CASTING_TITLES_ENUM, nullOption } from '../../../modules/constants.js'
 
@@ -78,8 +78,8 @@ class SelectPastProjectIdNameTitle extends Component {
     const pastProjects = this.props.document.pastProjects
     const projectTitle = pastProjects[this.props.itemIndex] ? pastProjects[this.props.itemIndex].projectTitle : ''
     const titleForProject = pastProjects[this.props.itemIndex] ? pastProjects[this.props.itemIndex].titleForProject : ''
-    const selectedIdOption = _.find(this.props.options, { value: this.props.value }) || nullOption
-    const selectedTitleOption = _.find(CASTING_TITLES_ENUM, { value: titleForProject }) || nullOption
+    const selectedIdOption = find(this.props.options, { value: this.props.value }) || nullOption
+    const selectedTitleOption = find(CASTING_TITLES_ENUM, { value: titleForProject }) || nullOption
 
     this.setState({
       projectTitle,

@@ -2,7 +2,7 @@ import { Components, getFragment, registerComponent } from 'meteor/vulcan:core'
 import React from 'react'
 import { withRouter } from 'react-router-dom'
 import Card from 'react-bootstrap/Card'
-import _ from 'lodash'
+import includes from 'lodash/includes'
 import PastProjects from '../../modules/past-projects/collection.js'
 import withSettings from '../../modules/hocs/withSettings.js'
 import { ACTIVE_PROJECT_STATUSES_ARRAY, MLAB } from '../../modules/constants.js'
@@ -20,7 +20,7 @@ const PastProjectsEditForm = ({ documentId, match, history, toggle, mongoProvide
             mutationFragment={getFragment('PastProjectsEditFragment')}
             showRemove
             successCallback={document => {
-              if (_.includes(ACTIVE_PROJECT_STATUSES_ARRAY, document.status)) {
+              if (includes(ACTIVE_PROJECT_STATUSES_ARRAY, document.status)) {
                 history.push(`/projects/${theDocumentId}/${document.slug}`)
               } else if (toggle) {
                 toggle()

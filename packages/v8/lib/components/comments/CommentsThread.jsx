@@ -1,7 +1,8 @@
 import { Components, registerComponent, Utils, withCurrentUser, withMulti2 } from 'meteor/vulcan:core'
 import React, { Component } from 'react'
 import Card from 'react-bootstrap/Card'
-import _ from 'lodash'
+import clone from 'lodash/clone'
+import map from 'lodash/map'
 import pluralize from 'pluralize'
 import mapProps from 'recompose/mapProps'
 import Comments from '../../modules/comments/collection.js'
@@ -39,7 +40,7 @@ class CommentsThread extends Component {
       return <Components.Loading />
     }
 
-    const resultsClone = _.map(results, _.clone) // we don't want to modify the objects we got from props
+    const resultsClone = map(results, clone) // we don't want to modify the objects we got from props
     const nestedComments = Utils.unflatten(resultsClone, { idProperty: '_id', parentIdProperty: 'parentCommentId' })
 
     return (

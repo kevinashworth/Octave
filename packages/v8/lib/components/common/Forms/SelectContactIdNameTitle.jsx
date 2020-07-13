@@ -3,7 +3,7 @@ import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import Form from 'react-bootstrap/Form'
 import Select from 'react-select-virtualized'
-import _ from 'lodash'
+import find from 'lodash/find'
 import { customStyles, theme } from './react-select-settings'
 import { CASTING_TITLES_ENUM, nullOption } from '../../../modules/constants.js'
 
@@ -67,8 +67,8 @@ class SelectContactIdNameTitle extends Component {
     if (contacts) {
       const contactName = contacts[this.props.itemIndex] ? contacts[this.props.itemIndex].contactName : ''
       const contactTitle = contacts[this.props.itemIndex] ? contacts[this.props.itemIndex].contactTitle : ''
-      const selectedIdOption = _.find(this.props.options, { value: this.props.value }) || nullOption
-      const selectedTitleOption = _.find(CASTING_TITLES_ENUM, { value: contactTitle }) || nullOption
+      const selectedIdOption = find(this.props.options, { value: this.props.value }) || nullOption
+      const selectedTitleOption = find(CASTING_TITLES_ENUM, { value: contactTitle }) || nullOption
 
       this.setState({
         contactName,

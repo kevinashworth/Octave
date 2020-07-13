@@ -6,7 +6,7 @@ import { LinkContainer } from 'react-router-bootstrap'
 import Button from 'react-bootstrap/Button'
 import Card from 'react-bootstrap/Card'
 import Markup from 'interweave'
-import _ from 'lodash'
+import get from 'lodash/get'
 import moment from 'moment'
 import mapProps from 'recompose/mapProps'
 import { DATE_FORMAT_LONG, DATE_FORMAT_SHORT } from '../../modules/constants.js'
@@ -89,7 +89,7 @@ const mapPropsFunction = props => ({
   input: {
     filter: {
       slug: {
-        _eq: _.get(props, 'match.params.slug')
+        _eq: get(props, 'match.params.slug')
       }
     }
   }

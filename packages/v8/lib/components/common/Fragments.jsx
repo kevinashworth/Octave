@@ -1,7 +1,7 @@
 import { Components, Fragments, getFragmentText, registerComponent } from 'meteor/vulcan:lib'
 import React, { useState } from 'react'
 import Button from 'react-bootstrap/Button'
-import _ from 'lodash'
+import sortBy from 'lodash/sortBy'
 import MyCode from './MyCode'
 
 function fragmentOutput (props) {
@@ -19,7 +19,7 @@ const FragmentsDashboard = () => {
       fragmentText: getFragmentText(f.fragmentObject.definitions[0].name.value).trim()
     }
   })
-  const fragmentsData = _.sortBy(fragmentsTrimmed, 'fragmentText')
+  const fragmentsData = sortBy(fragmentsTrimmed, 'fragmentText')
 
   const columns = [{
     name: 'fragmentText',

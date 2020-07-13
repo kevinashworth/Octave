@@ -1,7 +1,8 @@
 import { getActions, getStore } from 'meteor/vulcan:redux'
 import React from 'react'
 import { Link } from 'react-router-dom'
-import _ from 'lodash'
+import isEqual from 'lodash/isEqual'
+import sortBy from 'lodash/sortBy'
 import Contacts from './contacts/collection.js'
 import Offices from './offices/collection.js'
 import Projects from './projects/collection.js'
@@ -160,7 +161,7 @@ export const getAddress = ({ project, office, contact }) => {
         }
       }
     }
-    if (_.isEqual(address, blankAddress) && !isEmptyValue(office.projects)) {
+    if (isEqual(address, blankAddress) && !isEmptyValue(office.projects)) {
       for (let i = 0; i < office.projects.length; i++) {
         address = findProjectAddress(office.projects[i])
         if (address.state.length) {
@@ -168,7 +169,7 @@ export const getAddress = ({ project, office, contact }) => {
         }
       }
     }
-    if (_.isEqual(address, blankAddress) && !isEmptyValue(office.contacts)) {
+    if (isEqual(address, blankAddress) && !isEmptyValue(office.contacts)) {
       for (let i = 0; i < office.contacts.length; i++) {
         address = findContactAddress(office.contacts[i])
         if (address.state.length) {
@@ -187,7 +188,7 @@ export const getAddress = ({ project, office, contact }) => {
         }
       }
     }
-    if (_.isEqual(address, blankAddress) && !isEmptyValue(project.offices)) {
+    if (isEqual(address, blankAddress) && !isEmptyValue(project.offices)) {
       for (let i = 0; i < project.offices.length; i++) {
         address = findOfficeAddress(project.offices[i])
         if (address.state.length) {
@@ -195,7 +196,7 @@ export const getAddress = ({ project, office, contact }) => {
         }
       }
     }
-    if (_.isEqual(address, blankAddress) && !isEmptyValue(project.contacts)) {
+    if (isEqual(address, blankAddress) && !isEmptyValue(project.contacts)) {
       for (let i = 0; i < project.contacts.length; i++) {
         address = findContactAddress(project.contacts[i])
         if (address.state.length) {
@@ -214,7 +215,7 @@ export const getAddress = ({ project, office, contact }) => {
         }
       }
     }
-    if (_.isEqual(address, blankAddress) && !isEmptyValue(contact.offices)) {
+    if (isEqual(address, blankAddress) && !isEmptyValue(contact.offices)) {
       for (let i = 0; i < contact.offices.length; i++) {
         address = findOfficeAddress(contact.offices[i])
         if (address.state.length) {
@@ -222,7 +223,7 @@ export const getAddress = ({ project, office, contact }) => {
         }
       }
     }
-    if (_.isEqual(address, blankAddress) && !isEmptyValue(contact.projects)) {
+    if (isEqual(address, blankAddress) && !isEmptyValue(contact.projects)) {
       for (let i = 0; i < contact.projects.length; i++) {
         address = findProjectAddress(contact.projects[i])
         if (address.state.length) {
@@ -232,7 +233,7 @@ export const getAddress = ({ project, office, contact }) => {
     }
   }
 
-  if (!_.isEqual(address, blankAddress)) {
+  if (!isEqual(address, blankAddress)) {
     address.location = getLocation(address)
     return address
   } else {
@@ -308,7 +309,7 @@ const findAddress = (address) => {
 
 export const getLatestAddress = ({ contact, office, project }) => {
   // which is most recently updated? THe contact, office or project? Use it's address.
-  const sorted = _.sortBy([contact.updatedAt, office.updatedAt, project.updatedAt])
+  const sorted = sortBy([contact.updatedAt, office.updatedAt, project.updatedAt])
   return getAddress({ contact: sorted[0] })
 }
 
