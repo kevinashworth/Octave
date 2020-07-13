@@ -1,5 +1,8 @@
 import { Connectors } from 'meteor/vulcan:core'
-import _ from 'lodash'
+import differenceWith from 'lodash/differenceWith'
+import findIndex from 'lodash/findIndex'
+import isEqual from 'lodash/isEqual'
+import remove from 'lodash/remove'
 import Contacts from '../../../modules/contacts/collection.js'
 import { isEmptyValue } from '../../../modules/helpers.js'
 
@@ -13,8 +16,8 @@ export function OfficeEditUpdateContacts (data, { document, originalDocument }) 
   let contactsToAddThisOfficeTo = null
   const newOffice = document
   const oldOffice = originalDocument
-  contactsToAddThisOfficeTo = _.differenceWith(newOffice.contacts, oldOffice.contacts, _.isEqual)
-  contactsToRemoveThisOfficeFrom = _.differenceWith(oldOffice.contacts, newOffice.contacts, _.isEqual)
+  contactsToAddThisOfficeTo = differenceWith(newOffice.contacts, oldOffice.contacts, isEqual)
+  contactsToRemoveThisOfficeFrom = differenceWith(oldOffice.contacts, newOffice.contacts, isEqual)
   console.group('OfficeEditUpdateContacts:')
   console.info('contactsToRemoveThisOfficeFrom:', contactsToRemoveThisOfficeFrom)
   console.info('contactsToAddThisOfficeTo:', contactsToAddThisOfficeTo)
@@ -26,11 +29,11 @@ export function OfficeEditUpdateContacts (data, { document, originalDocument }) 
       // case 1: there are no offices on the contact and contact.offices is undefined (shouldn't happen, theoretically, but it does currently anyway)
       if (contact.offices) {
         const outdatedOffices = contact.offices
-        const updatedOffices = _.remove(outdatedOffices, function (o) {
+        const updatedOffices = remove(outdatedOffices, function (o) {
           return o._id === office._id
         })
         // case 2: office didn't have the contact on it (shouldn't happen, theoretically, but does currently anyway)
-        if (_.isEqual(updatedOffices, outdatedOffices)) {
+        if (isEqual(updatedOffices, outdatedOffices)) {
           return
         }
         // case 3: update the contact with its new offices
@@ -56,7 +59,7 @@ export function OfficeEditUpdateContacts (data, { document, originalDocument }) 
         updatedOffices = [updatedOffice]
       } else {
         updatedOffices = contact.offices
-        const i = _.findIndex(contact.offices, { officeId: office._id })
+        const i = findIndex(contact.offices, { officeId: office._id })
         if (i < 0) {
           // case 2: contact not on office list of contacts, add contact
           updatedOffices.push(updatedOffice)
@@ -77,7 +80,7 @@ export function OfficeEditUpdateContacts (data, { document, originalDocument }) 
 
 export function OfficeCreateUpdateContacts (document) {
   const office = document
-  let contactsToAddThisOfficeTo = document.contacts
+  const contactsToAddThisOfficeTo = document.contacts
 
   // [c]
   if (contactsToAddThisOfficeTo) {
@@ -92,7 +95,7 @@ export function OfficeCreateUpdateContacts (document) {
         updatedOffices = [updatedOffice]
       } else {
         updatedOffices = contact.offices
-        const i = _.findIndex(contact.offices, { officeId: office._id })
+        const i = findIndex(contact.offices, { officeId: office._id })
         if (i < 0) {
           // case 2: contact not on office list of contacts, add contact
           updatedOffices.push(updatedOffice)

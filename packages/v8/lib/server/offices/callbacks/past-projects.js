@@ -1,5 +1,7 @@
 import { Connectors } from 'meteor/vulcan:core'
-import _ from 'lodash'
+import differenceWith from 'lodash/differenceWith'
+import findIndex from 'lodash/findIndex'
+import isEqual from 'lodash/isEqual'
 import PastProjects from '../../../modules/past-projects/collection.js'
 import { isEmptyValue } from '../../../modules/helpers.js'
 
@@ -21,8 +23,8 @@ export function OfficeEditUpdatePastProjects (data, { document, originalDocument
   } else {
     const newOffice = document
     const oldOffice = originalDocument
-    pastProjectsToAddThisOfficeTo = _.differenceWith(newOffice.pastProjects, oldOffice.pastProjects, _.isEqual)
-    pastProjectsToRemoveThisOfficeFrom = _.differenceWith(oldOffice.pastProjects, newOffice.pastProjects, _.isEqual)
+    pastProjectsToAddThisOfficeTo = differenceWith(newOffice.pastProjects, oldOffice.pastProjects, isEqual)
+    pastProjectsToRemoveThisOfficeFrom = differenceWith(oldOffice.pastProjects, newOffice.pastProjects, isEqual)
     console.group('OfficeEditUpdatePastProjects:')
     console.info('pastProjectsToAddThisOfficeTo:', pastProjectsToAddThisOfficeTo)
     console.info('pastProjectsToRemoveThisOfficeFrom:', pastProjectsToRemoveThisOfficeFrom)
@@ -32,7 +34,7 @@ export function OfficeEditUpdatePastProjects (data, { document, originalDocument
   if (pastProjectsToRemoveThisOfficeFrom) {
     pastProjectsToRemoveThisOfficeFrom.forEach(projectToUpdate => {
       var pastProject = PastProjects.findOne(projectToUpdate.projectId)
-      const i = _.findIndex(pastProject.offices, ['officeId', office._id])
+      const i = findIndex(pastProject.offices, ['officeId', office._id])
       if (i > -1) {
         pastProject.offices.splice(i, 1)
         Connectors.update(PastProjects, pastProject._id, {

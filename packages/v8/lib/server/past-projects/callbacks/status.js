@@ -1,5 +1,6 @@
 import { Connectors, createMutator, deleteMutator } from 'meteor/vulcan:core'
-import _ from 'lodash'
+import includes from 'lodash/includes'
+import remove from 'lodash/remove'
 import Comments from '../../../modules/comments/collection.js'
 import Contacts from '../../../modules/contacts/collection.js'
 import Offices from '../../../modules/offices/collection.js'
@@ -12,7 +13,7 @@ import { isEmptyValue } from '../../../modules/helpers.js'
 // if the new project is created and matches (TODO: matches what, exactly?), delete current
 
 export function PastProjectEditUpdateStatusAfter (document, { context, currentUser }) {
-  const newStatusIsActive = _.includes(ACTIVE_PROJECT_STATUSES_ARRAY, document.status)
+  const newStatusIsActive = includes(ACTIVE_PROJECT_STATUSES_ARRAY, document.status)
 
   if (newStatusIsActive) {
     const { data: newProject } = Promise.await(createMutator({
@@ -39,7 +40,7 @@ export function PastProjectEditUpdateStatusAfter (document, { context, currentUs
         const office = Offices.findOne(officeOfDocument.officeId)
         if (office.pastProjects && office.pastProjects.length) {
           pastProjects = office.pastProjects
-          _.remove(pastProjects, function (p) {
+          remove(pastProjects, function (p) {
             return p._id === document._id
           })
         }
@@ -64,7 +65,7 @@ export function PastProjectEditUpdateStatusAfter (document, { context, currentUs
         const contact = Contacts.findOne(c.contactId)
         if (contact.pastProjects && contact.pastProjects.length) {
           pastProjects = contact.projects
-          _.remove(pastProjects, function (p) {
+          remove(pastProjects, function (p) {
             return p.projectId === document._id
           })
         }

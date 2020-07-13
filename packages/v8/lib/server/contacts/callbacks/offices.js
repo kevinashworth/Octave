@@ -1,5 +1,5 @@
 import { Connectors } from 'meteor/vulcan:core'
-import _ from 'lodash'
+import findIndex from 'lodash/findIndex'
 import Offices from '../../../modules/offices/collection.js'
 import { getFullNameFromContact } from '../../../modules/helpers.js'
 
@@ -40,7 +40,7 @@ export function ContactCreateUpdateOffices (document, properties) {
     if (!office.contacts) {
       newContacts = [newContact]
     } else {
-      const i = _.findIndex(office.contacts, { contactId: contact._id })
+      const i = findIndex(office.contacts, { contactId: contact._id })
       newContacts = office.contacts
       if (i < 0) {
         // case 2: this contact is not on this office but other contacts are and we're adding this contact
@@ -80,7 +80,7 @@ export function ContactEditUpdateOffices (document, properties) {
     if (!office.contacts) {
       newContacts = [newContact]
     } else {
-      const i = _.findIndex(office.contacts, { contactId: contact._id })
+      const i = findIndex(office.contacts, { contactId: contact._id })
       newContacts = office.contacts
       if (i < 0) {
         // case 2: this contact is not on this office but other contacts are and we're adding this contact

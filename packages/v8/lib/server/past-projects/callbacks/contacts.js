@@ -1,5 +1,7 @@
 import { Connectors } from 'meteor/vulcan:core'
-import _ from 'lodash'
+import findIndex from 'lodash/findIndex'
+import includes from 'lodash/includes'
+import sortBy from 'lodash/sortBy'
 import Contacts from '../../../modules/contacts/collection.js'
 import { ACTIVE_PROJECT_STATUSES_ARRAY } from '../../../modules/constants.js'
 import { isEmptyValue } from '../../../modules/helpers.js'
@@ -35,14 +37,14 @@ export function PastProjectEditUpdateContacts (document, properties) {
       titleForProject: projectContact.contactTitle
     }
 
-    if (_.includes(ACTIVE_PROJECT_STATUSES_ARRAY, project.status)) {
+    if (includes(ACTIVE_PROJECT_STATUSES_ARRAY, project.status)) {
       // past-project is becoming a project
       var newProjects = []
       // case 1: there are no contacts on the project and project.contacts is undefined
       if (!contact.projects) {
         newProjects = [newProject]
       } else {
-        const i = _.findIndex(contact.projects, { projectId: project._id })
+        const i = findIndex(contact.projects, { projectId: project._id })
         newProjects = contact.projects
         if (i < 0) {
           // case 2: this contact is not on this project but other contacts are and we're adding this contact
@@ -52,7 +54,7 @@ export function PastProjectEditUpdateContacts (document, properties) {
           newProjects[i] = newProject
         }
       }
-      const sortedProjects = _.sortBy(newProjects, ['projectTitle'])
+      const sortedProjects = sortBy(newProjects, ['projectTitle'])
       Connectors.update(Contacts, contact._id, {
         $set: {
           projects: sortedProjects,
@@ -63,7 +65,7 @@ export function PastProjectEditUpdateContacts (document, properties) {
       // also remove the past-project from contact.pastProjects
       if (!isEmptyValue(contact.pastProjects)) {
         var newPastProjects = contact.pastProjects
-        const i = _.findIndex(contact.pastProjects, { projectId: project._id })
+        const i = findIndex(contact.pastProjects, { projectId: project._id })
         if (i > -1) {
           newPastProjects.splice(i, 1)
           Connectors.update(Contacts, contact._id, {
@@ -81,7 +83,7 @@ export function PastProjectEditUpdateContacts (document, properties) {
       if (isEmptyValue(contact.pastProjects)) {
         newPastProjects = [newProject]
       } else {
-        const i = _.findIndex(contact.pastProjects, { projectId: project._id })
+        const i = findIndex(contact.pastProjects, { projectId: project._id })
         newPastProjects = contact.pastProjects
         if (i < 0) {
           // case 2: this past-project is not on this contact but other past-projects are and we're adding this past-project

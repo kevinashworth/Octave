@@ -1,5 +1,5 @@
 import { Connectors } from 'meteor/vulcan:core'
-import _ from 'lodash'
+import findIndex from 'lodash/findIndex'
 import Projects from '../../../modules/projects/collection.js'
 import { getFullNameFromContact } from '../../../modules/helpers.js'
 
@@ -39,7 +39,7 @@ export function ContactEditUpdateProjects (document, properties) {
     if (!project.contacts) {
       newContacts = [newContact]
     } else {
-      const i = _.findIndex(project.contacts, { contactId: contact._id })
+      const i = findIndex(project.contacts, { contactId: contact._id })
       newContacts = project.contacts
       if (i < 0) {
         // case 2: this contact is not on this project but other contacts are and we're adding this contact

@@ -1,5 +1,8 @@
 import { Connectors } from 'meteor/vulcan:core'
-import _ from 'lodash'
+import differenceWith from 'lodash/differenceWith'
+import findIndex from 'lodash/findIndex'
+import isEqual from 'lodash/isEqual'
+import remove from 'lodash/remove'
 import Offices from '../../../modules/offices/collection.js'
 import { isEmptyValue } from '../../../modules/helpers.js'
 
@@ -128,8 +131,8 @@ export function PastProjectEditUpdateOfficesBefore (data, { document, originalDo
   let officesToAddThisProjectTo = []
   const newProject = document
   const oldProject = originalDocument
-  officesToAddThisProjectTo = _.differenceWith(newProject.offices, oldProject.offices, _.isEqual)
-  officesToRemoveThisProjectFrom = _.differenceWith(oldProject.offices, newProject.offices, _.isEqual)
+  officesToAddThisProjectTo = differenceWith(newProject.offices, oldProject.offices, isEqual)
+  officesToRemoveThisProjectFrom = differenceWith(oldProject.offices, newProject.offices, isEqual)
   console.group('PastProjectEditUpdateOfficesBefore:')
   console.info('officesToRemoveThisProjectFrom:', officesToRemoveThisProjectFrom)
   console.info('officesToAddThisProjectTo:', officesToAddThisProjectTo)
@@ -139,9 +142,9 @@ export function PastProjectEditUpdateOfficesBefore (data, { document, originalDo
   if (officesToRemoveThisProjectFrom) {
     officesToRemoveThisProjectFrom.forEach(deletedOffice => {
       const oldOffice = Offices.findOne(deletedOffice.officeId)
-      let oldOfficeProjects = oldOffice && oldOffice.pastProjects
+      const oldOfficeProjects = oldOffice && oldOffice.pastProjects
 
-      _.remove(oldOfficeProjects, function (p) {
+      remove(oldOfficeProjects, function (p) {
         return p.projectId === document._id
       })
 
@@ -176,7 +179,7 @@ export function PastProjectEditUpdateOfficesBefore (data, { document, originalDo
         updatedProjects = [updatedProject]
       } else {
         updatedProjects = office.pastProjects
-        const i = _.findIndex(office.pastProjects, { projectId: project._id })
+        const i = findIndex(office.pastProjects, { projectId: project._id })
         if (i < 0) {
           // case 2: add to it
           updatedProjects.push(updatedProject)
