@@ -3,9 +3,7 @@ import React from 'react'
 import { Link } from 'react-router-dom'
 import Card from 'react-bootstrap/Card'
 import Interweave from 'interweave'
-import moment from 'moment'
 import pluralize from 'pluralize'
-import { DATE_FORMAT_LONG } from '../../modules/constants.js'
 import { isEmptyValue, transformLinks } from '../../modules/helpers.js'
 
 const PastProjects = (props) => {
@@ -21,8 +19,7 @@ const PastProjects = (props) => {
 
 const ContactDisplay = ({ contact }) => {
   if (!contact) return null
-  const displayDate =
-    'Contact as it was in the database before it was edited ' + moment(contact.updatedAt).format(DATE_FORMAT_LONG)
+
   return (
     <>
       <Card className='card-accent-warning'>
@@ -67,9 +64,6 @@ const ContactDisplay = ({ contact }) => {
               )}
             </Card.Text>}
         </Card.Body>
-        <Card.Footer>
-          <small className='text-muted'>{displayDate}</small>
-        </Card.Footer>
       </Card>
       {contact.pastProjects &&
         <div>
