@@ -2,10 +2,8 @@ import { Components } from 'meteor/vulcan:core'
 import React from 'react'
 import Card from 'react-bootstrap/Card'
 import Interweave from 'interweave'
-import moment from 'moment'
 import pluralize from 'pluralize'
 import styled from 'styled-components'
-import { DATE_FORMAT_LONG } from '../../modules/constants.js'
 import { transformLinks } from '../../modules/helpers.js'
 
 const Flextest = styled.div`
@@ -30,8 +28,7 @@ function PastProjects (props) {
 
 const OfficeDisplay = ({ office }) => {
   if (!office) return null
-  const displayDate =
-    'Office as it was in the database before it was edited ' + moment(office.updatedAt).format(DATE_FORMAT_LONG)
+
   return (
     <>
       <Card className='card-accent-primary'>
@@ -68,9 +65,6 @@ const OfficeDisplay = ({ office }) => {
               )}
             </Card.Text>}
         </Card.Body>
-        <Card.Footer>
-          <span className='text-muted'>{displayDate}</span>
-        </Card.Footer>
       </Card>
       {office.pastProjects &&
         <div>

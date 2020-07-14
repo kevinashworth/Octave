@@ -4,6 +4,7 @@ import { FormattedMessage } from 'meteor/vulcan:i18n'
 import React from 'react'
 import PropTypes from 'prop-types'
 import mapProps from 'recompose/mapProps'
+import Button from 'react-bootstrap/Button'
 import Card from 'react-bootstrap/Card'
 import Patches from '../../modules/patches/collection.js'
 import withSettings from '../../modules/hocs/withSettings.js'
@@ -47,11 +48,8 @@ const ProjectPatchesList = (props) => {
       </Card.Body>
       {Users.isAdmin(currentUser) && mongoProvider === MLAB &&
         <Card.Body>
-          <Card.Link href={`https://mlab.com/databases/v8-alba-mlab/collections/patches?_id=${patchesDocument._id}`} target={MLAB}>Edit on mLab</Card.Link>
+          <Button href={`https://mlab.com/databases/v8-alba-mlab/collections/patches?_id=${patchesDocument._id}`} target={MLAB}>Edit History on mLab</Button>
         </Card.Body>}
-      <Card.Footer>
-        <small className='text-muted'>This is the unused footer of ProjectPatchesList</small>
-      </Card.Footer>
     </Card>
   )
 }

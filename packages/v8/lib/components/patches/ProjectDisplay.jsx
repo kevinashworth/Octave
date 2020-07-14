@@ -2,8 +2,6 @@ import { Components } from 'meteor/vulcan:core'
 import React from 'react'
 import Card from 'react-bootstrap/Card'
 import Interweave from 'interweave'
-import moment from 'moment'
-import { DATE_FORMAT_LONG } from '../../modules/constants.js'
 import { getFullAddress, transformLinks } from '../../modules/helpers.js'
 
 const ProjectDisplay = ({ project }) => {
@@ -26,8 +24,7 @@ const ProjectDisplay = ({ project }) => {
     }
     return <div>{so}</div>
   }
-  const displayDate =
-    'Project as it was in the database before it was edited ' + moment(project.updatedAt).format(DATE_FORMAT_LONG)
+
   return (
     <Card className='card-accent-danger'>
       <Card.Header as='h2'>{project.projectTitle}</Card.Header>
@@ -79,9 +76,6 @@ const ProjectDisplay = ({ project }) => {
             )}
           </Card.Text>}
       </Card.Body>
-      <Card.Footer>
-        <span className='text-muted'>{displayDate}</span>
-      </Card.Footer>
     </Card>
   )
 }
