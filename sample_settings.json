@@ -1,14 +1,14 @@
 {
   "public": {
     "title": "V8",
-    "tagline": "The 4th Wall",
+    "tagline": "Not affliated with V8",
     "faviconUrl": "/favicon/favicon.ico",
     "locale": "en",
     "algolia": {
-      "ApplicationID": "14RUP1OK0B",
-      "SearchOnlyAPIKey": "2cd70a6b9a01c10aeaee6f6f11105f46",
-      "AlgoliaIndex": "mockaroo",
-      "README": "Index names appear in network requests and should be considered publicly available"
+      "ApplicationID": "Q8NZWM8ALA",
+      "SearchOnlyAPIKey": "612961548224f1f21ef72d854aac5f4c",
+      "AlgoliaIndex": "Mockaroo",
+      "README": "Index names appear in network requests and should be considered publicly available."
     }
   },
   "apolloServer": {
@@ -40,19 +40,19 @@
   },
   "private": {
     "algolia": {
-      "AddAndUpdateAPIKey": "202906167c49f16568567be849d3aa45",
-      "README": "The mockaroo Algolia index is a sandbox for development only."
+      "AddAndUpdateAPIKey": "cb39fc87eacd871c77260f47efa0adad",
+      "README": "The Mockaroo Algolia index is a sandbox for development only."
     },
     "twilio": {
       "accountSid": "foo",
       "authToken": "bar"
     }
   },
-  "defaultEmail": "4@the-4th-wall.com",
-  "mailUrl": "smtp://postmaster%40sandbox57674c9ac2e04f2b84e5ee358187e400.mailgun.org:***REMOVED***@smtp.mailgun.org:587/",
+  "defaultEmail": "example@example.com",
+  "mailUrl": "smtp://username%40yourdomain.mailgun.org:yourpassword123@smtp.mailgun.org:587/",
   "emailNotifications": true,
   "enableDevelopmentEmails": true,
   "secondaryColor": "#2F353A",
   "accentColor": "#20A8D8",
-  "emailFooter": "<span><a href='//v8.the-4th-wall.com/'>V8</a> &copy; 2018-2020 SuperSite, LLC<br />Powered by <a href='//the-4th-wall.com/'>The 4th Wall</a></span>"
+  "emailFooter": "<span><a href='//example.com/v8/'>V8</a> &copy; 2018-2020 SuperSite, LLC<br />Powered by <a href='//example.com/'>The Fourth Wall</a></span>"
 }
