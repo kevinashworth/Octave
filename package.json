@@ -6,18 +6,14 @@
     "npm": "^6.0"
   },
   "scripts": {
-    "build-for-heroku": "meteor build ./.build --directory --server-only --architecture=os.linux.x86_64",
-    "deploy-to-heroku": "open --hide --background -a Docker && cp Dockerfile ./.build/bundle && heroku container:push web -a sleepy-earth-65615 --context-path ./.build/bundle && heroku container:release web -a sleepy-earth-65615",
-    "deploy-2-heroku": "open --hide --background -a Docker && cp Dockerfile ./.build/bundle && heroku container:push web --context-path ./.build/bundle && heroku container:release web",
-    "deploy-to-galaxy": "DEPLOY_HOSTNAME=us-east-1.galaxy-deploy.meteor.com meteor deploy v8.the-4th-wall.com --settings .galaxy/settings.json",
-    "deploy-to-meteorapp": "DEPLOY_HOSTNAME=us-east-1.galaxy-deploy.meteor.com meteor deploy v8.meteorapp.com --settings .galaxy/settings.json",
-    "prepare": "cd mockaroo; ./mockaroo.sh; cd ..",
-    "prestart": "node .vulcan/prestart_vulcan.js",
     "start": "meteor --port 4004 --settings settings.json",
     "start-debug": "meteor debug --port 4004 --settings settings.json",
-    "start-atlas": "./start-atlas.sh",
-    "start-mlab": "./start-mlab.sh",
+    "start-mongo1": ". scripts/start-mongo1.sh",
+    "start-mongo2": ". scripts/start-mongo2.sh",
     "start-visualizer": "meteor --extra-packages bundle-visualizer --production --port 4004 --settings settings.json",
+    "prepare": "cd mockaroo; ./mockaroo.sh; cd ..",
+    "prestart": "node .vulcan/prestart_vulcan.js",
+    "postinstall": "patch-package",
     "lint": "standard 'packages/v8/**/*.js' 'packages/v8/**/*.jsx' --fix",
     "lintnofix": "standard 'packages/v8/**/*.js' 'packages/v8/**/*.jsx'",
     "lintnofixv": "standard --verbose 'packages/v8/**/*.js' 'packages/v8/**/*.jsx'",
@@ -26,7 +22,10 @@
     "build:sass": "node-sass 'packages/v8/lib/stylesheets/main.scss' -o 'packages/v8/lib/stylesheets/compiled'",
     "build:sass:min": "node-sass packages/v8/lib/stylesheets/main.scss packages/v8/lib/stylesheets/compiled/main-min.css --output-style compressed",
     "watch:sass": "npm run build:sass && npm run build:sass -w",
-    "postinstall": "patch-package"
+    "build-for-paas1": ". scripts/paas1-build.sh",
+    "deploy-to-paas1": ". scripts/paas1-deploy.sh",
+    "deploy-to-paas2": ". scripts/paas2-deploy.sh",
+    "deploy-to-paas2b": ". scripts/paas2b-deploy.sh"
   },
   "dependencies": {
     "@apollo/react-hooks": "^3.1.5",

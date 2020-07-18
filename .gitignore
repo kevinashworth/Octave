@@ -9,12 +9,11 @@ dump/
 misc/
 node_modules/
 packages/v8/lib/server/seeds/generated/
+scripts/
 storybook-static/
 bitbucket-pipelines.yml
 bundle.tar.gz
 *settings.json
-start-atlas.sh
-start-mlab.sh
 
 # The rest crept in from who knows where
 .eslintcache
