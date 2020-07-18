@@ -8,6 +8,7 @@
 dump/
 misc/
 node_modules/
+notes/
 packages/v8/lib/server/seeds/generated/
 scripts/
 storybook-static/
