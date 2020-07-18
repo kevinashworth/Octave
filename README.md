@@ -9,6 +9,7 @@
 - Vulcan, the “full-stack React+GraphQL framework,” built with React, GraphQL, Meteor, Apollo, MongoDB
 - Bootstrap, react-boostrap, SCSS / node-sass
 - Algolia
+- Mailgun
 - Mockaroo
 - Storybook
 - Twilio
@@ -23,7 +24,7 @@ Have these tools installed first:
 * NPM
 
 ### Installation Steps
-1. Clone [my fork](https://github.com/kevinashworth/Vulcan) of the [main Vulcan repo](https://github.com/VulcanJS/Vulcan). Be sure to check out branch `v8`. (There is no need to do more than clone this repo on the correct branch.)
+1. Clone [my fork](https://github.com/kevinashworth/Vulcan) of the [main Vulcan repo](https://github.com/VulcanJS/Vulcan). Be sure to check out branch [`v8`](https://github.com/kevinashworth/Vulcan/tree/v8). (There is no need to do more than clone this repo on the correct branch.)
 2. Clone this **V8** repo, then `cd` into its directory.
 3. Rename `sample_settings.json` to `settings.json`.
 4. Run `npm install`.<sup>1</sup>
