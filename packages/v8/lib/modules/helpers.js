@@ -14,6 +14,7 @@ import {
   AVOD_ENUM,
   DATE_FORMAT_SHORT
 } from './constants.js'
+import { getProcessMongo } from '../server/helpers.js'
 import moment from 'moment'
 
 export function getFullNameFromContact ({ firstName, middleName, lastName }) {
@@ -30,7 +31,7 @@ export function getFullNameFromContact ({ firstName, middleName, lastName }) {
   if (tempName.length) {
     return tempName
   } else {
-    return 'displayName or fullName Unknown'
+    return 'getFullNameFromContact error'
   }
 }
 
@@ -134,6 +135,9 @@ export const getLocation = (address) => { // have to repeat theState code, not a
   }
   if (state === 'ab' || state === 'bc' || state === 'mb' || state === 'ns' || state === 'on' || state === 'qc') {
     return 'Canada'
+  }
+  if (state === 'uk') {
+    return 'Europe'
   }
   return 'Other'
 }
@@ -429,17 +433,33 @@ export function titleSortFunc (a, b, order) {
   }
 }
 
-/* eslint-disable no-undef */
 export const getMongoProvider = () => {
-  const { setMongoProvider } = getActions()
   if (Meteor.isClient) {
     Meteor.call('getProcessEnvMongoProvider', function (err, results) {
       if (err) {
         console.error('getProcessEnvMongoProvider error:', err)
       }
+      const { setMongoProvider } = getActions()
+      getStore().dispatch(setMongoProvider(results))
+      return results
+    })
+  } else if (Meteor.isServer) {
+    return getProcessMongo()
+  } else {
+    return 'getMongoProvider error'
+  }
+}
+
+export const setMongoProvider = () => {
+  if (Meteor.isClient) {
+    Meteor.call('getProcessEnvMongoProvider', function (err, results) {
+      if (err) {
+        console.error('getProcessEnvMongoProvider error:', err)
+      }
+      const { setMongoProvider } = getActions()
       getStore().dispatch(setMongoProvider(results))
     })
+  } else {
+    return 'setMongoProvider error'
   }
-  return 'getMongoProvider error'
 }
-/* eslint-enable no-undef */

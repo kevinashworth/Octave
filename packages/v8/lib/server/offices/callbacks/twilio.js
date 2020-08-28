@@ -1,59 +1,50 @@
-/* eslint-disable no-undef */
-/*
- * Use Twilio Lookup for Validation and Formatting
- */
+/* Use Twilio Lookup for Validation and Formatting */
 import isEqual from 'lodash/isEqual'
+
+const accountSid = Meteor.settings.private.twilio.accountSid
+const authToken = Meteor.settings.private.twilio.authToken
+const client = require('twilio')(accountSid, authToken)
+
+const validateAndFormat = async (phones) => {
+  try {
+    const vfPhones = await Promise.all(
+      phones.map(async phone => {
+        const vf = await client.lookups.phoneNumbers(phone.phoneNumberAsInput).fetch()
+        const vfPhone = {
+          phoneNumberAsInput: phone.phoneNumberAsInput,
+          phoneNumberType: phone.phoneNumberType,
+          phoneNumber: vf.phoneNumber,
+          nationalFormat: vf.nationalFormat,
+          countryCode: vf.countryCode
+        }
+        return vfPhone
+      })
+    )
+    return vfPhones
+  } catch (e) {
+    console.error('Twilio / validateAndFormat error:', e)
+    return phones
+  }
+}
 
 export async function OfficeUpdateFormatPhones (data, { document, originalDocument }) {
   if (isEqual(document.phones, originalDocument.phones)) {
     return data
   }
-  if (Meteor.settings.private && Meteor.settings.private.twilio && document.phones && document.phones.length) {
-    const accountSid = Meteor.settings.private.twilio.accountSid
-    const authToken = Meteor.settings.private.twilio.authToken
-    const client = require('twilio')(accountSid, authToken)
-
-    const vfnPhones = await Promise.all(
-      document.phones.map(async phone => {
-        const vfn = await client.lookups.phoneNumbers(phone.phoneNumberAsInput).fetch({ countryCode: 'US' })
-        const vfnPhone = {
-          phoneNumberAsInput: phone.phoneNumberAsInput,
-          phoneNumberType: phone.phoneNumberType,
-          phoneNumber: vfn.phoneNumber,
-          nationalFormat: vfn.nationalFormat
-        }
-        return vfnPhone
-      })
-    )
-    const updatedData = data
-    updatedData.phones = vfnPhones
-    return updatedData
+  if (document.phones && document.phones.length) {
+    const vfPhones = await validateAndFormat(document.phones)
+    data.phones = vfPhones
+    return data
   } else {
     return data
   }
 }
 
 export async function OfficeCreateFormatPhones (document) {
-  if (Meteor.settings.private && Meteor.settings.private.twilio && document.phones && document.phones.length) {
-    const accountSid = Meteor.settings.private.twilio.accountSid
-    const authToken = Meteor.settings.private.twilio.authToken
-    const client = require('twilio')(accountSid, authToken)
-
-    const vfnPhones = await Promise.all(
-      document.phones.map(async phone => {
-        const vfn = await client.lookups.phoneNumbers(phone.phoneNumberAsInput).fetch({ countryCode: 'US' })
-        const vfnPhone = {
-          phoneNumberAsInput: phone.phoneNumberAsInput,
-          phoneNumberType: phone.phoneNumberType,
-          phoneNumber: vfn.phoneNumber,
-          nationalFormat: vfn.nationalFormat
-        }
-        return vfnPhone
-      })
-    )
-    const updatedDocument = document
-    updatedDocument.phones = vfnPhones
-    return updatedDocument
+  if (document.phones && document.phones.length) {
+    const vfPhones = await validateAndFormat(document.phones)
+    document.phones = vfPhones
+    return document
   } else {
     return document
   }

@@ -160,6 +160,7 @@ class AppSidebarNav extends Component {
   render () {
     const { className, children, navConfig, ...attributes } = this.props
 
+    delete attributes.currentUserRefetch
     delete attributes.isOpen
     delete attributes.staticContext
     delete attributes.Tag

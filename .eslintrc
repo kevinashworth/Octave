@@ -51,7 +51,10 @@
     "react/prop-types": 0,
     "react-hooks/rules-of-hooks": "error",
     "react-hooks/exhaustive-deps": "warn",
-    "quotes": [1, "single"]
+    "quotes": [
+      1,
+      "single"
+    ]
   },
   "env": {
     "browser": true,
@@ -65,12 +68,13 @@
     "graphql",
     "meteor",
     "react",
-    "react-hooks"],
+    "react-hooks"
+  ],
   "settings": {
-    "import/resolver": "meteor",
     "react": {
       "version": "detect"
-    }
+    },
+    "import/resolver": "meteor"
   },
   "root": true,
   "globals": {

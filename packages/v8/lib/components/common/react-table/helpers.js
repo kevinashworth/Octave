@@ -67,3 +67,10 @@ export function nameSortFn (rowA, rowB) {
   const b = rowB.values.displayName
   return a.localeCompare(b)
 }
+
+// see https://stackoverflow.com/questions/29829205/sort-an-array-so-that-null-values-always-come-last
+export function mySortFn (rowA, rowB, columnId) {
+  const a = rowA.values[columnId]
+  const b = rowB.values[columnId]
+  return (a === null) - (b === null) || +(a > b) || -(a < b)
+}

@@ -237,6 +237,9 @@ export const SVOD_ENUM = [
   'CBS All Access',
   'DC Universe',
   'Disney+',
+  'HBO Max',
+  'Hulu',
+  'FX on Hulu',
   'Netflix',
   'Quibi',
   'Spectrum Originals',
@@ -248,9 +251,8 @@ export const SVOD_ENUM = [
 
 export const AVOD_ENUM = [
   'Crackle',
-  'HBO Max',
-  'Hulu',
-  'FX on Hulu',
+  'IMDb TV',
+  'IMDbTV',
   'NBCUniversal streaming', // before it was named Peacock
   'Peacock',
   'Sony Crackle',
@@ -309,6 +311,7 @@ export const COREUI_BRANDS_LIST = [
 
 export const BRANDS_ENUM = [
   { brand: 'cbs', fa: 'fad fa-tv-retro' },
+  { brand: 'cdg', fa: 'fal fa-rectangle-wide' },
   { brand: 'csa', fa: 'fad fa-circle' },
   { brand: 'fox', fa: 'fad fa-tv-retro' },
   { brand: 'freeform', fa: 'fad fa-tv-retro' },
@@ -356,3 +359,4 @@ export const LOADING_PROJECTS_DATA = Array(50).fill(dummyProjectRow)
 
 export const MLAB = 'mLab'
 export const ATLAS = 'Atlas'
+export const LOCAL = 'localhost'

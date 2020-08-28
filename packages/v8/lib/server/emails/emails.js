@@ -10,12 +10,12 @@ VulcanEmail.addEmails({
   test: {
     template: 'test',
     path: '/email/test',
-    data() {
-      return {date: new Date()}
+    data () {
+      return { date: new Date() }
     },
-    subject() {
+    subject () {
       return 'This is a test'
-    },
+    }
   }
 })
 
@@ -23,7 +23,7 @@ VulcanEmail.addEmails({
   newUser: {
     template: 'newUser',
     path: '/email/new-user/:_id?',
-    subject() {
+    subject () {
       return 'A new user has been created'
     },
     query: `
@@ -40,7 +40,7 @@ VulcanEmail.addEmails({
   accountApproved: {
     template: 'accountApproved',
     path: '/email/account-approved/:_id?',
-    subject() {
+    subject () {
       return 'Your account has been approved.'
     },
     query: `
@@ -124,14 +124,14 @@ const commentsQuery = `
 `
 
 const dummyComment = {
-  user: {displayName: '[user]'}
+  user: { displayName: '[user]' }
 }
 
 VulcanEmail.addEmails({
   newComment: {
     template: 'newComment',
     path: '/email/new-comment/:_id?',
-    subject({data}) {
+    subject ({ data }) {
       const comment = _.isEmpty(data) ? dummyComment : data.comment.result
       console.log('newComment comment:')
       console.dir(comment)
@@ -142,12 +142,12 @@ VulcanEmail.addEmails({
   newReply: {
     template: 'newReply',
     path: '/email/new-reply/:_id?',
-    subject(data) {
+    subject (data) {
       const comment = _.isEmpty(data) ? dummyComment : data.comment.result
-      return comment.user.displayName+' replied to your comment at ' + comment.pageUrl
+      return comment.user.displayName + ' replied to your comment at ' + comment.pageUrl
     },
     query: commentsQuery
-  },
+  }
   // newCommentSubscribed: {
   //   template: 'newComment',
   //   path: '/email/new-comment-subscribed/:_id?',

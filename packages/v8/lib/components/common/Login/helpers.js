@@ -5,4 +5,4 @@ export const STATES = {
   PASSWORD_CHANGE: Symbol.for('PASSWORD_CHANGE'),
   PASSWORD_RESET: Symbol.for('PASSWORD_RESET'),
   ENROLL_ACCOUNT: Symbol.for('ENROLL_ACCOUNT')
-};
+}

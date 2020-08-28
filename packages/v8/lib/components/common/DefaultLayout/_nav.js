@@ -1,4 +1,15 @@
 const navItems = {
+  signIn: [
+    {
+      title: true,
+      name: 'Sign In'
+    },
+    {
+      name: 'Sign In / Sign Up',
+      url: '/login',
+      icon: 'fad fa-sign-in'
+    }
+  ],
   topItems: [
     {
       title: true,
@@ -99,7 +110,7 @@ const navItems = {
       name: 'Development'
     },
     {
-      name: 'Test',
+      name: 'ApolloTest',
       url: '/test',
       icon: 'fa fa fa-balance-scale'
     },
@@ -145,6 +156,7 @@ const navItems = {
 
 let keyCounter = 0
 export default {
+  signIn: navItems.signIn.map(item => ({ ...item, id: keyCounter++ })),
   topItems: navItems.topItems.map(item => ({ ...item, id: keyCounter++ })),
   smItems: navItems.smItems.map(item => ({ ...item, id: keyCounter++ })),
   xsItems: navItems.xsItems.map(item => ({ ...item, id: keyCounter++ })),

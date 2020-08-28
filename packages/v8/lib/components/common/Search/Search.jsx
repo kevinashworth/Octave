@@ -53,7 +53,7 @@ const Hits = ({ hits }) => {
             return (
               <Dropdown.Item key={hit.objectID} onClick={handleClick} href={hit.url}>
                 <Components.ErrorBoundary>
-                  <Highlight attribute='name' hit={hit} /><br />
+                  <Highlight attribute='name' hit={hit} />{' '}
                   <small className='text-muted'><Snippet attribute='body' hit={hit} /></small>
                 </Components.ErrorBoundary>
               </Dropdown.Item>
@@ -117,11 +117,11 @@ const Algolia = () => {
       >
         {matches => (
           <>
-            {matches.xs && <Configure hitsPerPage={4} />}
-            {matches.sm && <Configure hitsPerPage={6} />}
-            {matches.md && <Configure hitsPerPage={8} />}
-            {matches.lg && <Configure hitsPerPage={12} />}
-            {matches.xl && <Configure hitsPerPage={16} />}
+            {matches.xs && <Configure hitsPerPage={6} />}
+            {matches.sm && <Configure hitsPerPage={9} />}
+            {matches.md && <Configure hitsPerPage={12} />}
+            {matches.lg && <Configure hitsPerPage={18} />}
+            {matches.xl && <Configure hitsPerPage={24} />}
           </>
         )}
       </Media>

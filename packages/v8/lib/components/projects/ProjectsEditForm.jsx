@@ -1,4 +1,4 @@
-import { Components, getFragment, registerComponent } from 'meteor/vulcan:core'
+import { Components, registerComponent } from 'meteor/vulcan:core'
 import React from 'react'
 import { withRouter } from 'react-router-dom'
 import Card from 'react-bootstrap/Card'
@@ -17,7 +17,6 @@ const ProjectsEditForm = ({ documentId, match, history, toggle, mongoProvider })
           <Components.SmartForm
             collection={Projects}
             documentId={theDocumentId}
-            mutationFragment={getFragment('ProjectsEditFragment')}
             showRemove
             successCallback={document => {
               if (includes(PAST_PROJECT_STATUSES_ARRAY, document.status)) {

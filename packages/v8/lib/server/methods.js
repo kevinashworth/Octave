@@ -1,13 +1,13 @@
 import { Meteor } from 'meteor/meteor'
 import { Accounts } from 'meteor/accounts-base'
 import algoliasearch from 'algoliasearch'
-import { MLAB } from '../modules/constants.js'
+import { getProcessMongo } from './helpers.js'
 
 Meteor.methods({
 
   deleteAlgoliaRecord (objectId) {
     const applicationid = Meteor.settings.public.algolia.ApplicationID
-    const algoliaindex = Meteor.settings.private.algolia.AlgoliaIndex
+    const algoliaindex = Meteor.settings.public.algolia.AlgoliaIndex
     const deletekey = Meteor.settings.private.algolia.DeleteAPIKey
     const client = algoliasearch(applicationid, deletekey)
     const index = client.initIndex(algoliaindex)
@@ -16,17 +16,8 @@ Meteor.methods({
       .catch(error => console.error('deleteObject error:', error))
   },
 
-  // getProcessEnvMongoUrl () {
-  //   var mongoURL = process.env.MONGO_URL
-  //   return mongoURL
-  // },
-
   getProcessEnvMongoProvider () {
-    var mongoUrl = process.env.MONGO_URL
-    if (mongoUrl.indexOf('mlab.com') > -1) {
-      return MLAB
-    }
-    return 'Mongo provider is unknown'
+    return getProcessMongo()
   },
 
   getPrivateSettings () {

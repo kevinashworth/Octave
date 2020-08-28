@@ -8,7 +8,7 @@ import MyLoading from '../common/MyLoading'
 
 const MyLoader = ({ cardClass }) => {
   return (
-    <Card className='card-accent-primary' style={{ minWidth: '8rem', maxWidth: '18rem' }}>
+    <Card className='card-accent-primary card-mini'>
       <Card.Header as='h6'>
         <MyLoading variant='primary' />
       </Card.Header>
@@ -26,7 +26,7 @@ const OfficeMini = (props) => {
 
   const office = props.document
   return (
-    <Card className='card-accent-primary' style={{ minWidth: '8rem', maxWidth: '18rem' }}>
+    <Card className='card-accent-primary card-mini'>
       <Card.Header as='h6'>
         <Link to={`/offices/${office._id}/${office.slug}`}>
           {office.displayName}

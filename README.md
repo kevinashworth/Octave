@@ -7,7 +7,7 @@
 **V8** is built with:
 
 - Vulcan, the “full-stack React+GraphQL framework,” built with React, GraphQL, Meteor, Apollo, MongoDB
-- Bootstrap, react-boostrap, SCSS / node-sass
+- Bootstrap (react-boostrap, SCSS, node-sass)
 - Algolia
 - Mailgun
 - Mockaroo

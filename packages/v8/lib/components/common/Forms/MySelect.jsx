@@ -32,7 +32,6 @@ class MySelect extends Component {
       })
     } else {
       this.context.updateCurrentValues({ [this.props.path]: selectedOption.value })
-      console.log(`Just set ${this.props.path} to ${selectedOption.value}`)
     }
   }
 

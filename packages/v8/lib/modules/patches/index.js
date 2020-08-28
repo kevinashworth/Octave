@@ -3,4 +3,4 @@
 // import './callbacks.js'
 // import './views.js'
 
-export * from './collection.js'
+export Patches from './collection.js'

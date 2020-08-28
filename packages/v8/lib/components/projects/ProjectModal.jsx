@@ -52,12 +52,10 @@ class ProjectModal extends PureComponent {
             <Card.Text className='mb-0'>
               <b>{project.castingCompany}</b>
             </Card.Text>
-            {project.contacts
-              ? project.contacts.map(contact => <Components.ContactDetail key={contact.contactId} contact={contact} />)
-              : null}
-            {project.addresses
-              ? project.addresses.map(address => <Components.AddressDetail key={address} address={address} />)
-              : null}
+            {project.contacts &&
+              project.contacts.map(contact => <Components.ContactDetail key={contact.contactId} contact={contact} />)}
+            {project.addresses &&
+              project.addresses.map(address => <Components.AddressDetail key={address} address={address} />)}
             {project.contactId}
           </Card.Body>
           <Card.Footer>

@@ -1,55 +1,74 @@
 import { Connectors } from 'meteor/vulcan:core'
+import differenceWith from 'lodash/differenceWith'
 import findIndex from 'lodash/findIndex'
+import remove from 'lodash/remove'
 import PastProjects from '../../../modules/past-projects/collection.js'
-import { getFullNameFromContact } from '../../../modules/helpers.js'
+import { isEmptyValue } from '../../../modules/helpers.js'
 
-/*
-When updating a past-project on a contact, also update that past-project with the contact.
-I get confused, so here's a description:
-
-  Where i represents the project(s) we're adding to our contact,
-  contact.pastProjects[i] has { projectId, projectTitle, titleForProject }
-
-  But we actually get all pastProjects, not just i, the new ones.
-
-  So for each of the contact.pastProjects we update project.contacts of the Project with _id === projectId with
-  {
-    contactId: contact._id,
-    contactName: fullName -- which is getFullNameFromContact(contact),
-    contactTitle: project.titleForProject
+// callbacks.update.before
+// for unknown reasons, projectTitle is sometimes missing
+export const updatePastProjectTitles = (data) => {
+  if (isEmptyValue(data.pastProjects)) {
+    return data
   }
-*/
+  data.pastProjects.map(pastProject => {
+    if (isEmptyValue(pastProject.projectTitle)) {
+      const getPastProject = PastProjects.findOne(pastProject.projectId)
+      pastProject.projectTitle = getPastProject.projectTitle
+    }
+    return pastProject
+  })
+  return data
+}
 
-export function ContactEditUpdatePastProjects (document, properties) {
+// callbacks.create.async
+export const createContactUpdatePastProjects = ({ document }) => {
   const contact = document
-  if (!contact.pastProjects) {
-    return
+  if (!isEmptyValue(contact.pastProjects)) {
+    handleAddPastProjects(contact.pastProjects, contact)
   }
-  const fullName = getFullNameFromContact(contact)
+}
 
-  contact.pastProjects.forEach(contactProject => {
-    const pastProject = PastProjects.findOne(contactProject.projectId) // TODO: error handling
+// callbacks.udpate.async
+export const updateContactUpdatePastProjects = ({ document, originalDocument }) => {
+  const newContact = document
+  const oldContact = originalDocument
+  const pastProjectsThatWereAdded = differenceWith(newContact.pastProjects, oldContact.pastProjects, isSamePastProject)
+  const pastProjectsThatWereRemoved = differenceWith(oldContact.pastProjects, newContact.pastProjects, isSamePastProject)
+  if (!isEmptyValue(pastProjectsThatWereRemoved)) {
+    handleRemovePastProjects(pastProjectsThatWereRemoved, newContact._id)
+  }
+  if (!isEmptyValue(pastProjectsThatWereAdded)) {
+    handleAddPastProjects(pastProjectsThatWereAdded, newContact)
+  }
+}
+
+const handleAddPastProjects = (pastProjects, contact) => {
+  const contactId = contact._id
+  pastProjects.forEach(contactPastProject => {
+    const pastProject = PastProjects.findOne(contactPastProject.projectId) // TODO: error handling
     const newContact = {
-      contactId: contact._id,
-      contactName: fullName,
-      contactTitle: contactProject.titleForProject
+      contactId,
+      contactName: contact.displayName,
+      contactTitle: contactPastProject.titleForProject
     }
     let newContacts = []
 
-    // case 1: there are no contacts on the project and project.contacts is undefined
+    // case 1: there are no contacts on the pastProject and pastProject.contacts is undefined
     if (!pastProject.contacts) {
       newContacts = [newContact]
     } else {
-      const i = findIndex(pastProject.contacts, { contactId: contact._id })
+      const i = findIndex(pastProject.contacts, { contactId })
       newContacts = pastProject.contacts
       if (i < 0) {
-        // case 2: this contact is not on this project but other contacts are and we're adding this contact
+        // case 2: this contact is not on this pastProject but other contacts are and we're adding this contact
         newContacts.push(newContact)
       } else {
-        // case 3: this contact is on this project and we're updating the info
+        // case 3: this contact is on this pastProject and we're updating the info
         newContacts[i] = newContact
       }
     }
+
     Connectors.update(PastProjects, pastProject._id, {
       $set: {
         contacts: newContacts,
@@ -57,6 +76,35 @@ export function ContactEditUpdatePastProjects (document, properties) {
       }
     })
   })
+}
 
-  return document
+const handleRemovePastProjects = (pastProjects, contactId) => {
+  pastProjects.forEach(deletedPastProject => {
+    const oldPastProject = PastProjects.findOne(deletedPastProject.projectId)
+    const oldPastProjectContacts = oldPastProject && oldPastProject.contacts
+    remove(oldPastProjectContacts, function (p) { // `remove` mutates
+      return p.contactId === contactId
+    })
+    if (isEmptyValue(oldPastProjectContacts)) {
+      Connectors.update(PastProjects, oldPastProject._id, {
+        $set: {
+          updatedAt: new Date()
+        },
+        $unset: {
+          contacts: 1
+        }
+      })
+    } else {
+      Connectors.update(PastProjects, oldPastProject._id, {
+        $set: {
+          contacts: oldPastProjectContacts,
+          updatedAt: new Date()
+        }
+      })
+    }
+  })
+}
+
+const isSamePastProject = (a, b) => {
+  return a.projectId === b.projectId
 }

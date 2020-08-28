@@ -1,14 +1,15 @@
-/* eslint-disable no-undef */
-import { Promise } from 'meteor/promise'
 import algoliasearch from 'algoliasearch'
 import includes from 'lodash/includes'
 import { PAST_PROJECT_STATUSES_ARRAY } from '../../../modules/constants.js'
 
-export function PastProjectEditUpdateAlgoliaBefore (data, { document, originalDocument }) {
+// callbacks.update.async
+export function updateAlgoliaObject ({ document, originalDocument }) {
+  /* eslint-disable no-undef */
   if (Meteor.settings.private && Meteor.settings.private.algolia) {
     const applicationid = Meteor.settings.public.algolia.ApplicationID
-    const algoliaindex = Meteor.settings.private.algolia.AlgoliaIndex
+    const algoliaindex = Meteor.settings.public.algolia.AlgoliaIndex
     const addupdatekey = Meteor.settings.private.algolia.AddAndUpdateAPIKey
+    /* eslint-enable no-undef */
 
     var indexedObject = {
       objectID: document._id
@@ -44,23 +45,13 @@ export function PastProjectEditUpdateAlgoliaBefore (data, { document, originalDo
     }
 
     if (dirty) {
+      indexedObject.updatedAt = new Date()
       const client = algoliasearch(applicationid, addupdatekey)
       const index = client.initIndex(algoliaindex)
-      indexedObject.updatedAt = new Date()
-      Promise.await(
-        index.partialUpdateObject(
-          indexedObject,
-          { createIfNotExists: true }
-        )
-          .then(response => {
-            console.log('partialUpdateObject response:', response)
-          })
-          .catch(error => {
-            console.error('partialUpdateObject error:', error)
-          })
-      )
+      index
+        .partialUpdateObject(indexedObject, { createIfNotExists: true })
+        .then(response => { console.log('past-projects partialUpdateObject response:', response) })
+        .catch(error => { console.error('past-projects partialUpdateObject error:', JSON.stringify(error, null, 2)) })
     }
-  } else {
-    return data
   }
 }

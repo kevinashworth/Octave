@@ -122,11 +122,12 @@ const schema = {
     options: PROJECT_STATUSES_ENUM
   },
   renewed: {
-    label: 'On Hiatus but Renewed',
-    hidden: ({ document, formType }) => {
-      return formType !== 'new' && document.status !== 'On Hiatus'
-    },
     type: Boolean,
+    defaultValue: false,
+    label: 'On Hiatus but Renewed',
+    hidden: ({ document }) => {
+      return document.status !== 'On Hiatus'
+    },
     canRead: ['guests']
   },
   shootingLocation: {
@@ -213,12 +214,15 @@ const schema = {
     canRead: ['members'],
     resolveAs: {
       type: 'String',
-      resolver: async (project, args, { Offices }) => {
+      resolver: async (project, args, { Contacts, Offices }) => {
         if (project.offices && project.offices[0] && project.offices[0].officeId) {
           const office = await Offices.loader.load(project.offices[0].officeId)
           return office.displayName
         } else if (project.castingCompany && project.castingCompany.length) {
           return project.castingCompany
+        } else if (project.contacts && project.contacts[0] && project.contacts[0].contactId) {
+          const contact = await Contacts.loader.load(project.contacts[0].contactId)
+          return contact.displayName
         }
         return null
       }
@@ -257,7 +261,7 @@ const schema = {
         contacts {
           results {
             _id
-            fullName
+            displayName
           }
         }
       }
@@ -324,45 +328,6 @@ const schema = {
     }
   }
 }
-
-// let keys = Object.keys(schema)
-// console.log('keys:', keys)
-//
-// const allFields = [
-//   '_id',
-//   'createdAt',
-//   'userId',
-//   'updatedAt',
-//   'projectTitle',
-//   'sortTitle',
-//   'projectType',
-//   'platformType',
-//   'union',
-//   'network',
-//   'status',
-//   'renewed',
-//   'shootingLocation',
-//   'summary',
-//   'htmlSummary',
-//   'website',
-//   'notes',
-//   'htmlNotes',
-//   'season',
-//   'order',
-//   'slug',
-//   'castingCompany',
-//   'casting',
-//   'contacts',
-//   'contacts.$',
-//   'offices',
-//   'offices.$',
-//   'links',
-//   'links.$',
-//   'allContactNames',
-//   'addresses',
-//   'addresses.$',
-//   'allAddresses'
-// ]
 
 const optionalFields = [
   '_id',

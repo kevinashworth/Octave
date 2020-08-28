@@ -20,6 +20,7 @@ let initialState = {
     { contactLocation: 'Calif.', value: true },
     { contactLocation: 'NY', value: true },
     { contactLocation: 'Canada', value: true },
+    { contactLocation: 'Europe', value: true },
     { contactLocation: 'Other', value: true },
     { contactLocation: 'Unknown', value: true }
   ],

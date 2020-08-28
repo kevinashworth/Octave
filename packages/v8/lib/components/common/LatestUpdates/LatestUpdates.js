@@ -1,18 +1,20 @@
-import { Components, registerComponent, withAccess, withMulti } from 'meteor/vulcan:core'
-import React from 'react'
+import { Components, registerComponent, withAccess, withMulti, withMulti2 } from 'meteor/vulcan:core'
+import React, { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import Card from 'react-bootstrap/Card'
 import Col from 'react-bootstrap/Col'
 import Row from 'react-bootstrap/Row'
 import Markup from 'interweave'
+import isEqual from 'lodash/isEqual'
 import moment from 'moment'
 import pluralize from 'pluralize'
+import mapProps from 'recompose/mapProps'
 import Contacts from '../../../modules/contacts/collection.js'
 import Offices from '../../../modules/offices/collection.js'
 import Projects from '../../../modules/projects/collection.js'
 import PastProjects from '../../../modules/past-projects/collection.js'
 import MyLoading from '../MyLoading'
-import { DATE_FORMAT_SHORT_FRIENDLY } from '../../../modules/constants.js'
+import { ACTIVE_PROJECT_STATUSES_ARRAY, DATE_FORMAT_SHORT_FRIENDLY } from '../../../modules/constants.js'
 
 const MyLoader = ({ cardClass }) => {
   return (
@@ -41,9 +43,13 @@ const MyLoader = ({ cardClass }) => {
 }
 
 const LatestContactUpdates = (props) => {
-  const { loading, results } = props
+  const { error, loading, results } = props
   if (loading) {
     return <MyLoader cardClass='card-accent-warning' />
+  }
+  if (error) {
+    console.error('LatestContactUpdates error:', error)
+    return null
   }
   const contacts = results
 
@@ -92,9 +98,13 @@ registerComponent({
 })
 
 const LatestOfficeUpdates = (props) => {
-  const { loading, results } = props
+  const { error, loading, results } = props
   if (loading) {
     return <MyLoader cardClass='card-accent-primary' />
+  }
+  if (error) {
+    console.error('LatestOfficeUpdates error:', error)
+    return null
   }
   const offices = results
 
@@ -140,11 +150,22 @@ registerComponent({
 })
 
 const ProjectUpdates = (props) => {
-  const { loading, results } = props
+  const { callbackFn, error, loading, results } = props
   if (loading) {
     return <MyLoader cardClass='card-accent-danger' />
   }
+  if (error) {
+    console.error('ProjectUpdates error:', error)
+    return null
+  }
   const projects = results
+
+  // on props change, callbackFn sends results up to LatestUpdates
+  useEffect(() => {
+    if (!loading && results && callbackFn) {
+      callbackFn(results)
+    }
+  }, [results])
 
   return (
     <Row className='row-cols-xs-1 row-cols-sm-2 row-cols-md-3 row-cols-xxxl-6'>
@@ -180,33 +201,49 @@ const ProjectUpdates = (props) => {
   )
 }
 
-const newestProjectsAddedOptions = {
+const newestProjectsCastingOptions = {
   collection: Projects,
   fragmentName: 'ProjectsSingleFragment',
   limit: 6,
   terms: { view: 'projectsCastingByCreated' }
 }
 
+const activelyActive = ACTIVE_PROJECT_STATUSES_ARRAY.slice(0, 3) // Casting, Shooting, See Notes, the 3 that are actively Active
 const latestProjectUpdatesOptions = {
   collection: Projects,
   fragmentName: 'ProjectsSingleFragment',
-  limit: 12
+  limit: 12,
+  input: {
+    filter: { status: { _in: activelyActive } },
+    sort: { updatedAt: 'desc' }
+  }
 }
 
 registerComponent({
-  name: 'NewestProjectsAdded',
+  name: 'NewestProjectsCasting',
   component: ProjectUpdates,
-  hocs: [[withMulti, newestProjectsAddedOptions]]
+  hocs: [[withMulti, newestProjectsCastingOptions]]
 })
+
+const mapPropsFunction = (props) => {
+  const newestProjectsCastingIds = props.newestProjectsCastingIds
+  return {
+    ...props,
+    input: { filter: { _id: { _nin: newestProjectsCastingIds } } }
+  }
+}
 
 registerComponent({
   name: 'LatestProjectUpdates',
   component: ProjectUpdates,
-  hocs: [[withMulti, latestProjectUpdatesOptions]]
+  hocs: [
+    mapProps(mapPropsFunction),
+    [withMulti2, latestProjectUpdatesOptions]
+  ]
 })
 
 const LatestPastProjectUpdates = (props) => {
-  const { loading, results } = props
+  const { error, loading, results } = props
   if (loading) {
     return (
       <>
@@ -214,6 +251,10 @@ const LatestPastProjectUpdates = (props) => {
         <MyLoader cardClass='card-accent-secondary' />
       </>
     )
+  }
+  if (error) {
+    console.error('LatestPastProjectUpdates error:', error)
+    return null
   }
   const pastProjects = results
 
@@ -259,38 +300,49 @@ registerComponent({
 })
 
 const LatestUpdates = () => {
+  const [newestProjectsCastingIds, setNewestProjectsCastingIds] = useState([])
+
+  // callbackFn gets results from NewestProjectsCasting,
+  // makes newestProjectsCastingIds available to LatestProjectUpdates
+  const callbackFn = (results) => {
+    const ids = results.map(result => result._id)
+    if (!isEqual(newestProjectsCastingIds, ids)) {
+      setNewestProjectsCastingIds(ids)
+    }
+  }
+
   return (
     <div className='animated fadeIn'>
       <Components.HeadTags title='V8: Latest Updates' />
-
       <Card>
         <Card.Body>
           <Card.Title>Newest Projects Casting</Card.Title>
-          <Components.NewestProjectsAdded />
+          <Components.NewestProjectsCasting
+            callbackFn={callbackFn}
+          />
         </Card.Body>
       </Card>
-
+      <Card>
+        <Card.Body>
+          <Card.Title>Additional Recently Updated Active Projects</Card.Title>
+          {newestProjectsCastingIds.length &&
+            <Components.LatestProjectUpdates
+              newestProjectsCastingIds={newestProjectsCastingIds}
+            />}
+        </Card.Body>
+      </Card>
       <Card>
         <Card.Body>
           <Card.Title>Recently Updated Contacts</Card.Title>
           <Components.LatestContactUpdates />
         </Card.Body>
       </Card>
-
       <Card>
         <Card.Body>
           <Card.Title>Recently Updated Offices</Card.Title>
           <Components.LatestOfficeUpdates />
         </Card.Body>
       </Card>
-
-      <Card>
-        <Card.Body>
-          <Card.Title>Recently Updated Projects</Card.Title>
-          <Components.LatestProjectUpdates />
-        </Card.Body>
-      </Card>
-
       <Card>
         <Card.Body>
           <Card.Title>Recently Updated Past Projects</Card.Title>

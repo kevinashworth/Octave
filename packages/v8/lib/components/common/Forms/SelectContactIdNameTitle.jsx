@@ -1,5 +1,8 @@
+/*
+ * Specialized 3-part Select for contactId (props.value), contactName, contactTitle
+ */
 import { registerComponent } from 'meteor/vulcan:lib'
-import React, { Component } from 'react'
+import React, { useEffect, useState } from 'react'
 import PropTypes from 'prop-types'
 import Form from 'react-bootstrap/Form'
 import Select from 'react-select-virtualized'
@@ -7,120 +10,92 @@ import find from 'lodash/find'
 import { customStyles, theme } from './react-select-settings'
 import { CASTING_TITLES_ENUM, nullOption } from '../../../modules/constants.js'
 
-import onlyUpdateForKeys from 'recompose/onlyUpdateForKeys'
-const OptimizedSelect = onlyUpdateForKeys(['value'])(Select)
+const SelectContactIdNameTitle = (props, context) => {
+  const { itemIndex, options, value } = props
+  const pathPrefix = props.parentFieldName + '.' + itemIndex + '.'
 
-/**
-* This version explicity for contactId, contactName, contactTitle
-*/
+  const [contactName, setContactName] = useState('')
+  const [selectedIdOption, setSelectedIdOption] = useState(nullOption)
+  const [selectedTitleOption, setSelectedTitleOption] = useState(nullOption)
 
-class SelectContactIdNameTitle extends Component {
-  constructor (props) {
-    super(props)
-
-    this.handleIdChange = this.handleIdChange.bind(this)
-    this.handleNameChange = this.handleNameChange.bind(this)
-    this.handleTitleChange = this.handleTitleChange.bind(this)
-
-    this.state = {
-      path: this.props.path,
-      pathPrefix: this.props.parentFieldName + '.' + this.props.itemIndex + '.',
-      contactId: this.props.value,
-      contactName: '',
-      selectedIdOption: nullOption,
-      selectedTitleOption: nullOption
-    }
-  }
-
-  handleIdChange (selectedOption) {
-    this.setState({
-      contactId: selectedOption.value,
-      contactName: selectedOption.label,
-      selectedIdOption: selectedOption
-    })
-    this.context.updateCurrentValues({
-      [this.state.path]: selectedOption.value,
-      [this.state.pathPrefix + 'contactName']: selectedOption.label
+  const handleIdChange = (selectedOption) => {
+    setContactName(selectedOption.label)
+    setSelectedIdOption(selectedOption)
+    context.updateCurrentValues({
+      [props.path]: selectedOption.value,
+      [pathPrefix + 'contactName']: selectedOption.label
     })
   }
 
-  handleNameChange ({ target }) {
-    this.setState({
-      contactName: target.value
-    })
-    this.context.updateCurrentValues({
-      [this.state.pathPrefix + 'contactName']: target.value
+  const handleNameChange = ({ target }) => {
+    setContactName(target.value)
+    context.updateCurrentValues({
+      [pathPrefix + 'contactName']: target.value
     })
   }
 
-  handleTitleChange (selectedOption) {
-    this.setState({
-      selectedTitleOption: selectedOption
-    })
-    this.context.updateCurrentValues({
-      [this.state.pathPrefix + 'contactTitle']: selectedOption.label
+  const handleTitleChange = (selectedOption) => {
+    setSelectedTitleOption(selectedOption)
+    context.updateCurrentValues({
+      [pathPrefix + 'contactTitle']: selectedOption.label
     })
   }
 
-  componentDidMount () {
-    const contacts = this.props.document.contacts
+  // put 'run once' code here (similar to componentDidMount)
+  useEffect(() => {
+    const contacts = props.document.contacts
     if (contacts) {
-      const contactName = contacts[this.props.itemIndex] ? contacts[this.props.itemIndex].contactName : ''
-      const contactTitle = contacts[this.props.itemIndex] ? contacts[this.props.itemIndex].contactTitle : ''
-      const selectedIdOption = find(this.props.options, { value: this.props.value }) || nullOption
-      const selectedTitleOption = find(CASTING_TITLES_ENUM, { value: contactTitle }) || nullOption
-
-      this.setState({
-        contactName,
-        selectedIdOption,
-        selectedTitleOption
-      })
+      const contactName = (contacts[itemIndex] && contacts[itemIndex].contactName) || ''
+      const selectedIdOption = find(options, { value: value }) || nullOption
+      const contactTitle = contacts[itemIndex] && contacts[itemIndex].contactTitle
+      const selectedTitleOption = (contactTitle && find(CASTING_TITLES_ENUM, { value: contactTitle })) || nullOption
+      setContactName(contactName)
+      setSelectedIdOption(selectedIdOption)
+      setSelectedTitleOption(selectedTitleOption)
     }
-  }
+  }, [])
 
-  render () {
-    return (
-      <>
-        <Form.Group>
-          <Form.Label htmlFor={`contactId${this.props.itemIndex}`}>Name from Database</Form.Label>
-          <OptimizedSelect
-            styles={customStyles}
-            maxMenuHeight={400}
-            theme={theme}
-            id={`contactId${this.props.itemIndex}`}
-            value={this.state.selectedIdOption}
-            onChange={this.handleIdChange}
-            options={this.props.options}
-            isClearable
-            resetValue={nullOption}
-          />
-        </Form.Group>
-        <Form.Group>
-          <Form.Label htmlFor={`contactName${this.props.itemIndex}`}>Editable Name</Form.Label>
-          <Form.Control
-            type='text'
-            id={`contactName${this.props.itemIndex}`}
-            value={this.state.contactName}
-            onChange={this.handleNameChange}
-          />
-        </Form.Group>
-        <Form.Group>
-          <Form.Label htmlFor={`contactTitle${this.props.itemIndex}`}>Title for This</Form.Label>
-          <OptimizedSelect
-            styles={customStyles}
-            maxMenuHeight={400}
-            theme={theme}
-            id={`contactTitle${this.props.itemIndex}`}
-            value={this.state.selectedTitleOption}
-            onChange={this.handleTitleChange}
-            options={CASTING_TITLES_ENUM}
-            isClearable
-            resetValue={nullOption}
-          />
-        </Form.Group>
-      </>
-    )
-  }
+  return (
+    <>
+      <Form.Group>
+        <Form.Label htmlFor={`contactId${itemIndex}`}>Name from Database</Form.Label>
+        <Select
+          styles={customStyles}
+          maxMenuHeight={500}
+          theme={theme}
+          id={`contactId${itemIndex}`}
+          value={selectedIdOption}
+          onChange={handleIdChange}
+          options={options}
+          isClearable
+          resetValue={nullOption}
+        />
+      </Form.Group>
+      <Form.Group>
+        <Form.Label htmlFor={`contactName${itemIndex}`}>Editable Name</Form.Label>
+        <Form.Control
+          type='text'
+          id={`contactName${itemIndex}`}
+          value={contactName}
+          onChange={handleNameChange}
+        />
+      </Form.Group>
+      <Form.Group>
+        <Form.Label htmlFor={`contactTitle${itemIndex}`}>Title for This</Form.Label>
+        <Select
+          styles={customStyles}
+          maxMenuHeight={500}
+          theme={theme}
+          id={`contactTitle${itemIndex}`}
+          value={selectedTitleOption}
+          onChange={handleTitleChange}
+          options={CASTING_TITLES_ENUM}
+          isClearable
+          resetValue={nullOption}
+        />
+      </Form.Group>
+    </>
+  )
 }
 
 SelectContactIdNameTitle.contextTypes = {

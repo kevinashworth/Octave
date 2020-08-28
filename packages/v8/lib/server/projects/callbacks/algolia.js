@@ -1,13 +1,17 @@
-/* eslint-disable no-undef */
-import { Promise } from 'meteor/promise'
 import algoliasearch from 'algoliasearch'
 import includes from 'lodash/includes'
-import { ACTIVE_PROJECT_STATUSES_ARRAY } from '../../../modules/constants.js'
+import { getMongoProvider } from '../../../modules/helpers.js'
+import { ACTIVE_PROJECT_STATUSES_ARRAY, MLAB } from '../../../modules/constants.js'
 
-export function ProjectEditUpdateAlgoliaBefore (data, { document, originalDocument }) {
+// callbacks.update.async
+export function updateAlgoliaObject ({ document, originalDocument }) {
+  if (getMongoProvider() !== MLAB) {
+    console.log('Not using mLab, so not updating Algolia.')
+    return
+  }
   if (Meteor.settings.private && Meteor.settings.private.algolia) {
     const applicationid = Meteor.settings.public.algolia.ApplicationID
-    const algoliaindex = Meteor.settings.private.algolia.AlgoliaIndex
+    const algoliaindex = Meteor.settings.public.algolia.AlgoliaIndex
     const addupdatekey = Meteor.settings.private.algolia.AddAndUpdateAPIKey
 
     var indexedObject = {
@@ -44,31 +48,26 @@ export function ProjectEditUpdateAlgoliaBefore (data, { document, originalDocume
     }
 
     if (dirty) {
+      indexedObject.updatedAt = new Date()
       const client = algoliasearch(applicationid, addupdatekey)
       const index = client.initIndex(algoliaindex)
-      indexedObject.updatedAt = new Date()
-      Promise.await(
-        index.partialUpdateObject(
-          indexedObject,
-          { createIfNotExists: true }
-        )
-          .then(response => {
-            console.log('partialUpdateObject response:', response)
-          })
-          .catch(error => {
-            console.error('partialUpdateObject error:', error)
-          })
-      )
+      index
+        .partialUpdateObject(indexedObject, { createIfNotExists: true })
+        .then(response => { console.log('projects partialUpdateObject response:', response) })
+        .catch(error => { console.error('projects partialUpdateObject error:', JSON.stringify(error, null, 2)) })
     }
-  } else {
-    return data
   }
 }
 
-export function ProjectCreateSaveToAlgolia (document) {
+// callbacks.create.async
+export function createAlgoliaObject ({ document }) {
+  if (getMongoProvider() !== MLAB) {
+    console.log('Not using mLab, so not updating Algolia.')
+    return
+  }
   if (Meteor.settings.private && Meteor.settings.private.algolia) {
     const applicationid = Meteor.settings.public.algolia.ApplicationID
-    const algoliaindex = Meteor.settings.private.algolia.AlgoliaIndex
+    const algoliaindex = Meteor.settings.public.algolia.AlgoliaIndex
     const addupdatekey = Meteor.settings.private.algolia.AddAndUpdateAPIKey
 
     const indexedObject = {
@@ -84,11 +83,9 @@ export function ProjectCreateSaveToAlgolia (document) {
 
     const client = algoliasearch(applicationid, addupdatekey)
     const index = client.initIndex(algoliaindex)
-    Promise.await(index.saveObject(indexedObject)
-      .then(response => console.log('saveObject response:', response))
-      .catch(error => console.error('saveObject error:', error))
-    )
-  } else {
-    return document
+    index
+      .saveObject(indexedObject)
+      .then(response => { console.log('projects saveObject response:', response) })
+      .catch(error => { console.error('projects saveObject error:', JSON.stringify(error, null, 2)) })
   }
 }

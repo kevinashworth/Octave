@@ -8619,6 +8619,32 @@ a.text-dark:hover, a.text-dark:focus {
     .show > .btn-cbs.dropdown-toggle:focus {
       box-shadow: 0 0 0 0.2rem rgba(38, 162, 245, 0.5); }
 
+.btn-cdg {
+  color: #fff;
+  background-color: #1e73be;
+  border-color: #1e73be; }
+  .btn-cdg:hover {
+    color: #fff;
+    background-color: #195f9d;
+    border-color: #175892; }
+  .btn-cdg:focus, .btn-cdg.focus {
+    color: #fff;
+    background-color: #195f9d;
+    border-color: #175892;
+    box-shadow: 0 0 0 0.2rem rgba(64, 136, 200, 0.5); }
+  .btn-cdg.disabled, .btn-cdg:disabled {
+    color: #fff;
+    background-color: #1e73be;
+    border-color: #1e73be; }
+  .btn-cdg:not(:disabled):not(.disabled):active, .btn-cdg:not(:disabled):not(.disabled).active,
+  .show > .btn-cdg.dropdown-toggle {
+    color: #fff;
+    background-color: #175892;
+    border-color: #155287; }
+    .btn-cdg:not(:disabled):not(.disabled):active:focus, .btn-cdg:not(:disabled):not(.disabled).active:focus,
+    .show > .btn-cdg.dropdown-toggle:focus {
+      box-shadow: 0 0 0 0.2rem rgba(64, 136, 200, 0.5); }
+
 .btn-csa {
   color: #23282c;
   background-color: #b6b294;
@@ -12014,6 +12040,14 @@ a.bg-cbs:hover, a.bg-cbs:focus,
 button.bg-cbs:hover,
 button.bg-cbs:focus {
   background-color: #0073c0 !important; }
+
+.bg-cdg {
+  background-color: #1e73be !important; }
+
+a.bg-cdg:hover, a.bg-cdg:focus,
+button.bg-cdg:hover,
+button.bg-cdg:focus {
+  background-color: #175892 !important; }
 
 .bg-csa {
   background-color: #b6b294 !important; }

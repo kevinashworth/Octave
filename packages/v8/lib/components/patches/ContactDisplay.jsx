@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom'
 import Card from 'react-bootstrap/Card'
 import Interweave from 'interweave'
 import pluralize from 'pluralize'
-import { isEmptyValue, transformLinks } from '../../modules/helpers.js'
+import { getFullNameFromContact, isEmptyValue, transformLinks } from '../../modules/helpers.js'
 
 const PastProjects = (props) => {
   return (
@@ -23,10 +23,10 @@ const ContactDisplay = ({ contact }) => {
   return (
     <>
       <Card className='card-accent-warning'>
-        <Card.Header as='h2'>{contact.fullName}</Card.Header>
+        <Card.Header as='h2'>{contact.displayName}</Card.Header>
         <Card.Body>
           <Card.Text as='div'>
-            <b>{contact.displayName}</b>
+            <b>{getFullNameFromContact(contact)}</b>
             {contact.title && <div>{contact.title}</div>}
             {contact.gender && <div>{contact.gender}</div>}
             <hr />

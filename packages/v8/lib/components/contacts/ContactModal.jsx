@@ -33,14 +33,12 @@ const ContactModal = (props) => {
             ? <Markup content={contact.htmlBody} />
             : <div>{contact.body}</div>}
         </Card.Text>
-        {contact.addresses && contact.addresses[0] && <Card.Title>Addresses</Card.Title>}
         {contact.addresses &&
-          contact.addresses.map((address, index) => (
-            <Card.Text key={`address${index}`}>
-              <Components.AddressDetail address={address} />
-            </Card.Text>
-          ))}
-        {contact.projects && contact.projects[0] && <Card.Title>Projects</Card.Title>}
+          contact.addresses[0] && <Card.Title>Addresses</Card.Title>}
+        {contact.addresses &&
+          contact.addresses.map(address => <Components.AddressDetail key={address} address={address} />)}
+        {contact.projects &&
+          contact.projects[0] && <Card.Title>Projects</Card.Title>}
         {contact.projects &&
           contact.projects.map(project => (
             <Card.Text key={project.projectId}>

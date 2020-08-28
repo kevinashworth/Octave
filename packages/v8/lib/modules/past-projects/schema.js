@@ -350,7 +350,7 @@ const schema = {
         contacts{
           results{
             _id
-            fullName
+            displayName
           }
         }
       }

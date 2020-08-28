@@ -8,7 +8,7 @@ import MyLoading from '../common/MyLoading'
 
 const MyLoader = ({ cardClass }) => {
   return (
-    <Card.Text style={{ minWidth: '8rem', maxWidth: '18rem' }}>
+    <Card.Text className='card-mini'>
       <MyLoading variant='primary' />
     </Card.Text>
   )
@@ -21,7 +21,7 @@ const ContactMini = (props) => {
 
   const contact = props.document
   return (
-    <Card.Text style={{ minWidth: '8rem', maxWidth: '18rem' }}>
+    <Card.Text className='card-mini'>
       <Link to={`/contacts/${contact._id}/${contact.slug}`}>
         {contact.firstName} {contact.middleName} <strong>{contact.lastName}</strong>
       </Link> ({contact.title})

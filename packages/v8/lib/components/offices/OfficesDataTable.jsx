@@ -1,4 +1,3 @@
-/* eslint-disable react/jsx-curly-newline */
 import { Components, registerComponent, withAccess, withCurrentUser, withMulti2 } from 'meteor/vulcan:core'
 import Users from 'meteor/vulcan:users'
 import React, { useEffect } from 'react'
@@ -284,8 +283,7 @@ function OfficesDataTable (props) {
         {results && totalCount > results.length &&
           <Card.Footer>
             <Components.LoadingButton loading={myLoadingMore} onClick={handleLoadMoreClick} label={`Load ${Math.min(totalCount - count, SIZE_PER_LOAD)} More (${count}/${totalCount})`} />
-          </Card.Footer>
-        }
+          </Card.Footer>}
         {Users.canCreate({ collection: Offices, user: currentUser }) && <AddButtonFooter />}
       </Card>
     </div>

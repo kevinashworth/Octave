@@ -1,5 +1,5 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
+import React from 'react'
+import { Link } from 'react-router-dom'
 
 const AdminUsersPosts = ({ document: user }) => (
   <ul>
@@ -10,6 +10,6 @@ const AdminUsersPosts = ({ document: user }) => (
         </li>
       ))}
   </ul>
-);
+)
 
-export default AdminUsersPosts;
+export default AdminUsersPosts

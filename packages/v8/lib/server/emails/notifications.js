@@ -3,7 +3,6 @@ import VulcanEmail from 'meteor/vulcan:email'
 import { getSetting } from 'meteor/vulcan:core'
 
 export const createNotification = (userIds, notificationName, variables) => {
-
   console.groupCollapsed('Hello from createNotification!')
   console.log('userIds:', userIds)
   console.log('notificationName:', notificationName)
@@ -25,5 +24,4 @@ export const createNotification = (userIds, notificationName, variables) => {
       }
     })
   }
-
 }

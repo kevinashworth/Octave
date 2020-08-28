@@ -55,6 +55,7 @@ const pastProjectGroup = {
   startCollapsed: true
 }
 
+// NB: [past-]projects are different for offices than contacts
 const projectSubSchema = new SimpleSchema({
   projectId: {
     type: String,
@@ -337,7 +338,7 @@ const schema = {
     canCreate: ['members', 'admins'],
     canUpdate: ['members', 'admins'],
     group: officeGroup,
-    query:/* GraphQL */`
+    query: /* GraphQL */`
       query OfficesNameAndId {
         offices {
           results {
@@ -361,7 +362,7 @@ const schema = {
     canCreate: ['members', 'admins'],
     canUpdate: ['members', 'admins'],
     group: projectGroup,
-    query:/* GraphQL */`
+    query: /* GraphQL */`
       query ProjectsTitleAndId {
         projects {
           results {
@@ -385,7 +386,7 @@ const schema = {
     canCreate: ['members', 'admins'],
     canUpdate: ['members', 'admins'],
     group: pastProjectGroup,
-    query:/* GraphQL */`
+    query: /* GraphQL */`
       query PastProjectsTitleAndId {
         pastProjects {
           results {
@@ -394,23 +395,10 @@ const schema = {
           }
         }
       }
-    `,
+    `
   },
   'pastProjects.$': {
     type: pastProjectSubSchema
-  },
-
-  // GraphQL only fields
-
-  fullName: {
-    label: 'Full Name',
-    type: String,
-    optional: true,
-    canRead: ['members'],
-    resolveAs: {
-      type: 'String',
-      resolver: (o) => getFullNameFromContact(o)
-    }
   }
 }
 

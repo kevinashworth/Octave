@@ -54,3 +54,14 @@ nav.card-header-tabs {
 .statistics-lists {
   font-variant-numeric: tabular-nums;
 }
+
+/* For ContactMini, OfficeMini, and ProjectMini */
+.card-mini {
+  min-width: 8rem;
+  max-width: 20rem;
+}
+@media (min-width: 768px) {
+  .card-mini a {
+    white-space: nowrap;
+  }
+}

@@ -1,6 +1,6 @@
 import { Utils } from 'meteor/vulcan:core'
 
-export const getPageUrl = function(comment, isAbsolute = false) {
+export const getPageUrl = function (comment, isAbsolute = false) {
   const prefix = isAbsolute ? Utils.getSiteUrl().slice(0, -1) : ''
   return `${prefix}/${comment.collectionName.toLowerCase()}/${comment.objectId}`
 }

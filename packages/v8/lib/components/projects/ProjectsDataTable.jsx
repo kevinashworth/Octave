@@ -1,9 +1,10 @@
-/* eslint-disable react/jsx-curly-newline */
 import { Components, registerComponent, withAccess, withCurrentUser, withMulti2 } from 'meteor/vulcan:core'
 import Users from 'meteor/vulcan:users'
-import React, { useEffect, useMemo } from 'react'
+import React, { useEffect, useMemo, useState } from 'react'
+import { Link } from 'react-router-dom'
 import Card from 'react-bootstrap/Card'
 import Col from 'react-bootstrap/Col'
+import Modal from 'react-bootstrap/Modal'
 import ProgressBar from 'react-bootstrap/ProgressBar'
 import Row from 'react-bootstrap/Row'
 import {
@@ -15,12 +16,13 @@ import {
 import filter from 'lodash/filter'
 import includes from 'lodash/includes'
 import moment from 'moment'
+import { createBreakpointHook } from '@restart/hooks/useBreakpoint'
 import MyCode from '../common/MyCode'
 import MyLoading from '../common/MyLoading'
 import GlobalFilter from '../common/react-table/GlobalFilter'
 import Pagination from '../common/react-table/Pagination'
-import { dateFormatter, linkFormatter, titleSortFn } from '../common/react-table/helpers.js'
-import { CaretSorted, CaretUnsorted } from '../common/react-table/styled.js'
+import { dateFormatter, linkFormatter, mySortFn, titleSortFn } from '../common/react-table/helpers.js'
+import { CaretNone, CaretSort } from '../common/react-table/styled.js'
 import withFilters from '../../modules/hocs/withFilters.js'
 import Projects from '../../modules/projects/collection.js'
 import { INITIAL_SIZE_PER_PAGE, LOADING_PROJECTS_DATA } from '../../modules/constants.js'
@@ -28,7 +30,7 @@ import { INITIAL_SIZE_PER_PAGE, LOADING_PROJECTS_DATA } from '../../modules/cons
 const INITIAL_LOAD = 50
 const SIZE_PER_LOAD = 150
 const AUTOMATICALLY_LOAD_UP_TO = 650
-const hiddenColumns = ['allAddresses', 'allContactNames', 'notes', 'sortTitle', 'summary']
+const hiddenColumns = ['allAddresses', 'allContactNames', 'notes', 'sortTitle']
 
 // Set initial state. Just options I want to keep.
 // See https://github.com/amannn/react-keep-state
@@ -44,7 +46,7 @@ let keptState = {
 
 let keptLimit = null
 
-function AddButtonFooter () {
+const AddButtonFooter = () => {
   return (
     <Card.Footer>
       <Components.ModalTrigger label='Add a Project' title='New Project'>
@@ -54,7 +56,7 @@ function AddButtonFooter () {
   )
 }
 
-function Table ({ columns, data, loading }) {
+const Table = ({ columns, data, loading, onRowClick }) => {
   const tableProps = useTable(
     {
       columns,
@@ -84,6 +86,13 @@ function Table ({ columns, data, loading }) {
     state: { globalFilter, pageIndex, pageSize, sortBy }
   } = tableProps
   tableProps.collection = 'projects'
+
+  const rowClickHandler = (e, columnIndex, row) => {
+    e.stopPropagation()
+    if (columnIndex !== 0) {
+      onRowClick(true, row.original)
+    }
+  }
 
   // Remember state for the next mount
   useEffect(() => {
@@ -117,8 +126,11 @@ function Table ({ columns, data, loading }) {
                 // Return an array of prop objects and react-table will merge them appropriately
                 <th
                   {...column.getHeaderProps([
-                    { style: column.style },
-                    column.getSortByToggleProps()
+                    {
+                      ...column.getSortByToggleProps(),
+                      style: column.style,
+                      title: null
+                    }
                   ])}
                   key={index}
                 >
@@ -127,9 +139,11 @@ function Table ({ columns, data, loading }) {
                       {column.render('Header')}
                       {column.isSorted
                         ? column.isSortedDesc
-                          ? <CaretSorted className='fa fa-sort-desc' />
-                          : <CaretSorted className='fa fa-sort-asc' />
-                        : <CaretUnsorted className='fa fa-sort' />}
+                          ? <CaretSort className='fad fa-sort-down' />
+                          : <CaretSort className='fad fa-sort-up' />
+                        : column.canSort
+                          ? <CaretSort className='fad fa-sort' />
+                          : <CaretNone className='fad fa-sort' />}
                     </div>
                   </div>
                 </th>
@@ -145,7 +159,13 @@ function Table ({ columns, data, loading }) {
                 <tr {...row.getRowProps()} key={index}>
                   {row.cells.map((cell, index) => {
                     return (
-                      <td {...cell.getCellProps()} key={index}>{loading ? <MyLoading variant={index === 0 && 'primary'} /> : cell.render('Cell')}</td>
+                      <td
+                        {...cell.getCellProps()}
+                        key={index}
+                        onClick={(e) => rowClickHandler(e, index, row)}
+                      >
+                        {loading ? <MyLoading variant={index === 0 && 'primary'} /> : cell.render('Cell')}
+                      </td>
                     )
                   })}
                 </tr>
@@ -159,36 +179,80 @@ function Table ({ columns, data, loading }) {
   )
 }
 
-function ProjectsDataTable (props) {
+const ProjectsDataTable = (props) => {
+  const [show, setShow] = useState(false) // show Modal
+  const [project, setProject] = useState(null) // Modal project
+  const rowClickHandler = (show, project) => {
+    setShow(show)
+    setProject(project)
+  }
+
   const {
     count, currentUser, error, loading, loadMore, networkStatus, results, totalCount,
     projectTypeFilters, projectStatusFilters, projectUpdatedFilters, projectPlatformFilters
   } = props
   const myLoadingMore = networkStatus === 2
 
-  const columns = useMemo(
-    () => [
+  const useBreakpoint = createBreakpointHook({
+    xxxl: 1800,
+    xxxxl: 2100
+  })
+  const isWide = useBreakpoint({ xxxl: 'up' })
+  const isVeryWide = useBreakpoint({ xxxxl: 'up' })
+
+  const columns = useMemo(() => {
+    const arrayOfColumns = [
       {
-        Header: 'Name',
+        Header: 'Project Title',
         accessor: 'projectTitle',
         Cell: linkFormatter,
-        sortType: titleSortFn,
-        style: {
-          width: '25%'
-        }
-      }, {
+        sortType: titleSortFn
+      },
+      {
         Header: 'Casting',
-        accessor: 'casting'
-      }, {
+        accessor: 'casting',
+        sortType: mySortFn
+      },
+      {
         Header: 'Network',
-        accessor: 'network'
-      }, {
+        accessor: 'network',
+        sortType: mySortFn
+      },
+      {
         Header: 'Type',
         accessor: 'projectType'
-      }, {
+      }
+    ]
+    isWide && arrayOfColumns.push(
+      {
+        Header: 'Main Shooting Location',
+        accessor: 'shootingLocation',
+        sortType: mySortFn
+      }
+    )
+    isVeryWide && arrayOfColumns.push(
+      {
+        Header: 'Notes',
+        accessor: 'summary',
+        disableSortBy: true,
+        style: {
+          width: '33%'
+        }
+      }
+    )
+    arrayOfColumns.push(
+      {
         Header: 'Status',
         accessor: 'status',
         style: {
+          width: '6.6em'
+        }
+      }, {
+        Header: 'Created',
+        accessor: 'createdAt',
+        Cell: dateFormatter,
+        style: {
+          textAlign: 'right',
           width: '6.6em'
         }
       }, {
@@ -203,8 +267,10 @@ function ProjectsDataTable (props) {
       ...hiddenColumns.map(id => ({
         accessor: id
       }))
-    ],
-    []
+    )
+    return arrayOfColumns
+  },
+  [isWide, isVeryWide]
   )
 
   const filteredResults = useMemo(
@@ -230,7 +296,7 @@ function ProjectsDataTable (props) {
           return true
         }
       })
-      return filter(results, function (o) {
+      return filter(results, (o) => {
         const now = moment()
         const dateToCompare = o.updatedAt ? o.updatedAt : o.createdAt
         const displayThis = moment(dateToCompare).isAfter(now.subtract(momentNumber, momentPeriod).startOf('day'))
@@ -255,6 +321,12 @@ function ProjectsDataTable (props) {
     }
   })
 
+  const handleHide = () => {
+    if (show) {
+      setShow(false)
+    }
+  }
+
   const handleLoadMoreClick = (e) => {
     e.preventDefault()
     const newLimit = Math.min(count + SIZE_PER_LOAD, totalCount)
@@ -277,6 +349,17 @@ function ProjectsDataTable (props) {
   return (
     <div>
       <Components.HeadTags title='V8: Projects' />
+      {project &&
+        <Modal show={show} onHide={handleHide}>
+          <Modal.Header closeButton>
+            <Modal.Title>
+              <Link to={`/projects/${project._id}/${project.slug}`}>{project.projectTitle}</Link>
+            </Modal.Title>
+          </Modal.Header>
+          <Modal.Body>
+            <Components.ProjectModal document={project} />
+          </Modal.Body>
+        </Modal>}
       <Card className='card-accent-danger' style={{ borderTopWidth: 1 }}>
         <ProgressBar now={progress} style={{ height: 2 }} variant='danger' />
         <Card.Header>
@@ -284,13 +367,17 @@ function ProjectsDataTable (props) {
           <Components.ProjectFilters />
         </Card.Header>
         <Card.Body>
-          <Table columns={columns} data={filteredResults} loading={loading} />
+          <Table
+            onRowClick={rowClickHandler}
+            columns={columns}
+            data={filteredResults}
+            loading={loading}
+          />
         </Card.Body>
         {results && totalCount > results.length &&
           <Card.Footer>
             <Components.LoadingButton loading={myLoadingMore} onClick={handleLoadMoreClick} label={`Load ${Math.min(totalCount - count, SIZE_PER_LOAD)} More (${count}/${totalCount})`} />
-          </Card.Footer>
-        }
+          </Card.Footer>}
         <ProgressBar now={progress} style={{ height: 2 }} variant='secondary' />
         {Users.canCreate({ collection: Projects, user: currentUser }) && <AddButtonFooter />}
       </Card>

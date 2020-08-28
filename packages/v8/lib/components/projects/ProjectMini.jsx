@@ -8,7 +8,7 @@ import MyLoading from '../common/MyLoading'
 
 const MyLoader = ({ cardClass }) => {
   return (
-    <Card.Text style={{ minWidth: '8rem', maxWidth: '18rem' }}>
+    <Card.Text className='card-mini'>
       <MyLoading variant='primary' />
       <br />
       <small>
@@ -25,7 +25,7 @@ const ProjectMini = (props) => {
 
   const project = props.document
   return (
-    <Card.Text style={{ minWidth: '8rem', maxWidth: '18rem' }}>
+    <Card.Text className='card-mini'>
       <b><Link to={`/projects/${project._id}/${project.slug}`}>{project.projectTitle}</Link></b>
       {props.titleForProject && ` (${props.titleForProject})`}
       <br />

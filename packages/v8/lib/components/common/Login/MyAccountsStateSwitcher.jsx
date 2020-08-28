@@ -1,84 +1,83 @@
-import React from 'react';
-import { Components, replaceComponent } from 'meteor/vulcan:core';
-import { Accounts } from 'meteor/accounts-base';
+import React from 'react'
+import { Components } from 'meteor/vulcan:core'
+import { Accounts } from 'meteor/accounts-base'
 import { STATES } from './helpers.js'
 
 export class MyAccountsStateSwitcher extends React.Component {
+  // constructor(props) {
+  //   super(props)
 
-  constructor(props) {
-    super(props);
-
-    // this.state = {
-    //   formState: props.formState
-    // };
-  }
+  //   this.state = {
+  //     formState: props.formState
+  //   }
+  // }
 
   switchToSignUp = (event) => {
-    event && event.preventDefault();
+    event && event.preventDefault()
     // this.setState({
     //   formState: STATES.SIGN_UP,
-    // });
+    // })
     this.props.onFormStateChange(STATES.SIGN_UP)
-    // this.clearMessages();
+    // this.clearMessages()
   }
 
   switchToSignIn = (event) => {
-    event && event.preventDefault();
+    event && event.preventDefault()
     // this.setState({
     //   formState: STATES.SIGN_IN,
-    // });
+    // })
     this.props.onFormStateChange(STATES.SIGN_IN)
 
-    // this.clearMessages();
+    // this.clearMessages()
   }
 
   switchToPasswordReset = (event) => {
-    event && event.preventDefault();
+    event && event.preventDefault()
     // this.setState({
     //   formState: STATES.PASSWORD_RESET,
-    // });
+    // })
     this.props.onFormStateChange(STATES.PASSWORD_RESET)
-    // this.clearMessages();
+    // this.clearMessages()
   }
 
   switchToChangePassword = (event) => {
-    event && event.preventDefault();
+    event && event.preventDefault()
     // this.setState({
     //   formState: STATES.PASSWORD_CHANGE,
-    // });
+    // })
     this.props.onFormStateChange(STATES.PASSWORD_CHANGE)
-    // this.clearMessages();
+    // this.clearMessages()
   }
 
   switchToSignOut = (event) => {
-    event && event.preventDefault();
+    event && event.preventDefault()
     // this.setState({
     //   formState: STATES.PROFILE,
-    // });
+    // })
     this.props.onFormStateChange(STATES.PROFILE)
-    // this.clearMessages();
+    // this.clearMessages()
   }
 
   cancelResetPassword = (event) => {
-    event && event.preventDefault();
-    Accounts._loginButtonsSession.set('resetPasswordToken', null);
+    event && event.preventDefault()
+    Accounts._loginButtonsSession.set('resetPasswordToken', null)
     // this.setState({
     //   formState: STATES.SIGN_IN,
-    // });
+    // })
     this.props.onFormStateChange(STATES.SIGN_IN)
-    // this.clearMessages();
+    // this.clearMessages()
   }
 
   switchToProfile = (event) => {
-    event && event.preventDefault();
+    event && event.preventDefault()
     // this.setState({
     //   formState: STATES.PROFILE,
-    // });
+    // })
     this.props.onFormStateChange(STATES.PROFILE)
-    // this.clearMessages();
+    // this.clearMessages()
   }
 
-  render() {
+  render () {
     // const { formState } = this.props
     const {
       switchToSignUp,
@@ -87,8 +86,8 @@ export class MyAccountsStateSwitcher extends React.Component {
       switchToChangePassword,
       switchToSignOut,
       cancelResetPassword,
-      switchToProfile,
-    } = this;
+      switchToProfile
+    } = this
 
     const handlers = {
       switchToSignUp,
@@ -97,11 +96,11 @@ export class MyAccountsStateSwitcher extends React.Component {
       switchToChangePassword,
       switchToSignOut,
       cancelResetPassword,
-      switchToProfile,
-    };
+      switchToProfile
+    }
     return (
       <Components.AccountsLoginFormInner {...this.props} handlers={handlers} />
-    );
+    )
   }
 }
 
@@ -109,4 +108,4 @@ export class MyAccountsStateSwitcher extends React.Component {
 //   <MyStateSwitcher ref={ref} {...props} />
 // ))
 
-// replaceComponent('AccountsStateSwitcher', MyAccountsStateSwitcher);
+// replaceComponent('AccountsStateSwitcher', MyAccountsStateSwitcher)

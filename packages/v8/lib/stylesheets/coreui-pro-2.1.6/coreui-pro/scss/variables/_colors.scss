@@ -90,6 +90,7 @@ $theme-colors: map-merge(
 // Brand Colors
 
 $cbs:            #0092f3 !default;
+$cdg:            #1e73be !default;
 $csa:            #b6b294 !default;
 $freeform:       #0066ff !default;
 $hulu:           #63c696 !default;
@@ -129,6 +130,7 @@ $vimeo:          #aad450 !default;
 $brands-colors: () !default;
 $brands-colors: map-merge((
   "cbs":            $cbs,
+  "cdg":            $cdg,
   "csa":            $csa,
   "freeform":       $freeform,
   "hulu":           $hulu,

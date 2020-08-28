@@ -41,15 +41,15 @@ const pastProjectGroup = {
   startCollapsed: true
 }
 
+// NB: [past-]projects are different for offices than contacts
 const projectSubSchema = new SimpleSchema({
   projectId: {
     type: String,
-    label: 'Project',
     input: 'MySelect',
     optional: true,
     canRead: ['members'],
-    canCreate: ['members', 'admins'],
-    canUpdate: ['members', 'admins'],
+    canCreate: ['admins'],
+    canUpdate: ['admins'],
     options: props => props.data.projects.results.map(project => ({
       value: project._id,
       label: project.projectTitle
@@ -60,20 +60,19 @@ const projectSubSchema = new SimpleSchema({
     optional: true,
     hidden: true,
     canRead: ['members'],
-    canCreate: ['members', 'admins'],
-    canUpdate: ['members', 'admins']
+    canCreate: ['admins'],
+    canUpdate: ['admins']
   }
 })
 
 const pastProjectSubSchema = new SimpleSchema({
   projectId: {
     type: String,
-    label: 'Past Project',
     input: 'MySelect',
     optional: true,
     canRead: ['members'],
-    canCreate: ['members', 'admins'],
-    canUpdate: ['members', 'admins'],
+    canCreate: ['admins'],
+    canUpdate: ['admins'],
     options: props => props.data.pastProjects.results.map(project => ({
       value: project._id,
       label: project.projectTitle
@@ -84,8 +83,8 @@ const pastProjectSubSchema = new SimpleSchema({
     optional: true,
     hidden: true,
     canRead: ['members'],
-    canCreate: ['members', 'admins'],
-    canUpdate: ['members', 'admins']
+    canCreate: ['admins'],
+    canUpdate: ['admins']
   }
 })
 
@@ -188,12 +187,12 @@ const schema = {
     canRead: ['members'],
     canCreate: ['members', 'admins'],
     canUpdate: ['members', 'admins'],
-    query:/* GraphQL */`
+    query: /* GraphQL */`
       query ContactsNameAndId {
         contacts {
           results {
             _id
-            fullName
+            displayName
           }
         }
       }
@@ -244,7 +243,7 @@ const schema = {
     canRead: ['members'],
     canCreate: ['members', 'admins'],
     canUpdate: ['members', 'admins'],
-    query:/* GraphQL */`
+    query: /* GraphQL */`
       query ProjectsTitleAndId {
         projects {
           results {
@@ -341,7 +340,7 @@ const schema = {
     canRead: ['members'],
     canCreate: ['members', 'admins'],
     canUpdate: ['members', 'admins'],
-    query:/* GraphQL */`
+    query: /* GraphQL */`
       query PastProjectsTitleAndId {
         pastProjects {
           results {
@@ -399,9 +398,7 @@ const schema = {
     canRead: ['guests'],
     resolveAs: {
       type: 'String',
-      resolver: (office) => {
-        getAddress({ office }).location
-      }
+      resolver: (office) => getAddress({ office }).location
     }
   },
 

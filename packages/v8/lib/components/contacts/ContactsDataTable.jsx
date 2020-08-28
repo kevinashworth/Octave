@@ -1,9 +1,10 @@
-/* eslint-disable react/jsx-curly-newline */
 import { Components, registerComponent, withAccess, withCurrentUser, withMulti2 } from 'meteor/vulcan:core'
 import Users from 'meteor/vulcan:users'
-import React, { useEffect, useMemo } from 'react'
+import React, { useEffect, useMemo, useState } from 'react'
+import { Link } from 'react-router-dom'
 import Card from 'react-bootstrap/Card'
 import Col from 'react-bootstrap/Col'
+import Modal from 'react-bootstrap/Modal'
 import ProgressBar from 'react-bootstrap/ProgressBar'
 import Row from 'react-bootstrap/Row'
 import {
@@ -45,7 +46,7 @@ let keptState = {
 
 let keptUserRequestedLoad = null
 
-function AddButtonFooter () {
+const AddButtonFooter = () => {
   return (
     <Card.Footer>
       <Components.ModalTrigger label='Add a Contact' title='New Contact'>
@@ -55,7 +56,7 @@ function AddButtonFooter () {
   )
 }
 
-function Table ({ columns, data }) {
+const Table = ({ columns, data, onRowClick }) => {
   const tableProps = useTable(
     {
       columns,
@@ -85,6 +86,13 @@ function Table ({ columns, data }) {
     state: { globalFilter, pageIndex, pageSize, sortBy }
   } = tableProps
   tableProps.collection = 'contacts'
+
+  const rowClickHandler = (e, columnIndex, row) => {
+    e.stopPropagation()
+    if (columnIndex !== 0) {
+      onRowClick(true, row.original)
+    }
+  }
 
   // Remember state for the next mount
   useEffect(() => {
@@ -146,7 +154,13 @@ function Table ({ columns, data }) {
                 <tr {...row.getRowProps()} key={index}>
                   {row.cells.map((cell, index) => {
                     return (
-                      <td {...cell.getCellProps()} key={index}>{cell.render('Cell')}</td>
+                      <td
+                        {...cell.getCellProps()}
+                        key={index}
+                        onClick={(e) => rowClickHandler(e, index, row)}
+                      >
+                        {cell.render('Cell')}
+                      </td>
                     )
                   })}
                 </tr>
@@ -161,6 +175,13 @@ function Table ({ columns, data }) {
 }
 
 function ContactsDataTable (props) {
+  const [show, setShow] = useState(false) // show Modal
+  const [contact, setContact] = useState(null) // Modal contact
+  const rowClickHandler = (show, project) => {
+    setShow(show)
+    setContact(project)
+  }
+
   const {
     count, currentUser, error, loading, loadMore, networkStatus, results, totalCount,
     contactTitleFilters, contactLocationFilters, contactUpdatedFilters
@@ -262,6 +283,12 @@ function ContactsDataTable (props) {
     }
   })
 
+  const handleHide = () => {
+    if (show) {
+      setShow(false)
+    }
+  }
+
   const handleLoadMoreClick = (e) => {
     e.preventDefault()
     const newLimit = Math.min(count + SIZE_PER_LOAD, totalCount)
@@ -289,6 +316,17 @@ function ContactsDataTable (props) {
   return (
     <div>
       <Components.HeadTags title='V8: Contacts' />
+      {contact &&
+        <Modal show={show} onHide={handleHide}>
+          <Modal.Header closeButton>
+            <Modal.Title>
+              <Link to={`/contacts/${contact._id}/${contact.slug}`}>{contact.displayName}</Link>
+            </Modal.Title>
+          </Modal.Header>
+          <Modal.Body>
+            <Components.ContactModal document={contact} />
+          </Modal.Body>
+        </Modal>}
       <Card className='card-accent-warning' style={{ borderTopWidth: 1 }}>
         <ProgressBar now={progress} style={{ height: 2 }} variant='warning' />
         <Card.Header>
@@ -296,13 +334,16 @@ function ContactsDataTable (props) {
           <Components.ContactFilters />
         </Card.Header>
         <Card.Body>
-          <Table columns={columns} data={filteredResults} />
+          <Table
+            onRowClick={rowClickHandler}
+            columns={columns}
+            data={filteredResults}
+          />
         </Card.Body>
         {(totalCount > results.length) &&
           <Card.Footer>
             <Components.LoadingButton loading={myLoadingMore} onClick={handleLoadMoreClick} label={`Load ${Math.min(totalCount - count, SIZE_PER_LOAD)} More (${count}/${totalCount})`} />
-          </Card.Footer>
-        }
+          </Card.Footer>}
         <ProgressBar now={progress} style={{ height: 2 }} variant='secondary' />
         {Users.canCreate({ collection: Contacts, user: currentUser }) && <AddButtonFooter />}
       </Card>

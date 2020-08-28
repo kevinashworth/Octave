@@ -3,13 +3,14 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import Card from 'react-bootstrap/Card'
 
-const PhoneDetail = (props) => {
-  const { phone } = props
-  let displayText = phone.phoneNumberType ? phone.phoneNumberType + ': ' : ''
-  displayText += phone.nationalFormat ? phone.nationalFormat : phone.phoneNumberAsInput
+const PhoneDetail = ({ phone }) => {
+  const label = phone.phoneNumberType ? phone.phoneNumberType + ': ' : ''
+  const number = phone.nationalFormat ? phone.nationalFormat : phone.phoneNumberAsInput
+  const title = phone.countryCode ? `Country Code '${phone.countryCode}'` : null
   return (
     <Card.Text>
-      {displayText}
+      {label}
+      <a title={title} href={`tel:${phone.phoneNumber}`}>{number}</a>
     </Card.Text>
   )
 }
@@ -19,7 +20,8 @@ PhoneDetail.propTypes = {
     phoneNumberAsInput: PropTypes.string,
     phoneNumberType: PropTypes.string,
     phoneNumber: PropTypes.string,
-    nationalFormat: PropTypes.string
+    nationalFormat: PropTypes.string,
+    countryCode: PropTypes.string
   }).isRequired
 }
 

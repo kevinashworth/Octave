@@ -15,27 +15,9 @@ import './statistics'
 import './users'
 import './patches'
 
-import { getMongoProvider } from './helpers.js'
+import { setMongoProvider } from './helpers.js'
 
-getMongoProvider()
-
-// See https://stackoverflow.com/questions/14342848/how-do-i-access-process-env-in-meteor
-// if (Meteor.isClient) {
-//   Meteor.call('getProcessEnvMongoUrl', function (err, results) {
-//     if (err) {
-//       console.error('getProcessEnvMongoUrl[index] error:', err)
-//     }
-//     console.info('process.env.MONGO_URL:', results)
-//   })
-// }
-// if (Meteor.isServer) {
-//   Meteor.methods({
-//     getProcessEnvMongoUrl: function () {
-//       var mongoURL = process.env.MONGO_URL
-//       return mongoURL
-//     }
-//   })
-// }
+setMongoProvider()
 
 // `true`/ `false` to show / hide UsersGroups
 registerSetting('myDebug', false, 'Show UsersGroups')

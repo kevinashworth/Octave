@@ -1,78 +1,55 @@
 import { Connectors } from 'meteor/vulcan:core'
+import differenceWith from 'lodash/differenceWith'
 import findIndex from 'lodash/findIndex'
+import remove from 'lodash/remove'
 import Offices from '../../../modules/offices/collection.js'
-import { getFullNameFromContact } from '../../../modules/helpers.js'
+import { isEmptyValue } from '../../../modules/helpers.js'
 
-/*
-When updating an office on a contact, also update that office with the contact.
-I get confused, so here's a description:
-
-  Where i represents the office(s) we're adding to our contact,
-  contact.offices[i] has { officeId, officeName }
-
-  But we actually get all offices, not just i, the new ones.
-
-  So for each of the contact.offices we update office.contacts of the Office with _id === officeId with
-  {
-    contactId: contact._id,
-    contactName: fullName -- which is getFullNameFromContact(contact)
+// callbacks.update.before
+// for unknown reasons, officeName is sometimes missing
+export const updateOfficeNames = (data) => {
+  if (isEmptyValue(data.offices)) {
+    return data
   }
-
-TODO: What about the contact's title for this office?
-*/
-
-export function ContactCreateUpdateOffices (document, properties) {
-  const contact = document
-  if (!contact.offices) {
-    return
-  }
-  const fullName = getFullNameFromContact(contact)
-
-  contact.offices.forEach(contactOffice => {
-    const office = Offices.findOne(contactOffice.officeId) // TODO: error handling
-    const newContact = {
-      contactId: contact._id,
-      contactName: fullName
+  data.offices.map(office => {
+    if (isEmptyValue(office.officeName)) {
+      const getOffice = Offices.findOne(office.officeId)
+      office.officeName = getOffice.displayName
     }
-    let newContacts = []
-
-    // case 1: there are no contacts on the office and office.contacts is undefined
-    if (!office.contacts) {
-      newContacts = [newContact]
-    } else {
-      const i = findIndex(office.contacts, { contactId: contact._id })
-      newContacts = office.contacts
-      if (i < 0) {
-        // case 2: this contact is not on this office but other contacts are and we're adding this contact
-        newContacts.push(newContact)
-      } else {
-        // case 3: this contact is on this office and we're updating the info
-        newContacts[i] = newContact
-      }
-    }
-
-    Connectors.update(Offices, office._id, {
-      $set: {
-        contacts: newContacts,
-        updatedAt: new Date()
-      }
-    })
+    return office
   })
-  return document
+  return data
 }
 
-export function ContactEditUpdateOffices (document, properties) {
+// callbacks.create.async
+export const createContactUpdateOffices = ({ document }) => {
   const contact = document
-  if (!contact.offices) {
-    return
+  if (!isEmptyValue(contact.offices)) {
+    handleAddOffices(contact.offices, contact)
   }
-  const fullName = getFullNameFromContact(contact)
+}
 
-  contact.offices.forEach(contactOffice => {
+// callbacks.udpate.async
+export const updateContactUpdateOffices = ({ document, originalDocument }) => {
+  const newContact = document
+  const oldContact = originalDocument
+  const officesThatWereAdded = differenceWith(newContact.offices, oldContact.offices, isSameOffice)
+  const officesThatWereRemoved = differenceWith(oldContact.offices, newContact.offices, isSameOffice)
+  if (!isEmptyValue(officesThatWereRemoved)) {
+    handleRemoveOffices(officesThatWereRemoved, newContact._id)
+  }
+  if (!isEmptyValue(officesThatWereAdded)) {
+    handleAddOffices(officesThatWereAdded, newContact)
+  }
+}
+
+const handleAddOffices = (offices, contact) => {
+  const contactId = contact._id
+  offices.forEach(contactOffice => {
     const office = Offices.findOne(contactOffice.officeId) // TODO: error handling
     const newContact = {
-      contactId: contact._id,
-      contactName: fullName
+      contactId,
+      contactName: contact.displayName
     }
     let newContacts = []
 
@@ -80,7 +57,7 @@ export function ContactEditUpdateOffices (document, properties) {
     if (!office.contacts) {
       newContacts = [newContact]
     } else {
-      const i = findIndex(office.contacts, { contactId: contact._id })
+      const i = findIndex(office.contacts, { contactId })
       newContacts = office.contacts
       if (i < 0) {
         // case 2: this contact is not on this office but other contacts are and we're adding this contact
@@ -98,5 +75,35 @@ export function ContactEditUpdateOffices (document, properties) {
       }
     })
   })
-  return document
+}
+
+const handleRemoveOffices = (offices, contactId) => {
+  offices.forEach(deletedOffice => {
+    const oldOffice = Offices.findOne(deletedOffice.officeId)
+    const oldOfficeContacts = oldOffice && oldOffice.contacts
+    remove(oldOfficeContacts, function (p) { // `remove` mutates
+      return p.contactId === contactId
+    })
+    if (isEmptyValue(oldOfficeContacts)) {
+      Connectors.update(Offices, oldOffice._id, {
+        $set: {
+          updatedAt: new Date()
+        },
+        $unset: {
+          contacts: 1
+        }
+      })
+    } else {
+      Connectors.update(Offices, oldOffice._id, {
+        $set: {
+          contacts: oldOfficeContacts,
+          updatedAt: new Date()
+        }
+      })
+    }
+  })
+}
+
+const isSameOffice = (a, b) => {
+  return a.officeId === b.officeId
 }

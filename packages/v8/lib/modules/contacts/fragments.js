@@ -17,7 +17,6 @@ registerFragment(/* GraphQL */ `
     createdAt
     updatedAt
     userId
-    fullName
     displayName
     firstName
     middleName
@@ -68,11 +67,10 @@ registerFragment(/* GraphQL */ `
   }
 `)
 
-// ContactsPatchesFragment includes only directly-editable fields, plus fullName and htmlBody
+// ContactsPatchesFragment includes only directly-editable fields, plus htmlBody
 registerFragment(/* GraphQL */ `
   fragment ContactsPatchesFragment on Contact {
     displayName
-    fullName
     firstName
     middleName
     lastName
@@ -168,7 +166,6 @@ registerFragment(/* GraphQL */ `
     createdAt
     updatedAt
     userId
-    fullName
     firstName
     middleName
     lastName

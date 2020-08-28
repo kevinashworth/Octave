@@ -1,23 +1,43 @@
 import { extendCollection } from 'meteor/vulcan:core'
 import { Contacts } from '../../modules/contacts/collection.js'
 import {
-  ContactCreateSaveToAlgolia,
-  ContactEditUpdateAlgoliaBefore,
-  ContactCreateUpdateOffices,
-  ContactEditUpdateOffices,
-  ContactEditUpdateProjects,
-  ContactEditUpdatePastProjects,
-  ContactEditUpdateHistoryAfter
+  createAlgoliaObject,
+  updateAlgoliaObject,
+  createContactUpdateOffices,
+  updateContactUpdateOffices,
+  updateOfficeNames,
+  createContactUpdateProjects,
+  updateContactUpdateProjects,
+  updateProjectTitles,
+  createContactUpdatePastProjects,
+  updateContactUpdatePastProjects,
+  updatePastProjectTitles,
+  updatePatches
 } from './callbacks/index.js'
 
 extendCollection(Contacts, {
   callbacks: {
     create: {
-      after: [ContactCreateSaveToAlgolia, ContactCreateUpdateOffices, ContactEditUpdateProjects, ContactEditUpdatePastProjects]
+      async: [
+        createAlgoliaObject,
+        createContactUpdateOffices,
+        createContactUpdateProjects,
+        createContactUpdatePastProjects
+      ]
     },
     update: {
-      after: [ContactEditUpdateOffices, ContactEditUpdateProjects, ContactEditUpdatePastProjects, ContactEditUpdateHistoryAfter],
-      before: [ContactEditUpdateAlgoliaBefore]
+      before: [
+        updateOfficeNames,
+        updateProjectTitles,
+        updatePastProjectTitles
+      ],
+      async: [
+        updateAlgoliaObject,
+        updateContactUpdateOffices,
+        updateContactUpdateProjects,
+        updateContactUpdatePastProjects,
+        updatePatches
+      ]
     }
   }
 })

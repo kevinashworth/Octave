@@ -20,11 +20,11 @@ export function OfficeEditUpdatePastProjects (data, { document, originalDocument
     } else {
       return
     }
-  } else {
-    const newOffice = document
-    const oldOffice = originalDocument
-    pastProjectsToAddThisOfficeTo = differenceWith(newOffice.pastProjects, oldOffice.pastProjects, isEqual)
-    pastProjectsToRemoveThisOfficeFrom = differenceWith(oldOffice.pastProjects, newOffice.pastProjects, isEqual)
+  } else { // compare differences only by id
+    const newOfficePastProjects = document.pastProjects ? document.pastProjects.map((project) => ({ projectId: project.projectId })) : null
+    const oldOfficePastProjects = originalDocument.pastProjects ? originalDocument.pastProjects.map((project) => ({ projectId: project.projectId })) : null
+    pastProjectsToAddThisOfficeTo = differenceWith(newOfficePastProjects, oldOfficePastProjects, isEqual)
+    pastProjectsToRemoveThisOfficeFrom = differenceWith(oldOfficePastProjects, newOfficePastProjects, isEqual)
     console.group('OfficeEditUpdatePastProjects:')
     console.info('pastProjectsToAddThisOfficeTo:', pastProjectsToAddThisOfficeTo)
     console.info('pastProjectsToRemoveThisOfficeFrom:', pastProjectsToRemoveThisOfficeFrom)
@@ -48,11 +48,19 @@ export function OfficeEditUpdatePastProjects (data, { document, originalDocument
   // [c]
   if (pastProjectsToAddThisOfficeTo) {
     pastProjectsToAddThisOfficeTo.forEach(projectToUpdate => {
-      Connectors.update(PastProjects, projectToUpdate.projectId, {
-        $addToSet: {
-          offices: { officeId: office._id }
-        }
-      })
+      if (projectToUpdate.offices === undefined) {
+        Connectors.update(PastProjects, projectToUpdate.projectId, {
+          $set: {
+            offices: [{ officeId: office._id }]
+          }
+        })
+      } else {
+        Connectors.update(PastProjects, projectToUpdate.projectId, {
+          $addToSet: {
+            offices: { officeId: office._id }
+          }
+        })
+      }
     })
   }
 }

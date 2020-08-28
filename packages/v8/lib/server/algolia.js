@@ -6,7 +6,7 @@ import Projects from '../modules/projects/collection.js'
 import PastProjects from '../modules/past-projects/collection.js'
 
 const applicationid = Meteor.settings.public.algolia.ApplicationID
-const algoliaindex = Meteor.settings.private.algolia.AlgoliaIndex
+const algoliaindex = Meteor.settings.public.algolia.AlgoliaIndex
 const addupdatekey = Meteor.settings.private.algolia.AddAndUpdateAPIKey
 
 const populateAlgoliaIndex = () => {

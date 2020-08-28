@@ -1,8 +1,9 @@
-/* eslint-disable react/jsx-curly-newline */
 import { Components, registerComponent, withAccess, withMulti2 } from 'meteor/vulcan:core'
 import React, { useEffect, useMemo, useState } from 'react'
+import { Link } from 'react-router-dom'
 import Card from 'react-bootstrap/Card'
 import Col from 'react-bootstrap/Col'
+import Modal from 'react-bootstrap/Modal'
 import ProgressBar from 'react-bootstrap/ProgressBar'
 import Row from 'react-bootstrap/Row'
 import {
@@ -19,7 +20,7 @@ import MyLoading from '../common/MyLoading'
 import GlobalFilter from '../common/react-table/GlobalFilter'
 import Pagination from '../common/react-table/Pagination'
 import { dateFormatter, linkFormatter, titleSortFn } from '../common/react-table/helpers.js'
-import { CaretSorted, CaretUnsorted } from '../common/react-table/styled.js'
+import { CaretNone, CaretSort } from '../common/react-table/styled.js'
 import withFilters from '../../modules/hocs/withFilters.js'
 import PastProjects from '../../modules/past-projects/collection.js'
 import { INITIAL_SIZE_PER_PAGE, LOADING_PROJECTS_DATA } from '../../modules/constants.js'
@@ -43,7 +44,7 @@ let keptState = {
 
 let keptLimit = SIZE_PER_LOAD
 
-function Table ({ columns, data, loading }) {
+const Table = ({ columns, data, loading, onRowClick }) => {
   const tableProps = useTable(
     {
       columns,
@@ -73,6 +74,13 @@ function Table ({ columns, data, loading }) {
     state: { filters, globalFilter, pageIndex, pageSize, sortBy }
   } = tableProps
   tableProps.collection = 'past-projects'
+
+  const rowClickHandler = (e, columnIndex, row) => {
+    e.stopPropagation()
+    if (columnIndex !== 0) {
+      onRowClick(true, row.original)
+    }
+  }
 
   // Remember state for the next mount
   useEffect(() => {
@@ -117,9 +125,11 @@ function Table ({ columns, data, loading }) {
                       {column.render('Header')}
                       {column.isSorted
                         ? column.isSortedDesc
-                          ? <CaretSorted className='fa fa-sort-desc' />
-                          : <CaretSorted className='fa fa-sort-asc' />
-                        : <CaretUnsorted className='fa fa-sort' />}
+                          ? <CaretSort className='fad fa-sort-down' />
+                          : <CaretSort className='fad fa-sort-up' />
+                        : column.canSort
+                          ? <CaretSort className='fad fa-sort' />
+                          : <CaretNone className='fad fa-sort' />}
                     </div>
                   </div>
                 </th>
@@ -135,7 +145,13 @@ function Table ({ columns, data, loading }) {
                 <tr {...row.getRowProps()} key={index}>
                   {row.cells.map((cell, index) => {
                     return (
-                      <td {...cell.getCellProps()} key={index}>{loading ? <MyLoading variant={index === 0 && 'primary'} /> : cell.render('Cell')}</td>
+                      <td
+                        {...cell.getCellProps()}
+                        key={index}
+                        onClick={(e) => rowClickHandler(e, index, row)}
+                      >
+                        {loading ? <MyLoading variant={index === 0 && 'primary'} /> : cell.render('Cell')}
+                      </td>
                     )
                   })}
                 </tr>
@@ -149,7 +165,14 @@ function Table ({ columns, data, loading }) {
   )
 }
 
-function PastProjectsDataTable (props) {
+const PastProjectsDataTable = (props) => {
+  const [show, setShow] = useState(false) // show Modal
+  const [project, setProject] = useState(null) // Modal project
+  const rowClickHandler = (show, project) => {
+    setShow(show)
+    setProject(project)
+  }
+
   const {
     count, error, loading, loadMore, networkStatus, results, totalCount,
     pastProjectTypeFilters, pastProjectStatusFilters, pastProjectUpdatedFilters
@@ -242,6 +265,12 @@ function PastProjectsDataTable (props) {
     }
   })
 
+  const handleHide = () => {
+    if (show) {
+      setShow(false)
+    }
+  }
+
   const handleLoadMoreClick = (e) => {
     e.preventDefault()
     const newLimit = Math.min(count + SIZE_PER_LOAD, totalCount)
@@ -263,6 +292,17 @@ function PastProjectsDataTable (props) {
   return (
     <div>
       <Components.HeadTags title='V8: Past Projects' />
+      {project &&
+        <Modal show={show} onHide={handleHide}>
+          <Modal.Header closeButton>
+            <Modal.Title>
+              <Link to={`/past-projects/${project._id}/${project.slug}`}>{project.projectTitle}</Link>
+            </Modal.Title>
+          </Modal.Header>
+          <Modal.Body>
+            <Components.ProjectModal document={project} />
+          </Modal.Body>
+        </Modal>}
       <Card className='card-accent-danger' style={{ borderTopWidth: 1 }}>
         <ProgressBar now={progress} style={{ height: 2 }} variant='danger' />
         <Card.Header>
@@ -270,14 +310,18 @@ function PastProjectsDataTable (props) {
           <Components.PastProjectFilters />
         </Card.Header>
         <Card.Body>
-          <Table columns={columns} data={filteredResults} loading={loading} />
+          <Table
+            onRowClick={rowClickHandler}
+            columns={columns}
+            data={filteredResults}
+            loading={loading}
+          />
         </Card.Body>
         <ProgressBar now={progress} style={{ height: 2 }} variant='secondary' />
         {results && totalCount > results.length &&
           <Card.Footer>
             <Components.LoadingButton loading={myLoadingMore} onClick={handleLoadMoreClick} label={`Load ${Math.min(totalCount - count, SIZE_PER_LOAD)} More (${count}/${totalCount})`} />
-          </Card.Footer>
-        }
+          </Card.Footer>}
       </Card>
     </div>
   )

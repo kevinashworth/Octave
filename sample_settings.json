@@ -9,21 +9,21 @@
       "SearchOnlyAPIKey": "612961548224f1f21ef72d854aac5f4c",
       "AlgoliaIndex": "Mockaroo",
       "README": "Index names appear in network requests and should be considered publicly available."
-    }
-  },
+    },
+    "apolloSsr": {
+      "disable": true
+    },
+    "pollInterval": 30000
+},
   "apolloServer": {
     "corsWhitelist": [],
     "corsEnableAll": false
-  },
-  "apolloSsr": {
-    "disable": true
   },
   "backoffice": {
     "enabled": true
   },
   "debug": true,
   "maxDocumentsPerRequest": 1000,
-  "pollInterval": 10000,
   "oAuth": {
     "facebook": {
       "appId": "foo",

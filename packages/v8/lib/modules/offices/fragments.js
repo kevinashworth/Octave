@@ -50,6 +50,7 @@ registerFragment(/* GraphQL */ `
       phoneNumberType
       phoneNumber
       nationalFormat
+      countryCode
     }
     pastProjects {
       projectId

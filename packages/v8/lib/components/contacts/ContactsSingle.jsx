@@ -1,4 +1,4 @@
-import { Components, registerComponent, withCurrentUser, withSingle } from 'meteor/vulcan:core'
+import { Components, registerComponent, withAccess, withCurrentUser, withSingle } from 'meteor/vulcan:core'
 import Users from 'meteor/vulcan:users'
 import { FormattedMessage } from 'meteor/vulcan:i18n'
 import React, { Component } from 'react'
@@ -15,7 +15,7 @@ import moment from 'moment'
 import pluralize from 'pluralize'
 import mapProps from 'recompose/mapProps'
 import { DATE_FORMAT_LONG, DATE_FORMAT_SHORT } from '../../modules/constants.js'
-import { isEmptyValue, transformLinks } from '../../modules/helpers.js'
+import { getFullNameFromContact, isEmptyValue, transformLinks } from '../../modules/helpers.js'
 import Contacts from '../../modules/contacts/collection.js'
 
 // Don't fetch PastProjects unless user clicks to see them
@@ -69,10 +69,10 @@ class ContactsSingle extends Component {
 
       return (
         <div className='animated fadeIn'>
-          <Components.HeadTags title={`V8: ${contact.fullName}`} />
+          <Components.HeadTags title={`V8: ${contact.displayName}`} />
           <Card className='card-accent-warning'>
             <Card.Header as='h2'>
-              {contact.fullName}
+              {getFullNameFromContact(contact)}
               {Users.canUpdate({ collection: Contacts, user: currentUser, document }) &&
                 <div className='float-right'>
                   <LinkContainer to={`/contacts/${contact._id}/edit`}>
@@ -155,6 +155,11 @@ ContactsSingle.propTypes = {
   document: PropTypes.object
 }
 
+const accessOptions = {
+  groups: ['participants', 'admins'],
+  redirect: '/welcome/new'
+}
+
 const options = {
   collection: Contacts,
   fragmentName: 'ContactsSingleFragment'
@@ -166,6 +171,7 @@ registerComponent({
   name: 'ContactsSingle',
   component: ContactsSingle,
   hocs: [
+    [withAccess, accessOptions],
     withCurrentUser,
     mapProps(mapPropsFunction), [withSingle, options] // mapProps must precede withSingle
   ]

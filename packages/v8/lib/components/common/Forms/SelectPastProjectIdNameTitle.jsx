@@ -1,5 +1,9 @@
+/*
+ * Specialized 3-part Select for projectId (`props.value`), projectTitle, titleForProject
+ * TODO: a DRY component of this to not repeat all this code in SelectProjectIdNameTitle.jsx
+ */
 import { registerComponent } from 'meteor/vulcan:lib'
-import React, { Component } from 'react'
+import React, { useEffect, useState } from 'react'
 import PropTypes from 'prop-types'
 import Form from 'react-bootstrap/Form'
 import Select from 'react-select-virtualized'
@@ -7,130 +11,93 @@ import find from 'lodash/find'
 import { customStyles, theme } from './react-select-settings'
 import { CASTING_TITLES_ENUM, nullOption } from '../../../modules/constants.js'
 
-// import onlyUpdateForKeys from 'recompose/onlyUpdateForKeys'
-// import pure from 'recompose/pure'
-// const PureSelect = pure(Select)
-// const OptimizedSelect = onlyUpdateForKeys(['value'])(PureSelect)
+const SelectPastProjectIdNameTitle = (props, context) => {
+  const { itemIndex, options, value } = props
+  const pathPrefix = props.parentFieldName + '.' + itemIndex + '.'
 
-/**
-* This version explicity for projectId, projectTitle, titleForProject
-* TODO: a DRY component of this to not repeat all this code in SelectProjectIdNameTitle.jsx
-*/
+  const [projectTitle, setProjectTitle] = useState('')
+  const [selectedIdOption, setSelectedIdOption] = useState(nullOption)
+  const [selectedTitleOption, setSelectedTitleOption] = useState(nullOption)
 
-const OptionsSelect = ({ options, ...otherProps }) => {
-  return (
-    <Select
-      options={options}
-      {...otherProps}
-    />
-  )
-}
+  const handleIdChange = (selectedOption) => {
+    setProjectTitle(selectedOption.label)
+    setSelectedIdOption(selectedOption)
+    context.updateCurrentValues({
+      [props.path]: selectedOption.value,
+      [pathPrefix + 'projectTitle']: selectedOption.label
+    })
+  }
 
-class SelectPastProjectIdNameTitle extends Component {
-  constructor (props) {
-    super(props)
+  const handleNameChange = ({ target }) => {
+    setProjectTitle(target.value)
+    context.updateCurrentValues({
+      [pathPrefix + 'projectTitle']: target.value
+    })
+  }
 
-    this.handleIdChange = this.handleIdChange.bind(this)
-    this.handleNameChange = this.handleNameChange.bind(this)
-    this.handleTitleChange = this.handleTitleChange.bind(this)
+  const handleTitleChange = (selectedOption) => {
+    setSelectedTitleOption(selectedOption)
+    context.updateCurrentValues({
+      [pathPrefix + 'titleForProject']: selectedOption.label
+    })
+  }
 
-    this.state = {
-      path: this.props.path,
-      pathPrefix: this.props.parentFieldName + '.' + this.props.itemIndex + '.',
-      projectId: this.props.value,
-      projectTitle: '',
-      selectedIdOption: nullOption,
-      selectedTitleOption: nullOption
+  // put 'run once' code here (similar to componentDidMount)
+  useEffect(() => {
+    const pastProjects = props.document.pastProjects
+    if (pastProjects) {
+      const projectTitle = (pastProjects[itemIndex] && pastProjects[itemIndex].projectTitle) || ''
+      const selectedIdOption = find(options, { value: value }) || nullOption
+      const titleForProject = pastProjects[itemIndex] && pastProjects[itemIndex].titleForProject
+      const selectedTitleOption = (titleForProject && find(CASTING_TITLES_ENUM, { value: titleForProject })) || nullOption
+
+      setProjectTitle(projectTitle)
+      setSelectedIdOption(selectedIdOption)
+      setSelectedTitleOption(selectedTitleOption)
     }
-  }
+  }, [])
 
-  handleIdChange (selectedOption) {
-    this.setState({
-      projectId: selectedOption.value,
-      projectTitle: selectedOption.label,
-      selectedIdOption: selectedOption
-    })
-    this.context.updateCurrentValues({
-      [this.state.path]: selectedOption.value,
-      [this.state.pathPrefix + 'projectTitle']: selectedOption.label
-    })
-  }
-
-  handleNameChange ({ target }) {
-    this.setState({
-      projectTitle: target.value
-    })
-    this.context.updateCurrentValues({
-      [this.state.pathPrefix + 'projectTitle']: target.value
-    })
-  }
-
-  handleTitleChange (selectedOption) {
-    this.setState({
-      selectedTitleOption: selectedOption
-    })
-    this.context.updateCurrentValues({
-      [this.state.pathPrefix + 'titleForProject']: selectedOption.label
-    })
-  }
-
-  componentDidMount () {
-    const pastProjects = this.props.document.pastProjects
-    const projectTitle = pastProjects[this.props.itemIndex] ? pastProjects[this.props.itemIndex].projectTitle : ''
-    const titleForProject = pastProjects[this.props.itemIndex] ? pastProjects[this.props.itemIndex].titleForProject : ''
-    const selectedIdOption = find(this.props.options, { value: this.props.value }) || nullOption
-    const selectedTitleOption = find(CASTING_TITLES_ENUM, { value: titleForProject }) || nullOption
-
-    this.setState({
-      projectTitle,
-      selectedIdOption,
-      selectedTitleOption
-    })
-  }
-
-  render () {
-    return (
-      <>
-        <Form.Group>
-          <Form.Label htmlFor={`pastProjectId${this.props.itemIndex}`}>Past Project from Database</Form.Label>
-          <OptionsSelect
-            styles={customStyles}
-            maxMenuHeight={400}
-            theme={theme}
-            id={`pastProjectId${this.props.itemIndex}`}
-            value={this.state.selectedIdOption}
-            onChange={this.handleIdChange}
-            options={this.props.options}
-            isClearable
-            resetValue={nullOption}
-          />
-        </Form.Group>
-        <Form.Group>
-          <Form.Label htmlFor={`pastProjectTitle${this.props.itemIndex}`}>Editable Past Project Name</Form.Label>
-          <Form.Control
-            type='text'
-            id={`pastProjectTitle${this.props.itemIndex}`}
-            value={this.state.projectTitle}
-            onChange={this.handleNameChange}
-          />
-        </Form.Group>
-        <Form.Group>
-          <Form.Label htmlFor={`titleForPastProject${this.props.itemIndex}`}>Title for Past Project</Form.Label>
-          <Select
-            styles={customStyles}
-            maxMenuHeight={400}
-            theme={theme}
-            id={`titleForPastProject${this.props.itemIndex}`}
-            value={this.state.selectedTitleOption}
-            onChange={this.handleTitleChange}
-            options={CASTING_TITLES_ENUM}
-            isClearable
-            resetValue={nullOption}
-          />
-        </Form.Group>
-      </>
-    )
-  }
+  return (
+    <>
+      <Form.Group>
+        <Form.Label htmlFor={`pastProjectId${itemIndex}`}>Past Project from Database</Form.Label>
+        <Select
+          styles={customStyles}
+          maxMenuHeight={500}
+          theme={theme}
+          id={`pastProjectId${itemIndex}`}
+          value={selectedIdOption}
+          onChange={handleIdChange}
+          options={options}
+          isClearable
+          resetValue={nullOption}
+        />
+      </Form.Group>
+      <Form.Group>
+        <Form.Label htmlFor={`pastProjectTitle${itemIndex}`}>Editable Past Project Name</Form.Label>
+        <Form.Control
+          type='text'
+          id={`pastProjectTitle${itemIndex}`}
+          value={projectTitle}
+          onChange={handleNameChange}
+        />
+      </Form.Group>
+      <Form.Group>
+        <Form.Label htmlFor={`titleForPastProject${itemIndex}`}>Title for Past Project</Form.Label>
+        <Select
+          styles={customStyles}
+          maxMenuHeight={500}
+          theme={theme}
+          id={`titleForPastProject${itemIndex}`}
+          value={selectedTitleOption}
+          onChange={handleTitleChange}
+          options={CASTING_TITLES_ENUM}
+          isClearable
+          resetValue={nullOption}
+        />
+      </Form.Group>
+    </>
+  )
 }
 
 SelectPastProjectIdNameTitle.contextTypes = {

@@ -26,6 +26,9 @@ class DefaultLayout extends Component {
     const { children, currentUser, currentRoute, currentUserLoading, currentUserData, ...rest } = this.props
 
     var xsNav = { items: [] }
+    if (!currentUser) {
+      xsNav.items.push(...nav.signIn)
+    }
     xsNav.items.push(...nav.topItems)
     xsNav.items.push(...nav.xsItems)
     if (Users.isAdmin(currentUser)) {
@@ -36,6 +39,9 @@ class DefaultLayout extends Component {
     }
 
     var smNav = { items: [] }
+    if (!currentUser) {
+      smNav.items.push(...nav.signIn)
+    }
     smNav.items.push(...nav.topItems)
     smNav.items.push(...nav.smItems)
     if (Users.isAdmin(currentUser)) {
