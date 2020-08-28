@@ -3,10 +3,10 @@ import isEqual from 'lodash/isEqual'
 
 const accountSid = Meteor.settings.private.twilio.accountSid
 const authToken = Meteor.settings.private.twilio.authToken
-const client = require('twilio')(accountSid, authToken)
 
 const validateAndFormat = async (phones) => {
   try {
+    const client = require('twilio')(accountSid, authToken)
     const vfPhones = await Promise.all(
       phones.map(async phone => {
         const vf = await client.lookups.phoneNumbers(phone.phoneNumberAsInput).fetch()

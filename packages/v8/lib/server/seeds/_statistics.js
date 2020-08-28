@@ -1359,7 +1359,6 @@ const statistics = {
       quantity: 16
     }
   ],
-  userId: 'QzNMTJdveamHh8iGP',
   createdAt: new Date('2018-08-01T23:51:53.766Z'),
   updatedAt: new Date('2020-06-16T19:35:54.224Z')
 }

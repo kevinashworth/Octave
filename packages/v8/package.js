@@ -1,6 +1,6 @@
 Package.describe({
   name: 'v8',
-  version: '1.16.0'
+  version: '1.16.1'
 });
 
 Package.onUse(function (api) {
