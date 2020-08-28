@@ -114,7 +114,13 @@ Meteor.startup(() => {
     // eslint-disable-next-line no-console
     console.log('// creating dummy statistics')
     import('./seeds/_statistics.js').then(({ statistics }) => {
-      Promise.await(Statistics.insert(statistics))
+      Promise.await(newMutation({
+        action: 'statistics.new',
+        collection: Statistics,
+        document: statistics,
+        currentUser,
+        validate: false
+      }))
     })
   }
 

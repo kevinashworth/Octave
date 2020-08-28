@@ -301,74 +301,74 @@ Migrations.add({
   }
 })
 
-Migrations.add({
-  version: 7,
-  name: 'Statistics Dates as strings',
-  up () {
-    const theStats = Statistics.findOne() // TODO: this fails on new installs
-    if (theStats) {
-      let newStats = {}
-      newStats.episodics = theStats.episodics.map((o) => {
-        return {
-          date: moment(o.date).format('YYYY-MM-DD HH:mm:ss'),
-          quantity: o.quantity
-        }
-      })
-      newStats.features = theStats.features.map((o) => {
-        return {
-          date: moment(o.date).format('YYYY-MM-DD HH:mm:ss'),
-          quantity: o.quantity
-        }
-      })
-      newStats.pilots = theStats.pilots.map((o) => {
-        return {
-          date: moment(o.date).format('YYYY-MM-DD HH:mm:ss'),
-          quantity: o.quantity
-        }
-      })
-      newStats.others = theStats.others.map((o) => {
-        return {
-          date: moment(o.date).format('YYYY-MM-DD HH:mm:ss'),
-          quantity: o.quantity
-        }
-      })
-      Statistics.update(theStats._id, {
-        $set: newStats
-      })
-    }
-  },
-  down () {
-    const theStats = Statistics.findOne()
-    let newStats = {}
-    newStats.episodics = theStats.episodics.map((o) => {
-      return {
-        date: new Date(o.date),
-        quantity: o.quantity
-      }
-    })
-    newStats.features = theStats.features.map((o) => {
-      return {
-        date: new Date(o.date),
-        quantity: o.quantity
-      }
-    })
-    newStats.pilots = theStats.pilots.map((o) => {
-      return {
-        date: new Date(o.date),
-        quantity: o.quantity
-      }
-    })
-    newStats.others = theStats.others.map((o) => {
-      return {
-        date: new Date(o.date),
-        quantity: o.quantity
-      }
-    })
-    Statistics.update(theStats._id, {
-      $set: newStats
-    })
-  }
-})
+// Migrations.add({
+//   version: 7,
+//   name: 'Statistics Dates as strings',
+//   up () {
+//     const theStats = Statistics.findOne() // TODO: this fails on new installs
+//     if (theStats) {
+//       let newStats = {}
+//       newStats.episodics = theStats.episodics.map((o) => {
+//         return {
+//           date: moment(o.date).format('YYYY-MM-DD HH:mm:ss'),
+//           quantity: o.quantity
+//         }
+//       })
+//       newStats.features = theStats.features.map((o) => {
+//         return {
+//           date: moment(o.date).format('YYYY-MM-DD HH:mm:ss'),
+//           quantity: o.quantity
+//         }
+//       })
+//       newStats.pilots = theStats.pilots.map((o) => {
+//         return {
+//           date: moment(o.date).format('YYYY-MM-DD HH:mm:ss'),
+//           quantity: o.quantity
+//         }
+//       })
+//       newStats.others = theStats.others.map((o) => {
+//         return {
+//           date: moment(o.date).format('YYYY-MM-DD HH:mm:ss'),
+//           quantity: o.quantity
+//         }
+//       })
+//       Statistics.update(theStats._id, {
+//         $set: newStats
+//       })
+//     }
+//   },
+//   down () {
+//     const theStats = Statistics.findOne()
+//     let newStats = {}
+//     newStats.episodics = theStats.episodics.map((o) => {
+//       return {
+//         date: new Date(o.date),
+//         quantity: o.quantity
+//       }
+//     })
+//     newStats.features = theStats.features.map((o) => {
+//       return {
+//         date: new Date(o.date),
+//         quantity: o.quantity
+//       }
+//     })
+//     newStats.pilots = theStats.pilots.map((o) => {
+//       return {
+//         date: new Date(o.date),
+//         quantity: o.quantity
+//       }
+//     })
+//     newStats.others = theStats.others.map((o) => {
+//       return {
+//         date: new Date(o.date),
+//         quantity: o.quantity
+//       }
+//     })
+//     Statistics.update(theStats._id, {
+//       $set: newStats
+//     })
+//   }
+// })
 
 // Migrations.add({
 //   version: 8,

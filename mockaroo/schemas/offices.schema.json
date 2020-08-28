@@ -135,6 +135,14 @@
       "formula": ""
     },
     {
+      "name": "links",
+      "null_percentage": 25,
+      "type": "JSON Array",
+      "minItems": 1,
+      "maxItems": 2,
+      "formula": ""
+    },
+    {
       "name": "links.platformName",
       "null_percentage": 0,
       "type": "Custom List",
@@ -166,22 +174,6 @@
       "includeHost": true,
       "includePath": true,
       "includeQueryString": false,
-      "formula": ""
-    },
-    {
-      "name": "createdAt",
-      "null_percentage": 0,
-      "type": "Datetime",
-      "min": "6/17/2018",
-      "max": "6/17/2019",
-      "format": "%Y-%m-%dT%H:%M:%SZ",
-      "formula": ""
-    },
-    {
-      "name": "updatedAt",
-      "null_percentage": 50,
-      "type": "Formula",
-      "value": "createdAt + days(random(1,365))",
       "formula": ""
     },
     {

@@ -42,7 +42,7 @@ let keptState = {
   }]
 }
 
-let keptLimit = SIZE_PER_LOAD
+let keptLimit = null
 
 const Table = ({ columns, data, loading, onRowClick }) => {
   const tableProps = useTable(
@@ -115,8 +115,11 @@ const Table = ({ columns, data, loading, onRowClick }) => {
                 // Return an array of prop objects and react-table will merge them appropriately
                 <th
                   {...column.getHeaderProps([
-                    { style: column.style },
-                    column.getSortByToggleProps()
+                    {
+                      ...column.getSortByToggleProps(),
+                      style: column.style,
+                      title: null
+                    }
                   ])}
                   key={index}
                 >
@@ -178,7 +181,6 @@ const PastProjectsDataTable = (props) => {
     pastProjectTypeFilters, pastProjectStatusFilters, pastProjectUpdatedFilters
   } = props
   const myLoadingMore = networkStatus === 2
-  const [limit, setLimit] = useState(keptLimit) // only pertains if user clicks Load More
 
   const columns = useMemo(
     () => [
@@ -237,7 +239,7 @@ const PastProjectsDataTable = (props) => {
         }
       })
 
-      return filter(results, function (o) {
+      return filter(results, (o) => {
         const now = moment()
         const dateToCompare = o.updatedAt ? o.updatedAt : o.createdAt
         const displayThis = moment(dateToCompare).isAfter(now.subtract(momentNumber, momentPeriod).startOf('day'))
@@ -249,19 +251,15 @@ const PastProjectsDataTable = (props) => {
   )
 
   useEffect(() => {
-    if (count < AUTOMATICALLY_LOAD_UP_TO && !loading && !myLoadingMore) {
-      const newLimit = Math.min(count + SIZE_PER_LOAD, AUTOMATICALLY_LOAD_UP_TO)
+    if (keptLimit && count < keptLimit && !loading && !myLoadingMore) {
+      loadMore({
+        limit: keptLimit
+      })
+    } else if (count < totalCount && count < AUTOMATICALLY_LOAD_UP_TO && !loading && !myLoadingMore) {
+      const newLimit = count + SIZE_PER_LOAD
       loadMore({
         limit: newLimit
       })
-    } else if (count >= AUTOMATICALLY_LOAD_UP_TO && count < limit && !loading && !myLoadingMore) {
-      loadMore({
-        limit: limit
-      })
-    }
-    // Remember state for the next mount
-    return () => {
-      keptLimit = limit
     }
   })
 
@@ -274,10 +272,11 @@ const PastProjectsDataTable = (props) => {
   const handleLoadMoreClick = (e) => {
     e.preventDefault()
     const newLimit = Math.min(count + SIZE_PER_LOAD, totalCount)
-    setLimit(newLimit)
     loadMore({
       limit: newLimit
     })
+    // Remember state for the next mount
+    keptLimit = newLimit
   }
 
   if (error) {
@@ -287,7 +286,7 @@ const PastProjectsDataTable = (props) => {
       </div>
     )
   }
-  const progress = Math.ceil(100 * count / Math.min(totalCount, Math.max(limit, AUTOMATICALLY_LOAD_UP_TO)))
+  const progress = Math.ceil(100 * count / Math.min(totalCount, AUTOMATICALLY_LOAD_UP_TO))
 
   return (
     <div>
@@ -317,11 +316,11 @@ const PastProjectsDataTable = (props) => {
             loading={loading}
           />
         </Card.Body>
-        <ProgressBar now={progress} style={{ height: 2 }} variant='secondary' />
         {results && totalCount > results.length &&
           <Card.Footer>
             <Components.LoadingButton loading={myLoadingMore} onClick={handleLoadMoreClick} label={`Load ${Math.min(totalCount - count, SIZE_PER_LOAD)} More (${count}/${totalCount})`} />
           </Card.Footer>}
+        <ProgressBar now={progress} style={{ height: 2 }} variant='secondary' />
       </Card>
     </div>
   )
