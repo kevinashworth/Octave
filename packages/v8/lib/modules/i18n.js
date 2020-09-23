@@ -37,6 +37,7 @@ addStrings('en', {
   'users.unverified': 'Unverified',
   'users.verified': 'Verified',
   'users.verify_email': 'Send verification email',
-  'users.verify_email_sent': 'Sent verification email to “{address}”'
+  'users.verify_email_sent': 'Sent verification email to “{address}”',
+  'users.cannot_access': 'Sorry, you do not have the rights to access the {title} page.'
 
 })

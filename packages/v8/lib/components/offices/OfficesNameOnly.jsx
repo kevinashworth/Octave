@@ -106,7 +106,7 @@ function OfficesNameOnly (props) {
   return (
     <>
       <Components.HeadTags title='V8: Offices' />
-      <Card className='card-accent-primary'>
+      <Card className='card-accent-offices'>
         <Card.Header>
           <i className='icon-briefcase' />Offices
         </Card.Header>

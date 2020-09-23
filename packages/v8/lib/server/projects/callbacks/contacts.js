@@ -4,6 +4,7 @@ import differenceWith from 'lodash/differenceWith'
 import findIndex from 'lodash/findIndex'
 import isEqual from 'lodash/isEqual'
 import remove from 'lodash/remove'
+import log from 'loglevel'
 // import { PAST_PROJECT_STATUSES_ARRAY } from '../../constants.js'
 import { isEmptyValue } from '../../../modules/helpers.js'
 
@@ -38,10 +39,9 @@ export function ProjectEditUpdateContacts (data, { document, originalDocument })
   const oldProject = originalDocument
   contactsToAddThisProjectTo = differenceWith(newProject.contacts, oldProject.contacts, isEqual)
   contactsToRemoveThisProjectFrom = differenceWith(oldProject.contacts, newProject.contacts, isEqual)
-  console.group('ProjectEditUpdateContacts:')
-  console.info('contactsToRemoveThisProjectFrom:', contactsToRemoveThisProjectFrom)
-  console.info('contactsToAddThisProjectTo:', contactsToAddThisProjectTo)
-  console.groupEnd()
+  log.debug('ProjectEditUpdateContacts:')
+  log.debug('contactsToRemoveThisProjectFrom:', contactsToRemoveThisProjectFrom)
+  log.debug('contactsToAddThisProjectTo:', contactsToAddThisProjectTo)
 
   // [b]
   if (!isEmptyValue(contactsToRemoveThisProjectFrom)) {

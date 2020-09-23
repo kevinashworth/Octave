@@ -1,4 +1,5 @@
 import { Components, registerComponent, withAccess } from 'meteor/vulcan:core'
+import { getString } from 'meteor/vulcan:lib'
 import React, { Component } from 'react'
 import { Link } from 'react-router-dom'
 import moment from 'moment'
@@ -48,7 +49,7 @@ class AdminComments extends Component {
               name: 'userId',
               label: 'User ID',
               sortable: true,
-              component: ({ document }) => <Link to={`/users/${document.user.username}`} title={document.user.displayName}>{document.userId}</Link>
+              component: ({ document }) => <Link to={`/users/${document.user.slug}`} title={document.user.displayName}>{document.userId}</Link>
             },
             {
               name: 'collectionName',
@@ -72,10 +73,17 @@ class AdminComments extends Component {
   }
 }
 
+const message = getString({
+  id: 'users.cannot_access',
+  values: {
+    title: 'Comments Admin'
+  }
+})
+
 const accessOptions = {
   groups: ['admins'],
   redirect: '/',
-  message: 'Sorry, you do not have the rights to access the Comments Admin page.'
+  message
 }
 
 registerComponent({

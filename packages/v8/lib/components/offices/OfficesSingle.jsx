@@ -71,7 +71,7 @@ class OfficesSingle extends Component {
     return (
       <div className='animated fadeIn'>
         <Components.HeadTags title={`V8: ${office.displayName}`} />
-        <Card className='card-accent-primary'>
+        <Card className='card-accent-offices'>
           <Card.Header as='h2'>
             {office.displayName}
             {Users.canUpdate({ collection: Offices, user: currentUser, document }) &&

@@ -22,7 +22,7 @@ const ContactDisplay = ({ contact }) => {
 
   return (
     <>
-      <Card className='card-accent-warning'>
+      <Card className='card-accent-contacts'>
         <Card.Header as='h2'>{contact.displayName}</Card.Header>
         <Card.Body>
           <Card.Text as='div'>

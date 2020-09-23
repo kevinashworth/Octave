@@ -1,5 +1,5 @@
-/* eslint-disable react/display-name */
 import { Components, registerComponent, withAccess } from 'meteor/vulcan:core'
+import { getString } from 'meteor/vulcan:lib'
 import Users from 'meteor/vulcan:users'
 import React from 'react'
 import { Link } from 'react-router-dom'
@@ -47,10 +47,17 @@ const AdminUsers = () => (
   </div>
 )
 
+const message = getString({
+  id: 'users.cannot_access',
+  values: {
+    title: 'Users Admin'
+  }
+})
+
 const accessOptions = {
   groups: ['admins'],
   redirect: '/',
-  message: 'Sorry, you do not have the rights to access this page.'
+  message
 }
 
 registerComponent({

@@ -360,8 +360,8 @@ const ProjectsDataTable = (props) => {
             <Components.ProjectModal document={project} />
           </Modal.Body>
         </Modal>}
-      <Card className='card-accent-danger' style={{ borderTopWidth: 1 }}>
-        <ProgressBar now={progress} style={{ height: 2 }} variant='danger' />
+      <Card className='card-accent-projects' style={{ borderTopWidth: 1 }}>
+        <ProgressBar now={progress} style={{ height: 2 }} variant='projects' />
         <Card.Header>
           <i className='fad fa-camera' />Projects
           <Components.ProjectFilters />

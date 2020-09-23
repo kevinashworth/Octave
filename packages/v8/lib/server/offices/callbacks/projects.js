@@ -2,6 +2,7 @@ import { Connectors } from 'meteor/vulcan:core'
 import differenceWith from 'lodash/differenceWith'
 import findIndex from 'lodash/findIndex'
 import isEqual from 'lodash/isEqual'
+import log from 'loglevel'
 import Projects from '../../../modules/projects/collection.js'
 import { isEmptyValue } from '../../../modules/helpers.js'
 
@@ -25,10 +26,9 @@ export function OfficeEditUpdateProjects (data, { document, originalDocument }) 
     const oldOfficeProjects = originalDocument.projects ? originalDocument.projects.map((project) => ({ projectId: project.projectId })) : null
     projectsToAddThisOfficeTo = differenceWith(newOfficeProjects, oldOfficeProjects, isEqual)
     projectsToRemoveThisOfficeFrom = differenceWith(oldOfficeProjects, newOfficeProjects, isEqual)
-    console.group('OfficeEditUpdateProjects:')
-    console.info('projectsToAddThisOfficeTo:', projectsToAddThisOfficeTo)
-    console.info('projectsToRemoveThisOfficeFrom:', projectsToRemoveThisOfficeFrom)
-    console.groupEnd()
+    log.debug('OfficeEditUpdateProjects:')
+    log.debug('projectsToAddThisOfficeTo:', projectsToAddThisOfficeTo)
+    log.debug('projectsToRemoveThisOfficeFrom:', projectsToRemoveThisOfficeFrom)
   }
   // [b]
   if (!isEmptyValue(projectsToRemoveThisOfficeFrom)) {

@@ -1,11 +1,13 @@
 import algoliasearch from 'algoliasearch'
+import log from 'loglevel'
 import { getMongoProvider } from '../../../modules/helpers.js'
-import { MLAB } from '../../../modules/constants.js'
+import { ATLAS, MLAB } from '../../../modules/constants.js'
 
 // callbacks.update.async
 export function updateAlgoliaObject ({ document, originalDocument }) {
-  if (getMongoProvider() !== MLAB) {
-    console.log('Not using mLab, so not updating Algolia.')
+  const db = getMongoProvider()
+  if (db !== ATLAS && db !== MLAB) {
+    log.debug('Not using Atlas or mLab, so not updating Algolia.')
     return
   }
   if (Meteor.settings.private && Meteor.settings.private.algolia) {
@@ -48,8 +50,9 @@ export function updateAlgoliaObject ({ document, originalDocument }) {
 
 // callbacks.create.async
 export function createAlgoliaObject ({ document }) {
-  if (getMongoProvider() !== MLAB) {
-    console.log('Not using mLab, so not updating Algolia.')
+  const db = getMongoProvider()
+  if (db !== ATLAS && db !== MLAB) {
+    log.debug('Not using Atlas or mLab, so not updating Algolia.')
     return
   }
   if (Meteor.settings.private && Meteor.settings.private.algolia) {
@@ -71,7 +74,7 @@ export function createAlgoliaObject ({ document }) {
     const index = client.initIndex(algoliaindex)
     index
       .saveObject(indexedObject)
-      .then(response => { console.log('contacts saveObject response:', response) })
-      .catch(error => { console.error('contacts saveObject error:', JSON.stringify(error, null, 2)) })
+      .then(response => { log.debug('contacts saveObject response:', response) })
+      .catch(error => { log.error('contacts saveObject error:', JSON.stringify(error, null, 2)) })
   }
 }

@@ -70,7 +70,7 @@ class ContactsSingle extends Component {
       return (
         <div className='animated fadeIn'>
           <Components.HeadTags title={`V8: ${contact.displayName}`} />
-          <Card className='card-accent-warning'>
+          <Card className='card-accent-contacts'>
             <Card.Header as='h2'>
               {getFullNameFromContact(contact)}
               {Users.canUpdate({ collection: Contacts, user: currentUser, document }) &&

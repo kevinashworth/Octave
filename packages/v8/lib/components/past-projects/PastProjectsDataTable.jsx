@@ -302,8 +302,8 @@ const PastProjectsDataTable = (props) => {
             <Components.ProjectModal document={project} />
           </Modal.Body>
         </Modal>}
-      <Card className='card-accent-danger' style={{ borderTopWidth: 1 }}>
-        <ProgressBar now={progress} style={{ height: 2 }} variant='danger' />
+      <Card className='card-accent-pastprojects' style={{ borderTopWidth: 1 }}>
+        <ProgressBar now={progress} style={{ height: 2 }} variant='pastprojects' />
         <Card.Header>
           <i className='fad fa-camera-retro' />Past Projects
           <Components.PastProjectFilters />
@@ -320,7 +320,7 @@ const PastProjectsDataTable = (props) => {
           <Card.Footer>
             <Components.LoadingButton loading={myLoadingMore} onClick={handleLoadMoreClick} label={`Load ${Math.min(totalCount - count, SIZE_PER_LOAD)} More (${count}/${totalCount})`} />
           </Card.Footer>}
-        <ProgressBar now={progress} style={{ height: 2 }} variant='secondary' />
+        <ProgressBar now={progress} style={{ height: 2 }} variant='pastprojects' />
       </Card>
     </div>
   )

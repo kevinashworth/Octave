@@ -2,7 +2,7 @@ import { Utils } from 'meteor/vulcan:core'
 import SimpleSchema from 'simpl-schema'
 import marked from 'marked'
 import { addressSubSchema, contactSubSchema, linkSubSchema, phoneSubSchema } from '../shared_schemas.js'
-import { getAddress, getFullAddress, isEmptyValue } from '../helpers.js'
+import { compareCastingTitles, getAddress, getFullAddress, isEmptyValue } from '../helpers.js'
 
 const contactGroup = {
   name: 'contacts',
@@ -210,10 +210,10 @@ const schema = {
           {
             _id: { $in: contactIds }
           }, {
-            sort: { title: -1, lastName: 1 }
+            sort: { lastName: 1 }
           }
         ).fetch()
-        return contacts
+        return contacts.sort(compareCastingTitles)
       },
       addOriginalField: true
     }

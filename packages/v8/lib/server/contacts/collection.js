@@ -43,3 +43,4 @@ extendCollection(Contacts, {
 })
 
 Contacts.rawCollection().createIndex({ updatedAt: -1 })
+Contacts.rawCollection().createIndex({ lastName: 1 })

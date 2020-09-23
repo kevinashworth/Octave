@@ -1,17 +1,17 @@
-import '../components/common/LayoutAdmin/'
-import '../components/common/Page404/' // replaceComponent Error404
+import '../components/common/LayoutAdmin'
+import '../components/common/Page404' // replaceComponent Error404
 import '../components/common/Dashboard/'
 import '../components/common/Dashboard/LineChartLarge'
 import '../components/common/Dashboard/LineChartSmall'
 import '../components/common/DefaultLayout/'
-import '../components/common/LatestUpdates/'
+import '../components/common/LatestUpdates'
 
 import '../components/common/Login/'
-import '../components/common/Login/MyAccountsLoginForm.jsx' // replaceComponent
-import '../components/common/Login/MyAccountsStateSwitcher.jsx' // replaceComponent
-import '../components/common/Login/MyFormControl.jsx' // replaceComponent
-import '../components/common/MyDropdown.jsx' // replaceComponent
-import '../components/common/MyModalTrigger.jsx' // replaceComponent
+import '../components/common/Login/MyAccountsLoginForm' // replaceComponent
+import '../components/common/Login/MyAccountsStateSwitcher' // replaceComponent
+import '../components/common/Login/MyFormControl' // replaceComponent
+import '../components/common/MyDropdown' // replaceComponent
+import '../components/common/MyModalTrigger' // replaceComponent
 
 import '../components/common/Forms/MyDatalist'
 import '../components/common/Forms/MyFormNestedArrayLayout' // replaceComponent
@@ -23,10 +23,10 @@ import '../components/common/Forms/SelectPastProjectIdNameTitle'
 
 import '../components/common/Message/'
 import '../components/common/Message/NewRegistration'
-import '../components/common/Search/'
+import '../components/common/Search'
 
 import '../components/common/Fragments'
-import '../components/common/ErrorBoundary.jsx'
+import '../components/common/ErrorBoundary'
 
 import '../components/admin/AdminComments'
 import '../components/admin/AdminUsers'
@@ -54,21 +54,20 @@ import '../components/contacts/ContactsNameOnly'
 import '../components/contacts/ContactsNewForm'
 import '../components/contacts/ContactsSingle'
 
-import '../components/patches/ContactPatchesList.jsx'
-import '../components/patches/ContactPatch.jsx'
-import '../components/patches/OfficePatchesList.jsx'
-import '../components/patches/OfficePatch.jsx'
-import '../components/patches/PastProjectPatchesList.jsx'
-import '../components/patches/PastProjectPatch.jsx'
-import '../components/patches/ProjectPatchesList.jsx'
-import '../components/patches/ProjectPatch.jsx'
+import '../components/patches/ContactPatchesList'
+import '../components/patches/ContactPatch'
+import '../components/patches/OfficePatchesList'
+import '../components/patches/OfficePatch'
+import '../components/patches/PastProjectPatchesList'
+import '../components/patches/PastProjectPatch'
+import '../components/patches/ProjectPatchesList'
+import '../components/patches/ProjectPatch'
 
 import '../components/offices/OfficeMini'
 import '../components/offices/OfficesDataTable'
 import '../components/offices/OfficesEditForm'
 import '../components/offices/OfficesNameOnly'
 import '../components/offices/OfficesNewForm'
-import '../components/offices/OfficesPersonDetail'
 import '../components/offices/OfficesSingle'
 
 import '../components/past-projects/PastProjectMini'

@@ -7,6 +7,8 @@ registerFragment(/* GraphQL */`
     displayName
     username
     email
+    emails
+    services
     emailHash
     groups
     createdAt

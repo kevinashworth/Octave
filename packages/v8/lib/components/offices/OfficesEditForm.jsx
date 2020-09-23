@@ -11,7 +11,7 @@ const OfficesEditForm = ({ documentId, match, history, toggle, mongoProvider }) 
   return (
     <div className='animated fadeIn'>
       <Components.HeadTags title='V8: Edit Office' />
-      <Card className='card-accent-primary'>
+      <Card className='card-accent-offices'>
         <Card.Body>
           <Components.SmartForm
             collection={Offices}

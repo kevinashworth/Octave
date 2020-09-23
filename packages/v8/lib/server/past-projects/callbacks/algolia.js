@@ -1,15 +1,20 @@
 import algoliasearch from 'algoliasearch'
 import includes from 'lodash/includes'
-import { PAST_PROJECT_STATUSES_ARRAY } from '../../../modules/constants.js'
+import log from 'loglevel'
+import { getMongoProvider } from '../../../modules/helpers.js'
+import { PAST_PROJECT_STATUSES_ARRAY, ATLAS, MLAB } from '../../../modules/constants.js'
 
 // callbacks.update.async
 export function updateAlgoliaObject ({ document, originalDocument }) {
-  /* eslint-disable no-undef */
+  const db = getMongoProvider()
+  if (db !== ATLAS && db !== MLAB) {
+    log.debug('Not using Atlas or mLab, so not updating Algolia.')
+    return
+  }
   if (Meteor.settings.private && Meteor.settings.private.algolia) {
     const applicationid = Meteor.settings.public.algolia.ApplicationID
     const algoliaindex = Meteor.settings.public.algolia.AlgoliaIndex
     const addupdatekey = Meteor.settings.private.algolia.AddAndUpdateAPIKey
-    /* eslint-enable no-undef */
 
     var indexedObject = {
       objectID: document._id

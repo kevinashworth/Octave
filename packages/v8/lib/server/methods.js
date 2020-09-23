@@ -1,6 +1,7 @@
 import { Meteor } from 'meteor/meteor'
 import { Accounts } from 'meteor/accounts-base'
 import algoliasearch from 'algoliasearch'
+import log from 'loglevel'
 import { getProcessMongo } from './helpers.js'
 
 Meteor.methods({
@@ -12,8 +13,8 @@ Meteor.methods({
     const client = algoliasearch(applicationid, deletekey)
     const index = client.initIndex(algoliaindex)
     index.deleteObject(objectId)
-      .then(response => console.log('deleteObject response:', response))
-      .catch(error => console.error('deleteObject error:', error))
+      .then(response => log.debug('Algolia deleteObject response:', response))
+      .catch(error => log.error('Algolia deleteObject error:', error))
   },
 
   getProcessEnvMongoProvider () {
@@ -26,31 +27,29 @@ Meteor.methods({
   },
 
   sendVerificationEmail ({ userId, email }) {
-    // console.log('sendVerificationEmail userId, email:', userId, email)
+    log.debug('sendVerificationEmail ({ userId, email }):', userId, email)
     Accounts.sendVerificationEmail(userId, email)
   },
 
-  // only used in conjunction with removeEmail to effectively editEmail
+  // addEmail/removeEmail used together to effectively editEmail
   addEmail ({ userId, newEmail }) {
-    // console.log('Meteor.methods addEmail:', userId, newEmail)
+    log.debug('addEmail ({ userId, newEmail }):', userId, newEmail)
     try {
       Meteor.wrapAsync(Accounts.addEmail(userId, newEmail))
       return newEmail
     } catch (error) {
-      // console.log('addEmail error:', error)
+      log.error('addEmail error:', error)
       throw new Meteor.Error('already-exists', 'Email already exists in the database.')
     }
   },
-
-  // only used in conjunction with addEmail to effectively editEmail
   removeEmail ({ userId, email }) {
     var removeSuccess = false
-    // console.log('Meteor.methods removeEmail:', userId, email)
+    log.debug('removeEmail ({ userId, email }):', userId, email)
     try {
       Meteor.wrapAsync(Accounts.removeEmail(userId, email))
       removeSuccess = true
     } catch (error) {
-      // console.log('removeEmail error:', error)
+      log.error('removeEmail error:', error)
       removeSuccess = false
       throw new Meteor.Error('remove-error', 'Meteor.methods/removeEmail error.')
       // TODO: if there is an error, make sure to not remove the email

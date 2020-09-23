@@ -1,7 +1,9 @@
+const version = process.env.npm_package_version || '1.16.4'
+
 Package.describe({
   name: 'v8',
-  version: '1.16.1'
-});
+  version: version
+})
 
 Package.onUse(function (api) {
   api.use([
@@ -14,20 +16,22 @@ Package.onUse(function (api) {
     'vulcan:forms',
     'vulcan:redux',
     'percolate:migrations'
-  ]);
+  ])
 
-  // import .css here; import .scss in main.scss
-  api.addFiles('lib/stylesheets/compiled/main.css', 'client');
+  // import .scss in main.scss
+  api.addFiles('lib/stylesheets/compiled/main.css', 'client')
+
+  // import .css in these files
   api.addFiles([
     'lib/stylesheets/vendors/react-perfect-scrollbar.css',
     'lib/stylesheets/vendors/react-virtualized/styles.css'
-  ], 'client');
+  ], 'client')
   api.addFiles([
     'lib/stylesheets/custom/algolia.css',
     'lib/stylesheets/custom/btn.css',
     'lib/stylesheets/custom/datatable.css',
     'lib/stylesheets/custom/misc.css'
-  ], 'client');
+  ], 'client')
 
   api.addAssets([
     'lib/server/emails/templates/common/test.handlebars',
@@ -39,8 +43,8 @@ Package.onUse(function (api) {
     // 'lib/server/emails/templates/posts/postApproved.handlebars',
     'lib/server/emails/templates/users/accountApproved.handlebars',
     'lib/server/emails/templates/users/newUser.handlebars'
-  ], ['server']);
+  ], 'server')
 
-  api.mainModule('lib/server/main.js', 'server');
-  api.mainModule('lib/client/main.js', 'client');
-});
+  api.mainModule('lib/server/main.js', 'server')
+  api.mainModule('lib/client/main.js', 'client')
+})

@@ -1,4 +1,3 @@
-/* eslint-disable no-undef */
 import { withSingle, Components, registerComponent, withMessages } from 'meteor/vulcan:core'
 import Users from 'meteor/vulcan:users'
 import { FormattedMessage } from 'meteor/vulcan:i18n'

@@ -26,7 +26,7 @@ const ProjectDisplay = ({ project }) => {
   }
 
   return (
-    <Card className='card-accent-danger'>
+    <Card className='card-accent-projects'>
       <Card.Header as='h2'>{project.projectTitle}</Card.Header>
       <Card.Body>
         <Card.Title><b>Project Information</b></Card.Title>

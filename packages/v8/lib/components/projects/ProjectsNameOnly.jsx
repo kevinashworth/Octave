@@ -175,8 +175,8 @@ function ProjectsNameOnly (props) {
     const cfr = projectFiltersRef
     if (!cfr) { return } // is null when modal opens, has value when closes
     const colors = Object.values(cfr.state) // includes unwanted state values, but no big deal to include them
-    if (colors.includes('danger')) {
-      setVariant('outline-danger')
+    if (colors.includes('projects')) {
+      setVariant('outline-projects')
     } else {
       setVariant('outline-primary')
     }
@@ -185,7 +185,7 @@ function ProjectsNameOnly (props) {
   return (
     <>
       <Components.HeadTags title='V8: Projects' />
-      <Card className='card-accent-danger'>
+      <Card className='card-accent-projects'>
         <Card.Header>
           <i className='icon-people' />Projects
           <Button size='sm' variant={variant} className='ml-2' onClick={handleShow}>Filters</Button>

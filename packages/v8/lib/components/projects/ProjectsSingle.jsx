@@ -32,7 +32,6 @@ class ProjectsSingle extends Component {
 
   deleteAlgoliaRecord = (documentId) => {
     if (typeof documentId === 'string') {
-      // eslint-disable-next-line no-undef
       Meteor.call(
         'deleteAlgoliaRecord',
         documentId,
@@ -77,7 +76,7 @@ class ProjectsSingle extends Component {
             </Card.Text>
             {Users.isAdmin(currentUser) &&
               <Card.Text>
-                <Button variant='danger' onClick={this.deleteAlgoliaRecord(documentId)}>Admin: Delete {documentId} from Algolia</Button>{' '}
+                <Button variant='projects' onClick={this.deleteAlgoliaRecord(documentId)}>Admin: Delete {documentId} from Algolia</Button>{' '}
                 <Link to={`/past-projects/${documentId}`}>Is this _id for a Past Project?</Link>
               </Card.Text>}
           </Card.Body>
@@ -94,7 +93,7 @@ class ProjectsSingle extends Component {
     return (
       <div className='animated fadeIn'>
         <Components.HeadTags title={`V8: ${project.projectTitle}`} />
-        <Card className='card-accent-danger'>
+        <Card className='card-accent-projects'>
           <Card.Header as='h2'>
             {project.projectTitle}
             {Users.canUpdate({ collection: Projects, user: currentUser, document }) &&

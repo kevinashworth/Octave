@@ -11,7 +11,7 @@ const ContactsEditForm = ({ documentId, match, history, toggle, mongoProvider })
   return (
     <div className='animated fadeIn'>
       <Components.HeadTags title='V8: Edit Contact' />
-      <Card className='card-accent-warning'>
+      <Card className='card-accent-contacts'>
         <Card.Body>
           <Components.SmartForm
             collection={Contacts}

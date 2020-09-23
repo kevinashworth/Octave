@@ -3,6 +3,7 @@ import differenceWith from 'lodash/differenceWith'
 import findIndex from 'lodash/findIndex'
 import isEqual from 'lodash/isEqual'
 import remove from 'lodash/remove'
+import log from 'loglevel'
 import Contacts from '../../../modules/contacts/collection.js'
 import { isEmptyValue } from '../../../modules/helpers.js'
 
@@ -18,10 +19,9 @@ export function OfficeEditUpdateContacts (data, { document, originalDocument }) 
   const oldOffice = originalDocument
   contactsToAddThisOfficeTo = differenceWith(newOffice.contacts, oldOffice.contacts, isEqual)
   contactsToRemoveThisOfficeFrom = differenceWith(oldOffice.contacts, newOffice.contacts, isEqual)
-  console.group('OfficeEditUpdateContacts:')
-  console.info('contactsToRemoveThisOfficeFrom:', contactsToRemoveThisOfficeFrom)
-  console.info('contactsToAddThisOfficeTo:', contactsToAddThisOfficeTo)
-  console.groupEnd()
+  log.debug('OfficeEditUpdateContacts:')
+  log.debug('contactsToRemoveThisOfficeFrom:', contactsToRemoveThisOfficeFrom)
+  log.debug('contactsToAddThisOfficeTo:', contactsToAddThisOfficeTo)
   // [b]
   if (contactsToRemoveThisOfficeFrom) {
     contactsToRemoveThisOfficeFrom.forEach(deletedContact => {

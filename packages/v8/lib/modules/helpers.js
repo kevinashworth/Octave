@@ -12,7 +12,8 @@ import {
   PAYTV_ENUM,
   SVOD_ENUM,
   AVOD_ENUM,
-  DATE_FORMAT_SHORT
+  DATE_FORMAT_SHORT,
+  CASTING_TITLES_SORT_ORDER
 } from './constants.js'
 import { getProcessMongo } from '../server/helpers.js'
 import moment from 'moment'
@@ -136,7 +137,7 @@ export const getLocation = (address) => { // have to repeat theState code, not a
   if (state === 'ab' || state === 'bc' || state === 'mb' || state === 'ns' || state === 'on' || state === 'qc') {
     return 'Canada'
   }
-  if (state === 'uk') {
+  if (state === 'uk' || state === 'u.k.' || state === 'ie' || state === 'ir' || state === 'irl') {
     return 'Europe'
   }
   return 'Other'
@@ -431,6 +432,21 @@ export function titleSortFunc (a, b, order) {
       return getSortTitle(b.projectTitle).localeCompare(getSortTitle(a.projectTitle))
     }
   }
+}
+
+export const compareCastingTitles = (a, b) => {
+  const aOrder = CASTING_TITLES_SORT_ORDER.indexOf(a.title)
+  const bOrder = CASTING_TITLES_SORT_ORDER.indexOf(b.title)
+  if (aOrder < 0 || bOrder < 0) {
+    return 0
+  }
+  if (aOrder < bOrder) {
+    return -1
+  }
+  if (aOrder > bOrder) {
+    return 1
+  }
+  return 0
 }
 
 export const getMongoProvider = () => {

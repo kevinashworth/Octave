@@ -1,6 +1,7 @@
 import { Connectors, newMutation } from 'meteor/vulcan:core'
 import * as jsonpatch from 'fast-json-patch'
 import cloneDeep from 'lodash/cloneDeep'
+import log from 'loglevel'
 import omitDeep from 'omit-deep'
 import Patches from '../../../modules/patches/collection.js'
 import { isEmptyValue } from '../../../modules/helpers.js'
@@ -31,8 +32,9 @@ export function updatePatches ({ currentUser, document, originalDocument }) {
   const doNotDiff = ['createdAt', 'updatedAt', 'allLinks', 'addressString', 'theAddress', 'allAddresses']
   const prunedDocument = justTheIds(document)
   const prunedOrigDocument = justTheIds(originalDocument)
-  console.log('pruneds:')
+  log.debug('pruned document:')
   console.dir(prunedDocument)
+  log.debug('pruned originalDocument:')
   console.dir(prunedOrigDocument)
   const myDocument = cloneDeep(omitDeep(prunedDocument, doNotDiff))
   const myOriginalDocument = cloneDeep(omitDeep(prunedOrigDocument, doNotDiff))

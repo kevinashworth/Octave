@@ -46,60 +46,64 @@ export const updateContactUpdateOffices = ({ document, originalDocument }) => {
 const handleAddOffices = (offices, contact) => {
   const contactId = contact._id
   offices.forEach(contactOffice => {
-    const office = Offices.findOne(contactOffice.officeId) // TODO: error handling
-    const newContact = {
-      contactId,
-      contactName: contact.displayName
-    }
-    let newContacts = []
+    const office = Offices.findOne(contactOffice.officeId)
+    if (office) {
+      const newContact = {
+        contactId,
+        contactName: contact.displayName
+      }
+      let newContacts = []
 
-    // case 1: there are no contacts on the office and office.contacts is undefined
-    if (!office.contacts) {
-      newContacts = [newContact]
-    } else {
-      const i = findIndex(office.contacts, { contactId })
-      newContacts = office.contacts
-      if (i < 0) {
-        // case 2: this contact is not on this office but other contacts are and we're adding this contact
-        newContacts.push(newContact)
+      // case 1: there are no contacts on the office and office.contacts is undefined
+      if (!office.contacts) {
+        newContacts = [newContact]
       } else {
-        // case 3: this contact is on this office and we're updating the info
-        newContacts[i] = newContact
+        const i = findIndex(office.contacts, { contactId })
+        newContacts = office.contacts
+        if (i < 0) {
+          // case 2: this contact is not on this office but other contacts are and we're adding this contact
+          newContacts.push(newContact)
+        } else {
+          // case 3: this contact is on this office and we're updating the info
+          newContacts[i] = newContact
+        }
       }
-    }
 
-    Connectors.update(Offices, office._id, {
-      $set: {
-        contacts: newContacts,
-        updatedAt: new Date()
-      }
-    })
+      Connectors.update(Offices, office._id, {
+        $set: {
+          contacts: newContacts,
+          updatedAt: new Date()
+        }
+      })
+    }
   })
 }
 
 const handleRemoveOffices = (offices, contactId) => {
   offices.forEach(deletedOffice => {
     const oldOffice = Offices.findOne(deletedOffice.officeId)
-    const oldOfficeContacts = oldOffice && oldOffice.contacts
-    remove(oldOfficeContacts, function (p) { // `remove` mutates
-      return p.contactId === contactId
-    })
-    if (isEmptyValue(oldOfficeContacts)) {
-      Connectors.update(Offices, oldOffice._id, {
-        $set: {
-          updatedAt: new Date()
-        },
-        $unset: {
-          contacts: 1
-        }
+    if (oldOffice) {
+      const oldOfficeContacts = oldOffice.contacts
+      remove(oldOfficeContacts, function (p) { // `remove` mutates
+        return p.contactId === contactId
       })
-    } else {
-      Connectors.update(Offices, oldOffice._id, {
-        $set: {
-          contacts: oldOfficeContacts,
-          updatedAt: new Date()
-        }
-      })
+      if (isEmptyValue(oldOfficeContacts)) {
+        Connectors.update(Offices, oldOffice._id, {
+          $set: {
+            updatedAt: new Date()
+          },
+          $unset: {
+            contacts: 1
+          }
+        })
+      } else {
+        Connectors.update(Offices, oldOffice._id, {
+          $set: {
+            contacts: oldOfficeContacts,
+            updatedAt: new Date()
+          }
+        })
+      }
     }
   })
 }

@@ -2,9 +2,9 @@ import { registerSetting } from 'meteor/vulcan:lib'
 
 import '../redux/redux.js'
 
+import './i18n.js'
 import './components.js'
 import './routes.js'
-import './i18n.js'
 
 import './comments'
 import './contacts'

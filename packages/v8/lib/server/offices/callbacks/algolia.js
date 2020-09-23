@@ -1,5 +1,6 @@
 import algoliasearch from 'algoliasearch'
-import { MLAB } from '../../../modules/constants.js'
+import log from 'loglevel'
+import { ATLAS, MLAB } from '../../../modules/constants.js'
 import { getFullAddress, getMongoProvider } from '../../../modules/helpers.js'
 
 const fullAddress = (office) => {
@@ -11,8 +12,9 @@ const fullAddress = (office) => {
 
 // callbacks.update.async
 export function updateAlgoliaObject ({ document, originalDocument }) {
-  if (getMongoProvider() !== MLAB) {
-    console.log('Not using mLab, so not updating Algolia.')
+  const db = getMongoProvider()
+  if (db !== ATLAS && db !== MLAB) {
+    log.debug('Not using Atlas or mLab, so not updating Algolia.')
     return
   }
   if (Meteor.settings.private && Meteor.settings.private.algolia) {
@@ -57,8 +59,9 @@ export function updateAlgoliaObject ({ document, originalDocument }) {
 
 // callbacks.create.async
 export function createAlgoliaObject ({ document }) {
-  if (getMongoProvider() !== MLAB) {
-    console.log('Not using mLab, so not updating Algolia.')
+  const db = getMongoProvider()
+  if (db !== ATLAS && db !== MLAB) {
+    log.debug('Not using Atlas or mLab, so not updating Algolia.')
     return
   }
   if (Meteor.settings.private && Meteor.settings.private.algolia) {

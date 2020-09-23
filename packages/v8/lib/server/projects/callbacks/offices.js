@@ -3,6 +3,7 @@ import differenceWith from 'lodash/differenceWith'
 import findIndex from 'lodash/findIndex'
 import isEqual from 'lodash/isEqual'
 import remove from 'lodash/remove'
+import log from 'loglevel'
 import Offices from '../../../modules/offices/collection.js'
 import { isEmptyValue } from '../../../modules/helpers.js'
 
@@ -134,10 +135,9 @@ export function ProjectEditUpdateOfficesBefore (data, { document, originalDocume
   const oldProject = originalDocument
   officesToAddThisProjectTo = differenceWith(newProject.offices, oldProject.offices, isEqual)
   officesToRemoveThisProjectFrom = differenceWith(oldProject.offices, newProject.offices, isEqual)
-  console.group('ProjectEditUpdateOfficesBefore:')
-  console.info('officesToRemoveThisProjectFrom:', officesToRemoveThisProjectFrom)
-  console.info('officesToAddThisProjectTo:', officesToAddThisProjectTo)
-  console.groupEnd()
+  log.debug('ProjectEditUpdateOfficesBefore:')
+  log.debug('officesToRemoveThisProjectFrom:', officesToRemoveThisProjectFrom)
+  log.debug('officesToAddThisProjectTo:', officesToAddThisProjectTo)
 
   // [b]
   if (officesToRemoveThisProjectFrom) {

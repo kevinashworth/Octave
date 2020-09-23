@@ -271,8 +271,8 @@ function OfficesDataTable (props) {
   return (
     <div>
       <Components.HeadTags title='V8: Offices' />
-      <Card className='card-accent-primary' style={{ borderTopWidth: 1 }}>
-        <ProgressBar now={progress} style={{ height: 2 }} variant='primary' />
+      <Card className='card-accent-offices' style={{ borderTopWidth: 1 }}>
+        <ProgressBar now={progress} style={{ height: 2 }} variant='offices' />
         <Card.Header>
           <i className='icon-briefcase' />Offices
         </Card.Header>

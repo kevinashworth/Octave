@@ -56,7 +56,7 @@ class PastProjectsSingle extends Component {
     return (
       <div className='animated fadeIn'>
         <Components.HeadTags title={`V8: ${project.projectTitle}`} />
-        <Card className='card-accent-secondary'>
+        <Card className='card-accent-pastprojects'>
           <Card.Header as='h2'>
             {project.projectTitle}
             {Users.canUpdate({ collection: PastProjects, user: currentUser, document }) &&

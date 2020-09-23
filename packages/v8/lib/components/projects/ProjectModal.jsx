@@ -24,7 +24,7 @@ class ProjectModal extends PureComponent {
 
     return (
       <div>
-        <Card className='card-accent-danger'>
+        <Card className='card-accent-projects'>
           <Card.Body>
             <Card.Title className='mb-1'>
               {project.projectType}

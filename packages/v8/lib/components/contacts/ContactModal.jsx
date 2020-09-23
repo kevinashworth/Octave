@@ -23,7 +23,7 @@ const ContactModal = (props) => {
       'Last modified ' + moment(contact.updatedAt).format(DATE_FORMAT_LONG)
 
   return (
-    <Card className='card-accent-warning'>
+    <Card className='card-accent-contacts'>
       <Card.Body>
         <Card.Text as='div'>
           {contact.title && <div>{contact.title}</div>}

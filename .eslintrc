@@ -1,8 +1,8 @@
 {
   "extends": [
     "eslint:recommended",
-    "plugin:meteor/recommended",
-    "plugin:react/recommended"
+    "plugin:react/recommended",
+    "plugin:meteor/recommended"
   ],
   "parser": "babel-eslint",
   "parserOptions": {

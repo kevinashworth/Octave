@@ -8,7 +8,7 @@ import Patches from '../modules/patches/collection.js'
 import Projects from '../modules/projects/collection.js'
 import PastProjects from '../modules/past-projects/collection.js'
 import Statistics from '../modules/statistics/collection.js'
-import populateAlgoliaMockaroo from './algolia-mockaroo.js'
+import populateAlgoliaMockaroo from './algolia/algolia-mockaroo.js'
 
 const createUser = async (username, email) => {
   const user = {
@@ -32,14 +32,12 @@ const createDummyUsers = async () => {
   ])
 }
 
-// eslint-disable-next-line no-undef
 Vulcan.removeGettingStartedContent = () => {
   Users.remove({ 'profile.isDummy': true })
   // eslint-disable-next-line no-console
   console.log('// Getting started content removed')
 }
 
-// eslint-disable-next-line no-undef
 Meteor.startup(() => {
   if (Users.find().fetch().length === 0) {
     Promise.await(createDummyUsers())

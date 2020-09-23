@@ -11,5 +11,7 @@ import './users/index.js'
 
 import './emails/index.js'
 
-// import Contacts from '../modules/contacts/collection.js'
-// Contacts.rawCollection().createIndex({ lastName: 1 })
+import './logger.js'
+
+// Initialize Algolia after significant changes, otherwise leave commented out
+// import './algolia/algolia-initialize.js'

@@ -12,7 +12,7 @@ const PastProjectsEditForm = ({ documentId, match, history, toggle, mongoProvide
   return (
     <div className='animated fadeIn'>
       <Components.HeadTags title='V8: Edit Past Project' />
-      <Card className='card-accent-secondary'>
+      <Card className='card-accent-pastprojects'>
         <Card.Body>
           <Components.SmartForm
             collection={PastProjects}

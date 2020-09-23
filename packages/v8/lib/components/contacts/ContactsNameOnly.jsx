@@ -211,7 +211,7 @@ function ContactsNameOnly (props) {
   return (
     <>
       <Components.HeadTags title='V8: Contacts' />
-      <Card className='card-accent-warning'>
+      <Card className='card-accent-contacts'>
         <Card.Header>
           <i className='icon-people' />Contacts
           <Button size='sm' variant={variant} className='ml-2' onClick={handleShow}>Filters</Button>

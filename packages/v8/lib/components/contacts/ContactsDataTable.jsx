@@ -250,7 +250,7 @@ function ContactsDataTable (props) {
         if (!displayThis) {
           return false
         }
-        const location = contact.theAddress.location ? contact.theAddress.location : getAddress({ contact }).location
+        const location = (contact.theAddress && contact.theAddress.location) ? contact.theAddress.location : getAddress({ contact }).location
         // if "Other" is not checked, filter per normal via titleFilters:
         if (!(includes(titleFilters, 'Other'))) {
           return displayThis &&
@@ -327,8 +327,8 @@ function ContactsDataTable (props) {
             <Components.ContactModal document={contact} />
           </Modal.Body>
         </Modal>}
-      <Card className='card-accent-warning' style={{ borderTopWidth: 1 }}>
-        <ProgressBar now={progress} style={{ height: 2 }} variant='warning' />
+      <Card className='card-accent-contacts' style={{ borderTopWidth: 1 }}>
+        <ProgressBar now={progress} style={{ height: 2 }} variant='contacts' />
         <Card.Header>
           <i className='icon-people' />Contacts
           <Components.ContactFilters />

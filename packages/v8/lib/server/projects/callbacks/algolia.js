@@ -1,12 +1,14 @@
 import algoliasearch from 'algoliasearch'
 import includes from 'lodash/includes'
+import log from 'loglevel'
 import { getMongoProvider } from '../../../modules/helpers.js'
-import { ACTIVE_PROJECT_STATUSES_ARRAY, MLAB } from '../../../modules/constants.js'
+import { ACTIVE_PROJECT_STATUSES_ARRAY, ATLAS, MLAB } from '../../../modules/constants.js'
 
 // callbacks.update.async
 export function updateAlgoliaObject ({ document, originalDocument }) {
-  if (getMongoProvider() !== MLAB) {
-    console.log('Not using mLab, so not updating Algolia.')
+  const db = getMongoProvider()
+  if (db !== ATLAS && db !== MLAB) {
+    log.debug('Not using Atlas or mLab, so not updating Algolia.')
     return
   }
   if (Meteor.settings.private && Meteor.settings.private.algolia) {
@@ -61,8 +63,9 @@ export function updateAlgoliaObject ({ document, originalDocument }) {
 
 // callbacks.create.async
 export function createAlgoliaObject ({ document }) {
-  if (getMongoProvider() !== MLAB) {
-    console.log('Not using mLab, so not updating Algolia.')
+  const db = getMongoProvider()
+  if (db !== ATLAS && db !== MLAB) {
+    log.debug('Not using Atlas or mLab, so not updating Algolia.')
     return
   }
   if (Meteor.settings.private && Meteor.settings.private.algolia) {

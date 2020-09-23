@@ -66,7 +66,7 @@ const ApolloTest = (props) => {
   return (
     <div className='animated fadeIn'>
       <Components.HeadTags title='V8: Test' />
-      <Card className='card-accent-danger'>
+      <Card className='card-accent-projects'>
         <Card.Header>Apollo Test</Card.Header>
         <Card.Body>
           <Card.Title>Projects (totalCount: {totalCount} / count: {count})</Card.Title>

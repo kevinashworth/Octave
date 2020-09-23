@@ -18,6 +18,21 @@ export const CASTING_TITLES_ENUM = [
   { value: 'Unknown Title', label: 'Unknown Title' }
 ]
 
+export const CASTING_TITLES_SORT_ORDER = [
+  'Casting Consultant',
+  'Casting Executive',
+  'Casting Director / Casting Executive',
+  'Casting Director',
+  'Casting Director / Associate',
+  'Associate',
+  'Associate / Assistant',
+  'Assistant',
+  'Assistant / Intern',
+  'Intern',
+  'Not Currently In Casting',
+  'Unknown Title'
+]
+
 export const PHONE_NUMBER_TYPES_ENUM = [
   { value: 'Home', label: 'Home' },
   { value: 'Home Fax', label: 'Home Fax' },
@@ -357,6 +372,7 @@ const dummyProjectRow = {
 
 export const LOADING_PROJECTS_DATA = Array(50).fill(dummyProjectRow)
 
-export const MLAB = 'mLab'
 export const ATLAS = 'Atlas'
-export const LOCAL = 'localhost'
+export const LOCAL = 'Local Mongo'
+export const MLAB = 'mLab'
+export const OTHER = 'Other Mongo'
