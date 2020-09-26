@@ -1,6 +1,6 @@
 {
   "id": 243894,
-  "num_rows": 5,
+  "num_rows": 45,
   "file_format": "json",
   "name": "offices",
   "array": true,
@@ -139,7 +139,7 @@
       "null_percentage": 25,
       "type": "JSON Array",
       "minItems": 1,
-      "maxItems": 2,
+      "maxItems": 3,
       "formula": ""
     },
     {

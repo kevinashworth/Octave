@@ -1,6 +1,6 @@
 {
   "id": 244104,
-  "num_rows": 5,
+  "num_rows": 55,
   "file_format": "json",
   "name": "pastprojects",
   "array": true,
@@ -148,7 +148,7 @@
       "null_percentage": 20,
       "type": "JSON Array",
       "minItems": 1,
-      "maxItems": 2,
+      "maxItems": 1,
       "formula": ""
     },
     {
@@ -174,7 +174,7 @@
       "null_percentage": 25,
       "type": "JSON Array",
       "minItems": 1,
-      "maxItems": 2,
+      "maxItems": 3,
       "formula": ""
     },
     {

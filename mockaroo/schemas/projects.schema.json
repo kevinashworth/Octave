@@ -1,6 +1,6 @@
 {
   "id": 243892,
-  "num_rows": 8,
+  "num_rows": 280,
   "file_format": "json",
   "name": "projects",
   "array": true,
@@ -147,7 +147,7 @@
       "null_percentage": 20,
       "type": "JSON Array",
       "minItems": 1,
-      "maxItems": 3,
+      "maxItems": 2,
       "formula": ""
     },
     {
@@ -173,7 +173,7 @@
       "null_percentage": 25,
       "type": "JSON Array",
       "minItems": 1,
-      "maxItems": 2,
+      "maxItems": 3,
       "formula": ""
     },
     {

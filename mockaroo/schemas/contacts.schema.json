@@ -1,6 +1,6 @@
 {
   "id": 101652,
-  "num_rows": 6,
+  "num_rows": 65,
   "file_format": "json",
   "name": "contacts",
   "array": true,
@@ -128,7 +128,7 @@
       "null_percentage": 25,
       "type": "JSON Array",
       "minItems": 1,
-      "maxItems": 2,
+      "maxItems": 4,
       "formula": ""
     },
     {
