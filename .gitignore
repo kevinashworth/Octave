@@ -1,10 +1,5 @@
-# I understand and want these
-.DS_Store
 .build/
-.deploy
-.galaxy
-.meteor/versions
-.npmrc
+.galaxy/
 dump/
 misc/
 node_modules/
@@ -12,29 +7,7 @@ notes/
 packages/v8/lib/server/seeds/generated/
 scripts/
 storybook-static/
-bitbucket-pipelines.yml
-bundle.tar.gz
+.DS_Store
+.meteor/versions
+.npmrc
 *settings.json
-
-# The rest crept in from who knows where
-.eslintcache
-npm-debug.log
-*.scssc
-.sass-cache/
-*-ck.js
-providers_secret.js
-config.rb
-deploy.sh
-.demeteorized
-.idea
-scratch
-.meteor/meteorite
-mup.json
-packages_update.py
-get_file_list.sh
-packages_update.py
-publish_packages.sh
-jsdoc-conf.json
-jsdoc.json
-packages/nova-router/.npm
-npm-debug.log
