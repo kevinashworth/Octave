@@ -1,4 +1,4 @@
-const version = process.env.npm_package_version || '1.16.4'
+const version = process.env.npm_package_version || '1.16.5'
 
 Package.describe({
   name: 'v8',
