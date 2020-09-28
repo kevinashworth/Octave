@@ -1,10 +1,12 @@
 import algoliasearch from 'algoliasearch'
+import log from 'loglevel'
 
 const applicationid = Meteor.settings.public.search.ApplicationID
 const algoliaindex = Meteor.settings.public.search.SearchIndex
 const addupdatekey = Meteor.settings.private.search.AddAndUpdateAPIKey
 
 const populateAlgoliaMockaroo = (contacts, offices, projects, pastProjects) => {
+  log.debug('// populateAlgoliaMockaroo start')
   const client = algoliasearch(applicationid, addupdatekey)
   const index = client.initIndex(algoliaindex)
 
@@ -97,13 +99,12 @@ const populateAlgoliaMockaroo = (contacts, offices, projects, pastProjects) => {
   index
     .saveObjects(objects)
     .then((response) => {
-      console.group('populateAlgoliaMockaroo response:')
-      console.log(response)
-      console.groupEnd()
+      log.debug(response)
     })
     .catch(err => {
-      console.error('populateAlgoliaMockaroo error:', err)
+      log.error('populateAlgoliaMockaroo error:', err)
     })
+  log.debug('// populateAlgoliaMockaroo end')
 }
 
 export default populateAlgoliaMockaroo
