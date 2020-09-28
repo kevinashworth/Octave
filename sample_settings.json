@@ -4,10 +4,10 @@
     "tagline": "Not affliated with V8",
     "faviconUrl": "/favicon/favicon.ico",
     "locale": "en",
-    "algolia": {
-      "ApplicationID": "Q8NZWM8ALA",
-      "SearchOnlyAPIKey": "612961548224f1f21ef72d854aac5f4c",
-      "AlgoliaIndex": "Mockaroo",
+    "search": {
+      "ApplicationID": "MHHVORPPHC",
+      "SearchOnlyAPIKey": "218e220e7af5adaf933b883a2e23d01b",
+      "SearchIndex": "Mockaroo",
       "README": "Index names appear in network requests and should be considered publicly available."
     },
     "apolloSsr": {
@@ -39,9 +39,9 @@
     }
   },
   "private": {
-    "algolia": {
-      "AddAndUpdateAPIKey": "cb39fc87eacd871c77260f47efa0adad",
-      "README": "The Mockaroo Algolia index is a sandbox for development only."
+    "search": {
+      "AddAndUpdateAPIKey": "b41683f331768543c229f488ccda0984",
+      "README": "Never fear. The Mockaroo index is a sandbox for development only."
     },
     "twilio": {
       "accountSid": "foo",

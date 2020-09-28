@@ -25,9 +25,9 @@ const popperConfig = {
   }]
 }
 
-const applicationid = Meteor.settings.public.algolia.ApplicationID
-const searchonlyapikey = Meteor.settings.public.algolia.SearchOnlyAPIKey
-const algoliaindex = Meteor.settings.public.algolia.AlgoliaIndex
+const algoliaindex = Meteor.settings.public.search.SearchIndex
+const applicationid = Meteor.settings.public.search.ApplicationID
+const searchonlyapikey = Meteor.settings.public.search.SearchOnlyAPIKey
 const searchClient = algoliasearch(applicationid, searchonlyapikey)
 
 const PoweredBy = ({ url }) => <a href={url} target='_blank' rel='noopener noreferrer'>Algolia</a>

@@ -1,10 +1,10 @@
 import algoliasearch from 'algoliasearch'
 
-const applicationid = Meteor.settings.public.algolia.ApplicationID
-const algoliaindex = Meteor.settings.public.algolia.AlgoliaIndex
-const addupdatekey = Meteor.settings.private.algolia.AddAndUpdateAPIKey
 const client = algoliasearch(applicationid, addupdatekey)
 const index = client.initIndex(algoliaindex)
+const applicationid = Meteor.settings.public.search.ApplicationID
+const algoliaindex = Meteor.settings.public.search.SearchIndex
+const addupdatekey = Meteor.settings.private.search.AddAndUpdateAPIKey
 
 const populateAlgoliaMockaroo = (contacts, offices, projects, pastProjects) => {
   var objects = []
