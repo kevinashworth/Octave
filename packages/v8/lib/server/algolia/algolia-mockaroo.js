@@ -1,12 +1,47 @@
 import algoliasearch from 'algoliasearch'
 
-const client = algoliasearch(applicationid, addupdatekey)
-const index = client.initIndex(algoliaindex)
 const applicationid = Meteor.settings.public.search.ApplicationID
 const algoliaindex = Meteor.settings.public.search.SearchIndex
 const addupdatekey = Meteor.settings.private.search.AddAndUpdateAPIKey
 
 const populateAlgoliaMockaroo = (contacts, offices, projects, pastProjects) => {
+  const client = algoliasearch(applicationid, addupdatekey)
+  const index = client.initIndex(algoliaindex)
+
+  index.setSettings({
+    attributesToHighlight: [
+      'body',
+      'name'
+    ],
+    attributesToSnippet: [
+      'body:10'
+    ],
+    exactOnSingleWordQuery: 'word',
+    highlightPostTag: '</strong>',
+    highlightPreTag: '<strong>',
+    hitsPerPage: 24,
+    paginationLimitedTo: 48,
+    ranking: [
+      'desc(boosted)',
+      'exact',
+      'asc(name)',
+      'desc(updatedAt)',
+      'typo',
+      'words',
+      'proximity',
+      'attribute'
+    ],
+    searchableAttributes: [
+      'name',
+      'body',
+      'notes',
+      'addressString',
+      'network',
+      'url'
+    ],
+    snippetEllipsisText: '…'
+  })
+
   var objects = []
   contacts.forEach((o) => {
     const indexedObject = {
