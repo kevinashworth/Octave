@@ -13,6 +13,7 @@
     "start-triad": ". scripts/start-triad.sh",
     "start-mongo-old": ". scripts/start-mongo-old.sh",
     "start-visualizer": "meteor --extra-packages bundle-visualizer --production --port 4004 --settings settings.json",
+    "prepare": "node mockaroo/mockaroo.sh",
     "prestart": "node .vulcan/prestart_vulcan.js",
     "postinstall": "patch-package",
     "lint:fix": "standard --fix --verbose 'packages/octave/**/*.js' 'packages/octave/**/*.jsx'",
