@@ -9,5 +9,13 @@
       }
     ],
     "@babel/preset-react"
-  ]
+  ],
+  "env": {
+    "meteor:coverage": {
+      "plugins": [
+        "transform-class-properties",
+        "istanbul"
+      ]
+    }
+  }
 }

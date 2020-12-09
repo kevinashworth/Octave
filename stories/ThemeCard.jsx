@@ -1,5 +1,5 @@
 import React from 'react'
-import '../packages/v8/lib/stylesheets/compiled/main.css'
+import '../packages/octave/lib/stylesheets/compiled/main.css'
 
 const ThemeCard = ({ children }) => {
   return (

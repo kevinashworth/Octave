@@ -90,9 +90,9 @@ module.exports = ({ config }) => {
           exclude: ['meteor/vulcan:email', 'meteor/vulcan:accounts']
         }
       }
-      // // Load V8 packages
+      // // Load Octave packages
       // {
-      //   loader: path.resolve(__dirname, './loaders/v8-loader')
+      //   loader: path.resolve(__dirname, './loaders/octave-loader')
       // }
     ]
   })

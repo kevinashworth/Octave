@@ -1,0 +1,207 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title> server/comments/callbacks/other.js</title>
+
+  <script src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js"></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  <script src="./build/entry.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+  <![endif]-->
+  <link href="https://fonts.googleapis.com/css?family=Roboto:100,400,700|Inconsolata,700" rel="stylesheet">
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
+  <link type="text/css" rel="stylesheet" href="https://jmblog.github.io/color-themes-for-google-code-prettify/themes/tomorrow-night.min.css">
+  <link type="text/css" rel="stylesheet" href="styles/app.min.css">
+  <link type="text/css" rel="stylesheet" href="styles/iframe.css">
+  <link type="text/css" rel="stylesheet" href="">
+  <script async defer src="https://buttons.github.io/buttons.js"></script>
+
+  
+</head>
+
+
+
+<body class="layout small-header">
+    <div id="stickyNavbarOverlay"></div>
+    
+
+<div class="top-nav">
+    <div class="inner">
+        <a id="hamburger" role="button" class="navbar-burger" aria-label="menu" aria-expanded="false">
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+        </a>
+        <div class="logo">
+            
+            
+        </div>
+        <div class="menu">
+            
+            <div class="navigation">
+                <a
+                    href="index.html"
+                    class="link"
+                >
+                    API Documentation
+                </a>
+                
+                
+                
+            </div>
+        </div>
+    </div>
+</div>
+    <div id="main">
+        <div
+            class="sidebar "
+            id="sidebarNav"
+        >
+            
+            <nav>
+                
+                    <h2><a href="index.html">Documentation</a></h2><div class="category"><h3>Components</h3><ul><li><a href="SelectProjectIdTitle.html">SelectProjectIdTitle</a></li></ul><h3>Global</h3><ul><li><a href="global.html#populateAlgoliaIndex">populateAlgoliaIndex</a></li><li><a href="global.html#UpvoteAsyncCallbacksAfterDocumentInsert">UpvoteAsyncCallbacksAfterDocumentInsert</a></li><li><a href="global.html#upvoteOwnComment">upvoteOwnComment</a></li></ul></div>
+                
+            </nav>
+        </div>
+        <div class="core" id="main-content-wrapper">
+            <div class="content">
+                <header class="page-title">
+                    <p>Source</p>
+                    <h1>server/comments/callbacks/other.js</h1>
+                </header>
+                
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>import Users from 'meteor/vulcan:users'
+import { addCallback, runCallbacksAsync, removeMutation } from 'meteor/vulcan:core'
+
+import { Posts } from '../../../modules/posts/index.js'
+import { Comments } from '../../../modules/comments/index.js'
+
+// comments.new.sync
+export function updateUserPost (comment) {
+  const { userId, postId } = comment
+
+  // increment comment count
+  Users.update({ _id: userId }, {
+    $inc: { commentCount: 1 }
+  })
+
+  // update post
+  Posts.update(postId, {
+    $inc: { commentCount: 1 },
+    $set: { lastCommentedAt: new Date() },
+    $addToSet: { commentersIds: userId }
+  })
+
+  return comment
+}
+
+// comments.new.async
+/**
+ * @summary Run the 'upvote.async' callbacks *once* the item exists in the database
+ * @param {object} item - The item being operated on
+ * @param {object} user - The user doing the operation
+ * @param {object} collection - The collection the item belongs to
+ */
+export function UpvoteAsyncCallbacksAfterDocumentInsert (item, user, collection) {
+  runCallbacksAsync('upvote.async', item, user, collection, 'upvote')
+}
+
+addCallback('comments.new.async', UpvoteAsyncCallbacksAfterDocumentInsert)
+
+// comments.remove.async
+export function CommentsRemovePostCommenters (comment, currentUser) {
+  const { userId, postId } = comment
+
+  // dec user's comment count
+  Users.update({ _id: userId }, {
+    $inc: { commentCount: -1 }
+  })
+
+  const postComments = Comments.find({ postId }, { sort: { postedAt: -1 } }).fetch()
+
+  const commenters = _.uniq(postComments.map(comment => comment.userId))
+  const lastCommentedAt = postComments[0] &amp;&amp; postComments[0].postedAt
+
+  // update post with a decremented comment count, a unique list of commenters and corresponding last commented at date
+  Posts.update(postId, {
+    $inc: { commentCount: -1 },
+    $set: { lastCommentedAt, commenters }
+  })
+
+  return comment
+}
+
+addCallback('comments.remove.async', CommentsRemovePostCommenters)
+
+export function CommentsRemoveChildrenComments (comment, currentUser) {
+  const childrenComments = Comments.find({ parentCommentId: comment._id }).fetch()
+
+  childrenComments.forEach(childComment => {
+    removeMutation({
+      action: 'comments.remove',
+      collection: Comments,
+      documentId: childComment._id,
+      currentUser: currentUser,
+      validate: false
+    })
+  })
+
+  return comment
+}
+
+addCallback('comments.remove.async', CommentsRemoveChildrenComments)
+
+// other
+export function UsersRemoveDeleteComments (user, options) {
+  if (options.deleteComments) {
+    Comments.remove({ userId: user._id })
+  } else {
+    // not sure if anything should be done in that scenario yet
+    // Comments.update({userId: userId}, {$set: {author: '\[deleted\]'}}, {multi: true})
+  }
+}
+addCallback('users.remove.async', UsersRemoveDeleteComments)
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+            </div>
+            
+            <footer class="footer">
+                <div class="content has-text-centered">
+                    <p>Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.6</a></p>
+                    <p class="sidebar-created-by">
+                        <a href="https://github.com/SoftwareBrothers/better-docs" target="_blank">BetterDocs theme</a> provided with <i class="fas fa-heart"></i> by 
+                        <a href="http://softwarebrothers.co" target="_blank">SoftwareBrothers - JavaScript Development Agency</a>
+                    </p>
+                </div>
+            </footer>
+            
+        </div>
+        <div id="side-nav" class="side-nav">
+        </div>
+    </div>
+<script src="scripts/app.min.js"></script>
+<script>PR.prettyPrint();</script>
+<script src="scripts/linenumber.js"> </script>
+
+</body>
+</html>

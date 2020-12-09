@@ -1,0 +1,28 @@
+{
+  "contact": {
+    "firstName": "Philippa",
+    "lastName": "Georgiou",
+    "title": "Casting Director",
+    "body": "A contact for testing, loaded by Cypress",
+    "slug": "philippa-georgiou"
+  },
+  "office": {
+    "displayName": "The Ready Room",
+    "body": "An office for testing, loaded by Cypress",
+    "slug": "the-ready-room"
+  },
+  "project": {
+    "projectTitle": "Star Trek: Discovery",
+    "projectType": "Feature Film",
+    "status": "See Notes",
+    "summary": "A project for testing, loaded by Cypress",
+    "slug": "stark-trek-discovery"
+  },
+  "pastproject": {
+    "projectTitle": "Star Trek: Voyager",
+    "projectType": "Feature Film",
+    "status": "Wrapped",
+    "summary": "A past project for testing, loaded by Cypress",
+    "slug": "star-trek-voyager"
+  }
+}

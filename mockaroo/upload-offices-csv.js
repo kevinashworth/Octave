@@ -5,7 +5,7 @@ var error = chalk.bold.red
 var success = chalk.bold.green
 
 var key = encodeURIComponent('8631d820')
-var project = encodeURIComponent('V8')
+var project = encodeURIComponent('Octave')
 var datasetName = 'offices'
 var name = encodeURIComponent(datasetName)
 

@@ -8,7 +8,6 @@ vulcan:i18n-en-us
 
 ############ Accounts Packages ############
 
-accounts-password
 # accounts-twitter
 # accounts-facebook@1.3.2
 accounts-github@1.4.3
@@ -25,6 +24,6 @@ vulcan:ui-bootstrap
 
 percolate:migrations
 
-v8
-apollo@3.1.0
+octave
+apollo@4.0.0
 tmeasday:check-npm-versions

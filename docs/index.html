@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title> Home</title>
+
+  <script src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js"></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  <script src="./build/entry.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+  <![endif]-->
+  <link href="https://fonts.googleapis.com/css?family=Roboto:100,400,700|Inconsolata,700" rel="stylesheet">
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
+  <link type="text/css" rel="stylesheet" href="https://jmblog.github.io/color-themes-for-google-code-prettify/themes/tomorrow-night.min.css">
+  <link type="text/css" rel="stylesheet" href="styles/app.min.css">
+  <link type="text/css" rel="stylesheet" href="styles/iframe.css">
+  <link type="text/css" rel="stylesheet" href="">
+  <script async defer src="https://buttons.github.io/buttons.js"></script>
+
+  
+</head>
+
+
+
+<body class="layout small-header">
+    <div id="stickyNavbarOverlay"></div>
+    
+
+<div class="top-nav">
+    <div class="inner">
+        <a id="hamburger" role="button" class="navbar-burger" aria-label="menu" aria-expanded="false">
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+        </a>
+        <div class="logo">
+            
+            
+        </div>
+        <div class="menu">
+            
+            <div class="navigation">
+                <a
+                    href="index.html"
+                    class="link"
+                >
+                    API Documentation
+                </a>
+                
+                
+                
+            </div>
+        </div>
+    </div>
+</div>
+    <div id="main">
+        <div
+            class="sidebar "
+            id="sidebarNav"
+        >
+            
+            <nav>
+                
+                    <h2><a href="index.html">Documentation</a></h2><div class="category"><h3>Components</h3><ul><li><a href="SelectProjectIdTitle.html">SelectProjectIdTitle</a></li></ul><h3>Global</h3><ul><li><a href="global.html#populateAlgoliaIndex">populateAlgoliaIndex</a></li><li><a href="global.html#UpvoteAsyncCallbacksAfterDocumentInsert">UpvoteAsyncCallbacksAfterDocumentInsert</a></li><li><a href="global.html#upvoteOwnComment">upvoteOwnComment</a></li></ul></div>
+                
+            </nav>
+        </div>
+        <div class="core" id="main-content-wrapper">
+            <div class="content">
+                <header class="page-title">
+                    <p></p>
+                    <h1>Home</h1>
+                </header>
+                
+
+
+
+    
+
+
+    <h3> </h3>
+
+
+
+
+
+
+
+
+
+
+    
+
+
+
+
+    <section>
+        <article><h1><strong>Octave</strong> README</h1>
+<h2>Description</h2>
+<p><strong>Octave</strong> is a place to collaborate and share information.</p>
+<h2>Technologies</h2>
+<p><strong>Octave</strong> is built with:</p>
+<ul>
+<li><a href="http://vulcanjs.org/">Vulcan</a>, the “full-stack React+GraphQL framework,”
+built with:
+<ul>
+<li><a href="https://reactjs.org/">React</a></li>
+<li><a href="https://graphql.org/">GraphQL</a></li>
+<li><a href="https://www.meteor.com/">Meteor</a></li>
+<li><a href="https://www.apollographql.com/">Apollo</a></li>
+<li><a href="https://www.mongodb.com/">MongoDB</a></li>
+</ul>
+</li>
+<li>Bootstrap (<a href="https://react-bootstrap.github.io/">react-boostrap</a>,
+<a href="https://sass-lang.com/documentation/syntax#scss">SCSS</a>, <a href="https://github.com/sass/node-sass">node-sass</a>)</li>
+<li><a href="https://www.algolia.com/">Algolia</a></li>
+<li><a href="https://www.mailgun.com/">Mailgun</a></li>
+<li><a href="https://mockaroo.com/">Mockaroo</a></li>
+<li><a href="https://storybook.js.org/">Storybook</a></li>
+<li><a href="https://www.twilio.com/">Twilio</a></li>
+</ul>
+<p>Octave lists Contacts, Offices, Projects and Past Projects, and provides an
+expanded editing interface for admins. Using Vulcan’s
+<a href="https://docs.vulcanjs.org/callbacks.html">hooks and callbacks</a>, related records
+are transformed upon editing the original record. Brill.</p>
+<h2>How to Install</h2>
+<h3>Prerequisites</h3>
+<p>Have these tools installed first:</p>
+<ul>
+<li>Meteor</li>
+<li>Node</li>
+<li>NPM</li>
+</ul>
+<h3>Installation Steps</h3>
+<ol>
+<li>Clone <a href="https://github.com/kevinashworth/Vulcan">my fork</a> of the <a href="https://github.com/VulcanJS/Vulcan">main Vulcan
+repo</a>. Be sure to check out branch
+<a href="https://github.com/kevinashworth/Vulcan/tree/Octave"><code>Octave</code></a>. (There is no
+need to do more than clone this repo on the correct branch.)</li>
+<li>Clone this <strong>Octave</strong> repo, then <code>cd</code> into its directory.</li>
+<li>Rename <code>sample_settings.json</code> to <code>settings.json</code>.</li>
+<li>Run <code>npm install</code>.<sup>1</sup></li>
+<li>As per Vulcan’s <a href="https://docs.vulcanjs.org/#Two-Repo-Install-Optional">Two-Repo Install</a>,
+start <strong>Octave</strong> with <code>METEOR_PACKAGE_DIRS=&quot;/[YOUR_PATH_TO]/Vulcan/packages&quot; meteor --port 4004 --settings settings.json</code>.</li>
+<li>When this command finishes after a few minutes, launch <strong>Octave</strong> by visiting
+<a href="http:%5C/%5C/localhost:4004">http://localhost:4004</a> in your browser.</li>
+<li>Click Sign Up and enter username, email, and password.<sup>2</sup></li>
+<li>That’s it. You’re in!</li>
+</ol>
+<h2>Notes</h2>
+<p>There are secrets that are not on Github — for the real <strong>Octave</strong> database, for
+phone number validation and formatting, for search. This publicly available
+version has a limited amount of seed data, and skips some functionality. There
+is a secret, alternative install procedure to get to full functionality.</p>
+<p><sup>1</sup> Near the end of the <code>install</code> process, you will see messages about
+contacts, offices, etc. This is seed data being randomly generated via Mockaroo.
+You can re-run this seeding process by typing <code>npm run prepare</code>. To replace old
+seed data with new seed data, run <code>meteor reset</code>, which will clear out the
+existing Mongo data, and delete the <code>mockaroo/generated</code> and <code>packages/Octave/lib/server/seeds/generated</code>
+directories. Then the <code>npm</code> command <code>install</code> or <code>prepare</code> will trigger a
+re-seeding of the database on the next <strong>Octave</strong> launch.</p>
+<p><sup>2</sup> This first user that you create will automatically become a user
+with <code>admin</code> permissions. The email that you enter will not be used, so it can
+be valid or a dummy value. Also, you may need to click menu items after logging
+in the first time, despite the message that ‘This will just take a moment.’ On
+subsequent logins this screen will only appear momentarily.</p></article>
+    </section>
+
+
+
+
+
+
+            </div>
+            
+            <footer class="footer">
+                <div class="content has-text-centered">
+                    <p>Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.6</a></p>
+                    <p class="sidebar-created-by">
+                        <a href="https://github.com/SoftwareBrothers/better-docs" target="_blank">BetterDocs theme</a> provided with <i class="fas fa-heart"></i> by 
+                        <a href="http://softwarebrothers.co" target="_blank">SoftwareBrothers - JavaScript Development Agency</a>
+                    </p>
+                </div>
+            </footer>
+            
+        </div>
+        <div id="side-nav" class="side-nav">
+        </div>
+    </div>
+<script src="scripts/app.min.js"></script>
+<script>PR.prettyPrint();</script>
+<script src="scripts/linenumber.js"> </script>
+
+</body>
+</html>

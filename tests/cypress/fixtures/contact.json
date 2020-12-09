@@ -1,0 +1,50 @@
+{
+	"_id" : "WFWQiEq8HjHD7q7H6",
+	"firstName" : "Graham",
+	"lastName" : "Bourrel",
+	"displayName" : "Graham Bourrel",
+	"gender" : "Male",
+	"addresses" : [ ],
+	"title" : "Casting Director",
+	"links" : [
+		{
+			"platformName" : "Instagram",
+			"profileName" : "G. Bourrel",
+			"profileLink" : "https://smugmug.com/donec/ut/dolor/morbi/vel.json"
+		}
+	],
+	"phone" : "615-210-8161",
+	"source" : "mockaroo",
+	"userId" : "h7JyxGz9x3dniDrzB",
+	"theAddress" : {
+		"street1" : "123 Main St",
+		"city" : "Los Angeles",
+		"state" : "CA",
+		"zip" : "90009",
+		"addressType" : "Office",
+		"location" : "Calif."
+	},
+	"slug" : "aube-graehme-bourrel",
+	"offices" : [
+		{
+			"officeId" : "kuyGyWtQj4hCvdRD3",
+			"officeLocation" : null,
+			"officeName" : "Botsford-Schaden Casting"
+		}
+	],
+	"projects" : [
+		{
+			"projectId" : "SJQ9paFHaba7aN2SY",
+			"projectTitle" : "Camp",
+			"titleForProject" : "Casting Director"
+		}
+	],
+	"addressString" : "123 Main St Los Angeles CA 90009",
+	"pastProjects" : [
+		{
+			"projectId" : "Mv6v5DwtPy3hQAbJ3",
+			"projectTitle" : "The Card Player",
+			"titleForProject" : "Casting Director"
+		}
+	]
+}

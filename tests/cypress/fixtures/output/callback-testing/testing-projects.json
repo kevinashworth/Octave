@@ -1,0 +1,241 @@
+[
+	{
+		"_id" : "Rd8gWygXgCtGPyHdG",
+		"projectTitle" : "MEXICO",
+		"projectType" : "TV One Hour",
+		"union" : "SAG-AFTRA",
+		"status" : "Casting",
+		"shootingLocation" : "Mexico",
+		"offices" : [
+			{
+				"officeId" : "zDnkS2PqfW9yxFtoN",
+				"officeLocation" : "New York, NY",
+				"officeName" : "WORDPEDIA CASTING"
+			}
+		],
+		"contacts" : [
+			{
+				"contactId" : "3d36EC7JrFAQgtLr7",
+				"contactName" : "HASTY HARMSON",
+				"contactTitle" : "Casting Director / Casting Executive"
+			},
+			{
+				"contactId" : "8N6KuyzpQiAf4mGy6",
+				"contactName" : "QUINN QUICK",
+				"contactTitle" : "Associate"
+			}
+		],
+		"userId" : "yhaNiNHL4vKEytrCn",
+		"sortTitle" : "mexico",
+		"platformType" : "Other",
+		"slug" : "mexico",
+		"htmlSummary" : "<p><strong>SUMMARY:</strong> A project for testing, created by triad-cypress-editor</p>\n",
+		"summary" : "A project for testing, created by triad-cypress-editor"
+	},
+	{
+		"_id" : "cFnAhTC4Qkho7GK2N",
+		"projectTitle" : "CHINA",
+		"projectType" : "Feature Film",
+		"union" : "SAG-AFTRA",
+		"status" : "Casting",
+		"shootingLocation" : "TBD",
+		"summary" : "A project for testing, created by triad-cypress-editor",
+		"offices" : [
+			{
+				"officeId" : "atNcNZQmATyfeJdPg",
+				"officeName" : "BUBBLEBOX CASTING"
+			}
+		],
+		"contacts" : [
+			{
+				"contactId" : "885jvrnZr4xi6pvnE",
+				"contactName" : "KIENAN KYNASTONE",
+				"contactTitle" : "Associate"
+			},
+			{
+				"contactId" : "DuezYGyRc92XhctaN",
+				"contactName" : "RAM RUCKMAN",
+				"contactTitle" : "Assistant"
+			}
+		],
+		"userId" : "yhaNiNHL4vKEytrCn",
+		"sortTitle" : "china",
+		"platformType" : "Theatrical",
+		"htmlSummary" : "<p><strong>SUMMARY:</strong> A project for testing, created by triad-cypress-editor</p>\n",
+		"slug" : "china"
+	},
+	{
+		"_id" : "sAHhv3MtpGD2M5fbJ",
+		"projectTitle" : "CANADA",
+		"projectType" : "TV 1/2 Hour",
+		"union" : "ACTRA",
+		"network" : "CBC",
+		"status" : "Casting",
+		"renewed" : false,
+		"shootingLocation" : "Nova Scotia",
+		"website" : "http://example.com",
+		"offices" : [
+			{
+				"officeId" : "bXRxDNh8RBvomgyTz",
+				"officeLocation" : null,
+				"officeName" : null
+			}
+		],
+		"contacts" : [
+			{
+				"contactId" : "2xvK89GM368eHHGBf",
+				"contactName" : "ADELIND ARONOW",
+				"contactTitle" : "Assistant"
+			},
+			{
+				"contactId" : "DuezYGyRc92XhctaN",
+				"contactName" : "RAM RUCKMAN",
+				"contactTitle" : "Assistant"
+			}
+		],
+		"userId" : "yhaNiNHL4vKEytrCn",
+		"sortTitle" : "canada",
+		"platformType" : "Other",
+		"slug" : "canada",
+		"htmlSummary" : "<p><strong>SUMMARY:</strong> A project for testing, created by triad-cypress-editor</p>\n",
+		"summary" : "A project for testing, created by triad-cypress-editor"
+	},
+	{
+		"_id" : "q8Pg9bRejsRRrf8WD",
+		"projectTitle" : "INDONESIA",
+		"projectType" : "TV Talk/Variety",
+		"union" : "SAG-AFTRA",
+		"network" : "Freeform",
+		"status" : "Casting",
+		"shootingLocation" : "New Orleans, LA",
+		"summary" : "A project for testing, created by triad-cypress-editor",
+		"offices" : [
+			{
+				"officeId" : "H9A89uNSzmKC7JfHH",
+				"officeLocation" : null,
+				"officeName" : "SKIMIA CASTING"
+			},
+			{
+				"officeId" : "ZavyQgsCZMPgn9Jzv",
+				"officeName" : "KAZIO CASTING"
+			}
+		],
+		"contacts" : [
+			{
+				"contactId" : "tGsEn6ckMx2K7xdTb",
+				"contactName" : "COBBIE CHATER",
+				"contactTitle" : "Casting Director / Casting Executive"
+			},
+			{
+				"contactId" : "2CvTAQHtRbjrQeiFy",
+				"contactName" : "SHANE SAVINS",
+				"contactTitle" : "Casting Director"
+			}
+		],
+		"userId" : "yhaNiNHL4vKEytrCn",
+		"sortTitle" : "indonesia",
+		"platformType" : "Network Code",
+		"htmlSummary" : "<p><strong>SUMMARY:</strong> A project for testing, created by triad-cypress-editor</p>\n",
+		"slug" : "indonesia"
+	},
+	{
+		"_id" : "T5JvuhpanYzKNHesQ",
+		"projectTitle" : "THAILAND",
+		"projectType" : "Feature Film",
+		"union" : "SAG-AFTRA",
+		"status" : "Shooting",
+		"shootingLocation" : "Paris, France",
+		"summary" : "A project for testing, created by triad-cypress-editor",
+		"offices" : [
+			{
+				"officeId" : "ZavyQgsCZMPgn9Jzv",
+				"officeName" : "KAZIO CASTING"
+			}
+		],
+		"contacts" : [
+			{
+				"contactId" : "2CvTAQHtRbjrQeiFy",
+				"contactName" : "SHANE SAVINS",
+				"contactTitle" : "Casting Director"
+			},
+			{
+				"contactId" : "8N6KuyzpQiAf4mGy6",
+				"contactName" : "QUINN QUICK",
+				"contactTitle" : "Associate"
+			}
+		],
+		"userId" : "yhaNiNHL4vKEytrCn",
+		"sortTitle" : "thailand",
+		"platformType" : "Theatrical",
+		"htmlSummary" : "<p><strong>SUMMARY:</strong> A project for testing, created by triad-cypress-editor</p>\n",
+		"slug" : "thailand"
+	},
+	{
+		"_id" : "APBNBmy89TtArTrn7",
+		"projectTitle" : "BANGLADESH",
+		"projectType" : "TV One Hour",
+		"union" : "SAG-AFTRA",
+		"status" : "See Notes",
+		"shootingLocation" : "Tokyo, Japan",
+		"summary" : "A project for testing, created by triad-cypress-editor",
+		"offices" : [
+			{
+				"officeId" : "zrZXnZSrAgtdzGGht"
+			}
+		],
+		"contacts" : [
+			{
+				"contactId" : "9ZPM8AFnjbKPmFLp8",
+				"contactName" : "PANDORA PAFFLEY",
+				"contactTitle" : "Associate"
+			},
+			{
+				"contactId" : "DuezYGyRc92XhctaN",
+				"contactName" : "RAM RUCKMAN",
+				"contactTitle" : "Assistant"
+			}
+		],
+		"userId" : "yhaNiNHL4vKEytrCn",
+		"sortTitle" : "bangladesh",
+		"platformType" : "Other",
+		"htmlSummary" : "<p><strong>SUMMARY:</strong> A project for testing, created by triad-cypress-editor</p>\n",
+		"slug" : "bangladesh"
+	},
+	{
+		"_id" : "KcyQQsGffst55d8XK",
+		"projectTitle" : "ARGENTINA",
+		"projectType" : "Pilot One Hour",
+		"union" : "SAG-AFTRA",
+		"network" : "TNT",
+		"status" : "See Notes",
+		"shootingLocation" : "TBD",
+		"summary" : "A project for testing, created by triad-cypress-editor",
+		"links" : [
+			{
+				"platformName" : "Twitter",
+				"profileName" : "ARGENTINA",
+				"profileLink" : "https://twitter.com/ARGENTINA"
+			}
+		],
+		"userId" : "yhaNiNHL4vKEytrCn",
+		"sortTitle" : "argentina",
+		"platformType" : "Cable",
+		"htmlSummary" : "<p><strong>SUMMARY:</strong> A project for testing, created by triad-cypress-editor</p>\n",
+		"slug" : "argentina"
+	},
+	{
+		"_id" : "ny6rj76aGftmQKzNb",
+		"projectTitle" : "BRAZIL",
+		"projectType" : "TV One Hour",
+		"union" : "SAG-AFTRA",
+		"network" : "Hulu",
+		"status" : "Casting",
+		"shootingLocation" : "Puerto Rico",
+		"summary" : "A project for testing, created by triad-cypress-editor",
+		"userId" : "yhaNiNHL4vKEytrCn",
+		"sortTitle" : "brazil",
+		"platformType" : "SVOD",
+		"htmlSummary" : "<p><strong>SUMMARY:</strong> A project for testing, created by triad-cypress-editor</p>\n",
+		"slug" : "brazil"
+	}
+]

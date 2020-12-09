@@ -1,0 +1,6 @@
+{
+  "name": "trends",
+  "version": "0.0.0",
+  "private": true,
+  "main": "./Trends.jsx"
+}

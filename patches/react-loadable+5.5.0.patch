@@ -1,0 +1,13 @@
+diff --git a/node_modules/react-loadable/lib/index.js b/node_modules/react-loadable/lib/index.js
+index 75b1364..14a5f4b 100644
+--- a/node_modules/react-loadable/lib/index.js
++++ b/node_modules/react-loadable/lib/index.js
+@@ -163,7 +163,7 @@ function createLoadableComponent(loadFn, options) {
+       return init();
+     };
+ 
+-    LoadableComponent.prototype.componentWillMount = function componentWillMount() {
++    LoadableComponent.prototype.UNSAFE_componentWillMount = function UNSAFE_componentWillMount() {
+       this._mounted = true;
+       this._loadModule();
+     };

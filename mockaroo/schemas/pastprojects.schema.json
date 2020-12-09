@@ -1,6 +1,6 @@
 {
   "id": 244104,
-  "num_rows": 55,
+  "num_rows": 805,
   "file_format": "json",
   "name": "pastprojects",
   "array": true,
@@ -9,7 +9,7 @@
       "name": "_id",
       "null_percentage": 0,
       "type": "Character Sequence",
-      "format": "***************",
+      "format": "abcdefghijklmnopq",
       "formula": ""
     },
     {
@@ -26,17 +26,35 @@
         "Feature Film",
         "Feature Film (LB)",
         "Feature Film (UPA)",
-        "Interactive",
         "Pilot One Hour",
         "Pilot 1/2 Hour",
-        "Podcast",
+        "TV One Hour",
+        "TV 1/2 Hour",
         "TV Animation",
         "TV Daytime",
-        "TV One Hour",
-        "TV 1/2 Hour"
+        "Interactive",
+        "New Media",
+        "Podcast"
       ],
       "selectionStyle": "random",
-      "distribution": null,
+      "distribution": [
+        {
+          "frequencies": {
+            "Feature Film": 9,
+            "Feature Film (LB)": 1,
+            "Feature Film (UPA)": 1,
+            "Pilot One Hour": 2,
+            "Pilot 1/2 Hour": 2,
+            "TV One Hour": 9,
+            "TV 1/2 Hour": 9,
+            "TV Animation": 1,
+            "TV Daytime": 1,
+            "Interactive": 1,
+            "New Media": 2,
+            "Podcast": 1
+          }
+        }
+      ],
       "formula": ""
     },
     {
@@ -48,28 +66,57 @@
     },
     {
       "name": "network",
-      "null_percentage": 20,
+      "null_percentage": 21,
       "type": "Custom List",
       "values": [
         "ABC",
         "Amazon",
         "AMC",
+        "BET",
         "Cartoon Network",
         "CBS",
         "CW",
         "Disney+",
+        "FOX",
         "HBO",
         "Hulu",
+        "Lifetime",
         "NBC",
         "Netflix",
+        "Peacock",
         "Showtime",
         "Starz",
         "TBS",
         "TNT",
         "USA"
       ],
-      "selectionStyle": "random",
-      "distribution": null,
+      "selectionStyle": "custom",
+      "distribution": [
+        {
+          "frequencies": {
+            "ABC": 5,
+            "Amazon": 4,
+            "AMC": 1,
+            "BET": 1,
+            "Cartoon Network": 1,
+            "CBS": 5,
+            "CW": 1,
+            "Disney+": 1,
+            "FOX": 5,
+            "HBO": 2,
+            "Hulu": 6,
+            "Lifetime": 1,
+            "NBC": 5,
+            "Netflix": 8,
+            "Peacock": 1,
+            "Showtime": 1,
+            "Starz": 1,
+            "TBS": 1,
+            "TNT": 1,
+            "USA": 1
+          }
+        }
+      ],
       "formula": ""
     },
     {
@@ -82,14 +129,35 @@
         "Unknown"
       ],
       "selectionStyle": "random",
-      "distribution": null,
+      "distribution": [
+        {
+          "frequencies": {
+            "Wrapped": 9,
+            "Canceled": 9,
+            "Unknown": 1
+          }
+        }
+      ],
+      "formula": ""
+    },
+    {
+      "name": "__state",
+      "null_percentage": 0,
+      "type": "State (abbrev)",
+      "onlyUSPlaces": true,
+      "formula": ""
+    },
+    {
+      "name": "__city",
+      "null_percentage": 0,
+      "type": "City",
       "formula": ""
     },
     {
       "name": "shootingLocation",
-      "null_percentage": 20,
-      "type": "State",
-      "onlyUSPlaces": true,
+      "null_percentage": 22,
+      "type": "Formula",
+      "value": "__city + \", \" + __state",
       "formula": ""
     },
     {
@@ -102,7 +170,7 @@
     },
     {
       "name": "notes",
-      "null_percentage": 20,
+      "null_percentage": 19,
       "type": "Sentences",
       "min": 1,
       "max": 2,
@@ -110,7 +178,7 @@
     },
     {
       "name": "contacts",
-      "null_percentage": 20,
+      "null_percentage": 18,
       "type": "JSON Array",
       "minItems": 1,
       "maxItems": 3,
@@ -127,7 +195,7 @@
     },
     {
       "name": "contacts.contactTitle",
-      "null_percentage": 20,
+      "null_percentage": 16,
       "type": "Dataset Column",
       "dataset": "contacts",
       "column": "title",
@@ -136,7 +204,7 @@
     },
     {
       "name": "contacts.contactName",
-      "null_percentage": 20,
+      "null_percentage": 0,
       "type": "Dataset Column",
       "dataset": "contacts",
       "column": "displayName",
@@ -145,10 +213,10 @@
     },
     {
       "name": "offices",
-      "null_percentage": 20,
+      "null_percentage": 23,
       "type": "JSON Array",
       "minItems": 1,
-      "maxItems": 1,
+      "maxItems": 2,
       "formula": ""
     },
     {
@@ -174,7 +242,7 @@
       "null_percentage": 25,
       "type": "JSON Array",
       "minItems": 1,
-      "maxItems": 3,
+      "maxItems": 2,
       "formula": ""
     },
     {
@@ -182,17 +250,22 @@
       "null_percentage": 0,
       "type": "Custom List",
       "values": [
-        "Facebook",
         "IMDb",
         "IMDbPro",
-        "Instagram",
-        "LinkedIn",
         "Twitter",
-        "Wikipedia",
-        "YouTube"
+        "Wikipedia"
       ],
       "selectionStyle": "random",
-      "distribution": null,
+      "distribution": [
+        {
+          "frequencies": {
+            "IMDb": 1,
+            "IMDbPro": 9,
+            "Twitter": 1,
+            "Wikipedia": 9
+          }
+        }
+      ],
       "formula": ""
     },
     {
@@ -209,6 +282,22 @@
       "includeHost": true,
       "includePath": true,
       "includeQueryString": false,
+      "formula": ""
+    },
+    {
+      "name": "createdAt",
+      "null_percentage": 0,
+      "type": "Datetime",
+      "min": "10/19/2017",
+      "max": "10/19/2018",
+      "format": "%Y-%m-%dT%H:%M:%SZ",
+      "formula": ""
+    },
+    {
+      "name": "updatedAt",
+      "null_percentage": 20,
+      "type": "Formula",
+      "value": "createdAt + days(random(1,730))",
       "formula": ""
     },
     {

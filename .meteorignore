@@ -1,5 +1,9 @@
+coverage
+docs
 dump
+logs
 misc
 mockaroo
+notes
 stories
 storybook-static

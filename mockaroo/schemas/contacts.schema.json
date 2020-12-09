@@ -1,6 +1,6 @@
 {
   "id": 101652,
-  "num_rows": 65,
+  "num_rows": 469,
   "file_format": "json",
   "name": "contacts",
   "array": true,
@@ -9,7 +9,7 @@
       "name": "_id",
       "null_percentage": 0,
       "type": "Character Sequence",
-      "format": "***************",
+      "format": "abcdefghijklmnopq",
       "formula": ""
     },
     {
@@ -47,8 +47,8 @@
       "name": "addresses",
       "null_percentage": 50,
       "type": "JSON Array",
-      "minItems": 1,
-      "maxItems": 2,
+      "minItems": 0,
+      "maxItems": 1,
       "formula": ""
     },
     {
@@ -92,7 +92,7 @@
     {
       "name": "addresses.state",
       "null_percentage": 0,
-      "type": "State",
+      "type": "State (abbrev)",
       "onlyUSPlaces": true,
       "formula": ""
     },
@@ -106,7 +106,7 @@
       "name": "addresses.location",
       "null_percentage": 0,
       "type": "Formula",
-      "value": "if field(\"state\") == \"California\" then \"Calif.\" else \"NY\" end",
+      "value": "if field(\"state\") == \"CA\" then \"Calif.\" else \"NY\" end",
       "formula": ""
     },
     {
@@ -117,10 +117,19 @@
         "Casting Director",
         "Associate",
         "Assistant",
-        "Unknown Title"
+        "Casting Director / Associate"
       ],
-      "selectionStyle": "random",
-      "distribution": null,
+      "selectionStyle": "custom",
+      "distribution": [
+        {
+          "frequencies": {
+            "Casting Director": "20",
+            "Associate": "10",
+            "Assistant": "2",
+            "Casting Director / Associate": "3"
+          }
+        }
+      ],
       "formula": ""
     },
     {
@@ -128,7 +137,7 @@
       "null_percentage": 25,
       "type": "JSON Array",
       "minItems": 1,
-      "maxItems": 4,
+      "maxItems": 5,
       "formula": ""
     },
     {
@@ -136,15 +145,13 @@
       "null_percentage": 0,
       "type": "Custom List",
       "values": [
-        "CSA",
+        "Twitter",
+        "LinkedIn",
+        "Instagram",
         "Facebook",
         "IMDb",
-        "IMDbPro",
-        "Instagram",
-        "LinkedIn",
-        "Twitter",
-        "Wikipedia",
-        "YouTube"
+        "YouTube",
+        "CSA"
       ],
       "selectionStyle": "random",
       "distribution": null,
@@ -176,9 +183,25 @@
     },
     {
       "name": "phone",
-      "null_percentage": 50,
+      "null_percentage": 80,
       "type": "Phone",
       "format": "###-###-####",
+      "formula": ""
+    },
+    {
+      "name": "createdAt",
+      "null_percentage": 0,
+      "type": "Datetime",
+      "min": "3/3/2017",
+      "max": "10/01/2019",
+      "format": "%Y-%m-%dT%H:%M:%SZ",
+      "formula": ""
+    },
+    {
+      "name": "updatedAt",
+      "null_percentage": 50,
+      "type": "Formula",
+      "value": "createdAt + days(random(1,380))",
       "formula": ""
     },
     {

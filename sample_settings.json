@@ -1,7 +1,12 @@
 {
   "public": {
-    "title": "V8",
-    "tagline": "Not affliated with V8",
+    "title": "Octave",
+    "tagline": "You and Me",
+    "homeUrl": "//app.example.com/",
+    "owner": "All of Us",
+    "ownerUrl": "//example.com/",
+    "description": "Octave is a place to collaborate and share information.",
+    "version": "1.16.17",
     "faviconUrl": "/favicon/favicon.ico",
     "locale": "en",
     "algolia": {
@@ -54,5 +59,5 @@
   "enableDevelopmentEmails": true,
   "secondaryColor": "#2F353A",
   "accentColor": "#20A8D8",
-  "emailFooter": "<span><a href='//example.com/v8/'>V8</a> &copy; 2018-2020 SuperSite, LLC<br />Powered by <a href='//example.com/'>The Fourth Wall</a></span>"
+  "emailFooter": "<span><a href='//example.com/octave/'>Octave</a> &copy; 2020 SuperSite, LLC<br />Powered by <a href='//example.com/'>The 4th Wall</a></span>"
 }
