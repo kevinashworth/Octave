@@ -46,7 +46,7 @@ repo](https://github.com/VulcanJS/Vulcan). Be sure to check out branch
 need to do more than clone this repo on the correct branch.)
 2. Clone this **Octave** repo, then `cd` into its directory.
 3. Rename `sample_settings.json` to `settings.json`.
-4. Run `npm install`.<sup>1</sup>
+4. Run `npm install --production`.<sup>1</sup> (If you want to do development or download the large e2e testing packages, omit the `--production` flag.)
 5. As per Vulcan’s [Two-Repo Install](https://docs.vulcanjs.org/#Two-Repo-Install-Optional),
 start **Octave** with `METEOR_PACKAGE_DIRS="/[YOUR_PATH_TO]/Vulcan/packages"
 meteor --port 4004 --settings settings.json`.
