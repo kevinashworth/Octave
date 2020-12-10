@@ -16,8 +16,8 @@ if (settings.mockaroo) {
   if (settings.mockaroo.generateAndDownload) {
     settings.mockaroo = {
       generateAndDownload: false,
-      seedDatabase: false,
-      initializeAlgolia: false,
+      seedDatabase: true,
+      initializeAlgolia: true,
       updateAlgolia: true
     }
   }

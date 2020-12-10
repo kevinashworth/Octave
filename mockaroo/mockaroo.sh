@@ -16,6 +16,8 @@ if [ ! -d ../packages/octave/lib/server/seeds/generated ]; then
   node post-download --schema=projects
 
   mv generated ../packages/octave/lib/server/seeds
+
+  node postinstall
 else
   echo "Please remove packages/octave/lib/server/seeds/generated to generate Mockaroo seed data"
 fi

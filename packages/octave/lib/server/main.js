@@ -19,12 +19,12 @@ import './log.js'
 //   initializeAlgolia()
 // })
 
-import { WebApp } from 'meteor/webapp'
+// import { WebApp } from 'meteor/webapp'
 
-WebApp.connectHandlers.use('/__coverage__', (req, res, next) => {
-  if (global.__coverage__ && req.method === 'GET') {
-    res.writeHead(200, { 'Content-Type': 'text/json' })
-    res.write(JSON.stringify({ coverage: global.__coverage__ }))
-    res.end()
-  }
-})
+// WebApp.connectHandlers.use('/__coverage__', (req, res, next) => {
+//   if (global.__coverage__ && req.method === 'GET') {
+//     res.writeHead(200, { 'Content-Type': 'text/json' })
+//     res.write(JSON.stringify({ coverage: global.__coverage__ }))
+//     res.end()
+//   }
+// })
