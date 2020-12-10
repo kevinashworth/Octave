@@ -19,7 +19,7 @@
       "disable": true
     },
     "pollInterval": 30000
-},
+  },
   "apolloServer": {
     "corsWhitelist": [],
     "corsEnableAll": false
@@ -29,6 +29,12 @@
   },
   "debug": true,
   "maxDocumentsPerRequest": 1000,
+  "mockaroo": {
+    "generateAndDownload": true,
+    "seedDatabase": true,
+    "initializeAlgolia": true,
+    "updateAlgolia": true
+  },
   "oAuth": {
     "facebook": {
       "appId": "foo",
