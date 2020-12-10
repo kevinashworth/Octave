@@ -1,9 +1,24 @@
 /// <reference types="cypress" />
 
 /**
- * Update Contacts to test packages/octave/lib/server/contacts/callbacks
+ * Update Contacts to test packages/octave/lib/server/contacts/callbacks.
  *
- * Reminder: Use keyword `function`, not arrow function, to access `this.items.foo`
+ * Very rough assessment of code coverage:
+ *
+ *  update: {
+ *    before: [
+ *      updateOfficeNames,                x
+ *      updateProjectTitles,              x
+ *      updatePastProjectTitles           x
+ *    ],
+ *    async: [
+ *      updateAlgoliaObject,              x
+ *      updateContactUpdateOffices,       ✓
+ *      updateContactUpdateProjects,      ✓
+ *      updateContactUpdatePastProjects,  ✓
+ *      updatePatches                     x
+ *    ]
+ *  }
  */
 
 const clear = Cypress.LocalStorage.clear
@@ -191,25 +206,30 @@ describe('Update Contacts', () => {
     cy.location().then((loc) => {
       cy.writeFile('temp-project-link.txt', loc.pathname)
     })
-    cy.go('back')
 
-    cy.get('[data-cy=edit-button]', { log: false }).click({ force: true })
+    // edit the contact
+    cy.go('back')
+    cy.edit()
     cy.get('.form-section-projects').within(() => {
       // has 2 preexisting projects, remove first
       cy.get('.form-nested-item-remove button').first().click()
     })
     cy.submit()
+
+    // assertions on the result
     cy.get('[data-cy=contact-header]', { log: false }).contains(contact.displayName)
-    cy.get('[data-cy=office-link)')
+    cy.get('[data-cy=office-link]')
     cy.percySnapshot()
 
-    // assert contact 0 has 1 project
+    // assert contact has 1 project
     cy.get('[data-cy=project-link]')
       .should('have.length', 1)
       .click()
+
     // assert project still has contact 0
     cy.get('[data-cy=contact-link]')
       .should('include.text', contact.displayName)
+
     // assert removed project no longer has contact 0
     cy.readFile('temp-project-link.txt').then((link) => {
       cy.visit(link)
@@ -240,6 +260,8 @@ describe('Update Contacts', () => {
         }
       }
     })
+
+    // edit contact 3
     cy.visit('/contacts')
     cy.get(`a[href$=${contact.slug}][data-cy=contacts-link]`, { log: false }).click()
     cy.get('[data-cy=edit-button]', { log: false }).click({ force: true })
@@ -274,30 +296,41 @@ describe('Update Contacts', () => {
       })
     })
     cy.submit()
+
+    // asserts on updated contact
     cy.get('[data-cy=contact-header]', { log: false }).contains(contact.displayName)
+    cy.get('[data-cy=office-link]')
+      .should('have.length', 2)
     cy.get('[data-cy=project-link]')
       .should('have.length', 2)
+    cy.get('[data-cy=show-hide-past-projects]').click({ log: false })
+    cy.get('[data-cy=pastproject-link]')
+      .should('have.length', 2)
 
-    // assert project added to contact
-    cy.get(`a[href$=${project.slug}][data-cy=project-link]`).last().click()
+    // assert project added to contact, then assert contact added to project
+    cy.get(`a[href$=${project.slug}][data-cy=project-link]`)
+      .should('have.length', 1).click()
     cy.get('[data-cy=project-header]', { log: false }).contains(project.projectTitle)
     cy.get('[data-cy=contact-link]').last()
       .should('have.text', contact.displayName)
+    cy.percySnapshot()
 
-    // assert office added to contact
-    cy.visit('/contacts')
-    cy.get(`a[href$=${contact.slug}][data-cy=contacts-link]`, { log: false }).click()
-    cy.get(`a[href$=${office.slug}][data-cy=office-link]`).last().click()
+    // assert office added to contact, then assert contact added to office
+    cy.goTo('contacts', contact)
+    cy.get('[data-cy=contact-header]', { log: false }).contains(contact.lastName)
+    cy.get(`a[href$=${office.slug}][data-cy=office-link]`)
+      .should('have.length', 1).click()
     cy.get('[data-cy=office-header]', { log: false }).contains(office.displayName)
-    cy.get('[data-cy=contact-link]').first().then((link) => {
-      cy.expectInnerText(link, contact.displayName)
-    })
+    cy.get('[data-cy=contact-link]').should('contain', contact.firstName)
+    cy.get('[data-cy=contact-link]').should('contain', contact.lastName)
+    cy.percySnapshot()
 
-    // assert pastproject added to contact
-    cy.visit('/contacts')
-    cy.get(`a[href$=${contact.slug}][data-cy=contacts-link]`, { log: false }).click()
+    // assert pastproject added to contact, then assert contact added to pastproject
+    cy.goTo('contacts', contact)
+    cy.get('[data-cy=contact-header]', { log: false }).contains(contact.firstName)
     cy.get('[data-cy=show-hide-past-projects]').click({ log: false })
-    cy.get(`a[href$=${pastproject.slug}][data-cy=pastproject-link]`).last().click()
+    cy.get(`a[href$=${pastproject.slug}][data-cy=pastproject-link]`)
+      .should('have.length', 1).click()
     cy.get('[data-cy=pastproject-header]', { log: false }).contains(pastproject.projectTitle)
     cy.get('[data-cy=contact-link]').last()
       .should('have.text', contact.displayName)
