@@ -54,6 +54,8 @@ Cypress.Commands.add('clickRedRemoveButton', (index = 0) => {
 })
 
 // works for MySelect, whether options from static array or options from database query
+// project on office: data-cy-my-select-projects.0.projectId
+// past project on office: data-cy-my-select-pastProjects.0.projectId
 Cypress.Commands.add('mySelect', (selector, option, index = 0) => {
   const log = Cypress.log({
     name: 'select',
@@ -154,4 +156,9 @@ Cypress.Commands.add('waitForPastProjectOptions', () => {
 
 Cypress.Commands.add('waitForProjectOptions', () => {
   cy.get('[id^=data-cy-select-project-id]', { log: false })
+})
+
+// for when schema uses MySelect
+Cypress.Commands.add('waitForProjectOptions2', () => {
+  cy.get('[id^=data-cy-my-select]', { log: false })
 })
