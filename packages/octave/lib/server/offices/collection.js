@@ -8,31 +8,37 @@ import {
   OfficeEditUpdatePastProjects,
   OfficeCreateUpdateProjects,
   OfficeEditUpdateProjects,
-  OfficeCreateFormatPhones,
-  OfficeUpdateFormatPhones,
+  createOfficeFormatPhones,
+  updateOfficeFormatPhones,
   OfficeEditUpdateHistoryAfter
 } from './callbacks/index.js'
 
 extendCollection(Offices, {
   callbacks: {
     create: {
-      before: [OfficeCreateFormatPhones],
+      before: [
+        createOfficeFormatPhones
+      ],
       after: [
         OfficeCreateUpdateContacts,
         OfficeEditUpdatePastProjects,
         OfficeCreateUpdateProjects
       ],
-      async: [createAlgoliaObject]
+      async: [
+        createAlgoliaObject
+      ]
     },
     update: {
       before: [
+        updateOfficeFormatPhones,
         OfficeEditUpdateContacts,
         OfficeEditUpdatePastProjects,
-        OfficeEditUpdateProjects,
-        OfficeUpdateFormatPhones
+        OfficeEditUpdateProjects
       ],
       after: [OfficeEditUpdateHistoryAfter],
-      async: [updateAlgoliaObject]
+      async: [
+        updateAlgoliaObject
+      ]
     }
   }
 })
