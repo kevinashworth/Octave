@@ -98,6 +98,10 @@ Cypress.Commands.add('stubAlgolia', () => {
   cy.intercept({ url: 'algolia' }, staticResponse)
 })
 
+Cypress.Commands.add('showPastProjects', () => {
+  cy.get('[data-cy=show-hide-past-projects]').click({ log: false })
+})
+
 // see https://github.com/cypress-io/cypress/issues/3942#issuecomment-485648100
 // Cypress.Commands.add('dragAndDrop', ({ subject, target, section = 'body' }) => {
 //   Cypress.log({

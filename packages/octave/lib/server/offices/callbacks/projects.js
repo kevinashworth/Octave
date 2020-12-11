@@ -2,6 +2,7 @@ import { Connectors } from 'meteor/vulcan:core'
 import differenceWith from 'lodash/differenceWith'
 import findIndex from 'lodash/findIndex'
 import isEqual from 'lodash/isEqual'
+import remove from 'lodash/remove'
 import log from 'loglevel'
 import Projects from '../../../modules/projects/collection.js'
 import { isEmptyValue } from '../../../modules/helpers.js'
@@ -41,33 +42,33 @@ const handleAddProjects = (projects, office) => {
   })
 }
 
-const handleRemoveProjects = (projects, contactId) => {
+const handleRemoveProjects = (projects, officeId) => {
   projects.forEach(deletedProject => {
     try {
       const oldProject = Projects.findOne(deletedProject.projectId)
-      const oldProjectContacts = oldProject && oldProject.contacts
-      remove(oldProjectContacts, function (p) { // `remove` mutates
-        return p.contactId === contactId
+      const oldProjectOffices = oldProject && oldProject.offices
+      remove(oldProjectOffices, function (p) { // `remove` mutates
+        return p.officeId === officeId
       })
-      if (isEmptyValue(oldProjectContacts)) {
+      if (isEmptyValue(oldProjectOffices)) {
         Connectors.update(Projects, oldProject._id, {
           $set: {
             updatedAt: new Date()
           },
           $unset: {
-            contacts: 1
+            offices: 1
           }
         })
       } else {
         Connectors.update(Projects, oldProject._id, {
           $set: {
-            contacts: oldProjectContacts,
+            offices: oldProjectOffices,
             updatedAt: new Date()
           }
         })
       }
     } catch {
-      log.error('handleRemoveProjects could not find project', deletedProject.projectId)
+      log.error('handleRemoveProjects error, project', deletedProject.projectId)
     }
   })
 }
