@@ -115,6 +115,72 @@ describe('Update Office', () => {
     log.end()
   })
 
+  it('add past project, remove project from office', function () {
+    const office = Cypress._.find(this.testingOffices, { displayName: 'KAZIO CASTING' })
+    const project = Cypress._.find(this.testingProjects, { projectTitle: 'INDONESIA' })
+    const pastproject = Cypress._.find(this.testingPastprojects, { projectTitle: 'CALIFORNIA FAGONBUSH' })
+    const log = Cypress.log({
+      name: 'add past project to, remove project from office',
+      displayName: 'ADD PAST PROJECT',
+      message: [`Adding ${pastproject.projectTitle} to ${office.displayName}, removing ${project.projectTitle}`],
+      autoEnd: false
+    })
+
+    // assert office before
+    cy.goTo('offices', office)
+    cy.get('[data-cy=office-header]', { log: false }).contains(office.displayName)
+    cy.get('[data-cy=project-link]')
+      .should('have.length', 2)
+    cy.showPastProjects()
+    cy.get('[data-cy=pastproject-link]')
+      .should('have.length', 1)
+    cy.percySnapshot()
+
+    // assert on project to be removed
+    cy.goTo('projects', project)
+    cy.get('[data-cy=project-header]', { log: false }).contains(project.projectTitle)
+    cy.get('[data-cy=office-link]')
+      .should('have.length', 2)
+
+    // update
+    cy.goTo('offices', office)
+    cy.edit()
+    cy.get('.form-section-projects').within(() => {
+      cy.clickRedRemoveButton(1)
+    })
+    cy.get('.form-section-pastProjects').click().within(() => {
+      cy.clickGreenAddButton()
+      cy.waitForProjectOptions2()
+      cy.mySelect('projectId', pastproject.projectTitle, 1)
+    })
+    cy.submit()
+
+    // assert office after
+    cy.get('[data-cy=office-header]', { log: false }).contains(office.displayName)
+    cy.get('[data-cy=project-link]')
+      .should('have.length', 1)
+    cy.showPastProjects()
+    cy.get('[data-cy=pastproject-link]')
+      .should('have.length', 2)
+    cy.percySnapshot()
+
+    // assert on added past project
+    cy.goTo('pastprojects', pastproject)
+    cy.get('[data-cy=pastproject-header]', { log: false }).contains(pastproject.projectTitle)
+    cy.get('[data-cy=office-link]').last()
+      .should('have.text', office.displayName)
+    cy.percySnapshot()
+
+    // assert on removed project
+    cy.goTo('projects', project)
+    cy.get('[data-cy=project-header]', { log: false }).contains(project.projectTitle)
+    cy.get('[data-cy=office-link]')
+      .should('have.length', 1)
+    cy.percySnapshot()
+
+    log.end()
+  })
+
   // it('remove the other project from contact 0', function () {
   //   const contact = this.testingContacts[0]
   //   const project = this.testingProjects[2]

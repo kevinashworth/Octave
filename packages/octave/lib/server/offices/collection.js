@@ -1,15 +1,16 @@
 import { extendCollection } from 'meteor/vulcan:core'
 import { Offices } from '../../modules/offices/collection.js'
 import {
+  createOfficeFormatPhones,
+  updateOfficeFormatPhones,
   createAlgoliaObject,
   updateAlgoliaObject,
   createOfficeUpdateContacts,
   updateOfficeUpdateContacts,
   createOfficeUpdateProjects,
   updateOfficeUpdateProjects,
-  OfficeEditUpdatePastProjects,
-  createOfficeFormatPhones,
-  updateOfficeFormatPhones,
+  createOfficeUpdatePastProjects,
+  updateOfficeUpdatePastProjects,
   OfficeEditUpdateHistoryAfter
 } from './callbacks/index.js'
 
@@ -19,25 +20,23 @@ extendCollection(Offices, {
       before: [
         createOfficeFormatPhones
       ],
-      after: [
-        OfficeEditUpdatePastProjects
-      ],
       async: [
         createAlgoliaObject,
         createOfficeUpdateContacts,
-        createOfficeUpdateProjects
+        createOfficeUpdateProjects,
+        createOfficeUpdatePastProjects
       ]
     },
     update: {
       before: [
-        updateOfficeFormatPhones,
-        OfficeEditUpdatePastProjects
+        updateOfficeFormatPhones
       ],
       after: [OfficeEditUpdateHistoryAfter],
       async: [
         updateAlgoliaObject,
         updateOfficeUpdateContacts,
-        updateOfficeUpdateProjects
+        updateOfficeUpdateProjects,
+        updateOfficeUpdatePastProjects
       ]
     }
   }
