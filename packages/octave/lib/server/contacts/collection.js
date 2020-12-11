@@ -11,9 +11,9 @@ import {
   updateProjectTitles,
   createContactUpdatePastProjects,
   updateContactUpdatePastProjects,
-  updatePastProjectTitles,
-  updatePatches
+  updatePastProjectTitles
 } from './callbacks/index.js'
+import { updatePatches } from '../patches/callback'
 
 extendCollection(Contacts, {
   callbacks: {
