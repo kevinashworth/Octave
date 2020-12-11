@@ -27,7 +27,8 @@ const validateAndFormat = async (phones) => {
   }
 }
 
-export async function OfficeUpdateFormatPhones (data, { document, originalDocument }) {
+// callbacks.update.before
+export async function updateOfficeFormatPhones (data, { document, originalDocument }) {
   if (isEqual(document.phones, originalDocument.phones)) {
     return data
   }
@@ -40,7 +41,8 @@ export async function OfficeUpdateFormatPhones (data, { document, originalDocume
   }
 }
 
-export async function OfficeCreateFormatPhones (document) {
+// callbacks.create.before
+export async function createOfficeFormatPhones (document) {
   if (getSetting('mockaroo.seedDatabase')) {
     return document
   }
