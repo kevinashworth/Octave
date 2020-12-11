@@ -3,11 +3,11 @@ import { Offices } from '../../modules/offices/collection.js'
 import {
   createAlgoliaObject,
   updateAlgoliaObject,
-  OfficeCreateUpdateContacts,
-  OfficeEditUpdateContacts,
+  createOfficeUpdateContacts,
+  updateOfficeUpdateContacts,
+  createOfficeUpdateProjects,
+  updateOfficeUpdateProjects,
   OfficeEditUpdatePastProjects,
-  OfficeCreateUpdateProjects,
-  OfficeEditUpdateProjects,
   createOfficeFormatPhones,
   updateOfficeFormatPhones,
   OfficeEditUpdateHistoryAfter
@@ -20,24 +20,24 @@ extendCollection(Offices, {
         createOfficeFormatPhones
       ],
       after: [
-        OfficeCreateUpdateContacts,
-        OfficeEditUpdatePastProjects,
-        OfficeCreateUpdateProjects
+        OfficeEditUpdatePastProjects
       ],
       async: [
-        createAlgoliaObject
+        createAlgoliaObject,
+        createOfficeUpdateContacts,
+        createOfficeUpdateProjects
       ]
     },
     update: {
       before: [
         updateOfficeFormatPhones,
-        OfficeEditUpdateContacts,
-        OfficeEditUpdatePastProjects,
-        OfficeEditUpdateProjects
+        OfficeEditUpdatePastProjects
       ],
       after: [OfficeEditUpdateHistoryAfter],
       async: [
-        updateAlgoliaObject
+        updateAlgoliaObject,
+        updateOfficeUpdateContacts,
+        updateOfficeUpdateProjects
       ]
     }
   }

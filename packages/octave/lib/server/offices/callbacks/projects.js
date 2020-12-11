@@ -6,89 +6,95 @@ import log from 'loglevel'
 import Projects from '../../../modules/projects/collection.js'
 import { isEmptyValue } from '../../../modules/helpers.js'
 
-export function OfficeEditUpdateProjects (data, { document, originalDocument }) {
-  // [a] if the two `projects` arrays are equal, do nothing
-  // [b] else for deleted projects in oldOffice but not newOffice, remove officeId from those projects
-  // [c] and for added projects in newOffice but not oldOffice, add officeId to those projects
-
-  const office = document
-  let projectsToRemoveThisOfficeFrom = null
-  let projectsToAddThisOfficeTo = null
-
-  if (!originalDocument) { // newly created office, skip to --> [c] add office to these projects, if any
-    if (!isEmptyValue(office.projects)) {
-      projectsToAddThisOfficeTo = office.projects
-    } else {
-      return
+const handleAddProjects = (projects, office) => {
+  const officeId = office._id
+  projects.forEach(officeProject => {
+    const project = Projects.findOne(officeProject.projectId) // TODO: error handling
+    const newOffice = {
+      officeId,
+      officeName: office.displayName,
+      officeTitle: officeProject.titleForProject
     }
-  } else { // compare differences only by id
-    const newOfficeProjects = document.projects ? document.projects.map((project) => ({ projectId: project.projectId })) : null
-    const oldOfficeProjects = originalDocument.projects ? originalDocument.projects.map((project) => ({ projectId: project.projectId })) : null
-    projectsToAddThisOfficeTo = differenceWith(newOfficeProjects, oldOfficeProjects, isEqual)
-    projectsToRemoveThisOfficeFrom = differenceWith(oldOfficeProjects, newOfficeProjects, isEqual)
-    log.debug('OfficeEditUpdateProjects:')
-    log.debug('projectsToAddThisOfficeTo:', projectsToAddThisOfficeTo)
-    log.debug('projectsToRemoveThisOfficeFrom:', projectsToRemoveThisOfficeFrom)
-  }
-  // [b]
-  if (!isEmptyValue(projectsToRemoveThisOfficeFrom)) {
-    projectsToRemoveThisOfficeFrom.forEach(projectToUpdate => {
-      const project = Projects.findOne(projectToUpdate.projectId)
-      if (project && project.offices) {
-        const i = findIndex(project.offices, ['officeId', office._id])
-        if (i > -1) {
-          project.offices.splice(i, 1)
-          Connectors.update(Projects, project._id, {
-            $set: {
-              ...project
-            }
-          })
-        }
+    let newOffices = []
+
+    // case 1: there are no offices on the project and project.offices is undefined
+    if (!project.offices) {
+      newOffices = [newOffice]
+    } else {
+      const i = findIndex(project.offices, { officeId })
+      newOffices = project.offices
+      if (i < 0) {
+        // case 2: this office is not on this project but other offices are and we're adding this office
+        newOffices.push(newOffice)
+      } else {
+        // case 3: this office is on this project and we're updating the info
+        newOffices[i] = newOffice
+      }
+    }
+
+    Connectors.update(Projects, project._id, {
+      $set: {
+        offices: newOffices,
+        updatedAt: new Date()
       }
     })
-  }
-  // [c]
-  if (projectsToAddThisOfficeTo) {
-    projectsToAddThisOfficeTo.forEach(projectToUpdate => {
-      if (projectToUpdate.offices === undefined) {
-        Connectors.update(Projects, projectToUpdate.projectId, {
+  })
+}
+
+const handleRemoveProjects = (projects, contactId) => {
+  projects.forEach(deletedProject => {
+    try {
+      const oldProject = Projects.findOne(deletedProject.projectId)
+      const oldProjectContacts = oldProject && oldProject.contacts
+      remove(oldProjectContacts, function (p) { // `remove` mutates
+        return p.contactId === contactId
+      })
+      if (isEmptyValue(oldProjectContacts)) {
+        Connectors.update(Projects, oldProject._id, {
           $set: {
-            offices: [{ officeId: office._id }]
+            updatedAt: new Date()
+          },
+          $unset: {
+            contacts: 1
           }
         })
       } else {
-        Connectors.update(Projects, projectToUpdate.projectId, {
-          $addToSet: {
-            offices: { officeId: office._id }
+        Connectors.update(Projects, oldProject._id, {
+          $set: {
+            contacts: oldProjectContacts,
+            updatedAt: new Date()
           }
         })
       }
-    })
-  }
+    } catch {
+      log.error('handleRemoveProjects could not find project', deletedProject.projectId)
+    }
+  })
 }
 
-export function OfficeCreateUpdateProjects (document, properties) {
+const isSameProject = (a, b) => {
+  return a.projectId === b.projectId
+}
+
+// callbacks.create.async
+export const createOfficeUpdateProjects = ({ document }) => {
   const office = document
-  const projectsToAddThisOfficeTo = office.projects
-  console.group('OfficeCreateUpdateProjects:')
-  console.info('projectsToAddThisOfficeTo:', projectsToAddThisOfficeTo)
-  console.groupEnd()
-
-  if (!isEmptyValue(projectsToAddThisOfficeTo)) {
-    projectsToAddThisOfficeTo.forEach(projectToUpdate => {
-      if (projectToUpdate.offices === undefined) {
-        Connectors.update(Projects, projectToUpdate.projectId, {
-          $set: {
-            offices: [{ officeId: office._id }]
-          }
-        })
-      } else {
-        Connectors.update(Projects, projectToUpdate.projectId, {
-          $addToSet: {
-            offices: { officeId: office._id }
-          }
-        })
-      }
-    })
+  if (!isEmptyValue(office.projects)) {
+    handleAddProjects(office.projects, office)
   }
 }
+
+// callbacks.udpate.async
+export const updateOfficeUpdateProjects = ({ document, originalDocument }) => {
+  const newOffice = document
+  const oldOffice = originalDocument
+  const projectsThatWereAdded = differenceWith(newOffice.projects, oldOffice.projects, isSameProject)
+  const projectsThatWereRemoved = differenceWith(oldOffice.projects, newOffice.projects, isSameProject)
+  if (!isEmptyValue(projectsThatWereRemoved)) {
+    handleRemoveProjects(projectsThatWereRemoved, newOffice._id)
+  }
+  if (!isEmptyValue(projectsThatWereAdded)) {
+    handleAddProjects(projectsThatWereAdded, newOffice)
+  }
+}
+
