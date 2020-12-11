@@ -26,7 +26,7 @@ describe('Update Office', () => {
     cy.fixture('output/callback-testing/testing-pastprojects.json').as('testingPastprojects')
   })
 
-  it.skip('add project to office', function () {
+  it('add project to office', function () {
     const office = Cypress._.find(this.testingOffices, { displayName: 'KAZIO CASTING' })
     const project = Cypress._.find(this.testingProjects, { projectTitle: 'BANGLADESH' })
     const log = Cypress.log({

@@ -7,112 +7,93 @@ import log from 'loglevel'
 import Contacts from '../../../modules/contacts/collection.js'
 import { isEmptyValue } from '../../../modules/helpers.js'
 
-export function OfficeEditUpdateContacts (data, { document, originalDocument }) {
-  // [a] if the two `contacts` arrays are equal, do nothing
-  // [b] else for deleted contacts in oldOffice but not newOffice, remove office from those contacts
-  // [c] and for added contacts in newOffice but not oldOffice, add office to those contacts
+const handleAddContacts = (contacts, office) => {
+  const officeId = office._id
+  contacts.forEach(officeContact => {
+    const contact = Contacts.findOne(officeContact.contactId)
+    if (contact) {
+      const newOffice = {
+        officeId,
+        officeName: office.displayName
+      }
+      let newOffices = []
 
-  const office = document
-  let contactsToRemoveThisOfficeFrom = null
-  let contactsToAddThisOfficeTo = null
-  const newOffice = document
-  const oldOffice = originalDocument
-  contactsToAddThisOfficeTo = differenceWith(newOffice.contacts, oldOffice.contacts, isEqual)
-  contactsToRemoveThisOfficeFrom = differenceWith(oldOffice.contacts, newOffice.contacts, isEqual)
-  log.debug('OfficeEditUpdateContacts:')
-  log.debug('contactsToRemoveThisOfficeFrom:', contactsToRemoveThisOfficeFrom)
-  log.debug('contactsToAddThisOfficeTo:', contactsToAddThisOfficeTo)
-  // [b]
-  if (contactsToRemoveThisOfficeFrom) {
-    contactsToRemoveThisOfficeFrom.forEach(deletedContact => {
-      const contact = Contacts.findOne(deletedContact.contactId)
-      // case 1: there are no offices on the contact and contact.offices is undefined (shouldn't happen, theoretically, but it does currently anyway)
-      if (contact.offices) {
-        const outdatedOffices = contact.offices
-        const updatedOffices = remove(outdatedOffices, function (o) {
-          return o._id === office._id
-        })
-        // case 2: office didn't have the contact on it (shouldn't happen, theoretically, but does currently anyway)
-        if (isEqual(updatedOffices, outdatedOffices)) {
-          return
+      // case 1: there are no offices on the contact and contact.offices is undefined
+      if (!contact.offices) {
+        newOffices = [newOffice]
+      } else {
+        const i = findIndex(contact.offices, { officeId })
+        newOffices = contact.offices
+        if (i < 0) {
+          // case 2: this office is not on this contact but other offices are and we're adding this office
+          newOffices.push(newOffice)
+        } else {
+          // case 3: this office is on this contact and we're updating the info TODO: is this redundant?
+          newOffices[i] = newOffice
         }
-        // case 3: update the contact with its new offices
-        Connectors.update(Contacts, contact._id, {
+      }
+
+      Connectors.update(Contacts, contact._id, {
+        $set: {
+          offices: newOffices,
+          updatedAt: new Date()
+        }
+      })
+    }
+  })
+}
+
+const handleRemoveContacts = (contacts, officeId) => {
+  contacts.forEach(deletedContact => {
+    const oldContact = Contacts.findOne(deletedContact.contactId)
+    if (oldContact) {
+      const oldContactOffices = oldContact.offices
+      remove(oldContactOffices, function (p) { // `remove` mutates
+        return p.officeId === officeId
+      })
+      if (isEmptyValue(oldContactOffices)) {
+        Connectors.update(Contacts, oldContact._id, {
           $set: {
-            offices: updatedOffices,
+            updatedAt: new Date()
+          },
+          $unset: {
+            offices: 1
+          }
+        })
+      } else {
+        Connectors.update(Contacts, oldContact._id, {
+          $set: {
+            offices: oldContactOffices,
             updatedAt: new Date()
           }
         })
       }
-    })
-  }
-  // [c]
-  if (contactsToAddThisOfficeTo) {
-    contactsToAddThisOfficeTo.forEach(addedContact => {
-      const contact = Contacts.findOne(addedContact.contactId)
-      const updatedOffice = {
-        officeId: office._id
-      }
-      let updatedOffices = []
-      // case 1: office has no contacts, add contact
-      if (isEmptyValue(contact.offices)) {
-        updatedOffices = [updatedOffice]
-      } else {
-        updatedOffices = contact.offices
-        const i = findIndex(contact.offices, { officeId: office._id })
-        if (i < 0) {
-          // case 2: contact not on office list of contacts, add contact
-          updatedOffices.push(updatedOffice)
-        } else {
-          // case 3: contact is already on this office (shouldn't happen, theoretically, but it does currently anyway)
-          return
-        }
-      }
-      Connectors.update(Contacts, contact._id, {
-        $set: {
-          offices: updatedOffices,
-          updatedAt: new Date()
-        }
-      })
-    })
+    }
+  })
+}
+
+const isSameContact = (a, b) => {
+  return a.contactId === b.contactId
+}
+
+// callbacks.create.async
+export const createOfficeUpdateContacts = ({ document }) => {
+  const office = document
+  if (!isEmptyValue(office.contacts)) {
+    handleAddContacts(office.contacts, office)
   }
 }
 
-export function OfficeCreateUpdateContacts (document) {
-  const office = document
-  const contactsToAddThisOfficeTo = document.contacts
-
-  // [c]
-  if (contactsToAddThisOfficeTo) {
-    contactsToAddThisOfficeTo.forEach(addedContact => {
-      const contact = Contacts.findOne(addedContact.contactId)
-      const updatedOffice = {
-        officeId: office._id
-      }
-      let updatedOffices = []
-      // case 1: office has no contacts, add contact
-      if (isEmptyValue(contact.offices)) {
-        updatedOffices = [updatedOffice]
-      } else {
-        updatedOffices = contact.offices
-        const i = findIndex(contact.offices, { officeId: office._id })
-        if (i < 0) {
-          // case 2: contact not on office list of contacts, add contact
-          updatedOffices.push(updatedOffice)
-        } else {
-          // case 3: contact is already on this office (shouldn't happen, theoretically, but it does currently anyway)
-          return
-        }
-      }
-      const setObj = {
-        offices: updatedOffices
-      }
-      if (!getSetting('mockaroo.seedDatabase')) {
-        setObj.updatedAt = new Date()
-      }
-      Connectors.update(Contacts, contact._id, {
-        $set: setObj
-      })
-    })
+// callbacks.update.async
+export const updateOfficeUpdateContacts = ({ document, originalDocument }) => {
+  const newOffice = document
+  const oldOffice = originalDocument
+  const contactsThatWereAdded = differenceWith(newOffice.contacts, oldOffice.contacts, isSameContact)
+  const contactsThatWereRemoved = differenceWith(oldOffice.contacts, newOffice.contacts, isSameContact)
+  if (!isEmptyValue(contactsThatWereRemoved)) {
+    handleRemoveContacts(contactsThatWereRemoved, newOffice._id)
+  }
+  if (!isEmptyValue(contactsThatWereAdded)) {
+    handleAddContacts(contactsThatWereAdded, newOffice)
   }
 }
