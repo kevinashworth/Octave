@@ -10,9 +10,9 @@ import {
   createOfficeUpdateProjects,
   updateOfficeUpdateProjects,
   createOfficeUpdatePastProjects,
-  updateOfficeUpdatePastProjects,
-  OfficeEditUpdateHistoryAfter
+  updateOfficeUpdatePastProjects
 } from './callbacks/index.js'
+import { updatePatches } from '../patches/callback'
 
 extendCollection(Offices, {
   callbacks: {
@@ -31,12 +31,12 @@ extendCollection(Offices, {
       before: [
         updateOfficeFormatPhones
       ],
-      after: [OfficeEditUpdateHistoryAfter],
       async: [
         updateAlgoliaObject,
         updateOfficeUpdateContacts,
         updateOfficeUpdateProjects,
-        updateOfficeUpdatePastProjects
+        updateOfficeUpdatePastProjects,
+        updatePatches
       ]
     }
   }
