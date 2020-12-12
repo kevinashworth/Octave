@@ -116,8 +116,8 @@ describe('Update Office', () => {
   })
 
   it('add past project, remove project from office', function () {
-    const office = Cypress._.find(this.testingOffices, { displayName: 'KAZIO CASTING' })
-    const project = Cypress._.find(this.testingProjects, { projectTitle: 'INDONESIA' })
+    const office = Cypress._.find(this.testingOffices, { displayName: 'WORDPEDIA CASTING' })
+    const project = Cypress._.find(this.testingProjects, { projectTitle: 'MEXICO' })
     const pastproject = Cypress._.find(this.testingPastprojects, { projectTitle: 'CALIFORNIA FAGONBUSH' })
     const log = Cypress.log({
       name: 'add past project to, remove project from office',
@@ -130,7 +130,7 @@ describe('Update Office', () => {
     cy.goTo('offices', office)
     cy.get('[data-cy=office-header]', { log: false }).contains(office.displayName)
     cy.get('[data-cy=project-link]')
-      .should('have.length', 2)
+      .should('have.length', 1)
     cy.showPastProjects()
     cy.get('[data-cy=pastproject-link]')
       .should('have.length', 1)
@@ -140,13 +140,13 @@ describe('Update Office', () => {
     cy.goTo('projects', project)
     cy.get('[data-cy=project-header]', { log: false }).contains(project.projectTitle)
     cy.get('[data-cy=office-link]')
-      .should('have.length', 2)
+      .should('have.length', 1)
 
     // update
     cy.goTo('offices', office)
     cy.edit()
     cy.get('.form-section-projects').within(() => {
-      cy.clickRedRemoveButton(1)
+      cy.clickRedRemoveButton(0)
     })
     cy.get('.form-section-pastProjects').click().within(() => {
       cy.clickGreenAddButton()
@@ -158,7 +158,7 @@ describe('Update Office', () => {
     // assert office after
     cy.get('[data-cy=office-header]', { log: false }).contains(office.displayName)
     cy.get('[data-cy=project-link]')
-      .should('have.length', 1)
+      .should('not.exist')
     cy.showPastProjects()
     cy.get('[data-cy=pastproject-link]')
       .should('have.length', 2)
@@ -175,7 +175,7 @@ describe('Update Office', () => {
     cy.goTo('projects', project)
     cy.get('[data-cy=project-header]', { log: false }).contains(project.projectTitle)
     cy.get('[data-cy=office-link]')
-      .should('have.length', 1)
+      .should('not.exist')
     cy.percySnapshot()
 
     log.end()
