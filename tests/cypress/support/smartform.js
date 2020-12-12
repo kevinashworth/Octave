@@ -41,11 +41,10 @@ Cypress.Commands.add('clickRedRemoveButton', (index = 0) => {
   Cypress.log({
     name: 'remove',
     displayName: 'REMOVE',
-    message: ['Click red (—) button']
+    message: [`Click red (—) button ${index}`]
   })
   cy.get('.form-nested-item-remove button', { log: false }).then((buttons) => {
-    cy.log('Number of red buttons before clicking button number', [buttons.length, index])
-    if (buttons.length > 0) {
+    if (buttons.length > 1) {
       buttons[index].click({ log: false })
     } else {
       buttons.click({ log: false })
@@ -160,5 +159,5 @@ Cypress.Commands.add('waitForProjectOptions', () => {
 
 // for when schema uses MySelect
 Cypress.Commands.add('waitForProjectOptions2', () => {
-  cy.get('[id^=data-cy-my-select]', { log: false })
+  cy.get('[id^=data-cy-my-select]', { log: false, timeout: 10000 }).should('have.length.at.least', 1)
 })
