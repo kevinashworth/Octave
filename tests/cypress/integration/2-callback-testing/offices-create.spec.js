@@ -65,7 +65,7 @@ describe('Create Office', () => {
     cy.get('.form-section-pastProjects').click().within(() => {
       cy.clickGreenAddButton()
       cy.clickGreenAddButton()
-      cy.waitForProjectOptions2()
+      cy.waitForPastProjectOptions2()
       cy.mySelect('projectId', pastproject0.projectTitle, 0)
       cy.mySelect('projectId', pastproject1.projectTitle, 1)
     })
