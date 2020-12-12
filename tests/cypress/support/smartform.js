@@ -52,9 +52,6 @@ Cypress.Commands.add('clickRedRemoveButton', (index = 0) => {
   })
 })
 
-// works for MySelect, whether options from static array or options from database query
-// project on office: data-cy-my-select-projects.0.projectId
-// past project on office: data-cy-my-select-pastProjects.0.projectId
 Cypress.Commands.add('mySelect', (selector, option, index = 0) => {
   const log = Cypress.log({
     name: 'select',
@@ -76,7 +73,6 @@ Cypress.Commands.add('mySelect', (selector, option, index = 0) => {
   log.end()
 })
 
-// works only for SelectContactIdNameTitle
 Cypress.Commands.add('selectContactAndTitle', (displayName, titleForProject, numberInForm = 0) => {
   const log = Cypress.log({
     name: 'selectContactAndTitle',
@@ -108,7 +104,7 @@ Cypress.Commands.add('selectContactAndTitle', (displayName, titleForProject, num
   log.snapshot('after')
   log.end()
 })
-// works only for SelectProjectIdTitle
+
 Cypress.Commands.add('selectProjectAndTitle', (projectTitle, titleForProject, numberInForm = 0) => {
   const log = Cypress.log({
     name: 'selectProjectAndTitle',
@@ -142,22 +138,56 @@ Cypress.Commands.add('selectProjectAndTitle', (projectTitle, titleForProject, nu
 })
 
 Cypress.Commands.add('waitForContactOptions', () => {
-  cy.get('[id^=data-cy-select-contact-id]', { log: false })
+  Cypress.log({
+    name: 'options',
+    displayName: 'OPTIONS',
+    message: [`Wait for Contact Options (SelectContactIdNameTitle)`]
+  })
+  cy.get('[id^=data-cy-select-contact-id]', { log: false, timeout: 10000 })
 })
 
 Cypress.Commands.add('waitForOfficeOptions', () => {
-  cy.get('[id^=data-cy-my-select]', { log: false })
+  Cypress.log({
+    name: 'options',
+    displayName: 'OPTIONS',
+    message: [`Wait for Office Options (MySelect)`]
+  })
+  cy.get('[id^=data-cy-my-select]', { log: false, timeout: 10000 })
 })
 
 Cypress.Commands.add('waitForPastProjectOptions', () => {
-  cy.get('[id^=data-cy-select-pastproject-id]', { log: false })
+  Cypress.log({
+    name: 'options',
+    displayName: 'OPTIONS',
+    message: [`Wait for Past Project Options (SelectProjectIdTitle)`]
+  })
+  cy.get('[id^=data-cy-select-pastproject-id]', { log: false, timeout: 10000 })
+})
+
+Cypress.Commands.add('waitForPastProjectOptions2', () => {
+  Cypress.log({
+    name: 'options',
+    displayName: 'OPTIONS',
+    message: [`Wait for Past Project Options (MySelect)`]
+  })
+  cy.get('[id^=data-cy-my-select-pastProjects]', { log: false, timeout: 10000 })
 })
 
 Cypress.Commands.add('waitForProjectOptions', () => {
-  cy.get('[id^=data-cy-select-project-id]', { log: false })
+  Cypress.log({
+    name: 'options',
+    displayName: 'OPTIONS',
+    message: [`Wait for Project Options (SelectProjectIdTitle)`]
+  })
+  cy.get('[id^=data-cy-select-project-id]', { log: false, timeout: 10000 })
 })
 
-// for when schema uses MySelect
 Cypress.Commands.add('waitForProjectOptions2', () => {
-  cy.get('[id^=data-cy-my-select]', { log: false, timeout: 10000 }).should('have.length.at.least', 1)
+  Cypress.log({
+    name: 'options',
+    displayName: 'OPTIONS',
+    message: [`Wait for Project Options (MySelect)`]
+  })
+  cy.get('[id^=data-cy-my-select-projects]', { log: false, timeout: 10000 })
 })
+

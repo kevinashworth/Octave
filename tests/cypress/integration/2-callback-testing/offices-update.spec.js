@@ -150,7 +150,7 @@ describe('Update Office', () => {
     })
     cy.get('.form-section-pastProjects').click().within(() => {
       cy.clickGreenAddButton()
-      cy.waitForProjectOptions2()
+      cy.waitForPastProjectOptions2()
       cy.mySelect('projectId', pastproject.projectTitle, 1)
     })
     cy.submit()
