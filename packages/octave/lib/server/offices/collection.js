@@ -1,38 +1,43 @@
 import { extendCollection } from 'meteor/vulcan:core'
 import { Offices } from '../../modules/offices/collection.js'
 import {
+  createOfficeFormatPhones,
+  updateOfficeFormatPhones,
   createAlgoliaObject,
   updateAlgoliaObject,
-  OfficeCreateUpdateContacts,
-  OfficeEditUpdateContacts,
-  OfficeEditUpdatePastProjects,
-  OfficeCreateUpdateProjects,
-  OfficeEditUpdateProjects,
-  OfficeCreateFormatPhones,
-  OfficeUpdateFormatPhones,
-  OfficeEditUpdateHistoryAfter
+  createOfficeUpdateContacts,
+  updateOfficeUpdateContacts,
+  createOfficeUpdateProjects,
+  updateOfficeUpdateProjects,
+  createOfficeUpdatePastProjects,
+  updateOfficeUpdatePastProjects
 } from './callbacks/index.js'
+import { updatePatches } from '../patches/callback'
 
 extendCollection(Offices, {
   callbacks: {
     create: {
-      before: [OfficeCreateFormatPhones],
-      after: [
-        OfficeCreateUpdateContacts,
-        OfficeEditUpdatePastProjects,
-        OfficeCreateUpdateProjects
+      before: [
+        createOfficeFormatPhones
       ],
-      async: [createAlgoliaObject]
+      async: [
+        createAlgoliaObject,
+        createOfficeUpdateContacts,
+        createOfficeUpdateProjects,
+        createOfficeUpdatePastProjects
+      ]
     },
     update: {
       before: [
-        OfficeEditUpdateContacts,
-        OfficeEditUpdatePastProjects,
-        OfficeEditUpdateProjects,
-        OfficeUpdateFormatPhones
+        updateOfficeFormatPhones
       ],
-      after: [OfficeEditUpdateHistoryAfter],
-      async: [updateAlgoliaObject]
+      async: [
+        updateAlgoliaObject,
+        updateOfficeUpdateContacts,
+        updateOfficeUpdateProjects,
+        updateOfficeUpdatePastProjects,
+        updatePatches
+      ]
     }
   }
 })

@@ -2,6 +2,17 @@
 
 /**
  * Create contacts to test packages/octave/lib/server/contacts/callbacks
+ *
+ * Very rough assessment of code coverage:
+ *
+ *  create: {
+ *    async: [
+ *      createAlgoliaObject,             x
+ *      createContactUpdateOffices,      ✓
+ *      createContactUpdateProjects,     ✓
+ *      createContactUpdatePastProjects  ✓
+ *    ]
+ *  }
  */
 
 const clear = Cypress.LocalStorage.clear
@@ -40,7 +51,7 @@ describe('Create Project', () => {
     const log = Cypress.log({
       name: 'create contact',
       displayName: 'CREATE A CONTACT',
-      message: ['Creating a contact with office and 3 [past]projects.'],
+      message: ['Creating a contact with 1 office and 3 [past]projects.'],
       autoEnd: false
     })
 

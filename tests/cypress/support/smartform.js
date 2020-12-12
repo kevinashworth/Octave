@@ -41,11 +41,10 @@ Cypress.Commands.add('clickRedRemoveButton', (index = 0) => {
   Cypress.log({
     name: 'remove',
     displayName: 'REMOVE',
-    message: ['Click red (—) button']
+    message: [`Click red (—) button ${index}`]
   })
   cy.get('.form-nested-item-remove button', { log: false }).then((buttons) => {
-    cy.log('Number of red buttons before clicking button number', [buttons.length, index])
-    if (buttons.length > 0) {
+    if (buttons.length > 1) {
       buttons[index].click({ log: false })
     } else {
       buttons.click({ log: false })
@@ -54,6 +53,8 @@ Cypress.Commands.add('clickRedRemoveButton', (index = 0) => {
 })
 
 // works for MySelect, whether options from static array or options from database query
+// project on office: data-cy-my-select-projects.0.projectId
+// past project on office: data-cy-my-select-pastProjects.0.projectId
 Cypress.Commands.add('mySelect', (selector, option, index = 0) => {
   const log = Cypress.log({
     name: 'select',
@@ -154,4 +155,9 @@ Cypress.Commands.add('waitForPastProjectOptions', () => {
 
 Cypress.Commands.add('waitForProjectOptions', () => {
   cy.get('[id^=data-cy-select-project-id]', { log: false })
+})
+
+// for when schema uses MySelect
+Cypress.Commands.add('waitForProjectOptions2', () => {
+  cy.get('[id^=data-cy-my-select]', { log: false, timeout: 10000 }).should('have.length.at.least', 1)
 })
