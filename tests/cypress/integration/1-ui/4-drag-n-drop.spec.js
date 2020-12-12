@@ -29,7 +29,7 @@ describe('Edit Order by Drag n Drop', () => {
     // cy.fixture('output/callback-testing/testing-pastprojects.json').as('testingPastprojects')
   })
 
-  it.skip('change order of projects and past projects on a contact', function () {
+  it('change order of projects and past projects on a contact', function () {
     const contact = Cypress._.find(this.testingContacts, { lastName: 'RUCKMAN' }) // has 3 projects and 3 past projects
     const log = Cypress.log({
       name: 'drag projects and past projects',
@@ -126,7 +126,7 @@ describe('Edit Order by Drag n Drop', () => {
     log.end()
   })
 
-  it.skip('change order of contacts and offices on a project', function () {
+  it('change order of contacts and offices on a project', function () {
     const project = Cypress._.find(this.testingProjects, { projectTitle: 'INDONESIA' })
     const log = Cypress.log({
       name: 'drag contacts and offices',
