@@ -1,4 +1,4 @@
-import { Components, registerComponent, useCurrentUser, useSingle2, withAccess } from 'meteor/vulcan:core'
+import { Components, registerComponent, useCurrentUser, useSingle2, withAccess, withMessages } from 'meteor/vulcan:core'
 import Users from 'meteor/vulcan:users'
 import { FormattedMessage } from 'meteor/vulcan:i18n'
 import React, { useState } from 'react'
@@ -12,6 +12,7 @@ import get from 'lodash/get'
 import sortBy from 'lodash/sortBy'
 import pluralize from 'pluralize'
 import MyMarkdown from '../common/MyMarkdown'
+import ErrorWithAlgoliaDelete from '../algolia/ErrorWithAlgoliaDelete'
 import { displayDates, getFullNameFromContact, isEmptyValue } from '../../modules/helpers.js'
 import Contacts from '../../modules/contacts/collection.js'
 
@@ -35,13 +36,12 @@ function PastProjects (props) {
 }
 
 const ContactsSingle = (props) => {
-  const id = get(props, 'match.params._id')
-
+  const documentId = get(props, 'match.params._id')
   const { currentUser } = useCurrentUser()
   const { document: contact, error, loading } = useSingle2({
     collection: Contacts,
     fragmentName: 'ContactsSingleFragment',
-    input: { id },
+    input: { id: documentId },
     queryOptions: {
       fetchPolicy: 'cache-and-network'
     }
@@ -57,6 +57,12 @@ const ContactsSingle = (props) => {
     setCollapseIsOpen(!collapseIsOpen)
   }
 
+  if (error?.message === 'app.missing_document') {
+    return (
+      <ErrorWithAlgoliaDelete documentId={documentId} />
+    )
+  }
+
   if (error) {
     console.error('ContactsSingle useQuery error:', error)
     return <FormattedMessage id='errors.document' values={{ errorMessage: error.message }} />
@@ -67,7 +73,9 @@ const ContactsSingle = (props) => {
   }
 
   if (!contact) {
-    return <FormattedMessage id='app.404' />
+    return (
+      <FormattedMessage id='app.404' />
+    )
   }
 
   const dates = displayDates('Contact', contact)
@@ -162,5 +170,5 @@ const accessOptions = {
 registerComponent({
   name: 'ContactsSingle',
   component: ContactsSingle,
-  hocs: [[withAccess, accessOptions]]
+  hocs: [[withAccess, accessOptions], withMessages]
 })

@@ -1,25 +1,26 @@
-import { Components, registerComponent, useCurrentUser, useSingle2 } from 'meteor/vulcan:core'
+import { Components, registerComponent, useCurrentUser, useSingle2, withMessages } from 'meteor/vulcan:core'
 import Users from 'meteor/vulcan:users'
 import { FormattedMessage } from 'meteor/vulcan:i18n'
 import React, { useState } from 'react'
 import { LinkContainer } from 'react-router-bootstrap'
+import { Link } from 'react-router-dom'
 import Button from 'react-bootstrap/Button'
 import Card from 'react-bootstrap/Card'
 import Tab from 'react-bootstrap/Tab'
 import Tabs from 'react-bootstrap/Tabs'
 import get from 'lodash/get'
 import MyMarkdown from '../common/MyMarkdown'
+import ErrorWithAlgoliaDelete from '../algolia/ErrorWithAlgoliaDelete'
 import { displayDates, seasonOrder } from '../../modules/helpers.js'
 import PastProjects from '../../modules/past-projects/collection.js'
 
 const PastProjectsSingle = (props) => {
-  const id = get(props, 'match.params._id')
-
+  const documentId = get(props, 'match.params._id')
   const { currentUser } = useCurrentUser()
   const { document: project, error, loading } = useSingle2({
     collection: PastProjects,
     fragmentName: 'PastProjectsSingleFragment',
-    input: { id },
+    input: { id: documentId },
     queryOptions: {
       fetchPolicy: 'cache-and-network'
     }
@@ -28,6 +29,12 @@ const PastProjectsSingle = (props) => {
 
   const commentsCallback = (labelFromCommentsThread) => {
     setCommentsTabTitle(labelFromCommentsThread)
+  }
+
+  if (error?.message === 'app.missing_document') {
+    return (
+      <ErrorWithAlgoliaDelete documentId={documentId} variant='pastprojects' />
+    )
   }
 
   if (error) {
@@ -40,7 +47,9 @@ const PastProjectsSingle = (props) => {
   }
 
   if (!project) {
-    return <FormattedMessage id='app.404' />
+    return (
+      <FormattedMessage id='app.404' />
+    )
   }
 
   const order = seasonOrder(project)
