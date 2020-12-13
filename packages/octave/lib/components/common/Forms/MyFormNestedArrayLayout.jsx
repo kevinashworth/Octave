@@ -1,7 +1,9 @@
 import { instantiateComponent, replaceComponent } from 'meteor/vulcan:lib'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useEffectOnce } from '../../../hooks'
 import PropTypes from 'prop-types'
+import classNames from 'classnames'
+import findIndex from 'lodash/findIndex'
 import { sortableContainer, sortableElement, sortableHandle } from 'react-sortable-hoc'
 
 const reorder = (list, startIndex, endIndex) => {
@@ -11,12 +13,17 @@ const reorder = (list, startIndex, endIndex) => {
   return result
 }
 
-const DragHandle = sortableHandle(({ sortIndex }) => <i className='fas fa-bars' data-cy={`drag-handle-${sortIndex}`} tabIndex={0} />)
+const DragHandle = sortableHandle(({ disabled, sortIndex }) => (
+  <i
+    className={classNames('fas fa-bars', { 'text-light': disabled })}
+    data-cy={`drag-handle-${sortIndex}`}
+    tabIndex={0}
+  />
+))
 
 const SortableItem = sortableElement(({ child, isDisabled, sortIndex }) => (
   <div>
-    {!isDisabled &&
-      <DragHandle sortIndex={sortIndex} />}
+    <DragHandle sortIndex={sortIndex} disabled={isDisabled} />
     {child}
   </div>
 ))
@@ -27,23 +34,38 @@ const SortableContainer = sortableContainer(({ children }) => {
 
 const MyFormNestedArrayLayout = (props, context) => {
   const {
-    hasErrors,
-    nestedArrayErrors,
-    label,
     addItem,
-    beforeComponent,
     afterComponent,
+    arrayField,
+    beforeComponent,
+    children,
+    document,
     formComponents,
-    children
+    hasErrors,
+    label,
+    nestedArrayErrors
   } = props
   const FormComponents = formComponents
-  const collectionString = props.arrayField.name.slice(0, -2) // `projects`, `links`, etc.
-  const [collection, setCollection] = useState(props.document[collectionString])
-  const [origCollLength, setOrigCollLength] = useState(0)
+  const collectionString = arrayField.name.slice(0, -2) // `projects`, `links`, etc.
+  const propsCollection = document[collectionString]
+  const [collection, setCollection] = useState(propsCollection)
+  const [initialCollectionLength, setInitialCollectionLength] = useState(null)
+  const [haveDeletedAnItem, setHaveDeletedAnItem] = useState(false)
 
   useEffectOnce(() => {
-    setOrigCollLength(props.document[collectionString] ? props.document[collectionString].length : 0)
+    setInitialCollectionLength(propsCollection?.length || 0)
   })
+
+  // Vulcan uses updateCurrentValues to set deleted items to null.
+  // drag-n-drop then becomes unreliable, so disable it when we find nulls.
+  useEffect(() => {
+    if (propsCollection?.length) {
+      const collectionWithoutNulls = propsCollection.filter(x => x)
+      if (collectionWithoutNulls.length < propsCollection.length) {
+        setHaveDeletedAnItem(true)
+      }
+    }
+  }, [propsCollection])
 
   const handleSortEnd = ({ oldIndex, newIndex }) => {
     const reorderedCollection = reorder(collection, oldIndex, newIndex)
@@ -51,16 +73,40 @@ const MyFormNestedArrayLayout = (props, context) => {
     context.updateCurrentValues({ [collectionString]: reorderedCollection })
   }
 
+  // disable sortable on new children, or when there's just one child,
+  // or after having deleted an item
+  const getDisabled = (i) => {
+    if (haveDeletedAnItem) {
+      return true
+    }
+    return (i > initialCollectionLength - 1) || (initialCollectionLength <= 1)
+  }
+
   return (
     <div className={`form-group row form-nested ${hasErrors ? 'input-error' : ''}`}>
       {instantiateComponent(beforeComponent, props)}
       <label className='control-label col-sm-3'>{label}</label>
       <SortableContainer distance={2} onSortEnd={handleSortEnd} useDragHandle>
-        {React.Children.map(children, (child, i) => {
-          // don't sort new children or when there's just one child
-          const disabled = (i > origCollLength - 1) || (origCollLength <= 1)
+        {React.Children.toArray(children).sort(function (a, b) {
+          const aObj = propsCollection[a.props.itemIndex]
+          const bObj = propsCollection[b.props.itemIndex]
+          const aIndex = findIndex(collection, { contactId: aObj.contactId })
+          const bIndex = findIndex(collection, { contactId: bObj.contactId })
+          if (aIndex === -1 && bIndex !== -1) { // new entries at end of array
+            return 1
+          }
+          return aIndex - bIndex
+        }).map((child, i) => {
+          const disabled = getDisabled(i)
           return (
-            <SortableItem key={`${collectionString}-${i}`} index={i} child={child} disabled={disabled} isDisabled={disabled} sortIndex={i} />
+            <SortableItem
+              child={child}
+              key={`${collectionString}-${i}`}
+              index={i}
+              sortIndex={i}
+              disabled={disabled}
+              isDisabled={disabled}
+            />
           )
         })}
         {addItem && (
