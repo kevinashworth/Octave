@@ -3,7 +3,7 @@ import algoliasearch from 'algoliasearch'
 import includes from 'lodash/includes'
 import log from 'loglevel'
 import { getMongoProvider } from '../../../modules/helpers.js'
-import { ACTIVE_PROJECT_STATUSES_ARRAY, DBS } from '../../../modules/constants.js'
+import { ACTIVE_PROJECT_STATUSES_ARRAY, BOOSTED, DBS } from '../../../modules/constants.js'
 
 const db = getMongoProvider()
 let shouldUpdateAlgolia = true
@@ -38,16 +38,16 @@ export function updateAlgoliaObject ({ document, originalDocument }) {
       indexedObject.body = document.summary
       dirty = true
     }
-    if (document.notes !== originalDocument.notes) {
-      indexedObject.notes = document.notes
-      dirty = true
-    }
     if (document.projectTitle !== originalDocument.projectTitle) {
       indexedObject.name = document.projectTitle
       dirty = true
     }
     if (document.network !== originalDocument.network) {
       indexedObject.network = document.network
+      dirty = true
+    }
+    if (document.notes !== originalDocument.notes) {
+      indexedObject.notes = document.notes
       dirty = true
     }
     if (document.slug !== originalDocument.slug) {
@@ -64,6 +64,11 @@ export function updateAlgoliaObject ({ document, originalDocument }) {
     }
 
     if (dirty) {
+      if (includes(ACTIVE_PROJECT_STATUSES_ARRAY, document.status)) {
+        indexedObject.boosted = BOOSTED.PROJECTS
+      } else {
+        indexedObject.boosted = BOOSTED.PASTPROJECTS
+      }
       indexedObject.updatedAt = new Date()
       const client = algoliasearch(applicationid, addupdatekey)
       const index = client.initIndex(algoliaindex)
@@ -87,14 +92,15 @@ export function createAlgoliaObject ({ document }) {
     const addupdatekey = Meteor.settings.private.algolia.AddAndUpdateAPIKey
 
     const indexedObject = {
-      objectID: document._id,
-      name: document.projectTitle,
       body: document.summary,
-      notes: document.notes,
+      boosted: BOOSTED.PROJECTS,
+      name: document.projectTitle,
       network: document.network,
-      url: `/projects/${document._id}/${document.slug}`,
+      notes: document.notes,
+      objectID: document._id,
+      source: document.source || db,
       updatedAt: document.createdAt,
-      boosted: 2
+      url: `/projects/${document._id}/${document.slug}`
     }
 
     const client = algoliasearch(applicationid, addupdatekey)

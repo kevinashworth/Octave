@@ -3,7 +3,7 @@ import algoliasearch from 'algoliasearch'
 import includes from 'lodash/includes'
 import log from 'loglevel'
 import { getMongoProvider } from '../../../modules/helpers.js'
-import { PAST_PROJECT_STATUSES_ARRAY, DBS } from '../../../modules/constants.js'
+import { BOOSTED, DBS, PAST_PROJECT_STATUSES_ARRAY } from '../../../modules/constants.js'
 
 const db = getMongoProvider()
 let shouldUpdateAlgolia = true
@@ -38,16 +38,16 @@ export function updateAlgoliaObject ({ document, originalDocument }) {
       indexedObject.body = document.summary
       dirty = true
     }
-    if (document.notes !== originalDocument.notes) {
-      indexedObject.notes = document.notes
-      dirty = true
-    }
     if (document.projectTitle !== originalDocument.projectTitle) {
       indexedObject.name = document.projectTitle
       dirty = true
     }
     if (document.network !== originalDocument.network) {
       indexedObject.network = document.network
+      dirty = true
+    }
+    if (document.notes !== originalDocument.notes) {
+      indexedObject.notes = document.notes
       dirty = true
     }
     if (document.slug !== originalDocument.slug) {
@@ -64,6 +64,11 @@ export function updateAlgoliaObject ({ document, originalDocument }) {
     }
 
     if (dirty) {
+      if (includes(PAST_PROJECT_STATUSES_ARRAY, document.status)) {
+        indexedObject.boosted = BOOSTED.PASTPROJECTS
+      } else {
+        indexedObject.boosted = BOOSTED.PROJECTS
+      }
       indexedObject.updatedAt = new Date()
       const client = algoliasearch(applicationid, addupdatekey)
       const index = client.initIndex(algoliaindex)

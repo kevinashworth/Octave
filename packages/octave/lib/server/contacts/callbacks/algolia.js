@@ -3,7 +3,7 @@ import algoliasearch from 'algoliasearch'
 // import log from 'loglevel'
 import { logger } from '../../logger.js'
 import { getMongoProvider } from '../../../modules/helpers.js'
-import { DBS } from '../../../modules/constants.js'
+import { BOOSTED, DBS } from '../../../modules/constants.js'
 
 const db = getMongoProvider()
 let shouldUpdateAlgolia = true
@@ -34,6 +34,10 @@ export function updateAlgoliaObject ({ document, originalDocument }) {
       objectID: document._id
     }
     let dirty = false
+    if (document.addressString !== originalDocument.addressString) {
+      indexedObject.addressString = document.addressString
+      dirty = true
+    }
     if (document.body !== originalDocument.body) {
       indexedObject.body = document.body
       dirty = true
@@ -42,16 +46,13 @@ export function updateAlgoliaObject ({ document, originalDocument }) {
       indexedObject.name = document.displayName
       dirty = true
     }
-    if (document.addressString !== originalDocument.addressString) {
-      indexedObject.addressString = document.addressString
-      dirty = true
-    }
     if (document.slug !== originalDocument.slug) {
       indexedObject.url = `/contacts/${document._id}/${document.slug}`
       dirty = true
     }
 
     if (dirty) {
+      indexedObject.boosted = BOOSTED.CONTACTS
       indexedObject.updatedAt = new Date()
       const client = algoliasearch(applicationid, addupdatekey)
       const index = client.initIndex(algoliaindex)
@@ -75,13 +76,14 @@ export function createAlgoliaObject ({ document }) {
     const addupdatekey = Meteor.settings.private.algolia.AddAndUpdateAPIKey
 
     const indexedObject = {
-      objectID: document._id,
-      name: document.displayName,
       addressString: document.addressString,
       body: document.body,
-      url: `/contacts/${document._id}/${document.slug}`,
+      boosted: BOOSTED.CONTACTS,
+      name: document.displayName,
+      objectID: document._id,
+      source: document.source || db,
       updatedAt: document.createdAt,
-      boosted: 3
+      url: `/contacts/${document._id}/${document.slug}`
     }
 
     const client = algoliasearch(applicationid, addupdatekey)

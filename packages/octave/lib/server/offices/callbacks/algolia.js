@@ -3,7 +3,7 @@ import algoliasearch from 'algoliasearch'
 // import log from 'loglevel'
 import { logger } from '../../logger.js'
 import { getFullAddress, getMongoProvider } from '../../../modules/helpers.js'
-import { DBS } from '../../../modules/constants.js'
+import { BOOSTED, DBS } from '../../../modules/constants.js'
 
 const fullAddress = (office) => {
   if (office.addresses && office.addresses[0]) {
@@ -41,6 +41,12 @@ export function updateAlgoliaObject ({ document, originalDocument }) {
       objectID: document._id
     }
     let dirty = false
+    const docFullAddress = fullAddress(document)
+    const origFullAddress = fullAddress(originalDocument)
+    if (docFullAddress !== origFullAddress) {
+      indexedObject.addressString = docFullAddress
+      dirty = true
+    }
     if (document.body !== originalDocument.body) {
       indexedObject.body = document.body
       dirty = true
@@ -49,18 +55,13 @@ export function updateAlgoliaObject ({ document, originalDocument }) {
       indexedObject.name = document.displayName
       dirty = true
     }
-    const docFullAddress = fullAddress(document)
-    const origFullAddress = fullAddress(originalDocument)
-    if (docFullAddress !== origFullAddress) {
-      indexedObject.addressString = docFullAddress
-      dirty = true
-    }
     if (document.slug !== originalDocument.slug) {
       indexedObject.url = `/offices/${document._id}/${document.slug}`
       dirty = true
     }
 
     if (dirty) {
+      indexedObject.boosted = BOOSTED.OFFICES
       indexedObject.updatedAt = new Date()
       const client = algoliasearch(applicationid, addupdatekey)
       const index = client.initIndex(algoliaindex)
@@ -84,13 +85,14 @@ export function createAlgoliaObject ({ document }) {
     const addupdatekey = Meteor.settings.private.algolia.AddAndUpdateAPIKey
 
     const indexedObject = {
-      objectID: document._id,
-      name: document.displayName,
       addressString: document.fullAddress,
       body: document.body,
-      url: `/offices/${document._id}/${document.slug}`,
+      boosted: BOOSTED.OFFICES,
+      name: document.displayName,
+      objectID: document._id,
+      source: document.source || db,
       updatedAt: document.createdAt,
-      boosted: 1
+      url: `/offices/${document._id}/${document.slug}`
     }
 
     const client = algoliasearch(applicationid, addupdatekey)
