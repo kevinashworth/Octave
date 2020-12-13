@@ -1,4 +1,4 @@
-import { Components, registerComponent, useCurrentUser, useSingle2, withMessages } from 'meteor/vulcan:core'
+import { Components, getSetting, registerComponent, useCurrentUser, useSingle2, withMessages } from 'meteor/vulcan:core'
 import Users from 'meteor/vulcan:users'
 import { FormattedMessage } from 'meteor/vulcan:i18n'
 import React, { useState } from 'react'
@@ -31,7 +31,7 @@ const PastProjectsSingle = (props) => {
     setCommentsTabTitle(labelFromCommentsThread)
   }
 
-  if (error?.message === 'app.missing_document') {
+  if (error?.message === 'app.missing_document' && getSetting('algolia.enableErrorDelete')) {
     return (
       <ErrorWithAlgoliaDelete documentId={documentId} variant='pastprojects' />
     )
