@@ -65,7 +65,7 @@ const DefaultLayout = (props) => {
 
   const MyMetaTags = () => {
     const abstract = getSetting('description')
-    const version = getSetting('title') + '@' + (getSetting('version', '1.16.18'))
+    const version = getSetting('title') + '@' + (getSetting('version', '1.16.19'))
 
     return (
       <Helmet>
