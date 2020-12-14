@@ -13,6 +13,7 @@ describe('Update Projects', () => {
   before(() => {
     Cypress.LocalStorage.clear = doNotClearLocalStorage
     cy.resetTriad()
+    cy.stubAlgolia()
     cy.login()
     cy.getTestingCollection('contacts')
     cy.getTestingCollection('offices')

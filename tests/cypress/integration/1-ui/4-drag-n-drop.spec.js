@@ -173,6 +173,40 @@ describe('Edit Order by Drag n Drop', () => {
     log.end()
   })
 
+  it('remove one contact; cannot reorder other contacts', function () {
+    const project = Cypress._.find(this.testingProjects, { projectTitle: 'SWEDEN' })
+    const log = Cypress.log({
+      name: 'delete disables reorder',
+      displayName: 'DELETE & DRAG-N-DROP',
+      message: [`Deleting & reordering contacts on ${project.projectTitle}.`],
+      autoEnd: false
+    })
+
+    // verify before
+    cy.goTo('projects', project)
+    cy.get('[data-cy=contact-link]').should('have.length', 3)
+    cy.get('[data-cy=contact-link]').first().should('contain', 'ADELIND ARONOW')
+    cy.get('[data-cy=contact-link]').eq(1).should('contain', 'PANDORA PAFFLEY')
+    cy.get('[data-cy=contact-link]').last().should('contain', 'BRODIE BYRON')
+
+    // edit
+    cy.edit()
+    cy.get('.form-section-contacts').within(() => {
+      cy.waitForContactOptions()
+      cy.clickRedRemoveButton(1)
+      cy.get('[data-cy=drag-handle-0]').type(' {downarrow} ', { force: true })
+    })
+    cy.submit()
+
+    // verify after
+    cy.get('[data-cy=project-header]', { log: false }).contains(project.projectTitle)
+    cy.get('[data-cy=contact-link]').should('have.length', 2)
+    cy.get('[data-cy=contact-link]').first().should('contain', 'ADELIND ARONOW')
+    cy.get('[data-cy=contact-link]').last().should('contain', 'BRODIE BYRON')
+
+    log.end()
+  })
+
   // it('actual mouse trigger test', function () {
   //   const project = Cypress._.find(this.testingProjects, { projectTitle: 'INDONESIA' }) // has 8 links
   //   const log = Cypress.log({

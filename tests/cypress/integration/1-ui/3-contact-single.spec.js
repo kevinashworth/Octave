@@ -19,10 +19,8 @@ const doNotClearLocalStorage = () => { }
 describe('Contact Single', () => {
   before(() => {
     Cypress.LocalStorage.clear = doNotClearLocalStorage
-    Cypress.Cookies.debug(true, { verbose: false })
-    Cypress.Cookies.defaults({
-      preserve: ['meteor_login_token', 'connect.sid']
-    })
+    cy.resetTriad()
+    cy.stubAlgolia()
     cy.login()
     cy.exec(findOne)
       .its('code').should('eq', 0)
@@ -30,6 +28,7 @@ describe('Contact Single', () => {
   })
 
   beforeEach(() => {
+    Cypress.Cookies.preserveOnce('meteor_login_token')
     cy.fixture('contact.json').as('contact')
   })
 

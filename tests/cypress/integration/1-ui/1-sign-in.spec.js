@@ -1,6 +1,11 @@
 /// <reference types="Cypress" />
 
 describe('Sign in', function () {
+  before(() => {
+    cy.resetTriad()
+    cy.stubAlgolia()
+  })
+
   beforeEach(function () {
     cy.visit('/login')
   })

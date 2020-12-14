@@ -237,5 +237,36 @@
 		"platformType" : "SVOD",
 		"htmlSummary" : "<p><strong>SUMMARY:</strong> A project for testing, created by triad-cypress-editor</p>\n",
 		"slug" : "brazil"
+	},
+	{
+		"_id" : "rraxuXMBmTF2R52Ce",
+		"projectTitle" : "SWEDEN",
+		"projectType" : "Feature Film",
+		"union" : "SAG-AFTRA",
+		"status" : "Casting",
+		"shootingLocation" : "Iceland",
+		"summary" : "A project for testing, created by triad-cypress-editor\n\nIt has 3 contacts",
+		"contacts" : [
+			{
+				"contactId" : "2xvK89GM368eHHGBf",
+				"contactName" : "ADELIND ARONOW",
+				"contactTitle" : "Casting Director"
+			},
+			{
+				"contactId" : "9ZPM8AFnjbKPmFLp8",
+				"contactName" : "PANDORA PAFFLEY",
+				"contactTitle" : "Casting Director"
+			},
+			{
+				"contactId" : "yDDSsJ4uPvCY5f7qN",
+				"contactName" : "BRODIE BYRON",
+				"contactTitle" : "Associate"
+			}
+		],
+		"userId" : "yhaNiNHL4vKEytrCn",
+		"sortTitle" : "sweden",
+		"platformType" : "Theatrical",
+		"htmlSummary" : "<p><strong>SUMMARY:</strong> A project for testing, created by triad-cypress-editor</p>\n<p>It has 3 contacts</p>\n",
+		"slug" : "sweden"
 	}
 ]

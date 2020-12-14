@@ -14,6 +14,8 @@ const doNotClearLocalStorage = () => { }
 describe('Latest Updates', () => {
   before(() => {
     Cypress.LocalStorage.clear = doNotClearLocalStorage
+    cy.resetTriad()
+    cy.stubAlgolia()
     cy.login()
     cy.visit('/latest')
   })

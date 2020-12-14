@@ -24,10 +24,11 @@
 const clear = Cypress.LocalStorage.clear
 const doNotClearLocalStorage = () => { }
 
-describe('Update Contacts', () => {
+describe('Contacts Update', () => {
   before(() => {
     Cypress.LocalStorage.clear = doNotClearLocalStorage
     cy.resetTriad()
+    cy.stubAlgolia()
     cy.login()
     cy.getTestingCollection('contacts')
     cy.getTestingCollection('offices')
@@ -81,8 +82,8 @@ describe('Update Contacts', () => {
   })
 
   // 2 to 1
-  it('add projects 0 & 1 to contact 2', function () {
-    const contact = this.testingContacts[2]
+  it('add 2 projects to a contact', function () {
+    const contact = Cypress._.find(this.testingContacts, { displayName: 'ADELIND ARONOW' })
     const testingProjects = this.testingProjects
     const log = Cypress.log({
       name: '2 to 1',
@@ -98,12 +99,12 @@ describe('Update Contacts', () => {
       // click open 2 project elements
       cy.clickGreenAddButton()
       cy.clickGreenAddButton()
-      // now has 3 open projects - 0 preexisting, 1 2 empty
+      // now has 4 open projects - 0 1 preexisting, 2 3 empty
       cy.get('.form-nested-array-inner-layout')
         .each(($el, i) => {
-          if (i > 0) {
+          if (i > 1) {
             cy.get($el).within(() => {
-              cy.selectProjectAndTitle(testingProjects[i - 1].projectTitle, contact.title, i)
+              cy.selectProjectAndTitle(testingProjects[i - 2].projectTitle, contact.title, i)
             })
           }
         })
@@ -111,18 +112,18 @@ describe('Update Contacts', () => {
     cy.submit()
     cy.get('[data-cy=contact-header]', { log: false }).contains(contact.displayName)
     cy.get('[data-cy=project-link]')
-      .should('have.length', 3)
+      .should('have.length', 4)
 
-    // assert contact 2 added to project 0
-    cy.get(`a[href$="${testingProjects[0].slug}"][data-cy=project-link]`).last().click()
+    // assert contact added to project 0
+    cy.get(`a[href$="${testingProjects[0].slug}"][data-cy=project-link]`).click()
     cy.get('[data-cy=project-header]', { log: false }).contains(testingProjects[0].projectTitle)
     cy.get('[data-cy=contact-link]').last()
       .should('have.text', contact.displayName)
     cy.percySnapshot()
 
-    // assert contact 2 added to project 1
+    // assert contact added to project 1
     cy.go('back')
-    cy.get(`a[href$="${testingProjects[1].slug}"][data-cy=project-link]`).last().click()
+    cy.get(`a[href$="${testingProjects[1].slug}"][data-cy=project-link]`).click()
     cy.get('[data-cy=project-header]', { log: false }).contains(testingProjects[1].projectTitle)
     cy.get('[data-cy=contact-link]').last()
       .should('have.text', contact.displayName)

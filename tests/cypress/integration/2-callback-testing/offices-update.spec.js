@@ -7,10 +7,11 @@
 const clear = Cypress.LocalStorage.clear
 const doNotClearLocalStorage = () => { }
 
-describe('Update Office', () => {
+describe('Offices Update', () => {
   before(() => {
     Cypress.LocalStorage.clear = doNotClearLocalStorage
     cy.resetTriad()
+    cy.stubAlgolia()
     cy.login()
     cy.getTestingCollection('contacts')
     cy.getTestingCollection('offices')
@@ -167,6 +168,8 @@ describe('Update Office', () => {
     // assert on added past project
     cy.goTo('pastprojects', pastproject)
     cy.get('[data-cy=pastproject-header]', { log: false }).contains(pastproject.projectTitle)
+    cy.get('[data-cy=office-link]')
+      .should('have.length', 2)
     cy.get('[data-cy=office-link]').last()
       .should('have.text', office.displayName)
     cy.percySnapshot()

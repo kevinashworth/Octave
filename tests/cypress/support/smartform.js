@@ -141,7 +141,7 @@ Cypress.Commands.add('waitForContactOptions', () => {
   Cypress.log({
     name: 'options',
     displayName: 'OPTIONS',
-    message: [`Wait for Contact Options (SelectContactIdNameTitle)`]
+    message: ['Wait for Contact Options (SelectContactIdNameTitle)']
   })
   cy.get('[id^=data-cy-select-contact-id]', { log: false, timeout: 10000 })
 })
@@ -150,7 +150,7 @@ Cypress.Commands.add('waitForOfficeOptions', () => {
   Cypress.log({
     name: 'options',
     displayName: 'OPTIONS',
-    message: [`Wait for Office Options (MySelect)`]
+    message: ['Wait for Office Options (MySelect)']
   })
   cy.get('[id^=data-cy-my-select]', { log: false, timeout: 10000 })
 })
@@ -159,7 +159,7 @@ Cypress.Commands.add('waitForPastProjectOptions', () => {
   Cypress.log({
     name: 'options',
     displayName: 'OPTIONS',
-    message: [`Wait for Past Project Options (SelectProjectIdTitle)`]
+    message: ['Wait for Past Project Options (SelectProjectIdTitle)']
   })
   cy.get('[id^=data-cy-select-pastproject-id]', { log: false, timeout: 10000 })
 })
@@ -168,7 +168,7 @@ Cypress.Commands.add('waitForPastProjectOptions2', () => {
   Cypress.log({
     name: 'options',
     displayName: 'OPTIONS',
-    message: [`Wait for Past Project Options (MySelect)`]
+    message: ['Wait for Past Project Options (MySelect)']
   })
   cy.get('[id^=data-cy-my-select-pastProjects]', { log: false, timeout: 10000 })
 })
@@ -177,7 +177,7 @@ Cypress.Commands.add('waitForProjectOptions', () => {
   Cypress.log({
     name: 'options',
     displayName: 'OPTIONS',
-    message: [`Wait for Project Options (SelectProjectIdTitle)`]
+    message: ['Wait for Project Options (SelectProjectIdTitle)']
   })
   cy.get('[id^=data-cy-select-project-id]', { log: false, timeout: 10000 })
 })
@@ -186,8 +186,7 @@ Cypress.Commands.add('waitForProjectOptions2', () => {
   Cypress.log({
     name: 'options',
     displayName: 'OPTIONS',
-    message: [`Wait for Project Options (MySelect)`]
+    message: ['Wait for Project Options (MySelect)']
   })
   cy.get('[id^=data-cy-my-select-projects]', { log: false, timeout: 10000 })
 })
-

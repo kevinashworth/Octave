@@ -12,6 +12,8 @@ const doNotClearLocalStorage = () => { }
 describe('Delete Created Items', () => {
   before(() => {
     Cypress.LocalStorage.clear = doNotClearLocalStorage
+    // cy.resetTriad()
+    cy.stubAlgolia()
     cy.login()
   })
 
