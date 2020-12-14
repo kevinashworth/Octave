@@ -420,3 +420,10 @@ export const LOCAL = 'Local Mongo'
 export const MLAB = 'mLab'
 export const OTHER = 'Other Mongo'
 export const DBS = [ATLAS, ATLAS_MOZART, ATLAS_TRIAD, MLAB]
+
+export const BOOSTED = {
+  CONTACTS: 3,
+  OFFICES: 1,
+  PROJECTS: 2,
+  PASTPROJECTS: 0
+}

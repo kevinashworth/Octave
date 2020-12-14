@@ -1,21 +1,20 @@
-import { Components, registerComponent, useCurrentUser, useSingle2 } from 'meteor/vulcan:core'
+import { Components, getSetting, registerComponent, useCurrentUser, useSingle2, withMessages } from 'meteor/vulcan:core'
 import Users from 'meteor/vulcan:users'
 import { FormattedMessage } from 'meteor/vulcan:i18n'
 import React, { useState } from 'react'
 import { LinkContainer } from 'react-router-bootstrap'
-import { Link } from 'react-router-dom'
 import Button from 'react-bootstrap/Button'
 import Card from 'react-bootstrap/Card'
 import Tab from 'react-bootstrap/Tab'
 import Tabs from 'react-bootstrap/Tabs'
 import get from 'lodash/get'
 import MyMarkdown from '../common/MyMarkdown'
+import ErrorWithAlgoliaDelete from '../algolia/ErrorWithAlgoliaDelete'
 import { displayDates, getFullAddress, seasonOrder } from '../../modules/helpers.js'
 import Projects from '../../modules/projects/collection.js'
 
 const ProjectsSingle = (props) => {
   const documentId = get(props, 'match.params._id')
-
   const { currentUser } = useCurrentUser()
   const { document: project, error, loading } = useSingle2({
     collection: Projects,
@@ -33,17 +32,10 @@ const ProjectsSingle = (props) => {
     setCommentsTabTitle(labelFromCommentsThread)
   }
 
-  const deleteAlgoliaRecord = (documentId) => {
-    if (typeof documentId === 'string') {
-      Meteor.call(
-        'deleteAlgoliaRecord',
-        documentId,
-        (error, result) => { // we expect result to be undefined
-          if (error) {
-            console.error('deleteAlgoliaRecord error:', error)
-          }
-        })
-    }
+  if (error?.message === 'app.missing_document' && getSetting('algolia.enableErrorDelete')) {
+    return (
+      <ErrorWithAlgoliaDelete documentId={documentId} variant='projects' />
+    )
   }
 
   if (error) {
@@ -57,18 +49,7 @@ const ProjectsSingle = (props) => {
 
   if (!project) {
     return (
-      <Card>
-        <Card.Body>
-          <Card.Text>
-            <FormattedMessage id='app.missing_document' />
-          </Card.Text>
-          {Users.isAdmin(currentUser) &&
-            <Card.Text>
-              <Button variant='projects' onClick={deleteAlgoliaRecord(documentId)}>Admin: Delete {documentId} from Algolia</Button>{' '}
-              <Link to={`/past-projects/${documentId}`}>Is this _id for a Past Project?</Link>
-            </Card.Text>}
-        </Card.Body>
-      </Card>
+      <FormattedMessage id='app.404' />
     )
   }
 
@@ -163,5 +144,6 @@ const ProjectsSingle = (props) => {
 
 registerComponent({
   name: 'ProjectsSingle',
-  component: ProjectsSingle
+  component: ProjectsSingle,
+  hocs: [withMessages]
 })

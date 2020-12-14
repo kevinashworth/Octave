@@ -1,4 +1,4 @@
-import { Components, registerComponent, useCurrentUser, useSingle2 } from 'meteor/vulcan:core'
+import { Components, getSetting, registerComponent, useCurrentUser, useSingle2, withMessages } from 'meteor/vulcan:core'
 import Users from 'meteor/vulcan:users'
 import { FormattedMessage } from 'meteor/vulcan:i18n'
 import React, { useState } from 'react'
@@ -12,6 +12,7 @@ import get from 'lodash/get'
 import sortBy from 'lodash/sortBy'
 import pluralize from 'pluralize'
 import MyMarkdown from '../common/MyMarkdown'
+import ErrorWithAlgoliaDelete from '../algolia/ErrorWithAlgoliaDelete'
 import { displayDates } from '../../modules/helpers.js'
 import Offices from '../../modules/offices/collection.js'
 
@@ -35,13 +36,12 @@ function PastProjects (props) {
 }
 
 const OfficesSingle = (props) => {
-  const id = get(props, 'match.params._id')
-
+  const documentId = get(props, 'match.params._id')
   const { currentUser } = useCurrentUser()
   const { document: office, error, loading } = useSingle2({
     collection: Offices,
     fragmentName: 'OfficesSingleFragment',
-    input: { id },
+    input: { id: documentId },
     queryOptions: {
       fetchPolicy: 'cache-and-network'
     }
@@ -57,6 +57,12 @@ const OfficesSingle = (props) => {
     setCollapseIsOpen(!collapseIsOpen)
   }
 
+  if (error?.message === 'app.missing_document' && getSetting('algolia.enableErrorDelete')) {
+    return (
+      <ErrorWithAlgoliaDelete documentId={documentId} />
+    )
+  }
+
   if (error) {
     console.error('OfficesSingle useQuery error:', error)
     return <FormattedMessage id='errors.document' values={{ errorMessage: error.message }} />
@@ -67,7 +73,9 @@ const OfficesSingle = (props) => {
   }
 
   if (!office) {
-    return <FormattedMessage id='app.404' />
+    return (
+      <FormattedMessage id='app.404' />
+    )
   }
 
   const dates = displayDates('Office', office)
@@ -151,5 +159,6 @@ const OfficesSingle = (props) => {
 
 registerComponent({
   name: 'OfficesSingle',
-  component: OfficesSingle
+  component: OfficesSingle,
+  hocs: [withMessages]
 })
