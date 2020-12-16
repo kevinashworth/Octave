@@ -1,10 +1,11 @@
+import { getStore } from 'meteor/vulcan:redux'
 import { BOOSTED } from '../../modules/constants'
 
 const createIndexedObject = ({ collectionName, document, sourceDb }) => {
   const boosted = BOOSTED[collectionName]
   const objectID = document._id
-  const source = document.source || sourceDb
-  const updatedAt = document.createdAt
+  const source = document.source || sourceDb || getStore().getState().mongoProvider
+  const updatedAt = document.updatedAt || document.createdAt
   const url = `/${collectionName}/${document._id}/${document.slug}`
 
   if (collectionName === 'contacts') {
