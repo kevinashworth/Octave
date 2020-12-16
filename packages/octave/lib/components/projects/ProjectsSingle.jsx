@@ -1,4 +1,4 @@
-import { Components, getSetting, registerComponent, useCurrentUser, useSingle2, withMessages } from 'meteor/vulcan:core'
+import { Components, getSetting, registerComponent, useCurrentUser, useSingle2 } from 'meteor/vulcan:core'
 import Users from 'meteor/vulcan:users'
 import { FormattedMessage } from 'meteor/vulcan:i18n'
 import React, { useState } from 'react'
@@ -10,14 +10,14 @@ import Tabs from 'react-bootstrap/Tabs'
 import get from 'lodash/get'
 import MyMarkdown from '../common/MyMarkdown'
 import ErrorWithAlgoliaDelete from '../algolia/ErrorWithAlgoliaDelete'
-import createIndexedObject from '../../server/algolia/helpers'
-import { displayDates, getFullAddress, seasonOrder } from '../../modules/helpers.js'
+import RecreateAlgoliaRecord from '../algolia/RecreateAlgoliaRecord'
+import { displayDates, getFullAddress, isEditor, seasonOrder } from '../../modules/helpers'
 import Projects from '../../modules/projects/collection.js'
 
 const ProjectsSingle = (props) => {
   const documentId = get(props, 'match.params._id')
-  const { flash } = props
   const { currentUser } = useCurrentUser()
+  const showEditors = isEditor(currentUser)
   const { document: project, error, loading } = useSingle2({
     collection: Projects,
     fragmentName: 'ProjectsSingleFragment',
@@ -57,27 +57,6 @@ const ProjectsSingle = (props) => {
 
   const order = seasonOrder(project)
   const dates = displayDates('Project', project)
-
-  const updateAlgolia = () => {
-    const indexedObject = createIndexedObject({ collectionName: 'projects', document: project })
-
-    Meteor.call(
-      'recreateAlgoliaRecord',
-      indexedObject,
-      (error, result) => { // we expect result to be undefined
-        if (error) {
-          flash({
-            message: `recreateAlgoliaRecord error: ${error}`,
-            type: 'error'
-          })
-        } else {
-          flash({
-            message: `Re-created record for ${documentId} sent to Algolia.`,
-            type: 'info'
-          })
-        }
-      })
-  }
 
   return (
     <div className='animated fadeIn'>
@@ -155,9 +134,10 @@ const ProjectsSingle = (props) => {
             <Tab eventKey='history' title='History'>
               <Components.ProjectPatchesList project={project} documentId={project._id} />
             </Tab>
-            <Tab eventKey='algolia' title='Algolia'>
-              <Button onClick={updateAlgolia}>Re-create Algolia</Button>
-            </Tab>
+            {showEditors &&
+              <Tab eventKey='editors' title='Editors Only'>
+                <RecreateAlgoliaRecord collectionName='projects' document={project} />
+              </Tab>}
           </Tabs>
         </Card.Body>
         <Card.Footer>
@@ -170,6 +150,5 @@ const ProjectsSingle = (props) => {
 
 registerComponent({
   name: 'ProjectsSingle',
-  component: ProjectsSingle,
-  hocs: [withMessages]
+  component: ProjectsSingle
 })

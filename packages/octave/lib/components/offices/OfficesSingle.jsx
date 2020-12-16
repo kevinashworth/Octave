@@ -13,7 +13,8 @@ import sortBy from 'lodash/sortBy'
 import pluralize from 'pluralize'
 import MyMarkdown from '../common/MyMarkdown'
 import ErrorWithAlgoliaDelete from '../algolia/ErrorWithAlgoliaDelete'
-import { displayDates } from '../../modules/helpers.js'
+import RecreateAlgoliaRecord from '../algolia/RecreateAlgoliaRecord'
+import { displayDates, isEditor } from '../../modules/helpers'
 import Offices from '../../modules/offices/collection.js'
 
 // Don't fetch and render PastProjects unless user clicks to see them
@@ -38,6 +39,7 @@ function PastProjects (props) {
 const OfficesSingle = (props) => {
   const documentId = get(props, 'match.params._id')
   const { currentUser } = useCurrentUser()
+  const showEditors = isEditor(currentUser)
   const { document: office, error, loading } = useSingle2({
     collection: Offices,
     fragmentName: 'OfficesSingleFragment',
@@ -133,6 +135,10 @@ const OfficesSingle = (props) => {
             <Tab eventKey='history' title='History'>
               <Components.OfficePatchesList documentId={office._id} />
             </Tab>
+            {showEditors &&
+              <Tab eventKey='editors' title='Editors Only'>
+                <RecreateAlgoliaRecord collectionName='offices' document={office} />
+              </Tab>}
           </Tabs>
         </Card.Body>
         <Card.Footer>

@@ -1,4 +1,4 @@
-import { Components, getSetting, registerComponent, useCurrentUser, useSingle2, withAccess, withMessages } from 'meteor/vulcan:core'
+import { Components, getSetting, registerComponent, useCurrentUser, useSingle2, withAccess } from 'meteor/vulcan:core'
 import Users from 'meteor/vulcan:users'
 import { FormattedMessage } from 'meteor/vulcan:i18n'
 import React, { useState } from 'react'
@@ -13,7 +13,8 @@ import sortBy from 'lodash/sortBy'
 import pluralize from 'pluralize'
 import MyMarkdown from '../common/MyMarkdown'
 import ErrorWithAlgoliaDelete from '../algolia/ErrorWithAlgoliaDelete'
-import { displayDates, getFullNameFromContact, isEmptyValue } from '../../modules/helpers.js'
+import RecreateAlgoliaRecord from '../algolia/RecreateAlgoliaRecord'
+import { displayDates, getFullNameFromContact, isEditor, isEmptyValue } from '../../modules/helpers'
 import Contacts from '../../modules/contacts/collection.js'
 
 // Don't fetch PastProjects unless user clicks to see them
@@ -38,6 +39,7 @@ function PastProjects (props) {
 const ContactsSingle = (props) => {
   const documentId = get(props, 'match.params._id')
   const { currentUser } = useCurrentUser()
+  const showEditors = isEditor(currentUser)
   const { document: contact, error, loading } = useSingle2({
     collection: Contacts,
     fragmentName: 'ContactsSingleFragment',
@@ -139,6 +141,10 @@ const ContactsSingle = (props) => {
             <Tab eventKey='history' title='History'>
               <Components.ContactPatchesList documentId={contact._id} />
             </Tab>
+            {showEditors &&
+              <Tab eventKey='editors' title='Editors Only'>
+                <RecreateAlgoliaRecord collectionName='contacts' document={contact} />
+              </Tab>}
           </Tabs>
         </Card.Body>
         <Card.Footer>
@@ -170,5 +176,5 @@ const accessOptions = {
 registerComponent({
   name: 'ContactsSingle',
   component: ContactsSingle,
-  hocs: [[withAccess, accessOptions], withMessages]
+  hocs: [[withAccess, accessOptions]]
 })

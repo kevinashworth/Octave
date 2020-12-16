@@ -34,7 +34,7 @@ const createIndexedObject = ({ collectionName, document, sourceDb }) => {
     }
   }
 
-  if (collectionName === 'projects') {
+  if (collectionName === 'projects' || collectionName === 'pastprojects') {
     return {
       body: document.summary,
       boosted,

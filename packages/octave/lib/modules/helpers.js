@@ -1,4 +1,5 @@
 import { getActions, getStore } from 'meteor/vulcan:redux'
+import Users from 'meteor/vulcan:users'
 import React from 'react'
 import { Link } from 'react-router-dom'
 import isEqual from 'lodash/isEqual'
@@ -503,4 +504,11 @@ export const seasonOrder = (project) => {
 export const displayDates = (itemName, item) => {
   return `${itemName} added to database ` + moment(item.createdAt).format(DATE_FORMAT_SHORT) + ' / ' +
     'Last modified ' + moment(item.updatedAt).format(DATE_FORMAT_LONG)
+}
+
+export const isEditor = (currentUser) => {
+  const isAdmin = Users.isAdmin(currentUser)
+  const isEditor = Users.isMemberOf(currentUser, 'editors')
+  const isEditorOrAdmin = isAdmin || isEditor
+  return isEditorOrAdmin
 }

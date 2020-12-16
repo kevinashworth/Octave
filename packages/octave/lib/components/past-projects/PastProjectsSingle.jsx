@@ -1,9 +1,8 @@
-import { Components, getSetting, registerComponent, useCurrentUser, useSingle2, withMessages } from 'meteor/vulcan:core'
+import { Components, getSetting, registerComponent, useCurrentUser, useSingle2 } from 'meteor/vulcan:core'
 import Users from 'meteor/vulcan:users'
 import { FormattedMessage } from 'meteor/vulcan:i18n'
 import React, { useState } from 'react'
 import { LinkContainer } from 'react-router-bootstrap'
-import { Link } from 'react-router-dom'
 import Button from 'react-bootstrap/Button'
 import Card from 'react-bootstrap/Card'
 import Tab from 'react-bootstrap/Tab'
@@ -11,12 +10,14 @@ import Tabs from 'react-bootstrap/Tabs'
 import get from 'lodash/get'
 import MyMarkdown from '../common/MyMarkdown'
 import ErrorWithAlgoliaDelete from '../algolia/ErrorWithAlgoliaDelete'
-import { displayDates, seasonOrder } from '../../modules/helpers.js'
+import RecreateAlgoliaRecord from '../algolia/RecreateAlgoliaRecord'
+import { displayDates, isEditor, seasonOrder } from '../../modules/helpers'
 import PastProjects from '../../modules/past-projects/collection.js'
 
 const PastProjectsSingle = (props) => {
   const documentId = get(props, 'match.params._id')
   const { currentUser } = useCurrentUser()
+  const showEditors = isEditor(currentUser)
   const { document: project, error, loading } = useSingle2({
     collection: PastProjects,
     fragmentName: 'PastProjectsSingleFragment',
@@ -127,6 +128,10 @@ const PastProjectsSingle = (props) => {
             <Tab eventKey='history' title='History'>
               <Components.PastProjectPatchesList documentId={project._id} />
             </Tab>
+            {showEditors &&
+              <Tab eventKey='editors' title='Editors Only'>
+                <RecreateAlgoliaRecord collectionName='pastprojects' document={project} />
+              </Tab>}
           </Tabs>
         </Card.Body>
         <Card.Footer>
