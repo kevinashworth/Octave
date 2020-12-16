@@ -21,16 +21,16 @@ Meteor.methods({
   recreateAlgoliaRecord (indexedObject) {
     const applicationid = Meteor.settings.public.algolia.ApplicationID
     const algoliaindex = Meteor.settings.public.algolia.AlgoliaIndex
-    const deletekey = Meteor.settings.private.algolia.DeleteAPIKey
-    const client = algoliasearch(applicationid, deletekey)
+    const addupdatekey = Meteor.settings.private.algolia.AddAndUpdateAPIKey
+    const client = algoliasearch(applicationid, addupdatekey)
     const index = client.initIndex(algoliaindex)
 
     console.log('About to send indexedObject:', indexedObject)
 
     index
       .saveObject(indexedObject)
-      .then(response => { log.debug('recreateAlgoliaRecord response:' + JSON.stringify(response)) })
-      .catch(error => { log.error('recreateAlgoliaRecord error:' + JSON.stringify(error)) })
+      .then(response => { log.debug('recreateAlgoliaRecord response:', response) })
+      .catch(error => { log.error('recreateAlgoliaRecord error:', error) })
   },
 
   getProcessEnvMongoProvider () {
