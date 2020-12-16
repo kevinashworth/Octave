@@ -10,11 +10,13 @@ import Tabs from 'react-bootstrap/Tabs'
 import get from 'lodash/get'
 import MyMarkdown from '../common/MyMarkdown'
 import ErrorWithAlgoliaDelete from '../algolia/ErrorWithAlgoliaDelete'
+import createIndexedObject from '../../server/algolia/helpers'
 import { displayDates, getFullAddress, seasonOrder } from '../../modules/helpers.js'
 import Projects from '../../modules/projects/collection.js'
 
 const ProjectsSingle = (props) => {
   const documentId = get(props, 'match.params._id')
+  const { flash } = props
   const { currentUser } = useCurrentUser()
   const { document: project, error, loading } = useSingle2({
     collection: Projects,
@@ -55,6 +57,27 @@ const ProjectsSingle = (props) => {
 
   const order = seasonOrder(project)
   const dates = displayDates('Project', project)
+
+  const updateAlgolia = () => {
+    const indexedObject = createIndexedObject({ collectionName: 'projects', document: project })
+
+    Meteor.call(
+      'recreateAlgoliaRecord',
+      indexedObject,
+      (error, result) => { // we expect result to be undefined
+        if (error) {
+          flash({
+            message: `recreateAlgoliaRecord error: ${error}`,
+            type: 'error'
+          })
+        } else {
+          flash({
+            message: `Re-created record for ${documentId} sent to Algolia.`,
+            type: 'info'
+          })
+        }
+      })
+  }
 
   return (
     <div className='animated fadeIn'>
@@ -131,6 +154,9 @@ const ProjectsSingle = (props) => {
             </Tab>
             <Tab eventKey='history' title='History'>
               <Components.ProjectPatchesList project={project} documentId={project._id} />
+            </Tab>
+            <Tab eventKey='algolia' title='Algolia'>
+              <Button onClick={updateAlgolia}>Re-create Algolia</Button>
             </Tab>
           </Tabs>
         </Card.Body>
