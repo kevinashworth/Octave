@@ -422,8 +422,12 @@ export const OTHER = 'Other Mongo'
 export const DBS = [ATLAS, ATLAS_MOZART, ATLAS_TRIAD, MLAB]
 
 export const BOOSTED = {
+  contacts: 3,
   CONTACTS: 3,
+  offices: 1,
   OFFICES: 1,
+  projects: 2,
   PROJECTS: 2,
+  pastprojects: 0,
   PASTPROJECTS: 0
 }

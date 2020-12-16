@@ -1,7 +1,7 @@
 /// <reference types="cypress" />
 
 /**
- * Create projects to test packages/octave/lib/server/projects/callbacks
+ * Create Projects to test packages/octave/lib/server/projects/callbacks
  *
  * Reminder: Use keyword `function`, not arrow function, to access `this.items.foo`
  */
@@ -9,7 +9,7 @@
 const clear = Cypress.LocalStorage.clear
 const doNotClearLocalStorage = () => { }
 
-describe('Create Project', () => {
+describe('Projects Create', () => {
   before(() => {
     Cypress.LocalStorage.clear = doNotClearLocalStorage
     cy.resetTriad()
@@ -70,6 +70,7 @@ describe('Create Project', () => {
       cy.mySelect('officeId', office2.displayName, 2)
     })
     cy.submit()
+    cy.get('[data-cy=project-header]', { log: false }).contains(project.projectTitle)
     cy.location().then((loc) => {
       cy.writeFile('temp-project-link.txt', loc.pathname)
       cy.log(`created project at ${loc.pathname}`)

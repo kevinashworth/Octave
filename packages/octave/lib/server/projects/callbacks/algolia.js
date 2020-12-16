@@ -2,6 +2,7 @@ import { getSetting } from 'meteor/vulcan:core'
 import algoliasearch from 'algoliasearch'
 import includes from 'lodash/includes'
 import log from 'loglevel'
+import createIndexedObject from '../../algolia/helpers'
 import { getMongoProvider } from '../../../modules/helpers.js'
 import { ACTIVE_PROJECT_STATUSES_ARRAY, BOOSTED, DBS } from '../../../modules/constants.js'
 
@@ -91,17 +92,7 @@ export function createAlgoliaObject ({ document }) {
     const algoliaindex = Meteor.settings.public.algolia.AlgoliaIndex
     const addupdatekey = Meteor.settings.private.algolia.AddAndUpdateAPIKey
 
-    const indexedObject = {
-      body: document.summary,
-      boosted: BOOSTED.PROJECTS,
-      name: document.projectTitle,
-      network: document.network,
-      notes: document.notes,
-      objectID: document._id,
-      source: document.source || db,
-      updatedAt: document.createdAt,
-      url: `/projects/${document._id}/${document.slug}`
-    }
+    const indexedObject = createIndexedObject({ collectionName: 'projects', document, sourceDb: db })
 
     const client = algoliasearch(applicationid, addupdatekey)
     const index = client.initIndex(algoliaindex)

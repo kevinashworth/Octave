@@ -17,6 +17,22 @@ Meteor.methods({
       .catch(error => log.error('Algolia deleteObject error:', error))
   },
 
+  // for when a record is missing or wrong and for this one item we want a re-do
+  recreateAlgoliaRecord (indexedObject) {
+    const applicationid = Meteor.settings.public.algolia.ApplicationID
+    const algoliaindex = Meteor.settings.public.algolia.AlgoliaIndex
+    const addupdatekey = Meteor.settings.private.algolia.AddAndUpdateAPIKey
+    const client = algoliasearch(applicationid, addupdatekey)
+    const index = client.initIndex(algoliaindex)
+
+    console.log('About to send indexedObject:', indexedObject)
+
+    index
+      .saveObject(indexedObject)
+      .then(response => { log.debug('recreateAlgoliaRecord response:', response) })
+      .catch(error => { log.error('recreateAlgoliaRecord error:', error) })
+  },
+
   getProcessEnvMongoProvider () {
     return getProcessMongo()
   },

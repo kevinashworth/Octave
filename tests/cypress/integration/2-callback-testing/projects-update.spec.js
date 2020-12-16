@@ -9,7 +9,7 @@
 const clear = Cypress.LocalStorage.clear
 const doNotClearLocalStorage = () => { }
 
-describe('Update Projects', () => {
+describe('Projects Update', () => {
   before(() => {
     Cypress.LocalStorage.clear = doNotClearLocalStorage
     cy.resetTriad()

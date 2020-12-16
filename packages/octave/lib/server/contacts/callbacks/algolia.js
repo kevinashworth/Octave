@@ -2,6 +2,7 @@ import { getSetting } from 'meteor/vulcan:core'
 import algoliasearch from 'algoliasearch'
 // import log from 'loglevel'
 import { logger } from '../../logger.js'
+import createIndexedObject from '../../algolia/helpers'
 import { getMongoProvider } from '../../../modules/helpers.js'
 import { BOOSTED, DBS } from '../../../modules/constants.js'
 
@@ -75,16 +76,7 @@ export function createAlgoliaObject ({ document }) {
     const algoliaindex = Meteor.settings.public.algolia.AlgoliaIndex
     const addupdatekey = Meteor.settings.private.algolia.AddAndUpdateAPIKey
 
-    const indexedObject = {
-      addressString: document.addressString,
-      body: document.body,
-      boosted: BOOSTED.CONTACTS,
-      name: document.displayName,
-      objectID: document._id,
-      source: document.source || db,
-      updatedAt: document.createdAt,
-      url: `/contacts/${document._id}/${document.slug}`
-    }
+    const indexedObject = createIndexedObject({ collectionName: 'contacts', document, sourceDb: db })
 
     const client = algoliasearch(applicationid, addupdatekey)
     const index = client.initIndex(algoliaindex)

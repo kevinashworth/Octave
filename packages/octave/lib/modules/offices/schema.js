@@ -532,7 +532,7 @@ const schema = {
         let state = ''
         try {
           if (!isEmptyValue(o.addresses)) {
-            state = o.addresses[0].state.toLowerCase()
+            state = o.addresses[0].state?.toLowerCase()
           }
         } catch (e) {
           console.group('Error in theLocation for ', o._id, ':')
@@ -540,7 +540,7 @@ const schema = {
           console.groupEnd()
           return 'Locomotion'
         }
-        if (state === 'ca' || state.indexOf('calif') > -1) {
+        if (state === 'ca' || state?.indexOf('calif') > -1) {
           return 'CA'
         }
         if (state === 'ny' || state === 'n.y.' || state === 'new york') {
