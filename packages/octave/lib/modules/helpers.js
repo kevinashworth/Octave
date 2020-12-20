@@ -385,17 +385,6 @@ export function getSortTitle (title) {
   return newTitle
 }
 
-// for ReactMarkdown
-export const myRenderers = {
-  link: ({ href, children }) => {
-    if (href.indexOf('/') === 0) {
-      return (<Link to={href}>{children}</Link>)
-    } else if (href.indexOf('http') === 0) {
-      return (<a href={href} target='notelinks'>{children}</a>)
-    }
-  }
-}
-
 /* for DataTables */
 
 // export function dateFormatter (cell, row) {

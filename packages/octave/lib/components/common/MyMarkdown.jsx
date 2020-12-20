@@ -12,6 +12,18 @@ import PropTypes from 'prop-types'
 import ReactMarkdown from 'react-markdown'
 import { myRenderers } from '../../modules/helpers.js'
 
+export const renderers = {
+  link: ({ href, children }) => {
+    if (href.indexOf('/') === 0) {
+      return <Link to={href}>{children}</Link>
+    } else if (href.indexOf('http') === 0) {
+      return <a href={href} target='notelinks'>{children}</a>
+    } else if (href.indexOf('mailto') === 0) {
+      return <a href={href}>{children}</a>
+    }
+  }
+}
+
 const MyMarkdown = ({ heading, id, markdown }) => {
   if (!markdown) {
     return null
@@ -26,6 +38,7 @@ const MyMarkdown = ({ heading, id, markdown }) => {
   return (
     <ReactMarkdown renderers={myRenderers}>
       {myMarkdown}
+    <ReactMarkdown renderers={renderers}>
     </ReactMarkdown>
   )
 }
