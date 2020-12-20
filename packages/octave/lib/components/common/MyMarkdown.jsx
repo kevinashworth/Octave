@@ -10,7 +10,7 @@ import { getString, Utils } from 'meteor/vulcan:core'
 import React from 'react'
 import PropTypes from 'prop-types'
 import ReactMarkdown from 'react-markdown'
-import { myRenderers } from '../../modules/helpers.js'
+import gfm from 'remark-gfm'
 
 export const renderers = {
   link: ({ href, children }) => {
@@ -28,17 +28,18 @@ const MyMarkdown = ({ heading, id, markdown }) => {
   if (!markdown) {
     return null
   }
-  let myHeading
+
+  let head
   if (heading) {
-    myHeading = heading
+    head = heading
   } else if (id && getString({ id })) {
-    myHeading = getString({ id })
+    head = getString({ id })
   }
-  const myMarkdown = myHeading ? Utils.sanitize(`**${myHeading}:** ${markdown}`) : Utils.sanitize(markdown)
+  const md = head ? Utils.sanitize(`**${head}:** ${markdown}`) : Utils.sanitize(markdown)
+
   return (
-    <ReactMarkdown renderers={myRenderers}>
-      {myMarkdown}
-    <ReactMarkdown renderers={renderers}>
+    <ReactMarkdown plugins={[gfm]} renderers={renderers}>
+      {md}
     </ReactMarkdown>
   )
 }
