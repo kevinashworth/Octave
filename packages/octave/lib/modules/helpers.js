@@ -1,7 +1,6 @@
 import { getActions, getStore } from 'meteor/vulcan:redux'
 import Users from 'meteor/vulcan:users'
 import React from 'react'
-import { Link } from 'react-router-dom'
 import isEqual from 'lodash/isEqual'
 import sortBy from 'lodash/sortBy'
 import Contacts from './contacts/collection.js'

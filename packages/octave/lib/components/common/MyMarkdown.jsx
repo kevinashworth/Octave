@@ -9,6 +9,7 @@
 import { getString, Utils } from 'meteor/vulcan:core'
 import React from 'react'
 import PropTypes from 'prop-types'
+import { Link } from 'react-router-dom'
 import ReactMarkdown from 'react-markdown'
 import gfm from 'remark-gfm'
 
