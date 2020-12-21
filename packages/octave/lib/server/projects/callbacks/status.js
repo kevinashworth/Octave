@@ -12,7 +12,8 @@ import { isEmptyValue } from '../../../modules/helpers.js'
 // if the new status is now a past-project, create a new past-project then remove this active project
 // if the new project is created and matches (TODO: matches what, exactly?), delete current
 
-export function ProjectEditUpdateStatusAfter (document, { context, currentUser }) {
+// callbacks.create.after
+export function updateProjectUpdateStatus (document, { context, currentUser }) {
   const newStatusIsPast = includes(PAST_PROJECT_STATUSES_ARRAY, document.status)
 
   if (newStatusIsPast) {

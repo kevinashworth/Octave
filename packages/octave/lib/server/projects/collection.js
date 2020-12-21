@@ -5,14 +5,10 @@ import {
   updateAlgoliaObject,
   createProjectUpdateContacts,
   updateProjectUpdateContacts,
-  // ProjectEditUpdateContacts,
-  // ProjectCreateUpdateContacts,
-  // ProjectCreateUpdateOfficesAfter,
   createProjectUpdateOffices,
   updateProjectUpdateOffices,
   createProjectUpdateStatistics,
-  ProjectEditUpdateStatusAfter,
-  // ProjectEditUpdateHistoryAfter
+  updateProjectUpdateStatus
 } from './callbacks/index.js'
 import { updatePatches } from '../patches/callback'
 
@@ -20,8 +16,6 @@ extendCollection(Projects, {
   callbacks: {
     create: {
       after: [
-        // ProjectCreateUpdateContacts,
-        // ProjectCreateUpdateOfficesAfter,
         createProjectUpdateStatistics
       ],
       async: [
@@ -32,9 +26,7 @@ extendCollection(Projects, {
     },
     update: {
       after: [
-        // ProjectEditUpdateContacts,
-        // ProjectEditUpdateHistoryAfter,
-        ProjectEditUpdateStatusAfter
+        updateProjectUpdateStatus
       ],
       async: [
         updateAlgoliaObject,
@@ -45,27 +37,5 @@ extendCollection(Projects, {
     }
   }
 })
-
-// extendCollection(Projects, {
-//   callbacks: {
-//     create: {
-//       async: [
-//         createAlgoliaObject,
-//         createProjectUpdateContacts,
-//         createProjectUpdateOffices,
-//         createProjectUpdateStatistics
-//       ]
-//     },
-//     update: {
-//       async: [
-//         updateAlgoliaObject,
-//         updateProjectUpdateContacts,
-//         updateProjectUpdateOffices,
-//         updateProjectUpdateStatus,
-//         updatePatches
-//       ]
-//     }
-//   }
-// })
 
 Projects.rawCollection().createIndex({ updatedAt: -1 })
