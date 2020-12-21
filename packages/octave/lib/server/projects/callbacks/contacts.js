@@ -25,36 +25,199 @@ So for each of the project.contacts we update contact.projects of the Contact wi
 }
 */
 
-export function ProjectEditUpdateContacts (data, { document, originalDocument }) {
-  // [a] if the two `contacts` arrays are equal, do nothing
-  // [b] else for deleted contacts in oldProject but not newProject, remove project from those contacts
-  // [c] and for added contacts in newProject but not oldProject, add project to those contacts
+// export function ProjectEditUpdateContacts (data, { document, originalDocument }) {
+//   // [a] if the two `contacts` arrays are equal, do nothing
+//   // [b] else for deleted contacts in oldProject but not newProject, remove project from those contacts
+//   // [c] and for added contacts in newProject but not oldProject, add project to those contacts
 
-  // TODO: what happens when Project becomes PastProject ???
+//   // TODO: what happens when Project becomes PastProject ???
 
+//   const project = document
+//   let contactsToRemoveThisProjectFrom = []
+//   let contactsToAddThisProjectTo = []
+//   const newProject = document
+//   const oldProject = originalDocument
+//   contactsToAddThisProjectTo = differenceWith(newProject.contacts, oldProject.contacts, isEqual)
+//   contactsToRemoveThisProjectFrom = differenceWith(oldProject.contacts, newProject.contacts, isEqual)
+//   log.debug('ProjectEditUpdateContacts:')
+//   log.debug('contactsToRemoveThisProjectFrom:', contactsToRemoveThisProjectFrom)
+//   log.debug('contactsToAddThisProjectTo:', contactsToAddThisProjectTo)
+
+//   // [b]
+//   if (!isEmptyValue(contactsToRemoveThisProjectFrom)) {
+//     contactsToRemoveThisProjectFrom.forEach(deletedContact => {
+//       const oldContact = Contacts.findOne(deletedContact.contactId)
+//       const oldContactProjects = oldContact && oldContact.projects
+
+//       remove(oldContactProjects, function (p) {
+//         return p.projectId === document._id
+//       })
+
+//       if (isEmptyValue(oldContactProjects)) {
+//         Connectors.update(Contacts, oldContact._id, {
+//           $unset: {
+//             projects: 1
+//           }
+//         })
+//       } else {
+//         Connectors.update(Contacts, oldContact._id, {
+//           $set: {
+//             projects: oldContactProjects,
+//             updatedAt: new Date()
+//           }
+//         })
+//       }
+//     })
+//   }
+
+//   // [c]
+//   if (contactsToAddThisProjectTo) {
+//     contactsToAddThisProjectTo.forEach(addedContact => {
+//       const contact = Contacts.findOne(addedContact.contactId)
+//       const updatedProject = {
+//         projectId: project._id,
+//         projectTitle: project.projectTitle,
+//         titleForProject: addedContact.contactTitle
+//       }
+//       let updatedProjects = []
+//       // case 1: nothing there
+//       if (isEmptyValue(contact.projects)) {
+//         updatedProjects = [updatedProject]
+//       } else {
+//         updatedProjects = contact.projects
+//         const i = findIndex(contact.projects, { projectId: project._id })
+//         if (i < 0) {
+//           // case 2: add to it
+//           updatedProjects.push(updatedProject)
+//         } else {
+//           // case 3: already there
+//           return
+//         }
+//       }
+//       Connectors.update(Contacts, contact._id, {
+//         $set: {
+//           projects: updatedProjects,
+//           updatedAt: new Date()
+//         }
+//       })
+//     })
+//   }
+// }
+
+// export function ProjectCreateUpdateContacts (data, { document, originalDocument }) {
+//   const project = document
+//   const contactsToAddThisProjectTo = project.contacts
+//   console.group('ProjectCreateUpdateContacts:')
+//   console.info('contactsToAddThisProjectTo:', contactsToAddThisProjectTo)
+//   console.groupEnd()
+
+//   if (contactsToAddThisProjectTo) {
+//     contactsToAddThisProjectTo.forEach(addedContact => {
+//       const contact = Contacts.findOne(addedContact.contactId)
+//       const updatedProject = {
+//         projectId: project._id,
+//         projectTitle: project.projectTitle,
+//         titleForProject: addedContact.contactTitle
+//       }
+//       let updatedProjects = []
+//       // case 1: nothing there
+//       if (isEmptyValue(contact.projects)) {
+//         updatedProjects = [updatedProject]
+//       } else {
+//         updatedProjects = contact.projects
+//         const i = findIndex(contact.projects, { projectId: project._id })
+//         if (i < 0) {
+//           // case 2: add to it
+//           updatedProjects.push(updatedProject)
+//         } else {
+//           // case 3: already there
+//           return
+//         }
+//       }
+//       const setObj = {
+//         projects: updatedProjects
+//       }
+//       if (!getSetting('mockaroo.seedDatabase')) {
+//         setObj.updatedAt = new Date()
+//       }
+//       Connectors.update(Contacts, contact._id, {
+//         $set: setObj
+//       })
+//     })
+//   }
+// }
+
+// callbacks.create.async
+export const createProjectUpdateContacts = ({ document }) => {
   const project = document
-  let contactsToRemoveThisProjectFrom = []
-  let contactsToAddThisProjectTo = []
+  if (!isEmptyValue(project.contacts)) {
+    handleAddContacts(project.contacts, project)
+  }
+}
+
+// callbacks.udpate.async
+export const updateProjectUpdateContacts = ({ document, originalDocument }) => {
   const newProject = document
   const oldProject = originalDocument
-  contactsToAddThisProjectTo = differenceWith(newProject.contacts, oldProject.contacts, isEqual)
-  contactsToRemoveThisProjectFrom = differenceWith(oldProject.contacts, newProject.contacts, isEqual)
-  log.debug('ProjectEditUpdateContacts:')
-  log.debug('contactsToRemoveThisProjectFrom:', contactsToRemoveThisProjectFrom)
-  log.debug('contactsToAddThisProjectTo:', contactsToAddThisProjectTo)
+  const contactsThatWereAdded = differenceWith(newProject.contacts, oldProject.contacts, isSameContact)
+  const contactsThatWereRemoved = differenceWith(oldProject.contacts, newProject.contacts, isSameContact)
+  if (!isEmptyValue(contactsThatWereRemoved)) {
+    handleRemoveContacts(contactsThatWereRemoved, newProject._id)
+  }
+  if (!isEmptyValue(contactsThatWereAdded)) {
+    handleAddContacts(contactsThatWereAdded, newProject)
+  }
+}
 
-  // [b]
-  if (!isEmptyValue(contactsToRemoveThisProjectFrom)) {
-    contactsToRemoveThisProjectFrom.forEach(deletedContact => {
-      const oldContact = Contacts.findOne(deletedContact.contactId)
-      const oldContactProjects = oldContact && oldContact.projects
+const handleAddContacts = (contacts, project) => {
+  const projectId = project._id
+  contacts.forEach(addedContact => {
+    const contact = Contacts.findOne(addedContact.contactId)
+    const updatedProject = {
+      projectId: project._id,
+      projectTitle: project.projectTitle,
+      titleForProject: addedContact.contactTitle
+    }
+    let updatedProjects = []
+    // case 1: nothing there
+    if (isEmptyValue(contact.projects)) {
+      updatedProjects = [updatedProject]
+    } else {
+      updatedProjects = contact.projects
+      const i = findIndex(contact.projects, { projectId: project._id })
+      if (i < 0) {
+        // case 2: add to it
+        updatedProjects.push(updatedProject)
+      } else {
+        // case 3: already there
+        return
+      }
+    }
+    const setObj = {
+      projects: updatedProjects
+    }
+    if (!getSetting('mockaroo.seedDatabase')) {
+      setObj.updatedAt = new Date()
+    }
+    Connectors.update(Contacts, contact._id, {
+      $set: setObj
+    })
+  })
+}
 
-      remove(oldContactProjects, function (p) {
-        return p.projectId === document._id
+const handleRemoveContacts = (contacts, projectId) => {
+  contacts.forEach(deletedContact => {
+    const oldContact = Contacts.findOne(deletedContact.contactId)
+    if (oldContact) {
+      const oldContactProjects = oldContact.projects
+      remove(oldContactProjects, function (p) { // `remove` mutates
+        return p.projectId === projectId
       })
-
       if (isEmptyValue(oldContactProjects)) {
         Connectors.update(Contacts, oldContact._id, {
+          $set: {
+            updatedAt: new Date()
+          },
           $unset: {
             projects: 1
           }
@@ -67,82 +230,11 @@ export function ProjectEditUpdateContacts (data, { document, originalDocument })
           }
         })
       }
-    })
-  }
-
-  // [c]
-  if (contactsToAddThisProjectTo) {
-    contactsToAddThisProjectTo.forEach(addedContact => {
-      const contact = Contacts.findOne(addedContact.contactId)
-      const updatedProject = {
-        projectId: project._id,
-        projectTitle: project.projectTitle,
-        titleForProject: addedContact.contactTitle
-      }
-      let updatedProjects = []
-      // case 1: nothing there
-      if (isEmptyValue(contact.projects)) {
-        updatedProjects = [updatedProject]
-      } else {
-        updatedProjects = contact.projects
-        const i = findIndex(contact.projects, { projectId: project._id })
-        if (i < 0) {
-          // case 2: add to it
-          updatedProjects.push(updatedProject)
-        } else {
-          // case 3: already there
-          return
-        }
-      }
-      Connectors.update(Contacts, contact._id, {
-        $set: {
-          projects: updatedProjects,
-          updatedAt: new Date()
-        }
-      })
-    })
-  }
+    }
+  })
 }
 
-export function ProjectCreateUpdateContacts (data, { document, originalDocument }) {
-  const project = document
-  const contactsToAddThisProjectTo = project.contacts
-  console.group('ProjectCreateUpdateContacts:')
-  console.info('contactsToAddThisProjectTo:', contactsToAddThisProjectTo)
-  console.groupEnd()
 
-  if (contactsToAddThisProjectTo) {
-    contactsToAddThisProjectTo.forEach(addedContact => {
-      const contact = Contacts.findOne(addedContact.contactId)
-      const updatedProject = {
-        projectId: project._id,
-        projectTitle: project.projectTitle,
-        titleForProject: addedContact.contactTitle
-      }
-      let updatedProjects = []
-      // case 1: nothing there
-      if (isEmptyValue(contact.projects)) {
-        updatedProjects = [updatedProject]
-      } else {
-        updatedProjects = contact.projects
-        const i = findIndex(contact.projects, { projectId: project._id })
-        if (i < 0) {
-          // case 2: add to it
-          updatedProjects.push(updatedProject)
-        } else {
-          // case 3: already there
-          return
-        }
-      }
-      const setObj = {
-        projects: updatedProjects
-      }
-      if (!getSetting('mockaroo.seedDatabase')) {
-        setObj.updatedAt = new Date()
-      }
-      Connectors.update(Contacts, contact._id, {
-        $set: setObj
-      })
-    })
-  }
+const isSameContact = (a, b) => {
+  return a.contactId === b.contactId
 }

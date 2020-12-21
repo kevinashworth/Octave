@@ -3,8 +3,10 @@ import { Projects } from '../../modules/projects/collection.js'
 import {
   createAlgoliaObject,
   updateAlgoliaObject,
-  ProjectEditUpdateContacts,
-  ProjectCreateUpdateContacts,
+  createProjectUpdateContacts,
+  updateProjectUpdateContacts,
+  // ProjectEditUpdateContacts,
+  // ProjectCreateUpdateContacts,
   ProjectCreateUpdateOfficesAfter,
   updateProjectUpdateOffices,
   ProjectCreateUpdateStatisticsAfter,
@@ -17,23 +19,25 @@ extendCollection(Projects, {
   callbacks: {
     create: {
       after: [
-        ProjectCreateUpdateContacts,
+        // ProjectCreateUpdateContacts,
         ProjectCreateUpdateOfficesAfter,
         ProjectCreateUpdateStatisticsAfter
       ],
       async: [
-        createAlgoliaObject
+        createAlgoliaObject,
+        createProjectUpdateContacts
       ]
     },
     update: {
       after: [
-        ProjectEditUpdateContacts,
+        // ProjectEditUpdateContacts,
         // ProjectEditUpdateHistoryAfter,
         ProjectEditUpdateStatusAfter
       ],
       async: [
         updateAlgoliaObject,
         updatePatches,
+        updateProjectUpdateContacts,
         updateProjectUpdateOffices
       ]
     }
