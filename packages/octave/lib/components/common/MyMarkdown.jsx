@@ -13,7 +13,7 @@ import { Link } from 'react-router-dom'
 import ReactMarkdown from 'react-markdown'
 import gfm from 'remark-gfm'
 
-export const renderers = {
+const renderers = {
   link: ({ href, children }) => {
     if (href.indexOf('/') === 0) {
       return <Link to={href}>{children}</Link>
