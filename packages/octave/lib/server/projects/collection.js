@@ -10,7 +10,7 @@ import {
   // ProjectCreateUpdateOfficesAfter,
   createProjectUpdateOffices,
   updateProjectUpdateOffices,
-  ProjectCreateUpdateStatisticsAfter,
+  createProjectUpdateStatistics,
   ProjectEditUpdateStatusAfter,
   // ProjectEditUpdateHistoryAfter
 } from './callbacks/index.js'
@@ -22,7 +22,7 @@ extendCollection(Projects, {
       after: [
         // ProjectCreateUpdateContacts,
         // ProjectCreateUpdateOfficesAfter,
-        ProjectCreateUpdateStatisticsAfter
+        createProjectUpdateStatistics
       ],
       async: [
         createAlgoliaObject,
