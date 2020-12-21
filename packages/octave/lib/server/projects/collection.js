@@ -9,8 +9,9 @@ import {
   updateProjectUpdateOffices,
   ProjectCreateUpdateStatisticsAfter,
   ProjectEditUpdateStatusAfter,
-  ProjectEditUpdateHistoryAfter
+  // ProjectEditUpdateHistoryAfter
 } from './callbacks/index.js'
+import { updatePatches } from '../patches/callback'
 
 extendCollection(Projects, {
   callbacks: {
@@ -27,15 +28,38 @@ extendCollection(Projects, {
     update: {
       after: [
         ProjectEditUpdateContacts,
-        ProjectEditUpdateHistoryAfter,
+        // ProjectEditUpdateHistoryAfter,
         ProjectEditUpdateStatusAfter
       ],
       async: [
-        updateProjectUpdateOffices,
-        updateAlgoliaObject
+        updateAlgoliaObject,
+        updatePatches,
+        updateProjectUpdateOffices
       ]
     }
   }
 })
+
+// extendCollection(Projects, {
+//   callbacks: {
+//     create: {
+//       async: [
+//         createAlgoliaObject,
+//         createProjectUpdateContacts,
+//         createProjectUpdateOffices,
+//         createProjectUpdateStatistics
+//       ]
+//     },
+//     update: {
+//       async: [
+//         updateAlgoliaObject,
+//         updateProjectUpdateContacts,
+//         updateProjectUpdateOffices,
+//         updateProjectUpdateStatus,
+//         updatePatches
+//       ]
+//     }
+//   }
+// })
 
 Projects.rawCollection().createIndex({ updatedAt: -1 })

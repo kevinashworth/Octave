@@ -31,7 +31,8 @@ const keepOnlySubSchemaIds = (document) => {
 
 const doNotDiff = {
   Contacts: ['createdAt', 'updatedAt', 'allLinks', 'addressString', 'theAddress', 'allAddresses'],
-  Offices: ['createdAt', 'updatedAt', 'theContacts', 'theProjects']
+  Offices: ['createdAt', 'updatedAt', 'theContacts', 'theProjects'],
+  Projects: ['createdAt', 'updatedAt']
 }
 
 // this callbacks.update.async function has one parameter, 'properties',
