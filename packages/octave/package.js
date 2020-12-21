@@ -1,4 +1,4 @@
-const version = process.env.npm_package_version || '1.16.19'
+const version = process.env.npm_package_version || '1.16.20'
 
 Package.describe({
   name: 'octave',
