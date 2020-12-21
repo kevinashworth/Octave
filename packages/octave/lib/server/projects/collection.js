@@ -7,7 +7,8 @@ import {
   updateProjectUpdateContacts,
   // ProjectEditUpdateContacts,
   // ProjectCreateUpdateContacts,
-  ProjectCreateUpdateOfficesAfter,
+  // ProjectCreateUpdateOfficesAfter,
+  createProjectUpdateOffices,
   updateProjectUpdateOffices,
   ProjectCreateUpdateStatisticsAfter,
   ProjectEditUpdateStatusAfter,
@@ -20,12 +21,13 @@ extendCollection(Projects, {
     create: {
       after: [
         // ProjectCreateUpdateContacts,
-        ProjectCreateUpdateOfficesAfter,
+        // ProjectCreateUpdateOfficesAfter,
         ProjectCreateUpdateStatisticsAfter
       ],
       async: [
         createAlgoliaObject,
-        createProjectUpdateContacts
+        createProjectUpdateContacts,
+        createProjectUpdateOffices
       ]
     },
     update: {

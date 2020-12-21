@@ -6,43 +6,51 @@ import log from 'loglevel'
 import Offices from '../../../modules/offices/collection.js'
 import { isEmptyValue } from '../../../modules/helpers.js'
 
-export function ProjectCreateUpdateOfficesAfter (document, properties) {
+// export function ProjectCreateUpdateOfficesAfter (document, properties) {
+//   const project = document
+//   if (isEmptyValue(project.offices)) {
+//     return
+//   }
+
+//   project.offices.forEach(officeOfProject => {
+//     const office = Offices.findOne(officeOfProject.officeId) // TODO: error handling
+//     const newProject = {
+//       projectId: project._id
+//     }
+//     let updatedOfficeProjects = []
+
+//     // case 1: there are no projects on the office and office.projects is undefined
+//     if (!office.projects) {
+//       updatedOfficeProjects = [newProject]
+//     } else {
+//       const i = findIndex(office.projects, { projectId: project._id })
+//       updatedOfficeProjects = office.projects
+//       if (i < 0) {
+//         // case 2: this project is not on this office but other projects are and we're adding this project
+//         updatedOfficeProjects.push(newProject)
+//       } else {
+//         // case 3: this project is on this office and we're updating the info
+//         updatedOfficeProjects[i] = newProject
+//       }
+//     }
+//     const setObj = {
+//       projects: updatedOfficeProjects
+//     }
+//     if (!getSetting('mockaroo.seedDatabase')) {
+//       setObj.updatedAt = new Date()
+//     }
+//     Connectors.update(Offices, office._id, {
+//       $set: setObj
+//     })
+//   })
+// }
+
+// callbacks.create.async
+export const createProjectUpdateOffices = ({ document }) => {
   const project = document
-  if (isEmptyValue(project.offices)) {
-    return
+  if (!isEmptyValue(project.offices)) {
+    handleAddOffices(project.offices, project)
   }
-
-  project.offices.forEach(officeOfProject => {
-    const office = Offices.findOne(officeOfProject.officeId) // TODO: error handling
-    const newProject = {
-      projectId: project._id
-    }
-    let updatedOfficeProjects = []
-
-    // case 1: there are no projects on the office and office.projects is undefined
-    if (!office.projects) {
-      updatedOfficeProjects = [newProject]
-    } else {
-      const i = findIndex(office.projects, { projectId: project._id })
-      updatedOfficeProjects = office.projects
-      if (i < 0) {
-        // case 2: this project is not on this office but other projects are and we're adding this project
-        updatedOfficeProjects.push(newProject)
-      } else {
-        // case 3: this project is on this office and we're updating the info
-        updatedOfficeProjects[i] = newProject
-      }
-    }
-    const setObj = {
-      projects: updatedOfficeProjects
-    }
-    if (!getSetting('mockaroo.seedDatabase')) {
-      setObj.updatedAt = new Date()
-    }
-    Connectors.update(Offices, office._id, {
-      $set: setObj
-    })
-  })
 }
 
 // callbacks.udpate.async
@@ -88,12 +96,16 @@ const handleAddOffices = (offices, project) => {
         }
       }
 
+      const setObj = {
+        projects: newProjects
+      }
+      if (!getSetting('mockaroo.seedDatabase')) {
+        setObj.updatedAt = new Date()
+      }
       Connectors.update(Offices, office._id, {
-        $set: {
-          projects: newProjects,
-          updatedAt: new Date()
-        }
+        $set: setObj
       })
+
     }
   })
 }
