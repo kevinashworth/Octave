@@ -219,7 +219,9 @@
 		"sortTitle" : "blackgirdle bulrush",
 		"platformType" : "Theatrical",
 		"htmlSummary" : "<p><strong>SUMMARY:</strong> A past project for testing, created by triad-cypress-editor</p>\n",
-		"slug" : "blackgirdle-bulrush"
+		"slug" : "blackgirdle-bulrush",
+		"htmlNotes" : "<p><strong>NOTES:</strong> Link to <a href=\"/projects/sAHhv3MtpGD2M5fbJ/canada\">CANADA</a></p>\n<h2>GFM</h2>\n<h3>Autolink literals</h3>\n<p><a href=\"http://www.example.com\">www.example.com</a>, <a href=\"https://example.com\">https://example.com</a>, and <a href=\"mailto:contact@example.com\">contact@example.com</a>.</p>\n<h3>Strikethrough</h3>\n<p><del>one</del> or <del>two</del> tildes</p>\n<h3>Table</h3>\n<table>\n<thead>\n<tr>\n<th>a</th>\n<th>b</th>\n<th>c</th>\n<th>d</th>\n</tr>\n</thead>\n<tbody><tr>\n<td>plain</td>\n<td>left</td>\n<td>right</td>\n<td>center</td>\n</tr>\n<tr>\n<td>Lorem ipsum.</td>\n<td>Dolor sit.</td>\n<td>Consectetur.</td>\n<td>Adipiscing.</td>\n</tr>\n</tbody></table>\n",
+		"notes" : "Link to [CANADA](/projects/sAHhv3MtpGD2M5fbJ/canada)\n\n## GFM\n \n### Autolink literals\n \nwww.example.com, https://example.com, and contact@example.com.\n \n### Strikethrough\n \n~one~ or ~~two~~ tildes\n \n### Table\n \n| a | b  |  c |  d  |\n| - | :- | -: | :-: |\n| plain | left | right | center |\n| Lorem ipsum. | Dolor sit. | Consectetur. | Adipiscing. |\n \n"
 	},
 	{
 		"_id" : "fWfKmHjmFkSaZSNLS",
