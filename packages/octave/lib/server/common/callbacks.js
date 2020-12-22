@@ -15,12 +15,17 @@ export function deleteAlgoliaObject ({ document }) {
   if (getSetting('mockaroo.initializeAlgolia')) {
     shouldUpdateAlgolia = false
     warning = 'Skipping object update to initialize Algolia as a batch.'
-  } if (getSetting('mockaroo.updateAlgolia')) {
+  }
+  if (getSetting('mockaroo.updateAlgolia')) {
     shouldUpdateAlgolia = true
     warning = 'Updating object on Algolia.'
   } else if (!includes(DBS, db)) {
     shouldUpdateAlgolia = false
     warning = 'No Atlas, no mLab. Not sending to Algolia'
+  }
+  if (getSetting('cypress')) {
+    shouldUpdateAlgolia = true
+    warning = 'Cypress test environment. Sending to Algolia.'
   }
 
   if (!shouldUpdateAlgolia) {
@@ -31,12 +36,12 @@ export function deleteAlgoliaObject ({ document }) {
   if (Meteor.settings.private && Meteor.settings.private.algolia) {
     const applicationid = Meteor.settings.public.algolia.ApplicationID
     const algoliaindex = Meteor.settings.public.algolia.AlgoliaIndex
-    const addupdatekey = Meteor.settings.private.algolia.AddAndUpdateAPIKey
+    const deleteapikey = Meteor.settings.private.algolia.DeleteAPIKey
 
     const objectID = document._id
-    logger.info('About to deleteAlgoliaObject', objectID)
+    logger.info('About to deleteAlgoliaObject' + objectID)
 
-    const client = algoliasearch(applicationid, addupdatekey)
+    const client = algoliasearch(applicationid, deleteapikey)
     const index = client.initIndex(algoliaindex)
     index
       .deleteObject(objectID)

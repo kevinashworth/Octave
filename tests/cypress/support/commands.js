@@ -102,6 +102,14 @@ Cypress.Commands.add('showPastProjects', () => {
   cy.get('[data-cy=show-hide-past-projects]').click({ log: false })
 })
 
+Cypress.Commands.add('toggleSidebar', () => {
+  cy.get('[data-cy=sidebar-toggler]').filter(':visible').click()
+})
+
+Cypress.Commands.add('enterAlgoliaSearch', (search) => {
+  cy.get('[data-cy=search-input]').type(search)
+})
+
 // see https://github.com/cypress-io/cypress/issues/3942#issuecomment-485648100
 // Cypress.Commands.add('dragAndDrop', ({ subject, target, section = 'body' }) => {
 //   Cypress.log({

@@ -49,7 +49,7 @@ const Hits = ({ hits }) => {
               history.push(`${hit.url}`)
             }
             return (
-              <Dropdown.Item key={hit.objectID} onClick={handleClick} href={hit.url}>
+              <Dropdown.Item key={hit.objectID} onClick={handleClick} href={hit.url} data-cy='search-result'>
                 <Components.ErrorBoundary>
                   <Highlight attribute='name' hit={hit} />{' '}
                   <small className='text-muted'><Snippet attribute='body' hit={hit} /></small>
@@ -75,6 +75,7 @@ const SearchBox = ({ currentRefinement, refine }) => {
   return (
     <InputGroup>
       <FormControl
+        data-cy='search-input'
         onChange={event => refine(event.currentTarget.value)}
         placeholder='Search…'
         value={currentRefinement}

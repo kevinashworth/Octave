@@ -40,7 +40,7 @@ class AppSidebarToggler extends Component {
     const classes = classNames(className, 'navbar-toggler')
 
     return (
-      <Tag type='button' className={classes} {...attributes} onClick={(event) => this.sidebarToggle(event)} data-sidebar-toggler>
+      <Tag type='button' className={classes} {...attributes} onClick={(event) => this.sidebarToggle(event)} data-sidebar-toggler data-cy='sidebar-toggler'>
         {children || <span className='navbar-toggler-icon' />}
       </Tag>
     )
