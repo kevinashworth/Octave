@@ -1,9 +1,7 @@
-import { Connectors, getSetting } from 'meteor/vulcan:core'
+import { Connectors } from 'meteor/vulcan:core'
 import differenceWith from 'lodash/differenceWith'
 import findIndex from 'lodash/findIndex'
-import isEqual from 'lodash/isEqual'
 import remove from 'lodash/remove'
-import log from 'loglevel'
 import Contacts from '../../../modules/contacts/collection.js'
 import { isEmptyValue } from '../../../modules/helpers.js'
 
