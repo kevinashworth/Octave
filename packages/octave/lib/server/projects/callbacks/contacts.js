@@ -1,4 +1,4 @@
-import { Connectors, getSetting } from 'meteor/vulcan:core'
+import { Connectors } from 'meteor/vulcan:core'
 import Contacts from '../../../modules/contacts/collection.js'
 import differenceWith from 'lodash/differenceWith'
 import findIndex from 'lodash/findIndex'
@@ -51,14 +51,11 @@ const handleAddContacts = (contacts, project) => {
         return
       }
     }
-    const setObj = {
-      projects: updatedProjects
-    }
-    if (!getSetting('mockaroo.seedDatabase')) {
-      setObj.updatedAt = new Date()
-    }
     Connectors.update(Contacts, contact._id, {
-      $set: setObj
+      $set: {
+        projects: updatedProjects,
+        updatedAt: new Date()
+      }
     })
   })
 }
