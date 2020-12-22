@@ -9,5 +9,9 @@
   "ignoreTestFiles": "**/examples/*.js",
   "viewportHeight": 1160,
   "viewportWidth": 960,
-  "projectId": "7dnjhx"
+  "projectId": "7dnjhx",
+  "retries": {
+    "runMode": 10,
+    "openMode": 2
+  }
 }
