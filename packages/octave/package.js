@@ -1,8 +1,6 @@
-const version = process.env.npm_package_version || '1.16.21'
-
 Package.describe({
   name: 'octave',
-  version: version
+  version: '1.16.22'
 })
 
 Package.onUse(function (api) {

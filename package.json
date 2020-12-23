@@ -1,6 +1,6 @@
 {
   "name": "octave",
-  "version": "1.16.21",
+  "version": "1.16.22",
   "engines": {
     "node": "12.x",
     "npm": "^6.0"
@@ -38,7 +38,8 @@
     "start-testing": "meteor --port 4004 --settings settings-testing.json",
     "test": "start-server-and-test start-testing http://localhost:4004 cypress:open",
     "mockaroo": "cd mockaroo; ./mockaroo.sh; cd ..",
-    "start-mockaroo": "meteor --port 4004 --settings settings-mockaroo.json"
+    "start-mockaroo": "meteor --port 4004 --settings settings-mockaroo.json",
+    "release": "release-it"
   },
   "dependencies": {
     "@apollo/client": "^3.3.0-rc.0",
@@ -171,6 +172,7 @@
     "@babel/preset-env": "^7.12.7",
     "@babel/preset-react": "^7.12.7",
     "@cypress/code-coverage": "^3.8.6",
+    "@j-ulrich/release-it-regex-bumper": "^1.2.0",
     "@percy/cypress": "^2.3.3",
     "@storybook/addon-actions": "5.3.19",
     "@storybook/addon-knobs": "5.3.19",
@@ -203,6 +205,7 @@
     "eslint-plugin-react-hooks": "^4.2.0",
     "istanbul-lib-coverage": "^3.0.0",
     "nyc": "^15.1.0",
+    "release-it": "^14.2.2",
     "sass-loader": "^10.1.0",
     "scrap-meteor-loader": "0.0.1",
     "standard": "^16.0.3",

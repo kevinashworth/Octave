@@ -1,0 +1,21 @@
+{
+  "github": {
+    "release": true,
+    "tokenRef": "RELEASE_IT_GITHUB_TOKEN"
+  },
+  "npm": {
+    "publish": false
+  },
+  "plugins": {
+    "@j-ulrich/release-it-regex-bumper": {
+      "out": {
+        "files": [
+          "*settings*.json",
+          ".deploy/settings.json",
+          ".galaxy/settings*.json",
+          "packages/octave/package.js"
+        ]
+      }
+    }
+  }
+}
