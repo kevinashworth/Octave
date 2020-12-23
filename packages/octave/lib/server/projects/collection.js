@@ -3,36 +3,43 @@ import { Projects } from '../../modules/projects/collection.js'
 import {
   createAlgoliaObject,
   updateAlgoliaObject,
-  ProjectEditUpdateContacts,
-  ProjectCreateUpdateContacts,
-  ProjectCreateUpdateOfficesAfter,
+  createProjectUpdateContacts,
+  updateProjectUpdateContacts,
+  createProjectUpdateOffices,
   updateProjectUpdateOffices,
-  ProjectCreateUpdateStatisticsAfter,
-  ProjectEditUpdateStatusAfter,
-  ProjectEditUpdateHistoryAfter
+  createProjectUpdateStatistics,
+  updateProjectUpdateStatus
 } from './callbacks/index.js'
+import { deleteAlgoliaObject, deleteComments } from '../common/callbacks'
+import { updatePatches } from '../patches/callback'
 
 extendCollection(Projects, {
   callbacks: {
     create: {
       after: [
-        ProjectCreateUpdateContacts,
-        ProjectCreateUpdateOfficesAfter,
-        ProjectCreateUpdateStatisticsAfter
+        createProjectUpdateStatistics
       ],
       async: [
-        createAlgoliaObject
+        createAlgoliaObject,
+        createProjectUpdateContacts,
+        createProjectUpdateOffices
       ]
     },
     update: {
       after: [
-        ProjectEditUpdateContacts,
-        ProjectEditUpdateHistoryAfter,
-        ProjectEditUpdateStatusAfter
+        updateProjectUpdateStatus
       ],
       async: [
-        updateProjectUpdateOffices,
-        updateAlgoliaObject
+        updateAlgoliaObject,
+        updatePatches,
+        updateProjectUpdateContacts,
+        updateProjectUpdateOffices
+      ]
+    },
+    delete: {
+      async: [
+        deleteAlgoliaObject,
+        deleteComments
       ]
     }
   }

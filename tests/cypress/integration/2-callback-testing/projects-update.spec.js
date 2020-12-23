@@ -29,7 +29,6 @@ describe('Projects Update', () => {
     cy.fixture('output/callback-testing/testing-pastprojects.json').as('testingPastprojects')
   })
 
-  // 1 to 1
   it('reorder the contacts and offices on a 2-contact-2-office project', function () {
     const project = Cypress._.find(this.testingProjects, { projectTitle: 'INDONESIA' })
     const project2 = Cypress._.find(this.testingProjects, { projectTitle: 'THAILAND' })

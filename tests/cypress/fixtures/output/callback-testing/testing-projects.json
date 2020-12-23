@@ -139,38 +139,6 @@
 		"slug" : "indonesia"
 	},
 	{
-		"_id" : "T5JvuhpanYzKNHesQ",
-		"projectTitle" : "THAILAND",
-		"projectType" : "Feature Film",
-		"union" : "SAG-AFTRA",
-		"status" : "Shooting",
-		"shootingLocation" : "Paris, France",
-		"summary" : "A project for testing, created by triad-cypress-editor",
-		"offices" : [
-			{
-				"officeId" : "ZavyQgsCZMPgn9Jzv",
-				"officeName" : "KAZIO CASTING"
-			}
-		],
-		"contacts" : [
-			{
-				"contactId" : "2CvTAQHtRbjrQeiFy",
-				"contactName" : "SHANE SAVINS",
-				"contactTitle" : "Casting Director"
-			},
-			{
-				"contactId" : "8N6KuyzpQiAf4mGy6",
-				"contactName" : "QUINN QUICK",
-				"contactTitle" : "Associate"
-			}
-		],
-		"userId" : "yhaNiNHL4vKEytrCn",
-		"sortTitle" : "thailand",
-		"platformType" : "Theatrical",
-		"htmlSummary" : "<p><strong>SUMMARY:</strong> A project for testing, created by triad-cypress-editor</p>\n",
-		"slug" : "thailand"
-	},
-	{
 		"_id" : "APBNBmy89TtArTrn7",
 		"projectTitle" : "BANGLADESH",
 		"projectType" : "TV One Hour",
@@ -268,5 +236,38 @@
 		"platformType" : "Theatrical",
 		"htmlSummary" : "<p><strong>SUMMARY:</strong> A project for testing, created by triad-cypress-editor</p>\n<p>It has 3 contacts</p>\n",
 		"slug" : "sweden"
+	},
+	{
+		"_id" : "G6rCb36z5yhQhoHLB",
+		"projectTitle" : "THAILAND",
+		"projectType" : "TV One Hour",
+		"union" : "SAG-AFTRA",
+		"network" : "CBS",
+		"status" : "Casting",
+		"shootingLocation" : "New Orleans, LA",
+		"summary" : "A project for testing, created by triad-cypress-editor",
+		"offices" : [
+			{
+				"officeId" : "ZavyQgsCZMPgn9Jzv",
+				"officeName" : "KAZIO CASTING"
+			}
+		],
+		"contacts" : [
+			{
+				"contactId" : "2CvTAQHtRbjrQeiFy",
+				"contactName" : "SHANE SAVINS",
+				"contactTitle" : "Casting Director"
+			},
+			{
+				"contactId" : "8N6KuyzpQiAf4mGy6",
+				"contactName" : "QUINN QUICK",
+				"contactTitle" : "Associate"
+			}
+		],
+		"userId" : "yhaNiNHL4vKEytrCn",
+		"sortTitle" : "thailand",
+		"platformType" : "Broadcast",
+		"htmlSummary" : "<p><strong>SUMMARY:</strong> A project for testing, created by triad-cypress-editor</p>\n",
+		"slug" : "thailand"
 	}
 ]

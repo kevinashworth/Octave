@@ -225,7 +225,7 @@
 		],
 		"projects" : [
 			{
-				"projectId" : "T5JvuhpanYzKNHesQ",
+				"projectId" : "G6rCb36z5yhQhoHLB",
 				"projectTitle" : "THAILAND",
 				"titleForProject" : "Casting Director"
 			},
@@ -351,7 +351,7 @@
 		"body" : "A contact for testing, created by triad-cypress-editor\n\n2 Projects, 2 Past Projects",
 		"projects" : [
 			{
-				"projectId" : "T5JvuhpanYzKNHesQ",
+				"projectId" : "G6rCb36z5yhQhoHLB",
 				"projectTitle" : "THAILAND",
 				"titleForProject" : "Associate"
 			},
@@ -376,7 +376,6 @@
 		"userId" : "yhaNiNHL4vKEytrCn",
 		"displayName" : "QUINN QUICK",
 		"htmlBody" : "<p>A contact for testing, created by triad-cypress-editor</p>\n<p>2 Projects, 2 Past Projects</p>\n",
-		"addressString" : null,
 		"theAddress" : {
 			"state" : "",
 			"location" : "Unknown"

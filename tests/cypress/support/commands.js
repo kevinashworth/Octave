@@ -1,8 +1,8 @@
 /// <reference types="Cypress" />
 
 Cypress.Commands.add('login', () => {
-  const user = 'triad-cypress-editor'
-  const pass = 'password123'
+  const user = Cypress.env('username')
+  const pass = Cypress.env('password')
   const log = Cypress.log({
     name: 'login',
     displayName: 'LOGIN',
@@ -46,6 +46,18 @@ Cypress.Commands.add('resetTriad', () => {
     { timeout: 90000 }
   )
   log.end()
+})
+
+Cypress.Commands.add('readyForCypress', () => {
+  Cypress.log({
+    name: 'ready',
+    displayName: 'READY',
+    message: 'Ready for Cypress'
+  })
+  cy.visit('/')
+  cy.window().then((win) => {
+    expect(win.readyForCypress).to.be.true
+  })
 })
 
 Cypress.Commands.add('getTestingCollection', (collectionName) => {
@@ -100,6 +112,14 @@ Cypress.Commands.add('stubAlgolia', () => {
 
 Cypress.Commands.add('showPastProjects', () => {
   cy.get('[data-cy=show-hide-past-projects]').click({ log: false })
+})
+
+Cypress.Commands.add('toggleSidebar', () => {
+  cy.get('[data-cy=sidebar-toggler]').filter(':visible').click()
+})
+
+Cypress.Commands.add('enterAlgoliaSearch', (search) => {
+  cy.get('[data-cy=search-input]').type(search)
 })
 
 // see https://github.com/cypress-io/cypress/issues/3942#issuecomment-485648100

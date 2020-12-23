@@ -6,6 +6,7 @@ import {
   PastProjectEditUpdateOfficesBefore,
   PastProjectEditUpdateStatusAfter
 } from './callbacks/index.js'
+import { deleteAlgoliaObject, deleteComments } from '../common/callbacks'
 
 extendCollection(PastProjects, {
   callbacks: {
@@ -13,6 +14,12 @@ extendCollection(PastProjects, {
       before: [PastProjectEditUpdateOfficesBefore],
       after: [PastProjectEditUpdateContacts, PastProjectEditUpdateStatusAfter],
       async: [updateAlgoliaObject]
+    },
+    delete: {
+      async: [
+        deleteAlgoliaObject,
+        deleteComments
+      ]
     }
   }
 })

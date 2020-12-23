@@ -12,6 +12,7 @@ import {
   createOfficeUpdatePastProjects,
   updateOfficeUpdatePastProjects
 } from './callbacks/index.js'
+import { deleteAlgoliaObject, deleteComments } from '../common/callbacks'
 import { updatePatches } from '../patches/callback'
 
 extendCollection(Offices, {
@@ -37,6 +38,12 @@ extendCollection(Offices, {
         updateOfficeUpdateProjects,
         updateOfficeUpdatePastProjects,
         updatePatches
+      ]
+    },
+    delete: {
+      async: [
+        deleteAlgoliaObject,
+        deleteComments
       ]
     }
   }

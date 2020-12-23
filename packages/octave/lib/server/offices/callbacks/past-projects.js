@@ -1,7 +1,6 @@
 import { Connectors } from 'meteor/vulcan:core'
 import differenceWith from 'lodash/differenceWith'
 import findIndex from 'lodash/findIndex'
-import isEqual from 'lodash/isEqual'
 import remove from 'lodash/remove'
 import log from 'loglevel'
 import PastProjects from '../../../modules/past-projects/collection.js'
@@ -98,4 +97,3 @@ export const updateOfficeUpdatePastProjects = ({ document, originalDocument }) =
     handleAddPastProjects(pastProjectsThatWereAdded, newOffice)
   }
 }
-
