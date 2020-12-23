@@ -67,7 +67,7 @@ const MyFormSubmit = (props, context) => {
       {deleteDocument ? (
         <div>
           <hr />
-          <Button disabled={disabled} onClick={deleteDocument} variant='danger'>
+          <Button disabled={disabled} onClick={deleteDocument} variant={disabled ? 'light' : 'danger'}>
             <FormattedMessage id='forms.delete' />
           </Button>
           <br />
