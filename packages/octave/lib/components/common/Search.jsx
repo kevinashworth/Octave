@@ -12,7 +12,7 @@ import { Configure, connectHits, connectPoweredBy, connectSearchBox, connectStat
 // eslint-disable-next-line react/display-name
 const CustomToggle = forwardRef(({ children }, ref) => (
   <span ref={ref}>
-    {children} &nbsp;
+    {children}
   </span>
 ))
 
