@@ -1,6 +1,10 @@
 {
+  "git": {
+    "commitMessage": "${version}"
+  },
   "github": {
     "release": true,
+    "releaseName": "${version}",
     "tokenRef": "RELEASE_IT_GITHUB_TOKEN"
   },
   "npm": {
