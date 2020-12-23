@@ -4,18 +4,27 @@ Cypress.Commands.add('edit', () => {
   Cypress.log({
     name: 'edit',
     displayName: 'EDIT',
-    message: ['Click Edit button']
+    message: 'Edit document'
   })
-  cy.get('[data-cy=edit-button]').click({ force: true })
+  cy.get('[data-cy=edit-button]', { log: false }).click({ force: true, log: false })
 })
 
 Cypress.Commands.add('submit', () => {
   Cypress.log({
     name: 'submit',
     displayName: 'SUBMIT',
-    message: ['Submit form']
+    message: 'Submit form'
   })
-  cy.get('.form-submit > button').click()
+  cy.get('.form-submit > button', { log: false }).click({ log: false })
+})
+
+Cypress.Commands.add('delete', () => {
+  Cypress.log({
+    name: 'delete',
+    displayName: 'DELETE',
+    message: 'Delete document'
+  })
+  cy.get('[data-cy=delete-document]', { log: false }).click({ log: false })
 })
 
 Cypress.Commands.add('cancel', () => {

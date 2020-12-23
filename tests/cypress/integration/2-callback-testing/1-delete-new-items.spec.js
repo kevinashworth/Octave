@@ -28,25 +28,25 @@ describe('Delete Created Items', () => {
     cy.get('div.card-body > table > tbody > tr > td > a')
       .contains(project.projectTitle).click()
     cy.get('h2 > div > a').contains('Edit').click({ force: true })
-    cy.get('.delete-link').click()
+    cy.delete()
 
     cy.visit('/pastprojects')
     cy.get('div.card-body > table > tbody > tr > td > a')
       .contains(pastproject.projectTitle).click()
     cy.get('h2 > div > a').contains('Edit').click({ force: true })
-    cy.get('.delete-link').click()
+    cy.delete()
 
     cy.visit('/contacts')
     cy.get('div.card-body > table > tbody > tr > td > a')
       .contains(contact.lastName).click()
     cy.get('h2 > div > a').contains('Edit').click({ force: true })
-    cy.get('.delete-link').click()
+    cy.delete()
 
     cy.visit('/offices')
     cy.get('div.card-body > table > tbody > tr > td > a')
       .contains(office.displayName).click()
     cy.get('h2 > div > a').contains('Edit').click({ force: true })
-    cy.get('.delete-link').click()
+    cy.delete()
   })
 
   after(() => {

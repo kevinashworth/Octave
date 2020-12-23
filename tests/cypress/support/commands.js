@@ -54,8 +54,8 @@ Cypress.Commands.add('readyForCypress', () => {
     displayName: 'READY',
     message: 'Ready for Cypress'
   })
-  cy.visit('/')
-  cy.window().then((win) => {
+  cy.visit('/', { log: false })
+  cy.window({ log: false }).then((win) => {
     expect(win.readyForCypress).to.be.true
   })
 })

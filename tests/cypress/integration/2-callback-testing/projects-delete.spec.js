@@ -37,7 +37,7 @@ describe('Projects Delete', () => {
     const office = Cypress._.find(this.testingOffices, { displayName: 'KAZIO CASTING' })
     const log = Cypress.log({
       name: 'delete',
-      displayName: 'DELETE A PROJECT',
+      displayName: 'DELETE PROJECT',
       message: 'Delete a project, assert results of delete callbacks',
       autoEnd: false
     })
@@ -72,7 +72,7 @@ describe('Projects Delete', () => {
 
     // delete the project
     cy.edit()
-    cy.get('.delete-link').click()
+    cy.delete()
     cy.location().should((loc) => {
       expect(loc.pathname).to.eq('/projects/')
     })
