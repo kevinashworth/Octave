@@ -6,6 +6,7 @@ import React from 'react'
 import { useSelector } from 'react-redux'
 import { NavLink } from 'react-router-dom'
 import PropTypes from 'prop-types'
+import Button from 'react-bootstrap/Button'
 
 const MyFormSubmit = (props, context) => {
   const getMongoProvider = (state) => state.mongoProvider
@@ -66,9 +67,9 @@ const MyFormSubmit = (props, context) => {
       {deleteDocument ? (
         <div>
           <hr />
-          <NavLink to='#' onClick={deleteDocument} className={`delete-link ${collectionName}-delete-link btn btn-danger`} disabled={disabled}>
+          <Button disabled={disabled} onClick={deleteDocument} variant='danger'>
             <FormattedMessage id='forms.delete' />
-          </NavLink>
+          </Button>
           <br />
         </div>
       ) : null}
