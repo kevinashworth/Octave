@@ -1,5 +1,6 @@
 /* eslint-disable multiline-ternary */
-import { Components, replaceComponent } from 'meteor/vulcan:core'
+import { Components, replaceComponent, useCurrentUser } from 'meteor/vulcan:core'
+import Users from 'meteor/vulcan:users'
 import { FormattedMessage, intlShape } from 'meteor/vulcan:i18n'
 import React from 'react'
 import { useSelector } from 'react-redux'
@@ -22,6 +23,9 @@ const MyFormSubmit = (props, context) => {
   } = props
 
   const { clearForm } = context
+
+  const { currentUser } = useCurrentUser()
+  const disabled = !Users.canDelete({ collectionName, document, user: currentUser })
 
   let mySubmitLabel = submitLabel || context.intl.formatMessage({ id: 'forms.submit' })
   if (mongoProvider) {
@@ -62,7 +66,7 @@ const MyFormSubmit = (props, context) => {
       {deleteDocument ? (
         <div>
           <hr />
-          <NavLink to='#' onClick={deleteDocument} className={`delete-link ${collectionName}-delete-link btn btn-danger`}>
+          <NavLink to='#' onClick={deleteDocument} className={`delete-link ${collectionName}-delete-link btn btn-danger`} disabled={disabled}>
             <FormattedMessage id='forms.delete' />
           </NavLink>
           <br />
