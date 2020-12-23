@@ -13,8 +13,7 @@
           "*settings*.json",
           ".deploy/settings.json",
           ".galaxy/settings*.json",
-          "packages/octave/lib/package.js",
-          "packages/octave/lib/components/common/DefaultLayout/DefaultLayout.jsx"
+          "packages/octave/lib/package.js"
         ]
       }
     }
