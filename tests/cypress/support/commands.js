@@ -1,8 +1,8 @@
 /// <reference types="Cypress" />
 
 Cypress.Commands.add('login', () => {
-  const user = 'triad-cypress-editor'
-  const pass = 'password123'
+  const user = Cypress.env('username')
+  const pass = Cypress.env('password')
   const log = Cypress.log({
     name: 'login',
     displayName: 'LOGIN',
