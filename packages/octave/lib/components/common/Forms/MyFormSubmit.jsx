@@ -4,7 +4,6 @@ import Users from 'meteor/vulcan:users'
 import { FormattedMessage, intlShape } from 'meteor/vulcan:i18n'
 import React from 'react'
 import { useSelector } from 'react-redux'
-import { NavLink } from 'react-router-dom'
 import PropTypes from 'prop-types'
 import Button from 'react-bootstrap/Button'
 
