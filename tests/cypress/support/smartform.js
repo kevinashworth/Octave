@@ -18,6 +18,15 @@ Cypress.Commands.add('submit', () => {
   cy.get('.form-submit > button').click()
 })
 
+Cypress.Commands.add('delete', () => {
+  Cypress.log({
+    name: 'delete',
+    displayName: 'DELETE',
+    message: 'Delete document'
+  })
+  cy.get('[data-cy=delete-document]', { log: false }).click({ log: false })
+})
+
 Cypress.Commands.add('cancel', () => {
   Cypress.log({
     name: 'cancel',

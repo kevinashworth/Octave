@@ -72,7 +72,7 @@ describe('Projects Delete', () => {
 
     // delete the project
     cy.edit()
-    cy.get('.delete-link').click()
+    cy.delete()
     cy.location().should((loc) => {
       expect(loc.pathname).to.eq('/projects/')
     })
