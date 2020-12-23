@@ -48,6 +48,18 @@ Cypress.Commands.add('resetTriad', () => {
   log.end()
 })
 
+Cypress.Commands.add('readyForCypress', () => {
+  Cypress.log({
+    name: 'ready',
+    displayName: 'READY',
+    message: 'Ready for Cypress'
+  })
+  cy.visit('/')
+  cy.window().then((win) => {
+    expect(win.readyForCypress).to.be.true
+  })
+})
+
 Cypress.Commands.add('getTestingCollection', (collectionName) => {
   const log = Cypress.log({
     name: 'getTestingCollection',

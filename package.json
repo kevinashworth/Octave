@@ -34,9 +34,9 @@
     "docs": "jsdoc -c jsdoc.json",
     "cypress:open": "cypress open",
     "cypress:headless": "cypress run",
-    "start-server-production": "meteor --port 4004 --settings settings-testing.json --production",
-    "start-server": "meteor --port 4004 --settings settings-testing.json",
-    "test": "start-server-and-test start-server http://localhost:4004 cypress:open",
+    "start-testing-production": "meteor --port 4004 --settings settings-testing.json --production",
+    "start-testing": "meteor --port 4004 --settings settings-testing.json",
+    "test": "start-server-and-test start-testing http://localhost:4004 cypress:open",
     "mockaroo": "cd mockaroo; ./mockaroo.sh; cd ..",
     "start-mockaroo": "meteor --port 4004 --settings settings-mockaroo.json"
   },
