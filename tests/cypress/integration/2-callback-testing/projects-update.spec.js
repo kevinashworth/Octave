@@ -18,7 +18,6 @@ describe('Projects Update', () => {
     cy.getTestingCollection('contacts')
     cy.getTestingCollection('offices')
     cy.getTestingCollection('projects')
-    cy.getTestingCollection('pastprojects')
   })
 
   beforeEach(() => {
@@ -26,7 +25,6 @@ describe('Projects Update', () => {
     cy.fixture('output/callback-testing/testing-contacts.json').as('testingContacts')
     cy.fixture('output/callback-testing/testing-offices.json').as('testingOffices')
     cy.fixture('output/callback-testing/testing-projects.json').as('testingProjects')
-    cy.fixture('output/callback-testing/testing-pastprojects.json').as('testingPastprojects')
   })
 
   it('reorder the contacts and offices on a 2-contact-2-office project', function () {

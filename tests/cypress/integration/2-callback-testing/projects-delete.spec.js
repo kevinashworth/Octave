@@ -14,12 +14,10 @@ describe('Projects Delete', () => {
     Cypress.LocalStorage.clear = doNotClearLocalStorage
     cy.readyForCypress()
     cy.resetTriad()
-    // cy.stubAlgolia()
     cy.login()
     cy.getTestingCollection('contacts')
     cy.getTestingCollection('offices')
     cy.getTestingCollection('projects')
-    // cy.getTestingCollection('pastprojects')
   })
 
   beforeEach(() => {
@@ -27,7 +25,6 @@ describe('Projects Delete', () => {
     cy.fixture('output/callback-testing/testing-contacts.json').as('testingContacts')
     cy.fixture('output/callback-testing/testing-offices.json').as('testingOffices')
     cy.fixture('output/callback-testing/testing-projects.json').as('testingProjects')
-    // cy.fixture('output/callback-testing/testing-pastprojects.json').as('testingPastprojects')
   })
 
   it('delete a project', function () {
@@ -68,6 +65,7 @@ describe('Projects Delete', () => {
     cy.get('[data-cy=project-header]', { log: false }).contains(project.projectTitle)
     cy.toggleSidebar()
     cy.enterAlgoliaSearch(project.projectTitle)
+    cy.percySnapshot('Algolia Search Results')
     cy.get('[data-cy=search-result]').should('have.length', 1)
 
     // delete the project
