@@ -18,7 +18,6 @@ describe('Projects Create', () => {
     cy.getTestingCollection('contacts')
     cy.getTestingCollection('offices')
     cy.getTestingCollection('projects')
-    cy.getTestingCollection('pastprojects')
   })
 
   beforeEach(() => {
@@ -26,7 +25,6 @@ describe('Projects Create', () => {
     cy.fixture('output/callback-testing/testing-contacts.json').as('testingContacts')
     cy.fixture('output/callback-testing/testing-offices.json').as('testingOffices')
     cy.fixture('output/callback-testing/testing-projects.json').as('testingProjects')
-    cy.fixture('output/callback-testing/testing-pastprojects.json').as('testingPastprojects')
     cy.fixture('callback-testing.json').as('items')
   })
 
