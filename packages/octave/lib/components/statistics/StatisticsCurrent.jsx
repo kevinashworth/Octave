@@ -1,4 +1,4 @@
-import { Components, Utils, useMulti2, useSingle2, useUpdate, withMessages } from 'meteor/vulcan:core'
+import { Components, Utils, useMulti2, useSingle2, useUpdate2, withMessages } from 'meteor/vulcan:core'
 import React, { useState } from 'react'
 import Button from 'react-bootstrap/Button'
 import Card from 'react-bootstrap/Card'
@@ -27,9 +27,7 @@ const StatisticsCurrent = (props) => {
       }
     }
   })
-  const { updateStatistic } = useUpdate({
-    collection: Statistics
-  })
+  const [updateStatistic] = useUpdate2({ collection: Statistics });
 
   const { loading: loadingF, error: errorF, totalCount: featuresCasting } = useMulti2({
     collection: Projects,
@@ -106,8 +104,10 @@ const StatisticsCurrent = (props) => {
     }
     newStats.others.push({ date: new Date(), quantity: othersCasting })
     updateStatistic({
-      selector: { _id: 'HSEC7MWC9RFCJLEMP' },
-      data: newStats
+      input: {
+        id: 'HSEC7MWC9RFCJLEMP',
+        data: newStats
+      }
     }).then((results) => {
       flash({
         message: `Stats updated as of ${results.data.updateStatistic.data.updatedAt}`,
