@@ -34,7 +34,9 @@ describe('Markdown', () => {
     cy.get('[data-cy=pastproject-header]', { log: false }).contains(pastproject.projectTitle)
 
     // set flag on the window for assertion below
-    cy.window().then(w => w.beforeReload = true)
+    cy.window().then((win) => {
+      win.beforeReload = true
+    })
 
     // assert prepared links in "Production Notes:"
     cy.get('#past_projects_single_tabs-tabpane-main').within(() => {
