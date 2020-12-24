@@ -1,6 +1,6 @@
 Package.describe({
   name: 'octave',
-  version: '1.16.23'
+  version: '1.16.24'
 })
 
 Package.onUse(function (api) {
