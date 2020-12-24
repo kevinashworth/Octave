@@ -132,7 +132,7 @@ const StatisticsCurrent = (props) => {
           <ListGroup.Item>Pilots Casting: {pilotsCasting}</ListGroup.Item>
           <ListGroup.Item>Others Casting: {othersCasting}</ListGroup.Item>
         </ListGroup>
-        <Button onClick={() => writeStatistics()} disabled={disabled}>Write These Statistics to Database</Button>
+        <Button onClick={() => writeStatistics()} disabled={disabled} data-cy='write-statistics'>Write These Statistics to Database</Button>
       </Card.Body>
     </Card>
   )

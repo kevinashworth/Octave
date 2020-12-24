@@ -8,7 +8,7 @@ const Statistics = createCollection({
   permissions: {
     canCreate: ['members'],
     canRead: ['guests'],
-    canUpdate: ['owners', 'admins'],
+    canUpdate: ['editors', 'admins'],
     canDelete: ['owners', 'admins']
   }
 })

@@ -14,7 +14,7 @@
   "project": {
     "projectTitle": "Star Trek: Discovery",
     "projectType": "Feature Film",
-    "status": "See Notes",
+    "status": "Casting",
     "summary": "A project for testing, loaded by Cypress",
     "slug": "stark-trek-discovery"
   },
