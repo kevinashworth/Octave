@@ -12,22 +12,16 @@ import { CASTING_TITLES_ENUM } from '../../../modules/constants.js'
 import { useMount, useUnmount } from '../../../hooks'
 
 const SelectContactIdNameTitle = (props, context) => {
-  const [selectedIdOption, setSelectedIdOption] = useState(null)
-  const [contactName, setContactName] = useState('')
-  const [selectedTitleOption, setSelectedTitleOption] = useState(null)
-
   const { document: { contacts }, itemIndex, options, parentFieldName, path, value } = props
   const pathPrefix = parentFieldName + '.' + itemIndex + '.'
+  const selectedIdOption = find(options, { value: value })
+  const selectedTitleOption = find(CASTING_TITLES_ENUM, { value: contacts[itemIndex]?.contactTitle })
+  const [contactName, setContactName] = useState('')
 
   useMount(() => {
-    setSelectedIdOption(find(options, { value: value }))
     const name = contacts[itemIndex] && contacts[itemIndex].contactName
     if (name) {
       setContactName(name)
-    }
-    const title = contacts[itemIndex] && contacts[itemIndex].contactTitle
-    if (title) {
-      setSelectedTitleOption(find(CASTING_TITLES_ENUM, { value: title }))
     }
   })
 
@@ -40,7 +34,6 @@ const SelectContactIdNameTitle = (props, context) => {
       [path]: selectedOption && selectedOption.value,
       [pathPrefix + 'contactName']: selectedOption && selectedOption.label
     })
-    setSelectedIdOption(selectedOption)
     setContactName(selectedOption.label)
   }
 
@@ -61,7 +54,6 @@ const SelectContactIdNameTitle = (props, context) => {
     context.updateCurrentValues({
       [pathPrefix + 'contactTitle']: selectedOption && selectedOption.label
     })
-    setSelectedTitleOption(selectedOption)
   }
 
   let inputId = 'data-cy-select-contact-id'
