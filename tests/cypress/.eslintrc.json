@@ -3,15 +3,15 @@
     "cypress/globals": true
   },
   "extends": [
+    "standard",
     "plugin:cypress/recommended"
+  ],
+  "ignorePatterns": [
+    "integration/examples/*.js",
+    "scripts/addRachelTenner.js"
   ],
   "plugins": [
     "cypress"
   ],
-  "rules": {
-    "padded-blocks": [
-      1,
-      "always"
-    ]
-  }
+  "rules": {}
 }

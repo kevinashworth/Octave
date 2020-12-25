@@ -1,6 +1,6 @@
 repos:
-  - repo: https://github.com/standard/standardx
+  - repo: https://github.com/pre-commit/mirrors-eslint
     rev: master
     hooks:
-      - id: standardx
+      - id: eslint
         files: packages\/octave\/.*\.jsx?$
