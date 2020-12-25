@@ -1,6 +1,6 @@
 repos:
-  - repo: https://github.com/standard/standard
+  - repo: https://github.com/standard/standardx
     rev: master
     hooks:
-      - id: standard
+      - id: standardx
         files: packages\/octave\/.*\.jsx?$

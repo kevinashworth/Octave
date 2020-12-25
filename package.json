@@ -16,10 +16,10 @@
     "prepare": "cd mockaroo; ./mockaroo.sh",
     "prestart": "node .vulcan/prestart_vulcan.js",
     "postinstall": "patch-package; node mockaroo/postinstall.js",
-    "lint:fix": "standard --fix --verbose 'packages/octave/**/*.js' 'packages/octave/**/*.jsx'",
-    "lint:nofix": "standard --verbose 'packages/octave/**/*.js' 'packages/octave/**/*.jsx'",
-    "lint:cypress:fix": "standard --env mocha --fix --verbose 'tests/cypress/**/*.js'",
-    "lint:cypress:nofix": "standard --env mocha --verbose 'tests/cypress/**/*.js'",
+    "lint:fix": "standardx --fix --verbose 'packages/octave/**/*.js' 'packages/octave/**/*.jsx'",
+    "lint:nofix": "standardx --verbose 'packages/octave/**/*.js' 'packages/octave/**/*.jsx'",
+    "lint:cypress:fix": "standardx --env mocha --fix --verbose 'tests/cypress/**/*.js'",
+    "lint:cypress:nofix": "standardx --env mocha --verbose 'tests/cypress/**/*.js'",
     "storybook": "start-storybook -p 6006",
     "build-storybook": "build-storybook",
     "build:sass": "node-sass 'packages/octave/lib/stylesheets/main.scss' -o 'packages/octave/lib/stylesheets/compiled'",
@@ -208,30 +208,12 @@
     "release-it": "^14.2.2",
     "sass-loader": "^10.1.0",
     "scrap-meteor-loader": "0.0.1",
-    "standard": "^16.0.3",
+    "standardx": "^7.0.0",
     "start-server-and-test": "^1.11.6",
     "storybook-react-router": "^1.0.8",
     "style-loader": "^2.0.0",
     "vulcan-loader": "0.0.1",
     "webpack": "^4.44.2"
-  },
-  "standard": {
-    "globals": [
-      "_",
-      "Assets",
-      "Cypress",
-      "cy",
-      "expect",
-      "Meteor",
-      "Package",
-      "Vulcan"
-    ],
-    "ignore": [
-      "packages/octave/lib/components/common/coreui-react/**",
-      "docs/**",
-      "mockaroo/generated/**"
-    ],
-    "parser": "babel-eslint"
   },
   "browserslist": [
     "defaults"

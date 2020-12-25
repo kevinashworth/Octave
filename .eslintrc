@@ -1,9 +1,32 @@
 {
+  "env": {
+    "browser": true,
+    "commonjs": true,
+    "es6": true,
+    "meteor": true,
+    "mocha": true,
+    "node": true
+  },
   "extends": [
     "eslint:recommended",
     "plugin:react/recommended",
     "plugin:react-hooks/recommended",
     "plugin:meteor/recommended"
+  ],
+  "globals": {
+    "_": "readonly",
+    "Assets": "readonly",
+    "Cypress": "readonly",
+    "cy": "readonly",
+    "expect": "readonly",
+    "Meteor": "readonly",
+    "Package": "readonly",
+    "Vulcan": "readonly"
+  },
+  "ignorePatterns": [
+    "packages/octave/lib/components/common/coreui-react/**",
+    "docs/**",
+    "mockaroo/generated/**"
   ],
   "parser": "babel-eslint",
   "parserOptions": {
@@ -11,6 +34,14 @@
     "ecmaVersion": 6,
     "sourceType": "module"
   },
+  "plugins": [
+    "babel",
+    "graphql",
+    "meteor",
+    "react",
+    "react-hooks"
+  ],
+  "root": true,
   "rules": {
     "babel/array-bracket-spacing": 0,
     "babel/arrow-parens": 0,
@@ -54,29 +85,10 @@
       "single"
     ]
   },
-  "env": {
-    "browser": true,
-    "commonjs": true,
-    "es6": true,
-    "meteor": true,
-    "mocha": true,
-    "node": true
-  },
-  "plugins": [
-    "babel",
-    "graphql",
-    "meteor",
-    "react",
-    "react-hooks"
-  ],
   "settings": {
     "react": {
       "version": "detect"
     },
     "import/resolver": "meteor"
-  },
-  "root": true,
-  "globals": {
-    "Vulcan": "readonly"
   }
 }
