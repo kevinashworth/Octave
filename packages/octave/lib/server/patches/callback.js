@@ -54,15 +54,15 @@ export function updatePatches ({ currentUser, document, originalDocument, collec
   const trimmedDocument = cloneDeep(omitDeep(prunedDocument, doNotDiff[collectionName]))
   const trimmedOriginalDocument = cloneDeep(omitDeep(prunedOriginalDocument, doNotDiff[collectionName]))
 
-  log.debug('updatePatches trimmed document:')
-  console.dir(trimmedDocument)
-  log.debug('updatePatches trimmed originalDocument:')
-  console.dir(trimmedOriginalDocument)
+  // log.debug('updatePatches trimmed document:')
+  // console.dir(trimmedDocument)
+  // log.debug('updatePatches trimmed originalDocument:')
+  // console.dir(trimmedOriginalDocument)
 
   const patch = jsonpatch.compare(trimmedDocument, trimmedOriginalDocument, true)
 
-  log.debug('updatePatches patch:')
-  console.dir(patch)
+  // log.debug('updatePatches patch:')
+  // console.dir(patch)
 
   if (patch.length > 0) {
     const objectId = originalDocument._id

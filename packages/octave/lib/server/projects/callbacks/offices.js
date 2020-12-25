@@ -20,9 +20,9 @@ export const updateProjectUpdateOffices = ({ document, originalDocument }) => {
   const oldProject = originalDocument
   const officesThatWereAdded = differenceWith(newProject.offices, oldProject.offices, isSameOffice)
   const officesThatWereRemoved = differenceWith(oldProject.offices, newProject.offices, isSameOffice)
-  log.debug('updateProjectUpdateOffices:')
-  log.debug('officesThatWereAdded:', officesThatWereAdded)
-  log.debug('officesThatWereRemoved:', officesThatWereRemoved)
+  // log.debug('updateProjectUpdateOffices:')
+  // log.debug('officesThatWereAdded:', officesThatWereAdded)
+  // log.debug('officesThatWereRemoved:', officesThatWereRemoved)
   if (!isEmptyValue(officesThatWereRemoved)) {
     handleRemoveOffices(officesThatWereRemoved, newProject._id)
   }
