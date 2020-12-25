@@ -5,7 +5,6 @@ import findIndex from 'lodash/findIndex'
 import intersectionWith from 'lodash/intersectionWith'
 import isEqual from 'lodash/isEqual'
 import remove from 'lodash/remove'
-import log from 'loglevel'
 import { isEmptyValue } from '../../../modules/helpers.js'
 import { find } from 'lodash'
 
@@ -27,23 +26,12 @@ export const updateProjectUpdateContacts = ({ document, originalDocument }) => {
   const contactsThatWereUpdated = contactsThatAreSameId.filter((newContact) => {
     const oldContact = find(oldProject.contacts, { contactId: newContact.contactId })
     if (isEqual(newContact, oldContact)) {
-      // log.debug('not updated:')
-      // log.debug(oldContact)
-      // log.debug(newContact)
       return false
     } else {
-      log.debug('updated:')
-      log.debug(oldContact)
-      log.debug(newContact)
       return true
     }
   })
 
-  // log.debug('updateProjectUpdateContacts')
-  log.debug('contactsThatWereRemoved:', contactsThatWereRemoved)
-  log.debug('contactsThatWereAdded:', contactsThatWereAdded)
-  // log.debug('contactsThatAreSameId:', contactsThatAreSameId)
-  log.debug('contactsThatWereUpdated:', contactsThatWereUpdated)
   if (!isEmptyValue(contactsThatWereRemoved)) {
     handleRemoveContacts(contactsThatWereRemoved, newProject._id)
   }
@@ -121,9 +109,6 @@ const handleUpdateContacts = (contacts, project) => {
   const projectId = project._id
   contacts.forEach(updatedContact => {
     const contact = Contacts.findOne(updatedContact.contactId)
-    // console.log('contact title possibles.')
-    // console.log('project.contacts:', project.contacts)
-    // console.log('updatedContact?.contactTitle:', updatedContact?.contactTitle)
     const updatedProject = {
       projectId,
       projectTitle: project.projectTitle,
@@ -157,18 +142,3 @@ const isSameContactById = (a, b) => {
   const result = a.contactId === b.contactId
   return result
 }
-
-// const isUpdatedContact = (a, b) => {
-//   if (isSameContactById(a, b)) {
-//     if (!isEqual(a, b)) {
-//       log.debug('this contact is updated:')
-//       log.debug(a)
-//       log.debug(b)
-//       return true
-//     } else {
-//       return false
-//     }
-//   } else {
-//     return false
-//   }
-// }
