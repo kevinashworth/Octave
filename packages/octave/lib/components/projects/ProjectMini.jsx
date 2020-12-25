@@ -24,10 +24,19 @@ const ProjectMini = (props) => {
     return <MyLoader />
   }
 
+  const TitleForProject = ({ titleForProject }) => {
+    return (
+      <>
+        {' '}
+        (<span data-cy='title-for-project'>{titleForProject}</span>)
+      </>
+    )
+  }
+
   return (
     <Card.Text className='card-mini' data-cy='ProjectMini'>
       <b><Link to={`/projects/${project._id}/${project.slug}`} data-cy='project-link'>{project.projectTitle}</Link></b>
-      {titleForProject && ` (${titleForProject})`}
+      {titleForProject && <TitleForProject titleForProject={titleForProject} />}
       <br />
       <small data-cy='project-type-network-status'>
         {project.projectType} {project.network && ` – ${project.network} `} ({project.status})
