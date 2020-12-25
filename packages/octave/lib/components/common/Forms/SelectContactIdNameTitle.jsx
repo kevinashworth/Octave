@@ -1,7 +1,9 @@
-/*
+/**
  * Specialized 3-part Select for contactId (props.value), contactName, contactTitle
+ *
+ * NB:
  */
-import React, { useCallback, useState } from 'react'
+import React, { useRef, useState } from 'react'
 import PropTypes from 'prop-types'
 import find from 'lodash/find'
 import Form from 'react-bootstrap/Form'
@@ -37,14 +39,12 @@ const SelectContactIdNameTitle = (props, context) => {
     setContactName(selectedOption.label)
   }
 
-  // use debounce when both keyboard input and updateCurrentValues
-  // (but not other occurrences of updateCurrentValues)
-  const updateCurrentValues = (value) => {
+  // use debounce because both keyboard input and updateCurrentValues
+  const updateCurrentValuesDebounced = useRef(_debounce((value) => {
     context.updateCurrentValues({
       [pathPrefix + 'contactName']: value
     })
-  }
-  const updateCurrentValuesDebounced = useCallback(_debounce(updateCurrentValues, 250), [])
+  }, 250), []).current
   const handleNameChange = ({ currentTarget: { value } }) => {
     setContactName(value)
     updateCurrentValuesDebounced(value)
