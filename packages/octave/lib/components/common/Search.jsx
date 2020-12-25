@@ -125,7 +125,7 @@ const Algolia = () => {
         )}
       </Media>
       <CustomSearchBox />
-      <Dropdown show={true} drop='right' onToggle={toggle}>
+      <Dropdown show={show} drop='right' onToggle={toggle}>
         <CustomSearchResults />
       </Dropdown>
     </InstantSearch>
