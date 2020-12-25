@@ -19,29 +19,28 @@ const formatGroupLabel = data => (
 // Reminder about value: props.value is just a string while
 // CreatableSelect's value is an object with the keys label and value
 const MyCreatableSelect = (props, context) => {
-  const { itemIndex, itemProperties: { flattenedOptions }, label, path, placeholder } = props
+  const { itemIndex, itemProperties: { flattenedOptions }, label, path, placeholder, value: propsValue } = props
   const [options, setOptions] = useState(props.options)
   const [value, setValue] = useState(null)
 
-  // runs on mount; and runs on props change, needed for react-sortable-hoc reordering
+  // runs on mount and runs on props change, needed for react-sortable-hoc reordering
   useEffect(() => {
     let selectedOption = null
-    const value = props.value
-    if (value) {
+    if (propsValue) {
       // is it a value in the system
-      selectedOption = find(flattenedOptions, { label: value })
+      selectedOption = find(flattenedOptions, { label: propsValue })
       if (!selectedOption) {
         // is it a custom value already in the list
-        selectedOption = find(options, { label: value })
+        selectedOption = find(options, { label: propsValue })
         if (!selectedOption) {
           // else it is a new custom value
-          selectedOption = { value: value, label: value }
+          selectedOption = { value: propsValue, label: propsValue }
           setOptions([selectedOption, ...options])
         }
       }
       setValue(selectedOption)
     }
-  }, [props.value])
+  }, [flattenedOptions, options, propsValue])
 
   const handleChange = (newValue, actionMeta) => {
     if (actionMeta.action === 'create-option') {
