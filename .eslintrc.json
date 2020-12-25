@@ -1,0 +1,61 @@
+{
+  "env": {
+    "browser": true,
+    "commonjs": true,
+    "es6": true,
+    "meteor": true,
+    "mocha": true,
+    "node": true
+  },
+  "extends": [
+    "eslint-config-standard",
+    "eslint:recommended",
+    "plugin:react/recommended",
+    "plugin:react-hooks/recommended",
+    "plugin:meteor/recommended"
+  ],
+  "globals": {
+    "_": "readonly",
+    "Assets": "readonly",
+    "Cypress": "readonly",
+    "cy": "readonly",
+    "expect": "readonly",
+    "Meteor": "readonly",
+    "Package": "readonly",
+    "Vulcan": "readonly"
+  },
+  "ignorePatterns": [
+    "packages/octave/lib/components/common/coreui-react/**",
+    "docs/**",
+    "mockaroo/generated/**",
+    "packages/octave/lib/server/seeds/generated/*.js",
+    "packages/_*",
+    "*.graphql"
+  ],
+  "parser": "babel-eslint",
+  "parserOptions": {
+    "ecmaFeatures": {
+      "jsx": true
+    },
+    "ecmaVersion": 6,
+    "sourceType": "module"
+  },
+  "plugins": [
+    "babel",
+    "graphql",
+    "meteor",
+    "react",
+    "react-hooks"
+  ],
+  "root": true,
+  "rules": {
+    "meteor/audit-argument-checks": 0,
+    "react/prop-types": 0
+  },
+  "settings": {
+    "react": {
+      "version": "detect"
+    },
+    "import/resolver": "meteor"
+  }
+}

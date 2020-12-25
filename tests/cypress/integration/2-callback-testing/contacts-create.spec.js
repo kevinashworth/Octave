@@ -91,8 +91,8 @@ describe('Create Project', () => {
     })
 
     // verify all 8 items after create
-    cy.get('[data-cy=contact-header').should('contain', contact.firstName)
-    cy.get('[data-cy=contact-header').should('contain', contact.lastName)
+    cy.get('[data-cy=contact-header]').should('contain', contact.firstName)
+    cy.get('[data-cy=contact-header]').should('contain', contact.lastName)
     cy.get('[data-cy=contact-name-title-gender-body').should('contain', contact.title)
     cy.get('[data-cy=contact-name-title-gender-body').should('contain', contact.body)
     cy.get('[data-cy=project-link]').should('have.length', 3)

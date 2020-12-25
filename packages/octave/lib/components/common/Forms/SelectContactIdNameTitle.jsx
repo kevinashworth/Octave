@@ -1,7 +1,9 @@
-/*
+/**
  * Specialized 3-part Select for contactId (props.value), contactName, contactTitle
+ *
+ * NB:
  */
-import React, { useCallback, useState } from 'react'
+import React, { useRef, useState } from 'react'
 import PropTypes from 'prop-types'
 import find from 'lodash/find'
 import Form from 'react-bootstrap/Form'
@@ -12,22 +14,16 @@ import { CASTING_TITLES_ENUM } from '../../../modules/constants.js'
 import { useMount, useUnmount } from '../../../hooks'
 
 const SelectContactIdNameTitle = (props, context) => {
-  const [selectedIdOption, setSelectedIdOption] = useState(null)
-  const [contactName, setContactName] = useState('')
-  const [selectedTitleOption, setSelectedTitleOption] = useState(null)
-
   const { document: { contacts }, itemIndex, options, parentFieldName, path, value } = props
   const pathPrefix = parentFieldName + '.' + itemIndex + '.'
+  const selectedIdOption = find(options, { value: value })
+  const selectedTitleOption = find(CASTING_TITLES_ENUM, { value: contacts[itemIndex]?.contactTitle })
+  const [contactName, setContactName] = useState('')
 
   useMount(() => {
-    setSelectedIdOption(find(options, { value: value }))
     const name = contacts[itemIndex] && contacts[itemIndex].contactName
     if (name) {
       setContactName(name)
-    }
-    const title = contacts[itemIndex] && contacts[itemIndex].contactTitle
-    if (title) {
-      setSelectedTitleOption(find(CASTING_TITLES_ENUM, { value: title }))
     }
   })
 
@@ -40,18 +36,15 @@ const SelectContactIdNameTitle = (props, context) => {
       [path]: selectedOption && selectedOption.value,
       [pathPrefix + 'contactName']: selectedOption && selectedOption.label
     })
-    setSelectedIdOption(selectedOption)
     setContactName(selectedOption.label)
   }
 
-  // use debounce when both keyboard input and updateCurrentValues
-  // (but not other occurrences of updateCurrentValues)
-  const updateCurrentValues = (value) => {
+  // use debounce because both keyboard input and updateCurrentValues
+  const updateCurrentValuesDebounced = useRef(_debounce((value) => {
     context.updateCurrentValues({
       [pathPrefix + 'contactName']: value
     })
-  }
-  const updateCurrentValuesDebounced = useCallback(_debounce(updateCurrentValues, 250), [])
+  }, 250), []).current
   const handleNameChange = ({ currentTarget: { value } }) => {
     setContactName(value)
     updateCurrentValuesDebounced(value)
@@ -61,7 +54,6 @@ const SelectContactIdNameTitle = (props, context) => {
     context.updateCurrentValues({
       [pathPrefix + 'contactTitle']: selectedOption && selectedOption.label
     })
-    setSelectedTitleOption(selectedOption)
   }
 
   let inputId = 'data-cy-select-contact-id'

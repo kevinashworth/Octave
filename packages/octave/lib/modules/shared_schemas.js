@@ -172,6 +172,7 @@ export const officeSubSchema = createSchema({
     itemProperties: {
       flattenedOptions: FLAT_LOCATIONS_ENUM
     },
+    placeholder: 'Type or Select…',
     canRead: ['guests'],
     canCreate: ['editors', 'admins'],
     canUpdate: ['editors', 'admins']

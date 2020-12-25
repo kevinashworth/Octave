@@ -56,7 +56,7 @@ Cypress.Commands.add('readyForCypress', () => {
   })
   cy.visit('/', { log: false })
   cy.window({ log: false }).then((win) => {
-    expect(win.readyForCypress).to.be.true
+    assert.isTrue(win.readyForCypress)
   })
 })
 

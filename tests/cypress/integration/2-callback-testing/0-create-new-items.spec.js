@@ -26,24 +26,16 @@ describe('Create New Items', () => {
     cy.fixture('callback-testing.json').as('items')
   })
 
-  it.skip('verify test items not in database [redundant now]', function () {
-    const { contact, office, project, pastproject } = this.items
-    cy.visit('/contacts')
-    cy.get('div.card-body > table > tbody > tr > td > a')
-      .contains(contact.lastName).should('not.exist')
-    cy.visit('/offices')
-    cy.get('div.card-body > table > tbody > tr > td > a')
-      .contains(office.displayName).should('not.exist')
-    cy.visit('/projects')
-    cy.get('div.card-body > table > tbody > tr > td > a')
-      .contains(project.projectTitle).should('not.exist')
-    cy.visit('/pastprojects')
-    cy.get('div.card-body > table > tbody > tr > td > a')
-      .contains(pastproject.projectTitle).should('not.exist')
-  })
-
   it('create contact, office, project, pastproject', function () {
     const { contact, office, project, pastproject } = this.items
+    let beforeStat = 0
+
+    // Statistics before
+    cy.visit('/statistics/list')
+    cy.get('[data-cy=features-casting]').then(($span) => {
+      beforeStat = parseInt($span.text())
+      cy.log('features stat before', beforeStat)
+    })
 
     cy.visit('/contacts/new')
     cy.get('#firstName').type(contact.firstName)
@@ -51,23 +43,19 @@ describe('Create New Items', () => {
     cy.mySelect('title', contact.title)
     cy.get('#body').type(contact.body)
     cy.get('.form-submit > button').click()
-    // cy.get('h2.card-header').contains(contact.firstName)
+    cy.get('[data-cy=contact-header]').should('contain', contact.lastName)
     cy.location().then((location) => {
       cy.log(`created contact at ${location.pathname}`)
     })
-    cy.get('[data-cy=contact-header')
-      .should('contain', contact.lastName)
 
     cy.visit('/offices/new')
     cy.get('#displayName').type(office.displayName)
     cy.get('#body').type(office.body)
     cy.get('.form-submit > button').click()
-    // cy.get('h2.card-header').contains(office.displayName)
+    cy.get('[data-cy=office-header]').should('contain', office.displayName)
     cy.location().then((location) => {
       cy.log(`created office at ${location.pathname}`)
     })
-    cy.get('[data-cy=office-header')
-      .should('contain', office.displayName)
 
     cy.visit('/projects/new')
     cy.get('#projectTitle').type(project.projectTitle)
@@ -75,12 +63,10 @@ describe('Create New Items', () => {
     cy.mySelect('status', project.status)
     cy.get('#summary').type(project.summary)
     cy.get('.form-submit > button').click()
-    // cy.get('h2.card-header').contains(project.projectTitle)
+    cy.get('[data-cy=project-header]').should('contain', project.projectTitle)
     cy.location().then((location) => {
       cy.log(`created project at ${location.pathname}`)
     })
-    cy.get('[data-cy=project-header')
-      .should('contain', project.projectTitle)
 
     cy.visit('/projects/new')
     cy.get('#projectTitle').type(pastproject.projectTitle)
@@ -88,13 +74,20 @@ describe('Create New Items', () => {
     cy.mySelect('status', pastproject.status)
     cy.get('#summary').type(pastproject.summary)
     cy.get('.form-submit > button').click()
-    // cy.get('h2.card-header').contains(pastproject.projectTitle)
+    cy.get('[data-cy=project-header]').should('contain', pastproject.projectTitle)
     cy.get('[data-cy=edit-button]', { log: false }).click({ force: true })
     cy.get('.form-submit > button').click()
-    cy.get('[data-cy=pastproject-header')
-      .should('contain', pastproject.projectTitle)
+    cy.get('[data-cy=pastproject-header]').should('contain', pastproject.projectTitle)
     cy.location().then((location) => {
       cy.log(`created past project at ${location.pathname}`)
+    })
+
+    // Statistics after
+    cy.visit('/statistics/list')
+    cy.get('[data-cy=features-casting]').then(($span) => {
+      const stat = parseInt($span.text())
+      cy.log('features stat after', stat)
+      expect(stat - beforeStat).to.eq(1)
     })
   })
 

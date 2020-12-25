@@ -1,0 +1,17 @@
+{
+  "env": {
+    "cypress/globals": true
+  },
+  "extends": [
+    "eslint-config-standard",
+    "plugin:cypress/recommended"
+  ],
+  "ignorePatterns": [
+    "integration/examples/*.js",
+    "scripts/addRachelTenner.js"
+  ],
+  "plugins": [
+    "cypress"
+  ],
+  "rules": {}
+}

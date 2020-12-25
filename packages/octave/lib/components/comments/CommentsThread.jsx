@@ -1,5 +1,5 @@
 import { Components, registerComponent, Utils, useCurrentUser, useMulti2 } from 'meteor/vulcan:core'
-import React, { useEffect, useState } from 'react'
+import React, { useEffect } from 'react'
 import Card from 'react-bootstrap/Card'
 import clone from 'lodash/clone'
 import map from 'lodash/map'
@@ -16,12 +16,16 @@ const CommentsThread = (props) => {
     input: { filter: { objectId: { _eq: props.objectId } } },
     limit: 0
   })
-  const [commentsHeader, setCommentsHeader] = useState('Comments')
 
-  useEffect(() => {
+  const getCommentsHeader = (totalCount) => {
     const prefixWithNumber = totalCount > 0
     const commentsHeader = pluralize('Comment', totalCount, prefixWithNumber)
-    setCommentsHeader(commentsHeader)
+    return commentsHeader
+  }
+
+  const commentsHeader = getCommentsHeader(totalCount)
+
+  useEffect(() => {
     callbackFromSingle(commentsHeader)
   })
 

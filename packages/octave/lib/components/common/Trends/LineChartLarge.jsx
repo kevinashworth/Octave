@@ -222,7 +222,7 @@ function LineChartLarge (props) {
           </Col>
           <Col xs='12' sm='6' md='3' className='mb-2'>
             <strong>Features</strong>
-            <div className='text-muted'>{theStats.features[theStats.features.length - 1].quantity} Currently Casting</div>
+            <div className='text-muted'><span data-cy='features-casting'>{theStats.features[theStats.features.length - 1].quantity}</span> Currently Casting</div>
             <ProgressBar className='progress-xs mt-1' variant='info' now='100' />
           </Col>
           <Col xs='12' sm='6' md='3' className='mb-2'>

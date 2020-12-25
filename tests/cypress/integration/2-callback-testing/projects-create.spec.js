@@ -42,6 +42,14 @@ describe('Projects Create', () => {
       message: ['Creating a project then remove 2 out of 3 contacts.'],
       autoEnd: false
     })
+    let beforeStat = 0
+
+    // Statistics before
+    cy.visit('/statistics/list')
+    cy.get('[data-cy=features-casting]').then(($span) => {
+      beforeStat = parseInt($span.text())
+      cy.log('features stat before', beforeStat)
+    })
 
     // create
     cy.visit('/projects/new')
@@ -75,7 +83,7 @@ describe('Projects Create', () => {
     })
 
     // verify all 5 items after create
-    cy.get('[data-cy=project-header').should('contain', project.projectTitle)
+    cy.get('[data-cy=project-header]').should('contain', project.projectTitle)
     cy.get('[data-cy=contact-link]').should('have.length', 3)
     cy.get('[data-cy=contact-link]').first().should('contain', contact0.displayName)
     cy.get('[data-cy=contact-link]').eq(1).should('contain', contact1.displayName)
@@ -120,7 +128,7 @@ describe('Projects Create', () => {
       cy.submit()
 
       // verify all 5 items after udpate
-      cy.get('[data-cy=project-header').should('contain', project.projectTitle)
+      cy.get('[data-cy=project-header]').should('contain', project.projectTitle)
       cy.get('[data-cy=contact-link]').should('have.length', 1)
       cy.get('[data-cy=contact-link]').should('contain', contact1.displayName)
       cy.get('[data-cy=office-link]').should('have.length', 1)
@@ -150,6 +158,14 @@ describe('Projects Create', () => {
       cy.get('[data-cy=project-link]').should('not.contain', project.projectTitle)
     })
     cy.percySnapshot()
+
+    // Statistics after
+    cy.visit('/statistics/list')
+    cy.get('[data-cy=features-casting]').then(($span) => {
+      const stat = parseInt($span.text())
+      cy.log('features stat after', stat)
+      expect(stat - beforeStat).to.eq(1)
+    })
 
     cy.exec('rm temp-project-link.txt')
     log.end()

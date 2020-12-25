@@ -1,16 +1,4 @@
 {
-  "extends": [
-    "eslint:recommended",
-    "plugin:react/recommended",
-    "plugin:react-hooks/recommended",
-    "plugin:meteor/recommended"
-  ],
-  "parser": "babel-eslint",
-  "parserOptions": {
-    "allowImportExportEverywhere": true,
-    "ecmaVersion": 6,
-    "sourceType": "module"
-  },
   "rules": {
     "babel/array-bracket-spacing": 0,
     "babel/arrow-parens": 0,
@@ -48,35 +36,10 @@
         "varsIgnorePattern": "React|PropTypes|Component"
       }
     ],
-    "react/prop-types": 0,
+    ,
     "quotes": [
       1,
       "single"
     ]
-  },
-  "env": {
-    "browser": true,
-    "commonjs": true,
-    "es6": true,
-    "meteor": true,
-    "mocha": true,
-    "node": true
-  },
-  "plugins": [
-    "babel",
-    "graphql",
-    "meteor",
-    "react",
-    "react-hooks"
-  ],
-  "settings": {
-    "react": {
-      "version": "detect"
-    },
-    "import/resolver": "meteor"
-  },
-  "root": true,
-  "globals": {
-    "Vulcan": "readonly"
   }
 }
