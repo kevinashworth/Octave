@@ -8,7 +8,7 @@
     "node": true
   },
   "extends": [
-    "standard",
+    "eslint-config-standard",
     "eslint:recommended",
     "plugin:react/recommended",
     "plugin:react-hooks/recommended",
