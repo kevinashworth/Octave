@@ -12,8 +12,10 @@ const doNotClearLocalStorage = () => { }
 describe('Projects Update', () => {
   before(() => {
     Cypress.LocalStorage.clear = doNotClearLocalStorage
+    cy.downloadTriad()
     cy.resetTriad()
     cy.stubAlgolia()
+    cy.readyForCypress()
     cy.login()
     cy.getTestingCollection('contacts')
     cy.getTestingCollection('offices')
@@ -110,6 +112,81 @@ describe('Projects Update', () => {
     verifyRemainingItems()
     log.snapshot()
     cy.percySnapshot()
+
+    log.end()
+  })
+
+  it('contacts on a project: add, delete, and update titles', {
+    retries: {
+      runMode: 0,
+      openMode: 0
+    }
+  }, function () {
+    const project = Cypress._.find(this.testingProjects, { projectTitle: 'SWEDEN' })
+    const contact0 = Cypress._.find(this.testingContacts, { displayName: 'ADELIND ARONOW' })
+    const contact1 = Cypress._.find(this.testingContacts, { displayName: 'PANDORA PAFFLEY' })
+    const contact2 = Cypress._.find(this.testingContacts, { displayName: 'BRODIE BYRON' })
+    const contact3 = Cypress._.find(this.testingContacts, { displayName: 'SHANE SAVINS' })
+    const NEW_TITLE = 'Intern'
+    const log = Cypress.log({
+      name: 'c on a p',
+      displayName: 'CONTACTS ON A PROJECT',
+      message: 'Test handleAddContacts, handleRemoveContacts, handleUpdateContacts',
+      autoEnd: false
+    })
+
+    // verify all 5 items before
+    cy.goTo('projects', project)
+    cy.get('[data-cy=project-header]', { log: false }).contains(project.projectTitle)
+    cy.get('[data-cy=contact-link]').should('have.length', 3)
+    cy.get('[data-cy=contact-link]').first().should('contain', contact0.displayName)
+    cy.get('[data-cy=contact-link]').last().should('contain', contact2.displayName)
+    cy.goTo('contacts', contact0)
+    cy.get('[data-cy=contact-header]', { log: false }).contains(contact0.displayName)
+    cy.get('[data-cy=title-for-project]').should('not.exist')
+    cy.get('[data-cy=project-link]').should('contain', project.projectTitle)
+    cy.goTo('contacts', contact1)
+    cy.get('[data-cy=contact-header]', { log: false }).contains(contact1.displayName)
+    cy.get('[data-cy=project-link]').should('contain', project.projectTitle)
+    cy.goTo('contacts', contact2)
+    cy.get('[data-cy=contact-header]', { log: false }).contains(contact2.displayName)
+    cy.get('[data-cy=project-link]').should('contain', project.projectTitle)
+    cy.goTo('contacts', contact3)
+    cy.get('[data-cy=contact-header]', { log: false }).contains(contact3.displayName)
+    cy.get('[data-cy=project-link]').should('not.contain', project.projectTitle)
+    log.snapshot()
+
+    // edit
+    cy.goTo('projects', project)
+    cy.get('[data-cy=project-header]', { log: false }).contains(project.projectTitle, { log: false })
+    cy.edit()
+    cy.get('.form-section-contacts').within(() => {
+      cy.waitForContactOptions()
+      cy.clickRedRemoveButton(2)
+      cy.clickGreenAddButton()
+      cy.selectContactAndTitle(contact0.displayName, NEW_TITLE, 0)
+      cy.selectContactAndTitle(contact3.displayName, contact3.title, 3) // note to self: despite deletion, this is #contactId3 not #contactId2 in SmartForm
+    })
+    cy.submit()
+    cy.get('[data-cy=project-header]', { log: false }).contains(project.projectTitle, { log: false })
+
+    // verify all 5 items after
+    cy.get('[data-cy=contact-link]').should('have.length', 3)
+    cy.get('[data-cy=contact-link]').first().should('contain', contact0.displayName)
+    cy.get('[data-cy=contact-link]').last().should('contain', contact3.displayName)
+    cy.goTo('contacts', contact0)
+    cy.get('[data-cy=contact-header]', { log: false }).contains(contact0.displayName)
+    cy.get('[data-cy=project-link]').should('contain', project.projectTitle)
+    cy.get('[data-cy=title-for-project]').should('contain', NEW_TITLE)
+    cy.goTo('contacts', contact1)
+    cy.get('[data-cy=contact-header]', { log: false }).contains(contact1.displayName)
+    cy.get('[data-cy=project-link]').should('contain', project.projectTitle)
+    cy.goTo('contacts', contact2)
+    cy.get('[data-cy=contact-header]', { log: false }).contains(contact2.displayName)
+    cy.get('[data-cy=project-link]').should('not.exist')
+    cy.goTo('contacts', contact3)
+    cy.get('[data-cy=contact-header]', { log: false }).contains(contact3.displayName)
+    cy.get('[data-cy=project-link]').should('contain', project.projectTitle)
 
     log.end()
   })
