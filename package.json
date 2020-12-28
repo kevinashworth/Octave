@@ -1,6 +1,6 @@
 {
   "name": "octave",
-  "version": "1.16.25",
+  "version": "1.16.26",
   "engines": {
     "node": "12.x",
     "npm": "^6.0"
