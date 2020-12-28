@@ -7,7 +7,7 @@ import Dropdown from 'react-bootstrap/Dropdown'
 import FormControl from 'react-bootstrap/FormControl'
 import InputGroup from 'react-bootstrap/InputGroup'
 import algoliasearch from 'algoliasearch/lite'
-import { Configure, connectHits, connectPoweredBy, connectSearchBox, connectStateResults, Highlight, InstantSearch, Snippet } from 'react-instantsearch-dom'
+import { Configure, connectHits, connectSearchBox, connectStateResults, Highlight, InstantSearch, PoweredBy, Snippet } from 'react-instantsearch-dom'
 
 // eslint-disable-next-line react/display-name
 const CustomToggle = forwardRef(({ children }, ref) => (
@@ -30,17 +30,13 @@ const searchonlyapikey = Meteor.settings.public.algolia.SearchOnlyAPIKey
 const algoliaindex = Meteor.settings.public.algolia.AlgoliaIndex
 const searchClient = algoliasearch(applicationid, searchonlyapikey)
 
-const PoweredBy = ({ url }) => <a href={url} target='_blank' rel='noopener noreferrer'>Algolia</a>
-
-const CustomPoweredBy = connectPoweredBy(PoweredBy)
-
 const Hits = ({ hits }) => {
   const history = useHistory()
   return (
     <>
       <Dropdown.Toggle as={CustomToggle} id='algolia-dropdown' />
       <Dropdown.Menu popperConfig={popperConfig}>
-        <Dropdown.Header>Search powered by <CustomPoweredBy /></Dropdown.Header>
+        <Dropdown.Header className='text-right'><PoweredBy /></Dropdown.Header>
         {hits.length === 0
           ? <Dropdown.Item disabled>No search results</Dropdown.Item>
           : hits.map((hit) => {
