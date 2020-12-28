@@ -2,12 +2,14 @@ import { registerComponent, Components, withAccess } from 'meteor/vulcan:core'
 import React, { forwardRef, useState } from 'react'
 import { useHistory } from 'react-router-dom'
 import Media from 'react-media'
+import { createBreakpointHook } from '@restart/hooks/useBreakpoint'
 import Button from 'react-bootstrap/Button'
 import Dropdown from 'react-bootstrap/Dropdown'
 import FormControl from 'react-bootstrap/FormControl'
 import InputGroup from 'react-bootstrap/InputGroup'
 import algoliasearch from 'algoliasearch/lite'
 import { Configure, connectHits, connectSearchBox, connectStateResults, Highlight, InstantSearch, PoweredBy, Snippet } from 'react-instantsearch-dom'
+import { BREAKPOINTS } from '../../modules/constants'
 
 // eslint-disable-next-line react/display-name
 const CustomToggle = forwardRef(({ children }, ref) => (
@@ -16,13 +18,17 @@ const CustomToggle = forwardRef(({ children }, ref) => (
   </span>
 ))
 
-const popperConfig = {
-  modifiers: [{
-    name: 'offset',
-    options: {
-      offset: [0, 120]
-    }
-  }]
+const popperConfigFn = (isMobile) => {
+  const skidding = 10
+  const distance = isMobile ? 10 : 100
+  return {
+    modifiers: [{
+      name: 'offset',
+      options: {
+        offset: [skidding, distance]
+      }
+    }]
+  }
 }
 
 const applicationid = Meteor.settings.public.algolia.ApplicationID
@@ -32,10 +38,14 @@ const searchClient = algoliasearch(applicationid, searchonlyapikey)
 
 const Hits = ({ hits }) => {
   const history = useHistory()
+  const useBreakpoint = createBreakpointHook({
+    mobile: BREAKPOINTS.MOBILE
+  })
+  const isMobile = useBreakpoint({ mobile: 'down' })
   return (
     <>
       <Dropdown.Toggle as={CustomToggle} id='algolia-dropdown' />
-      <Dropdown.Menu popperConfig={popperConfig}>
+      <Dropdown.Menu popperConfig={popperConfigFn(isMobile)}>
         <Dropdown.Header className='text-right'><PoweredBy /></Dropdown.Header>
         {hits.length === 0
           ? <Dropdown.Item disabled>No search results</Dropdown.Item>
@@ -94,7 +104,7 @@ const Algolia = () => {
     }
   }
   const toggle = () => setShow(!show)
-  const breakpoints = [555, 720, 885, 1215]
+  const breakpoints = BREAKPOINTS.ALGOLIA.VERTICAL
   return (
     <InstantSearch
       indexName={algoliaindex}
