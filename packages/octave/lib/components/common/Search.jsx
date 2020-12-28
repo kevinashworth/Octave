@@ -2,27 +2,32 @@ import { registerComponent, Components, withAccess } from 'meteor/vulcan:core'
 import React, { forwardRef, useState } from 'react'
 import { useHistory } from 'react-router-dom'
 import Media from 'react-media'
+import { createBreakpointHook } from '@restart/hooks/useBreakpoint'
 import Button from 'react-bootstrap/Button'
 import Dropdown from 'react-bootstrap/Dropdown'
 import FormControl from 'react-bootstrap/FormControl'
 import InputGroup from 'react-bootstrap/InputGroup'
 import algoliasearch from 'algoliasearch/lite'
-import { Configure, connectHits, connectPoweredBy, connectSearchBox, connectStateResults, Highlight, InstantSearch, Snippet } from 'react-instantsearch-dom'
+import { Configure, connectHits, connectSearchBox, connectStateResults, Highlight, InstantSearch, PoweredBy, Snippet } from 'react-instantsearch-dom'
+import { BREAKPOINTS } from '../../modules/constants'
 
-// eslint-disable-next-line react/display-name
 const CustomToggle = forwardRef(({ children }, ref) => (
   <span ref={ref}>
     {children}
   </span>
 ))
 
-const popperConfig = {
-  modifiers: [{
-    name: 'offset',
-    options: {
-      offset: [0, 120]
-    }
-  }]
+const popperConfigFn = (isMobile) => {
+  const skidding = 10
+  const distance = isMobile ? 10 : 100
+  return {
+    modifiers: [{
+      name: 'offset',
+      options: {
+        offset: [skidding, distance]
+      }
+    }]
+  }
 }
 
 const applicationid = Meteor.settings.public.algolia.ApplicationID
@@ -30,17 +35,17 @@ const searchonlyapikey = Meteor.settings.public.algolia.SearchOnlyAPIKey
 const algoliaindex = Meteor.settings.public.algolia.AlgoliaIndex
 const searchClient = algoliasearch(applicationid, searchonlyapikey)
 
-const PoweredBy = ({ url }) => <a href={url} target='_blank' rel='noopener noreferrer'>Algolia</a>
-
-const CustomPoweredBy = connectPoweredBy(PoweredBy)
-
 const Hits = ({ hits }) => {
   const history = useHistory()
+  const useBreakpoint = createBreakpointHook({
+    mobile: BREAKPOINTS.MOBILE
+  })
+  const isMobile = useBreakpoint({ mobile: 'down' })
   return (
     <>
       <Dropdown.Toggle as={CustomToggle} id='algolia-dropdown' />
-      <Dropdown.Menu popperConfig={popperConfig}>
-        <Dropdown.Header>Search powered by <CustomPoweredBy /></Dropdown.Header>
+      <Dropdown.Menu popperConfig={popperConfigFn(isMobile)}>
+        <Dropdown.Header className='text-right'><PoweredBy /></Dropdown.Header>
         {hits.length === 0
           ? <Dropdown.Item disabled>No search results</Dropdown.Item>
           : hits.map((hit) => {
@@ -98,7 +103,7 @@ const Algolia = () => {
     }
   }
   const toggle = () => setShow(!show)
-  const breakpoints = [555, 720, 885, 1215]
+  const breakpoints = BREAKPOINTS.ALGOLIA.VERTICAL
   return (
     <InstantSearch
       indexName={algoliaindex}

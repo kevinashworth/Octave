@@ -431,3 +431,10 @@ export const BOOSTED = {
   pastprojects: 0,
   PASTPROJECTS: 0
 }
+
+export const BREAKPOINTS = {
+  ALGOLIA: {
+    VERTICAL: [555, 720, 885, 1215]
+  },
+  MOBILE: 576
+}
