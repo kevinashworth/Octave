@@ -94,7 +94,6 @@ const AdminComments = () => {
                 name: 'collectionName',
                 label: 'Coll. ',
                 sortable: true,
-                // eslint-disable-next-line react/display-name
                 component: ({ document }) => <small>{document.collectionName}</small>
               },
               {

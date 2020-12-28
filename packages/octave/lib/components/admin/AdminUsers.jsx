@@ -31,7 +31,6 @@ const AdminUsers = () => (
           columns={[
             {
               label: 'Avatar',
-              // eslint-disable-next-line react/display-name
               component: ({ document }) => <Components.Avatar user={document} size='xsmall' gutter='right' />
             },
             {
@@ -41,7 +40,6 @@ const AdminUsers = () => (
             {
               name: 'slug',
               sortable: true,
-              // eslint-disable-next-line react/display-name
               component: ({ document }) => <Link to={`/users/${document.slug}`} title={document.displayName}>{document.slug}</Link>
             },
             {

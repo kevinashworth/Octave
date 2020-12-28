@@ -11,7 +11,6 @@ import algoliasearch from 'algoliasearch/lite'
 import { Configure, connectHits, connectSearchBox, connectStateResults, Highlight, InstantSearch, PoweredBy, Snippet } from 'react-instantsearch-dom'
 import { BREAKPOINTS } from '../../modules/constants'
 
-// eslint-disable-next-line react/display-name
 const CustomToggle = forwardRef(({ children }, ref) => (
   <span ref={ref}>
     {children}
