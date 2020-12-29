@@ -27,7 +27,12 @@ describe('Projects Delete', () => {
     cy.fixture('output/callback-testing/testing-projects.json').as('testingProjects')
   })
 
-  it('delete a project', function () {
+  it('delete a project', {
+    retries: {
+      runMode: 0,
+      openMode: 0
+    }
+  }, function () {
     const project = Cypress._.find(this.testingProjects, { projectTitle: 'THAILAND' })
     const contact0 = Cypress._.find(this.testingContacts, { displayName: 'SHANE SAVINS' })
     const contact1 = Cypress._.find(this.testingContacts, { displayName: 'QUINN QUICK' })
