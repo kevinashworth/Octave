@@ -20,8 +20,13 @@ import ContactMini from '../packages/octave/lib/components/contacts/ContactMini.
 import OfficeMini from '../packages/octave/lib/components/offices/OfficeMini.jsx'
 import ProjectMini from '../packages/octave/lib/components/projects/ProjectMini.jsx'
 
-// be sure to run with -s./packages/octave/lib/stylesheets/custom
+// be sure to run with -s ./packages/octave/lib/stylesheets/custom, etc
+import '../packages/octave/lib/stylesheets/custom/algolia.css'
 import '../packages/octave/lib/stylesheets/custom/btn.css'
+import '../packages/octave/lib/stylesheets/custom/datatable.css'
+import '../packages/octave/lib/stylesheets/custom/misc.css'
+import '../packages/octave/lib/stylesheets/vendors/react-perfect-scrollbar.css'
+import '../packages/octave/lib/stylesheets/vendors/react-virtualized/styles.css'
 
 addDecorator(storyFn => <ThemeCard>{storyFn()}</ThemeCard>)
 
