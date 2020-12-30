@@ -11,7 +11,7 @@ input String_Selector {
   #_ilike: String
   _in: [String!]
   _is_null: Boolean
-  #_like: String
+  _like: String
   #_lt: String
   #_lte: String
   #_neq: String
@@ -23,8 +23,9 @@ input String_Selector {
 }
 
 input String_Array_Selector {
-  contains: String_Selector
-  # contains_all: [String_Selector]
+  _in: [String!]
+  _contains: String
+  # _contains_all: [String_Selector]
 }
 
 input Int_Selector {
@@ -117,6 +118,52 @@ input IntlValueInput{
 }
 directive @intl on FIELD_DEFINITION
 
+  input AuthPasswordInput {
+    email: String
+    password: String
+  }
+  type AuthResult {
+    token: String
+    userId: String
+  }
+  type LogoutResult {
+    userId: String
+  }
+
+  input SignupInput {
+    email: String
+    password: String
+  }
+  type SignupResult {
+    userId: String
+  }
+
+  input SetPasswordInput {
+    newPassword: String
+  }
+
+  #type SetPasswordResult # Will auth user again so we reuse AuthResult atm
+
+  input ResetPasswordInput {
+    token: String
+    newPassword: String
+  }
+  type ResetPasswordResult {
+    userId: String
+  }
+
+  input VerifyEmailInput {
+    token: String
+  }
+  type VerifyEmailResult {
+    userId: String
+  }
+
+  input AuthEmailInput {
+    email: String
+  }
+
+
 # A user object
 type User {
   _id: String 
@@ -137,18 +184,6 @@ type User {
   pageUrl: String 
   pagePath: String 
   editUrl: String 
-  dwellings: [UserDwellings] 
-  emailAddress: String 
-  emailVerified: Boolean 
-  commentCount: Float 
-  bio: String 
-  htmlBio: String 
-  website: String 
-  updatedAt: Date 
-  notifications_users: Boolean 
-  notifications_posts: Boolean 
-  notifications_comments: Boolean 
-  notifications_replies: Boolean 
 }
 
 
@@ -223,16 +258,6 @@ input CreateUserDataInput {
   email: String 
   twitterUsername: String 
   groups: [String] 
-  dwellings: [CreateUserDwellingsDataInput] 
-  emailAddress: String 
-  emailVerified: Boolean 
-  bio: String 
-  website: String 
-  updatedAt: Date 
-  notifications_users: Boolean 
-  notifications_posts: Boolean 
-  notifications_comments: Boolean 
-  notifications_replies: Boolean 
 }
 
 input UpdateUserInput{
@@ -255,16 +280,6 @@ input UpdateUserDataInput {
   email: String 
   twitterUsername: String 
   groups: [String] 
-  dwellings: [UpdateUserDwellingsDataInput] 
-  emailAddress: String 
-  emailVerified: Boolean 
-  bio: String 
-  website: String 
-  updatedAt: Date 
-  notifications_users: Boolean 
-  notifications_posts: Boolean 
-  notifications_comments: Boolean 
-  notifications_replies: Boolean 
 }
 
 input UserFilterInput {
@@ -286,22 +301,10 @@ input UserFilterInput {
   avatarUrl: String_Selector
   slug: String_Selector
   twitterUsername: String_Selector
-
+  groups: String_Array_Selector
   pageUrl: String_Selector
   pagePath: String_Selector
   editUrl: String_Selector
-
-  emailAddress: String_Selector
-  emailVerified: Boolean_Selector
-  commentCount: Float_Selector
-  bio: String_Selector
-  htmlBio: String_Selector
-  website: String_Selector
-  updatedAt: Date_Selector
-  notifications_users: Boolean_Selector
-  notifications_posts: Boolean_Selector
-  notifications_comments: Boolean_Selector
-  notifications_replies: Boolean_Selector
 }
 
 input UserSortInput {
@@ -322,18 +325,6 @@ input UserSortInput {
   pageUrl: SortOptions
   pagePath: SortOptions
   editUrl: SortOptions
-  dwellings: SortOptions
-  emailAddress: SortOptions
-  emailVerified: SortOptions
-  commentCount: SortOptions
-  bio: SortOptions
-  htmlBio: SortOptions
-  website: SortOptions
-  updatedAt: SortOptions
-  notifications_users: SortOptions
-  notifications_posts: SortOptions
-  notifications_comments: SortOptions
-  notifications_replies: SortOptions
 }
 
 input UserSelectorInput {
@@ -347,54 +338,6 @@ input UserSelectorUniqueInput {
   documentId: String # OpenCRUD backwards compatibility
   slug: String
 
-}
-
-
-type UserDwellings {
-  address: String 
-  verified: Boolean 
-}
-
-
-input CreateUserDwellingsInput {
-  data: CreateUserDwellingsDataInput!
-}
-
-input CreateUserDwellingsDataInput {
-  address: String 
-  verified: Boolean 
-}
-
-input UpdateUserDwellingsInput{
-  filter: UserDwellingsFilterInput
-  id: String
-  data: UpdateUserDwellingsDataInput!
-}
-
-input UpsertUserDwellingsInput{
-  filter: UserDwellingsFilterInput
-  id: String
-  data: UpdateUserDwellingsDataInput!
-}
-
-input UpdateUserDwellingsDataInput {
-  address: String 
-  verified: Boolean 
-}
-
-input UserDwellingsFilterInput {
-  _and: [UserDwellingsFilterInput]
-  _not: UserDwellingsFilterInput
-  _or: [UserDwellingsFilterInput]
-
-
-  address: String_Selector
-  verified: Boolean_Selector
-}
-
-input UserDwellingsSortInput {
-  address: SortOptions
-  verified: SortOptions
 }
 
 
@@ -1350,6 +1293,7 @@ input CreateProjectInput {
 
 input CreateProjectDataInput {
   projectTitle: String 
+  sortTitle: String 
   projectType: String 
   union: String 
   network: String 
@@ -1383,6 +1327,7 @@ input UpsertProjectInput{
 
 input UpdateProjectDataInput {
   projectTitle: String 
+  sortTitle: String 
   projectType: String 
   union: String 
   network: String 
@@ -2280,6 +2225,140 @@ input ContactPastProjectsSortInput {
 }
 
 
+# Type for Patches
+type Patch {
+  _id: String 
+  createdAt: Date 
+  userId: String 
+  updatedAt: String 
+  collectionName: String 
+  patches: [JSON] 
+}
+
+
+input DeletePatchInput{
+  filter: PatchFilterInput
+  id: String
+}
+
+input SinglePatchInput {
+  # filtering
+  filter: PatchFilterInput
+  sort: PatchSortInput
+  search: String
+  id: String
+
+  # backwards-compatibility
+  "Deprecated (use 'filter/id' fields instead)."
+  selector: PatchSelectorUniqueInput
+
+  # options (backwards-compatibility)
+  # Whether to enable caching for this query
+  enableCache: Boolean
+  # Return null instead of throwing MissingDocumentError
+  allowNull: Boolean
+}
+
+input MultiPatchInput {
+
+  # filtering
+  filter: PatchFilterInput
+  sort: PatchSortInput
+  search: String
+  offset: Int
+  limit: Int
+
+  # backwards-compatibility
+  # A JSON object that contains the query terms used to fetch data
+  "Deprecated (use 'filter/id' fields instead)."
+  terms: JSON
+
+  # options (backwards-compatibility)
+  # Whether to enable caching for this query
+  enableCache: Boolean
+  # Whether to calculate totalCount for this query
+  enableTotal: Boolean
+  
+}
+
+type SinglePatchOutput{
+  result: Patch
+}
+
+type  MultiPatchOutput{
+  results: [Patch]
+  totalCount: Int
+}
+
+type PatchMutationOutput{
+  data: Patch
+}
+
+input CreatePatchInput {
+  data: CreatePatchDataInput!
+}
+
+input CreatePatchDataInput {
+  updatedAt: String 
+  collectionName: String 
+  patches: [JSON] 
+}
+
+input UpdatePatchInput{
+  filter: PatchFilterInput
+  id: String
+  data: UpdatePatchDataInput!
+}
+
+input UpsertPatchInput{
+  filter: PatchFilterInput
+  id: String
+  data: UpdatePatchDataInput!
+}
+
+input UpdatePatchDataInput {
+  updatedAt: String 
+  collectionName: String 
+  patches: [JSON] 
+}
+
+input PatchFilterInput {
+  _and: [PatchFilterInput]
+  _not: PatchFilterInput
+  _or: [PatchFilterInput]
+
+
+  _id: String_Selector
+  createdAt: Date_Selector
+  userId: String_Selector
+  updatedAt: String_Selector
+  collectionName: String_Selector
+
+}
+
+input PatchSortInput {
+  _id: SortOptions
+  createdAt: SortOptions
+  userId: SortOptions
+  updatedAt: SortOptions
+  collectionName: SortOptions
+  patches: SortOptions
+}
+
+input PatchSelectorInput {
+  _and: [PatchSelectorInput]
+  _or: [PatchSelectorInput]
+
+}
+
+input PatchSelectorUniqueInput {
+  _id: String
+  documentId: String # OpenCRUD backwards compatibility
+  slug: String
+
+}
+
+
 # Type for PastProjects
 type PastProject {
   _id: String 
@@ -2747,6 +2826,340 @@ input PastProjectAddressesSortInput {
 }
 
 
+# Type for Statistics
+type Statistic {
+  _id: String 
+  createdAt: Date 
+  userId: String 
+  updatedAt: Date 
+  episodics: [StatisticEpisodics] 
+  pilots: [StatisticPilots] 
+  features: [StatisticFeatures] 
+  others: [StatisticOthers] 
+}
+
+
+input DeleteStatisticInput{
+  filter: StatisticFilterInput
+  id: String
+}
+
+input SingleStatisticInput {
+  # filtering
+  filter: StatisticFilterInput
+  sort: StatisticSortInput
+  search: String
+  id: String
+
+  # backwards-compatibility
+  "Deprecated (use 'filter/id' fields instead)."
+  selector: StatisticSelectorUniqueInput
+
+  # options (backwards-compatibility)
+  # Whether to enable caching for this query
+  enableCache: Boolean
+  # Return null instead of throwing MissingDocumentError
+  allowNull: Boolean
+}
+
+input MultiStatisticInput {
+
+  # filtering
+  filter: StatisticFilterInput
+  sort: StatisticSortInput
+  search: String
+  offset: Int
+  limit: Int
+
+  # backwards-compatibility
+  # A JSON object that contains the query terms used to fetch data
+  "Deprecated (use 'filter/id' fields instead)."
+  terms: JSON
+
+  # options (backwards-compatibility)
+  # Whether to enable caching for this query
+  enableCache: Boolean
+  # Whether to calculate totalCount for this query
+  enableTotal: Boolean
+  
+}
+
+type SingleStatisticOutput{
+  result: Statistic
+}
+
+type  MultiStatisticOutput{
+  results: [Statistic]
+  totalCount: Int
+}
+
+type StatisticMutationOutput{
+  data: Statistic
+}
+
+input CreateStatisticInput {
+  data: CreateStatisticDataInput!
+}
+
+input CreateStatisticDataInput {
+  episodics: [CreateStatisticEpisodicsDataInput] 
+  pilots: [CreateStatisticPilotsDataInput] 
+  features: [CreateStatisticFeaturesDataInput] 
+  others: [CreateStatisticOthersDataInput] 
+}
+
+input UpdateStatisticInput{
+  filter: StatisticFilterInput
+  id: String
+  data: UpdateStatisticDataInput!
+}
+
+input UpsertStatisticInput{
+  filter: StatisticFilterInput
+  id: String
+  data: UpdateStatisticDataInput!
+}
+
+input UpdateStatisticDataInput {
+  episodics: [UpdateStatisticEpisodicsDataInput] 
+  pilots: [UpdateStatisticPilotsDataInput] 
+  features: [UpdateStatisticFeaturesDataInput] 
+  others: [UpdateStatisticOthersDataInput] 
+}
+
+input StatisticFilterInput {
+  _and: [StatisticFilterInput]
+  _not: StatisticFilterInput
+  _or: [StatisticFilterInput]
+
+
+  _id: String_Selector
+  createdAt: Date_Selector
+  userId: String_Selector
+  updatedAt: Date_Selector
+
+
+
+
+}
+
+input StatisticSortInput {
+  _id: SortOptions
+  createdAt: SortOptions
+  userId: SortOptions
+  updatedAt: SortOptions
+  episodics: SortOptions
+  pilots: SortOptions
+  features: SortOptions
+  others: SortOptions
+}
+
+input StatisticSelectorInput {
+  _and: [StatisticSelectorInput]
+  _or: [StatisticSelectorInput]
+
+}
+
+input StatisticSelectorUniqueInput {
+  _id: String
+  documentId: String # OpenCRUD backwards compatibility
+  slug: String
+
+}
+
+
+type StatisticEpisodics {
+  date: Date 
+  quantity: Float 
+}
+
+
+input CreateStatisticEpisodicsInput {
+  data: CreateStatisticEpisodicsDataInput!
+}
+
+input CreateStatisticEpisodicsDataInput {
+  date: Date 
+  quantity: Float 
+}
+
+input UpdateStatisticEpisodicsInput{
+  filter: StatisticEpisodicsFilterInput
+  id: String
+  data: UpdateStatisticEpisodicsDataInput!
+}
+
+input UpsertStatisticEpisodicsInput{
+  filter: StatisticEpisodicsFilterInput
+  id: String
+  data: UpdateStatisticEpisodicsDataInput!
+}
+
+input UpdateStatisticEpisodicsDataInput {
+  date: Date 
+  quantity: Float 
+}
+
+input StatisticEpisodicsFilterInput {
+  _and: [StatisticEpisodicsFilterInput]
+  _not: StatisticEpisodicsFilterInput
+  _or: [StatisticEpisodicsFilterInput]
+
+
+  date: Date_Selector
+  quantity: Float_Selector
+}
+
+input StatisticEpisodicsSortInput {
+  date: SortOptions
+  quantity: SortOptions
+}
+
+
+type StatisticPilots {
+  date: Date 
+  quantity: Float 
+}
+
+
+input CreateStatisticPilotsInput {
+  data: CreateStatisticPilotsDataInput!
+}
+
+input CreateStatisticPilotsDataInput {
+  date: Date 
+  quantity: Float 
+}
+
+input UpdateStatisticPilotsInput{
+  filter: StatisticPilotsFilterInput
+  id: String
+  data: UpdateStatisticPilotsDataInput!
+}
+
+input UpsertStatisticPilotsInput{
+  filter: StatisticPilotsFilterInput
+  id: String
+  data: UpdateStatisticPilotsDataInput!
+}
+
+input UpdateStatisticPilotsDataInput {
+  date: Date 
+  quantity: Float 
+}
+
+input StatisticPilotsFilterInput {
+  _and: [StatisticPilotsFilterInput]
+  _not: StatisticPilotsFilterInput
+  _or: [StatisticPilotsFilterInput]
+
+
+  date: Date_Selector
+  quantity: Float_Selector
+}
+
+input StatisticPilotsSortInput {
+  date: SortOptions
+  quantity: SortOptions
+}
+
+
+type StatisticFeatures {
+  date: Date 
+  quantity: Float 
+}
+
+
+input CreateStatisticFeaturesInput {
+  data: CreateStatisticFeaturesDataInput!
+}
+
+input CreateStatisticFeaturesDataInput {
+  date: Date 
+  quantity: Float 
+}
+
+input UpdateStatisticFeaturesInput{
+  filter: StatisticFeaturesFilterInput
+  id: String
+  data: UpdateStatisticFeaturesDataInput!
+}
+
+input UpsertStatisticFeaturesInput{
+  filter: StatisticFeaturesFilterInput
+  id: String
+  data: UpdateStatisticFeaturesDataInput!
+}
+
+input UpdateStatisticFeaturesDataInput {
+  date: Date 
+  quantity: Float 
+}
+
+input StatisticFeaturesFilterInput {
+  _and: [StatisticFeaturesFilterInput]
+  _not: StatisticFeaturesFilterInput
+  _or: [StatisticFeaturesFilterInput]
+
+
+  date: Date_Selector
+  quantity: Float_Selector
+}
+
+input StatisticFeaturesSortInput {
+  date: SortOptions
+  quantity: SortOptions
+}
+
+
+type StatisticOthers {
+  date: Date 
+  quantity: Float 
+}
+
+
+input CreateStatisticOthersInput {
+  data: CreateStatisticOthersDataInput!
+}
+
+input CreateStatisticOthersDataInput {
+  date: Date 
+  quantity: Float 
+}
+
+input UpdateStatisticOthersInput{
+  filter: StatisticOthersFilterInput
+  id: String
+  data: UpdateStatisticOthersDataInput!
+}
+
+input UpsertStatisticOthersInput{
+  filter: StatisticOthersFilterInput
+  id: String
+  data: UpdateStatisticOthersDataInput!
+}
+
+input UpdateStatisticOthersDataInput {
+  date: Date 
+  quantity: Float 
+}
+
+input StatisticOthersFilterInput {
+  _and: [StatisticOthersFilterInput]
+  _not: StatisticOthersFilterInput
+  _or: [StatisticOthersFilterInput]
+
+
+  date: Date_Selector
+  quantity: Float_Selector
+}
+
+input StatisticOthersSortInput {
+  date: SortOptions
+  quantity: SortOptions
+}
+
+
 # Type for Comments
 type Comment {
   _id: String 
@@ -2908,478 +3321,10 @@ input CommentSelectorUniqueInput {
 }
 
 
-# Type for Patches
-type Patch {
-  _id: String 
-  createdAt: Date 
-  userId: String 
-  updatedAt: String 
-  collectionName: String 
-  patches: [JSON] 
-}
-
-
-input DeletePatchInput{
-  filter: PatchFilterInput
-  id: String
-}
-
-input SinglePatchInput {
-  # filtering
-  filter: PatchFilterInput
-  sort: PatchSortInput
-  search: String
-  id: String
-
-  # backwards-compatibility
-  "Deprecated (use 'filter/id' fields instead)."
-  selector: PatchSelectorUniqueInput
-
-  # options (backwards-compatibility)
-  # Whether to enable caching for this query
-  enableCache: Boolean
-  # Return null instead of throwing MissingDocumentError
-  allowNull: Boolean
-}
-
-input MultiPatchInput {
-
-  # filtering
-  filter: PatchFilterInput
-  sort: PatchSortInput
-  search: String
-  offset: Int
-  limit: Int
-
-  # backwards-compatibility
-  # A JSON object that contains the query terms used to fetch data
-  "Deprecated (use 'filter/id' fields instead)."
-  terms: JSON
-
-  # options (backwards-compatibility)
-  # Whether to enable caching for this query
-  enableCache: Boolean
-  # Whether to calculate totalCount for this query
-  enableTotal: Boolean
-  
-}
-
-type SinglePatchOutput{
-  result: Patch
-}
-
-type  MultiPatchOutput{
-  results: [Patch]
-  totalCount: Int
-}
-
-type PatchMutationOutput{
-  data: Patch
-}
-
-input CreatePatchInput {
-  data: CreatePatchDataInput!
-}
-
-input CreatePatchDataInput {
-  updatedAt: String 
-  collectionName: String 
-  patches: [JSON] 
-}
-
-input UpdatePatchInput{
-  filter: PatchFilterInput
-  id: String
-  data: UpdatePatchDataInput!
-}
-
-input UpsertPatchInput{
-  filter: PatchFilterInput
-  id: String
-  data: UpdatePatchDataInput!
-}
-
-input UpdatePatchDataInput {
-  updatedAt: String 
-  collectionName: String 
-  patches: [JSON] 
-}
-
-input PatchFilterInput {
-  _and: [PatchFilterInput]
-  _not: PatchFilterInput
-  _or: [PatchFilterInput]
-
-
-  _id: String_Selector
-  createdAt: Date_Selector
-  userId: String_Selector
-  updatedAt: String_Selector
-  collectionName: String_Selector
-
-}
-
-input PatchSortInput {
-  _id: SortOptions
-  createdAt: SortOptions
-  userId: SortOptions
-  updatedAt: SortOptions
-  collectionName: SortOptions
-  patches: SortOptions
-}
-
-input PatchSelectorInput {
-  _and: [PatchSelectorInput]
-  _or: [PatchSelectorInput]
-
-}
-
-input PatchSelectorUniqueInput {
-  _id: String
-  documentId: String # OpenCRUD backwards compatibility
-  slug: String
-
-}
-
-
-# Type for Statistics
-type Statistic {
-  _id: String 
-  createdAt: Date 
-  userId: String 
-  updatedAt: Date 
-  episodics: [StatisticEpisodics] 
-  pilots: [StatisticPilots] 
-  features: [StatisticFeatures] 
-  others: [StatisticOthers] 
-}
-
-
-input DeleteStatisticInput{
-  filter: StatisticFilterInput
-  id: String
-}
-
-input SingleStatisticInput {
-  # filtering
-  filter: StatisticFilterInput
-  sort: StatisticSortInput
-  search: String
-  id: String
-
-  # backwards-compatibility
-  "Deprecated (use 'filter/id' fields instead)."
-  selector: StatisticSelectorUniqueInput
-
-  # options (backwards-compatibility)
-  # Whether to enable caching for this query
-  enableCache: Boolean
-  # Return null instead of throwing MissingDocumentError
-  allowNull: Boolean
-}
-
-input MultiStatisticInput {
-
-  # filtering
-  filter: StatisticFilterInput
-  sort: StatisticSortInput
-  search: String
-  offset: Int
-  limit: Int
-
-  # backwards-compatibility
-  # A JSON object that contains the query terms used to fetch data
-  "Deprecated (use 'filter/id' fields instead)."
-  terms: JSON
-
-  # options (backwards-compatibility)
-  # Whether to enable caching for this query
-  enableCache: Boolean
-  # Whether to calculate totalCount for this query
-  enableTotal: Boolean
-  
-}
-
-type SingleStatisticOutput{
-  result: Statistic
-}
-
-type  MultiStatisticOutput{
-  results: [Statistic]
-  totalCount: Int
-}
-
-type StatisticMutationOutput{
-  data: Statistic
-}
-
-input CreateStatisticInput {
-  data: CreateStatisticDataInput!
-}
-
-input CreateStatisticDataInput {
-  episodics: [CreateStatisticEpisodicsDataInput] 
-  pilots: [CreateStatisticPilotsDataInput] 
-  features: [CreateStatisticFeaturesDataInput] 
-  others: [CreateStatisticOthersDataInput] 
-}
-
-input UpdateStatisticInput{
-  filter: StatisticFilterInput
-  id: String
-  data: UpdateStatisticDataInput!
-}
-
-input UpsertStatisticInput{
-  filter: StatisticFilterInput
-  id: String
-  data: UpdateStatisticDataInput!
-}
-
-input UpdateStatisticDataInput {
-  episodics: [UpdateStatisticEpisodicsDataInput] 
-  pilots: [UpdateStatisticPilotsDataInput] 
-  features: [UpdateStatisticFeaturesDataInput] 
-  others: [UpdateStatisticOthersDataInput] 
-}
-
-input StatisticFilterInput {
-  _and: [StatisticFilterInput]
-  _not: StatisticFilterInput
-  _or: [StatisticFilterInput]
-
-
-  _id: String_Selector
-  createdAt: Date_Selector
-  userId: String_Selector
-  updatedAt: Date_Selector
-
-
-
-
-}
-
-input StatisticSortInput {
-  _id: SortOptions
-  createdAt: SortOptions
-  userId: SortOptions
-  updatedAt: SortOptions
-  episodics: SortOptions
-  pilots: SortOptions
-  features: SortOptions
-  others: SortOptions
-}
-
-input StatisticSelectorInput {
-  _and: [StatisticSelectorInput]
-  _or: [StatisticSelectorInput]
-
-}
-
-input StatisticSelectorUniqueInput {
-  _id: String
-  documentId: String # OpenCRUD backwards compatibility
-  slug: String
-
-}
-
-
-type StatisticEpisodics {
-  date: String 
-  quantity: Float 
-}
-
-
-input CreateStatisticEpisodicsInput {
-  data: CreateStatisticEpisodicsDataInput!
-}
-
-input CreateStatisticEpisodicsDataInput {
-  date: String 
-  quantity: Float 
-}
-
-input UpdateStatisticEpisodicsInput{
-  filter: StatisticEpisodicsFilterInput
-  id: String
-  data: UpdateStatisticEpisodicsDataInput!
-}
-
-input UpsertStatisticEpisodicsInput{
-  filter: StatisticEpisodicsFilterInput
-  id: String
-  data: UpdateStatisticEpisodicsDataInput!
-}
-
-input UpdateStatisticEpisodicsDataInput {
-  date: String 
-  quantity: Float 
-}
-
-input StatisticEpisodicsFilterInput {
-  _and: [StatisticEpisodicsFilterInput]
-  _not: StatisticEpisodicsFilterInput
-  _or: [StatisticEpisodicsFilterInput]
-
-
-  date: String_Selector
-  quantity: Float_Selector
-}
-
-input StatisticEpisodicsSortInput {
-  date: SortOptions
-  quantity: SortOptions
-}
-
-
-type StatisticPilots {
-  date: String 
-  quantity: Float 
-}
-
-
-input CreateStatisticPilotsInput {
-  data: CreateStatisticPilotsDataInput!
-}
-
-input CreateStatisticPilotsDataInput {
-  date: String 
-  quantity: Float 
-}
-
-input UpdateStatisticPilotsInput{
-  filter: StatisticPilotsFilterInput
-  id: String
-  data: UpdateStatisticPilotsDataInput!
-}
-
-input UpsertStatisticPilotsInput{
-  filter: StatisticPilotsFilterInput
-  id: String
-  data: UpdateStatisticPilotsDataInput!
-}
-
-input UpdateStatisticPilotsDataInput {
-  date: String 
-  quantity: Float 
-}
-
-input StatisticPilotsFilterInput {
-  _and: [StatisticPilotsFilterInput]
-  _not: StatisticPilotsFilterInput
-  _or: [StatisticPilotsFilterInput]
-
-
-  date: String_Selector
-  quantity: Float_Selector
-}
-
-input StatisticPilotsSortInput {
-  date: SortOptions
-  quantity: SortOptions
-}
-
-
-type StatisticFeatures {
-  date: String 
-  quantity: Float 
-}
-
-
-input CreateStatisticFeaturesInput {
-  data: CreateStatisticFeaturesDataInput!
-}
-
-input CreateStatisticFeaturesDataInput {
-  date: String 
-  quantity: Float 
-}
-
-input UpdateStatisticFeaturesInput{
-  filter: StatisticFeaturesFilterInput
-  id: String
-  data: UpdateStatisticFeaturesDataInput!
-}
-
-input UpsertStatisticFeaturesInput{
-  filter: StatisticFeaturesFilterInput
-  id: String
-  data: UpdateStatisticFeaturesDataInput!
-}
-
-input UpdateStatisticFeaturesDataInput {
-  date: String 
-  quantity: Float 
-}
-
-input StatisticFeaturesFilterInput {
-  _and: [StatisticFeaturesFilterInput]
-  _not: StatisticFeaturesFilterInput
-  _or: [StatisticFeaturesFilterInput]
-
-
-  date: String_Selector
-  quantity: Float_Selector
-}
-
-input StatisticFeaturesSortInput {
-  date: SortOptions
-  quantity: SortOptions
-}
-
-
-type StatisticOthers {
-  date: String 
-  quantity: Float 
-}
-
-
-input CreateStatisticOthersInput {
-  data: CreateStatisticOthersDataInput!
-}
-
-input CreateStatisticOthersDataInput {
-  date: String 
-  quantity: Float 
-}
-
-input UpdateStatisticOthersInput{
-  filter: StatisticOthersFilterInput
-  id: String
-  data: UpdateStatisticOthersDataInput!
-}
-
-input UpsertStatisticOthersInput{
-  filter: StatisticOthersFilterInput
-  id: String
-  data: UpdateStatisticOthersDataInput!
-}
-
-input UpdateStatisticOthersDataInput {
-  date: String 
-  quantity: Float 
-}
-
-input StatisticOthersFilterInput {
-  _and: [StatisticOthersFilterInput]
-  _not: StatisticOthersFilterInput
-  _or: [StatisticOthersFilterInput]
-
-
-  date: String_Selector
-  quantity: Float_Selector
-}
-
-input StatisticOthersSortInput {
-  date: SortOptions
-  quantity: SortOptions
-}
-
-
 
 
 type Query {
-  SiteData: Site
+  siteData: Site
   
   currentUser: User
   
@@ -3413,23 +3358,17 @@ type Query {
   # A list of Contact documents matching a set of query terms
   contacts(input: MultiContactInput):  MultiContactOutput
   
-  # A single PastProject document fetched by ID or slug
-  pastProject(input: SinglePastProjectInput!): SinglePastProjectOutput
-  
-  # A list of PastProject documents matching a set of query terms
-  pastProjects(input: MultiPastProjectInput):  MultiPastProjectOutput
-  
-  # A single Comment document fetched by ID or slug
-  comment(input: SingleCommentInput!): SingleCommentOutput
-  
-  # A list of Comment documents matching a set of query terms
-  comments(input: MultiCommentInput):  MultiCommentOutput
-  
   # A single Patch document fetched by ID or slug
   patch(input: SinglePatchInput!): SinglePatchOutput
   
   # A list of Patch documents matching a set of query terms
   patches(input: MultiPatchInput):  MultiPatchOutput
+  
+  # A single PastProject document fetched by ID or slug
+  pastProject(input: SinglePastProjectInput!): SinglePastProjectOutput
+  
+  # A list of PastProject documents matching a set of query terms
+  pastProjects(input: MultiPastProjectInput):  MultiPastProjectOutput
   
   # A single Statistic document fetched by ID or slug
   statistic(input: SingleStatisticInput!): SingleStatisticOutput
@@ -3437,10 +3376,32 @@ type Query {
   # A list of Statistic documents matching a set of query terms
   statistics(input: MultiStatisticInput):  MultiStatisticOutput
   
+  # A single Comment document fetched by ID or slug
+  comment(input: SingleCommentInput!): SingleCommentOutput
+  
+  # A list of Comment documents matching a set of query terms
+  comments(input: MultiCommentInput):  MultiCommentOutput
+  
 }
   
 
 type Mutation {
+  authenticateWithPassword(input: AuthPasswordInput): AuthResult
+
+  logout: LogoutResult
+
+  signup(input: SignupInput): SignupResult
+
+  setPassword(input: SetPasswordInput): AuthResult
+
+  sendResetPasswordEmail(input: AuthEmailInput): Boolean
+
+  resetPassword(input: ResetPasswordInput): ResetPasswordResult
+
+  sendVerificationEmail(input: AuthEmailInput): Boolean
+
+  verifyEmail(input: VerifyEmailInput): VerifyEmailResult
+
   # Mutation for creating new User documents
   createUser(
   input: CreateUserInput,
@@ -3569,70 +3530,6 @@ type Mutation {
   selector: ContactSelectorUniqueInput
 ) : ContactMutationOutput
 
-  # Mutation for creating new PastProject documents
-  createPastProject(
-  input: CreatePastProjectInput,
-  "Deprecated (use 'input' field instead)."
-  data: CreatePastProjectDataInput
-) : PastProjectMutationOutput
-
-  # Mutation for updating a PastProject document
-  updatePastProject(
-  input: UpdatePastProjectInput,
-  "Deprecated (use 'input' field instead)."
-  selector: PastProjectSelectorUniqueInput,
-  "Deprecated (use 'input' field instead)."
-  data: UpdatePastProjectDataInput 
-) : PastProjectMutationOutput
-
-  # Mutation for upserting a PastProject document
-  upsertPastProject(
-  input: UpsertPastProjectInput,
-  "Deprecated (use 'input' field instead)."
-  selector: PastProjectSelectorUniqueInput,
-  "Deprecated (use 'input' field instead)."
-  data: UpdatePastProjectDataInput
-) : PastProjectMutationOutput
-
-  # Mutation for deleting a PastProject document
-  deletePastProject(
-  input: DeletePastProjectInput,
-  "Deprecated (use 'input' field instead)."
-  selector: PastProjectSelectorUniqueInput
-) : PastProjectMutationOutput
-
-  # Mutation for creating new Comment documents
-  createComment(
-  input: CreateCommentInput,
-  "Deprecated (use 'input' field instead)."
-  data: CreateCommentDataInput
-) : CommentMutationOutput
-
-  # Mutation for updating a Comment document
-  updateComment(
-  input: UpdateCommentInput,
-  "Deprecated (use 'input' field instead)."
-  selector: CommentSelectorUniqueInput,
-  "Deprecated (use 'input' field instead)."
-  data: UpdateCommentDataInput 
-) : CommentMutationOutput
-
-  # Mutation for upserting a Comment document
-  upsertComment(
-  input: UpsertCommentInput,
-  "Deprecated (use 'input' field instead)."
-  selector: CommentSelectorUniqueInput,
-  "Deprecated (use 'input' field instead)."
-  data: UpdateCommentDataInput
-) : CommentMutationOutput
-
-  # Mutation for deleting a Comment document
-  deleteComment(
-  input: DeleteCommentInput,
-  "Deprecated (use 'input' field instead)."
-  selector: CommentSelectorUniqueInput
-) : CommentMutationOutput
-
   # Mutation for creating new Patch documents
   createPatch(
   input: CreatePatchInput,
@@ -3665,6 +3562,38 @@ type Mutation {
   selector: PatchSelectorUniqueInput
 ) : PatchMutationOutput
 
+  # Mutation for creating new PastProject documents
+  createPastProject(
+  input: CreatePastProjectInput,
+  "Deprecated (use 'input' field instead)."
+  data: CreatePastProjectDataInput
+) : PastProjectMutationOutput
+
+  # Mutation for updating a PastProject document
+  updatePastProject(
+  input: UpdatePastProjectInput,
+  "Deprecated (use 'input' field instead)."
+  selector: PastProjectSelectorUniqueInput,
+  "Deprecated (use 'input' field instead)."
+  data: UpdatePastProjectDataInput 
+) : PastProjectMutationOutput
+
+  # Mutation for upserting a PastProject document
+  upsertPastProject(
+  input: UpsertPastProjectInput,
+  "Deprecated (use 'input' field instead)."
+  selector: PastProjectSelectorUniqueInput,
+  "Deprecated (use 'input' field instead)."
+  data: UpdatePastProjectDataInput
+) : PastProjectMutationOutput
+
+  # Mutation for deleting a PastProject document
+  deletePastProject(
+  input: DeletePastProjectInput,
+  "Deprecated (use 'input' field instead)."
+  selector: PastProjectSelectorUniqueInput
+) : PastProjectMutationOutput
+
   # Mutation for creating new Statistic documents
   createStatistic(
   input: CreateStatisticInput,
@@ -3696,6 +3625,38 @@ type Mutation {
   "Deprecated (use 'input' field instead)."
   selector: StatisticSelectorUniqueInput
 ) : StatisticMutationOutput
+
+  # Mutation for creating new Comment documents
+  createComment(
+  input: CreateCommentInput,
+  "Deprecated (use 'input' field instead)."
+  data: CreateCommentDataInput
+) : CommentMutationOutput
+
+  # Mutation for updating a Comment document
+  updateComment(
+  input: UpdateCommentInput,
+  "Deprecated (use 'input' field instead)."
+  selector: CommentSelectorUniqueInput,
+  "Deprecated (use 'input' field instead)."
+  data: UpdateCommentDataInput 
+) : CommentMutationOutput
+
+  # Mutation for upserting a Comment document
+  upsertComment(
+  input: UpsertCommentInput,
+  "Deprecated (use 'input' field instead)."
+  selector: CommentSelectorUniqueInput,
+  "Deprecated (use 'input' field instead)."
+  data: UpdateCommentDataInput
+) : CommentMutationOutput
+
+  # Mutation for deleting a Comment document
+  deleteComment(
+  input: DeleteCommentInput,
+  "Deprecated (use 'input' field instead)."
+  selector: CommentSelectorUniqueInput
+) : CommentMutationOutput
 
 }
 
