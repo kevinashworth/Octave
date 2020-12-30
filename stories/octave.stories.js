@@ -39,7 +39,10 @@ storiesOf('Octave/Common/ErrorBoundary', module)
 
 storiesOf('Octave/Common/LinkDetail', module)
   .add('Default', () => (
-    <LinkDetail link={projectData.links[0]} />
+    <>
+      <LinkDetail link={projectData.links[0]} />
+      <LinkDetail link={projectData.links[1]} />
+    </>
   ))
 
 storiesOf('Octave/Common/LineChartLarge', module)

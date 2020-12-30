@@ -71,5 +71,8 @@ setIntlConfig({
 // Register decorator
 addDecorator(withIntl);
 
+import { initializeRTL } from 'storybook-addon-rtl';
+initializeRTL();
+
 // Run storybook
 configure(loadStories, module);
