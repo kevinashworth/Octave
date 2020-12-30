@@ -211,6 +211,7 @@
     "sass-loader": "^10.1.0",
     "scrap-meteor-loader": "0.0.1",
     "start-server-and-test": "^1.11.7",
+    "storybook-addon-rtl": "^0.2.2",
     "storybook-react-router": "^1.0.8",
     "style-loader": "^2.0.0",
     "vulcan-loader": "0.0.1",
