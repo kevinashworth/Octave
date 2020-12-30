@@ -163,6 +163,13 @@ directive @intl on FIELD_DEFINITION
     email: String
   }
 
+type EmailResponse {
+  from: String
+  to: String
+  subject: String
+  success: JSON
+  error: String
+}
 
 # A user object
 type User {
@@ -179,11 +186,11 @@ type User {
   emailHash: String 
   avatarUrl: String 
   slug: String 
-  twitterUsername: String 
   groups: [String] 
   pageUrl: String 
   pagePath: String 
   editUrl: String 
+  createdAtFormatted(format: String = "YYYY/MM/DD"): String 
 }
 
 
@@ -256,7 +263,6 @@ input CreateUserDataInput {
   profile: JSON 
   displayName: String 
   email: String 
-  twitterUsername: String 
   groups: [String] 
 }
 
@@ -278,7 +284,6 @@ input UpdateUserDataInput {
   locale: String 
   displayName: String 
   email: String 
-  twitterUsername: String 
   groups: [String] 
 }
 
@@ -300,7 +305,6 @@ input UserFilterInput {
   emailHash: String_Selector
   avatarUrl: String_Selector
   slug: String_Selector
-  twitterUsername: String_Selector
   groups: String_Array_Selector
   pageUrl: String_Selector
   pagePath: String_Selector
@@ -320,7 +324,6 @@ input UserSortInput {
   emailHash: SortOptions
   avatarUrl: SortOptions
   slug: SortOptions
-  twitterUsername: SortOptions
   groups: SortOptions
   pageUrl: SortOptions
   pagePath: SortOptions
@@ -346,7 +349,7 @@ type Email {
   name: String 
   template: String 
   subject: String 
-  path: String 
+  testPath: String 
 }
 
 
@@ -417,14 +420,14 @@ input EmailFilterInput {
   name: String_Selector
   template: String_Selector
   subject: String_Selector
-  path: String_Selector
+  testPath: String_Selector
 }
 
 input EmailSortInput {
   name: SortOptions
   template: SortOptions
   subject: SortOptions
-  path: SortOptions
+  testPath: SortOptions
 }
 
 input EmailSelectorInput {
@@ -686,6 +689,8 @@ type Office {
   theState: String 
   theLocation: String 
   theZip: String 
+  createdAtFormatted(format: String = "YYYY/MM/DD"): String 
+  updatedAtFormatted(format: String = "YYYY/MM/DD"): String 
 }
 
 
@@ -1226,6 +1231,8 @@ type Project {
   addresses: [ProjectAddresses] 
   allAddresses: String 
   slug: String 
+  createdAtFormatted(format: String = "YYYY/MM/DD"): String 
+  updatedAtFormatted(format: String = "YYYY/MM/DD"): String 
 }
 
 
@@ -1687,6 +1694,8 @@ type Contact {
   projects: [ContactProjects] 
   pastProjects: [ContactPastProjects] 
   fullName: String 
+  createdAtFormatted(format: String = "YYYY/MM/DD"): String 
+  updatedAtFormatted(format: String = "YYYY/MM/DD"): String 
 }
 
 
@@ -2233,6 +2242,7 @@ type Patch {
   updatedAt: String 
   collectionName: String 
   patches: [JSON] 
+  createdAtFormatted(format: String = "YYYY/MM/DD"): String 
 }
 
 
@@ -2390,6 +2400,8 @@ type PastProject {
   allContactNames: String 
   addresses: [PastProjectAddresses] 
   allAddresses: String 
+  createdAtFormatted(format: String = "YYYY/MM/DD"): String 
+  updatedAtFormatted(format: String = "YYYY/MM/DD"): String 
 }
 
 
@@ -2836,6 +2848,8 @@ type Statistic {
   pilots: [StatisticPilots] 
   features: [StatisticFeatures] 
   others: [StatisticOthers] 
+  createdAtFormatted(format: String = "YYYY/MM/DD"): String 
+  updatedAtFormatted(format: String = "YYYY/MM/DD"): String 
 }
 
 
@@ -3179,6 +3193,8 @@ type Comment {
   isDeleted: Boolean 
   pagePath: String 
   pageUrl: String 
+  createdAtFormatted(format: String = "YYYY/MM/DD"): String 
+  postedAtFormatted(format: String = "YYYY/MM/DD"): String 
 }
 
 
@@ -3328,6 +3344,8 @@ type Query {
   
   currentUser: User
   
+  getDatabaseObject(id: String): JSON
+  
   # A single User document fetched by ID or slug
   user(input: SingleUserInput!): SingleUserOutput
   
@@ -3401,6 +3419,8 @@ type Mutation {
   sendVerificationEmail(input: AuthEmailInput): Boolean
 
   verifyEmail(input: VerifyEmailInput): VerifyEmailResult
+
+  testEmail(emailName: String) : EmailResponse
 
   # Mutation for creating new User documents
   createUser(
