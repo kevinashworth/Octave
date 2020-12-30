@@ -190,7 +190,18 @@ type User {
   pageUrl: String 
   pagePath: String 
   editUrl: String 
+  bio: String 
+  htmlBio: String 
+  commentCount: Float 
+  twitterUsername: String 
+  website: String 
+  updatedAt: Date 
+  notifications_users: Boolean 
+  notifications_posts: Boolean 
+  notifications_comments: Boolean 
+  notifications_replies: Boolean 
   createdAtFormatted(format: String = "YYYY/MM/DD"): String 
+  updatedAtFormatted(format: String = "YYYY/MM/DD"): String 
 }
 
 
@@ -264,6 +275,14 @@ input CreateUserDataInput {
   displayName: String 
   email: String 
   groups: [String] 
+  bio: String 
+  twitterUsername: String 
+  website: String 
+  updatedAt: Date 
+  notifications_users: Boolean 
+  notifications_posts: Boolean 
+  notifications_comments: Boolean 
+  notifications_replies: Boolean 
 }
 
 input UpdateUserInput{
@@ -285,6 +304,14 @@ input UpdateUserDataInput {
   displayName: String 
   email: String 
   groups: [String] 
+  bio: String 
+  twitterUsername: String 
+  website: String 
+  updatedAt: Date 
+  notifications_users: Boolean 
+  notifications_posts: Boolean 
+  notifications_comments: Boolean 
+  notifications_replies: Boolean 
 }
 
 input UserFilterInput {
@@ -309,6 +336,16 @@ input UserFilterInput {
   pageUrl: String_Selector
   pagePath: String_Selector
   editUrl: String_Selector
+  bio: String_Selector
+  htmlBio: String_Selector
+  commentCount: Float_Selector
+  twitterUsername: String_Selector
+  website: String_Selector
+  updatedAt: Date_Selector
+  notifications_users: Boolean_Selector
+  notifications_posts: Boolean_Selector
+  notifications_comments: Boolean_Selector
+  notifications_replies: Boolean_Selector
 }
 
 input UserSortInput {
@@ -328,6 +365,16 @@ input UserSortInput {
   pageUrl: SortOptions
   pagePath: SortOptions
   editUrl: SortOptions
+  bio: SortOptions
+  htmlBio: SortOptions
+  commentCount: SortOptions
+  twitterUsername: SortOptions
+  website: SortOptions
+  updatedAt: SortOptions
+  notifications_users: SortOptions
+  notifications_posts: SortOptions
+  notifications_comments: SortOptions
+  notifications_replies: SortOptions
 }
 
 input UserSelectorInput {
