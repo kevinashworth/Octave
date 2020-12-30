@@ -351,9 +351,6 @@ const theStats = {
       date: ISODate('2019-11-21T19:02:40.000Z'),
       quantity: 185
     }, {
-      date: ISODate('2019-11-22T20:47:00.000Z'),
-      quantity: 184
-    }, {
       date: ISODate('2019-12-03T04:56:11.000Z'),
       quantity: 183
     }, {
@@ -386,9 +383,6 @@ const theStats = {
     }, {
       date: ISODate('2019-12-21T23:31:22.000Z'),
       quantity: 186
-    }, {
-      date: ISODate('2019-12-27T03:39:26.000Z'),
-      quantity: 191
     }, {
       date: ISODate('2020-01-01T04:44:18.000Z'),
       quantity: 190
@@ -533,6 +527,12 @@ const theStats = {
     }, {
       date: ISODate('2020-06-05T22:17:37.017Z'),
       quantity: 25
+    }, {
+      date: ISODate('2020-11-22T20:47:00.000Z'),
+      quantity: 184
+    }, {
+      date: ISODate('2020-12-27T03:39:26.000Z'),
+      quantity: 191
     }
   ],
   features: [
@@ -804,9 +804,6 @@ const theStats = {
       date: ISODate('2019-12-17T18:02:07.000Z'),
       quantity: 48
     }, {
-      date: ISODate('2019-12-24T07:17:57.000Z'),
-      quantity: 49
-    }, {
       date: ISODate('2019-12-31T06:55:09.000Z'),
       quantity: 49
     }, {
@@ -914,6 +911,9 @@ const theStats = {
     }, {
       date: ISODate('2020-06-12T12:33:11.106Z'),
       quantity: 2
+    }, {
+      date: ISODate('2020-12-24T07:17:57.000Z'),
+      quantity: 49
     }
   ],
   pilots: [
@@ -1050,9 +1050,6 @@ const theStats = {
       date: ISODate('2019-12-14T06:51:59.000Z'),
       quantity: 10
     }, {
-      date: ISODate('2019-12-27T03:26:32.000Z'),
-      quantity: 11
-    }, {
       date: ISODate('2020-01-15T05:41:40.000Z'),
       quantity: 13
     }, {
@@ -1133,6 +1130,9 @@ const theStats = {
     }, {
       date: ISODate('2020-06-05T22:16:16.411Z'),
       quantity: 10
+    }, {
+      date: ISODate('2020-12-27T03:26:32.000Z'),
+      quantity: 11
     }
   ],
   others: [
@@ -1275,9 +1275,6 @@ const theStats = {
       date: ISODate('2019-12-17T01:08:13.000Z'),
       quantity: 25
     }, {
-      date: ISODate('2019-12-23T20:21:34.000Z'),
-      quantity: 23
-    }, {
       date: ISODate('2020-01-02T07:02:53.000Z'),
       quantity: 21
     }, {
@@ -1367,6 +1364,9 @@ const theStats = {
     }, {
       date: ISODate('2020-06-05T22:17:50.770Z'),
       quantity: 16
+    }, {
+      date: ISODate('2020-12-23T20:21:34.000Z'),
+      quantity: 23
     }
   ],
   userId: 'QzNMTJdveamHh8iGP',
