@@ -16,7 +16,7 @@ input String_Selector {
   #_lte: String
   #_neq: String
   #_nilike: String
-  #_nin: [String!]
+  _nin: [String!]
   #_nlike: String
   #_nsimilar: String
   #_similar: String
@@ -117,6 +117,12 @@ input IntlValueInput{
   value: String
 }
 directive @intl on FIELD_DEFINITION
+type Locale {
+  id: String,
+  label: String
+  dynamic: Boolean
+  strings: JSON
+}
 
   input AuthPasswordInput {
     email: String
@@ -200,8 +206,8 @@ type User {
   notifications_posts: Boolean 
   notifications_comments: Boolean 
   notifications_replies: Boolean 
-  createdAtFormatted(format: String = "YYYY/MM/DD"): String 
-  updatedAtFormatted(format: String = "YYYY/MM/DD"): String 
+  createdAtFormatted(format: String = "MMMM D YYYY, h:mm A"): String 
+  updatedAtFormatted(format: String = "MMMM D YYYY, h:mm A"): String 
 }
 
 
@@ -218,7 +224,7 @@ input SingleUserInput {
   id: String
 
   # backwards-compatibility
-  "Deprecated (use 'filter/id' fields instead)."
+  # Deprecated (use 'filter/id' fields instead).
   selector: UserSelectorUniqueInput
 
   # options (backwards-compatibility)
@@ -226,6 +232,8 @@ input SingleUserInput {
   enableCache: Boolean
   # Return null instead of throwing MissingDocumentError
   allowNull: Boolean
+  # An identifier to name the query's execution context
+  contextName: String
 }
 
 input MultiUserInput {
@@ -239,7 +247,7 @@ input MultiUserInput {
 
   # backwards-compatibility
   # A JSON object that contains the query terms used to fetch data
-  "Deprecated (use 'filter/id' fields instead)."
+  # Deprecated (use 'filter/id' fields instead).
   terms: JSON
 
   # options (backwards-compatibility)
@@ -247,7 +255,9 @@ input MultiUserInput {
   enableCache: Boolean
   # Whether to calculate totalCount for this query
   enableTotal: Boolean
-  
+  # An identifier to name the query's execution context
+  contextName: String
+
 }
 
 type SingleUserOutput{
@@ -265,6 +275,8 @@ type UserMutationOutput{
 
 input CreateUserInput {
   data: CreateUserDataInput!
+  # An identifier to name the mutation's execution context
+  contextName: String
 }
 
 input CreateUserDataInput {
@@ -289,12 +301,16 @@ input UpdateUserInput{
   filter: UserFilterInput
   id: String
   data: UpdateUserDataInput!
+  # An identifier to name the mutation's execution context
+  contextName: String
 }
 
 input UpsertUserInput{
   filter: UserFilterInput
   id: String
   data: UpdateUserDataInput!
+  # An identifier to name the mutation's execution context
+  contextName: String
 }
 
 input UpdateUserDataInput {
@@ -413,7 +429,7 @@ input SingleEmailInput {
   id: String
 
   # backwards-compatibility
-  "Deprecated (use 'filter/id' fields instead)."
+  # Deprecated (use 'filter/id' fields instead).
   selector: EmailSelectorUniqueInput
 
   # options (backwards-compatibility)
@@ -421,6 +437,8 @@ input SingleEmailInput {
   enableCache: Boolean
   # Return null instead of throwing MissingDocumentError
   allowNull: Boolean
+  # An identifier to name the query's execution context
+  contextName: String
 }
 
 input MultiEmailInput {
@@ -434,7 +452,7 @@ input MultiEmailInput {
 
   # backwards-compatibility
   # A JSON object that contains the query terms used to fetch data
-  "Deprecated (use 'filter/id' fields instead)."
+  # Deprecated (use 'filter/id' fields instead).
   terms: JSON
 
   # options (backwards-compatibility)
@@ -442,7 +460,9 @@ input MultiEmailInput {
   enableCache: Boolean
   # Whether to calculate totalCount for this query
   enableTotal: Boolean
-  
+  # An identifier to name the query's execution context
+  contextName: String
+
 }
 
 type SingleEmailOutput{
@@ -514,7 +534,7 @@ input SingleSettingInput {
   id: String
 
   # backwards-compatibility
-  "Deprecated (use 'filter/id' fields instead)."
+  # Deprecated (use 'filter/id' fields instead).
   selector: SettingSelectorUniqueInput
 
   # options (backwards-compatibility)
@@ -522,6 +542,8 @@ input SingleSettingInput {
   enableCache: Boolean
   # Return null instead of throwing MissingDocumentError
   allowNull: Boolean
+  # An identifier to name the query's execution context
+  contextName: String
 }
 
 input MultiSettingInput {
@@ -535,7 +557,7 @@ input MultiSettingInput {
 
   # backwards-compatibility
   # A JSON object that contains the query terms used to fetch data
-  "Deprecated (use 'filter/id' fields instead)."
+  # Deprecated (use 'filter/id' fields instead).
   terms: JSON
 
   # options (backwards-compatibility)
@@ -543,7 +565,9 @@ input MultiSettingInput {
   enableCache: Boolean
   # Whether to calculate totalCount for this query
   enableTotal: Boolean
-  
+  # An identifier to name the query's execution context
+  contextName: String
+
 }
 
 type SingleSettingOutput{
@@ -620,7 +644,7 @@ input SingleCallbackInput {
   id: String
 
   # backwards-compatibility
-  "Deprecated (use 'filter/id' fields instead)."
+  # Deprecated (use 'filter/id' fields instead).
   selector: CallbackSelectorUniqueInput
 
   # options (backwards-compatibility)
@@ -628,6 +652,8 @@ input SingleCallbackInput {
   enableCache: Boolean
   # Return null instead of throwing MissingDocumentError
   allowNull: Boolean
+  # An identifier to name the query's execution context
+  contextName: String
 }
 
 input MultiCallbackInput {
@@ -641,7 +667,7 @@ input MultiCallbackInput {
 
   # backwards-compatibility
   # A JSON object that contains the query terms used to fetch data
-  "Deprecated (use 'filter/id' fields instead)."
+  # Deprecated (use 'filter/id' fields instead).
   terms: JSON
 
   # options (backwards-compatibility)
@@ -649,7 +675,9 @@ input MultiCallbackInput {
   enableCache: Boolean
   # Whether to calculate totalCount for this query
   enableTotal: Boolean
-  
+  # An identifier to name the query's execution context
+  contextName: String
+
 }
 
 type SingleCallbackOutput{
@@ -706,6 +734,525 @@ input CallbackSelectorUniqueInput {
 }
 
 
+# Type for Patches
+type Patch {
+  _id: String 
+  createdAt: Date 
+  userId: String 
+  updatedAt: String 
+  collectionName: String 
+  patches: [JSON] 
+  createdAtFormatted(format: String = "MMMM D YYYY, h:mm A"): String 
+}
+
+
+input DeletePatchInput{
+  filter: PatchFilterInput
+  id: String
+}
+
+input SinglePatchInput {
+  # filtering
+  filter: PatchFilterInput
+  sort: PatchSortInput
+  search: String
+  id: String
+
+  # backwards-compatibility
+  # Deprecated (use 'filter/id' fields instead).
+  selector: PatchSelectorUniqueInput
+
+  # options (backwards-compatibility)
+  # Whether to enable caching for this query
+  enableCache: Boolean
+  # Return null instead of throwing MissingDocumentError
+  allowNull: Boolean
+  # An identifier to name the query's execution context
+  contextName: String
+}
+
+input MultiPatchInput {
+
+  # filtering
+  filter: PatchFilterInput
+  sort: PatchSortInput
+  search: String
+  offset: Int
+  limit: Int
+
+  # backwards-compatibility
+  # A JSON object that contains the query terms used to fetch data
+  # Deprecated (use 'filter/id' fields instead).
+  terms: JSON
+
+  # options (backwards-compatibility)
+  # Whether to enable caching for this query
+  enableCache: Boolean
+  # Whether to calculate totalCount for this query
+  enableTotal: Boolean
+  # An identifier to name the query's execution context
+  contextName: String
+
+}
+
+type SinglePatchOutput{
+  result: Patch
+}
+
+type  MultiPatchOutput{
+  results: [Patch]
+  totalCount: Int
+}
+
+type PatchMutationOutput{
+  data: Patch
+}
+
+input CreatePatchInput {
+  data: CreatePatchDataInput!
+  # An identifier to name the mutation's execution context
+  contextName: String
+}
+
+input CreatePatchDataInput {
+  updatedAt: String 
+  collectionName: String 
+  patches: [JSON] 
+}
+
+input UpdatePatchInput{
+  filter: PatchFilterInput
+  id: String
+  data: UpdatePatchDataInput!
+  # An identifier to name the mutation's execution context
+  contextName: String
+}
+
+input UpsertPatchInput{
+  filter: PatchFilterInput
+  id: String
+  data: UpdatePatchDataInput!
+  # An identifier to name the mutation's execution context
+  contextName: String
+}
+
+input UpdatePatchDataInput {
+  updatedAt: String 
+  collectionName: String 
+  patches: [JSON] 
+}
+
+input PatchFilterInput {
+  _and: [PatchFilterInput]
+  _not: PatchFilterInput
+  _or: [PatchFilterInput]
+
+
+  _id: String_Selector
+  createdAt: Date_Selector
+  userId: String_Selector
+  updatedAt: String_Selector
+  collectionName: String_Selector
+
+}
+
+input PatchSortInput {
+  _id: SortOptions
+  createdAt: SortOptions
+  userId: SortOptions
+  updatedAt: SortOptions
+  collectionName: SortOptions
+  patches: SortOptions
+}
+
+input PatchSelectorInput {
+  _and: [PatchSelectorInput]
+  _or: [PatchSelectorInput]
+
+}
+
+input PatchSelectorUniqueInput {
+  _id: String
+  documentId: String # OpenCRUD backwards compatibility
+  slug: String
+
+}
+
+
+# Type for Statistics
+type Statistic {
+  _id: String 
+  createdAt: Date 
+  userId: String 
+  updatedAt: Date 
+  episodics: [StatisticEpisodics] 
+  pilots: [StatisticPilots] 
+  features: [StatisticFeatures] 
+  others: [StatisticOthers] 
+  createdAtFormatted(format: String = "MMMM D YYYY, h:mm A"): String 
+  updatedAtFormatted(format: String = "MMMM D YYYY, h:mm A"): String 
+}
+
+
+input DeleteStatisticInput{
+  filter: StatisticFilterInput
+  id: String
+}
+
+input SingleStatisticInput {
+  # filtering
+  filter: StatisticFilterInput
+  sort: StatisticSortInput
+  search: String
+  id: String
+
+  # backwards-compatibility
+  # Deprecated (use 'filter/id' fields instead).
+  selector: StatisticSelectorUniqueInput
+
+  # options (backwards-compatibility)
+  # Whether to enable caching for this query
+  enableCache: Boolean
+  # Return null instead of throwing MissingDocumentError
+  allowNull: Boolean
+  # An identifier to name the query's execution context
+  contextName: String
+}
+
+input MultiStatisticInput {
+
+  # filtering
+  filter: StatisticFilterInput
+  sort: StatisticSortInput
+  search: String
+  offset: Int
+  limit: Int
+
+  # backwards-compatibility
+  # A JSON object that contains the query terms used to fetch data
+  # Deprecated (use 'filter/id' fields instead).
+  terms: JSON
+
+  # options (backwards-compatibility)
+  # Whether to enable caching for this query
+  enableCache: Boolean
+  # Whether to calculate totalCount for this query
+  enableTotal: Boolean
+  # An identifier to name the query's execution context
+  contextName: String
+
+}
+
+type SingleStatisticOutput{
+  result: Statistic
+}
+
+type  MultiStatisticOutput{
+  results: [Statistic]
+  totalCount: Int
+}
+
+type StatisticMutationOutput{
+  data: Statistic
+}
+
+input CreateStatisticInput {
+  data: CreateStatisticDataInput!
+  # An identifier to name the mutation's execution context
+  contextName: String
+}
+
+input CreateStatisticDataInput {
+  episodics: [CreateStatisticEpisodicsDataInput] 
+  pilots: [CreateStatisticPilotsDataInput] 
+  features: [CreateStatisticFeaturesDataInput] 
+  others: [CreateStatisticOthersDataInput] 
+}
+
+input UpdateStatisticInput{
+  filter: StatisticFilterInput
+  id: String
+  data: UpdateStatisticDataInput!
+  # An identifier to name the mutation's execution context
+  contextName: String
+}
+
+input UpsertStatisticInput{
+  filter: StatisticFilterInput
+  id: String
+  data: UpdateStatisticDataInput!
+  # An identifier to name the mutation's execution context
+  contextName: String
+}
+
+input UpdateStatisticDataInput {
+  episodics: [UpdateStatisticEpisodicsDataInput] 
+  pilots: [UpdateStatisticPilotsDataInput] 
+  features: [UpdateStatisticFeaturesDataInput] 
+  others: [UpdateStatisticOthersDataInput] 
+}
+
+input StatisticFilterInput {
+  _and: [StatisticFilterInput]
+  _not: StatisticFilterInput
+  _or: [StatisticFilterInput]
+
+
+  _id: String_Selector
+  createdAt: Date_Selector
+  userId: String_Selector
+  updatedAt: Date_Selector
+
+
+
+
+}
+
+input StatisticSortInput {
+  _id: SortOptions
+  createdAt: SortOptions
+  userId: SortOptions
+  updatedAt: SortOptions
+  episodics: SortOptions
+  pilots: SortOptions
+  features: SortOptions
+  others: SortOptions
+}
+
+input StatisticSelectorInput {
+  _and: [StatisticSelectorInput]
+  _or: [StatisticSelectorInput]
+
+}
+
+input StatisticSelectorUniqueInput {
+  _id: String
+  documentId: String # OpenCRUD backwards compatibility
+  slug: String
+
+}
+
+
+type StatisticEpisodics {
+  date: Date 
+  quantity: Float 
+  dateFormatted(format: String = "MMMM D YYYY, h:mm A"): String 
+}
+
+
+input CreateStatisticEpisodicsInput {
+  data: CreateStatisticEpisodicsDataInput!
+  # An identifier to name the mutation's execution context
+  contextName: String
+}
+
+input CreateStatisticEpisodicsDataInput {
+  date: Date 
+  quantity: Float 
+}
+
+input UpdateStatisticEpisodicsInput{
+  filter: StatisticEpisodicsFilterInput
+  id: String
+  data: UpdateStatisticEpisodicsDataInput!
+  # An identifier to name the mutation's execution context
+  contextName: String
+}
+
+input UpsertStatisticEpisodicsInput{
+  filter: StatisticEpisodicsFilterInput
+  id: String
+  data: UpdateStatisticEpisodicsDataInput!
+  # An identifier to name the mutation's execution context
+  contextName: String
+}
+
+input UpdateStatisticEpisodicsDataInput {
+  date: Date 
+  quantity: Float 
+}
+
+input StatisticEpisodicsFilterInput {
+  _and: [StatisticEpisodicsFilterInput]
+  _not: StatisticEpisodicsFilterInput
+  _or: [StatisticEpisodicsFilterInput]
+
+
+  date: Date_Selector
+  quantity: Float_Selector
+}
+
+input StatisticEpisodicsSortInput {
+  date: SortOptions
+  quantity: SortOptions
+}
+
+
+type StatisticPilots {
+  date: Date 
+  quantity: Float 
+  dateFormatted(format: String = "MMMM D YYYY, h:mm A"): String 
+}
+
+
+input CreateStatisticPilotsInput {
+  data: CreateStatisticPilotsDataInput!
+  # An identifier to name the mutation's execution context
+  contextName: String
+}
+
+input CreateStatisticPilotsDataInput {
+  date: Date 
+  quantity: Float 
+}
+
+input UpdateStatisticPilotsInput{
+  filter: StatisticPilotsFilterInput
+  id: String
+  data: UpdateStatisticPilotsDataInput!
+  # An identifier to name the mutation's execution context
+  contextName: String
+}
+
+input UpsertStatisticPilotsInput{
+  filter: StatisticPilotsFilterInput
+  id: String
+  data: UpdateStatisticPilotsDataInput!
+  # An identifier to name the mutation's execution context
+  contextName: String
+}
+
+input UpdateStatisticPilotsDataInput {
+  date: Date 
+  quantity: Float 
+}
+
+input StatisticPilotsFilterInput {
+  _and: [StatisticPilotsFilterInput]
+  _not: StatisticPilotsFilterInput
+  _or: [StatisticPilotsFilterInput]
+
+
+  date: Date_Selector
+  quantity: Float_Selector
+}
+
+input StatisticPilotsSortInput {
+  date: SortOptions
+  quantity: SortOptions
+}
+
+
+type StatisticFeatures {
+  date: Date 
+  quantity: Float 
+  dateFormatted(format: String = "MMMM D YYYY, h:mm A"): String 
+}
+
+
+input CreateStatisticFeaturesInput {
+  data: CreateStatisticFeaturesDataInput!
+  # An identifier to name the mutation's execution context
+  contextName: String
+}
+
+input CreateStatisticFeaturesDataInput {
+  date: Date 
+  quantity: Float 
+}
+
+input UpdateStatisticFeaturesInput{
+  filter: StatisticFeaturesFilterInput
+  id: String
+  data: UpdateStatisticFeaturesDataInput!
+  # An identifier to name the mutation's execution context
+  contextName: String
+}
+
+input UpsertStatisticFeaturesInput{
+  filter: StatisticFeaturesFilterInput
+  id: String
+  data: UpdateStatisticFeaturesDataInput!
+  # An identifier to name the mutation's execution context
+  contextName: String
+}
+
+input UpdateStatisticFeaturesDataInput {
+  date: Date 
+  quantity: Float 
+}
+
+input StatisticFeaturesFilterInput {
+  _and: [StatisticFeaturesFilterInput]
+  _not: StatisticFeaturesFilterInput
+  _or: [StatisticFeaturesFilterInput]
+
+
+  date: Date_Selector
+  quantity: Float_Selector
+}
+
+input StatisticFeaturesSortInput {
+  date: SortOptions
+  quantity: SortOptions
+}
+
+
+type StatisticOthers {
+  date: Date 
+  quantity: Float 
+  dateFormatted(format: String = "MMMM D YYYY, h:mm A"): String 
+}
+
+
+input CreateStatisticOthersInput {
+  data: CreateStatisticOthersDataInput!
+  # An identifier to name the mutation's execution context
+  contextName: String
+}
+
+input CreateStatisticOthersDataInput {
+  date: Date 
+  quantity: Float 
+}
+
+input UpdateStatisticOthersInput{
+  filter: StatisticOthersFilterInput
+  id: String
+  data: UpdateStatisticOthersDataInput!
+  # An identifier to name the mutation's execution context
+  contextName: String
+}
+
+input UpsertStatisticOthersInput{
+  filter: StatisticOthersFilterInput
+  id: String
+  data: UpdateStatisticOthersDataInput!
+  # An identifier to name the mutation's execution context
+  contextName: String
+}
+
+input UpdateStatisticOthersDataInput {
+  date: Date 
+  quantity: Float 
+}
+
+input StatisticOthersFilterInput {
+  _and: [StatisticOthersFilterInput]
+  _not: StatisticOthersFilterInput
+  _or: [StatisticOthersFilterInput]
+
+
+  date: Date_Selector
+  quantity: Float_Selector
+}
+
+input StatisticOthersSortInput {
+  date: SortOptions
+  quantity: SortOptions
+}
+
+
 # Type for Offices
 type Office {
   _id: String 
@@ -736,8 +1283,8 @@ type Office {
   theState: String 
   theLocation: String 
   theZip: String 
-  createdAtFormatted(format: String = "YYYY/MM/DD"): String 
-  updatedAtFormatted(format: String = "YYYY/MM/DD"): String 
+  createdAtFormatted(format: String = "MMMM D YYYY, h:mm A"): String 
+  updatedAtFormatted(format: String = "MMMM D YYYY, h:mm A"): String 
 }
 
 
@@ -754,7 +1301,7 @@ input SingleOfficeInput {
   id: String
 
   # backwards-compatibility
-  "Deprecated (use 'filter/id' fields instead)."
+  # Deprecated (use 'filter/id' fields instead).
   selector: OfficeSelectorUniqueInput
 
   # options (backwards-compatibility)
@@ -762,6 +1309,8 @@ input SingleOfficeInput {
   enableCache: Boolean
   # Return null instead of throwing MissingDocumentError
   allowNull: Boolean
+  # An identifier to name the query's execution context
+  contextName: String
 }
 
 input MultiOfficeInput {
@@ -775,7 +1324,7 @@ input MultiOfficeInput {
 
   # backwards-compatibility
   # A JSON object that contains the query terms used to fetch data
-  "Deprecated (use 'filter/id' fields instead)."
+  # Deprecated (use 'filter/id' fields instead).
   terms: JSON
 
   # options (backwards-compatibility)
@@ -783,7 +1332,9 @@ input MultiOfficeInput {
   enableCache: Boolean
   # Whether to calculate totalCount for this query
   enableTotal: Boolean
-  
+  # An identifier to name the query's execution context
+  contextName: String
+
 }
 
 type SingleOfficeOutput{
@@ -801,6 +1352,8 @@ type OfficeMutationOutput{
 
 input CreateOfficeInput {
   data: CreateOfficeDataInput!
+  # An identifier to name the mutation's execution context
+  contextName: String
 }
 
 input CreateOfficeDataInput {
@@ -818,12 +1371,16 @@ input UpdateOfficeInput{
   filter: OfficeFilterInput
   id: String
   data: UpdateOfficeDataInput!
+  # An identifier to name the mutation's execution context
+  contextName: String
 }
 
 input UpsertOfficeInput{
   filter: OfficeFilterInput
   id: String
   data: UpdateOfficeDataInput!
+  # An identifier to name the mutation's execution context
+  contextName: String
 }
 
 input UpdateOfficeDataInput {
@@ -923,6 +1480,8 @@ type OfficeContacts {
 
 input CreateOfficeContactsInput {
   data: CreateOfficeContactsDataInput!
+  # An identifier to name the mutation's execution context
+  contextName: String
 }
 
 input CreateOfficeContactsDataInput {
@@ -935,12 +1494,16 @@ input UpdateOfficeContactsInput{
   filter: OfficeContactsFilterInput
   id: String
   data: UpdateOfficeContactsDataInput!
+  # An identifier to name the mutation's execution context
+  contextName: String
 }
 
 input UpsertOfficeContactsInput{
   filter: OfficeContactsFilterInput
   id: String
   data: UpdateOfficeContactsDataInput!
+  # An identifier to name the mutation's execution context
+  contextName: String
 }
 
 input UpdateOfficeContactsDataInput {
@@ -975,6 +1538,8 @@ type OfficeProjects {
 
 input CreateOfficeProjectsInput {
   data: CreateOfficeProjectsDataInput!
+  # An identifier to name the mutation's execution context
+  contextName: String
 }
 
 input CreateOfficeProjectsDataInput {
@@ -986,12 +1551,16 @@ input UpdateOfficeProjectsInput{
   filter: OfficeProjectsFilterInput
   id: String
   data: UpdateOfficeProjectsDataInput!
+  # An identifier to name the mutation's execution context
+  contextName: String
 }
 
 input UpsertOfficeProjectsInput{
   filter: OfficeProjectsFilterInput
   id: String
   data: UpdateOfficeProjectsDataInput!
+  # An identifier to name the mutation's execution context
+  contextName: String
 }
 
 input UpdateOfficeProjectsDataInput {
@@ -1024,6 +1593,8 @@ type OfficeLinks {
 
 input CreateOfficeLinksInput {
   data: CreateOfficeLinksDataInput!
+  # An identifier to name the mutation's execution context
+  contextName: String
 }
 
 input CreateOfficeLinksDataInput {
@@ -1036,12 +1607,16 @@ input UpdateOfficeLinksInput{
   filter: OfficeLinksFilterInput
   id: String
   data: UpdateOfficeLinksDataInput!
+  # An identifier to name the mutation's execution context
+  contextName: String
 }
 
 input UpsertOfficeLinksInput{
   filter: OfficeLinksFilterInput
   id: String
   data: UpdateOfficeLinksDataInput!
+  # An identifier to name the mutation's execution context
+  contextName: String
 }
 
 input UpdateOfficeLinksDataInput {
@@ -1081,6 +1656,8 @@ type OfficeAddresses {
 
 input CreateOfficeAddressesInput {
   data: CreateOfficeAddressesDataInput!
+  # An identifier to name the mutation's execution context
+  contextName: String
 }
 
 input CreateOfficeAddressesDataInput {
@@ -1097,12 +1674,16 @@ input UpdateOfficeAddressesInput{
   filter: OfficeAddressesFilterInput
   id: String
   data: UpdateOfficeAddressesDataInput!
+  # An identifier to name the mutation's execution context
+  contextName: String
 }
 
 input UpsertOfficeAddressesInput{
   filter: OfficeAddressesFilterInput
   id: String
   data: UpdateOfficeAddressesDataInput!
+  # An identifier to name the mutation's execution context
+  contextName: String
 }
 
 input UpdateOfficeAddressesDataInput {
@@ -1146,11 +1727,14 @@ type OfficePhones {
   phoneNumberType: String 
   phoneNumber: String 
   nationalFormat: String 
+  countryCode: String 
 }
 
 
 input CreateOfficePhonesInput {
   data: CreateOfficePhonesDataInput!
+  # An identifier to name the mutation's execution context
+  contextName: String
 }
 
 input CreateOfficePhonesDataInput {
@@ -1158,18 +1742,23 @@ input CreateOfficePhonesDataInput {
   phoneNumberType: String 
   phoneNumber: String 
   nationalFormat: String 
+  countryCode: String 
 }
 
 input UpdateOfficePhonesInput{
   filter: OfficePhonesFilterInput
   id: String
   data: UpdateOfficePhonesDataInput!
+  # An identifier to name the mutation's execution context
+  contextName: String
 }
 
 input UpsertOfficePhonesInput{
   filter: OfficePhonesFilterInput
   id: String
   data: UpdateOfficePhonesDataInput!
+  # An identifier to name the mutation's execution context
+  contextName: String
 }
 
 input UpdateOfficePhonesDataInput {
@@ -1177,6 +1766,7 @@ input UpdateOfficePhonesDataInput {
   phoneNumberType: String 
   phoneNumber: String 
   nationalFormat: String 
+  countryCode: String 
 }
 
 input OfficePhonesFilterInput {
@@ -1189,6 +1779,7 @@ input OfficePhonesFilterInput {
   phoneNumberType: String_Selector
   phoneNumber: String_Selector
   nationalFormat: String_Selector
+  countryCode: String_Selector
 }
 
 input OfficePhonesSortInput {
@@ -1196,6 +1787,7 @@ input OfficePhonesSortInput {
   phoneNumberType: SortOptions
   phoneNumber: SortOptions
   nationalFormat: SortOptions
+  countryCode: SortOptions
 }
 
 
@@ -1207,6 +1799,8 @@ type OfficePastProjects {
 
 input CreateOfficePastProjectsInput {
   data: CreateOfficePastProjectsDataInput!
+  # An identifier to name the mutation's execution context
+  contextName: String
 }
 
 input CreateOfficePastProjectsDataInput {
@@ -1218,12 +1812,16 @@ input UpdateOfficePastProjectsInput{
   filter: OfficePastProjectsFilterInput
   id: String
   data: UpdateOfficePastProjectsDataInput!
+  # An identifier to name the mutation's execution context
+  contextName: String
 }
 
 input UpsertOfficePastProjectsInput{
   filter: OfficePastProjectsFilterInput
   id: String
   data: UpdateOfficePastProjectsDataInput!
+  # An identifier to name the mutation's execution context
+  contextName: String
 }
 
 input UpdateOfficePastProjectsDataInput {
@@ -1278,8 +1876,8 @@ type Project {
   addresses: [ProjectAddresses] 
   allAddresses: String 
   slug: String 
-  createdAtFormatted(format: String = "YYYY/MM/DD"): String 
-  updatedAtFormatted(format: String = "YYYY/MM/DD"): String 
+  createdAtFormatted(format: String = "MMMM D YYYY, h:mm A"): String 
+  updatedAtFormatted(format: String = "MMMM D YYYY, h:mm A"): String 
 }
 
 
@@ -1296,7 +1894,7 @@ input SingleProjectInput {
   id: String
 
   # backwards-compatibility
-  "Deprecated (use 'filter/id' fields instead)."
+  # Deprecated (use 'filter/id' fields instead).
   selector: ProjectSelectorUniqueInput
 
   # options (backwards-compatibility)
@@ -1304,6 +1902,8 @@ input SingleProjectInput {
   enableCache: Boolean
   # Return null instead of throwing MissingDocumentError
   allowNull: Boolean
+  # An identifier to name the query's execution context
+  contextName: String
 }
 
 input MultiProjectInput {
@@ -1317,7 +1917,7 @@ input MultiProjectInput {
 
   # backwards-compatibility
   # A JSON object that contains the query terms used to fetch data
-  "Deprecated (use 'filter/id' fields instead)."
+  # Deprecated (use 'filter/id' fields instead).
   terms: JSON
 
   # options (backwards-compatibility)
@@ -1325,7 +1925,9 @@ input MultiProjectInput {
   enableCache: Boolean
   # Whether to calculate totalCount for this query
   enableTotal: Boolean
-  
+  # An identifier to name the query's execution context
+  contextName: String
+
 }
 
 type SingleProjectOutput{
@@ -1343,6 +1945,8 @@ type ProjectMutationOutput{
 
 input CreateProjectInput {
   data: CreateProjectDataInput!
+  # An identifier to name the mutation's execution context
+  contextName: String
 }
 
 input CreateProjectDataInput {
@@ -1371,12 +1975,16 @@ input UpdateProjectInput{
   filter: ProjectFilterInput
   id: String
   data: UpdateProjectDataInput!
+  # An identifier to name the mutation's execution context
+  contextName: String
 }
 
 input UpsertProjectInput{
   filter: ProjectFilterInput
   id: String
   data: UpdateProjectDataInput!
+  # An identifier to name the mutation's execution context
+  contextName: String
 }
 
 input UpdateProjectDataInput {
@@ -1493,6 +2101,8 @@ type ProjectOffices {
 
 input CreateProjectOfficesInput {
   data: CreateProjectOfficesDataInput!
+  # An identifier to name the mutation's execution context
+  contextName: String
 }
 
 input CreateProjectOfficesDataInput {
@@ -1505,12 +2115,16 @@ input UpdateProjectOfficesInput{
   filter: ProjectOfficesFilterInput
   id: String
   data: UpdateProjectOfficesDataInput!
+  # An identifier to name the mutation's execution context
+  contextName: String
 }
 
 input UpsertProjectOfficesInput{
   filter: ProjectOfficesFilterInput
   id: String
   data: UpdateProjectOfficesDataInput!
+  # An identifier to name the mutation's execution context
+  contextName: String
 }
 
 input UpdateProjectOfficesDataInput {
@@ -1546,6 +2160,8 @@ type ProjectContacts {
 
 input CreateProjectContactsInput {
   data: CreateProjectContactsDataInput!
+  # An identifier to name the mutation's execution context
+  contextName: String
 }
 
 input CreateProjectContactsDataInput {
@@ -1558,12 +2174,16 @@ input UpdateProjectContactsInput{
   filter: ProjectContactsFilterInput
   id: String
   data: UpdateProjectContactsDataInput!
+  # An identifier to name the mutation's execution context
+  contextName: String
 }
 
 input UpsertProjectContactsInput{
   filter: ProjectContactsFilterInput
   id: String
   data: UpdateProjectContactsDataInput!
+  # An identifier to name the mutation's execution context
+  contextName: String
 }
 
 input UpdateProjectContactsDataInput {
@@ -1599,6 +2219,8 @@ type ProjectLinks {
 
 input CreateProjectLinksInput {
   data: CreateProjectLinksDataInput!
+  # An identifier to name the mutation's execution context
+  contextName: String
 }
 
 input CreateProjectLinksDataInput {
@@ -1611,12 +2233,16 @@ input UpdateProjectLinksInput{
   filter: ProjectLinksFilterInput
   id: String
   data: UpdateProjectLinksDataInput!
+  # An identifier to name the mutation's execution context
+  contextName: String
 }
 
 input UpsertProjectLinksInput{
   filter: ProjectLinksFilterInput
   id: String
   data: UpdateProjectLinksDataInput!
+  # An identifier to name the mutation's execution context
+  contextName: String
 }
 
 input UpdateProjectLinksDataInput {
@@ -1656,6 +2282,8 @@ type ProjectAddresses {
 
 input CreateProjectAddressesInput {
   data: CreateProjectAddressesDataInput!
+  # An identifier to name the mutation's execution context
+  contextName: String
 }
 
 input CreateProjectAddressesDataInput {
@@ -1672,12 +2300,16 @@ input UpdateProjectAddressesInput{
   filter: ProjectAddressesFilterInput
   id: String
   data: UpdateProjectAddressesDataInput!
+  # An identifier to name the mutation's execution context
+  contextName: String
 }
 
 input UpsertProjectAddressesInput{
   filter: ProjectAddressesFilterInput
   id: String
   data: UpdateProjectAddressesDataInput!
+  # An identifier to name the mutation's execution context
+  contextName: String
 }
 
 input UpdateProjectAddressesDataInput {
@@ -1721,6 +2353,7 @@ type Contact {
   _id: String 
   createdAt: Date 
   userId: String 
+  updatedAt: Date 
   firstName: String 
   middleName: String 
   lastName: String 
@@ -1736,13 +2369,11 @@ type Contact {
   addressString: String 
   theAddress: ContactTheAddress 
   slug: String 
-  updatedAt: Date 
   offices: [ContactOffices] 
   projects: [ContactProjects] 
   pastProjects: [ContactPastProjects] 
-  fullName: String 
-  createdAtFormatted(format: String = "YYYY/MM/DD"): String 
-  updatedAtFormatted(format: String = "YYYY/MM/DD"): String 
+  createdAtFormatted(format: String = "MMMM D YYYY, h:mm A"): String 
+  updatedAtFormatted(format: String = "MMMM D YYYY, h:mm A"): String 
 }
 
 
@@ -1759,7 +2390,7 @@ input SingleContactInput {
   id: String
 
   # backwards-compatibility
-  "Deprecated (use 'filter/id' fields instead)."
+  # Deprecated (use 'filter/id' fields instead).
   selector: ContactSelectorUniqueInput
 
   # options (backwards-compatibility)
@@ -1767,6 +2398,8 @@ input SingleContactInput {
   enableCache: Boolean
   # Return null instead of throwing MissingDocumentError
   allowNull: Boolean
+  # An identifier to name the query's execution context
+  contextName: String
 }
 
 input MultiContactInput {
@@ -1780,7 +2413,7 @@ input MultiContactInput {
 
   # backwards-compatibility
   # A JSON object that contains the query terms used to fetch data
-  "Deprecated (use 'filter/id' fields instead)."
+  # Deprecated (use 'filter/id' fields instead).
   terms: JSON
 
   # options (backwards-compatibility)
@@ -1788,7 +2421,9 @@ input MultiContactInput {
   enableCache: Boolean
   # Whether to calculate totalCount for this query
   enableTotal: Boolean
-  
+  # An identifier to name the query's execution context
+  contextName: String
+
 }
 
 type SingleContactOutput{
@@ -1806,6 +2441,8 @@ type ContactMutationOutput{
 
 input CreateContactInput {
   data: CreateContactDataInput!
+  # An identifier to name the mutation's execution context
+  contextName: String
 }
 
 input CreateContactDataInput {
@@ -1828,12 +2465,16 @@ input UpdateContactInput{
   filter: ContactFilterInput
   id: String
   data: UpdateContactDataInput!
+  # An identifier to name the mutation's execution context
+  contextName: String
 }
 
 input UpsertContactInput{
   filter: ContactFilterInput
   id: String
   data: UpdateContactDataInput!
+  # An identifier to name the mutation's execution context
+  contextName: String
 }
 
 input UpdateContactDataInput {
@@ -1861,6 +2502,7 @@ input ContactFilterInput {
   _id: String_Selector
   createdAt: Date_Selector
   userId: String_Selector
+  updatedAt: Date_Selector
   firstName: String_Selector
   middleName: String_Selector
   lastName: String_Selector
@@ -1876,17 +2518,16 @@ input ContactFilterInput {
   addressString: String_Selector
 
   slug: String_Selector
-  updatedAt: Date_Selector
 
 
 
-  fullName: String_Selector
 }
 
 input ContactSortInput {
   _id: SortOptions
   createdAt: SortOptions
   userId: SortOptions
+  updatedAt: SortOptions
   firstName: SortOptions
   middleName: SortOptions
   lastName: SortOptions
@@ -1902,11 +2543,9 @@ input ContactSortInput {
   addressString: SortOptions
   theAddress: SortOptions
   slug: SortOptions
-  updatedAt: SortOptions
   offices: SortOptions
   projects: SortOptions
   pastProjects: SortOptions
-  fullName: SortOptions
 }
 
 input ContactSelectorInput {
@@ -1932,6 +2571,8 @@ type ContactLinks {
 
 input CreateContactLinksInput {
   data: CreateContactLinksDataInput!
+  # An identifier to name the mutation's execution context
+  contextName: String
 }
 
 input CreateContactLinksDataInput {
@@ -1944,12 +2585,16 @@ input UpdateContactLinksInput{
   filter: ContactLinksFilterInput
   id: String
   data: UpdateContactLinksDataInput!
+  # An identifier to name the mutation's execution context
+  contextName: String
 }
 
 input UpsertContactLinksInput{
   filter: ContactLinksFilterInput
   id: String
   data: UpdateContactLinksDataInput!
+  # An identifier to name the mutation's execution context
+  contextName: String
 }
 
 input UpdateContactLinksDataInput {
@@ -1989,6 +2634,8 @@ type ContactAddresses {
 
 input CreateContactAddressesInput {
   data: CreateContactAddressesDataInput!
+  # An identifier to name the mutation's execution context
+  contextName: String
 }
 
 input CreateContactAddressesDataInput {
@@ -2005,12 +2652,16 @@ input UpdateContactAddressesInput{
   filter: ContactAddressesFilterInput
   id: String
   data: UpdateContactAddressesDataInput!
+  # An identifier to name the mutation's execution context
+  contextName: String
 }
 
 input UpsertContactAddressesInput{
   filter: ContactAddressesFilterInput
   id: String
   data: UpdateContactAddressesDataInput!
+  # An identifier to name the mutation's execution context
+  contextName: String
 }
 
 input UpdateContactAddressesDataInput {
@@ -2062,6 +2713,8 @@ type ContactTheAddress {
 
 input CreateContactTheAddressInput {
   data: CreateContactTheAddressDataInput!
+  # An identifier to name the mutation's execution context
+  contextName: String
 }
 
 input CreateContactTheAddressDataInput {
@@ -2078,12 +2731,16 @@ input UpdateContactTheAddressInput{
   filter: ContactTheAddressFilterInput
   id: String
   data: UpdateContactTheAddressDataInput!
+  # An identifier to name the mutation's execution context
+  contextName: String
 }
 
 input UpsertContactTheAddressInput{
   filter: ContactTheAddressFilterInput
   id: String
   data: UpdateContactTheAddressDataInput!
+  # An identifier to name the mutation's execution context
+  contextName: String
 }
 
 input UpdateContactTheAddressDataInput {
@@ -2131,6 +2788,8 @@ type ContactOffices {
 
 input CreateContactOfficesInput {
   data: CreateContactOfficesDataInput!
+  # An identifier to name the mutation's execution context
+  contextName: String
 }
 
 input CreateContactOfficesDataInput {
@@ -2143,12 +2802,16 @@ input UpdateContactOfficesInput{
   filter: ContactOfficesFilterInput
   id: String
   data: UpdateContactOfficesDataInput!
+  # An identifier to name the mutation's execution context
+  contextName: String
 }
 
 input UpsertContactOfficesInput{
   filter: ContactOfficesFilterInput
   id: String
   data: UpdateContactOfficesDataInput!
+  # An identifier to name the mutation's execution context
+  contextName: String
 }
 
 input UpdateContactOfficesDataInput {
@@ -2184,6 +2847,8 @@ type ContactProjects {
 
 input CreateContactProjectsInput {
   data: CreateContactProjectsDataInput!
+  # An identifier to name the mutation's execution context
+  contextName: String
 }
 
 input CreateContactProjectsDataInput {
@@ -2196,12 +2861,16 @@ input UpdateContactProjectsInput{
   filter: ContactProjectsFilterInput
   id: String
   data: UpdateContactProjectsDataInput!
+  # An identifier to name the mutation's execution context
+  contextName: String
 }
 
 input UpsertContactProjectsInput{
   filter: ContactProjectsFilterInput
   id: String
   data: UpdateContactProjectsDataInput!
+  # An identifier to name the mutation's execution context
+  contextName: String
 }
 
 input UpdateContactProjectsDataInput {
@@ -2237,6 +2906,8 @@ type ContactPastProjects {
 
 input CreateContactPastProjectsInput {
   data: CreateContactPastProjectsDataInput!
+  # An identifier to name the mutation's execution context
+  contextName: String
 }
 
 input CreateContactPastProjectsDataInput {
@@ -2249,12 +2920,16 @@ input UpdateContactPastProjectsInput{
   filter: ContactPastProjectsFilterInput
   id: String
   data: UpdateContactPastProjectsDataInput!
+  # An identifier to name the mutation's execution context
+  contextName: String
 }
 
 input UpsertContactPastProjectsInput{
   filter: ContactPastProjectsFilterInput
   id: String
   data: UpdateContactPastProjectsDataInput!
+  # An identifier to name the mutation's execution context
+  contextName: String
 }
 
 input UpdateContactPastProjectsDataInput {
@@ -2278,141 +2953,6 @@ input ContactPastProjectsSortInput {
   projectId: SortOptions
   projectTitle: SortOptions
   titleForProject: SortOptions
-}
-
-
-# Type for Patches
-type Patch {
-  _id: String 
-  createdAt: Date 
-  userId: String 
-  updatedAt: String 
-  collectionName: String 
-  patches: [JSON] 
-  createdAtFormatted(format: String = "YYYY/MM/DD"): String 
-}
-
-
-input DeletePatchInput{
-  filter: PatchFilterInput
-  id: String
-}
-
-input SinglePatchInput {
-  # filtering
-  filter: PatchFilterInput
-  sort: PatchSortInput
-  search: String
-  id: String
-
-  # backwards-compatibility
-  "Deprecated (use 'filter/id' fields instead)."
-  selector: PatchSelectorUniqueInput
-
-  # options (backwards-compatibility)
-  # Whether to enable caching for this query
-  enableCache: Boolean
-  # Return null instead of throwing MissingDocumentError
-  allowNull: Boolean
-}
-
-input MultiPatchInput {
-
-  # filtering
-  filter: PatchFilterInput
-  sort: PatchSortInput
-  search: String
-  offset: Int
-  limit: Int
-
-  # backwards-compatibility
-  # A JSON object that contains the query terms used to fetch data
-  "Deprecated (use 'filter/id' fields instead)."
-  terms: JSON
-
-  # options (backwards-compatibility)
-  # Whether to enable caching for this query
-  enableCache: Boolean
-  # Whether to calculate totalCount for this query
-  enableTotal: Boolean
-  
-}
-
-type SinglePatchOutput{
-  result: Patch
-}
-
-type  MultiPatchOutput{
-  results: [Patch]
-  totalCount: Int
-}
-
-type PatchMutationOutput{
-  data: Patch
-}
-
-input CreatePatchInput {
-  data: CreatePatchDataInput!
-}
-
-input CreatePatchDataInput {
-  updatedAt: String 
-  collectionName: String 
-  patches: [JSON] 
-}
-
-input UpdatePatchInput{
-  filter: PatchFilterInput
-  id: String
-  data: UpdatePatchDataInput!
-}
-
-input UpsertPatchInput{
-  filter: PatchFilterInput
-  id: String
-  data: UpdatePatchDataInput!
-}
-
-input UpdatePatchDataInput {
-  updatedAt: String 
-  collectionName: String 
-  patches: [JSON] 
-}
-
-input PatchFilterInput {
-  _and: [PatchFilterInput]
-  _not: PatchFilterInput
-  _or: [PatchFilterInput]
-
-
-  _id: String_Selector
-  createdAt: Date_Selector
-  userId: String_Selector
-  updatedAt: String_Selector
-  collectionName: String_Selector
-
-}
-
-input PatchSortInput {
-  _id: SortOptions
-  createdAt: SortOptions
-  userId: SortOptions
-  updatedAt: SortOptions
-  collectionName: SortOptions
-  patches: SortOptions
-}
-
-input PatchSelectorInput {
-  _and: [PatchSelectorInput]
-  _or: [PatchSelectorInput]
-
-}
-
-input PatchSelectorUniqueInput {
-  _id: String
-  documentId: String # OpenCRUD backwards compatibility
-  slug: String
-
 }
 
 
@@ -2447,8 +2987,8 @@ type PastProject {
   allContactNames: String 
   addresses: [PastProjectAddresses] 
   allAddresses: String 
-  createdAtFormatted(format: String = "YYYY/MM/DD"): String 
-  updatedAtFormatted(format: String = "YYYY/MM/DD"): String 
+  createdAtFormatted(format: String = "MMMM D YYYY, h:mm A"): String 
+  updatedAtFormatted(format: String = "MMMM D YYYY, h:mm A"): String 
 }
 
 
@@ -2465,7 +3005,7 @@ input SinglePastProjectInput {
   id: String
 
   # backwards-compatibility
-  "Deprecated (use 'filter/id' fields instead)."
+  # Deprecated (use 'filter/id' fields instead).
   selector: PastProjectSelectorUniqueInput
 
   # options (backwards-compatibility)
@@ -2473,6 +3013,8 @@ input SinglePastProjectInput {
   enableCache: Boolean
   # Return null instead of throwing MissingDocumentError
   allowNull: Boolean
+  # An identifier to name the query's execution context
+  contextName: String
 }
 
 input MultiPastProjectInput {
@@ -2486,7 +3028,7 @@ input MultiPastProjectInput {
 
   # backwards-compatibility
   # A JSON object that contains the query terms used to fetch data
-  "Deprecated (use 'filter/id' fields instead)."
+  # Deprecated (use 'filter/id' fields instead).
   terms: JSON
 
   # options (backwards-compatibility)
@@ -2494,7 +3036,9 @@ input MultiPastProjectInput {
   enableCache: Boolean
   # Whether to calculate totalCount for this query
   enableTotal: Boolean
-  
+  # An identifier to name the query's execution context
+  contextName: String
+
 }
 
 type SinglePastProjectOutput{
@@ -2512,6 +3056,8 @@ type PastProjectMutationOutput{
 
 input CreatePastProjectInput {
   data: CreatePastProjectDataInput!
+  # An identifier to name the mutation's execution context
+  contextName: String
 }
 
 input CreatePastProjectDataInput {
@@ -2540,12 +3086,16 @@ input UpdatePastProjectInput{
   filter: PastProjectFilterInput
   id: String
   data: UpdatePastProjectDataInput!
+  # An identifier to name the mutation's execution context
+  contextName: String
 }
 
 input UpsertPastProjectInput{
   filter: PastProjectFilterInput
   id: String
   data: UpdatePastProjectDataInput!
+  # An identifier to name the mutation's execution context
+  contextName: String
 }
 
 input UpdatePastProjectDataInput {
@@ -2662,6 +3212,8 @@ type PastProjectOffices {
 
 input CreatePastProjectOfficesInput {
   data: CreatePastProjectOfficesDataInput!
+  # An identifier to name the mutation's execution context
+  contextName: String
 }
 
 input CreatePastProjectOfficesDataInput {
@@ -2674,12 +3226,16 @@ input UpdatePastProjectOfficesInput{
   filter: PastProjectOfficesFilterInput
   id: String
   data: UpdatePastProjectOfficesDataInput!
+  # An identifier to name the mutation's execution context
+  contextName: String
 }
 
 input UpsertPastProjectOfficesInput{
   filter: PastProjectOfficesFilterInput
   id: String
   data: UpdatePastProjectOfficesDataInput!
+  # An identifier to name the mutation's execution context
+  contextName: String
 }
 
 input UpdatePastProjectOfficesDataInput {
@@ -2715,6 +3271,8 @@ type PastProjectLinks {
 
 input CreatePastProjectLinksInput {
   data: CreatePastProjectLinksDataInput!
+  # An identifier to name the mutation's execution context
+  contextName: String
 }
 
 input CreatePastProjectLinksDataInput {
@@ -2727,12 +3285,16 @@ input UpdatePastProjectLinksInput{
   filter: PastProjectLinksFilterInput
   id: String
   data: UpdatePastProjectLinksDataInput!
+  # An identifier to name the mutation's execution context
+  contextName: String
 }
 
 input UpsertPastProjectLinksInput{
   filter: PastProjectLinksFilterInput
   id: String
   data: UpdatePastProjectLinksDataInput!
+  # An identifier to name the mutation's execution context
+  contextName: String
 }
 
 input UpdatePastProjectLinksDataInput {
@@ -2768,6 +3330,8 @@ type PastProjectContacts {
 
 input CreatePastProjectContactsInput {
   data: CreatePastProjectContactsDataInput!
+  # An identifier to name the mutation's execution context
+  contextName: String
 }
 
 input CreatePastProjectContactsDataInput {
@@ -2780,12 +3344,16 @@ input UpdatePastProjectContactsInput{
   filter: PastProjectContactsFilterInput
   id: String
   data: UpdatePastProjectContactsDataInput!
+  # An identifier to name the mutation's execution context
+  contextName: String
 }
 
 input UpsertPastProjectContactsInput{
   filter: PastProjectContactsFilterInput
   id: String
   data: UpdatePastProjectContactsDataInput!
+  # An identifier to name the mutation's execution context
+  contextName: String
 }
 
 input UpdatePastProjectContactsDataInput {
@@ -2825,6 +3393,8 @@ type PastProjectAddresses {
 
 input CreatePastProjectAddressesInput {
   data: CreatePastProjectAddressesDataInput!
+  # An identifier to name the mutation's execution context
+  contextName: String
 }
 
 input CreatePastProjectAddressesDataInput {
@@ -2841,12 +3411,16 @@ input UpdatePastProjectAddressesInput{
   filter: PastProjectAddressesFilterInput
   id: String
   data: UpdatePastProjectAddressesDataInput!
+  # An identifier to name the mutation's execution context
+  contextName: String
 }
 
 input UpsertPastProjectAddressesInput{
   filter: PastProjectAddressesFilterInput
   id: String
   data: UpdatePastProjectAddressesDataInput!
+  # An identifier to name the mutation's execution context
+  contextName: String
 }
 
 input UpdatePastProjectAddressesDataInput {
@@ -2885,342 +3459,6 @@ input PastProjectAddressesSortInput {
 }
 
 
-# Type for Statistics
-type Statistic {
-  _id: String 
-  createdAt: Date 
-  userId: String 
-  updatedAt: Date 
-  episodics: [StatisticEpisodics] 
-  pilots: [StatisticPilots] 
-  features: [StatisticFeatures] 
-  others: [StatisticOthers] 
-  createdAtFormatted(format: String = "YYYY/MM/DD"): String 
-  updatedAtFormatted(format: String = "YYYY/MM/DD"): String 
-}
-
-
-input DeleteStatisticInput{
-  filter: StatisticFilterInput
-  id: String
-}
-
-input SingleStatisticInput {
-  # filtering
-  filter: StatisticFilterInput
-  sort: StatisticSortInput
-  search: String
-  id: String
-
-  # backwards-compatibility
-  "Deprecated (use 'filter/id' fields instead)."
-  selector: StatisticSelectorUniqueInput
-
-  # options (backwards-compatibility)
-  # Whether to enable caching for this query
-  enableCache: Boolean
-  # Return null instead of throwing MissingDocumentError
-  allowNull: Boolean
-}
-
-input MultiStatisticInput {
-
-  # filtering
-  filter: StatisticFilterInput
-  sort: StatisticSortInput
-  search: String
-  offset: Int
-  limit: Int
-
-  # backwards-compatibility
-  # A JSON object that contains the query terms used to fetch data
-  "Deprecated (use 'filter/id' fields instead)."
-  terms: JSON
-
-  # options (backwards-compatibility)
-  # Whether to enable caching for this query
-  enableCache: Boolean
-  # Whether to calculate totalCount for this query
-  enableTotal: Boolean
-  
-}
-
-type SingleStatisticOutput{
-  result: Statistic
-}
-
-type  MultiStatisticOutput{
-  results: [Statistic]
-  totalCount: Int
-}
-
-type StatisticMutationOutput{
-  data: Statistic
-}
-
-input CreateStatisticInput {
-  data: CreateStatisticDataInput!
-}
-
-input CreateStatisticDataInput {
-  episodics: [CreateStatisticEpisodicsDataInput] 
-  pilots: [CreateStatisticPilotsDataInput] 
-  features: [CreateStatisticFeaturesDataInput] 
-  others: [CreateStatisticOthersDataInput] 
-}
-
-input UpdateStatisticInput{
-  filter: StatisticFilterInput
-  id: String
-  data: UpdateStatisticDataInput!
-}
-
-input UpsertStatisticInput{
-  filter: StatisticFilterInput
-  id: String
-  data: UpdateStatisticDataInput!
-}
-
-input UpdateStatisticDataInput {
-  episodics: [UpdateStatisticEpisodicsDataInput] 
-  pilots: [UpdateStatisticPilotsDataInput] 
-  features: [UpdateStatisticFeaturesDataInput] 
-  others: [UpdateStatisticOthersDataInput] 
-}
-
-input StatisticFilterInput {
-  _and: [StatisticFilterInput]
-  _not: StatisticFilterInput
-  _or: [StatisticFilterInput]
-
-
-  _id: String_Selector
-  createdAt: Date_Selector
-  userId: String_Selector
-  updatedAt: Date_Selector
-
-
-
-
-}
-
-input StatisticSortInput {
-  _id: SortOptions
-  createdAt: SortOptions
-  userId: SortOptions
-  updatedAt: SortOptions
-  episodics: SortOptions
-  pilots: SortOptions
-  features: SortOptions
-  others: SortOptions
-}
-
-input StatisticSelectorInput {
-  _and: [StatisticSelectorInput]
-  _or: [StatisticSelectorInput]
-
-}
-
-input StatisticSelectorUniqueInput {
-  _id: String
-  documentId: String # OpenCRUD backwards compatibility
-  slug: String
-
-}
-
-
-type StatisticEpisodics {
-  date: Date 
-  quantity: Float 
-}
-
-
-input CreateStatisticEpisodicsInput {
-  data: CreateStatisticEpisodicsDataInput!
-}
-
-input CreateStatisticEpisodicsDataInput {
-  date: Date 
-  quantity: Float 
-}
-
-input UpdateStatisticEpisodicsInput{
-  filter: StatisticEpisodicsFilterInput
-  id: String
-  data: UpdateStatisticEpisodicsDataInput!
-}
-
-input UpsertStatisticEpisodicsInput{
-  filter: StatisticEpisodicsFilterInput
-  id: String
-  data: UpdateStatisticEpisodicsDataInput!
-}
-
-input UpdateStatisticEpisodicsDataInput {
-  date: Date 
-  quantity: Float 
-}
-
-input StatisticEpisodicsFilterInput {
-  _and: [StatisticEpisodicsFilterInput]
-  _not: StatisticEpisodicsFilterInput
-  _or: [StatisticEpisodicsFilterInput]
-
-
-  date: Date_Selector
-  quantity: Float_Selector
-}
-
-input StatisticEpisodicsSortInput {
-  date: SortOptions
-  quantity: SortOptions
-}
-
-
-type StatisticPilots {
-  date: Date 
-  quantity: Float 
-}
-
-
-input CreateStatisticPilotsInput {
-  data: CreateStatisticPilotsDataInput!
-}
-
-input CreateStatisticPilotsDataInput {
-  date: Date 
-  quantity: Float 
-}
-
-input UpdateStatisticPilotsInput{
-  filter: StatisticPilotsFilterInput
-  id: String
-  data: UpdateStatisticPilotsDataInput!
-}
-
-input UpsertStatisticPilotsInput{
-  filter: StatisticPilotsFilterInput
-  id: String
-  data: UpdateStatisticPilotsDataInput!
-}
-
-input UpdateStatisticPilotsDataInput {
-  date: Date 
-  quantity: Float 
-}
-
-input StatisticPilotsFilterInput {
-  _and: [StatisticPilotsFilterInput]
-  _not: StatisticPilotsFilterInput
-  _or: [StatisticPilotsFilterInput]
-
-
-  date: Date_Selector
-  quantity: Float_Selector
-}
-
-input StatisticPilotsSortInput {
-  date: SortOptions
-  quantity: SortOptions
-}
-
-
-type StatisticFeatures {
-  date: Date 
-  quantity: Float 
-}
-
-
-input CreateStatisticFeaturesInput {
-  data: CreateStatisticFeaturesDataInput!
-}
-
-input CreateStatisticFeaturesDataInput {
-  date: Date 
-  quantity: Float 
-}
-
-input UpdateStatisticFeaturesInput{
-  filter: StatisticFeaturesFilterInput
-  id: String
-  data: UpdateStatisticFeaturesDataInput!
-}
-
-input UpsertStatisticFeaturesInput{
-  filter: StatisticFeaturesFilterInput
-  id: String
-  data: UpdateStatisticFeaturesDataInput!
-}
-
-input UpdateStatisticFeaturesDataInput {
-  date: Date 
-  quantity: Float 
-}
-
-input StatisticFeaturesFilterInput {
-  _and: [StatisticFeaturesFilterInput]
-  _not: StatisticFeaturesFilterInput
-  _or: [StatisticFeaturesFilterInput]
-
-
-  date: Date_Selector
-  quantity: Float_Selector
-}
-
-input StatisticFeaturesSortInput {
-  date: SortOptions
-  quantity: SortOptions
-}
-
-
-type StatisticOthers {
-  date: Date 
-  quantity: Float 
-}
-
-
-input CreateStatisticOthersInput {
-  data: CreateStatisticOthersDataInput!
-}
-
-input CreateStatisticOthersDataInput {
-  date: Date 
-  quantity: Float 
-}
-
-input UpdateStatisticOthersInput{
-  filter: StatisticOthersFilterInput
-  id: String
-  data: UpdateStatisticOthersDataInput!
-}
-
-input UpsertStatisticOthersInput{
-  filter: StatisticOthersFilterInput
-  id: String
-  data: UpdateStatisticOthersDataInput!
-}
-
-input UpdateStatisticOthersDataInput {
-  date: Date 
-  quantity: Float 
-}
-
-input StatisticOthersFilterInput {
-  _and: [StatisticOthersFilterInput]
-  _not: StatisticOthersFilterInput
-  _or: [StatisticOthersFilterInput]
-
-
-  date: Date_Selector
-  quantity: Float_Selector
-}
-
-input StatisticOthersSortInput {
-  date: SortOptions
-  quantity: SortOptions
-}
-
-
 # Type for Comments
 type Comment {
   _id: String 
@@ -3240,8 +3478,8 @@ type Comment {
   isDeleted: Boolean 
   pagePath: String 
   pageUrl: String 
-  createdAtFormatted(format: String = "YYYY/MM/DD"): String 
-  postedAtFormatted(format: String = "YYYY/MM/DD"): String 
+  createdAtFormatted(format: String = "MMMM D YYYY, h:mm A"): String 
+  postedAtFormatted(format: String = "MMMM D YYYY, h:mm A"): String 
 }
 
 
@@ -3258,7 +3496,7 @@ input SingleCommentInput {
   id: String
 
   # backwards-compatibility
-  "Deprecated (use 'filter/id' fields instead)."
+  # Deprecated (use 'filter/id' fields instead).
   selector: CommentSelectorUniqueInput
 
   # options (backwards-compatibility)
@@ -3266,6 +3504,8 @@ input SingleCommentInput {
   enableCache: Boolean
   # Return null instead of throwing MissingDocumentError
   allowNull: Boolean
+  # An identifier to name the query's execution context
+  contextName: String
 }
 
 input MultiCommentInput {
@@ -3279,7 +3519,7 @@ input MultiCommentInput {
 
   # backwards-compatibility
   # A JSON object that contains the query terms used to fetch data
-  "Deprecated (use 'filter/id' fields instead)."
+  # Deprecated (use 'filter/id' fields instead).
   terms: JSON
 
   # options (backwards-compatibility)
@@ -3287,7 +3527,9 @@ input MultiCommentInput {
   enableCache: Boolean
   # Whether to calculate totalCount for this query
   enableTotal: Boolean
-  
+  # An identifier to name the query's execution context
+  contextName: String
+
 }
 
 type SingleCommentOutput{
@@ -3305,6 +3547,8 @@ type CommentMutationOutput{
 
 input CreateCommentInput {
   data: CreateCommentDataInput!
+  # An identifier to name the mutation's execution context
+  contextName: String
 }
 
 input CreateCommentDataInput {
@@ -3319,12 +3563,16 @@ input UpdateCommentInput{
   filter: CommentFilterInput
   id: String
   data: UpdateCommentDataInput!
+  # An identifier to name the mutation's execution context
+  contextName: String
 }
 
 input UpsertCommentInput{
   filter: CommentFilterInput
   id: String
   data: UpdateCommentDataInput!
+  # An identifier to name the mutation's execution context
+  contextName: String
 }
 
 input UpdateCommentDataInput {
@@ -3389,6 +3637,8 @@ input CommentSelectorUniqueInput {
 type Query {
   siteData: Site
   
+  locale(localeId: String): Locale
+  
   currentUser: User
   
   getDatabaseObject(id: String): JSON
@@ -3404,6 +3654,18 @@ type Query {
   settings(input: MultiSettingInput):  MultiSettingOutput
   
   callbacks(input: MultiCallbackInput):  MultiCallbackOutput
+  
+  # A single Patch document fetched by ID or slug
+  patch(input: SinglePatchInput!): SinglePatchOutput
+  
+  # A list of Patch documents matching a set of query terms
+  patches(input: MultiPatchInput):  MultiPatchOutput
+  
+  # A single Statistic document fetched by ID or slug
+  statistic(input: SingleStatisticInput!): SingleStatisticOutput
+  
+  # A list of Statistic documents matching a set of query terms
+  statistics(input: MultiStatisticInput):  MultiStatisticOutput
   
   # A single Office document fetched by ID or slug
   office(input: SingleOfficeInput!): SingleOfficeOutput
@@ -3423,23 +3685,11 @@ type Query {
   # A list of Contact documents matching a set of query terms
   contacts(input: MultiContactInput):  MultiContactOutput
   
-  # A single Patch document fetched by ID or slug
-  patch(input: SinglePatchInput!): SinglePatchOutput
-  
-  # A list of Patch documents matching a set of query terms
-  patches(input: MultiPatchInput):  MultiPatchOutput
-  
   # A single PastProject document fetched by ID or slug
   pastProject(input: SinglePastProjectInput!): SinglePastProjectOutput
   
   # A list of PastProject documents matching a set of query terms
   pastProjects(input: MultiPastProjectInput):  MultiPastProjectOutput
-  
-  # A single Statistic document fetched by ID or slug
-  statistic(input: SingleStatisticInput!): SingleStatisticOutput
-  
-  # A list of Statistic documents matching a set of query terms
-  statistics(input: MultiStatisticInput):  MultiStatisticOutput
   
   # A single Comment document fetched by ID or slug
   comment(input: SingleCommentInput!): SingleCommentOutput
@@ -3472,256 +3722,256 @@ type Mutation {
   # Mutation for creating new User documents
   createUser(
   input: CreateUserInput,
-  "Deprecated (use 'input' field instead)."
+  # Deprecated (use 'input' field instead).
   data: CreateUserDataInput
 ) : UserMutationOutput
 
   # Mutation for updating a User document
   updateUser(
   input: UpdateUserInput,
-  "Deprecated (use 'input' field instead)."
+  # Deprecated (use 'input' field instead).
   selector: UserSelectorUniqueInput,
-  "Deprecated (use 'input' field instead)."
-  data: UpdateUserDataInput 
+  # Deprecated (use 'input' field instead).
+  data: UpdateUserDataInput
 ) : UserMutationOutput
 
   # Mutation for upserting a User document
   upsertUser(
   input: UpsertUserInput,
-  "Deprecated (use 'input' field instead)."
+  # Deprecated (use 'input' field instead).
   selector: UserSelectorUniqueInput,
-  "Deprecated (use 'input' field instead)."
+  # Deprecated (use 'input' field instead).
   data: UpdateUserDataInput
 ) : UserMutationOutput
 
   # Mutation for deleting a User document
   deleteUser(
   input: DeleteUserInput,
-  "Deprecated (use 'input' field instead)."
+  # Deprecated (use 'input' field instead).
   selector: UserSelectorUniqueInput
 ) : UserMutationOutput
-
-  # Mutation for creating new Office documents
-  createOffice(
-  input: CreateOfficeInput,
-  "Deprecated (use 'input' field instead)."
-  data: CreateOfficeDataInput
-) : OfficeMutationOutput
-
-  # Mutation for updating a Office document
-  updateOffice(
-  input: UpdateOfficeInput,
-  "Deprecated (use 'input' field instead)."
-  selector: OfficeSelectorUniqueInput,
-  "Deprecated (use 'input' field instead)."
-  data: UpdateOfficeDataInput 
-) : OfficeMutationOutput
-
-  # Mutation for upserting a Office document
-  upsertOffice(
-  input: UpsertOfficeInput,
-  "Deprecated (use 'input' field instead)."
-  selector: OfficeSelectorUniqueInput,
-  "Deprecated (use 'input' field instead)."
-  data: UpdateOfficeDataInput
-) : OfficeMutationOutput
-
-  # Mutation for deleting a Office document
-  deleteOffice(
-  input: DeleteOfficeInput,
-  "Deprecated (use 'input' field instead)."
-  selector: OfficeSelectorUniqueInput
-) : OfficeMutationOutput
-
-  # Mutation for creating new Project documents
-  createProject(
-  input: CreateProjectInput,
-  "Deprecated (use 'input' field instead)."
-  data: CreateProjectDataInput
-) : ProjectMutationOutput
-
-  # Mutation for updating a Project document
-  updateProject(
-  input: UpdateProjectInput,
-  "Deprecated (use 'input' field instead)."
-  selector: ProjectSelectorUniqueInput,
-  "Deprecated (use 'input' field instead)."
-  data: UpdateProjectDataInput 
-) : ProjectMutationOutput
-
-  # Mutation for upserting a Project document
-  upsertProject(
-  input: UpsertProjectInput,
-  "Deprecated (use 'input' field instead)."
-  selector: ProjectSelectorUniqueInput,
-  "Deprecated (use 'input' field instead)."
-  data: UpdateProjectDataInput
-) : ProjectMutationOutput
-
-  # Mutation for deleting a Project document
-  deleteProject(
-  input: DeleteProjectInput,
-  "Deprecated (use 'input' field instead)."
-  selector: ProjectSelectorUniqueInput
-) : ProjectMutationOutput
-
-  # Mutation for creating new Contact documents
-  createContact(
-  input: CreateContactInput,
-  "Deprecated (use 'input' field instead)."
-  data: CreateContactDataInput
-) : ContactMutationOutput
-
-  # Mutation for updating a Contact document
-  updateContact(
-  input: UpdateContactInput,
-  "Deprecated (use 'input' field instead)."
-  selector: ContactSelectorUniqueInput,
-  "Deprecated (use 'input' field instead)."
-  data: UpdateContactDataInput 
-) : ContactMutationOutput
-
-  # Mutation for upserting a Contact document
-  upsertContact(
-  input: UpsertContactInput,
-  "Deprecated (use 'input' field instead)."
-  selector: ContactSelectorUniqueInput,
-  "Deprecated (use 'input' field instead)."
-  data: UpdateContactDataInput
-) : ContactMutationOutput
-
-  # Mutation for deleting a Contact document
-  deleteContact(
-  input: DeleteContactInput,
-  "Deprecated (use 'input' field instead)."
-  selector: ContactSelectorUniqueInput
-) : ContactMutationOutput
 
   # Mutation for creating new Patch documents
   createPatch(
   input: CreatePatchInput,
-  "Deprecated (use 'input' field instead)."
+  # Deprecated (use 'input' field instead).
   data: CreatePatchDataInput
 ) : PatchMutationOutput
 
   # Mutation for updating a Patch document
   updatePatch(
   input: UpdatePatchInput,
-  "Deprecated (use 'input' field instead)."
+  # Deprecated (use 'input' field instead).
   selector: PatchSelectorUniqueInput,
-  "Deprecated (use 'input' field instead)."
-  data: UpdatePatchDataInput 
+  # Deprecated (use 'input' field instead).
+  data: UpdatePatchDataInput
 ) : PatchMutationOutput
 
   # Mutation for upserting a Patch document
   upsertPatch(
   input: UpsertPatchInput,
-  "Deprecated (use 'input' field instead)."
+  # Deprecated (use 'input' field instead).
   selector: PatchSelectorUniqueInput,
-  "Deprecated (use 'input' field instead)."
+  # Deprecated (use 'input' field instead).
   data: UpdatePatchDataInput
 ) : PatchMutationOutput
 
   # Mutation for deleting a Patch document
   deletePatch(
   input: DeletePatchInput,
-  "Deprecated (use 'input' field instead)."
+  # Deprecated (use 'input' field instead).
   selector: PatchSelectorUniqueInput
 ) : PatchMutationOutput
-
-  # Mutation for creating new PastProject documents
-  createPastProject(
-  input: CreatePastProjectInput,
-  "Deprecated (use 'input' field instead)."
-  data: CreatePastProjectDataInput
-) : PastProjectMutationOutput
-
-  # Mutation for updating a PastProject document
-  updatePastProject(
-  input: UpdatePastProjectInput,
-  "Deprecated (use 'input' field instead)."
-  selector: PastProjectSelectorUniqueInput,
-  "Deprecated (use 'input' field instead)."
-  data: UpdatePastProjectDataInput 
-) : PastProjectMutationOutput
-
-  # Mutation for upserting a PastProject document
-  upsertPastProject(
-  input: UpsertPastProjectInput,
-  "Deprecated (use 'input' field instead)."
-  selector: PastProjectSelectorUniqueInput,
-  "Deprecated (use 'input' field instead)."
-  data: UpdatePastProjectDataInput
-) : PastProjectMutationOutput
-
-  # Mutation for deleting a PastProject document
-  deletePastProject(
-  input: DeletePastProjectInput,
-  "Deprecated (use 'input' field instead)."
-  selector: PastProjectSelectorUniqueInput
-) : PastProjectMutationOutput
 
   # Mutation for creating new Statistic documents
   createStatistic(
   input: CreateStatisticInput,
-  "Deprecated (use 'input' field instead)."
+  # Deprecated (use 'input' field instead).
   data: CreateStatisticDataInput
 ) : StatisticMutationOutput
 
   # Mutation for updating a Statistic document
   updateStatistic(
   input: UpdateStatisticInput,
-  "Deprecated (use 'input' field instead)."
+  # Deprecated (use 'input' field instead).
   selector: StatisticSelectorUniqueInput,
-  "Deprecated (use 'input' field instead)."
-  data: UpdateStatisticDataInput 
+  # Deprecated (use 'input' field instead).
+  data: UpdateStatisticDataInput
 ) : StatisticMutationOutput
 
   # Mutation for upserting a Statistic document
   upsertStatistic(
   input: UpsertStatisticInput,
-  "Deprecated (use 'input' field instead)."
+  # Deprecated (use 'input' field instead).
   selector: StatisticSelectorUniqueInput,
-  "Deprecated (use 'input' field instead)."
+  # Deprecated (use 'input' field instead).
   data: UpdateStatisticDataInput
 ) : StatisticMutationOutput
 
   # Mutation for deleting a Statistic document
   deleteStatistic(
   input: DeleteStatisticInput,
-  "Deprecated (use 'input' field instead)."
+  # Deprecated (use 'input' field instead).
   selector: StatisticSelectorUniqueInput
 ) : StatisticMutationOutput
+
+  # Mutation for creating new Office documents
+  createOffice(
+  input: CreateOfficeInput,
+  # Deprecated (use 'input' field instead).
+  data: CreateOfficeDataInput
+) : OfficeMutationOutput
+
+  # Mutation for updating a Office document
+  updateOffice(
+  input: UpdateOfficeInput,
+  # Deprecated (use 'input' field instead).
+  selector: OfficeSelectorUniqueInput,
+  # Deprecated (use 'input' field instead).
+  data: UpdateOfficeDataInput
+) : OfficeMutationOutput
+
+  # Mutation for upserting a Office document
+  upsertOffice(
+  input: UpsertOfficeInput,
+  # Deprecated (use 'input' field instead).
+  selector: OfficeSelectorUniqueInput,
+  # Deprecated (use 'input' field instead).
+  data: UpdateOfficeDataInput
+) : OfficeMutationOutput
+
+  # Mutation for deleting a Office document
+  deleteOffice(
+  input: DeleteOfficeInput,
+  # Deprecated (use 'input' field instead).
+  selector: OfficeSelectorUniqueInput
+) : OfficeMutationOutput
+
+  # Mutation for creating new Project documents
+  createProject(
+  input: CreateProjectInput,
+  # Deprecated (use 'input' field instead).
+  data: CreateProjectDataInput
+) : ProjectMutationOutput
+
+  # Mutation for updating a Project document
+  updateProject(
+  input: UpdateProjectInput,
+  # Deprecated (use 'input' field instead).
+  selector: ProjectSelectorUniqueInput,
+  # Deprecated (use 'input' field instead).
+  data: UpdateProjectDataInput
+) : ProjectMutationOutput
+
+  # Mutation for upserting a Project document
+  upsertProject(
+  input: UpsertProjectInput,
+  # Deprecated (use 'input' field instead).
+  selector: ProjectSelectorUniqueInput,
+  # Deprecated (use 'input' field instead).
+  data: UpdateProjectDataInput
+) : ProjectMutationOutput
+
+  # Mutation for deleting a Project document
+  deleteProject(
+  input: DeleteProjectInput,
+  # Deprecated (use 'input' field instead).
+  selector: ProjectSelectorUniqueInput
+) : ProjectMutationOutput
+
+  # Mutation for creating new Contact documents
+  createContact(
+  input: CreateContactInput,
+  # Deprecated (use 'input' field instead).
+  data: CreateContactDataInput
+) : ContactMutationOutput
+
+  # Mutation for updating a Contact document
+  updateContact(
+  input: UpdateContactInput,
+  # Deprecated (use 'input' field instead).
+  selector: ContactSelectorUniqueInput,
+  # Deprecated (use 'input' field instead).
+  data: UpdateContactDataInput
+) : ContactMutationOutput
+
+  # Mutation for upserting a Contact document
+  upsertContact(
+  input: UpsertContactInput,
+  # Deprecated (use 'input' field instead).
+  selector: ContactSelectorUniqueInput,
+  # Deprecated (use 'input' field instead).
+  data: UpdateContactDataInput
+) : ContactMutationOutput
+
+  # Mutation for deleting a Contact document
+  deleteContact(
+  input: DeleteContactInput,
+  # Deprecated (use 'input' field instead).
+  selector: ContactSelectorUniqueInput
+) : ContactMutationOutput
+
+  # Mutation for creating new PastProject documents
+  createPastProject(
+  input: CreatePastProjectInput,
+  # Deprecated (use 'input' field instead).
+  data: CreatePastProjectDataInput
+) : PastProjectMutationOutput
+
+  # Mutation for updating a PastProject document
+  updatePastProject(
+  input: UpdatePastProjectInput,
+  # Deprecated (use 'input' field instead).
+  selector: PastProjectSelectorUniqueInput,
+  # Deprecated (use 'input' field instead).
+  data: UpdatePastProjectDataInput
+) : PastProjectMutationOutput
+
+  # Mutation for upserting a PastProject document
+  upsertPastProject(
+  input: UpsertPastProjectInput,
+  # Deprecated (use 'input' field instead).
+  selector: PastProjectSelectorUniqueInput,
+  # Deprecated (use 'input' field instead).
+  data: UpdatePastProjectDataInput
+) : PastProjectMutationOutput
+
+  # Mutation for deleting a PastProject document
+  deletePastProject(
+  input: DeletePastProjectInput,
+  # Deprecated (use 'input' field instead).
+  selector: PastProjectSelectorUniqueInput
+) : PastProjectMutationOutput
 
   # Mutation for creating new Comment documents
   createComment(
   input: CreateCommentInput,
-  "Deprecated (use 'input' field instead)."
+  # Deprecated (use 'input' field instead).
   data: CreateCommentDataInput
 ) : CommentMutationOutput
 
   # Mutation for updating a Comment document
   updateComment(
   input: UpdateCommentInput,
-  "Deprecated (use 'input' field instead)."
+  # Deprecated (use 'input' field instead).
   selector: CommentSelectorUniqueInput,
-  "Deprecated (use 'input' field instead)."
-  data: UpdateCommentDataInput 
+  # Deprecated (use 'input' field instead).
+  data: UpdateCommentDataInput
 ) : CommentMutationOutput
 
   # Mutation for upserting a Comment document
   upsertComment(
   input: UpsertCommentInput,
-  "Deprecated (use 'input' field instead)."
+  # Deprecated (use 'input' field instead).
   selector: CommentSelectorUniqueInput,
-  "Deprecated (use 'input' field instead)."
+  # Deprecated (use 'input' field instead).
   data: UpdateCommentDataInput
 ) : CommentMutationOutput
 
   # Mutation for deleting a Comment document
   deleteComment(
   input: DeleteCommentInput,
-  "Deprecated (use 'input' field instead)."
+  # Deprecated (use 'input' field instead).
   selector: CommentSelectorUniqueInput
 ) : CommentMutationOutput
 
