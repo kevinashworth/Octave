@@ -20,6 +20,9 @@ import ContactMini from '../packages/octave/lib/components/contacts/ContactMini.
 import OfficeMini from '../packages/octave/lib/components/offices/OfficeMini.jsx'
 import ProjectMini from '../packages/octave/lib/components/projects/ProjectMini.jsx'
 
+// be sure to run with -s./packages/octave/lib/stylesheets/custom
+import '../packages/octave/lib/stylesheets/custom/btn.css'
+
 addDecorator(storyFn => <ThemeCard>{storyFn()}</ThemeCard>)
 
 storiesOf('Octave/Common/AddressDetail', module)
@@ -39,7 +42,10 @@ storiesOf('Octave/Common/ErrorBoundary', module)
 
 storiesOf('Octave/Common/LinkDetail', module)
   .add('Default', () => (
-    <LinkDetail link={projectData.links[0]} />
+    <>
+      <LinkDetail link={projectData.links[0]} />
+      <LinkDetail link={projectData.links[1]} />
+    </>
   ))
 
 storiesOf('Octave/Common/LineChartLarge', module)

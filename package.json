@@ -19,7 +19,7 @@
     "lint:fix": "eslint --fix 'packages/octave/**/*.js' 'packages/octave/**/*.jsx'",
     "lint:nofix": "eslint 'packages/octave/**/*.js' 'packages/octave/**/*.jsx' 'tests/cypress/**/*.js'",
     "lint:cypress:fix": "eslint --env mocha --fix 'tests/cypress/**/*.js'",
-    "storybook": "start-storybook -p 6006",
+    "storybook": "start-storybook -s ./packages/octave/lib/stylesheets/custom -p 6006",
     "build-storybook": "build-storybook",
     "build:sass": "node-sass 'packages/octave/lib/stylesheets/main.scss' -o 'packages/octave/lib/stylesheets/compiled'",
     "build:sass:min": "node-sass packages/octave/lib/stylesheets/main.scss packages/octave/lib/stylesheets/compiled/main-min.css --output-style compressed",
