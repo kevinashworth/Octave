@@ -63,20 +63,18 @@ const UsersProfile = (props) => {
             <Card.Text>
               <a href={user.website} target='profilelinks'>{user.website} </a>
             </Card.Text>}
-        </Card.Body>
-        {user.twitterUsername &&
-          <Card.Body>
+          {user.twitterUsername &&
             <Card.Text>
-              <Button className='btn-twitter btn-brand'>
-                <i className='fab fa-twitter' />
-                <span>
-                  <a href={'https://twitter.com/' + user.twitterUsername} target='profilelinks'>
-                    {user.twitterUsername}
-                  </a>
-                </span>
-              </Button>
-            </Card.Text>
-          </Card.Body>}
+                <Button className='btn-twitter btn-brand'>
+                  <i className='fab fa-twitter' />
+                  <span>
+                    <a href={'https://twitter.com/' + user.twitterUsername} target='profilelinks'>
+                      {user.twitterUsername}
+                    </a>
+                  </span>
+                </Button>
+            </Card.Text>}
+        </Card.Body>
         <Card.Footer>
           <small className='text-muted'>{dates}</small>
         </Card.Footer>
