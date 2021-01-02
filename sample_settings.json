@@ -6,7 +6,7 @@
     "owner": "All of Us",
     "ownerUrl": "//example.com/",
     "description": "Octave is a place to collaborate and share information.",
-    "version": "1.16.27",
+    "version": "1.16.28",
     "faviconUrl": "/favicon/favicon.ico",
     "locale": "en",
     "algolia": {

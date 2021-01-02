@@ -1,6 +1,6 @@
 {
   "name": "octave",
-  "version": "1.16.27",
+  "version": "1.16.28",
   "scripts": {
     "start": "meteor --port 4004 --settings settings.json",
     "start-debug": "meteor debug --port 4004 --settings settings.json",
