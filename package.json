@@ -34,7 +34,7 @@
     "test": "start-server-and-test start-testing http://localhost:4004 cypress:open",
     "mockaroo": "cd mockaroo; ./mockaroo.sh; cd ..",
     "start-mockaroo": "meteor --port 4004 --settings settings-mockaroo.json",
-    "release": "release-it"
+    "release": "release-it --only-version"
   },
   "dependencies": {
     "@apollo/client": "^3.3.6",
@@ -166,7 +166,6 @@
     "@babel/plugin-syntax-dynamic-import": "^7.8.3",
     "@babel/preset-env": "^7.12.11",
     "@babel/preset-react": "^7.12.10",
-    "@cypress/code-coverage": "^3.8.6",
     "@j-ulrich/release-it-regex-bumper": "^1.2.0",
     "@percy/cypress": "^2.3.3",
     "@storybook/addon-actions": "6.1.11",
@@ -182,11 +181,10 @@
     "babel-plugin-transform-class-properties": "^6.24.1",
     "better-docs": "^2.3.2",
     "css-loader": "^5.0.1",
-    "cssnano": "^4.1.10",
     "cypress": "^6.2.0",
     "cypress-plugin-tab": "^1.0.5",
     "diff": "^4.0.2",
-    "eslint": "^7.16.0",
+    "eslint": "^7.17.0",
     "eslint-config-airbnb": "^18.2.1",
     "eslint-config-meteor": "0.1.1",
     "eslint-config-standard": "^16.0.2",
@@ -199,7 +197,7 @@
     "eslint-plugin-meteor": "^7.2.2",
     "eslint-plugin-node": "^11.1.0",
     "eslint-plugin-promise": "^4.2.1",
-    "eslint-plugin-react": "^7.21.5",
+    "eslint-plugin-react": "^7.22.0",
     "eslint-plugin-react-hooks": "^4.2.0",
     "istanbul-lib-coverage": "^3.0.0",
     "nyc": "^15.1.0",
