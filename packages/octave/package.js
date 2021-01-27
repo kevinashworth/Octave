@@ -30,6 +30,7 @@ Package.onUse(function (api) {
     'lib/stylesheets/custom/algolia.css',
     'lib/stylesheets/custom/btn.css',
     'lib/stylesheets/custom/datatable.css',
+    'lib/stylesheets/custom/fontawesome.css',
     'lib/stylesheets/custom/misc.css'
   ], 'client')
 

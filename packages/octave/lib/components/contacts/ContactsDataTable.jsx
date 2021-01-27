@@ -340,7 +340,8 @@ function ContactsDataTable () {
       <Card className='card-accent-contacts' style={{ borderTopWidth: 1 }}>
         <ProgressBar now={progress} style={{ height: 2 }} variant='contacts' />
         <Card.Header>
-          <i className='fad fa-address-book' style={{ color: 'var(--primary)' }} />Contacts
+          <i className='fad fa-address-book' />
+          Contacts
           <Components.ContactFilters />
         </Card.Header>
         <Card.Body>

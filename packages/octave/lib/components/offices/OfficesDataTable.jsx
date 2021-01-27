@@ -255,7 +255,8 @@ const OfficesDataTable = () => {
       <Card className='card-accent-offices' style={{ borderTopWidth: 1 }}>
         <ProgressBar now={progress} style={{ height: 2 }} variant='offices' />
         <Card.Header>
-          <i className='fad fa-city' style={{ color: 'var(--primary)' }} />Offices
+          <i className='fad fa-city' />
+          Offices
         </Card.Header>
         <Card.Body>
           <Table

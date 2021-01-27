@@ -378,7 +378,8 @@ const ProjectsDataTable = () => {
       <Card className='card-accent-projects' style={{ borderTopWidth: 1 }}>
         <ProgressBar now={progress} style={{ height: 2 }} variant='projects' />
         <Card.Header>
-          <i className='fad fa-camera' style={{ color: 'var(--primary)' }} />Projects
+          <i className='fad fa-camera' />
+          Projects
           <Components.ProjectFilters />
         </Card.Header>
         <Card.Body>

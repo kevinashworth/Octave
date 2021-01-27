@@ -310,7 +310,8 @@ const PastProjectsDataTable = () => {
       <Card className='card-accent-pastprojects' style={{ borderTopWidth: 1 }}>
         <ProgressBar now={progress} style={{ height: 2 }} variant='pastprojects' />
         <Card.Header>
-          <i className='fad fa-camera-retro' style={{ color: 'var(--primary)' }} />Past Projects
+          <i className='fad fa-camera-retro' />
+          Past Projects
           <Components.PastProjectFilters />
         </Card.Header>
         <Card.Body>
