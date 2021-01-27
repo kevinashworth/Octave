@@ -34,7 +34,8 @@
     "test": "start-server-and-test start-testing http://localhost:4004 cypress:open",
     "mockaroo": "cd mockaroo; ./mockaroo.sh; cd ..",
     "start-mockaroo": "meteor --port 4004 --settings settings-mockaroo.json",
-    "release": "release-it --only-version"
+    "release": "release-it --only-version",
+    "start:ci": "meteor --port 4004 --settings $HOME/secrets/settings.json"
   },
   "dependencies": {
     "@apollo/client": "^3.3.6",
