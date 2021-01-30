@@ -1,0 +1,35 @@
+{
+  "public": {
+    "title": "Octave Public Testing",
+    "tagline": "Public Testing Version of Octave",
+    "homeUrl": "//example.com/",
+    "owner": "John Q. Public, LLC",
+    "ownerUrl": "//example.com/",
+    "description": "Octave is a side project that is totally awesome. This is the publicly available version with unreal data.",
+    "version": "1.16.29",
+    "faviconUrl": "/favicon/favicon.ico",
+    "locale": "en",
+    "algolia": {
+      "ApplicationID": "MHHVORPPHC",
+      "SearchOnlyAPIKey": "a4143a5dd9f9cb69d64a58c157c0f127",
+      "AlgoliaIndex": "Mockaroo",
+      "README": "Index names appear in network requests and should be considered publicly available",
+      "enableErrorDelete": true
+    },
+    "apolloSsr": {
+      "disable": true
+    },
+    "pollInterval": 30000
+  },
+  "private": {
+    "algolia": {
+      "AddAndUpdateAPIKey": "b41683f331768543c229f488ccda0984",
+      "README": "The Mockaroo Algolia index is a sandbox for development only."
+    }
+  },
+  "apolloServer": {
+    "corsWhitelist": [],
+    "corsEnableAll": false
+  },
+  "debug": true
+}
