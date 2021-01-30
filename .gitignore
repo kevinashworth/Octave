@@ -10,7 +10,8 @@ misc/
 node_modules/
 notes/
 packages/octave/lib/server/seeds/generated/
-scripts/
+scripts/*
+!scripts/start-public-testing.sh
 storybook-static/
 tests/cypress/integration/examples
 tests/cypress/screenshots

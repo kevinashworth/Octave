@@ -6,6 +6,7 @@
     "start-debug": "meteor debug --port 4004 --settings settings.json",
     "start-mongo": ". scripts/start-mongo.sh",
     "start-mozart": ". scripts/start-mozart.sh",
+    "start-public-testing": ". scripts/start-public-testing.sh",
     "start-triad": ". scripts/start-triad.sh",
     "start-mongo-old": ". scripts/start-mongo-old.sh",
     "start-visualizer": "meteor --extra-packages bundle-visualizer --production --port 4004 --settings settings.json",
