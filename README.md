@@ -24,7 +24,7 @@ built with:
 - [Storybook](https://storybook.js.org/)
 - [Twilio](https://www.twilio.com/)
 
-Octave lists Contacts, Offices, Projects and Past Projects, and provides an
+**Octave** lists Contacts, Offices, Projects and Past Projects, and provides an
 expanded editing interface for admins. Using Vulcan’s
 [hooks and callbacks](https://docs.vulcanjs.org/callbacks.html), related records
 are transformed upon editing the original record. Brill.
@@ -49,13 +49,15 @@ Have these tools installed first:
 6. Run the command `npm install`.
 7. Run the script that is available for public testing, `npm run start-public-testing`.
 8. When this command finishes after a few minutes, launch **Octave** by visiting <http://localhost:4004> in your browser.
-9. Click Sign Up and enter the username, email, and password of your choosing.
+9. You can Sign In using “public” and “testing”. Or sign up with the username, email, and password of your choosing. (See Note.)
 10. That’s it. You’re in!
 
 ## Note
 
-The sign-up email that you enter will not be used, so it can be valid, or a dummy value.
+The sign-up email that you enter will not be used, so it can be valid or a dummy value.
 When you first sign up, you will have limited permissions.
 There are secrets that are not on Github — for access to all objects, for access to the real **Octave** database, for Twilio
 phone number validation and formatting, for full Algolia search, etc.
-There is an alternative method of setting up to get it all. DM me.
+There is an alternative method of installation to get it all.
+
+For greater access, DM me.
