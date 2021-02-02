@@ -17,16 +17,16 @@ const MyFormControl = (props) => {
     type
   } = props
 
-  let icon = <i className='icon-user' />
+  let icon = <i className='fal fa-user' />
   switch (id) {
     case 'email':
-      icon = '@'
+      icon = <i className='fal fa-at' />
       break
     case 'newPassword':
-      icon = <i className='icon-key' />
+      icon = <i className='fal fa-key' />
       break
     case 'password':
-      icon = <i className='icon-lock' />
+      icon = <i className='fal fa-lock' />
       break
     default:
   }

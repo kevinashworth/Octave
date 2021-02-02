@@ -48,7 +48,7 @@ const StatisticsList = () => {
     <div className='animated fadeIn'>
       <Card>
         <Card.Header>
-          <i className='icon-briefcase' />Statistics (Collapsible Lists)
+          <i className='fad fa-chart-bar' />Statistics (Collapsible Lists)
           {Users.canUpdate({ collection: Statistics, user: currentUser, document }) &&
             <div className='float-right'>
               <LinkContainer to='/statistics/edit'>

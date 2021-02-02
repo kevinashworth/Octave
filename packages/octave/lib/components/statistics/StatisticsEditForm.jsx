@@ -24,7 +24,7 @@ const StatisticsEditForm = (props) => {
     <div className='animated fadeIn'>
       <Card>
         <Card.Header>
-          <i className='icon-briefcase' />Edit Statistics
+          <i className='fad fa-chart-bar' />Edit Statistics
         </Card.Header>
         <Card.Body>
           <Components.SmartForm
