@@ -6,7 +6,7 @@
     "owner": "John Q. Public, LLC",
     "ownerUrl": "//example.com/",
     "description": "Octave is a side project that is totally awesome. This is the publicly available version with unreal data.",
-    "version": "1.16.29",
+    "version": "1.16.30",
     "faviconUrl": "/favicon/favicon.ico",
     "locale": "en",
     "algolia": {
