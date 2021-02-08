@@ -1,0 +1,12 @@
+diff --git a/node_modules/crypto-random-string/index.js b/node_modules/crypto-random-string/index.js
+index 9193527..325684b 100644
+--- a/node_modules/crypto-random-string/index.js
++++ b/node_modules/crypto-random-string/index.js
+@@ -1,5 +1,6 @@
+ 'use strict';
+-const {promisify} = require('util');
++// const {promisify} = require('util');
++const promisify = require('util.promisify');
+ const crypto = require('crypto');
+ 
+ const randomBytesAsync = promisify(crypto.randomBytes);
