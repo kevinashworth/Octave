@@ -19,13 +19,13 @@ describe('Statistics', () => {
   it('verify Write These Statistics', function () {
     const log = Cypress.log({
       name: 'statistics',
-      displayName: 'WRITE STATISTICS',
-      message: 'Write statistics 115 --> 117',
+      displayName: 'WRITE STATS',
+      message: 'Features 48 --> 117',
       autoEnd: false
     })
     let beforeStat = 0
 
-    // before, there are 115 features casting
+    // before, there are 48 features casting
     cy.visit('/trends')
     cy.get('[data-cy=features-casting]').then(($span) => {
       beforeStat = parseInt($span.text())
@@ -46,7 +46,7 @@ describe('Statistics', () => {
     cy.get('[data-cy=features-casting]').then(($span) => {
       const stat = parseInt($span.text())
       cy.log('features stat after', stat)
-      expect(stat - beforeStat).to.eq(2)
+      expect(stat - beforeStat).to.eq(117 - 48)
     })
 
     log.end()
