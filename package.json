@@ -73,7 +73,7 @@
     "dataloader": "^1.4.0",
     "deepmerge": "^4.2.2",
     "escape-string-regexp": "^4.0.0",
-    "express": "^4.17.1",
+    "express": "^4.22.1",
     "fast-json-patch": "^3.0.0-1",
     "flat": "^5.0.2",
     "graphql": "14.4.2",
