@@ -39,7 +39,7 @@
   },
   "dependencies": {
     "@apollo/client": "^3.3.6",
-    "@babel/runtime": "^7.12.5",
+    "@babel/runtime": "^7.26.10",
     "@restart/hooks": "^0.3.26",
     "algoliasearch": "^4.8.4",
     "analytics-node": "^2.1.1",
